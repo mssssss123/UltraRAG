@@ -1,0 +1,43 @@
+# config.yaml
+
+# Template definitions
+Augment_template: |  # Template for augment data
+  Background:
+  {}
+  
+  Question: {}
+  Answer:
+
+QA_template: |  # Template for raw format
+  Question: {}
+  Answer:
+
+passage_separator: "\n"  # separator between passages
+
+# Arguments related to the model configuration
+model_args:
+  model_type: minicpm3  # Specify the model type. Options are 'minicpm2', 'minicpm3', and 'llama_style'
+  use_template: true  
+
+# Arguments related to the dataset
+data_args:
+  max_length: 2200
+  max_prompt_length: 2100
+  max_passage_length: 2000
+  max_seq_length: 2000
+  top_n: 5
+
+# Custom Training Arguments for fine-tuning the model, inherited from transformers
+training_args:
+  cache_dir:
+  optim: "adamw_torch"
+  save_steps: 100
+  eval_steps: 100
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 2
+  learning_rate: 5e-5
+  eval_strategy: "steps"
+  logging_steps: 10
+  bf16: true
+  num_train_epochs: 1
+

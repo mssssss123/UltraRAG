@@ -1,0 +1,8 @@
+[server]
+port = 8843
+
+[logging]
+level = "debug"
+
+[theme]
+base = "light"

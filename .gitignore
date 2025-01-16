@@ -1,0 +1,43 @@
+# 系统文件
+.DS_Store
+.vscode/
+
+# Python相关
+*.pyc
+*__pycache__
+*.egg-info
+.cache
+
+# 日志和输出文件
+*.log
+*.out
+*.txt
+*.json
+*.yml
+*.yaml
+*.xlsx
+
+# 临时文件
+*.tmp
+temp.*
+
+# 数据和资源目录
+resource/*
+!resource/prompt
+data/
+dist/
+node_modules/
+run/*
+storage/
+logs/
+output/
+kb_manager/
+data/
+
+# 关键配置文件
+!config/**/*.yaml
+!config/**/*.json
+!config/**/*.jsonl
+
+!examples/**/*.jsonl
+workspace/
