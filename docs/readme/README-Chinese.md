@@ -17,7 +17,9 @@ UltraRAG是一个面向典型实现与灵活编辑的一站式RAG框架，同时
   - 提供一个简单易用的WebUI，只需要在前端操作，无需编写代码即可完成各种的需求
   - 不断完善的技术支持，致力于丰富和完善UltraRAG功能，加速你的科研和项目进度
 
-<img src='../assets/zh/image.png' width=600>
+<div align="center">
+    <img src='../assets/zh/image.png' width=600>
+</div>
 
 ## ✨️ 主要特点
 - **效果体验**：UltraRAG 内置模块化工具，可灵活定制并体验个性化工作流，同时提供多种预设工作流，包括 VisRAG、Adaptive-Note 和 VanillaRAG，满足不同的使用需求。
@@ -26,7 +28,9 @@ UltraRAG是一个面向典型实现与灵活编辑的一站式RAG框架，同时
 - **效果评测**：涵盖检索模型与生成模型的多维评估指标，支持从整体到各环节全面评估模型和方法性能。
 **以上全部功能，都可以直接通过 web 前端快速实现。**
 
-<img src='../assets/zh/image2.png' width=600>
+<div align="center">
+    <img src='../assets/zh/image2.png' width=600>
+</div>
 
 ## 🔧整体架构
 UltraRAG 的框架整体上分为三个部分：前端页面、后端模块、微服务等。
@@ -34,7 +38,9 @@ UltraRAG 的框架整体上分为三个部分：前端页面、后端模块、�
 - 后端模块分为 workflow、modules 和涉及模型调优套件：datasets（构造数据）、finetune（模型微调）和 evaluate（效果评测）。其中 workflow 提供了几类典型的工作流的实现，你也可以follow 其中示例开发自己的工作流；modules 提供几类RAG 场景中的典型的实现模块，每一类模块都可以方便地复用到 workflow 的开发过程中；模型调优套件提供了一整套的 pipeline 和技术方法，涵盖了各项论文的技术成果，目前也在不断更新中。
 - 微服务接口：由于 UltraRAG 提供了涉及 RAG 的一站式框架方案，各类模型涉及到微调，因此需要具备微服务的部署能力，目前 UltraRAG 已经加入了对主流 RAG 链路中经典模型的支持，后续也会不断完善，兼容更多的模型。
 
-<img src='../assets/zh/image3.png' width=600>
+<div align="center">
+    <img src='../assets/zh/image3.png' width=600>
+</div>
 
 ## ⚡️快速开始
 UltraRAG支持在单机部署简单的演示demo，你可以通过导入python依赖的方式在本地部署简单的UI对话示例。你可以通过以下几种方式使用 UltraRAG 框架：

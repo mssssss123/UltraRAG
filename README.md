@@ -17,7 +17,9 @@ UltraRAG is a one-stop RAG framework designed for typical implementations and fl
   - Provides a user-friendly WebUI that allows you to meet various needs without writing any code.
   - Continuously improving technical support to enrich and enhance UltraRAG's functionality, accelerating your research and project progress.
 
-<img src='docs/assets/en/image.png' width=600>
+<div align="center">
+  <img src='docs/assets/en/image.png' width=600>
+</div>
 
 ## ✨️ Key Features
 - **Performance Experience**: UltraRAG includes modular tools for flexible customization and personalized workflows. It also offers several preset workflows, such as VisRAG, Adaptive-Note, and VanillaRAG, to meet different usage requirements.
@@ -26,14 +28,19 @@ UltraRAG is a one-stop RAG framework designed for typical implementations and fl
 - **Performance Evaluation**: Covers multidimensional evaluation metrics for retrieval and generation models, enabling comprehensive performance assessment from individual components to the overall system.
 **All these features can be accessed directly through the web frontend.**
 
-<img src='docs/assets/en/image2.png' width=600>
+<div align="center">
+  <img src='docs/assets/en/image2.png' width=600>
+</div>
 
 ## 🔧 Architecture
 UltraRAG's framework is divided into three main parts: frontend interface, backend modules, and microservices.
 - The frontend interface consists of resource management and functional pages. Resource management includes model and knowledge base management. Functional pages cover data construction, model training, performance evaluation, and inference experience.
 - Backend modules are categorized into workflow, modules, and model fine-tuning suites: datasets (data construction), finetune (model fine-tuning), and evaluate (performance evaluation). The workflow module implements several typical workflows, which you can use as examples to develop your own workflows. The modules provide typical components for RAG scenarios, which can be easily reused in workflow development. The model fine-tuning suite offers a complete pipeline and technical methods, incorporating results from various papers, and is continuously updated.
 - Microservice Interfaces: As a one-stop framework for RAG, UltraRAG involves microservice deployment capabilities for model fine-tuning. It currently supports mainstream RAG pipeline models and will continue to expand compatibility with more models.
-<img src='docs/assets/en/image3.png' width=600>
+
+<div align="center">
+  <img src='docs/assets/en/image3.png' width=600>
+</div>
 
 ## ⚡️ Quick Start
 UltraRAG supports simple demo deployment on a single machine. You can deploy a basic UI dialogue demo locally by installing Python dependencies. Here are several ways to use the UltraRAG framework:
