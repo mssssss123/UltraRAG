@@ -105,7 +105,7 @@ python UltraRAG/scripts/download_models.py
 | UltraRAG-Embedding-Finetune(Qwen2.5-14B-instruction造的2800条) | 37.57                       | 42.12                        | 56.50                         |
 
 
-## ‍致谢
+## ‍🤝致谢
 感谢以下贡献者的代码提交和测试，欢迎新成员加入我们，致力于构建完整生态！
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">

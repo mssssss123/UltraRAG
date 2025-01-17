@@ -105,7 +105,7 @@ python UltraRAG/scripts/download_models.py
 | UltraRAG-Embedding                       | 36.46                                | 40.05                                 | 54.50                                  |
 | UltraRAG-Embedding-Finetune(Qwen2.5-14B-instructionによる2800件) | 37.57                                | 42.12                                 | 56.50                                  |
 
-## ‍謝辞
+## ‍🤝謝辞
 以下の貢献者によるコード提供とテストに感謝します。新しいメンバーの参加を歓迎し、一緒に完全なエコシステムの構築を目指しましょう！
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">

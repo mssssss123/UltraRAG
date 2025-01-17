@@ -105,7 +105,7 @@ The following results are obtained from the UltraRAG evaluation page for these t
 | UltraRAG-Embedding                       | 36.46                                 | 40.05                                  | 54.50                                    |
 | UltraRAG-Embedding-Finetune(Qwen2.5-14B-instruction, 2800 samples) | 37.57                                 | 42.12                                  | 56.50                                    |
 
-## ‍Acknowledgments
+## ‍🤝Acknowledgments
 We sincerely thank the following contributors for their code contributions and testing. New members are welcome to join us in building a complete ecosystem!
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
