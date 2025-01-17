@@ -40,7 +40,7 @@ class KBAlignClass:
         long_dependecy.main()
     
     def main(self):
-        # self.short_dependency()
+        self.short_dependency()
         self.long_dependency()
         
         output_dir1 = os.path.join(self.args.output_dir, "kbalign_short_final_data")

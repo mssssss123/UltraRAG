@@ -69,17 +69,17 @@ python ./scripts/download_models.py
 
 ## 贡献者名单
 
-<a href="https://github.com/gdw439/UltraRAG/contributors">
-  <img src="https://contrib.rocks/image?repo=gdw439/UltraRAG" />
+<a href="https://github.com/OpenBMB/UltraRAG/contributors">
+  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
 </a>
 
 
 ## Star History
 
-<a href="https://star-history.com/#gdw439/UltraRAG&Date">
+<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=gdw439/UltraRAG&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=gdw439/UltraRAG&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=gdw439/UltraRAG&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
  </picture>
 </a>

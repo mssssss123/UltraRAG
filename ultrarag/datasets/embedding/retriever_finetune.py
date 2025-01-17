@@ -29,23 +29,3 @@ class RetrieverFinetune:
         if args.pipeline_step == "reranker_clean_data":
             from ultrarag.datasets.embedding.dig_hard_neg.dig_hard_neg import RerankerCleanDataClass
             RerankerCleanDataClass.reranker_clean(parser)
-
-
-    #### merge from dewen & chaoyue ####   
-    
-    # if args.pipeline_type == "finetune":
-    #    from ultrarag.datasets.embedding.finetune import RetrieverFinetuneClass
-    #    FinetuneClass.main(parser)
-    
-    # if args.pipeline_type == "finetune_reranker":
-    #     from ultrarag.datasets.embedding.finetune_reranker import RerankerFinetuneClass
-    #     RerankerFinetuneClass.main(parser)
-    
-    # if args.pipeline_type == "evaluation":
-    #     from ultrarag.datasets.embedding.evaluation import EvaluationClass
-    #     EvaluationClass.main(parser)
-    
-    # if args.pipeline_type == "evaluation_reranker":
-    #     from ultrarag.datasets.embedding.evaluation_reranker import EvaluationRerankerClass
-    #     EvaluationRerankerClass.main(parser)   
-    

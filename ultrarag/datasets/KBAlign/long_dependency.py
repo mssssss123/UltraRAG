@@ -37,7 +37,7 @@ class LongDependecy:
         self.output_path = output_file1
         os.makedirs(self.output_dir1, exist_ok=True)  
 
-        encoder = BGEServer(url_or_path=embedding_model_path)
+        encoder = BGEServer(url_or_path=embedding_model_path,device="cuda:5")
         self.searcher = Knowledge_Managment.get_searcher(
             knowledge_id = [knowledge_id],
             embedding_model = encoder,
@@ -60,8 +60,6 @@ class LongDependecy:
             # todo
             questions, answers = [], []
             for d in data:
-                if random.random() < 0.995:
-                    continue
                 # if self.is_example:
                 #     example, example_index = rc.get_top_k(query=[d], documents=ex_questions,documents_path=args.documents_path, top_k=1)
                 #     e_q = example[0]
@@ -80,7 +78,7 @@ class LongDependecy:
                 #     e_q=example[0]
                 #     e_a=ex_data[example_index[0]]["answer"]
                 a = ""
-                d_arr = self.searcher.search_with_data(query=q, data=data, top_k=10 if len(data) > 9 else 3, batch_size=256)
+                d_arr = self.searcher.search_with_data(query=q, data=data, top_k=10 if len(data) > 9 else 3, batch_size=512)
                 for doc in d_arr:
                     # if args.is_example:
                         # prompt=prompt_gen_a.format(document=doc, e_q=e_q, e_a=e_a, q=q)
@@ -95,6 +93,11 @@ class LongDependecy:
                 refined_answer = self.llm_service.run(messages=prompt_messages, stream=False)
                 answers.append(refined_answer)
 
+            try:
+                with open(self.output_path, 'r', encoding='utf-8') as f:
+                    existing_data = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                existing_data = []
 
             for idx, (q, a) in enumerate(zip(questions, answers)):
                 include_references = random.choice([True, False])
@@ -153,9 +156,10 @@ class LongDependecy:
                     "golden_reference": None
                 }
                 final_result.append(dialog_entry)
+                existing_data.append(dialog_entry)
 
-        with open(self.output_path, 'w', encoding='utf-8') as f:
-            json.dump(final_result, f, indent=4, ensure_ascii=False)
+            with open(self.output_path, 'w', encoding='utf-8') as f:
+                json.dump(existing_data, f, indent=4, ensure_ascii=False)
 
     def cluster_data(self, sentences_data):
         model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
