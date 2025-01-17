@@ -167,19 +167,21 @@ generated_evaluator=GeneratedEvaluator()
 llm = None
 flow = None
 if not args.evaluate_only:
-    if args.model_name_or_path:
-        llm = VllmServer(base_url=args.model_name_or_path, **vllm_params)
-    else:
-        llm = OpenaiLLM(api_key=args.api_key, base_url=args.base_url, model=args.model_name, **vllm_params["sampling_params"])
-    if args.model_name_or_path:
-        metric_llm = VllmServer(base_url=args.model_name_or_path, **metric_vllm_params)
-    else:
-        metric_llm = OpenaiLLM(api_key=args.metric_api_key, base_url=args.metric_base_url, model=args.metric_model_name)
-    if args.pooling and args.query_instruction:
-        encoder = BGEServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
-    else:
-        encoder = load_model(args.embedding_model_path, device='cuda:0')   
-    
+    try:
+        if args.model_name_or_path:
+            llm = VllmServer(base_url=args.model_name_or_path, **vllm_params)
+        else:
+            llm = OpenaiLLM(api_key=args.api_key, base_url=args.base_url, model=args.model_name, **vllm_params["sampling_params"])
+        if args.model_name_or_path:
+            metric_llm = VllmServer(base_url=args.model_name_or_path, **metric_vllm_params)
+        else:
+            metric_llm = OpenaiLLM(api_key=args.metric_api_key, base_url=args.metric_base_url, model=args.metric_model_name)
+        if args.pooling and args.query_instruction:
+            encoder = BGEServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
+        else:
+            encoder = load_model(args.embedding_model_path, device='cuda:0')   
+    except:
+        logger.error("Please load model first.")    
     searcher = Knowledge_Managment.get_searcher(embedding_model=encoder,knowledge_id=args.knowledge_id, knowledge_stat_tab_path = args.knowledge_stat_tab_path)
     reranker = load_rerank_model(args.reranker_model_path)
     if args.pipeline_type == "vanilla":
