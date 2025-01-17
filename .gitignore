@@ -40,4 +40,5 @@ data/
 !config/**/*.jsonl
 
 !examples/**/*.jsonl
+!LICENSE.txt
 workspace/
