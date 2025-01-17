@@ -17,9 +17,9 @@ UltraRAG提供模型微调，用于微调embedding模型，提升垂直领域的
 ```bash
 torchrun --nproc_per_node 4 \
     -m ultrarag.finetune.bgem3 \
-    --model_name_or_path /home/guodewen/dataset/soda_bgem3/finetune-model/model_1128/ \
+    --model_name_or_path resource/dataset/soda_bgem3/finetune-model/model_1128/ \
     --cache_dir ./cache/model \
-    --train_data  /home/guodewen/dataset/soda_bgem3/workspace/train_history_2/train_v3_incr.jsonl \
+    --train_data  resource/dataset/soda_bgem3/workspace/train_history_2/train_v3_incr.jsonl \
     --cache_path ./cache/data \
     --train_group_size 1 \
     --query_max_len 512 \
@@ -29,7 +29,7 @@ torchrun --nproc_per_node 4 \
     --same_dataset_within_batch True \
     --small_threshold 0 \
     --drop_threshold 0 \
-    --output_dir /home/guodewen/dataset/soda_bgem3/finetune-model/model_1206-incr/ \
+    --output_dir resource/dataset/soda_bgem3/finetune-model/model_1206-incr/ \
     --overwrite_output_dir \
     --learning_rate 1e-5 \
     --fp16 \

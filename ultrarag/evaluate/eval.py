@@ -9,6 +9,7 @@ import os
 from loguru import logger
 import asyncio
 import yaml
+import traceback
 from ultrarag.evaluate.evaluator.generated_evaluator import GeneratedEvaluator
 from ultrarag.evaluate.evaluator.retrieval_evaluator import RetrievalEvaluator
 from ultrarag.modules.llm import OpenaiLLM, VllmServer
@@ -36,7 +37,8 @@ parser.add_argument("--model_name", type=str)
 parser.add_argument("--embedding_model_path", type=str)
 parser.add_argument("--knowledge_stat_tab_path", type=str)
 parser.add_argument("--reranker_model_path", type=str)
-parser.add_argument("--config_path", type=str, help="Path to the YAML configuration file.")
+parser.add_argument("--config_path", type=str, 
+                    default=(home_path / "config/pipeline/eval/eval.yaml").as_posix(), help="Path to the YAML configuration file.")
 
 parser.add_argument("--pooling", type=str, default="mean", help="Pooling strategy to use.")
 parser.add_argument("--query_instruction", type=str, default=None, help="Instruction to extract query text.")
@@ -118,7 +120,7 @@ async def process_datasets(llm, flow, collections, datasets, evaluate_only, gene
 
                     item['prediction'] = prediction
                 except Exception as e:
-                    logger.error(e)
+                    logger.error(traceback.format_exc())
                     pass
         try:
             dataset = evaluate_metrics(llm, dataset, generated_metrics)

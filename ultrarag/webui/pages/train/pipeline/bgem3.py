@@ -43,7 +43,7 @@ def display():
             )
             st.text_input(
                 t("Training Data"),
-                value=bgem3_config.get('train_data', '/home/guodewen/dataset/soda_bgem3/workspace/train_history_2/train_v3_incr.jsonl'),
+                value=bgem3_config.get('train_data', 'resource/dataset/soda_bgem3/workspace/train_history_2/train_v3_incr.jsonl'),
                 key="train_data",
                 on_change=lambda: bgem3_config.update(
                     {'train_data': st.session_state.train_data}

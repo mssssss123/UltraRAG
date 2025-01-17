@@ -5,6 +5,7 @@ import warnings
 import traceback
 from loguru import logger
 
+AVAIL_ARGS = ["frequency_penalty", "presence_penalty", "temperature", "top_p", "max_tokens", "n", "model"]
 class OpenaiLLM(BaseLLM):
     def __init__(self, api_key: str, base_url: str, **kargs) -> None:
         self.max_retries = kargs.pop('max_retries', 3)
@@ -19,6 +20,8 @@ class OpenaiLLM(BaseLLM):
         chat_kargs = self.kargs
         chat_kargs.update(kargs)
 
+        checked_kargs = {key: chat_kargs[key] for key in AVAIL_ARGS if key in chat_kargs}
+
         if isinstance(messages, dict):
             if 'role' not in messages or 'content' not in messages:
                 raise ValueError(f"messages iformat error: {messages}")
@@ -30,7 +33,7 @@ class OpenaiLLM(BaseLLM):
         async def chat_generator(messages):
             response = await self._generator_async.chat.completions.create(
                 messages=messages,
-                **chat_kargs,
+                **checked_kargs,
                 stream=True,
             )
             async for item in response:
@@ -45,7 +48,7 @@ class OpenaiLLM(BaseLLM):
                 else:
                     response = await self._generator_async.chat.completions.create(
                         messages=messages,
-                        **chat_kargs,
+                        **checked_kargs,
                         stream=False,
                     )
                     return response.choices[0].message.content
