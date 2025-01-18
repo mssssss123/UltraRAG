@@ -20,7 +20,7 @@ from ultrarag.modules.reranker import BGERerankClient, BGERerankServer
 parser = argparse.ArgumentParser(description="Pipeline for processing datasets")
 
 parser.add_argument('--pipeline_type', type=str, required=True, help="Type of pipeline: 'vanilla' or 'renote'")
-parser.add_argument('--test_dataset', type=str, nargs='+', required=True, help="List of dataset files (json or jsonl)")
+parser.add_argument('--test_dataset', type=str, nargs='+', required=False, help="List of dataset files (json or jsonl)")
 parser.add_argument('--selected_generated_metrics', default=[], type=str, nargs='+', help="List of generated metrics to evaluate")
 parser.add_argument('--output_path', type=str, required=True, help="Path to save the results")
 parser.add_argument('--knowledge_id', type=str, nargs='+', help="List of collections")
@@ -53,6 +53,7 @@ parser.add_argument('--selected_retrieval_metrics', default=[], type=str, nargs=
 
 
 args, unknown = parser.parse_known_args()
+args.cutoffs = [int(c) for c in args.cutoffs.split(",")] if args.cutoffs is not None else [args.topk]
 
 def load_config(config_path):
     """Load prompts and sampling parameters from a YAML configuration file."""
@@ -181,10 +182,10 @@ if __name__ == "__main__":
         if args.pooling and args.query_instruction:
             encoder = BGEServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
         else:
-            encoder = load_model(args.embedding_model_path, device='cuda:5')   
+            encoder = load_model(args.embedding_model_path, device='cuda:0')   
         
         searcher = Knowledge_Managment.get_searcher(embedding_model=encoder,knowledge_id=args.knowledge_id, knowledge_stat_tab_path = args.knowledge_stat_tab_path)
-        reranker = load_rerank_model(args.reranker_model_path,device='cuda:6')
+        reranker = load_rerank_model(args.reranker_model_path,device='cuda:0')
         if args.pipeline_type == "vanilla":
             from ultrarag.workflow.ultraragflow.simple_flow import NativeFlow
             flow = NativeFlow.from_modules(llm=llm,index=searcher,reranker=reranker)
@@ -198,7 +199,7 @@ if __name__ == "__main__":
     try:
         if args.selected_retrieval_metrics:
             evaluator = RetrievalEvaluator(encoder, {"queries": args.queries_path, "corpus": args.corpus_path, "default": args.qrels_path, "output": args.retrieval_output_path}, args.topk)
-            metric_result = evaluator.run_metric_inference(args.metrics, args.cutoffs)
+            metric_result = evaluator.run_metric_inference(args.selected_retrieval_metrics, args.cutoffs)
             if args.log_path is not None:
                 with open(args.log_path, "w") as f:
                     f.write(json.dumps(metric_result, indent=4))
@@ -206,7 +207,10 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(e)
         
-    asyncio.run(process_datasets(metric_llm, flow, args.knowledge_id, args.test_dataset, args.evaluate_only, args.selected_generated_metrics))
-
-    print(f"Processing completed. Results saved to {args.output_path}")
-
+    try:
+        if args.selected_generated_metrics:
+            asyncio.run(process_datasets(llm, flow, args.knowledge_id, args.test_dataset, args.evaluate_only, args.selected_generated_metrics))
+            print(f"Processing completed. Results saved to {args.output_path}")
+    except Exception as e:
+        logger.error(e)    
+        
