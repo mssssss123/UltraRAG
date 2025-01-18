@@ -10,7 +10,7 @@ class LoRAModelMerger:
         self.save_path = save_path
 
         # Initialize the base model and tokenizer
-        self.base_tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+        self.base_tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, trust_remote_code=True)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name_or_path,
             torch_dtype=torch.bfloat16,

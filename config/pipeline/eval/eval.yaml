@@ -12,9 +12,6 @@ VllmServer_params:  # Configuration for the VLLM server
     temperature: 0.8
     top_p: 0.8
     top_k: -1
-    use_beam_search: false
-    length_penalty: 1.0
-    early_stopping: false
     stop: null
     stop_token_ids: null
     ignore_eos: false
@@ -38,9 +35,6 @@ metric_VllmServer_params:  # Configuration for the VLLM server
     temperature: 0.8
     top_p: 0.8
     top_k: -1
-    use_beam_search: false
-    length_penalty: 1.0
-    early_stopping: false
     stop: null
     stop_token_ids: null
     ignore_eos: false

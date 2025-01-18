@@ -54,9 +54,8 @@ class KBAlign:
         new_messages2 = [{"role": "user", "content": new_messages2}]
         final_answer = await self.generator(new_messages2, stream=self._stream)
         
-        if self._stream:
-            async for item in final_answer:
-                yield dict(state="data", value=item)
+        if isinstance(final_answer,str):
+            yield dict(state='data',value=final_answer)
         else:
-            yield dict(state="data", value=final_answer)
-            
+            async for item in final_answer:
+                yield dict(state='data',value=item)

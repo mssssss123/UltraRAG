@@ -95,7 +95,7 @@ python UltraRAG/scripts/download_models.py
 | **Vanilla**            | 68.8              | 44.96              | 23.65         | 45.80    |
 | **Renote**             | -                 | -                  | -             | -        |
 | **Embedding**          | -                 | -                  | -             | -        |
-| **DDR**                | -                 | -                  | -             | -        |
+| **DDR**                | -                 | 53.14              | 23.59         | -        |
 | **KBAlign**            | -                 | -                  | -             | -        |
 | **Finetune**           | 67.8              | 52.80              | 25.85         | 48.82    |
 

@@ -97,7 +97,7 @@ def load_dataset(file_path):
     return dataset
 
 # Process each dataset
-async def process_datasets(llm, flow, collections, datasets, evaluate_only, generated_metrics):
+async def process_datasets(metric_llm, flow, collections, datasets, evaluate_only, generated_metrics):
     for dataset_file in tqdm(datasets, desc="Processing datasets"):
         print(f"Processing dataset: {dataset_file}")
         dataset = load_dataset(dataset_file)
@@ -123,7 +123,7 @@ async def process_datasets(llm, flow, collections, datasets, evaluate_only, gene
                     logger.error(traceback.format_exc())
                     pass
         try:
-            dataset = evaluate_metrics(llm, dataset, generated_metrics)
+            dataset = evaluate_metrics(metric_llm, dataset, generated_metrics)
         except Exception as e:
             logger.error(e)
         output_file_path = ensure_output_path(os.path.join(args.output_path, os.path.basename(dataset_file)))
@@ -142,8 +142,6 @@ def evaluate_metrics(llm, dataset, generated_metrics):
         for metric_name in generated_metrics:
             try:
                 if metric_name == "completeness":
-                    if not llm:
-                        llm = OpenaiLLM(api_key=args.api_key, base_url=args.base_url, model=args.model_name)
                     score = generated_evaluator.get_score(metric_name, item["answer"], item["prediction"], item, llm=llm)
                 else:
                     score = generated_evaluator.get_score(metric_name, item["answer"], item["prediction"], item)
@@ -162,49 +160,53 @@ def evaluate_metrics(llm, dataset, generated_metrics):
     dataset.append({"average_scores": average_scores})
     return dataset
 
-generated_evaluator=GeneratedEvaluator()
-# retrieval_evaluator=RetrievalEvaluator()
-llm = None
-flow = None
-if not args.evaluate_only:
-    try:
+
+if __name__ == "__main__":
+    generated_evaluator=GeneratedEvaluator()
+    # retrieval_evaluator=RetrievalEvaluator()
+    llm = None
+    flow = None
+    if not args.evaluate_only:
         if args.model_name_or_path:
             llm = VllmServer(base_url=args.model_name_or_path, **vllm_params)
         else:
             llm = OpenaiLLM(api_key=args.api_key, base_url=args.base_url, model=args.model_name, **vllm_params["sampling_params"])
-        if args.model_name_or_path:
-            metric_llm = VllmServer(base_url=args.model_name_or_path, **metric_vllm_params)
-        else:
+        if args.metric_model_name_or_path:
+            metric_llm = VllmServer(base_url=args.metric_model_name_or_path, **metric_vllm_params)
+        elif args.metric_api_key and args.metric_base_url and args.metric_model_name:
             metric_llm = OpenaiLLM(api_key=args.metric_api_key, base_url=args.metric_base_url, model=args.metric_model_name)
+        else:
+            metric_llm = None
+            
         if args.pooling and args.query_instruction:
             encoder = BGEServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
         else:
-            encoder = load_model(args.embedding_model_path, device='cuda:0')   
-    except:
-        logger.error("Please load model first.")    
-    searcher = Knowledge_Managment.get_searcher(embedding_model=encoder,knowledge_id=args.knowledge_id, knowledge_stat_tab_path = args.knowledge_stat_tab_path)
-    reranker = load_rerank_model(args.reranker_model_path)
-    if args.pipeline_type == "vanilla":
-        from ultrarag.workflow.ultraragflow.simple_flow import NativeFlow
-        flow = NativeFlow.from_modules(llm=llm,index=searcher,reranker=reranker)
-    elif args.pipeline_type == "renote":
-        from ultrarag.workflow.ultraragflow.renote_flow import RenoteFlow
-        flow = RenoteFlow.from_modules(llm=llm,database=searcher)
-    elif args.pipeline_type == "kbalign":
-        from ultrarag.workflow.ultraragflow.kbalign_flow import KBAlignFlow
-        flow = KBAlignFlow.from_modules(llm=llm,database=searcher)
+            encoder = load_model(args.embedding_model_path, device='cuda:5')   
+        
+        searcher = Knowledge_Managment.get_searcher(embedding_model=encoder,knowledge_id=args.knowledge_id, knowledge_stat_tab_path = args.knowledge_stat_tab_path)
+        reranker = load_rerank_model(args.reranker_model_path,device='cuda:6')
+        if args.pipeline_type == "vanilla":
+            from ultrarag.workflow.ultraragflow.simple_flow import NativeFlow
+            flow = NativeFlow.from_modules(llm=llm,index=searcher,reranker=reranker)
+        elif args.pipeline_type == "renote":
+            from ultrarag.workflow.ultraragflow.renote_flow import RenoteFlow
+            flow = RenoteFlow.from_modules(llm=llm,database=searcher)
+        elif args.pipeline_type == "kbalign":
+            from ultrarag.workflow.ultraragflow.kbalign_flow import KBAlignFlow
+            flow = KBAlignFlow.from_modules(llm=llm,database=searcher)
 
-try:
-    if args.selected_retrieval_metrics:
-        evaluator = RetrievalEvaluator(encoder, {"queries": args.queries_path, "corpus": args.corpus_path, "default": args.qrels_path, "output": args.retrieval_output_path}, args.topk)
-        metric_result = evaluator.run_metric_inference(args.metrics, args.cutoffs)
-        if args.log_path is not None:
-            with open(args.log_path, "w") as f:
-                f.write(json.dumps(metric_result, indent=4))
-        print(f"Retrieval eval completed. Results saved to {args.retrieval_output_path}")
-except Exception as e:
-    logger.error(e)
-    
-asyncio.run(process_datasets(llm, flow, args.knowledge_id, args.test_dataset, args.evaluate_only, args.selected_generated_metrics))
+    try:
+        if args.selected_retrieval_metrics:
+            evaluator = RetrievalEvaluator(encoder, {"queries": args.queries_path, "corpus": args.corpus_path, "default": args.qrels_path, "output": args.retrieval_output_path}, args.topk)
+            metric_result = evaluator.run_metric_inference(args.metrics, args.cutoffs)
+            if args.log_path is not None:
+                with open(args.log_path, "w") as f:
+                    f.write(json.dumps(metric_result, indent=4))
+            print(f"Retrieval eval completed. Results saved to {args.retrieval_output_path}")
+    except Exception as e:
+        logger.error(e)
+        
+    asyncio.run(process_datasets(metric_llm, flow, args.knowledge_id, args.test_dataset, args.evaluate_only, args.selected_generated_metrics))
 
-print(f"Processing completed. Results saved to {args.output_path}")
+    print(f"Processing completed. Results saved to {args.output_path}")
+
