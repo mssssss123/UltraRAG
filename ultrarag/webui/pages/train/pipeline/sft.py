@@ -25,7 +25,7 @@ def display():
         sft_config.setdefault('eval_data_path', [])
         sft_config.setdefault('output_dir', "output/sft")
         sft_config.setdefault('logging_dir', "output/logs/sft")
-        sft_config.setdefault('deepspeed_config_file', "config/pipeline/sft")
+        sft_config.setdefault('deepspeed_config_file', "config/pipeline/train/ds_config_zero2.json")
         sft_config.setdefault('config_file', "config/pipeline/finetune.yaml")
         sft_config.setdefault('log_file', "output/logs/sft/finetune_run.log")
         sft_config.setdefault('task_type', "SFT")

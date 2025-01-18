@@ -47,7 +47,7 @@ class KBAlignClass:
         output_filename1 = (f"kbalign_short_final_data.json")
         output_file1 = os.path.join(output_dir1, output_filename1)
         output_dir2 = os.path.join(self.args.output_dir, "kbalign_long_final_data")
-        output_filename2 = (f"kbalign_long_final_data.jsonl")
+        output_filename2 = (f"kbalign_long_final_data.json")
         output_file2 = os.path.join(output_dir2, output_filename2)
         
         all_data = load_files([output_file1,output_file2])

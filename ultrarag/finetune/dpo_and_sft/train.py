@@ -284,17 +284,18 @@ def main():
     )
     config["task_type"] = args.task_type
     
-    partial_preprocess = partial(preprocessing,args=config, tokenizer=tokenizer)
+    partial_preprocess = partial(preprocessing, args=config, tokenizer=tokenizer)
 
     if os.path.exists(args.eval_data_path):
         train_dataset = load_dataset("json", data_files=args.train_data_path, split="train")
-        train_dataset = train_dataset.map(partial_preprocess)
-
         eval_dataset = load_dataset("json", data_files=args.eval_data_path, split="train")
-        eval_dataset = eval_dataset.map(partial_preprocess)
+        if args.task_type == "DPO":
+            train_dataset = train_dataset.map(partial_preprocess)
+            eval_dataset = eval_dataset.map(partial_preprocess)
     else:
         dataset = load_dataset("json", data_files=args.train_data_path, split="train")
-        dataset = dataset.map(partial_preprocess)
+        if args.task_type == "DPO":
+            dataset = dataset.map(partial_preprocess)
         
         train_dataset = dataset.shuffle(seed=42).train_test_split(test_size=0.1, seed=42)["train"]
         eval_dataset = dataset.shuffle(seed=42).train_test_split(test_size=0.1, seed=42)["test"]
@@ -358,6 +359,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
