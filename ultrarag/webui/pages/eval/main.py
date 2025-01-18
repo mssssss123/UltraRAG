@@ -11,6 +11,7 @@ from ultrarag.webui.components.preview import parse_json_files, preview_dataset
 from ultrarag.webui.components.collection_selectbox import collection_selectbox
 from ultrarag.webui.utils.language import t
 import re
+import torch
 
 home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
@@ -40,6 +41,17 @@ def load_config_from_file(config_path):
         st.error(t("Configuration file not found: path.").format(path=config_path))
     except Exception as e:
         st.error(t("Error loading configuration: error.").format(error=e))
+
+def select_cuda_devices(device_key):
+    if torch.cuda.is_available():
+        cuda_devices = [f"cuda:{i}" for i in range(torch.cuda.device_count())]
+    else:
+        cuda_devices = [t("No CUDA devices available")]
+    selected_devices = st.selectbox(
+        t('Select CUDA Devices for') + f" {device_key}",
+        cuda_devices
+    )
+    return selected_devices
 
 def display(global_configs):
     if "eval_config" not in st.session_state:st.session_state.eval_config = {}
@@ -73,6 +85,15 @@ def display(global_configs):
     eval_config.setdefault("log_path", None)
     eval_config.setdefault("topk", 10)
     eval_config.setdefault("cutoffs", "")
+    
+    eval_config.setdefault("embedding_gpu", "4")
+    eval_config.setdefault("reranker_gpu", "4")
+    
+    
+    if torch.cuda.is_available():
+        cuda_devices = [f"{i}" for i in range(torch.cuda.device_count())]
+    else:
+        cuda_devices = [t("No CUDA devices available")]
 
     st.subheader(t("Evaluation"))
     pipeline_names = [pipeline["name"] for pipeline in EVAL_PIPELINE]
@@ -127,11 +148,15 @@ def display(global_configs):
     else:
         all_files = [str(dataset_path / f) for f in os.listdir(dataset_path) if f.endswith(('.json', '.jsonl'))]
 
-    eval_config["embedding_model_path"] = st.text_input(
-        t("Embedding Model Path"),
-        value=eval_config["embedding_model_path"],
-        help=t("Path to the embedding model.")
-    )
+    cols = st.columns([5, 5])
+    with cols[0]:
+        eval_config["embedding_model_path"] = st.text_input(
+            t("Embedding Model Path"),
+            value=eval_config["embedding_model_path"],
+            help=t("Path to the embedding model.")
+        )
+    with cols[1]:
+        eval_config["embedding_gpu"] = select_cuda_devices("Embedding")
     col1, col2 = st.columns([1,1])
     with col1:
         with st.expander(t("Retrieval Evaluation"), expanded=True):
@@ -311,11 +336,15 @@ def display(global_configs):
                     value=eval_config.get("metric_model_name_or_path", ""),
                     help=t("Path or name of the locally hosted model.")
                 )
-            eval_config["reranker_model_path"] = st.text_input(
-                t("Reranker Model Path"),
-                value=eval_config["reranker_model_path"],
-                help=t("Path to the reranker model.")
-            )
+            cols_gpu = st.columns([5, 5])
+            with cols_gpu[0]:
+                eval_config["reranker_model_path"] = st.text_input(
+                    t("Reranker Model Path"),
+                    value=eval_config["reranker_model_path"],
+                    help=t("Path to the reranker model.")
+                )
+            with cols_gpu[1]:
+                eval_config["reranker_gpu"] = select_cuda_devices("Reranker")
             eval_config["output_path"] = st.text_input(
                 t("Output Dir"),
                 eval_config.get("output_path", f"output/evaluate/{pipeline_type}-{st.session_state.now_time.strftime('%Y-%m-%d-%H-%M-%S')}"),

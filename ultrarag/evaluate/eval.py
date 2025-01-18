@@ -51,6 +51,9 @@ parser.add_argument("--topk", type=int, default=10, help="Top k documents to ret
 parser.add_argument("--cutoffs", type=str, default=None, help="Cutoff for evaluation metrics,split by ,.")
 parser.add_argument('--selected_retrieval_metrics', default=[], type=str, nargs='+', help="List of retrieval metrics to evaluate")
 
+parser.add_argument("--embedding_gpu", type=str, default="cuda:0")
+parser.add_argument("--reranker_gpu", type=str, default="cuda:0")
+
 
 args, unknown = parser.parse_known_args()
 args.cutoffs = [int(c) for c in args.cutoffs.split(",")] if args.cutoffs is not None else [args.topk]
@@ -182,10 +185,10 @@ if __name__ == "__main__":
         if args.pooling and args.query_instruction:
             encoder = BGEServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
         else:
-            encoder = load_model(args.embedding_model_path, device='cuda:0')   
+            encoder = load_model(args.embedding_model_path, device=args.embedding_gpu)   
         
         searcher = Knowledge_Managment.get_searcher(embedding_model=encoder,knowledge_id=args.knowledge_id, knowledge_stat_tab_path = args.knowledge_stat_tab_path)
-        reranker = load_rerank_model(args.reranker_model_path,device='cuda:0')
+        reranker = load_rerank_model(args.reranker_model_path,device=args.reranker_gpu)
         if args.pipeline_type == "vanilla":
             from ultrarag.workflow.ultraragflow.simple_flow import NativeFlow
             flow = NativeFlow.from_modules(llm=llm,index=searcher,reranker=reranker)
@@ -212,5 +215,5 @@ if __name__ == "__main__":
             asyncio.run(process_datasets(llm, flow, args.knowledge_id, args.test_dataset, args.evaluate_only, args.selected_generated_metrics))
             print(f"Processing completed. Results saved to {args.output_path}")
     except Exception as e:
-        logger.error(e)    
+        logger.error(e)
         
