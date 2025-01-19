@@ -3,7 +3,6 @@ import asyncio, time
 from loguru import logger
 from typing import List, Dict
 from ultrarag.modules.llm import BaseLLM, OpenaiLLM
-# from ultrarag.modules.weather import Weather
 from ultrarag.modules.router import BaseRouter
 from ultrarag.modules.embedding import BGEClient
 from ultrarag.modules.database import BaseIndex, QdrantIndex
@@ -21,7 +20,6 @@ class NativeFlow:
         self._router = BaseRouter(llm_call_back=self._synthesizer.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
         self._index = QdrantIndex(database_url, encoder=BGEClient(url_or_path=embedding_url))
         self._rerank = BGERerankClient(url=reranker_url)
-        # self._weather = Weather()
 
         self.prompt = GENERATE_PROMPTS
 
@@ -33,7 +31,6 @@ class NativeFlow:
         inst._router = BaseRouter(llm_call_back=llm.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
         inst._index = index
         inst._rerank = reranker
-        # inst._weather = Weather()
         inst.prompt = GENERATE_PROMPTS
     
         return inst
@@ -46,13 +43,6 @@ class NativeFlow:
 
         if not route.get("intent", None):
             raise ValueError("route output error")
-
-        # if route.get("intent") == 'weather':
-        #     city = route.get("args", '北京')
-        #     weather_info = await self._weather.arun(city)
-        #     content = self.prompt.format(query=query, history="", content=weather_info)
-        #     message = {"role": "user", "content": content}
-        #     return await self._synthesizer.arun(messages=message, stream=True) 
         
         elif route.get("intent") == 'retriever':
             return self.naive_rag(query, collection, messages, system_prompt)
