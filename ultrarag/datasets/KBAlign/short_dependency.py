@@ -19,7 +19,35 @@ from ultrarag.datasets.KBAlign.utils import count_words, read_and_concatenate_js
 
 class ShortDependecy:
     def __init__(self, output_dir, language, model_name_or_path, config_path, 
+                
                  functions_to_run, embedding_model_path, knowledge_id, knowledge_stat_tab_path):
+        """
+        Initializes the class with the given parameters.
+        Args:
+            output_dir (str): The directory where output files will be saved.
+            language (str): The language to be used.
+            model_name_or_path (str): The base URL or path for the VllmServer model.
+            config_path (str): The path to the configuration file.
+            functions_to_run (list): A list of functions to run.
+            embedding_model_path (str): The path to the embedding model.
+            knowledge_id (str): The ID of the knowledge base.
+            knowledge_stat_tab_path (str): The path to the knowledge statistics table.
+        Attributes:
+            config (dict): The configuration loaded from the config file.
+            vllm_params (dict): Parameters for the VllmServer.
+            top_k (int): The top K results to consider, default is 5.
+            method (str): The method to use, default is "dense".
+            knowledge_id (str): The ID of the knowledge base.
+            llm_service (VllmServer): The VllmServer instance.
+            language (str): The language to be used.
+            output_dir1 (str): The directory for the generated data output.
+            output_dir2 (str): The directory for the final data output.
+            gen_data_output_file (str): The file path for the generated data output.
+            merge_output_file (str): The file path for the final data output.
+            functions_to_run (list): A list of functions to run.
+            searcher (object): The searcher instance for knowledge management.
+        """
+        
         self.config = self.load_config(config_path)
         self.vllm_params = self.config["VllmServer_params"]
         self.top_k = self.config.get('top_k', 5)
@@ -52,6 +80,25 @@ class ShortDependecy:
             return yaml.safe_load(file)
 
     def get_qa(self, content):
+        """
+        Extracts question-answer pairs from the provided content using a language model service.
+
+        Args:
+            content (str): The input content from which to generate question-answer pairs.
+
+        Returns:
+            tuple: A tuple containing two lists:
+                - questions (list of str): The list of extracted questions.
+                - answers (list of str): The list of corresponding answers.
+
+        Raises:
+            Any exceptions raised by the language model service or during processing.
+
+        Notes:
+            - The function uses a predefined prompt template based on the language to generate question-answer pairs.
+            - It filters out invalid question-answer pairs based on word count, presence of certain characters, and specific keywords.
+            - The function supports both English and Chinese languages.
+        """
         questions = []
         answers = []
         prompt = short_dependency_prompt[self.language]["q_a_pair"].format(content=content)
@@ -133,6 +180,19 @@ class ShortDependecy:
     
 
     def get_messages_list(self, user_contents, assistant_contents, example_idx, output_path,reference=None):
+        """
+        Generates a list of message dictionaries from user and assistant contents and saves them to a JSONL file.
+
+        Args:
+            user_contents (list): A list of strings containing the user's messages.
+            assistant_contents (list): A list of strings containing the assistant's messages.
+            example_idx (int): An index or identifier for the example.
+            output_path (str): The file path where the JSONL file will be saved.
+            reference (optional): Additional reference information to be included in the JSONL file.
+
+        Returns:
+            None
+        """
         messages_list = []
         for i in range(len(user_contents)):
             messages = [
@@ -144,6 +204,17 @@ class ShortDependecy:
 
 
     def process_files(self, input_paths, output_path, function_list):
+        """
+        Processes a list of input files by applying a list of functions to each line of the files and writes the processed data back to the files.
+
+        Args:
+            input_paths (list of str): List of paths to the input files to be processed.
+            output_path (str): Path to the output directory where processed files will be saved.
+            function_list (list of callable): List of functions to be applied to each line of the input files. Each function should accept three arguments: the data line, the output path, and the input path.
+
+        Returns:
+            None
+        """
         for input_path in input_paths:
             in_file=list(iter_jsonl(input_path))
             for line_idx, data in enumerate(tqdm(in_file, desc=f"Processing {input_path}")):
@@ -154,6 +225,25 @@ class ShortDependecy:
                     file.write(json.dumps(item) + '\n')
 
     def check_and_update_references(self, data, key, qid, content):
+        """
+        Check and update references in the provided data dictionary.
+
+        This method ensures that the specified key in the data dictionary is associated with a list of the same length as the 'questions' list.
+        If the key does not exist or is not a list of the correct length, it initializes it with empty strings.
+        Then, it updates the list at the specified key with the provided content at the given question ID (qid).
+
+        Args:
+            data (dict): The data dictionary containing the references and questions.
+            key (str): The key in the data dictionary to check and update.
+            qid (int): The question ID indicating the position in the list to update.
+            content (str): The content to insert at the specified position.
+
+        Returns:
+            dict: The updated data dictionary.
+
+        Raises:
+            IndexError: If the provided qid is out of range.
+        """
         if key not in data or not isinstance(data[f'{key}'], list) or len(data[f'{key}']) != len(data.get('questions')):
             data[f'{key}'] = ['' for _ in data.get('questions')]
         if 0 <= qid < len(data[f'{key}']):
@@ -164,6 +254,19 @@ class ShortDependecy:
 
     # q->a
     def function_q(self, data, output_path, input_path):
+        """
+        Processes a dataset of questions and answers, formats them into user and assistant content, 
+        and generates a list of messages.
+
+        Args:
+            data (dict): A dictionary containing the dataset with keys "questions", "answers", "id", 
+                         and optionally "content".
+            output_path (str): The path where the output will be saved.
+            input_path (str): The path where the input data is located.
+
+        Returns:
+            None
+        """
         user_contents = []
         assistant_contents = []
         for i in range(0, len(data["questions"])):
@@ -178,6 +281,16 @@ class ShortDependecy:
 
     # q+r->a
     def function_qr(self, data, output_path, input_path):
+        """
+        Processes a dataset of questions and answers, retrieves top documents for each question,
+        formats the data into user and assistant content, and saves the results to the specified output path.
+        Args:
+            data (dict): A dictionary containing "questions" and "answers" lists.
+            output_path (str): The path where the output will be saved.
+            input_path (str): The path where the input data is located.
+        Returns:
+            None
+        """
         user_contents = []
         assistant_contents = []
         for i in range(0, len(data["questions"])):

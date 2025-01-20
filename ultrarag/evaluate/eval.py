@@ -102,6 +102,24 @@ def load_dataset(file_path):
 
 # Process each dataset
 async def process_datasets(metric_llm, flow, collections, datasets, evaluate_only, generated_metrics):
+    """
+    Process and evaluate a list of datasets.
+
+    Args:
+        metric_llm (object): The language model used for evaluation metrics.
+        flow (object): The flow object used to generate predictions.
+        collections (list): A list of collections to be used in the flow query.
+        datasets (list): A list of dataset file paths to be processed.
+        evaluate_only (bool): If True, only evaluate the datasets without generating predictions.
+        generated_metrics (list): A list of metrics to be generated during evaluation.
+
+    Returns:
+        None
+
+    This function processes each dataset file in the provided list of datasets. For each dataset, it loads the data,
+    generates predictions using the provided flow object (if evaluate_only is False), and evaluates the dataset using
+    the provided metric language model. The results are then saved to the specified output path.
+    """
     for dataset_file in tqdm(datasets, desc="Processing datasets"):
         print(f"Processing dataset: {dataset_file}")
         dataset = load_dataset(dataset_file)
@@ -140,6 +158,17 @@ async def process_datasets(metric_llm, flow, collections, datasets, evaluate_onl
 
 
 def evaluate_metrics(llm, dataset, generated_metrics):
+    """
+    Evaluate metrics for a given dataset using a language model.
+    Args:
+        llm: The language model to be used for evaluation.
+        dataset (list): A list of dictionaries, where each dictionary contains 'answer' and 'prediction' keys.
+        generated_metrics (list): A list of metric names to be evaluated.
+    Returns:
+        list: The updated dataset with individual metric scores and average scores appended.
+    Raises:
+        Exception: Logs any exceptions that occur during metric evaluation.
+    """
     scores_summary = {}
     for item in tqdm(dataset, desc="Evaluating metrics"):
         # todo

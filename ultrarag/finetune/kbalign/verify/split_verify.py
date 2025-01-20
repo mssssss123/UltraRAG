@@ -19,6 +19,17 @@ output_dir.mkdir(exist_ok=True, parents=True)
 file_extension = os.path.splitext(args.in_path)[-1]
 
 def split_jsonl_file(input_path, num_parts):
+    """
+    Splits a JSONL (JSON Lines) file into multiple parts.
+    Args:
+        input_path (str): The path to the input JSONL file.
+        num_parts (int): The number of parts to split the file into.
+    Returns:
+        None
+    The function reads the input JSONL file, splits its lines into the specified number of parts,
+    and writes each part to a separate JSONL file in the same directory as the input file.
+    The output files are named 'part1.jsonl', 'part2.jsonl', ..., 'partN.jsonl' where N is the number of parts.
+    """
     with open(input_path, 'r') as file:
         lines = file.readlines()
     
@@ -33,6 +44,18 @@ def split_jsonl_file(input_path, num_parts):
             out_file.writelines(chunks[i])
 
 def split_json_file(input_path, num_parts):
+    """
+    Splits a JSON file into multiple parts.
+    Args:
+        input_path (str): The path to the input JSON file.
+        num_parts (int): The number of parts to split the JSON file into.
+    Raises:
+        FileNotFoundError: If the input file does not exist.
+        json.JSONDecodeError: If the input file is not a valid JSON.
+    Example:
+        split_json_file('/path/to/input.json', 3)
+        This will split the input JSON file into 3 parts and save them as part1.json, part2.json, and part3.json in the output directory.
+    """
     with open(input_path, 'r') as f:
         array = json.load(f)
 

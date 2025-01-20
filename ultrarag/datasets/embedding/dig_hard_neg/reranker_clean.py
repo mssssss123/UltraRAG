@@ -13,6 +13,27 @@ async def reranker_clean(reranker_model : BGERerankServer,
                             score_margin:float,
                             min_pos_score:float,
                             max_neg_score:float):
+    """
+    Asynchronously cleans a dataset by reranking positive and negative samples using a reranker model.
+    Parameters:
+        reranker_model (BGERerankServer): The reranker model used for scoring.
+        qrel_path (str): Path to the input dataset file in JSONL format.
+        output_path (str): Path to the output cleaned dataset file in JSONL format.
+        search_start_index (int): The starting index for the search.
+        search_end_index (int): The ending index for the search.
+        keep_neg_num (int): The number of negative samples to keep.
+        score_ratio (float): The ratio of the minimum positive score to filter negative samples.
+        score_margin (float): The margin to add to the minimum positive score to filter negative samples.
+        min_pos_score (float): The minimum score for positive samples.
+        max_neg_score (float): The maximum score for negative samples.
+    Returns:
+        None
+    The function processes the dataset by:
+    1. Loading the dataset from the specified qrel_path.
+    2. Scoring the positive and negative samples using the reranker model.
+    3. Removing samples that do not meet the specified score criteria.
+    4. Writing the cleaned dataset to the specified output_path.
+    """
     # keep_neg_num = 7
     
     # corpus_path = os.path.join(input_path, 'corpus.jsonl')

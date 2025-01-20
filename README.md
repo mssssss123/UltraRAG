@@ -93,7 +93,7 @@ python UltraRAG/scripts/download_models.py
 
 1. **VanillaRAG-original**Results evaluated using the default UltraRAG model (BGE-M3 + MiniCPM3-4B).
 2. **VanillaRAG-finetune**
-   Results after fine-tuning UltraRAG-Embedding and UltraRAG-DDR with legal domain data.
+   Results after fine-tuning MiniCPM-Embedding-Light and UltraRAG-DDR with legal domain data.
 
 The following results are obtained from the UltraRAG evaluation page for these two workflows. Fine-tuning led to an overall improvement of **3%**, with a slight decrease in knowledge Q&A performance but over **2% improvements** in the legal provision prediction and consultation datasets.
 
@@ -110,8 +110,8 @@ The following results are obtained from the UltraRAG evaluation page for these t
 
 | Model                                                              | MRR@10 for 200 Test Samples by GPT-4o | NDCG@10 for 200 Test Samples by GPT-4o | Recall@10 for 200 Test Samples by GPT-4o |
 | ------------------------------------------------------------------ | ------------------------------------- | -------------------------------------- | ---------------------------------------- |
-| UltraRAG-Embedding                                                 | 36.46                                 | 40.05                                  | 54.50                                    |
-| UltraRAG-Embedding-Finetune(Qwen2.5-14B-instruction, 2800 samples) | 37.57                                 | 42.12                                  | 56.50                                    |
+| MiniCPM-Embedding-Light                                                 | 36.46                                 | 40.05                                  | 54.50                                    |
+| MiniCPM-Embedding-Light-Finetune(Qwen2.5-14B-instruction, 2800 samples) | 37.57                                 | 42.12                                  | 56.50                                    |
 
 ## ‍🤝Acknowledgments
 

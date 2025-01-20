@@ -9,11 +9,21 @@ from ultrarag.modules.embedding import BGEServer
 
 np.random.seed(42)
 
-async def data_preprocess_synthesis(embedding_model:BGEServer,
-                                    corpus_path:str,
-                                    output_path:str,
-                                    search_start_index:int,
-                                    search_end_index:int):    
+async def data_preprocess_synthesis(embedding_model:BGEServer,corpus_path:str,output_path:str,search_start_index:int,search_end_index:int):    
+    """
+    Asynchronously preprocesses and synthesizes data for embedding models.
+    This function loads a corpus of documents, encodes them using the provided embedding model,
+    and performs similarity search to find the most similar documents within a specified range.
+    The results are then serialized and written to the specified output path.
+    Args:
+        embedding_model (BGEServer): The embedding model used to encode the documents.
+        corpus_path (str): The path to the input corpus file in JSONL format.
+        output_path (str): The path to the output file where the results will be written.
+        search_start_index (int): The starting index for the similarity search range.
+        search_end_index (int): The ending index for the similarity search range.
+    Returns:
+        None
+    """
     
     # corpus_path = os.path.join(input_path, 'corpus.jsonl')
     docs = load_file(corpus_path)

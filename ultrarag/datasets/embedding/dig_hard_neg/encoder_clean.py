@@ -10,7 +10,22 @@ import asyncio
 async def encoder_clean(embedding_model:BGEServer,qrel_path:str,
                         output_path:str,search_start_index:int,search_end_index:int,keep_neg_num:int,
                         score_ratio:float, score_margin:float, min_pos_score:float, max_neg_score:float):
-    
+    """
+    Cleans the dataset by filtering negative samples based on embedding similarity scores.
+    Args:
+        embedding_model (BGEServer): The embedding model used to encode documents and queries.
+        qrel_path (str): Path to the input dataset file in JSONL format.
+        output_path (str): Path to the output cleaned dataset file in JSONL format.
+        search_start_index (int): The starting index for the negative samples to be considered.
+        search_end_index (int): The ending index for the negative samples to be considered.
+        keep_neg_num (int): The minimum number of negative samples to keep for each query.
+        score_ratio (float): The ratio threshold for filtering negative samples based on similarity scores.
+        score_margin (float): The margin threshold for filtering negative samples based on similarity scores.
+        min_pos_score (float): The minimum similarity score for positive samples.
+        max_neg_score (float): The maximum similarity score for negative samples.
+    Returns:
+        None
+    """
     # keep_neg_num = 7
     # score_ratio = 0.95
     

@@ -133,7 +133,20 @@ def load_model_and_tokenizer(
     bf16: bool = False,
     fp16: bool = False,
 ):
-    """Load the pre-trained model and tokenizer."""
+    """
+    Load the pre-trained model and tokenizer.
+
+    Args:
+        model_path (str): Path to the pre-trained model.
+        model_type (str): Type of the model.
+        use_lora (bool, optional): Whether to use LoRA (Low-Rank Adaptation) for the model. Defaults to False.
+        bf16 (bool, optional): Whether to use bfloat16 precision. Defaults to False.
+        fp16 (bool, optional): Whether to use float16 precision. Defaults to False.
+
+    Returns:
+        model: The loaded pre-trained model.
+        tokenizer: The loaded tokenizer.
+    """
     assert not (bf16 and fp16), "bf16 or fp16, not both"
     if bf16:
         dtype = torch.bfloat16
@@ -172,7 +185,19 @@ def truncated_passage(passage, tokenizer, truncate_size):
     return decoded_passage
 
 def preprocessing(example,args,tokenizer):
-    """Preprocessing function to format input for the model."""
+    """
+    Preprocessing function to format input for the model.
+    Args:
+        example (dict): A dictionary containing the input example with keys 'query', 'retrieval_result', 'chosen', and 'rejected'.
+        args (dict): A dictionary containing various arguments including 'Augment_template', 'QA_template', 'task_type', 'model_args', 'data_args', and 'passage_separator'.
+        tokenizer (Tokenizer): A tokenizer object used to process the input text.
+    Returns:
+        dict: A dictionary containing the formatted input for the model. The keys are:
+            - "prompt" (str or list): The formatted prompt for the model (for DPO task).
+            - "chosen" (str): The chosen text from the example (for DPO task).
+            - "rejected" (str): The rejected text from the example (for DPO task).
+            - "input_text" (str or list): The formatted input text for the model (for SFT task).
+    """
     one_item = {}
     query = example['query']
     retrieve_result = example['retrieval_result']

@@ -29,10 +29,25 @@ class GeneratedEvaluator:
     请判断它们是否相关，如果相关，请回复“<EVAL>relavant</EVAL>”，如果不相关，请回复“<EVAL>irrelavant</EVAL>。”"""
 
     def __init__(self, input_path=None, output_path=None, metric='completeness', completeness_model=None):
+        
         """
-        初始化方法，传入输入文件路径、输出文件路径和评估指标（metric）。
-        metric: 可选值 'completeness', 'rouge', 'em', 'accuracy', 'f1'，默认为 'completeness'。
-        completeness_model: 用于completeness计算的模型路径
+        Initializes the evaluator with the given parameters.
+
+        Args:
+            input_path (str, optional): The path to the input file. Defaults to None.
+            output_path (str, optional): The path to the output file. Defaults to None.
+            metric (str, optional): The evaluation metric to use. Options are 'completeness', 'rouge', 'em', 'accuracy', 'f1'. Defaults to 'completeness'.
+            completeness_model (str, optional): The path to the model used for completeness calculation. Defaults to None.
+
+        Attributes:
+            input_path (str): The path to the input file.
+            output_path (str): The path to the output file.
+            metric (str): The evaluation metric to use.
+            rouge (Rouge): An instance of the Rouge class for ROUGE metric calculation.
+            completeness_model (str): The path to the model used for completeness calculation.
+            tokenizer (AutoTokenizer): The tokenizer initialized from the completeness model.
+            sampling_params (SamplingParams): The parameters for sampling.
+            llm (LLM): The language model initialized with the completeness model.
         """
         try:
             self.input_path = input_path
@@ -62,13 +77,15 @@ class GeneratedEvaluator:
         
     def get_score(self, metric_name, ground_truth, prediction, data, **kwargs):
         """
-        根据指定的评估指标计算分数。
+        Calculate the score based on the specified evaluation metric.
 
-        :param metric_name: 评估指标的名称 ('completeness', 'rouge', 'em', 'accuracy', 'f1')
-        :param ground_truth: 正确答案 (string)
-        :param prediction: 生成内容 (string)
-        :param kwargs: 额外参数，用于特定评估指标
-        :return: 计算的分数
+        :param metric_name: The name of the evaluation metric ('completeness', 'rouge', 'em', 'accuracy', 'f1', 'bleu', 'meteor', 'bert', 'jec')
+        :param ground_truth: The correct answer (string)
+        :param prediction: The generated content (string)
+        :param data: Additional data required for specific metrics (dictionary)
+        :param kwargs: Additional parameters for specific evaluation metrics
+        :return: The calculated score (float)
+        :raises ValueError: If an unsupported metric is provided
         """
         if metric_name == 'completeness':
             if not self.llm:
@@ -116,13 +133,29 @@ class GeneratedEvaluator:
         return max_similarity
 
     def extract_keypoints(self, keypoints_string):
-        """提取每个关键点并返回列表"""
+        """
+        Extracts keypoints from a given string and returns them as a list.
+
+        Args:
+            keypoints_string (str): A string containing keypoints, each starting with a number followed by a period.
+
+        Returns:
+            list: A list of extracted keypoints as strings.
+        """
         keypoint_pattern = r"\d+\.\s*([^\n]+)"
         keypoints = re.findall(keypoint_pattern, keypoints_string)
         return keypoints
 
     def extract_eval_content(self, model_output):
-        """从模型返回的结果中提取<EVAL></EVAL>之间的内容"""
+        """
+        Extracts the content between <EVAL> tags from the model output.
+
+        Args:
+            model_output (str): The output string from the model which contains the <EVAL> tags.
+
+        Returns:
+            str: The content between the <EVAL> and </EVAL> tags if found, otherwise None.
+        """
         eval_pattern = r"<EVAL>(.*?)</EVAL>"
         match = re.search(eval_pattern, model_output)
         return match.group(1) if match else None

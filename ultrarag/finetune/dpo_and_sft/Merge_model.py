@@ -5,6 +5,21 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 class LoRAModelMerger:
     def __init__(self, model_name_or_path, lora_name_or_path, save_path):
+        """
+        Initializes the MergeModel class.
+
+        Args:
+            model_name_or_path (str): Path to the pre-trained model or model identifier from huggingface.co/models.
+            lora_name_or_path (str): Path to the LoRA (Low-Rank Adaptation) model or model identifier.
+            save_path (str): Path where the merged model will be saved.
+
+        Attributes:
+            model_name_or_path (str): Path to the pre-trained model or model identifier.
+            lora_name_or_path (str): Path to the LoRA model or model identifier.
+            save_path (str): Path where the merged model will be saved.
+            base_tokenizer (AutoTokenizer): Tokenizer for the base model.
+            model (AutoModelForCausalLM): The base model loaded with specified configurations.
+        """
         self.model_name_or_path = model_name_or_path
         self.lora_name_or_path = lora_name_or_path
         self.save_path = save_path

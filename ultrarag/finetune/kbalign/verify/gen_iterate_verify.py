@@ -53,6 +53,17 @@ def iter_jsonl(fname):
             yield json.loads(line)
 
 def process_data(data_lines,is_jsonl,language):
+    """
+    Processes a list of data lines and generates new data based on the specified language and format.
+    Args:
+        data_lines (list): A list of data lines to be processed.
+        is_jsonl (bool): A flag indicating whether the input data is in JSONL format.
+        language (str): The language of the data, either "English" or another language.
+    Returns:
+        list: A list of processed data lines with updated content.
+    Raises:
+        Exception: If an error occurs during data processing, the error is caught and printed.
+    """
     new_data = []
     for data in tqdm(data_lines, desc="Processing JSONL Data"):
         try:

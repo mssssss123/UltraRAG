@@ -67,7 +67,22 @@ class RetrievalEvaluator(object):
 
     async def evaluate(self, topk) -> None:
         """
-        Run evaluation and get the retrieval results.
+            Args:
+                topk (int): The number of top results to retrieve for each query.
+
+            Returns:
+                None
+
+            This method performs the following steps:
+            1. Embeds the corpus asynchronously.
+            2. Initializes an empty dictionary to store the retrieval results.
+            3. Reads the queries from a file and processes each query:
+                a. Extracts the query ID and text.
+                b. Encodes the query using the model.
+                c. Searches the index for the top `topk` results based on the query embedding.
+                d. Stores the results in the `self.run` dictionary with query IDs as keys and 
+                   document IDs with their corresponding scores as values.
+            4. Sorts the retrieval results for each query by score in descending order.
         """
         await asyncio.create_task(self._embed_corpus())
         self.run = {}
@@ -170,6 +185,18 @@ class RetrievalEvaluator(object):
         return recall
     
     def get_score(self,metrics=["MRR","NDCG","Recall"],cutoffs=[None],data=None,**kwargs):
+        """
+        Calculate evaluation metrics for retrieval performance.
+        Parameters:
+        metrics (list of str): List of metrics to calculate. Supported metrics are "MRR", "NDCG", and "Recall".
+        cutoffs (list of int or None): List of cutoff values for the metrics. If None, the metric is calculated for all available data.
+        data (optional): Data to be evaluated. Default is None.
+        **kwargs: Additional keyword arguments.
+        Returns:
+        dict: A dictionary with metric names as keys and their corresponding calculated values as values.
+        Raises:
+        ValueError: If an unsupported metric is provided in the metrics list.
+        """
         results = {}
         for metrics in metrics:
             if metrics == "MRR":
@@ -264,6 +291,16 @@ class RetrievalEvaluator(object):
             raise ValueError(f"Unsupported metric: {metric}")
     
     def run_metric_inference(self, metrics=["MRR","NDCG","Recall"],cutoffs=[None]):
+        """
+        Runs metric inference by evaluating the top-k results and calculating specified metrics.
+
+        Args:
+            metrics (list, optional): A list of metric names to calculate. Defaults to ["MRR", "NDCG", "Recall"].
+            cutoffs (list, optional): A list of cutoff values for the metrics. Defaults to [None].
+
+        Returns:
+            dict: A dictionary containing the calculated scores for the specified metrics.
+        """
         asyncio.run(self.evaluate(self.topk))
         self.save_results(self.files_path['output'])
         return self.get_score(metrics,cutoffs)

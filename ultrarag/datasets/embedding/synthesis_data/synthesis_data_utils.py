@@ -12,6 +12,14 @@ from ultrarag.modules.llm import OpenaiLLM#, VllmServer
 np.random.seed(42)
 
 def praser_doc(input_doc:str, start_prefix:str="Query:"):
+    """
+    Parses the input document to extract the substring that follows the specified start prefix.
+    Args:
+        input_doc (str): The input document from which to extract the substring.
+        start_prefix (str, optional): The prefix to search for in the input document. Defaults to "Query:".
+    Returns:
+        str: The extracted substring that follows the start prefix. If the start prefix is not found, returns the original input document.
+    """
     start_index = input_doc.rfind(start_prefix)
     if start_index != -1:
         output = input_doc[start_index+len(start_prefix):]
@@ -28,7 +36,25 @@ async def synthesis_data(generate_model: OpenaiLLM,
                          shot_num:int, shot_file:str=None, input_prompt_path:str=None,
                          query_path:str=None, corpus_path:str=None
                          ):
-
+    """
+    Asynchronously synthesizes data using a language model.
+    Args:
+        generate_model (OpenaiLLM): The language model to generate data.
+        language (str): The language of the data, either "zh" for Chinese or "en" for English.
+        input_pair_path (str): Path to the input pairs file.
+        output_path (str): Path to the output file.
+        query_num_per_corpus (int): Number of queries per corpus.
+        corpus_sample_num (int): Number of samples to take from the corpus.
+        negs_start_index (int): Start index for negative samples.
+        negs_end_index (int): End index for negative samples.
+        shot_num (int): Number of shots for few-shot learning.
+        shot_file (str, optional): Path to the shot file. Defaults to None.
+        input_prompt_path (str, optional): Path to the input prompt file. Defaults to None.
+        query_path (str, optional): Path to the query file. Defaults to None.
+        corpus_path (str, optional): Path to the corpus file. Defaults to None.
+    Returns:
+        None
+    """
     
     # query_num_per_corpus = 1
     # corpus_sample_num = 1

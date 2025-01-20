@@ -21,6 +21,31 @@ from typing import Optional
 
 class LongDependecy:
     def __init__(self, output_dir, language, model_name_or_path, config_path, embedding_model_path, knowledge_id, knowledge_stat_tab_path,clustering):
+        """
+        Initializes the class with the given parameters.
+        Args:
+            output_dir (str): The directory where output files will be saved.
+            language (str): The language to be used.
+            model_name_or_path (str): The base URL or path for the model.
+            config_path (str): The path to the configuration file.
+            embedding_model_path (str): The path to the embedding model.
+            knowledge_id (str): The ID of the knowledge base.
+            knowledge_stat_tab_path (str): The path to the knowledge statistics table.
+            clustering (bool): A flag indicating whether clustering is enabled.
+        Attributes:
+            config (dict): The configuration loaded from the config file.
+            vllm_params (dict): Parameters for the VllmServer.
+            top_k (int): The top K value for search results.
+            method (str): The method used for searching.
+            is_example (bool): A flag indicating whether this is an example.
+            knowledge_id (str): The ID of the knowledge base.
+            llm_service (VllmServer): The language model service.
+            clustering (bool): A flag indicating whether clustering is enabled.
+            language (str): The language to be used.
+            output_dir1 (str): The directory for the final data output.
+            output_path (str): The path to the final output file.
+            searcher (Knowledge_Managment.Searcher): The searcher for knowledge management.
+        """
         self.config = self.load_config(config_path)
         self.vllm_params = self.config["VllmServer_params"]
         self.top_k = self.config.get('top_k', 8)

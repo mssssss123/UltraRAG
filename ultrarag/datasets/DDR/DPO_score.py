@@ -9,6 +9,21 @@ import random
 
 class DPOScorer:
     def __init__(self, input_path, train_output_path, dev_output_path, config_path):
+        """
+        Initializes the DPO_score class with the given input and output paths and configuration file.
+        Args:
+            input_path (str): Path to the input data.
+            train_output_path (str): Path to the training output data.
+            dev_output_path (str): Path to the development output data.
+            config_path (str): Path to the configuration file.
+        Attributes:
+            input_path (str): Path to the input data.
+            train_output_path (str): Path to the training output data.
+            dev_output_path (str): Path to the development output data.
+            metric (str): Evaluation metric to be used, default is 'rouge'.
+            ratio (float): Ratio value from the configuration, default is 0.1.
+            rouge (Rouge): Instance of the Rouge class for evaluation.
+        """
         self.input_path = input_path
         self.train_output_path = train_output_path
         self.dev_output_path = dev_output_path
@@ -21,7 +36,16 @@ class DPOScorer:
         self.rouge = Rouge()
 
     def normalize_answer(self, s):
-        """Lower text and remove punctuation, articles and extra whitespace."""
+        """
+        Normalize the input string by converting to lowercase, removing punctuation,
+        articles (a, an, the), and extra whitespace.
+
+        Args:
+            s (str): The input string to normalize.
+
+        Returns:
+            str: The normalized string.
+        """
         def remove_articles(text):
             return re.sub(r"\b(a|an|the)\b", " ", text)
 
@@ -94,7 +118,30 @@ class DPOScorer:
         return data[:split_index], data[split_index:]
 
     def save_best_worst_data(self):
-        """Select the best and worst data."""
+        """
+        Select the best and worst data based on a scoring metric and save the results.
+
+        This method reads input data from a JSONL file, splits it into training and testing datasets,
+        scores each context item against the ground truth, and identifies the best and worst items
+        based on the specified metric. The results are then saved to the specified output paths.
+
+        The method performs the following steps:
+        1. Reads input data from a JSONL file.
+        2. Splits the data into training and testing datasets.
+        3. For each item in the training and testing datasets:
+           a. Scores each context item against the ground truth.
+           b. Identifies the context item with the highest score (chosen).
+           c. Identifies the context item with the lowest score (rejected).
+           d. Adds the chosen and rejected items to the original item.
+        4. Writes the modified training data to the training output path.
+        5. Writes the modified testing data to the testing output path.
+
+        The results are saved in real-time to the specified output paths.
+
+        Raises:
+            FileNotFoundError: If the input file does not exist.
+            IOError: If there is an error reading from or writing to the files.
+        """
         input_data = self.read_jsonl(self.input_path)
 
         train_data, test_data = self._split_data(input_data)
