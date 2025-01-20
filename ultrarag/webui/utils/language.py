@@ -130,6 +130,8 @@ LANGUAGE_MAP = {
     "Please input your question": {"en": "Please input your question", "zh": "请输入您的问题"},
     "LoRA Merge": {"en": "LoRA Merge", "zh": "LoRA 合并"},
     "Model Name or Path": {"en": "Model Name or Path", "zh": "模型名称或路径"},
+    "Metric Model Name or Path": {"en": "Metric Model Name or Path", "zh": "评测模型名称或路径"},
+    "Path or name of the locally hosted model.": {"en": "Path or name of the locally hosted model.", "zh": "模型名称或路径"},
     "Path to the base model or model name.": {"en": "Path to the base model or model name.", "zh": "基础模型路径或名称。"},
     "Path to the LLM model or model name.": {"en": "Path to the LLM model or model name.", "zh": "LLM模型路径或名称。"},
     "LoRA Name or Path": {"en": "LoRA Name or Path", "zh": "LoRA 名称或路径"},

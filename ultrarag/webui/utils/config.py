@@ -15,16 +15,16 @@ TABS = [
 
 DATA_PIPELINE = [    
     {"name": "Merge", "module": "pages.data_construction.pipeline.merge", "pipeline": "merge"},
-    {"name": "Embedding", "module": "pages.data_construction.pipeline.embedding", "pipeline": "embedding_training_data"},
+    {"name": "UltraRAG-Embedding", "module": "pages.data_construction.pipeline.embedding", "pipeline": "embedding_training_data"},
     {"name": "UltraRAG-DDR", "module": "pages.data_construction.pipeline.ddr", "pipeline": "ddr"},
     {"name": "UltraRAG-KBAlign", "module": "pages.data_construction.pipeline.kbalign", "pipeline": "kbalign"},
 ]
 
 TRAIN_PIPELINE = [    
-    {"name": "BGEM3", "module": "pages.train.pipeline.bgem3", "pipeline": "bgem3"},
+    {"name": "UltraRAG-Embedding", "module": "pages.train.pipeline.bgem3", "pipeline": "bgem3"},
     {"name": "DPO", "module": "pages.train.pipeline.dpo", "pipeline": "dpo"},
     {"name": "SFT", "module": "pages.train.pipeline.sft", "pipeline": "sft"},
-    {"name": "KBAlign", "module": "pages.train.pipeline.kbalign", "pipeline": "kbalign"},
+    # {"name": "KBAlign", "module": "pages.train.pipeline.kbalign", "pipeline": "kbalign"},
 ]
 
 EMBEDDING_STEPS = [

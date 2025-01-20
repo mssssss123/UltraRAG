@@ -173,9 +173,13 @@ def display(global_configs):
 
     cols = st.columns([5, 5])
     with cols[0]:
-        eval_config["embedding_model_path"] = st.text_input(
+        st.text_input(
             t("Embedding Model Path"),
-            value=eval_config["embedding_model_path"],
+            value=eval_config.get('embedding_model_path', ''),
+            key="eval_embedding_model_path",
+            on_change=lambda: eval_config.update(
+                {'embedding_model_path': st.session_state.eval_embedding_model_path}
+            ),
             help=t("Path to the embedding model.")
         )
     with cols[1]:
@@ -193,51 +197,91 @@ def display(global_configs):
                     {'selected_retrieval_metrics': st.session_state.eval_selected_retrieval_metrics}
                 )
             )
-            eval_config["pooling"] = st.text_input(
+            st.text_input(
                 t("Pooling Strategy"),
-                value=eval_config["pooling"],
+                value=eval_config.get('pooling', ''),
+                key="eval_pooling",
+                on_change=lambda: eval_config.update(
+                    {'pooling': st.session_state.eval_pooling}
+                ),
                 help=t("Select the pooling strategy to use.")
             )
-            eval_config["query_instruction"] = st.text_input(
+            st.text_input(
                 t("Query Instruction"),
-                value=eval_config["query_instruction"] or "",
+                value=eval_config.get('query_instruction', ''),
+                key="eval_query_instruction",
+                on_change=lambda: eval_config.update(
+                    {'query_instruction': st.session_state.eval_query_instruction}
+                ),
                 help=t("Instruction to extract query text.")
             )
-            eval_config["queries_path"] = st.text_input(
+            st.text_input(
                 t("Queries File Path"),
-                value=eval_config["queries_path"],
+                value=eval_config.get('queries_path', ''),
+                key="eval_queries_path",
+                on_change=lambda: eval_config.update(
+                    {'queries_path': st.session_state.eval_queries_path}
+                ),
                 help=t("Path to the queries file.")
             )
-            eval_config["corpus_path"] = st.text_input(
+            st.text_input(
                 t("Corpus File Path"),
-                value=eval_config["corpus_path"],
+                value=eval_config.get('corpus_path', ''),
+                key="eval_corpus_path",
+                on_change=lambda: eval_config.update(
+                    {'corpus_path': st.session_state.eval_corpus_path}
+                ),
                 help=t("Path to the corpus file.")
             )
-            eval_config["qrels_path"] = st.text_input(
+            st.text_input(
                 t("Qrels File Path"),
-                value=eval_config["qrels_path"],
+                value=eval_config.get('qrels_path', ''),
+                key="eval_qrels_path",
+                on_change=lambda: eval_config.update(
+                    {'qrels_path': st.session_state.eval_qrels_path}
+                ),
                 help=t("Path to the qrels file.")
             )
-            eval_config["retrieval_output_path"] = st.text_input(
+
+            st.text_input(
                 t("Output Results Path"),
-                value=eval_config["retrieval_output_path"],
+                value=eval_config.get('retrieval_output_path', ''),
+                key="eval_retrieval_output_path",
+                on_change=lambda: eval_config.update(
+                    {'retrieval_output_path': st.session_state.eval_retrieval_output_path}
+                ),
                 help=t("Path to save the output results.")
             )
-            eval_config["log_path"] = st.text_input(
+
+            st.text_input(
                 t("Log File Path"),
-                value=eval_config["log_path"] or "",
+                value=eval_config.get('log_path', ''),
+                key="eval_log_path",
+                on_change=lambda: eval_config.update(
+                    {'log_path': st.session_state.eval_log_path}
+                ),
                 help=t("Path to save the log file (optional).")
             )
-            eval_config["topk"] = st.number_input(
+
+            st.number_input(
                 t("Top K Documents"),
-                value=eval_config["topk"],
+                value=eval_config.get('topk', 1),
+                key="eval_topk",
                 min_value=1,
                 step=1,
+                on_change=lambda: eval_config.update(
+                    {'topk': st.session_state.eval_topk}
+                ),
                 help=t("Top k documents to retrieve.")
             )
-            eval_config["cutoffs"] = st.text_input(
+
+            st.text_input(
                 t("Cutoffs"),
-                value=eval_config["cutoffs"] or "",
+                value=eval_config.get('cutoffs', ''),
+                key="eval_cutoffs",
+                on_change=lambda: eval_config.update(
+                    {'cutoffs': st.session_state.eval_cutoffs}
+                ),
                 help=t("Cutoff for evaluation metrics, separated by commas (e.g., 10,20,50).")
             )
     with col2:
@@ -305,82 +349,128 @@ def display(global_configs):
             if eval_config["llm_type"] == "API":
                 cols = st.columns([5, 5, 5])
                 with cols[0]:
-                    eval_config["api_key"] = st.text_input(
+                    st.text_input(
                         t("API Key"),
                         value=eval_config.get("api_key", ""),
+                        key="eval_api_key",
+                        on_change=lambda: eval_config.update(
+                            {"api_key": st.session_state.eval_api_key}
+                        ),
                         help=t("API key for accessing the model.")
                     )
                 with cols[1]:
-                    eval_config["base_url"] = st.text_input(
+                    st.text_input(
                         t("Base URL"),
                         value=eval_config.get("base_url", ""),
+                        key="eval_base_url",
+                        on_change=lambda: eval_config.update(
+                            {"base_url": st.session_state.eval_base_url}
+                        ),
                         help=t("Base URL for the API service.")
                     )
                 with cols[2]:
-                    eval_config["model_name"] = st.text_input(
+                    st.text_input(
                         t("Model Name"),
                         value=eval_config.get("model_name", ""),
+                        key="eval_model_name",
+                        on_change=lambda: eval_config.update(
+                            {"model_name": st.session_state.eval_model_name}
+                        ),
                         help=t("Name of the model hosted on the API.")
                     )
             elif eval_config["llm_type"] == "Local":
-                eval_config["model_name_or_path"] = st.text_input(
+                st.text_input(
                     t("Model Name or Path"),
                     value=eval_config.get("model_name_or_path", ""),
+                    key="eval_model_name_or_path",
+                    on_change=lambda: eval_config.update(
+                        {"model_name_or_path": st.session_state.eval_model_name_or_path}
+                    ),
                     help=t("Path or name of the locally hosted model.")
                 )
 
-            eval_config["metric_llm_type"] = st.selectbox(
-                    t("Select Metric Model"),
-                    options=["API", "Local"],
-                    index=['API', 'Local'].index(
-                        eval_config.get('metric_llm_type', 'Local')
-                    ),
-                    key = "eval_select_metric_model",
-                    on_change=lambda: eval_config.update(
-                        {'metric_llm_type': st.session_state.eval_select_metric_model}
-                    ),
+            st.selectbox(
+                t("Select Metric Model"),
+                options=["API", "Local"],
+                index=['API', 'Local'].index(
+                    eval_config.get('metric_llm_type', 'Local')
+                ),
+                key="eval_select_metric_model",
+                on_change=lambda: eval_config.update(
+                    {"metric_llm_type": st.session_state.eval_select_metric_model}
                 )
+            )
 
             if eval_config["metric_llm_type"] == "API":
                 cols = st.columns([5, 5, 5])
                 with cols[0]:
-                    eval_config["metric_api_key"] = st.text_input(
+                    st.text_input(
                         t("Metric API Key"),
                         value=eval_config.get("metric_api_key", ""),
+                        key="eval_metric_api_key",
+                        on_change=lambda: eval_config.update(
+                            {"metric_api_key": st.session_state.eval_metric_api_key}
+                        ),
                         help=t("API key for metric evaluation.")
                     )
                 with cols[1]:
-                    eval_config["metric_base_url"] = st.text_input(
+                    st.text_input(
                         t("Metric Base URL"),
                         value=eval_config.get("metric_base_url", ""),
+                        key="eval_metric_base_url",
+                        on_change=lambda: eval_config.update(
+                            {"metric_base_url": st.session_state.eval_metric_base_url}
+                        ),
                         help=t("Base URL for metric evaluation service.")
                     )
                 with cols[2]:
-                    eval_config["metric_model_name"] = st.text_input(
+                    st.text_input(
                         t("Metric Model Name"),
                         value=eval_config.get("metric_model_name", ""),
+                        key="eval_metric_model_name",
+                        on_change=lambda: eval_config.update(
+                            {"metric_model_name": st.session_state.eval_metric_model_name}
+                        ),
                         help=t("Model name for metric evaluation.")
                     )
             elif eval_config["metric_llm_type"] == "Local":
-                eval_config["metric_model_name_or_path"] = st.text_input(
+                st.text_input(
                     t("Metric Model Name or Path"),
                     value=eval_config.get("metric_model_name_or_path", ""),
+                    key="eval_metric_model_name_or_path",
+                    on_change=lambda: eval_config.update(
+                        {"metric_model_name_or_path": st.session_state.eval_metric_model_name_or_path}
+                    ),
                     help=t("Path or name of the locally hosted model.")
                 )
+
             cols_gpu = st.columns([5, 5])
             with cols_gpu[0]:
-                eval_config["reranker_model_path"] = st.text_input(
+                st.text_input(
                     t("Reranker Model Path"),
-                    value=eval_config["reranker_model_path"],
+                    value=eval_config.get("reranker_model_path", ""),
+                    key="eval_reranker_model_path",
+                    on_change=lambda: eval_config.update(
+                        {"reranker_model_path": st.session_state.eval_reranker_model_path}
+                    ),
                     help=t("Path to the reranker model.")
                 )
             with cols_gpu[1]:
                 eval_config["reranker_gpu"] = select_cuda_devices("Reranker")
-            eval_config["output_path"] = st.text_input(
+
+            st.text_input(
                 t("Output Dir"),
-                eval_config.get("output_path", f"output/evaluate/{pipeline_type}-{st.session_state.now_time.strftime('%Y-%m-%d-%H-%M-%S')}"),
+                value=eval_config.get(
+                    "output_path",
+                    f"output/evaluate/{pipeline_type}-{st.session_state.now_time.strftime('%Y-%m-%d-%H-%M-%S')}"
+                ),
+                key="eval_output_path",
+                on_change=lambda: eval_config.update(
+                    {"output_path": st.session_state.eval_output_path}
+                ),
                 help=t("Specify the path for saving output files.")
             )
+
 
     if module:
         st.write(f"### {t('Pipeline Config')}")

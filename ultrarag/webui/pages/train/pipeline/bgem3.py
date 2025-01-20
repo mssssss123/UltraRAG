@@ -79,12 +79,9 @@ def display():
                 help=t("Specify the sentence pooling method."),
             )
         with cols[1]:
-            st.number_input(
+            st.text_input(
                 t("Learning Rate"),
                 value=bgem3_config.get('learning_rate', 7e-6),
-                min_value=1e-8,
-                max_value=1e-3,
-                step=1e-6,
                 key="learning_rate",
                 on_change=lambda: bgem3_config.update(
                     {'learning_rate': st.session_state.learning_rate}
