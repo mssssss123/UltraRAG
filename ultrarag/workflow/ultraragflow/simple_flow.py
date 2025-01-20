@@ -14,10 +14,10 @@ from pathlib import Path
 home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
 
-class NativeFlow:
+class NaiveFlow:
     def __init__(self, api_key, base_url, llm_model, embedding_url, reranker_url, database_url=":memory:", **args) -> None:
         """
-        Initialize the NativeFlow with required components.
+        Initialize the NaiveFlow with required components.
         
         Args:
             api_key (str): API key for LLM service
@@ -38,7 +38,7 @@ class NativeFlow:
     @classmethod
     def from_modules(cls, llm: BaseLLM, index: QdrantIndexSearchWarper, reranker: BaseRerank, **args):
         """
-        Alternative constructor that creates NativeFlow from pre-configured modules.
+        Alternative constructor that creates NaiveFlow from pre-configured modules.
         
         Args:
             llm (BaseLLM): Language model instance
@@ -46,9 +46,9 @@ class NativeFlow:
             reranker (BaseRerank): Reranker instance
         
         Returns:
-            NativeFlow: Configured instance
+            NaiveFlow: Configured instance
         """
-        inst = NativeFlow(api_key="", base_url="", llm_model="", embedding_url="", reranker_url="")
+        inst = NaiveFlow(api_key="", base_url="", llm_model="", embedding_url="", reranker_url="")
         inst._synthesizer = llm
         inst._router = BaseRouter(llm_call_back=llm.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
         inst._index = index

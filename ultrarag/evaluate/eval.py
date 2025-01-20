@@ -190,8 +190,8 @@ if __name__ == "__main__":
         searcher = Knowledge_Managment.get_searcher(embedding_model=encoder,knowledge_id=args.knowledge_id, knowledge_stat_tab_path = args.knowledge_stat_tab_path)
         reranker = load_rerank_model(args.reranker_model_path,device=args.reranker_gpu)
         if args.pipeline_type == "vanilla":
-            from ultrarag.workflow.ultraragflow.simple_flow import NativeFlow
-            flow = NativeFlow.from_modules(llm=llm,index=searcher,reranker=reranker)
+            from ultrarag.workflow.ultraragflow.simple_flow import NaiveFlow
+            flow = NaiveFlow.from_modules(llm=llm,index=searcher,reranker=reranker)
         elif args.pipeline_type == "renote":
             from ultrarag.workflow.ultraragflow.renote_flow import RenoteFlow
             flow = RenoteFlow.from_modules(llm=llm,database=searcher)

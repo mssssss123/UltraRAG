@@ -9,7 +9,7 @@ output_path = home_path / "output"
 import asyncio
 import time
 from loguru import logger
-from ultrarag.workflow.ultraragflow import NativeFlow
+from ultrarag.workflow.ultraragflow import NaiveFlow
 from ultrarag.common.utils import get_debug_fold
 import pandas as pd
 from ultrarag.webui.utils.language import t
@@ -42,11 +42,11 @@ def display_configurations():
         if 'current_kb_config_id' not in st.session_state:
             st.session_state['current_kb_config_id'] = None
             
-        # Initialize NativeFlow if knowledge base is loaded
+        # Initialize NaiveFlow if knowledge base is loaded
         kb_df = st.session_state.get('kb_df')
         if (isinstance(kb_df, pd.DataFrame)) and not kb_df.empty:
             try:
-                st.session_state.naive_flow_inst = NativeFlow.from_modules(
+                st.session_state.naive_flow_inst = NaiveFlow.from_modules(
                     llm=st.session_state.llm,
                     index=st.session_state.searcher,
                     reranker=st.session_state.reranker
