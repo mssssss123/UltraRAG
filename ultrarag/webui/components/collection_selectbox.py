@@ -101,7 +101,7 @@ def collection_selectbox(collections=None, selected_options=None):
         selected_options = st.multiselect(
             t("Select Collection"),
             filtered_options,
-            default=st.session_state['selected_options'],
+            default=st.session_state.get('selected_options', []),
             key="multiselect",
             on_change=update_selection
         )

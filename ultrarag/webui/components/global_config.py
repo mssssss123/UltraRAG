@@ -140,18 +140,45 @@ def display_model_fields():
         model_path = st.session_state.config.get('model_path', '')
 
         if model_type == 'API':
-            cols = st.columns([2, 4, 4])
+            cols = st.columns([3, 4, 4],vertical_alignment="bottom")
             with cols[0]:
-                st.session_state.config['model_name'] = st.text_input(t('Model Name'), value=model_name)
+                st.text_input(
+                    t('Model Name'),
+                    value=st.session_state.config.get('model_name', ''),
+                    key="config_model_name",
+                    on_change=lambda: st.session_state.config.update(
+                        {'model_name': st.session_state.config_model_name}
+                    )
+                )
             with cols[1]:
-                st.session_state.config['api_key'] = st.text_input(t('API Key'), value=api_key)
+                st.text_input(
+                    t('API Key'),
+                    value=st.session_state.config.get('api_key', ''),
+                    key="config_api_key",
+                    on_change=lambda: st.session_state.config.update(
+                        {'api_key': st.session_state.config_api_key}
+                    )
+                )
             with cols[2]:
-                st.session_state.config['base_url'] = st.text_input(t('Base URL'), value=base_url)
+                st.text_input(
+                    t('Base URL'),
+                    value=st.session_state.config.get('base_url', ''),
+                    key="config_base_url",
+                    on_change=lambda: st.session_state.config.update(
+                        {'base_url': st.session_state.config_base_url}
+                    )
+                )
         elif model_type == 'Custom':
             cols = st.columns([10]) 
             with cols[0]:
-                st.session_state.config['model_path']  = st.text_input(t('Model Path'), value=model_path)
-
+                st.text_input(
+                    t('Model Path'),
+                    value=st.session_state.config.get('model_path', ''),
+                    key="config_model_path",
+                    on_change=lambda: st.session_state.config.update(
+                        {'model_path': st.session_state.config_model_path}
+                    )
+                )
 def select_embedding_model():
     """
     Display embedding model selection interface.
@@ -170,7 +197,15 @@ def select_embedding_model():
 def display_embedding_model_fields():
     embedding_model_type = st.session_state.config.get('embedding_model_type', '')
     with st.container():
-        st.session_state.config['embedding_model_path'] = st.text_input(t('Embedding Model Path'), value=st.session_state.config.get('embedding_model_path', '')) if embedding_model_type == 'Custom' else ""
+        if embedding_model_type == 'Custom':
+            st.text_input(
+                t('Embedding Model Path'),
+                value=st.session_state.config.get('embedding_model_path', ''),
+                key="config_embedding_model_path",
+                on_change=lambda: st.session_state.config.update(
+                    {'embedding_model_path': st.session_state.config_embedding_model_path}
+                )
+            )
 
 def select_reranker_model():
     cols = st.columns([4,7],vertical_alignment='bottom')
@@ -186,8 +221,16 @@ def select_reranker_model():
 def display_reranker_model_fields():
     reranker_model_type = st.session_state.config.get('reranker_model_type', '')
     with st.container():
-        st.session_state.config['reranker_model_path'] = st.text_input(t('Reranker Model Path'), value=st.session_state.config.get('reranker_model_path', '')) if reranker_model_type == 'Custom' else ""
-
+        if reranker_model_type == 'Custom':
+            st.text_input(
+                t('Reranker Model Path'),
+                value=st.session_state.config.get('reranker_model_path', ''),
+                key="config_reranker_model_path",
+                on_change=lambda: st.session_state.config.update(
+                    {'reranker_model_path': st.session_state.config_reranker_model_path}
+                )
+            )
+            
 def advanced_settings():
     kb_manage()
 

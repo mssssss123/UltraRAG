@@ -33,19 +33,14 @@ def display():
         # Column 1: GPU and Model Settings
         with cols[0]:
             # GPU device selection
-            selected_devices = st.multiselect(
+            st.multiselect(
                 t("Select CUDA Devices"),
                 options=cuda_devices,
                 default=default_selected_devices,
+                key="ddr_cuda",
                 help=t("Select the GPUs you want to use."),
+                on_change=lambda: ddr.update({'gpu_vis': ','.join(st.session_state.ddr_cuda) if 'No CUDA devices available' not in cuda_devices else t("No CUDA devices available")})
             )
-            if 'No CUDA devices available' not in cuda_devices:
-                gpu_vis = ','.join(selected_devices)
-                ddr['gpu_vis'] = gpu_vis
-                st.session_state.gpu_vis = gpu_vis
-            else:
-                gpu_vis = t("No CUDA devices available")
-                ddr['gpu_vis'] = gpu_vis
 
             # Model path inputs
             st.text_input(
