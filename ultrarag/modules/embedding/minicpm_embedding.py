@@ -12,7 +12,7 @@ from transformers import AutoModel, AutoTokenizer, is_torch_npu_available, AutoC
 from loguru import logger
 HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
 
-class BGEM3Client(BaseEmbedding):
+class MiniCPMEmbClient(BaseEmbedding):
     def __init__(self, url_or_path, **kargs) -> None:
         super().__init__()
         self.url = url_or_path
@@ -348,7 +348,7 @@ class BGEM3FlagModel:
                 "colbert_vecs": all_colbert_vec}
 
 
-class BGEM3Server(BaseEmbedding):
+class MiniCPMEmbServer(BaseEmbedding):
     def __init__(self, url_or_path, batch_size=256, max_length=8192, query_instruction:str=None, **kargs) -> None:
         super().__init__(query_instruction)
         self.model= BGEM3FlagModel(model_name_or_path=url_or_path, **kargs)
@@ -376,7 +376,7 @@ class BGEM3Server(BaseEmbedding):
                 - sparse_embed: Sparse embedding dictionary mapping token ids to weights
 
         Example:
-            >>> server = BGEM3Server("BAAI/bge-m3")
+            >>> server = MiniCPMEmbServer("BAAI/bge-m3")
             >>> # Single query
             >>> result = await server.query_encode("What is machine learning?")
             >>> print(result)
@@ -422,7 +422,7 @@ class BGEM3Server(BaseEmbedding):
                 - sparse_embed: Sparse embedding dictionary mapping token ids to weights
 
         Example:
-            >>> server = BGEM3Server("BAAI/bge-m3")
+            >>> server = MiniCPMEmbServer("BAAI/bge-m3")
             >>> docs = ["Machine learning is a subset of AI.", 
                        "Deep learning uses neural networks."]
             >>> results = await server.document_encode(docs)
@@ -454,7 +454,7 @@ class BGEM3Server(BaseEmbedding):
                 - sparse_embed: Sparse embedding dictionary mapping token ids to weights
 
         Example:
-            >>> encoder = BGEM3Server("BAAI/bge-m3")
+            >>> encoder = MiniCPMEmbServer("BAAI/bge-m3")
             >>> texts = ["Hello world", "Machine learning is amazing"]
             >>> results = encoder.encode(texts)
             >>> print(results)
