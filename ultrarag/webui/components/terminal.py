@@ -163,6 +163,7 @@ def terminal(full_command="", para_dict="", key=None):
                     log_container.text(line.strip())
                     
             process.wait()
+            if process.returncode != 0:
                 st.error(t("Command execution failed."))
         except Exception as e:
             st.error(f"Execution Error: {e}")

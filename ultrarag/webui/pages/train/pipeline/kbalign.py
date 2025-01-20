@@ -70,12 +70,13 @@ def display():
         # Training dataset selection and preview
         col1, col2 = st.columns([1,1], vertical_alignment='bottom')
         with col1:
-            kbalign_config['train_data_path'] = st.multiselect(
+            st.multiselect(
                 t("Select Train Datasets"),
                 options=all_files,
                 default=kbalign_config.get('train_data_path', []),
                 key="train_data_path",
-                help=t("Select datasets to include in the test configuration.")
+                help=t("Select datasets to include in the test configuration."),
+                on_change=lambda: kbalign_config.update({'train_data_path': st.session_state.train_data_path})
             )
         with col2:
             if st.button("Preview Selected train Datasets"):
@@ -94,12 +95,13 @@ def display():
         # Evaluation dataset selection and preview
         col1, col2 = st.columns([1,1], vertical_alignment='bottom')
         with col1:
-            kbalign_config['eval_data_path'] = st.multiselect(
+            st.multiselect(
                 t("Select Eval Datasets"),
                 options=all_files,
                 default=kbalign_config.get('eval_data_path', []),
                 key="eval_data_path",
-                help=t("Select datasets to include in the test configuration.")
+                help=t("Select datasets to include in the test configuration."),
+                on_change=lambda: kbalign_config.update({'eval_data_path': st.session_state.eval_data_path})
             )
         with col2:
             if st.button(t("Preview Selected eval Datasets")):
@@ -120,21 +122,14 @@ def display():
         
         # Column 1: Device and output settings
         with cols[0]:
-            selected_devices = st.multiselect(
+            st.multiselect(
                 t("Select CUDA Devices"),
                 options=cuda_devices,
                 default=default_selected_devices,
+                key="kbalign_config_cuda",
                 help=t("Select the GPUs you want to use."),
+                on_change=lambda: kbalign_config.update({'gpu_vis': ','.join(st.session_state.kbalign_config_cuda) if 'No CUDA devices available' not in cuda_devices else t("No CUDA devices available")})
             )
-            
-            # Update GPU visibility setting
-            if 'No CUDA devices available' not in cuda_devices:
-                gpu_vis = ','.join(selected_devices)
-                kbalign_config['gpu_vis'] = gpu_vis
-                st.session_state.gpu_vis = gpu_vis
-            else:
-                gpu_vis = t("No CUDA devices available")
-                kbalign_config['gpu_vis'] = gpu_vis
 
             # Output directory and deepspeed config settings
             st.text_input(

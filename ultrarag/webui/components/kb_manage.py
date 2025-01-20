@@ -125,7 +125,12 @@ def kb_manage():
     Handles file uploads, knowledge base creation, and management operations.
     """
     # Initialize columns for layout
-    cols = st.columns([1,1])
+    cols = st.columns([1,1],vertical_alignment="top")
+    
+    st.session_state.setdefault('files_csv', default_files_csv)
+    st.session_state.setdefault('kb_csv', default_kb_csv)
+    st.session_state.setdefault('file_save_dir', default_files_dir)
+    st.session_state.setdefault('kb_save_dir', default_kb_dir)
     
     # Load existing data
     try:
@@ -153,9 +158,23 @@ def kb_manage():
         # File paths configuration
         file_cols = st.columns([1, 1], vertical_alignment='bottom')
         with file_cols[0]:
-            st.session_state['files_csv'] = st.text_input(t("File Management CSV Path"), value=default_files_csv)
+            st.text_input(
+                t('File Management CSV Path'),
+                value=st.session_state.get('files_csv', f'{default_files_csv}'),
+                key="config_files_csv",
+                on_change=lambda: st.session_state.update(
+                    {'files_csv': st.session_state.config_files_csv}
+                )
+            )
         with file_cols[1]:
-            st.session_state['file_save_dir'] = st.text_input(t("File Save Path"), value=default_files_dir)
+            st.text_input(
+                t('File Save Path'),
+                value=st.session_state.get('file_save_dir', f'{default_files_dir}'),
+                key="config_file_save_dir",
+                on_change=lambda: st.session_state.update(
+                    {'file_save_dir': st.session_state.config_file_save_dir}
+                )
+            )
 
         # File upload section
         file_cols2 = st.columns([1], vertical_alignment='bottom')
@@ -199,7 +218,7 @@ def kb_manage():
                 st.success(t("Uploaded Successfully"))
                 st.rerun()
 
-    cols2=st.columns([1,1],vertical_alignment='bottom')
+    cols2=st.columns([1,1],vertical_alignment='top')
     with cols2[0]:
         st.subheader(t("File Lists"))
         selected_files=""
@@ -228,9 +247,23 @@ def kb_manage():
         
         kb_cols=st.columns([1, 1],vertical_alignment='bottom')
         with kb_cols[0]:
-            st.session_state['kb_csv'] = st.text_input(t("Collection Management CSV Path"), value=default_kb_csv)
+            st.text_input(
+                t('Collection Management CSV Path'),
+                value=st.session_state.get('kb_csv', f'{default_kb_csv}'),
+                key="config_kb_csv",
+                on_change=lambda: st.session_state.update(
+                    {'kb_csv': st.session_state.config_kb_csv}
+                )
+            )
         with kb_cols[1]:
-            st.session_state['kb_save_dir'] = st.text_input(t("Collection Save Path"), value=default_kb_dir)
+            st.text_input(
+                t('Collection Save Path'),
+                value=st.session_state.get('kb_save_dir', f'{default_kb_dir}'),
+                key="config_kb_save_dir",
+                on_change=lambda: st.session_state.update(
+                    {'kb_save_dir': st.session_state.config_kb_save_dir}
+                )
+            )
         with st.container():
             cols1_1=st.columns([1, 1, 1])
             with cols1_1[0]:
@@ -364,10 +397,10 @@ def kb_manage():
                         del data["collections"][selected_kb["knowledge_base_id"].values[i]]
                     with open(meta_path, 'w', encoding='utf-8') as f:
                         json.dump(data, f, ensure_ascii=False, indent=4)
-                    json_file_path = os.path.join(kb_base, f"{selected_kb['knowledge_base_id'].values[i]}.json")
+                    json_file_path = os.path.join(kb_base, f"{selected_kb['knowledge_base_id'].values[i]}.jsonl")
                     if os.path.exists(json_file_path):
                         os.remove(json_file_path)
-                kb_df = kb_df[~kb_df['qdrant_path'].isin([row for row in selected_kb['qdrant_path']])]
+                kb_df = kb_df[~kb_df['knowledge_base_id'].isin([row for row in selected_kb['knowledge_base_id']])]
                 st.session_state['kb_df'] = kb_df
                 save_csv(kb_df, st.session_state['kb_csv'])
                 st.success(t("Collection Deleted Successfully"))

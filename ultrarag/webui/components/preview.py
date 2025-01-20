@@ -73,7 +73,7 @@ def preview_dataset(file, content):
     for i in range(start_idx, end_idx):
         st.json(content[i], expanded=False)
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 2, 1],vertical_alignment='bottom')
     with col1:
         if st.button(t("Previous"), key=f"prev_{file}"):
             if page > 1:

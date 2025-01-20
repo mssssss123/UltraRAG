@@ -41,20 +41,14 @@ def display():
 
         # First column (CUDA devices, Model Paths)
         with cols[0]:
-            selected_devices = st.multiselect(
+            st.multiselect(
                 t("Select CUDA Devices"),
                 options=cuda_devices,
                 default=default_selected_devices,
+                key="kbalign_cuda",
                 help=t("Select the GPUs you want to use."),
+                on_change=lambda: kbalign.update({'gpu_vis': ','.join(st.session_state.kbalign_cuda) if 'No CUDA devices available' not in cuda_devices else t("No CUDA devices available")})
             )
-            if 'No CUDA devices available' not in cuda_devices:
-                gpu_vis = ','.join(selected_devices)
-                kbalign['gpu_vis'] = gpu_vis
-                st.session_state.gpu_vis = gpu_vis
-            else:
-                gpu_vis = t("No CUDA devices available")
-                kbalign['gpu_vis'] = gpu_vis
-
             # Text input for model name or path
             st.text_input(
                 t("Model Name or Path"),

@@ -183,11 +183,15 @@ def display(global_configs):
     col1, col2 = st.columns([1,1])
     with col1:
         with st.expander(t("Retrieval Evaluation"), expanded=True):
-            eval_config["selected_retrieval_metrics"] = st.multiselect(
+            st.multiselect(
                 t("Retrieval Metrics"),
                 options=RETRIEVAL_METRICS,
                 default=eval_config.get('selected_retrieval_metrics', []),
-                help=t("Select the retrieval metrics to evaluate (e.g., precision, recall).")
+                help=t("Select the retrieval metrics to evaluate (e.g., precision, recall)."),
+                key="eval_selected_retrieval_metrics",
+                on_change=lambda: eval_config.update(
+                    {'selected_retrieval_metrics': st.session_state.eval_selected_retrieval_metrics}
+                )
             )
             eval_config["pooling"] = st.text_input(
                 t("Pooling Strategy"),
@@ -238,12 +242,15 @@ def display(global_configs):
             )
     with col2:
         with st.expander(t("Generated Evaluation"), expanded=True):
-            eval_config["selected_generated_metrics"] = st.multiselect(
+            st.multiselect(
                 t("Generated Metrics"),
                 options=GENERATED_METRICS,
                 default=eval_config.get('selected_generated_metrics', []),
+                help=t("Select the generated metrics to evaluate (e.g., BLEU, ROUGE)."),
                 key = "eval_selected_generated_metrics",
-                help=t("Select the generated metrics to evaluate (e.g., BLEU, ROUGE).")
+                on_change=lambda: eval_config.update(
+                    {'selected_generated_metrics': st.session_state.eval_selected_generated_metrics}
+                )
             )
             eval_config["evaluate_only"] = st.checkbox(
                 t("Evaluate Only"),
@@ -264,12 +271,13 @@ def display(global_configs):
                     st.warning(t("Please config the knowledge base.")  ) 
             col1, col2 = st.columns([1,1],vertical_alignment='bottom')
             with col1:
-                eval_config['test_dataset'] = st.multiselect(
+                st.multiselect(
                     t("Select Test Datasets"),
                     options=all_files,
                     default=eval_config.get('test_dataset', []),
-                    key="test_dataset",
-                    help=t("Select datasets to include in the test configuration.")
+                    key="eval_config_test_dataset",
+                    help=t("Select datasets to include in the test configuration."),
+                    on_change=lambda: eval_config.update({'test_dataset': st.session_state.eval_config_test_dataset})
                 )
             with col2:
                 if st.button(t("Preview Selected Datasets")):
