@@ -17,6 +17,17 @@ sys.path.append(home_path.as_posix())
 
 class NativeFlow:
     def __init__(self, api_key, base_url, llm_model, embedding_url, reranker_url, database_url=":memory:", **args) -> None:
+        """
+        Initialize the NativeFlow with required components.
+        
+        Args:
+            api_key (str): API key for LLM service
+            base_url (str): Base URL for LLM service
+            llm_model (str): Name of the LLM model to use
+            embedding_url (str): URL for embedding service
+            reranker_url (str): URL for reranker service 
+            database_url (str): URL for vector database, defaults to in-memory
+        """
         self._synthesizer = OpenaiLLM(api_key=api_key, base_url=base_url, model=llm_model)
         self._router = BaseRouter(llm_call_back=self._synthesizer.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
         self._index = QdrantIndex(database_url, encoder=BGEClient(url_or_path=embedding_url))
@@ -28,6 +39,17 @@ class NativeFlow:
 
     @classmethod
     def from_modules(cls, llm: BaseLLM, index: QdrantIndexSearchWarper, reranker: BaseRerank, **args):
+        """
+        Alternative constructor that creates NativeFlow from pre-configured modules.
+        
+        Args:
+            llm (BaseLLM): Language model instance
+            index (QdrantIndexSearchWarper): Vector database instance
+            reranker (BaseRerank): Reranker instance
+        
+        Returns:
+            NativeFlow: Configured instance
+        """
         inst = NativeFlow(api_key="", base_url="", llm_model="", embedding_url="", reranker_url="")
         inst._synthesizer = llm
         inst._router = BaseRouter(llm_call_back=llm.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
@@ -39,7 +61,19 @@ class NativeFlow:
         return inst
 
 
-    async def aquery(self, query: str, messages: List[Dict[str, str]], collection: List[str],system_prompt=""):
+    async def aquery(self, query: str, messages: List[Dict[str, str]], collection: List[str], system_prompt=""):
+        """
+        Main query method that routes requests to appropriate handlers.
+        
+        Args:
+            query (str): User query
+            messages (List[Dict]): Conversation history
+            collection (List[str]): Knowledge base collections to search
+            system_prompt (str): Optional system prompt
+            
+        Returns:
+            AsyncGenerator: Yields response chunks with state information
+        """
         logger.info(f"query: {query}")
 
         route = await self._router.arun(query=query, history_dialogue=messages)
@@ -63,6 +97,18 @@ class NativeFlow:
 
 
     async def naive_rag(self, query, collection, messages, system_prompt=""):
+        """
+        Implements RAG workflow: retrieval -> reranking -> generation.
+        
+        Args:
+            query (str): User query
+            collection (List[str]): Knowledge base collections to search
+            messages (List[Dict]): Conversation history
+            system_prompt (str): Optional system prompt
+            
+        Yields:
+            Dict: Contains state ('recall' or 'data') and response values
+        """
         logger.info(f"strat find {collection} collection")
         recalls = await self._index.search(query=query, topn=25)
         scores, reranks = await self._rerank.rerank(query=query, nodes=recalls, func=lambda x: x.content)

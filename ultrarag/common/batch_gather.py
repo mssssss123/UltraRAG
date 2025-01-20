@@ -5,10 +5,15 @@ import asyncio
 
 class SingleTask:
     def __init__(self, info: list) -> None:
+        """Initialize a single task with input information
+        
+        Args:
+            info (list): Input data for the task
+        """
         self.cond = Condition()
-        self.info = info # input
-        self.exp = None # exception
-        self.res = None # output
+        self.info = info  # Input data
+        self.exp = None   # Exception if any occurs
+        self.res = None   # Output result
 
     def put_res(self, res):
         self.res = res
@@ -36,6 +41,14 @@ class BatchGather:
             max_capacity=256, 
             is_coroutine=False
     ) -> None:
+        """Initialize BatchGather for processing tasks in batches
+        
+        Args:
+            batch_func (Callable): Function to process batched inputs
+            batch_size (int): Maximum size of each batch
+            max_capacity (int): Maximum queue capacity
+            is_coroutine (bool): Whether batch_func is a coroutine
+        """
         self.task_queue = queue.Queue(max_capacity)
         self.batch_func = batch_func
         self.batch_size = batch_size
@@ -62,21 +75,28 @@ class BatchGather:
             self.thread = None
 
     def _get_task_batch(self):
+        """Collect tasks into a batch up to batch_size
+        
+        Returns:
+            tuple: (list of inputs, list of SingleTask objects)
+        """
         self.last_task: SingleTask | None
         inputs = []
         tasks: list[SingleTask] = []
+        
+        # Get first task (blocking if queue is empty)
         if self.last_task is None:
             try:
-                self.last_task: SingleTask = self.task_queue.get(False)
+                self.last_task = self.task_queue.get(False)
             except queue.Empty:
-                # 阻塞到下一次
-                self.last_task: SingleTask = self.task_queue.get(True)
-        # do-while 形式，第一次的 task 一定加入列表
+                self.last_task = self.task_queue.get(True)
+                
+        # Collect tasks until batch is full
         while True:
             tasks.append(self.last_task)
             inputs.extend(self.last_task.info)
             try:
-                self.last_task: SingleTask = self.task_queue.get(False)
+                self.last_task = self.task_queue.get(False)
             except queue.Empty:
                 self.last_task = None
                 break

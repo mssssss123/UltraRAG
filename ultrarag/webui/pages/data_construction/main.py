@@ -8,7 +8,6 @@ home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
 from utils.config import DATA_PIPELINE
 from ultrarag.webui.components.collection_selectbox import collection_selectbox
-from ultrarag.webui.utils.language import t
 
 def ensure_directory_exists(file_path):
     directory = Path(file_path).parent
@@ -47,6 +46,7 @@ def display(global_configs):
         selected_pipeline = st.selectbox(t("Select pipeline:"), pipeline_names)
 
     module_path = None
+    pipeline_type = None
     for pipeline in DATA_PIPELINE:
         if pipeline["name"] == selected_pipeline:
             module_name = pipeline["name"]

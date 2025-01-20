@@ -6,22 +6,25 @@ import yaml
 import os
 from datetime import datetime
 import time
+import torch
 from utils.config import EVAL_PIPELINE, RETRIEVAL_METRICS, GENERATED_METRICS
 from ultrarag.webui.components.preview import parse_json_files, preview_dataset
 from ultrarag.webui.components.collection_selectbox import collection_selectbox
 from ultrarag.webui.utils.language import t
 import re
-import torch
 
+# Set up base paths for the application
 home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
 dataset_path = home_path / "resource/dataset/test_dataset"
 
 def ensure_directory_exists(file_path):
+    """Ensure the directory exists for the given file path."""
     directory = Path(file_path).parent
     directory.mkdir(parents=True, exist_ok=True)
 
 def save_config_to_file(config_path, config):
+    """Save configuration to a YAML file."""
     try:
         ensure_directory_exists(config_path)
         with open(config_path, "w") as file:
@@ -31,6 +34,7 @@ def save_config_to_file(config_path, config):
         st.error(t("Error saving configuration: error.").format(error=e))
 
 def load_config_from_file(config_path):
+    """Load configuration from a YAML file."""
     try:
         with open(config_path, "r") as file:
             config = yaml.safe_load(file)
@@ -43,6 +47,7 @@ def load_config_from_file(config_path):
         st.error(t("Error loading configuration: error.").format(error=e))
 
 def select_cuda_devices(device_key):
+    """Create a selectbox for CUDA device selection."""
     if torch.cuda.is_available():
         cuda_devices = [f"cuda:{i}" for i in range(torch.cuda.device_count())]
     else:
@@ -54,14 +59,20 @@ def select_cuda_devices(device_key):
     return selected_devices
 
 def display(global_configs):
-    if "eval_config" not in st.session_state:st.session_state.eval_config = {}
+    """Main display function for evaluation configuration."""
+    # Initialize session state and default values
+    if "eval_config" not in st.session_state:
+        st.session_state.eval_config = {}
     eval_config = st.session_state.eval_config
+    
+    # Set default values for configuration
     eval_config.setdefault('test_dataset', [])
     eval_config.setdefault('selected_retrieval_metrics', [])
     eval_config.setdefault('selected_generated_metrics', [])
     eval_config.setdefault('collections', [])
     eval_config.setdefault('collections_names', [])
     
+    # Model and evaluation settings
     eval_config.setdefault("evaluate_only", False) 
     eval_config.setdefault("metric_api_key", "") 
     eval_config.setdefault("metric_base_url", "") 
@@ -69,6 +80,8 @@ def display(global_configs):
     eval_config.setdefault("api_key", "")  
     eval_config.setdefault("base_url", "") 
     eval_config.setdefault("model_name", "") 
+    
+    # Model paths and types
     eval_config.setdefault("embedding_model_path", "") 
     eval_config.setdefault("reranker_model_path", "")  
     eval_config.setdefault("llm_type", "Local")  
@@ -76,6 +89,7 @@ def display(global_configs):
     eval_config.setdefault("model_name_or_path", "")  
     eval_config.setdefault("metric_model_name_or_path", "")  
 
+    # Retrieval settings
     eval_config.setdefault("pooling", "mean")
     eval_config.setdefault("query_instruction", None)
     eval_config.setdefault("queries_path", "")
@@ -86,22 +100,27 @@ def display(global_configs):
     eval_config.setdefault("topk", 10)
     eval_config.setdefault("cutoffs", "")
     
+    # GPU settings
     eval_config.setdefault("embedding_gpu", "4")
     eval_config.setdefault("reranker_gpu", "4")
-    
-    
+
+    # Setup CUDA device options
     if torch.cuda.is_available():
         cuda_devices = [f"{i}" for i in range(torch.cuda.device_count())]
     else:
         cuda_devices = [t("No CUDA devices available")]
 
+    # Main UI components
     st.subheader(t("Evaluation"))
+    
+    # Pipeline selection
     pipeline_names = [pipeline["name"] for pipeline in EVAL_PIPELINE]
     cols = st.columns([2, 4, 4])
 
     with cols[0]:
         selected_pipeline = st.selectbox(t("Select pipeline:"), pipeline_names)
 
+    # Load selected pipeline module
     module_path = None
     for pipeline in EVAL_PIPELINE:
         if pipeline["name"] == selected_pipeline:
@@ -110,8 +129,12 @@ def display(global_configs):
             pipeline_type = pipeline["pipeline"]
             st.session_state.command_parameter["pipeline_type"] = pipeline_type
             break
-        
-    eval_config.setdefault('output_path', f"output/evaluate/{pipeline_type}-{st.session_state.now_time.strftime('%Y-%m-%d-%H-%M-%S')}")
+
+    # Set default output path
+    eval_config.setdefault(
+        'output_path', 
+        f"output/evaluate/{pipeline_type}-{st.session_state.now_time.strftime('%Y-%m-%d-%H-%M-%S')}"
+    )
     
     module=""
     try:

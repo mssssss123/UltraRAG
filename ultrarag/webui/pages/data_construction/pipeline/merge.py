@@ -3,17 +3,17 @@ import os
 from pathlib import Path
 from ultrarag.webui.utils.language import t
 
-# 设置路径
 home_path = Path().resolve()
 output_path = home_path / "output"
 
 
 
-# 更新参数函数
+# Update ratios when file list changes
 def update_ratios():
     file_list = st.session_state.dc_config['merge'].get('file_list', [])
     st.session_state.dc_config['merge']['ratios'] = [1] * len(file_list)
 
+# Update file list from text input
 def update_file_list():
     file_list_input = st.session_state['dc_file_list_input']
     file_list = file_list_input.split("\n") if file_list_input else []
@@ -21,27 +21,32 @@ def update_file_list():
     merge_config['file_list'] = list(set(merge_config.get('file_list', []) + file_list))
     update_ratios()
 
+# Update file list from multiselect
 def update_selected_files():
     selected_files = st.session_state['dc_selected_files']
     st.session_state.dc_config['merge']['file_list'] = selected_files
     update_ratios()
 
 def display():
+    # Initialize session state if not exists
     if 'dc_config' not in st.session_state:
         st.session_state.dc_config = {}
     if 'merge' not in st.session_state.dc_config:
         st.session_state.dc_config['merge'] = {}
+
     with st.expander(f"Merge {t('Configuration')}"):
         cols = st.columns([4, 4])
 
+        # Validate output directory
         if not output_path.exists():
             st.error(f"Output folder '{output_path}' not found.")
             return
         
-        # 获取所有文件
-        all_files = [str(output_path / f) for f in os.listdir(output_path) if os.path.isfile(output_path / f)]
+        # Get all available files from output directory
+        all_files = [str(output_path / f) for f in os.listdir(output_path) 
+                    if os.path.isfile(output_path / f)]
 
-        # 初始化 merge 配置的默认值
+        # Initialize default values for merge configuration
         merge_config = st.session_state.dc_config['merge']
         merge_config.setdefault('file_list', [])
         merge_config.setdefault('ratios', [])
@@ -50,6 +55,7 @@ def display():
         merge_config.setdefault('output_format', "jsonl")
         merge_config.setdefault('random_merge', True)
 
+        # File selection section
         with cols[0]:
             current_file_list = merge_config.get('file_list', [])
             extended_options = list(set(all_files + current_file_list))
@@ -62,6 +68,7 @@ def display():
                 help=t("Select files from the output folder or add your own full paths."),
             )
 
+        # Manual file path input section
         st.text_area(
             t("Or Enter Full Paths (one per line)"),
             value="\n".join(current_file_list),
@@ -70,6 +77,7 @@ def display():
             help=t("Enter additional full paths, one per line."),
         )
 
+        # Output configuration section
         with cols[1]:
             st.text_input(
                 t("Output File"),
@@ -81,9 +89,9 @@ def display():
                 help=t("Specify the name of the output file."),
             )
 
+        # Merge parameters section
         cols = st.columns([4, 4])
         with cols[0]:
-            # todo
             st.text_input(
                 t("Ratios (e.g., [1, 2, 3])"),
                 value=str(merge_config.get('ratios', [])),
@@ -103,7 +111,7 @@ def display():
                 help=t("Specify the fixed step size for merging."),
             )
 
-        # Random Merge 和 Output Format
+        # Additional options section
         cols = st.columns([4, 4])
         with cols[0]:
             st.checkbox(

@@ -1,14 +1,14 @@
-# Description: 启动服务
-# 目前的的微服务策略是：每个服务一个进程，每个进程一个端口
-# 默认需要两张卡，启动所需的模型包括 Visrag 的两个模型和 vanilla-rag 的三个模型
+# Description: Start microservices
+# Current microservice strategy: one process per service, one port per process
+# Default requirement: two GPUs to run models including two Visrag models and three vanilla-rag models
 
-
-# 下载模型(需要配置config/models_lists.yaml)
+# Download models (requires config/models_lists.yaml configuration)
 python $(pwd)/scripts/download_model.py 
 
+# Create logs directory if not exists
 mkdir -p $(pwd)/logs
 
-
+# Start HuggingFace LLM service
 export CUDA_VISIBLE_DEVICES=0
 nohup python -m ultrarag.server.run_server_hf_llm \
     -host localhost \
@@ -18,9 +18,8 @@ nohup python -m ultrarag.server.run_server_hf_llm \
 > $(pwd)/logs/hf_llm.log 2>&1 &
 HF_PID=$!
 
-
+# Start BGE embedding service
 export CUDA_VISIBLE_DEVICES=0
-# 启动embedding
 nohup python -m ultrarag.server.run_embedding \
     -host localhost \
     -port 8845 \
@@ -29,8 +28,7 @@ nohup python -m ultrarag.server.run_embedding \
 > $(pwd)/logs/bge-large-zh-v1.5.log 2>&1 &
 EMBED_PID=$!
 
-
-# 启动reranker
+# Start reranker service
 export CUDA_VISIBLE_DEVICES=0
 nohup python -m ultrarag.server.run_server_reranker \
     -host localhost \
@@ -40,9 +38,8 @@ nohup python -m ultrarag.server.run_server_reranker \
 > $(pwd)/logs/bge-reranker-large.log 2>&1 &
 RERNK_PID=$!
 
-
+# Start VisRAG embedding service
 export CUDA_VISIBLE_DEVICES=0
-# 启动embedding
 nohup python -m ultrarag.server.run_embedding \
     -host localhost \
     -port 8848 \
@@ -51,7 +48,7 @@ nohup python -m ultrarag.server.run_embedding \
 > $(pwd)/logs/VisRAG-Ret.log 2>&1 &
 EMBED_PID=$!
 
-
+# Start vLLM service for Qwen model
 export CUDA_VISIBLE_DEVICES=1
 nohup vllm serve \
     $(pwd)/resource/models/Qwen2.5-14B-Instruct \
@@ -64,15 +61,17 @@ nohup vllm serve \
 > $(pwd)/logs/vllm.log 2>&1 &
 VLLM_PID=$!
 
-
+# Start Qdrant vector database
 nohup /opt/qdrant > $(pwd)/logs/qdrant.log 2>&1 &
 
+# Start Streamlit web interface
 streamlit run ultrarag/webui/webui.py
-# # 死循环
-# echo "回车终止服务"
-# read name
-# echo "kill process..."
 
+# Commented out shutdown logic
+# # Infinite loop
+# echo "Press Enter to stop services"
+# read name
+# echo "Killing processes..."
 # kill $EMBED_PID
 # kill $RERNK_PID
 # kill $VLLM_PID

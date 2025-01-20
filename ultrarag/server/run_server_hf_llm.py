@@ -10,7 +10,15 @@ from ultrarag.modules.llm.huggingface_like import HuggingFaceServer
 
 
 class MicroServer:
+    """A micro server implementation for handling chat requests with HuggingFace models."""
     def __init__(self, model_path: str, device: str):
+        """
+        Initialize the server with a HuggingFace model.
+        
+        Args:
+            model_path (str): Path to the model files
+            device (str): Device to run the model on (e.g., 'cpu', 'cuda')
+        """
         if not Path(model_path).exists():
             raise ValueError(f"model path: {model_path} not exist!")
         self.llm = HuggingFaceServer(model_path=model_path, device=device)
@@ -20,18 +28,28 @@ class MicroServer:
         
 
     def process(self):
+        """
+        Process incoming chat requests, handling both text and image inputs.
+        
+        Returns:
+            Response: Flask response object containing either streaming or non-streaming chat response
+        """
         try:
+            # Parse request data
             data = json.loads(request.form.get("data", {}))
             messages = data.get('messages')
             stream = data.get('stream')
             
+            # Process image files if present
             name2img = dict()
             for item in request.files.values():
-                if "image" not in item.content_type: continue
+                if "image" not in item.content_type:
+                    continue
                 key = urllib.parse.unquote(item.filename)
                 name2img[key] = Image.open(item)
             logger.info(f"images files: {[n for n in name2img.keys()]}")
             
+            # Replace image references with actual image objects
             if name2img:
                 img_messages = []
                 for msg in messages:
@@ -53,6 +71,13 @@ class MicroServer:
 
 
     def run_server(self, host: str, port: int):
+        """
+        Start the Flask server.
+        
+        Args:
+            host (str): Server host address
+            port (int): Server port number
+        """
         try:
             self.app.run(host=host, port=port)
         except:

@@ -7,7 +7,19 @@ from ultrarag.modules.reranker import BaseRerank, all_reranker
 
 
 class MicroServer:
-    def __init__(self, model_name, model_path):
+    """A micro server implementation for text reranking service."""
+    
+    def __init__(self, model_name: str, model_path: str):
+        """
+        Initialize the reranker server.
+        
+        Args:
+            model_name (str): Name of the reranker model to use
+            model_path (str): Path to the model files
+        
+        Raises:
+            ValueError: If model_name is not found in registered rerankers
+        """
         if model_name not in all_reranker:
             raise ValueError(f"not found module name {model_name}, \
                     must be one of {[item for item in all_reranker.keys()]}")
@@ -21,6 +33,18 @@ class MicroServer:
         
 
     def process(self):
+        """
+        Process reranking requests by scoring query-text pairs.
+        
+        Expected JSON input format:
+        {
+            "query": str,
+            "texts": List[str]
+        }
+        
+        Returns:
+            JSON response with reranking scores or error message
+        """
         try:
             query = request.json['query']
             texts = request.json['texts']
@@ -33,6 +57,13 @@ class MicroServer:
 
 
     def run_server(self, host: str, port: int):
+        """
+        Start the Flask server and handle cleanup on shutdown.
+        
+        Args:
+            host (str): Server host address
+            port (int): Server port number
+        """
         try:
             self.app.run(host=host, port=port)
         finally:
@@ -40,6 +71,7 @@ class MicroServer:
 
 
 if __name__ == "__main__":
+    # Parse command line arguments for server configuration
     choices = [item for item in all_reranker.keys()]
     args = argparse.ArgumentParser()
     args.add_argument("-host", required=True, type=str, help="server host")
@@ -47,6 +79,7 @@ if __name__ == "__main__":
     args.add_argument("-model_path", required=True, type=str, help="model file path")
     args.add_argument("-model_type", required=True, choices=choices, help="your reranker model type")
     args = args.parse_args()
-
+    
+    # Initialize and start the server
     server = MicroServer(model_name=args.model_type, model_path=args.model_path)
     server.run_server(host=args.host, port=args.port)

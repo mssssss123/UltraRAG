@@ -3,18 +3,23 @@ import os
 from pathlib import Path
 from ultrarag.webui.utils.language import t
 
-# 设置路径
+# Set up paths
 home_path = Path().resolve()
 output_path = home_path / "output"
 
 
 def display():
+    # Initialize session state for configurations
     if 'train_config' not in st.session_state:
         st.session_state.train_config = {}
     if 'bgem3' not in st.session_state.train_config:
         st.session_state.train_config['bgem3'] = {}
+
+    # BGEM3 Configuration UI
     with st.expander(f"BGEM3 {t('Configuration')}"):
         bgem3_config = st.session_state.train_config['bgem3']
+        
+        # Set default configuration values
         bgem3_config.setdefault('model_name_or_path', '/public/kqa/440M_v0')
         bgem3_config.setdefault('train_data', 'workspace/train_history_2/train_v3_incr.jsonl')
         bgem3_config.setdefault('train_group_size', 1)
@@ -29,8 +34,10 @@ def display():
         bgem3_config.setdefault('query_instruction_for_retrieval', None)
         bgem3_config.setdefault('command', "bash scripts/finetune-bgem3.sh")
         
+        # Create three-column layout
         cols = st.columns(3)
 
+        # Column 1: Model and Training Settings
         with cols[0]:
             st.text_input(
                 t("Model Path"),

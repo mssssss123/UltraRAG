@@ -4,19 +4,24 @@ from pathlib import Path
 from ultrarag.webui.components.preview import parse_json_files, preview_dataset
 import torch
 from ultrarag.webui.utils.language import t
-# Set paths
+
+# Set up base paths for the application
 home_path = Path().resolve()
 output_path = home_path / "output"
 dataset_path = home_path / "resource/dataset/train_dataset"
 
 def display():
+    # Initialize session state for configurations
     if 'train_config' not in st.session_state:
         st.session_state.train_config = {}
     if 'kbalign' not in st.session_state.train_config:
         st.session_state.train_config['kbalign'] = {}
 
+    # KBAlign Configuration UI
     with st.expander(f"KBAlign {t('Configuration')}"):
         kbalign_config = st.session_state.train_config['kbalign']
+        
+        # Set default configuration values
         kbalign_config.setdefault('gpu_vis', '0,1,2,3')
         kbalign_config.setdefault('master_port', 2223)
         kbalign_config.setdefault('use_lora', True)
@@ -31,15 +36,18 @@ def display():
         kbalign_config.setdefault('task_type', "SFT")
         kbalign_config.setdefault('command', "bash ultrarag/finetune/kbalign/train.sh")
         
+        # Setup CUDA device selection
         if torch.cuda.is_available():
             cuda_devices = [f"{i}" for i in range(torch.cuda.device_count())]
         else:
             cuda_devices = [t("No CUDA devices available")]
         default_selected_devices = [
-            device for device in kbalign_config.get('gpu_vis', '').split(',') if device in cuda_devices
+            device for device in kbalign_config.get('gpu_vis', '').split(',') 
+            if device in cuda_devices
         ]
 
-        cols1 = st.columns(3,vertical_alignment='center')
+        # LoRA checkbox
+        cols1 = st.columns(3, vertical_alignment='center')
         with cols1[0]:
             st.checkbox(
                 t("Use LoRA"),
@@ -48,11 +56,19 @@ def display():
                 on_change=lambda: kbalign_config.update({'use_lora': st.session_state.use_lora}),
                 help=t("Enable or disable LoRA."),
             )
+
+        # Dataset file collection
         if not dataset_path.exists():
             all_files = []
         else:
-            all_files = [str(dataset_path / f) for f in os.listdir(dataset_path) if f.endswith(('.json', '.jsonl'))]
-        col1, col2 = st.columns([1,1],vertical_alignment='bottom')
+            all_files = [
+                str(dataset_path / f) 
+                for f in os.listdir(dataset_path) 
+                if f.endswith(('.json', '.jsonl'))
+            ]
+
+        # Training dataset selection and preview
+        col1, col2 = st.columns([1,1], vertical_alignment='bottom')
         with col1:
             kbalign_config['train_data_path'] = st.multiselect(
                 t("Select Train Datasets"),
@@ -68,12 +84,15 @@ def display():
                     st.warning(t("No datasets selected to preview."))
                 else:
                     preview_data = parse_json_files(selected_files)
-                    preview_contents = []
-                    for file, content in preview_data.items():
-                        if isinstance(content, list):
-                            preview_contents += content
+                    preview_contents = [
+                        item for file, content in preview_data.items() 
+                        if isinstance(content, list) 
+                        for item in content
+                    ]
                     preview_dataset("all_train_data_paths", preview_contents)
-        col1, col2 = st.columns([1,1],vertical_alignment='bottom')
+
+        # Evaluation dataset selection and preview
+        col1, col2 = st.columns([1,1], vertical_alignment='bottom')
         with col1:
             kbalign_config['eval_data_path'] = st.multiselect(
                 t("Select Eval Datasets"),
@@ -89,12 +108,17 @@ def display():
                     st.warning(t("No datasets selected to preview."))
                 else:
                     preview_data = parse_json_files(selected_files)
-                    preview_contents = []
-                    for file, content in preview_data.items():
-                        if isinstance(content, list):
-                            preview_contents += content
+                    preview_contents = [
+                        item for file, content in preview_data.items() 
+                        if isinstance(content, list) 
+                        for item in content
+                    ]
                     preview_dataset("all_eval_data_paths", preview_contents)
+
+        # Configuration columns
         cols = st.columns(3)
+        
+        # Column 1: Device and output settings
         with cols[0]:
             selected_devices = st.multiselect(
                 t("Select CUDA Devices"),
@@ -102,6 +126,8 @@ def display():
                 default=default_selected_devices,
                 help=t("Select the GPUs you want to use."),
             )
+            
+            # Update GPU visibility setting
             if 'No CUDA devices available' not in cuda_devices:
                 gpu_vis = ','.join(selected_devices)
                 kbalign_config['gpu_vis'] = gpu_vis
@@ -110,6 +136,7 @@ def display():
                 gpu_vis = t("No CUDA devices available")
                 kbalign_config['gpu_vis'] = gpu_vis
 
+            # Output directory and deepspeed config settings
             st.text_input(
                 t("Output Dir"),
                 value=kbalign_config.get('output_dir', "output/kbalign"),
@@ -117,13 +144,17 @@ def display():
                 on_change=lambda: kbalign_config.update({'output_dir': st.session_state.output_dir}),
                 help=t("Specify the output directory."),
             )
+            
             st.text_input(
                 t("DeepSpeed Config File"),
                 value=kbalign_config.get('deepspeed_config_file', "config/pipeline/kbalign"),
                 key="deepspeed_config_file",
-                on_change=lambda: kbalign_config.update({'deepspeed_config_file': st.session_state.deepspeed_config_file}),
+                on_change=lambda: kbalign_config.update(
+                    {'deepspeed_config_file': st.session_state.deepspeed_config_file}
+                ),
                 help=t("Specify the DeepSpeed configuration file path."),
             )
+
         with cols[1]:
             st.number_input(
                 t("Master Port"),

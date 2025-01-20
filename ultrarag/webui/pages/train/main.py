@@ -39,6 +39,7 @@ def display(global_configs):
     train_config = st.session_state.train_config
     if "lora_config" not in train_config:train_config["lora_config"] = {}
     lora_config = train_config["lora_config"]
+
     lora_config.setdefault('model_name_or_path', "")
     lora_config.setdefault('lora_name_or_path', "")
     lora_config.setdefault('save_path', "")

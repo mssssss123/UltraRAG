@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 获取当前脚本所在的git仓库根目录
+# Get root directory of the git repository
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
 DEFAULT_MODEL_NAME_OR_PATH="/public/kqa/440M_v0"
@@ -37,7 +37,7 @@ DEFAULT_TRUST_REMOTE_CODE="True"
 DEFAULT_SENTENCE_POOLING_METHOD="mean"
 DEFAULT_QUERY_INSTRUCTION_FOR_RETRIEVAL=""
 
-# 参数解析
+# Parameter parsing
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --model_name_or_path) MODEL_NAME_OR_PATH="$2"; shift ;;
@@ -78,7 +78,7 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-# 使用默认值（如果未传参）
+# Use default values if not provided
 MODEL_NAME_OR_PATH=${MODEL_NAME_OR_PATH:-$DEFAULT_MODEL_NAME_OR_PATH}
 OUTPUT_DIR=${OUTPUT_DIR:-$DEFAULT_OUTPUT_DIR}
 TRAIN_DATA=${TRAIN_DATA:-$DEFAULT_TRAIN_DATA}
@@ -113,7 +113,7 @@ TRUST_REMOTE_CODE=${TRUST_REMOTE_CODE:-$DEFAULT_TRUST_REMOTE_CODE}
 SENTENCE_POOLING_METHOD=${SENTENCE_POOLING_METHOD:-$DEFAULT_SENTENCE_POOLING_METHOD}
 QUERY_INSTRUCTION_FOR_RETRIEVAL=${QUERY_INSTRUCTION_FOR_RETRIEVAL:-$DEFAULT_QUERY_INSTRUCTION_FOR_RETRIEVAL}
 
-# 启动torchrun训练
+# Start torchrun training
 torchrun --nproc_per_node 1 \
     -m ultrarag.finetune.bgem3 \
     --model_name_or_path $MODEL_NAME_OR_PATH \

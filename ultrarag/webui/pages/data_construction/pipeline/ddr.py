@@ -7,6 +7,7 @@ def display():
         st.session_state.dc_config['ddr'] = {}
     ddr = st.session_state.dc_config["ddr"]
 
+    # Set default configuration values
     ddr.setdefault('gpu_vis', '0,1,2,3')
     ddr.setdefault('data_model_name_or_path', "")
     ddr.setdefault('train_model_name_or_path', "")
@@ -16,6 +17,7 @@ def display():
     ddr.setdefault("embedding_model_path", "") 
     ddr.setdefault('command', "bash ultrarag/datasets/DDR/workflow.sh")
     
+    # Setup CUDA device selection
     if torch.cuda.is_available():
         cuda_devices = [f"{i}" for i in range(torch.cuda.device_count())]
     else:
@@ -23,10 +25,14 @@ def display():
     default_selected_devices = [
         device for device in ddr.get('gpu_vis', '').split(',') if device in cuda_devices
     ]
+
+    # Display configuration interface
     with st.expander(f"DDR {t('Configuration')}"):
         cols = st.columns([3, 3, 3])
 
+        # Column 1: GPU and Model Settings
         with cols[0]:
+            # GPU device selection
             selected_devices = st.multiselect(
                 t("Select CUDA Devices"),
                 options=cuda_devices,
@@ -41,6 +47,7 @@ def display():
                 gpu_vis = t("No CUDA devices available")
                 ddr['gpu_vis'] = gpu_vis
 
+            # Model path inputs
             st.text_input(
                 t("Data Model Name or Path"),
                 value=ddr.get('data_model_name_or_path', ''),
@@ -59,6 +66,8 @@ def display():
                 ),
                 help=t("Path to the embedding model.")
             )
+
+        # Column 2: Training Configuration
         with cols[1]:
             st.text_input(
                 t("Train Model Name or Path"),
@@ -78,6 +87,8 @@ def display():
                 ),
                 help=t("Path to the YAML configuration file."),
             )
+
+        # Column 3: Output Configuration
         with cols[2]:
             st.text_input(
                 t("Train Output Path"),

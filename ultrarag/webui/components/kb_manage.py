@@ -17,13 +17,21 @@ from loguru import logger
 from ultrarag.webui.utils.language import t
 
 def change_config(kb_config_id=None):
+    """
+    Update the temporary configuration settings in session state.
+    
+    Args:
+        kb_config_id: Optional knowledge base configuration ID
+    """
     selected_config = st.session_state.get('kb_df', pd.DataFrame())
     
+    # Generate config ID if not provided
     if not kb_config_id:
         kb_config_id = generate_kb_config_id(
             st.session_state['embedding_model_name']
         )
     
+    # Update temp settings if config exists
     if not selected_config.empty:
         for _, config in selected_config.iterrows():
             if kb_config_id == config['kb_config_id']:
@@ -36,19 +44,43 @@ def change_config(kb_config_id=None):
 
     st.session_state['temp_selected_kb_config_id'] = "custom"
 
-    
-    
 def generate_file_id(file_name):
-    """Generate a unique file_id based on the file name."""
+    """
+    Generate a unique file_id based on the file name using MD5 hash.
+    
+    Args:
+        file_name: Name of the file
+    Returns:
+        str: MD5 hash of the file name
+    """
     return hashlib.md5(file_name.encode()).hexdigest()
 
 def generate_kb_config_id(embedding_model_name):
-    """Generate a unique kb_config_id based on the configuration."""
+    """
+    Generate a unique kb_config_id based on the embedding model name.
+    
+    Args:
+        embedding_model_name: Name of the embedding model
+    Returns:
+        str: MD5 hash of the configuration string
+    """
     config_str = f"{embedding_model_name}"
     return hashlib.md5(config_str.encode()).hexdigest()
 
 def generate_knowledge_base_id(kb_name, kb_config_id, file_list, chunk_size, overlap, others):
-    """Generate a unique knowledge_base_id based on kb_name and kb_config_id."""
+    """
+    Generate a unique knowledge_base_id based on multiple parameters.
+    
+    Args:
+        kb_name: Name of the knowledge base
+        kb_config_id: Configuration ID
+        file_list: List of files
+        chunk_size: Size of chunks
+        overlap: Overlap size
+        others: Additional parameters
+    Returns:
+        str: MD5 hash of the combined parameters
+    """
     combined_str = f"{kb_name}-{kb_config_id}-{file_list}-{chunk_size}-{overlap}-{others}"
     return hashlib.md5(combined_str.encode()).hexdigest()
 
@@ -60,6 +92,14 @@ default_files_dir = "resource/kb_manager/files"
 default_kb_dir = "resource/kb_manager/kb"
 
 def load_csv(path):
+    """
+    Load a CSV file into a pandas DataFrame.
+    
+    Args:
+        path: Path to the CSV file
+    Returns:
+        DataFrame: Loaded data or empty DataFrame if file doesn't exist
+    """
     try:
         if os.path.exists(path):
             return pd.read_csv(path)
@@ -68,12 +108,26 @@ def load_csv(path):
     return pd.DataFrame()
 
 def save_csv(df, path):
+    """
+    Save a pandas DataFrame to a CSV file.
+    
+    Args:
+        df: DataFrame to save
+        path: Path where to save the CSV file
+    """
     os.makedirs(os.path.dirname(path), exist_ok=True)
     df.to_csv(path, index=False)
 
 @st.fragment
 def kb_manage():
-    cols=st.columns([1,1])
+    """
+    Main function for knowledge base management interface.
+    Handles file uploads, knowledge base creation, and management operations.
+    """
+    # Initialize columns for layout
+    cols = st.columns([1,1])
+    
+    # Load existing data
     try:
         if 'files_df' not in st.session_state:
             st.session_state['files_df'] = load_csv(st.session_state['files_csv'])
@@ -85,23 +139,28 @@ def kb_manage():
         if 'kb_df' not in st.session_state:
             st.session_state['kb_df'] = load_csv(default_kb_csv)
     
+    # Initialize file uploader key
     if "uploader_file_key" not in st.session_state:
         st.session_state["uploader_file_key"] = 1
         
     files_df = st.session_state['files_df']
     kb_df = st.session_state['kb_df']
 
-    # 左侧：File Management
+    # Left column: File Management
     with cols[0]:
         st.subheader(t("File Management"))
         
-        file_cols=st.columns([1, 1],vertical_alignment='bottom')
+        # File paths configuration
+        file_cols = st.columns([1, 1], vertical_alignment='bottom')
         with file_cols[0]:
             st.session_state['files_csv'] = st.text_input(t("File Management CSV Path"), value=default_files_csv)
         with file_cols[1]:
             st.session_state['file_save_dir'] = st.text_input(t("File Save Path"), value=default_files_dir)
-        file_cols2=st.columns([1],vertical_alignment='bottom')
+
+        # File upload section
+        file_cols2 = st.columns([1], vertical_alignment='bottom')
         with file_cols2[0]:
+            # Hidden input styling
             st.markdown(
                 """
                 <style>
@@ -114,26 +173,32 @@ def kb_manage():
                 """,
                 unsafe_allow_html=True,
             )
+            
+            # File uploader
             uploaded_files = st.file_uploader(t("Upload Files"), accept_multiple_files=True, key=st.session_state["uploader_file_key"])
             if uploaded_files:
                 for uploaded_file in uploaded_files:
                     file_path = os.path.join(st.session_state['file_save_dir'], uploaded_file.name)
                     file_id = generate_file_id(file_path)
                     os.makedirs(st.session_state['file_save_dir'], exist_ok=True)
+                    
+                    # Skip if file already exists
                     if not files_df.empty and not files_df[files_df["id"] == file_id].empty:
                         logger.warning(t("File Existed, Ignored").format(file_name=uploaded_file.name))
                         continue
+                        
+                    # Save file and update DataFrame
                     with open(file_path, "wb") as f:
                         f.write(uploaded_file.getbuffer())
                     files_df = pd.concat([files_df, pd.DataFrame([{ "id": file_id, "file_path": file_path }])])
+                
+                # Update session state and save changes
                 st.session_state['files_df'] = files_df
                 save_csv(files_df, st.session_state['files_csv'])
-                st.session_state["uploader_file_key"]+=1
+                st.session_state["uploader_file_key"] += 1
                 st.success(t("Uploaded Successfully"))
                 st.rerun()
 
-        
-   
     cols2=st.columns([1,1],vertical_alignment='bottom')
     with cols2[0]:
         st.subheader(t("File Lists"))
@@ -157,7 +222,7 @@ def kb_manage():
         else:
             st.info(t("No File Found"))
 
-    # 右侧：Collection Management
+    # Right column: Collection Management
     with cols[1]:
         st.subheader(t("Collection Management"))
         

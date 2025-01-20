@@ -8,6 +8,11 @@ from datetime import datetime
 if "now_time" not in st.session_state: st.session_state.now_time = datetime.now()
 
 def main():
+    """
+    Main function to setup and run the UltraRAG web interface.
+    Configures page layout, initializes components and manages tab-based navigation.
+    """
+    # Configure main content area styling
     st.markdown(
         """
         <style>
@@ -22,9 +27,13 @@ def main():
         """,
         unsafe_allow_html=True
     )
+    
+    # Initialize global configurations and UI components
     global_configs = global_config()
     tab_bar(global_configs)
-    if st.session_state.active_tab != "Chat/Inference": 
+    
+    # Display terminal for all tabs except Chat/Inference
+    if st.session_state.active_tab != "Chat/Inference":
         terminal()
 
 if __name__ == "__main__":

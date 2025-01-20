@@ -16,9 +16,20 @@ from ultrarag.common.utils import load_prompt, chunk_by_sentence, GENERATE_PROMP
 
 class RenoteFlow:
     def __init__(self, api_key, base_url, llm_model, embed_model, database_url=":memory:", **args) -> None:
+        """
+        Initialize RenoteFlow with necessary components.
+        
+        Args:
+            api_key: API key for LLM service
+            base_url: Base URL for LLM service
+            llm_model: Name of the LLM model
+            embed_model: Path or URL to the embedding model
+            database_url: URL for vector database, defaults to in-memory
+        """
         # self._weather = Weather()
         self._synthesizer = OpenaiLLM(api_key=api_key, base_url=base_url, model=llm_model)
-        self._router = BaseRouter(llm_call_back=self._synthesizer.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
+        self._router = BaseRouter(llm_call_back=self._synthesizer.arun, 
+                                intent_list=[{"intent": "retriever", "description": "检索知识库"}])
         self._index = QdrantIndex(database_url, encoder=BGEClient(url_or_path=embed_model))
         
         self._renote = ReNote(
@@ -30,6 +41,13 @@ class RenoteFlow:
 
     @classmethod
     def from_modules(cls, llm: BaseLLM, database: BaseIndex, **args):
+        """
+        Create an instance of RenoteFlow using provided LLM and database.
+        
+        Args:
+            llm (BaseLLM): Language model instance
+            database (BaseIndex): Database instance
+        """
         inst = RenoteFlow(api_key="", base_url="", llm_model="", embed_model="")
         # inst._weather = Weather()
         inst._synthesizer = llm
@@ -45,6 +63,13 @@ class RenoteFlow:
     
 
     async def ingest(self, file_path: str, collection_name: str):
+        """
+        Ingest documents into the vector database.
+        
+        Args:
+            file_path: Path to the document file
+            collection_name: Name of the collection to store documents
+        """
         if not file_path:
             logger.warning(f"no found file_path when ingest")
             return
@@ -61,7 +86,19 @@ class RenoteFlow:
         logger.info(f'finish ingest file {file_path} into {collection_name} with {len(chunks)} chunks')
 
 
-    async def aquery(self, query: str, messages: List[Dict[str, str]], collection,system_prompt=""):
+    async def aquery(self, query: str, messages: List[Dict[str, str]], collection, system_prompt=""):
+        """
+        Process queries and generate responses based on intent classification.
+        
+        Args:
+            query: User's input query
+            messages: Chat history in message format
+            collection: Collection name for knowledge retrieval
+            system_prompt: Optional system prompt for response generation
+            
+        Returns:
+            Generator or None: Response stream if query is valid
+        """
         if not query: return None
 
         route = await self._router.arun(query, messages)

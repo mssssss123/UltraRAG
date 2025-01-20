@@ -2,12 +2,12 @@ import streamlit as st
 from ultrarag.webui.utils.language import t
 
 def display():
-    # 初始化会话状态中的配置
+    # Initialize configuration in session state
     if 'data_synthesis_config' not in st.session_state.dc_config["embedding_training_data"]:
         st.session_state.dc_config["embedding_training_data"]['data_synthesis_config'] = {}
     data_synthesis_config = st.session_state.dc_config["embedding_training_data"]["data_synthesis_config"]
 
-    # 设置默认值
+    # Set default values
     default_values = {
         'api_key': "",
         'base_url': "",

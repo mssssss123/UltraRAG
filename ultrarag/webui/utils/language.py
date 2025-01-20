@@ -1,6 +1,6 @@
 import streamlit as st
 def t(key):
-    """根据当前语言返回对应文本"""
+    """Returns text based on current language"""
     if "config" not in st.session_state: st.session_state.config = {}
     lang = st.session_state.config.get('language', 'en')
     return LANGUAGE_MAP.get(key, {}).get(lang, key)

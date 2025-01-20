@@ -14,6 +14,15 @@ from ultrarag.webui.utils.language import t
 from loguru import logger
 
 def load_config(file_path):
+    """
+    Load configuration from a JSON file.
+    
+    Args:
+        file_path: Path to the configuration file
+        
+    Returns:
+        dict: Loaded configuration or empty dict if file not found/invalid
+    """
     try:
         with open(file_path, "r") as f:
             config = json.load(f)
@@ -24,25 +33,48 @@ def load_config(file_path):
         return {}
 
 def initialize_session_state_from_config(config):
+    """
+    Initialize Streamlit session state variables from config dictionary.
+    
+    Args:
+        config: Configuration dictionary to initialize from
+    """
     for key, value in config.items():
         if key not in st.session_state:
             st.session_state[key] = value
     
-# 初始化全局索引变量
 def init_index(key, default_index=0):
+    """
+    Initialize index in session state if not exists.
+    
+    Args:
+        key: Key for the index in session state
+        default_index: Default index value if not set
+    """
     if key not in st.session_state:
         st.session_state[key] = default_index
 
 
-# 更新索引
 @st.fragment()
 def update_index(key, items):
+    """
+    Update index in session state based on selected item.
+    Triggers rerun if language selection changes.
+    
+    Args:
+        key: Key for the index in session state
+        items: List of items to find index from
+    """
     selected_item = st.session_state[key]
     st.session_state[key + '_index'] = items.index(selected_item)
     if key == "language_selectbox":
         st.session_state.rerun_trigger = True
 
 def first_col():
+    """
+    Display the first column containing language selection.
+    Handles language change and page rerun.
+    """
     cols = st.columns([2, 16])
     with cols[0]:
         init_index('language_selectbox_index', 0)
@@ -60,6 +92,10 @@ def first_col():
         
 
 def select_llm_model():
+    """
+    Display LLM model selection interface.
+    Includes model type selection and CUDA device selection.
+    """
     cols = st.columns([4,7],vertical_alignment='bottom')
     with cols[0]:
         init_index('llm_model_selectbox_index', 0)
@@ -71,6 +107,15 @@ def select_llm_model():
         st.session_state.config['selected_devices_llm'] = select_cuda_devices(t("LLM Model"))
 
 def select_cuda_devices(device_key):
+    """
+    Display CUDA device selection interface.
+    
+    Args:
+        device_key: Type of model for device selection
+        
+    Returns:
+        list: Selected CUDA devices
+    """
     if torch.cuda.is_available():
         cuda_devices = [f"cuda:{i}" for i in range(torch.cuda.device_count())]
     else:
@@ -83,6 +128,10 @@ def select_cuda_devices(device_key):
     return selected_devices
 
 def display_model_fields():
+    """
+    Display model-specific configuration fields based on selected model type.
+    Handles API and Custom model configurations.
+    """
     model_type = st.session_state.config.get('model_type', '')
     with st.container():
         model_name = st.session_state.config.get('model_name', '')
@@ -104,9 +153,13 @@ def display_model_fields():
                 st.session_state.config['model_path']  = st.text_input(t('Model Path'), value=model_path)
 
 def select_embedding_model():
+    """
+    Display embedding model selection interface.
+    Includes model type selection and CUDA device selection.
+    """
     cols = st.columns([4,7],vertical_alignment='bottom')
     with cols[0]:
-        init_index('embedding_model_selectbox_index', 0)  # 默认选择第一个嵌入模型类型
+        init_index('embedding_model_selectbox_index', 0)  # Default to select first embedding model type
         st.session_state.config['embedding_model_type'] = st.selectbox(
             t('Select Embedding Model'), EMBEDDING_MODEL_TYPES, index=st.session_state['embedding_model_selectbox_index'],
             key="embedding_model_selectbox", on_change=update_index, args=('embedding_model_selectbox', EMBEDDING_MODEL_TYPES)
@@ -122,7 +175,7 @@ def display_embedding_model_fields():
 def select_reranker_model():
     cols = st.columns([4,7],vertical_alignment='bottom')
     with cols[0]:
-        init_index('reranker_model_selectbox_index', 0)  # 默认选择第一个重排序模型类型
+        init_index('reranker_model_selectbox_index', 0)  # Default to select first reranker model type
         st.session_state.config['reranker_model_type']  = st.selectbox(
             t('Select Reranker Model'), RERANKER_MODEL_TYPES, index=st.session_state['reranker_model_selectbox_index'],
             key="reranker_model_selectbox", on_change=update_index, args=('reranker_model_selectbox', RERANKER_MODEL_TYPES)
@@ -159,7 +212,7 @@ def nvidia_smi_watch():
             )
             output_buffer.clear()
             for line in process.stdout:
-                output_buffer.append(line)  # 不再 strip，保留原始换行符
+                output_buffer.append(line)
                 smi_output.markdown(
                     "<div style='font-family: monospace; white-space: pre-wrap; word-wrap: break-word; margin: 0; max-height: 40vh; overflow: scroll;'>"
                     + "".join(output_buffer) + "</div>",

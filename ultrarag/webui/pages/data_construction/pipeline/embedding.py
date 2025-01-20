@@ -17,16 +17,21 @@ output_path = home_path / "output"
 def display():
     if 'embedding_training_data' not in st.session_state.dc_config:
         st.session_state.dc_config['embedding_training_data'] = {}
+    
     with st.expander(f"Embedding {t('Configuration')}"):
+        # Get current configuration and set defaults
         embedding_training_data_config = st.session_state.dc_config['embedding_training_data']
         embedding_training_data_config.setdefault('pipeline_step', "")
         
+        # Extract pipeline names from configuration
         pipeline_names = [pipeline["name"] for pipeline in EMBEDDING_STEPS]
         cols = st.columns([2, 4, 4])
 
+        # Display pipeline selection dropdown
         with cols[0]:
             selected_pipeline = st.selectbox(t("Select pipeline:"), pipeline_names)
 
+        # Load and display selected pipeline module
         module_path = None
         for pipeline in EMBEDDING_STEPS:
             if pipeline["name"] == selected_pipeline:
@@ -35,6 +40,8 @@ def display():
                 pipeline_step = pipeline["pipeline"]
                 embedding_training_data_config["pipeline_step"] = pipeline_step
                 break
+
+        # Dynamically import and display the selected module
         try:
             module = importlib.import_module(module_path)
         except ModuleNotFoundError:

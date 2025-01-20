@@ -9,6 +9,14 @@ from functools import wraps
 import requests
 
 def get_embedding_types(url):
+    """Get embedding types from specified URL endpoint
+    
+    Args:
+        url (str): API endpoint URL
+        
+    Returns:
+        dict: JSON response containing embedding types
+    """
     response = requests.get(url)
     logger.info(f"url: {url}, response: {response.text}")
     return json.loads(response.text)
@@ -44,7 +52,7 @@ def timer_record(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         src_time = time.perf_counter()
-        result = func(*args, **kwargs)  # 执行被装饰的函数
+        result = func(*args, **kwargs)  # Execute the decorated function
         dst_time = time.perf_counter()
         logger.info(f"TimeCounter of {func.__name__}: {(dst_time - src_time)*1000.0} ms")
         return result
@@ -65,26 +73,42 @@ def always_get_an_event_loop() -> asyncio.AbstractEventLoop:
 
 
 def chunk_by_sentence(document: str, chunk_size: int=512, pattern="([.。？！])"):
+    """Split document into chunks by sentence boundaries
+    
+    Args:
+        document (str): Input text document
+        chunk_size (int, optional): Maximum size of each chunk. Defaults to 512
+        pattern (str, optional): Regex pattern for sentence boundaries. Defaults to "([.。？！])"
+        
+    Returns:
+        List[str]: List of text chunks split by sentences
+    """
     import re
     slices = re.split(pattern, document)
-    buff, new_slieces = "", []
+    buffer, new_slices = "", []  # Renamed buff to buffer for clarity
+    
+    # Split into sentences
     for item in slices:
         if item and item not in pattern:
-            new_slieces.append(buff)
-            buff = item
+            new_slices.append(buffer)
+            buffer = item
         else:
-            buff += item
-    if buff: new_slieces.append(buff)
-    curr, responses = "", []
-
-    for item in new_slieces:
-        curr += item
-        if len(curr) > chunk_size:
-            responses.append(curr)
-            curr = ""
+            buffer += item
+            
+    if buffer: 
+        new_slices.append(buffer)
+        
+    current, responses = "", []  # Renamed curr to current for clarity
     
-    if curr:
-        responses.append(curr)
+    # Combine sentences into chunks
+    for item in new_slices:
+        current += item
+        if len(current) > chunk_size:
+            responses.append(current)
+            current = ""
+    
+    if current:
+        responses.append(current)
     return responses
         
 
@@ -195,11 +219,11 @@ def get_image_fold(title: str, context: List[str]):
         str: HTML-formatted collapsible table containing the images with uniform styling
     """
     logger.debug(f"context: {context}")
-    # 统一图片宽度和样式
+    # Standardize image width and style
     img_url = [f'<td style="padding: 5px;"><img src={url} width="300px" style="max-width: 100%;"></td>' for url in context]
     img_url = "\n\t".join(img_url)
     
-    # 文字居中显示
+    # Center align text display
     img_name = [f'<td style="text-align: center;">{name.split("/")[-1]}</td>' for name in context]
     img_name = "\n\t".join(img_name)
     
