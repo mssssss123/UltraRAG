@@ -18,14 +18,14 @@ nohup python -m ultrarag.server.run_server_hf_llm \
 > $(pwd)/logs/hf_llm.log 2>&1 &
 HF_PID=$!
 
-# Start BGE embedding service
+# Start embedding service
 export CUDA_VISIBLE_DEVICES=0
 nohup python -m ultrarag.server.run_embedding \
     -host localhost \
     -port 8845 \
-    -model_path $(pwd)/resource/models/bge-large-zh-v1.5 \
+    -model_path $(pwd)/resource/models/MiniCPM-Embedding-Light \
     -device cuda:0 \
-> $(pwd)/logs/bge-large-zh-v1.5.log 2>&1 &
+> $(pwd)/logs/embedding.log 2>&1 &
 EMBED_PID=$!
 
 # Start reranker service
@@ -33,9 +33,9 @@ export CUDA_VISIBLE_DEVICES=0
 nohup python -m ultrarag.server.run_server_reranker \
     -host localhost \
     -port 8846 \
-    -model_path $(pwd)/resource/models/bge-reranker-large \
-    -model_type bge_reranker \
-> $(pwd)/logs/bge-reranker-large.log 2>&1 &
+    -model_path $(pwd)/resource/models/MiniCPM-Reranker-Light \
+    -model_type reranker \
+> $(pwd)/logs/reranker.log 2>&1 &
 RERNK_PID=$!
 
 # Start VisRAG embedding service

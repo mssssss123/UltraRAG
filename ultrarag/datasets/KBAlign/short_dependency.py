@@ -10,7 +10,7 @@ from ultrarag.datasets.KBAlign.filter_words import filter_words, filter_words2
 import yaml
 import asyncio
 from ultrarag.modules.llm import VllmServer
-from ultrarag.modules.embedding.bge_embedding import BGEServer
+from UltraRAG.ultrarag.modules.embedding.embedding import EmbServer
 from ultrarag.modules.knowledge_managment.knowledge_managment import Knowledge_Managment
 from ultrarag.datasets.KBAlign.prompts import short_dependency_prompt, merge_data_prompt
 from ultrarag.datasets.KBAlign.utils import count_words, read_and_concatenate_jsonl, iter_jsonl, dump_jsonl
@@ -67,7 +67,7 @@ class ShortDependecy:
         self.functions_to_run = functions_to_run
         os.makedirs(self.output_dir1, exist_ok=True)  
         os.makedirs(self.output_dir2, exist_ok=True)  
-        encoder = BGEServer(url_or_path=embedding_model_path)
+        encoder = EmbServer(url_or_path=embedding_model_path)
         self.searcher = Knowledge_Managment.get_searcher(
             knowledge_id = [knowledge_id],
             embedding_model = encoder,

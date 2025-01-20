@@ -4,9 +4,9 @@ from loguru import logger
 from typing import List, Dict
 from ultrarag.modules.llm import BaseLLM, OpenaiLLM
 from ultrarag.modules.router import BaseRouter
-from ultrarag.modules.embedding import BGEClient
+from ultrarag.modules.embedding import EmbClient
 from ultrarag.modules.database import BaseIndex, QdrantIndex
-from ultrarag.modules.reranker import BaseRerank, BGERerankClient
+from ultrarag.modules.reranker import BaseRerank, RerankerClient
 from ultrarag.modules.knowledge_managment.knowledge_managment import QdrantIndexSearchWarper
 from ultrarag.common.utils import load_prompt, GENERATE_PROMPTS
 
@@ -29,8 +29,8 @@ class NaiveFlow:
         """
         self._synthesizer = OpenaiLLM(api_key=api_key, base_url=base_url, model=llm_model)
         self._router = BaseRouter(llm_call_back=self._synthesizer.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
-        self._index = QdrantIndex(database_url, encoder=BGEClient(url_or_path=embedding_url))
-        self._rerank = BGERerankClient(url=reranker_url)
+        self._index = QdrantIndex(database_url, encoder=EmbClient(url_or_path=embedding_url))
+        self._rerank = RerankerClient(url=reranker_url)
 
         self.prompt = GENERATE_PROMPTS
 

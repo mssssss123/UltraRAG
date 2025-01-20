@@ -3,7 +3,7 @@ from ultrarag.common import BatchGather
 import argparse
 import traceback
 
-from ultrarag.modules.reranker import BaseRerank, all_reranker
+from ultrarag.modules.reranker import BaseRerank, all_reranker, RerankerServer
 
 
 class MicroServer:
@@ -21,8 +21,9 @@ class MicroServer:
             ValueError: If model_name is not found in registered rerankers
         """
         if model_name not in all_reranker:
-            raise ValueError(f"not found module name {model_name}, \
-                    must be one of {[item for item in all_reranker.keys()]}")
+            all_reranker[model_name] = RerankerServer
+            # raise ValueError(f"not found module name {model_name}, \
+            #         must be one of {[item for item in all_reranker.keys()]}")
         reranker: BaseRerank = all_reranker[model_name]
         self.reranker = reranker(model_path)
         self.executor = BatchGather(self.reranker.run_batch)
@@ -72,12 +73,12 @@ class MicroServer:
 
 if __name__ == "__main__":
     # Parse command line arguments for server configuration
-    choices = [item for item in all_reranker.keys()]
+    # choices = [item for item in all_reranker.keys()]
     args = argparse.ArgumentParser()
     args.add_argument("-host", required=True, type=str, help="server host")
     args.add_argument("-port", required=True, type=int, help="server port")
     args.add_argument("-model_path", required=True, type=str, help="model file path")
-    args.add_argument("-model_type", required=True, choices=choices, help="your reranker model type")
+    args.add_argument("-model_type", required=True, help="your reranker model type")
     args = args.parse_args()
     
     # Initialize and start the server

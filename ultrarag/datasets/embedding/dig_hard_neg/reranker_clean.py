@@ -1,9 +1,9 @@
 from tqdm import tqdm
 import os
 from ultrarag.datasets.others.merge import load_file, write_output
-from ultrarag.modules.reranker import BGERerankServer
+from ultrarag.modules.reranker import RerankerServer
 import asyncio
-async def reranker_clean(reranker_model : BGERerankServer,
+async def reranker_clean(reranker_model : RerankerServer,
                             qrel_path:str, 
                             output_path:str,
                             search_start_index:int,
@@ -16,7 +16,7 @@ async def reranker_clean(reranker_model : BGERerankServer,
     """
     Asynchronously cleans a dataset by reranking positive and negative samples using a reranker model.
     Parameters:
-        reranker_model (BGERerankServer): The reranker model used for scoring.
+        reranker_model (RerankerServer): The reranker model used for scoring.
         qrel_path (str): Path to the input dataset file in JSONL format.
         output_path (str): Path to the output cleaned dataset file in JSONL format.
         search_start_index (int): The starting index for the search.
@@ -55,7 +55,7 @@ async def reranker_clean(reranker_model : BGERerankServer,
     dataset = load_file(qrel_path)
     
 
-    # reranker_model = BGERerankClient(url=reranker_model_url)    
+    # reranker_model = RerankerClient(url=reranker_model_url)    
     remove_indies = set()
     for i,item in tqdm(enumerate(dataset),total=len(dataset)):
         pos_scores = await reranker_model.scoring(item["query"], item["pos"])
@@ -78,7 +78,7 @@ async def reranker_clean(reranker_model : BGERerankServer,
     
 def reranker_clean_main(parser):
     import argparse
-    from ultrarag.modules.reranker import BGERerankServer
+    from ultrarag.modules.reranker import RerankerServer
     
     parser.add_argument("--reranker", required=True, type=str, help="reranker model path")
     # args.add_argument("--corpus_path", required=True, type=str, help="raw chunk data")
@@ -96,7 +96,7 @@ def reranker_clean_main(parser):
     
     args, unknown=parser.parse_known_args()
     
-    reranker = BGERerankServer(model_path=args.reranker)
+    reranker = RerankerServer(model_path=args.reranker)
     
     asyncio.run(reranker_clean(reranker_model=reranker,
                                 qrel_path=args.qrel_path,

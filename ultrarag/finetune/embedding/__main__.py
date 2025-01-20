@@ -1,6 +1,6 @@
 from transformers import HfArgumentParser
 
-from ultrarag.finetune.bgem3 import (
+from ultrarag.finetune.embedding import (
     EncoderOnlyEmbedderM3DataArguments,
     EncoderOnlyEmbedderM3TrainingArguments,
     EncoderOnlyEmbedderM3ModelArguments,

@@ -9,7 +9,7 @@ import argparse
 import yaml
 import asyncio
 from ultrarag.modules.llm import VllmServer
-from ultrarag.modules.embedding.bge_embedding import BGEServer
+from UltraRAG.ultrarag.modules.embedding.embedding import EmbServer
 from ultrarag.modules.knowledge_managment.knowledge_managment import Knowledge_Managment
 from ultrarag.datasets.KBAlign.prompts import long_dependency_prompt
 from ultrarag.datasets.KBAlign.utils import get_nested_arrays, read_and_concatenate_jsonl
@@ -62,7 +62,7 @@ class LongDependecy:
         self.output_path = output_file1
         os.makedirs(self.output_dir1, exist_ok=True)  
 
-        encoder = BGEServer(url_or_path=embedding_model_path,device="cuda:5")
+        encoder = EmbServer(url_or_path=embedding_model_path,device="cuda:5")
         self.searcher = Knowledge_Managment.get_searcher(
             knowledge_id = [knowledge_id],
             embedding_model = encoder,

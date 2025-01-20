@@ -69,9 +69,9 @@ class DataSyntheiser:
         args, unknown=parser.parse_known_args()
         if not self._llm or not self._index:
             from ultrarag.modules.llm import OpenaiLLM
-            from ultrarag.modules.embedding import BGEServer
+            from ultrarag.modules.embedding import EmbServer
             from ultrarag.modules.database import QdrantIndex
-            encoder = BGEServer(url_or_path=args.embed)
+            encoder = EmbServer(url_or_path=args.embed)
             index = QdrantIndex(url=":memory:", encoder=encoder)
             llm = OpenaiLLM(api_key=args.api_key, base_url=args.base_url, model=args.model_name)
             self.update(llm=llm, index=index)
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     import argparse
     import jsonlines
     from ultrarag.modules.llm import OpenaiLLM
-    from ultrarag.modules.embedding import BGEServer
+    from ultrarag.modules.embedding import EmbServer
     from ultrarag.modules.database import QdrantIndex
 
     args = argparse.ArgumentParser()
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     args.add_argument("-corpus", required=True, type=str, help="raw chunk data")
     args = args.parse_args()
-    encoder = BGEServer(url_or_path=args.embed)
+    encoder = EmbServer(url_or_path=args.embed)
     index = QdrantIndex(url=":memory:", encoder=encoder)
     llm = OpenaiLLM(api_key=args.api_key, base_url=args.base_url, model=args.model)
     synther = DataSyntheiser(llm=llm, index=index)

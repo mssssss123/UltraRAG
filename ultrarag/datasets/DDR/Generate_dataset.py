@@ -11,7 +11,7 @@ from pathlib import Path
 home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
 from ultrarag.modules.llm import VllmServer
-from ultrarag.modules.embedding.bge_embedding import BGEServer
+from UltraRAG.ultrarag.modules.embedding.embedding import EmbServer
 from ultrarag.modules.knowledge_managment.knowledge_managment import Knowledge_Managment
 from prompts import question_prompt, answer_prompt, keypoint_prompt
 
@@ -49,7 +49,7 @@ class DataGenerator:
         self.max_data_nums = self.config.get('max_data_nums', 5000)
         self.record_count = 0
 
-        encoder = BGEServer(url_or_path=embedding_model_path)
+        encoder = EmbServer(url_or_path=embedding_model_path)
         self.searcher = Knowledge_Managment.get_searcher(
             knowledge_id = [knowledge_id],
             embedding_model = encoder,

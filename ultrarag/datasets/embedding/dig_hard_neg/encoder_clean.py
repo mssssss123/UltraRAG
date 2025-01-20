@@ -4,16 +4,16 @@ from joblib import Parallel, delayed
 import os
 from itertools import chain
 from ultrarag.datasets.others.merge import load_file, write_output
-from ultrarag.modules.embedding import BGEServer
+from ultrarag.modules.embedding import EmbServer
 import asyncio
 
-async def encoder_clean(embedding_model:BGEServer,qrel_path:str,
+async def encoder_clean(embedding_model:EmbServer,qrel_path:str,
                         output_path:str,search_start_index:int,search_end_index:int,keep_neg_num:int,
                         score_ratio:float, score_margin:float, min_pos_score:float, max_neg_score:float):
     """
     Cleans the dataset by filtering negative samples based on embedding similarity scores.
     Args:
-        embedding_model (BGEServer): The embedding model used to encode documents and queries.
+        embedding_model (EmbServer): The embedding model used to encode documents and queries.
         qrel_path (str): Path to the input dataset file in JSONL format.
         output_path (str): Path to the output cleaned dataset file in JSONL format.
         search_start_index (int): The starting index for the negative samples to be considered.
@@ -58,7 +58,7 @@ async def encoder_clean(embedding_model:BGEServer,qrel_path:str,
     # negs_ids = [x["neg"] for x in dataset]
     # negs_ids = list(chain.from_iterable(negs_ids))
     
-    # embedding_model = BGEClient(url_or_path=embedding_model_path)
+    # embedding_model = EmbClient(url_or_path=embedding_model_path)
     
     poss = [x["pos"] for x in dataset]
     negs = [x["neg"] for x in dataset]
@@ -116,7 +116,7 @@ async def encoder_clean(embedding_model:BGEServer,qrel_path:str,
     
     
 def encoder_clean_main(parser):
-    from ultrarag.modules.embedding import BGEServer
+    from ultrarag.modules.embedding import EmbServer
     
     parser.add_argument("--embed", required=True, type=str, help="embedding model path")
     parser.add_argument("--pooling", default="mean", type=str, help="pooling method")
@@ -134,7 +134,7 @@ def encoder_clean_main(parser):
     
     args, unknown=parser.parse_known_args()
     
-    encoder = BGEServer(url_or_path=args.embed,pooling=args.pooling, query_instruction=args.query_instruction)
+    encoder = EmbServer(url_or_path=args.embed,pooling=args.pooling, query_instruction=args.query_instruction)
     
     
     asyncio.run(encoder_clean(embedding_model=encoder,

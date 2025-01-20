@@ -41,7 +41,7 @@ def display():
         with cols[0]:
             st.text_input(
                 t("Model Path"),
-                value=bgem3_config.get('model_name_or_path', '/public/kqa/440M_v0'),
+                value=bgem3_config.get('model_name_or_path', 'resource/model'),
                 key="model_name_or_path",
                 on_change=lambda: bgem3_config.update(
                     {'model_name_or_path': st.session_state.model_name_or_path}
@@ -50,7 +50,7 @@ def display():
             )
             st.text_input(
                 t("Training Data"),
-                value=bgem3_config.get('train_data', 'resource/dataset/soda_bgem3/workspace/train_history_2/train_v3_incr.jsonl'),
+                value=bgem3_config.get('train_data', 'resource/dataset/train.jsonl'),
                 key="train_data",
                 on_change=lambda: bgem3_config.update(
                     {'train_data': st.session_state.train_data}

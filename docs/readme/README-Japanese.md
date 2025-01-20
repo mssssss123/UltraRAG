@@ -85,7 +85,7 @@ python UltraRAG/scripts/download_models.py
    デフォルトのUltraRAGモデル（BGE-M3 + MiniCPM3-4B）で評価した結果。
 
 2. **VanillaRAG-finetune**  
-   UltraRAG-EmbeddingおよびUltraRAG-DDRを法律分野データで微調整した結果。
+   MiniCPM-Embedding-LightおよびUltraRAG-DDRを法律分野データで微調整した結果。
 
 以下は、UltraRAGの評価ページから得られた結果です。微調整により、全体のパフォーマンスが**3%**向上しました。知識Q&Aの性能はやや低下しましたが、法条予測と相談のデータセットではそれぞれ**2%以上**の向上が見られました。
 
@@ -102,8 +102,8 @@ python UltraRAG/scripts/download_models.py
 
 | モデル                                    | GPT-4oによるテストセット200件のMRR@10 | GPT-4oによるテストセット200件のNDCG@10 | GPT-4oによるテストセット200件のRecall@10 |
 |------------------------------------------|--------------------------------------|---------------------------------------|-----------------------------------------|
-| UltraRAG-Embedding                       | 36.46                                | 40.05                                 | 54.50                                  |
-| UltraRAG-Embedding-Finetune(Qwen2.5-14B-instructionによる2800件) | 37.57                                | 42.12                                 | 56.50                                  |
+| MiniCPM-Embedding-Light                       | 36.46                                | 40.05                                 | 54.50                                  |
+| MiniCPM-Embedding-Light-Finetune(Qwen2.5-14B-instructionによる2800件) | 37.57                                | 42.12                                 | 56.50                                  |
 
 ## ‍🤝謝辞
 以下の貢献者によるコード提供とテストに感謝します。新しいメンバーの参加を歓迎し、一緒に完全なエコシステムの構築を目指しましょう！

@@ -12,7 +12,7 @@ HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-class FlagReranker:
+class SimpleReranker:
     def __init__(
             self,
             model_name_or_path: str = None,
@@ -20,8 +20,8 @@ class FlagReranker:
             cache_dir: str = None,
             device: Union[str, int] = None
     ) -> None:
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, cache_dir=cache_dir)
-        self.model = AutoModelForSequenceClassification.from_pretrained(model_name_or_path, cache_dir=cache_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, cache_dir=cache_dir, trust_remote_code=True)
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_name_or_path, cache_dir=cache_dir, trust_remote_code=True)
 
         if device and isinstance(device, str):
             self.device = torch.device(device)
@@ -88,7 +88,7 @@ class FlagReranker:
 
 
 
-class BGERerankClient(BaseRerank):
+class RerankerClient(BaseRerank):
     def __init__(self, url: str) -> None:
         super().__init__()
         self.url = url
@@ -115,7 +115,7 @@ class BGERerankClient(BaseRerank):
     
 
 
-class BGERerankServer(BaseRerank):
+class RerankerServer(BaseRerank):
     def __init__(self,
             model_path: str,
             padding='longest',
@@ -123,7 +123,7 @@ class BGERerankServer(BaseRerank):
             batch_size=256,
             **build_kwargs,
     ) -> None:
-        self.rerank_model = FlagReranker(
+        self.rerank_model = SimpleReranker(
             model_name_or_path=model_path,
             **build_kwargs,
         )

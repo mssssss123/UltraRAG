@@ -11,7 +11,7 @@ import torch
 home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
 from ultrarag.evaluate.index import BruteIndex
-from ultrarag.modules.embedding import BGEServer
+from ultrarag.modules.embedding import EmbServer
 from ultrarag.evaluate.utils import load_beir_qrels, save_as_trec
 
 class RetrievalEvaluator(object):
@@ -323,7 +323,7 @@ def main():
     args = parser.parse_args()
     args.cutoffs = [int(c) for c in args.cutoffs.split(",")] if args.cutoffs is not None else [args.topk]
     args.metrics = args.metrics.split(",")
-    model = BGEServer(args.model_path, pooling=args.pooling, query_instruction=args.query_instruction)
+    model = EmbServer(args.model_path, pooling=args.pooling, query_instruction=args.query_instruction)
     
     evaluator = RetrievalEvaluator(model, {"queries": args.queries_path, "corpus": args.corpus_path, "default": args.qrels_path, "output": args.output_path}, args.topk)
     metric_result = evaluator.run_metric_inference(args.metrics, args.cutoffs)

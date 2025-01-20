@@ -27,7 +27,7 @@ class MiniCPMEmbClient(BaseEmbedding):
         '''
         if not isinstance(query, str):
             logger.error(f"input text {query} is not str")
-            raise ValueError("bge embedding input error")
+            raise ValueError("embedding input error")
         
         post_parm = dict(
             model = 'default',
@@ -354,7 +354,7 @@ class MiniCPMEmbServer(BaseEmbedding):
         self.model= BGEM3FlagModel(model_name_or_path=url_or_path, **kargs)
         self.max_length = max_length
         self.batch_size = batch_size
-        # UltraRAG-Embedding need query instruction
+        # MiniCPM-Embedding-Light need query instruction
         architectures = AutoConfig.from_pretrained(url_or_path, trust_remote_code=True).architectures
         if "MiniCPMModel" in architectures:
             self.query_instruction = "Query: "
@@ -376,7 +376,7 @@ class MiniCPMEmbServer(BaseEmbedding):
                 - sparse_embed: Sparse embedding dictionary mapping token ids to weights
 
         Example:
-            >>> server = MiniCPMEmbServer("BAAI/bge-m3")
+            >>> server = MiniCPMEmbServer("OpenBMB/MiniCPM-Embedding-Light")
             >>> # Single query
             >>> result = await server.query_encode("What is machine learning?")
             >>> print(result)
@@ -422,7 +422,7 @@ class MiniCPMEmbServer(BaseEmbedding):
                 - sparse_embed: Sparse embedding dictionary mapping token ids to weights
 
         Example:
-            >>> server = MiniCPMEmbServer("BAAI/bge-m3")
+            >>> server = MiniCPMEmbServer("OpenBMB/MiniCPM-Embedding-Light")
             >>> docs = ["Machine learning is a subset of AI.", 
                        "Deep learning uses neural networks."]
             >>> results = await server.document_encode(docs)
@@ -454,7 +454,7 @@ class MiniCPMEmbServer(BaseEmbedding):
                 - sparse_embed: Sparse embedding dictionary mapping token ids to weights
 
         Example:
-            >>> encoder = MiniCPMEmbServer("BAAI/bge-m3")
+            >>> encoder = MiniCPMEmbServer("OpenBMB/MiniCPM-Embedding-Light")
             >>> texts = ["Hello world", "Machine learning is amazing"]
             >>> results = encoder.encode(texts)
             >>> print(results)

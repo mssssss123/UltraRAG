@@ -1,10 +1,10 @@
-# bge-m3:
-#   model_id: BAAI/bge-m3
-#   model_type: embedding
+minicpm-embedding-light:
+  model_id: OpenBMB/MiniCPM-Embedding-Light
+  model_type: embedding
 
 
-bge-reranker-large:
-  model_id: BAAI/bge-reranker-large
+minicpm-reranker-light:
+  model_id: OpenBMB/MiniCPM-Reranker-Light
   model_type: reranker
 
 Qwen2.5-14B-Instruct:

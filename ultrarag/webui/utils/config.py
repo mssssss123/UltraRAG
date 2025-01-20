@@ -3,8 +3,8 @@ MODEL_TYPES = ['API', 'Custom']
 EMBEDDING_MODEL_TYPES = ['Custom']
 RERANKER_MODEL_TYPES = ['Custom']
 # MODEL_TYPES = ['openbmb/MiniCPM-2B-sft-bf16', 'openbmb/MiniCPM-2B-dpo-bf16', 'API', 'Custom']
-# EMBEDDING_MODEL_TYPES = ['BAAI/bge-large-en-v1.5', 'BAAI/bge-base-zh-v1.5', 'Custom']
-# RERANKER_MODEL_TYPES = ['bge-large-reranker', 'Custom']
+# EMBEDDING_MODEL_TYPES = ['OpenBMB/MiniCPM-Embedding-Light', 'OpenBMB/MiniCPM-Embedding-Light', 'Custom']
+# RERANKER_MODEL_TYPES = ['OpenBMB/MiniCPM-Reranker-Light','OpenBMB/MiniCPM-Reranker', 'Custom']
 ADVANCE_TABS=["Knowledge Base Manage"]
 TABS = [
     {"name": "Data Construction", "module": "pages.data_construction.main", "file_path":"ultrarag/datasets/data_construction.py"},
@@ -21,7 +21,7 @@ DATA_PIPELINE = [
 ]
 
 TRAIN_PIPELINE = [    
-    {"name": "BGEM3", "module": "pages.train.pipeline.bgem3", "pipeline": "bgem3"},
+    {"name": "Embedding", "module": "pages.train.pipeline.embedding", "pipeline": "embedding"},
     {"name": "DPO", "module": "pages.train.pipeline.dpo", "pipeline": "dpo"},
     {"name": "SFT", "module": "pages.train.pipeline.sft", "pipeline": "sft"},
     {"name": "KBAlign", "module": "pages.train.pipeline.kbalign", "pipeline": "kbalign"},

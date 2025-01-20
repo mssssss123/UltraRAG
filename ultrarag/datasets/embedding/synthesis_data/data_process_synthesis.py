@@ -4,19 +4,19 @@ import faiss
 import os
 import asyncio
 from ultrarag.datasets.others.others import load_file, write_output
-from ultrarag.modules.embedding import BGEServer
+from ultrarag.modules.embedding import EmbServer
 
 
 np.random.seed(42)
 
-async def data_preprocess_synthesis(embedding_model:BGEServer,corpus_path:str,output_path:str,search_start_index:int,search_end_index:int):    
+async def data_preprocess_synthesis(embedding_model:EmbServer,corpus_path:str,output_path:str,search_start_index:int,search_end_index:int):    
     """
     Asynchronously preprocesses and synthesizes data for embedding models.
     This function loads a corpus of documents, encodes them using the provided embedding model,
     and performs similarity search to find the most similar documents within a specified range.
     The results are then serialized and written to the specified output path.
     Args:
-        embedding_model (BGEServer): The embedding model used to encode the documents.
+        embedding_model (EmbServer): The embedding model used to encode the documents.
         corpus_path (str): The path to the input corpus file in JSONL format.
         output_path (str): The path to the output file where the results will be written.
         search_start_index (int): The starting index for the similarity search range.
@@ -37,7 +37,7 @@ async def data_preprocess_synthesis(embedding_model:BGEServer,corpus_path:str,ou
             new_docs.append(output_data)
         docs = new_docs
     
-    # embedding_model = BGEClient(url_or_path=embedding_model_path)
+    # embedding_model = EmbClient(url_or_path=embedding_model_path)
     # print(docs)
     d_embeddings = await embedding_model.document_encode(docs)
     d_embeddings = [emb["dense_embed"] for emb in d_embeddings]
@@ -82,7 +82,7 @@ async def data_preprocess_synthesis(embedding_model:BGEServer,corpus_path:str,ou
     write_output(hashed_docs, corpus_path, "jsonl")
 
 def data_preprocess_synthesis_main(parser):
-    from ultrarag.modules.embedding import BGEServer
+    from ultrarag.modules.embedding import EmbServer
     
     parser.add_argument("--embed", required=True, type=str, help="embedding model path")
     parser.add_argument("--pooling", default="mean", type=str, help="pooling method")
@@ -92,7 +92,7 @@ def data_preprocess_synthesis_main(parser):
     parser.add_argument("--search_end_index", type=int, default=30)
     
     args, unknown=parser.parse_known_args()
-    encoder = BGEServer(url_or_path=args.embed,pooling=args.pooling)
+    encoder = EmbServer(url_or_path=args.embed,pooling=args.pooling)
     
     asyncio.run(data_preprocess_synthesis(embedding_model=encoder,
                                             corpus_path=args.corpus_path,

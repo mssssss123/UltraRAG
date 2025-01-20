@@ -3,15 +3,15 @@ from tqdm import tqdm
 import faiss
 import os
 from ultrarag.datasets.others.merge import load_file, write_output
-from ultrarag.modules.embedding import BGEServer
+from ultrarag.modules.embedding import EmbServer
 import asyncio
 
-async def dig_hard(embedding_model:BGEServer,corpus_path:str,qrel_path:str,
+async def dig_hard(embedding_model:EmbServer,corpus_path:str,qrel_path:str,
                    output_path:str,search_start_index:int,search_end_index:int):
     """
     Asynchronously performs hard negative mining for a given set of queries and documents using an embedding model.
     Args:
-        embedding_model (BGEServer): The embedding model used to encode documents and queries.
+        embedding_model (EmbServer): The embedding model used to encode documents and queries.
         corpus_path (str): Path to the corpus file containing documents.
         qrel_path (str): Path to the qrel file containing query relevance information.
         output_path (str): Path to the output file where the results will be saved.
@@ -57,7 +57,7 @@ async def dig_hard(embedding_model:BGEServer,corpus_path:str,qrel_path:str,
     queries = [x["query"] for x in dataset]
     # TODO: Add instruction
     
-    # embedding_model = BGEClient(url_or_path=embedding_model_path)
+    # embedding_model = EmbClient(url_or_path=embedding_model_path)
 
     q_embeddings = await embedding_model.document_encode(queries)
     q_embeddings = [emb["dense_embed"] for emb in q_embeddings]
@@ -95,7 +95,7 @@ async def dig_hard(embedding_model:BGEServer,corpus_path:str,qrel_path:str,
     
 def dig_hard_main(parser):
     import argparse
-    from ultrarag.modules.embedding import BGEServer
+    from ultrarag.modules.embedding import EmbServer
     parser.add_argument("--embed", required=True, type=str, help="embedding model path")
     parser.add_argument("--pooling", default="mean", type=str, help="pooling method")
     parser.add_argument("--query_instruction", type=str, default=None, help="query instruction")
@@ -109,7 +109,7 @@ def dig_hard_main(parser):
     args, unknown=parser.parse_known_args()
 
     
-    encoder = BGEServer(url_or_path=args.embed,pooling=args.pooling,query_instruction=args.query_instruction)
+    encoder = EmbServer(url_or_path=args.embed,pooling=args.pooling,query_instruction=args.query_instruction)
     
     asyncio.run(dig_hard(embedding_model=encoder, 
                          corpus_path=args.corpus_path,

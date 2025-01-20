@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
 
-class BGEClient(BaseEmbedding):
+class EmbClient(BaseEmbedding):
     def __init__(self, url_or_path, **kargs) -> None:
         super().__init__()
         self.url = url_or_path
@@ -45,7 +45,7 @@ class BGEClient(BaseEmbedding):
         return super().encode(text)
     
 
-class BGEServer(BaseEmbedding):
+class EmbServer(BaseEmbedding):
     ''' 单节点部署场景，随RAG链路启动调用
         多节点部署场景，API调用此类
     '''
@@ -56,7 +56,7 @@ class BGEServer(BaseEmbedding):
         self.device = self.model.device
         self.pooling = pooling
 
-        # UltraRAG-Embedding need query instruction
+        # MiniCPM-Embedding-Light need query instruction
         architectures = AutoConfig.from_pretrained(url_or_path, trust_remote_code=True).architectures
         if "MiniCPMModel" in architectures:
             self.pooling = "mean"
@@ -107,8 +107,8 @@ class BGEServer(BaseEmbedding):
             List[Dict]: List of dictionaries containing embeddings under 'dense_embed' key
 
         Example:
-            >>> bge = BGEServer("BAAI/bge-large-en")
-            >>> embeddings = await bge.query_encode("What is machine learning?")
+            >>> model = EmbServer("OpenBMB/MiniCPM-Embedding-Light")
+            >>> embeddings = await model.query_encode("What is machine learning?")
             >>> print(embeddings)
             [{'dense_embed': [0.123, 0.456, ...]}]
         '''
@@ -137,10 +137,10 @@ class BGEServer(BaseEmbedding):
             List[Dict]: List of dictionaries containing embeddings under 'dense_embed' key
 
         Example:
-            >>> bge = BGEServer("BAAI/bge-large-en")
+            >>> model = EmbServer("OpenBMB/MiniCPM-Embedding-Light")
             >>> docs = ["Machine learning is a subset of AI.", 
                        "Deep learning uses neural networks."]
-            >>> embeddings = await bge.document_encode(docs)
+            >>> embeddings = await model.document_encode(docs)
             >>> print(embeddings)
             [{'dense_embed': [0.123, 0.456, ...]}, 
              {'dense_embed': [0.789, 0.321, ...]}]
@@ -165,7 +165,7 @@ class BGEServer(BaseEmbedding):
                               Shape: [batch_size, embedding_dimension]
 
         Example:
-            >>> encoder = BGEServer("BAAI/bge-large-en")
+            >>> encoder = EmbServer("OpenBMB/MiniCPM-Embedding-Light")
             >>> texts = ["Hello world", "Machine learning is amazing"]
             >>> embeddings = encoder.encode(texts)
             >>> print(embeddings)
@@ -209,7 +209,7 @@ if __name__ == "__main__":
     args.add_argument("-model_path", required=True, type=str, help="server url and port")
     args = args.parse_args()
 
-    embeder = BGEServer(args.model_path)
+    embeder = EmbServer(args.model_path)
 
     app = Flask(__name__)
     @app.route('/embed', methods=['GET', 'POST'])

@@ -84,7 +84,7 @@ python UltraRAG/scripts/download_models.py
 1. **VanillaRAG-original**  
    使用 UltraRAG 默认的模型（BGE-M3 + MiniCPM3-4B）下评测的效果。
 2. **VanillaRAG-finetune**  
-   基于法律领域数据，对 UltraRAG-Embedding 和 UltraRAG-DDR 进行微调后的效果。
+   基于法律领域数据，对 MiniCPM-Embedding-Light 和 UltraRAG-DDR 进行微调后的效果。
 
 以下是这两个 workflow 使用 UltraRAG 的评测页面得到的结果。微调后整体效果提升 **3%**，其中知识问答略有下降，但法条预测和咨询两个数据集均提升 **2% 以上**。
 
@@ -101,8 +101,8 @@ python UltraRAG/scripts/download_models.py
 
 | 模型                                       | 由gpt4o造的测试集 200条 MRR@10 | 由gpt4o造的测试集 200条 NDCG@10 | 由gpt4o造的测试集 200条 Recall@10 |
 |------------------------------------------|-----------------------------|------------------------------|-------------------------------|
-| UltraRAG-Embedding                       | 36.46                       | 40.05                        | 54.50                         |
-| UltraRAG-Embedding-Finetune(Qwen2.5-14B-instruction造的2800条) | 37.57                       | 42.12                        | 56.50                         |
+| MiniCPM-Embedding-Light                       | 36.46                       | 40.05                        | 54.50                         |
+| MiniCPM-Embedding-Light-Finetune(Qwen2.5-14B-instruction造的2800条) | 37.57                       | 42.12                        | 56.50                         |
 
 
 ## ‍🤝致谢

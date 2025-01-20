@@ -1,9 +1,9 @@
-from .bge_embedding import BGEServer
+from .embedding import EmbServer
 from .minicpm_embedding import MiniCPMEmbServer
 from .visrag_embedding import VisRAGNetServer
 
 model_mapping = dict(
-    BertModel=BGEServer,
+    BertModel=EmbServer,
     XLMRobertaModel=MiniCPMEmbServer,
     MiniCPMModel=MiniCPMEmbServer,
     VisRAG_Ret=VisRAGNetServer,

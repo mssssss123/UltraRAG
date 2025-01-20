@@ -5,7 +5,7 @@ home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
 from ultrarag.modules.embedding import EmbeddingClient, load_model
 from ultrarag.modules.llm import OpenaiLLM, HuggingfaceClient, HuggingFaceServer, VllmServer
-from ultrarag.modules.reranker import BGERerankClient, BGERerankServer
+from ultrarag.modules.reranker import RerankerClient, RerankerServer
 from ultrarag.webui.components.loading import loading
 from loguru import logger
 import traceback
@@ -67,9 +67,9 @@ def load_rerank_model(url, device):
         Reranker instance or client connection
     """
     if Path(url).exists():
-        return BGERerankServer(model_path=url, device=device)
+        return RerankerServer(model_path=url, device=device)
     else:
-        return BGERerankClient(url=url)
+        return RerankerClient(url=url)
 
 @st.fragment
 def update_btn(label, key, base_url=None, api_key=None, model_name=None, model_path=None):

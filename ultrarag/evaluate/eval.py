@@ -14,8 +14,8 @@ from ultrarag.evaluate.evaluator.generated_evaluator import GeneratedEvaluator
 from ultrarag.evaluate.evaluator.retrieval_evaluator import RetrievalEvaluator
 from ultrarag.modules.llm import OpenaiLLM, VllmServer
 from ultrarag.modules.knowledge_managment import Knowledge_Managment
-from ultrarag.modules.embedding import BGEServer, load_model
-from ultrarag.modules.reranker import BGERerankClient, BGERerankServer
+from ultrarag.modules.embedding import EmbServer, load_model
+from ultrarag.modules.reranker import RerankerClient, RerankerServer
 
 parser = argparse.ArgumentParser(description="Pipeline for processing datasets")
 
@@ -83,9 +83,9 @@ def ensure_output_path(file_path):
 
 def load_rerank_model(url, device='cuda'):
     if Path(url).exists():
-        return BGERerankServer(model_path=url, device=device)
+        return RerankerServer(model_path=url, device=device)
     else:
-        return BGERerankClient(url=url)
+        return RerankerClient(url=url)
     
     
 def load_dataset(file_path):
@@ -212,7 +212,7 @@ if __name__ == "__main__":
             metric_llm = None
             
         if args.pooling and args.query_instruction:
-            encoder = BGEServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
+            encoder = EmbServer(args.embedding_model_path, pooling=args.pooling, query_instruction=args.query_instruction)
         else:
             encoder = load_model(args.embedding_model_path, device=args.embedding_gpu)   
         
