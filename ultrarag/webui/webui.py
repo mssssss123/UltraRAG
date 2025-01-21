@@ -11,7 +11,7 @@ st.markdown(
     """
     <style>
     #root > div:nth-child(1) > div.withScreencast > div > div > div > div {
-        left: 5vw; /* 设置左边距为 5vw */
+        left: 5vw; 
     }
     </style>
     """,
