@@ -10,7 +10,7 @@
 The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, and Modelbest.Inc . It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
 
 <div align="center">
-  <img src='docs/assets/en/image.png' width=600>
+  <img src='docs/assets/en/feature.jpg' width=600>
 </div>
 
 - **No-Code Programming WebUI Support:** Users with no programming experience can easily operate the full link setup and optimization process, including the **multimodal RAG solution VisRAG**;
@@ -94,16 +94,16 @@ The architecture of UltraRAG is composed of three parts: **Frontend**, **Service
 To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](../evaluation_report/evaluation_report_en.md).
 
 | **End-to-End Performance** | **Statute Prediction (3-2) ROUGE-L** |
-| -------------------------------- | --------------------------------------------- |
-| **VanillaRAG**             | 40.75                                         |
-| **UltraRAG-DDR**           | 53.14                                         |
-| **UltraRAG-KBAlign**       | 48.72                                         |
+| -------------------------------- | ------------------------------------------ |
+| **VanillaRAG**             | 40.75                                      |
+| **UltraRAG-DDR**           | 53.14                                      |
+| **UltraRAG-KBAlign**       | 48.72                                      |
 
 | **End-to-End Performance** | **Consultation (3-8) ROUGE-L** |
-| -------------------------------- | --------------------------------------- |
-| **VanillaRAG**             | 23.65                                   |
-| **UltraRAG-Adaptive-Note** | 24.62                                   |
-| **VanillaRAG-finetune**    | 25.85                                   |
+| -------------------------------- | ------------------------------------ |
+| **VanillaRAG**             | 23.65                                |
+| **UltraRAG-Adaptive-Note** | 24.62                                |
+| **VanillaRAG-finetune**    | 25.85                                |
 
 ## ‍🤝 Acknowledgments
 
