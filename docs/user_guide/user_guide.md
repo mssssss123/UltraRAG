@@ -10,7 +10,8 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 下面将分别介绍 WebUI 各个环节的具体使用方法。
 
-![](../assets/en/user_1.png)
+
+![](../assets/en/user_guide_1.png)
 
 ## 模型管理
 
@@ -44,7 +45,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](../assets/en/user_2.png)
+![](../assets/en/user_guide_2.png)
 
 ## 数据构造
 
@@ -52,7 +53,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](../assets/en/user_3.png)
+![](../assets/en/user_guide_3.png)
 
 ## 训练
 
@@ -68,7 +69,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](../assets/en/user_4.png)
+![](../assets/en/user_guide_4.png)
 
 ## 评测
 
@@ -84,7 +85,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](../assets/en/user_5.png)
+![](../assets/en/user_guide_5.png)
 
 ## 聊天/推理
 
@@ -118,7 +119,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 如需详细操作说明，请参考演示视频。
 
-##### VisRAG/Adaptive-Note
+##### VisRAG/Adaptive-Note评测
 
 参考演示视频，评测操作需按照以下步骤进行：
 
@@ -129,4 +130,4 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 **建议：** 由于评测时间较长，前端关闭可能导致命令执行中断，推荐将获取的命令复制后在服务器本地运行，以确保评测过程的稳定性和完整性。
 
-![](../assets/en/user_6.png)
+![](../assets/en/user_guide_6.png)

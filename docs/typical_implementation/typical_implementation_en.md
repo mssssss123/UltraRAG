@@ -245,12 +245,6 @@ To address the challenges of **lack of information** and **poor interactivity** 
 
    Through the synergistic effect of the above modules, **UltraRAG-Adaptive-Note** achieves efficient solutions to complex problems from a knowledge growth perspective, demonstrating significant performance advantages in **multi-hop Q&A** and **long-text generation** tasks.
 
-##### Diagram：
-
-The process includes each retrieval's content as well as the current notes and optimal notes, finally showing the response content and response time.
-
-![](../assets/en/implement_5.png)
-
 #### UltraRAG-KBAlign
 
 ##### Source, Methods, and Results:
