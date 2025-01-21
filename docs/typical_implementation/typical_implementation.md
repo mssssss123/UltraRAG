@@ -423,7 +423,7 @@ VisRAG-Gen模块利用由VisRAG-Ret模块检索而来的文档，结合查询生
 * **灵活的生成能力** ：直接使用现有的视觉语言模型进行生成，具有较高的灵活性。
 * **提升信息利用率** ：相比于传统的文本解析RAG，**UltraRAG-Vis**通过保留文档的原始视觉信息，最大限度地提高了信息的利用率。
 
-#### UltraRAG-Embedding**@李奕杉 **
+#### UltraRAG-Embedding
 
 模型地址：https://huggingface.co/openbmb/MiniCPM-Embedding-Light
 MiniCPM-Embedding-Light是由面壁智能与清华大学自然语言处理实验室（THUNLP）、东北大学信息检索小组（NEUIR）共同开发的中英双语言文本嵌入模型，具有出色的中文、英文检索能力；出色的中英跨语言检索能力，超越了流行的bge-m3等模型。支持长文本（最长8192token），提供稠密向量与token级别的稀疏向量，并且允许可变的稠密向量维度（套娃表征）。
@@ -489,7 +489,7 @@ MiniCPM-Embedding-Light结构上采取双向注意力和 Weighted Mean Pooling�
 输出：预处理后的数据格式 `synthesis_qd.jsonl`
 
 ```JSON
-{"doc": "doc", "sims":  ["doc"， "doc2"]}
+{"doc": "doc", "sims":  ["doc", "doc2"]}
 ```
 
 ##### 数据合成：
@@ -501,13 +501,13 @@ MiniCPM-Embedding-Light结构上采取双向注意力和 Weighted Mean Pooling�
 输入文件 `input.jsonl`格式：
 
 ```JSON
-{"doc": "doc", "sims":  ["doc"， "doc2"]}
+{"doc": "doc", "sims":  ["doc", "doc2"]}
 ```
 
 例子数据 `shot.jsonl`、输出格式 `output.jsonl`：
 
 ```JSON
-{"query": "这是query1"， "pos": ["这是正确文档1"]}
+{"query": "这是query1", "pos": ["这是正确文档1"]}
 ```
 
 输出也支持多文件格式（与评测、beir对齐）：
@@ -559,7 +559,7 @@ aaa    bbb    1
 训练数据格式 `train.jsonl`
 
 ```JSON
-{"query": "这是query1"， "pos": ["这是正确文档1"]}
+{"query": "这是query1", "pos": ["这是正确文档1"]}
 ```
 
 文档数据格式 `corpus.jsonl`：
@@ -590,7 +590,7 @@ aaa    bbb    1
 数据格式 `train.jsonl`
 
 ```JSON
-{"query": "这是query1"， "pos": ["这是正确文档1"]}
+{"query": "这是query1", "pos": ["这是正确文档1"]}
 ```
 
 传入参数:
