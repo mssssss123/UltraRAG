@@ -1,5 +1,3 @@
-
-
 # WebUI介绍与使用说明
 
 WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Settings）** ，下方为  **各阶段流程配置** 。全局设置包括 **模型管理** 和 **知识管理** 两个分页，而流程配置涵盖 **数据构造、训练、评测** 及 **推理** 等环节。
@@ -12,7 +10,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 下面将分别介绍 WebUI 各个环节的具体使用方法。
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=NzNlOWM2MzBkYjNkNzdmNGY3NDQ0NWZjNzdlZjIxYzFfNkZjd2JSdnQwRmhzcllFaHFXeE92TVhpMVpORm9PYmhfVG9rZW46T1A5MmJDbDdFb0R4UjB4ZFVGNGNtYXV0bkpmXzE3Mzc0NDUwNzg6MTczNzQ0ODY3OF9WNA)
+![](../assets/en/user_1.png)
 
 ## 模型管理
 
@@ -46,7 +44,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=NTI4MmYxMmIzZmYwNWE1ODBmZTVhMDE4Mzk0NTdiZmJfWDA0WUVTYllrR0Zjc09nQlQ3UDV3dFpxVWo0R3RuQ25fVG9rZW46VXI4WmJVcGRob1BiWHB4cERjamM4eHJsbnFnXzE3Mzc0NDUwNzg6MTczNzQ0ODY3OF9WNA)
+![](../assets/en/user_2.png)
 
 ## 数据构造
 
@@ -54,7 +52,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=OGZjYjdlYTAwN2VjNGQ1OGI3OWI4NWY1MzVmZGNlODdfMnhFUmNMS3FIUHZxdUlVZ2dRR3JNT1phUnVPOW1GdGZfVG9rZW46Q0l2NWJHd3IzbzZkdEF4NHZUamN5dnllbjhjXzE3Mzc0NDUwNzg6MTczNzQ0ODY3OF9WNA)
+![](../assets/en/user_3.png)
 
 ## 训练
 
@@ -70,7 +68,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=NTlkMDMzN2ZmN2JhNzYwNjcyN2Q3MTdkYWFhNmFmZWRfVU4yOXJpZlhCeWkwRWNHZWlad0JKM0NOVHhWcDJKY0hfVG9rZW46TDNQcmJhRjcxb1AwMTN4NE1meGNQVjF1bjBmXzE3Mzc0NDUwNzg6MTczNzQ0ODY3OF9WNA)
+![](../assets/en/user_4.png)
 
 ## 评测
 
@@ -86,7 +84,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 ##### 图示：
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=YzFhMTgzZGE1NDk4NTljYWY5YjEwMmVkOThlNTM2MmNfYjJYTHZZNm42N3BlWVRZUjlXbFgwWWM3VkZUMkJaMjRfVG9rZW46Ujc0RmJTaDlBb052ZjZ4OW56RWNWMnEwbmJmXzE3Mzc0NDUwNzg6MTczNzQ0ODY3OF9WNA)
+![](../assets/en/user_5.png)
 
 ## 聊天/推理
 
@@ -95,7 +93,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 1. 选择合适的模型并构建知识库；
 2. 在完成上述环节后，选择对应的工作流和知识库，即可启动对话流程。
 
-##### 基本使用 **基本使用.mov**
+##### 基本使用
 
 **使用 WebUI 与 VanillaRAG 进行对话，需按以下步骤操作：**
 
@@ -107,7 +105,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 如需详细操作说明，请参考演示视频。
 
-##### VisRAG **visrag.mov**
+##### VisRAG
 
 **使用 WebUI 与 VisRAG 进行对话，需按以下步骤操作：**
 
@@ -120,7 +118,7 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 如需详细操作说明，请参考演示视频。
 
-##### VisRAG/Adaptive-Note评测**评测.mov**
+##### VisRAG/Adaptive-Note
 
 参考演示视频，评测操作需按照以下步骤进行：
 
@@ -131,4 +129,4 @@ WebUI 采用  **两段式布局** ，页面上方为  **全局设置（Global Se
 
 **建议：** 由于评测时间较长，前端关闭可能导致命令执行中断，推荐将获取的命令复制后在服务器本地运行，以确保评测过程的稳定性和完整性。
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=NjBmNzNhOTA4MWIyZDE5ZGQyOWVhYTdjYTk5NzUwZjFfRDlQMWJsUkJhSkhMSGFldVg5b3FDbjhrZm9INWNaTTNfVG9rZW46UDlqR2JOQ0ljb0NpZ3V4b3FrN2NsaURMbkdSXzE3Mzc0NDUwNzg6MTczNzQ0ODY3OF9WNA)
+![](../assets/en/user_6.png)

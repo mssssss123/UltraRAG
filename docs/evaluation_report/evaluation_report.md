@@ -6,13 +6,13 @@ UltraRAG内置了一系列的模型调优方法和评价指标，为了验证这
 
 我们在实验的过程中使用到的模型列表如下所示，UltraRAG 除了支持以下模型以外，其他模型还在陆续完善中。
 
-| **场景**                    | **模型**      | **值**       | **模型获取路径**                                                                                         |
-| --------------------------------- | ------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------- |
+| **场景**                    | **模型**      | **值**            | **模型获取路径**                                                                                                         |
+| --------------------------------- | ------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | VanilaRAG, Adaptive-Note, KBalign | 文本embedding 模型  | MiniCPM-Embedding-Light | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-Embedding-Light)｜[国外](https://huggingface.co/OpenBMB/MiniCPM-Embedding-Light) |
-| VanilaRAG, Adaptive-Note, KBalign | Reranker 模型       | MiniCPM-Reranker-Light | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-Reranker-Light)｜[国外](https://huggingface.co/OpenBMB/MiniCPM-Reranker-Light) |
-| VanilaRAG, Adaptive-Note, KBalign | 文本LLM             | MiniCPM3-4B        | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM3-4B)｜[国外](https://huggingface.co/openbmb/MiniCPM3-4B)         |
-| VisRAG                            | 图文 embedding 模型 | VisRAG-Ret         | [国外](https://huggingface.co/openbmb/VisRAG-Ret)                                                                 |
-| VisRAG                            | 多模态 LLM 模型     | MiniCPM-V-2_6      | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-V-2_6)｜[国外](https://huggingface.co/openbmb/MiniCPM-V-2_6)     |
+| VanilaRAG, Adaptive-Note, KBalign | Reranker 模型       | MiniCPM-Reranker-Light  | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-Reranker-Light)｜[国外](https://huggingface.co/OpenBMB/MiniCPM-Reranker-Light)   |
+| VanilaRAG, Adaptive-Note, KBalign | 文本LLM             | MiniCPM3-4B             | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM3-4B)｜[国外](https://huggingface.co/openbmb/MiniCPM3-4B)                         |
+| VisRAG                            | 图文 embedding 模型 | VisRAG-Ret              | [国外](https://huggingface.co/openbmb/VisRAG-Ret)                                                                                 |
+| VisRAG                            | 多模态 LLM 模型     | MiniCPM-V-2_6           | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-V-2_6)｜[国外](https://huggingface.co/openbmb/MiniCPM-V-2_6)                     |
 
 我们评测过程中使用的数据集和评测集等可公布的信息如下：
 
@@ -35,22 +35,22 @@ UltraRAG内置了一系列的模型调优方法和评价指标，为了验证这
 
 整体评测结果如下所示。
 
-| **端到端效果**       | **法条预测（3-2）****ROUGE-L** |
-| -------------------------- | ------------------------------------ |
-| **VanillaRAG**       | 40.75                                |
-| **UltraRAG-DDR**     | 53.14                                |
-| **UltraRAG-KBAlign** | 48.72                                |
+| 端到端效果       | 法条预测（3-2） ROUGE-L |
+| -------------------------- | -------------------------------- |
+| **VanillaRAG**       | 40.75                            |
+| **UltraRAG-DDR**     | 53.14                            |
+| **UltraRAG-KBAlign** | 48.72                            |
 
-| **端到端效果**             | **咨询（3-8）****ROUGE-L** |
-| -------------------------------- | -------------------------------- |
-| **VanillaRAG**             | 23.65                            |
-| **UltraRAG-Adaptive-Note** | 24.62                            |
-| **VanillaRAG-finetune**    | 25.85                            |
+| 端到端效果            | 咨询（3-8）ROUGE-L |
+| -------------------------------- | ---------------------------- |
+| **VanillaRAG**             | 23.65                        |
+| **UltraRAG-Adaptive-Note** | 24.62                        |
+| **VanillaRAG-finetune**    | 25.85                        |
 
-| **检索效果**                                              | **由gpt4o造的测试集 200条****MRR@10** | **由gpt4o造的测试集 200条****NDCG@10** | **由gpt4o造的测试集 200条****Recall@10** |
-| --------------------------------------------------------------- | ------------------------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| MiniCPM-Embedding-Light                                             | 36.46                                       | 40.05                                        | 54.50                                          |
-| MiniCPM-Embedding-Light-Finetune（Qwen2.5-14B-instruction造的2800条） | 37.57                                       | 42.12                                        | 56.50                                          |
+| 检索效果                                                    | 由gpt4o造的测试集 200条 MRR@10 | 由gpt4o造的测试集 200条 NDCG@10 | 由gpt4o造的测试集 200条 Recall@10 |
+| --------------------------------------------------------------------- | --------------------------------------- | ---------------------------------------- | ------------------------------------------ |
+| MiniCPM-Embedding-Light                                               | 36.46                                   | 40.05                                    | 54.50                                      |
+| MiniCPM-Embedding-Light-Finetune（Qwen2.5-14B-instruction造的2800条） | 37.57                                   | 42.12                                    | 56.50                                      |
 
 ### VanillaRAG的 case 分析
 
