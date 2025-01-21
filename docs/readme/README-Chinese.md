@@ -1,4 +1,3 @@
-
 <div align="center">
     <img src="../assets/logo.png" alt="UltraRAG Logo" width="450">
 </div>
@@ -95,7 +94,7 @@ UltraRAG 的架构由  **前端** **、服务和后端** 三个部分组成，�
 
 ## 💫效果评估
 
-为了验证 UltraRAG 在垂直领域的应用效果，我们以法律领域为例，收集了各类专业书籍，构建了包含 **88 万个切片** 的知识库，并基于相对完备的评测数据集，在 UltraRAG 上进行了系统性评估。以下为我们的评测结果。如需了解评测的详细内容，请参阅相关文档。[评测报告](https://modelbest.feishu.cn/docx/Bdo3d3YG8ocPV1xA2zacuUP4nWg?from=from_copylink)。
+为了验证 UltraRAG 在垂直领域的应用效果，我们以法律领域为例，收集了各类专业书籍，构建了包含 **88 万个切片** 的知识库，并基于相对完备的评测数据集，在 UltraRAG 上进行了系统性评估。以下为我们的评测结果。如需了解评测的详细内容，请参阅相关文档：[评测报告](../evaluation_report/evaluation_report.md)。
 
 | **端到端效果**       | **法条预测（3-2）****ROUGE-L** |
 | -------------------------- | ------------------------------------ |
@@ -161,6 +160,13 @@ UltraRAG 的架构由  **前端** **、服务和后端** 三个部分组成，�
   title={KBAlign: KBAlign: Efficient Self Adaptation on Specific Knowledge Bases},
   author={Zeng, Zheni and Chen, Yuxuan and Yu, Shi and Yan, Yukun and Liu, Zhenghao and Wang, Shuo and Han, Xu and Liu, Zhiyuan and Sun, Maosong},
   journal={arXiv preprint arXiv:2411.14790},
+  year={2024}
+}
+
+@article{zhu2024rageval,
+  title={Rageval: Scenario specific rag evaluation dataset generation framework},
+  author={Zhu, Kunlun and Luo, Yifan and Xu, Dingling and Wang, Ruobing and Yu, Shi and Wang, Shuo and Yan, Yukun and Liu, Zhenghao and Han, Xu and Liu, Zhiyuan and others},
+  journal={arXiv preprint arXiv:2408.01262},
   year={2024}
 }
 ```
