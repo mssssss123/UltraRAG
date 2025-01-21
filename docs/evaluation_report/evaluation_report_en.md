@@ -161,7 +161,7 @@ Compared to VanillaRAG, the overall responses of Adaptive-Note are more structur
 
 ![](../assets/en/visrag2.png)
 
-我们可以看到，对于"How can I charge my Tesla Model X?"这个query而言，VisRAG轻松检索到了汽车说明书中关于如何给汽车充电的那一页，并正确回答了问题。其相比于VanillaRAG，省去了包括OCR在内的繁琐的文档解析流程，也避免了对图文交错页面进行文档解析而引入的信息丢失，显著提高了端到端的性能。
+We can see that, for the query "How can I charge my Tesla Model X?", VisRAG successfully retrieved the page in the car manual that explains how to charge the vehicle and correctly answered the question. Compared to VanillaRAG, it eliminates the cumbersome document parsing process, including OCR, and avoids information loss that can occur when parsing text-and-image mixed pages. This significantly improves end-to-end performance.
 
 ## Appendix：List of Knowledge Base Books
 

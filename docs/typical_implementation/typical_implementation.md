@@ -371,8 +371,8 @@ UltraRAG-KBAlign 采用 **迭代自我校验** 的方式进行训练，需配置
 "context": [
 {"text": "xxx", "temperature": 0.5, "type": "raw", "x_score": 0.85}, 
 {"text": "xxx", "temperature": 0.5, "type": "aug", "x_score": 0.62}, 
-{"text": "xxx", "temperature": 0.6, "type": "raw", "x_score": 0.59}, 
-{"text": "xxx", "temperature": 0.6, "type": "aug", "x_score": 0.43, 
+{"text": "xxx", "temperature": 0.6, "type": "raw", "x_score": 0.59},
+{"text": "xxx", "temperature": 0.6, "type": "aug", "x_score": 0.43}, 
 {"text": "xxx", "temperature": 0.7, "type": "raw", "x_score": 0.58}, 
 {"text": "xxx", "temperature": 0.7, "type": "aug", "x_score": 0.69}, 
 {"text": "xxx", "temperature": 0.8, "type": "raw", "x_score": 0.25}, 
