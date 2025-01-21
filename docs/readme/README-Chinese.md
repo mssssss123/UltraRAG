@@ -4,9 +4,7 @@
 <p align="center">
     【<a href="../README.md">English</a>   | Chinese】
 </p>
-<p align="center">
-    【📚 <a href="https://modelbest.feishu.cn/docx/UDq0dzzm2omhWMxQ38bciLC7nyc">Document</a>】
-</p>
+
 
 ## 📖 概述
 
