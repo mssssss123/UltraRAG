@@ -5,7 +5,7 @@
     【English | <a href="docs/readme/README-Chinese.md">Chinese</a>】
 </p>
 <p align="center">
-    【📚 <a href="https://modelbest.feishu.cn/docx/UDq0dzzm2omhWMxQ38bciLC7nyc">Document</a>】
+    【📚 Document】
 </p>
 
 ## 📖 Overview
@@ -73,9 +73,9 @@ streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
 
 https://github.com/user-attachments/assets/b07d20d9-4121-404a-9cba-e89590bd4f4e
 
-The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink).
+The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](../user_guide/user_guide_en.md).
 
-If you are interested in the technical solutions involved, you can gain a more comprehensive understanding through the [UltraRAG Series](https://modelbest.feishu.cn/docx/OW07d5tE5oIdGLxz8mnc7GFknMf?from=from_copylink).
+If you are interested in the technical solutions involved, you can gain a more comprehensive understanding through the [UltraRAG Series](../typical_implementation/typical_implementation_en.md).
 
 ## 🔧 Overall Architecture
 
@@ -94,15 +94,15 @@ The architecture of UltraRAG is composed of three parts: **Frontend**, **Service
 
 ## 💫 Performance Evaluation
 
-To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](https://modelbest.feishu.cn/docx/Bdo3d3YG8ocPV1xA2zacuUP4nWg?from=from_copylink).
+To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](../evaluation_report/evaluation_report_en.md).
 
-| **End-to-End Performance** | **Statute Prediction (3-2)****ROUGE-L** |
+| **End-to-End Performance** | **Statute Prediction (3-2) ROUGE-L** |
 | -------------------------------- | --------------------------------------------- |
 | **VanillaRAG**             | 40.75                                         |
 | **UltraRAG-DDR**           | 53.14                                         |
 | **UltraRAG-KBAlign**       | 48.72                                         |
 
-| **End-to-End Performance** | **Consultation (3-8)****ROUGE-L** |
+| **End-to-End Performance** | **Consultation (3-8) ROUGE-L** |
 | -------------------------------- | --------------------------------------- |
 | **VanillaRAG**             | 23.65                                   |
 | **UltraRAG-Adaptive-Note** | 24.62                                   |
