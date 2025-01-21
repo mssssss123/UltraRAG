@@ -1,12 +1,12 @@
-bge-large-zh-v1.5:
-  model_id: BAAI/bge-large-zh-v1.5
+minicpm-embedding-light:
+  model_id: Openbmb/MiniCPM-Embedding-Light
   model_type: embedding
 
-bge-reranker-large:
-  model_id: BAAI/bge-reranker-large
+minicpm-reranker-light:
+  model_id: Openbmb/MiniCPM-Reranker-Light
   model_type: reranker
 
-Qwen2.5-14B-Instruct:
-  model_id: Qwen/Qwen2.5-14B-Instruct
+MiniCPM3-4B:
+  model_id: Openbmb/MiniCPM3-4B
   model_type: llm
 

@@ -18,14 +18,14 @@ nohup python -m ultrarag.server.run_server_hf_llm \
 > $(pwd)/logs/hf_llm.log 2>&1 &
 HF_PID=$!
 
-# Start BGE embedding service
+# Start embedding service
 export CUDA_VISIBLE_DEVICES=0
 nohup python -m ultrarag.server.run_embedding \
     -host localhost \
     -port 8845 \
-    -model_path $(pwd)/resource/models/bge-large-zh-v1.5 \
+    -model_path $(pwd)/resource/models/MiniCPM-Embedding-Light \
     -device cuda:0 \
-> $(pwd)/logs/bge-large-zh-v1.5.log 2>&1 &
+> $(pwd)/logs/MiniCPM-Embedding-Light.log 2>&1 &
 EMBED_PID=$!
 
 # Start reranker service
@@ -33,9 +33,9 @@ export CUDA_VISIBLE_DEVICES=0
 nohup python -m ultrarag.server.run_server_reranker \
     -host localhost \
     -port 8846 \
-    -model_path $(pwd)/resource/models/bge-reranker-large \
+    -model_path $(pwd)/resource/models/MiniCPM-Reranker-Light \
     -model_type bge_reranker \
-> $(pwd)/logs/bge-reranker-large.log 2>&1 &
+> $(pwd)/logs/MiniCPM-Reranker-Light.log 2>&1 &
 RERNK_PID=$!
 
 # Start VisRAG embedding service
@@ -48,14 +48,14 @@ nohup python -m ultrarag.server.run_embedding \
 > $(pwd)/logs/VisRAG-Ret.log 2>&1 &
 EMBED_PID=$!
 
-# Start vLLM service for Qwen model
+# Start vLLM service for Minicpm model
 export CUDA_VISIBLE_DEVICES=1
 nohup vllm serve \
-    $(pwd)/resource/models/Qwen2.5-14B-Instruct \
+    $(pwd)/resource/models/MiniCPM3-4B \
     --host localhost \
     --port 8847 \
     --dtype auto \
-    --served-model-name Qwen2.5-14B-Instruct \
+    --served-model-name MiniCPM3-4B \
     --trust-remote-code \
     --api-key empty \
 > $(pwd)/logs/vllm.log 2>&1 &
