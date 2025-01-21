@@ -1,4 +1,3 @@
-# UltraRAG
 
 <div align="center">
     <img src="../assets/logo.png" alt="UltraRAG Logo" width="450">
@@ -12,100 +11,106 @@
 
 ## 📖 概述
 
-UltraRAG是一个面向典型实现与灵活编辑的一站式RAG框架，同时支持快速实现研究型实验，以及个人的敏捷部署、评测和演示。和目前的RAG框架不同，UltraRAG 具有以下优势：
-  - 开箱即用的一站式的 RAG 框架，覆盖了数据构造、模型微调、评测和体验等环节
-  - 提供一个简单易用的WebUI，只需要在前端操作，无需编写代码即可完成各种的需求
-  - 不断完善的技术支持，致力于丰富和完善UltraRAG功能，加速你的科研和项目进度
+**UltraRAG 框架**由清华大学THUNLP联合东北大学NEUIR及面壁智能团队共同提出，基于敏捷化部署与模块化构造，引入了自动化的“数据构建-模型微调-推理评测”知识适配技术体系，提供了一站式、科研与开发双重友好的 RAG 系统解决方案。UltraRAG 显著简化了 RAG 系统在领域适配过程中，从数据构建到模型微调的全流程，助力科研人员与开发者高效应对复杂任务：
 
 <div align="center">
     <img src='../assets/zh/image.png' width=600>
 </div>
 
-## ✨️ 主要特点
-- **效果体验**：UltraRAG 内置模块化工具，可灵活定制并体验个性化工作流，同时提供多种预设工作流，包括 VisRAG、Adaptive-Note 和 VanillaRAG，满足不同的使用需求。
-- **数据构造**：从检索模型到生成模型，提供全流程的数据构造方案，可一键从知识库导入并生成数据。
-- **适配微调**：支持 Embedding 模型训练及 LLM 的 DPO/SFT 微调，配套提供完整的训练脚本，便于利用构造好的数据进行模型调优。
-- **效果评测**：涵盖检索模型与生成模型的多维评估指标，支持从整体到各环节全面评估模型和方法性能。
-**以上全部功能，都可以直接通过 web 前端快速实现。**
+- **零代码编程WebUI支持：** 零编程经验用户亦可上手操作全链路搭建和优化过程，包括 **多模态RAG方案VisRAG** ；
+- **合成与微调一键式解决：** 以自研**KBAlign、RAG-DDR**等方法为核心，一键式系统化数据构建 + 检索、生成模型多样微调策略支持下的性能优化；
+- **多维多阶段稳健式评估：** 以自研**RAGEval**方法为核心，融入面向有效/关键信息的多阶段评估方法，显著提升“模型评估”的稳健性；
+- **科研友好探索工作集成：** 内置**THUNLP-RAG组自研方法**及其他前沿RAG方法，支持模块级持续探索与研发。
+
+**以上全部功能，都可以直接通过 web ****前端****快速实现。**
 
 <div align="center">
     <img src='../assets/zh/image2.png' width=600>
 </div>
 
+## ⚡️快速开始
+
+### 环境依赖
+
+**CUDA** 版本在**12.2**及以上
+
+**Python** 版本在**3.10**及以上
+
+### 快速部署
+
+你可以通过以下几种方式部署 UltraRAG，运行前端页面：
+
+1. **通过docker部署**
+
+运行以下命令，然后在浏览器访问“[http://localhost:8843](http://localhost:8843/)"。
+
+```Bash
+docker-compose up --build -d
+```
+
+2. **通过****conda****部署**
+
+运行以下命令，然后在浏览器访问“[http://localhost:8843](http://localhost:8843/)"。
+
+```Bash
+# 创建conda环境
+conda create -n ultrarag python=3.10
+
+#激活conda环境
+conda activate ultrarag
+
+# 安装相关依赖
+pip install -r requirements.txt
+
+# 运行以下脚本下载模型，默认下载到resources/models目录下
+# 下载的模型列表在resources/models/model_list.txt中
+python scripts/download_models.py
+
+# 运行demo页面
+streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
+```
+
+### 简单上手
+
+<video data-lark-video-uri="drivetoken://PfxmbQXoeoaCqNxTJs8c7mIinQd" data-lark-video-mime="video/quicktime" data-lark-video-size="24798978" data-lark-video-duration="0" data-lark-video-name="demo.mov" data-lark-video-width="1920" data-lark-video-height="1260"></video>
+
+以上视频简单演示了上手体验过程，为了方便您使用 UltraRAG，我们提供了一份详细的说明文档，方便您上手 UltraRAG 完成体验和调优模型[使用说明](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink)。
+
+如果您对其中涉及到的技术方案更感兴趣，您可以通过[UltraRAG系列](https://modelbest.feishu.cn/docx/OW07d5tE5oIdGLxz8mnc7GFknMf?from=from_copylink)获取更全面的了解。
+
 ## 🔧整体架构
-UltraRAG 的框架整体上分为三个部分：前端页面、后端模块、微服务等。
-- 前端页面涉及资源管理和功能页面两个部分，资源管理包含模型管理和知识库管理；功能页面包含数据构造、模型训练、效果评测和推理体验。
-- 后端模块分为 workflow、modules 和涉及模型调优套件：datasets（构造数据）、finetune（模型微调）和 evaluate（效果评测）。其中 workflow 提供了几类典型的工作流的实现，你也可以follow 其中示例开发自己的工作流；modules 提供几类RAG 场景中的典型的实现模块，每一类模块都可以方便地复用到 workflow 的开发过程中；模型调优套件提供了一整套的 pipeline 和技术方法，涵盖了各项论文的技术成果，目前也在不断更新中。
-- 微服务接口：由于 UltraRAG 提供了涉及 RAG 的一站式框架方案，各类模型涉及到微调，因此需要具备微服务的部署能力，目前 UltraRAG 已经加入了对主流 RAG 链路中经典模型的支持，后续也会不断完善，兼容更多的模型。
+
+UltraRAG 的架构由  **前端** **、服务和后端** 三个部分组成，具体介绍如下：
+
+* **后端**
+  * **Modules （模块层）：**  定义 RAG 系统中的关键组成部分，例如知识库、检索模型、生成模型等，支持用户基于标准类进行灵活定制。
+  * **Workflow（流程层）：** 规范 RAG 系统的组成模式，提供标准化的基础 RAG 实现，并集成团队自研的典型方法，如 Adapative-Note、VisRAG 等，支持用户灵活搭建与调整，且将持续补充与优化。
+  * **Function （功能层）：** 负责 RAG 系统优化过程中的关键操作，包括数据合成、系统评估和模型微调等，助力系统性能的全面提升。
+* **服务** ：UltraRAG 除了支持基于实例方式搭建 RAG 系统，还提供微服务部署模式，以优化应用过程中的用户体验，支持 Embedding Model、LLM 以及向量数据库等关键服务的灵活部署。
+* **前端** ：前端划分为资源管理与功能页面两个部分。其中，资源管理包括 **模型管理** 和  **知识库管理** ，而功能页面涵盖 **数据构造、模型训练、效果评测** 及  **推理体验** ，为用户提供便捷的交互支持。
 
 <div align="center">
     <img src='../assets/zh/image3.png' width=600>
 </div>
 
-## ⚡️快速开始
-UltraRAG支持在单机部署简单的演示demo，你可以通过导入python依赖的方式在本地部署简单的UI对话示例。你可以通过以下几种方式使用 UltraRAG 框架：
-1. docker部署
-    
-    运行以下命令，然后在浏览器访问“http://localhost:8843"
-    ```bash
-    docker-compose up --build -d
-    ```
-2. conda部署
-    ```bash
-    # 创建conda环境
-    conda create -n UltraRAG python=3.10
+## 💫效果评估
 
-    # 激活conda环境
-    conda activate UltraRAG
+为了验证 UltraRAG 在垂直领域的应用效果，我们以法律领域为例，收集了各类专业书籍，构建了包含 **88 万个切片** 的知识库，并基于相对完备的评测数据集，在 UltraRAG 上进行了系统性评估。以下为我们的评测结果。如需了解评测的详细内容，请参阅相关文档。[评测报告](https://modelbest.feishu.cn/docx/Bdo3d3YG8ocPV1xA2zacuUP4nWg?from=from_copylink)。
 
-    # 安装相关依赖
-    pip install -r requirements.txt
+| **端到端效果**       | **法条预测（3-2）****ROUGE-L** |
+| -------------------------- | ------------------------------------ |
+| **VanillaRAG**       | 40.75                                |
+| **UltraRAG-DDR**     | 53.14                                |
+| **UltraRAG-KBAlign** | 48.72                                |
 
-    # 运行demo页面
-    streamlit run UltraRAG/webui/app.py --server.fileWatcherType none
-    ```
-
-### 模型下载
-运行以下指令下载模型，默认下载到**resources/models**目录下，下载的模型列表在**UltraRAG/resources/models/model_list.txt**中
-```bash
-python UltraRAG/scripts/download_models.py
-```
-
-### 环境依赖
-
-**cuda**版本在**12.2**及以上
-
-**python**版本在**3.10**及以上
-
-## 💫典型实现
-
-结合法律领域数据评测VanillaRAG模型微调前后的效果
-
-1. **VanillaRAG-original**  
-   使用 UltraRAG 默认的模型（BGE-M3 + MiniCPM3-4B）下评测的效果。
-2. **VanillaRAG-finetune**  
-   基于法律领域数据，对 UltraRAG-Embedding 和 UltraRAG-DDR 进行微调后的效果。
-
-以下是这两个 workflow 使用 UltraRAG 的评测页面得到的结果。微调后整体效果提升 **3%**，其中知识问答略有下降，但法条预测和咨询两个数据集均提升 **2% 以上**。
-
----
-
-| **方法**              | **知识问答 (1-2)** | **法条预测 (3-2)** | **咨询 (3-8)** | **平均** |
-|------------------------|--------------------|---------------------|----------------|----------|
-| **Vanilla**            | 68.8              | 44.96              | 23.65         | 45.80    |
-| **Renote**             | -                 | -                  | -             | -        |
-| **Embedding**          | -                 | -                  | -             | -        |
-| **DDR**                | -                 | 53.14              | 23.59         | -        |
-| **KBAlign**            | -                 | -                  | -             | -        |
-| **Finetune**           | 67.8              | 52.80              | 25.85         | 48.82    |
-
-| 模型                                       | 由gpt4o造的测试集 200条 MRR@10 | 由gpt4o造的测试集 200条 NDCG@10 | 由gpt4o造的测试集 200条 Recall@10 |
-|------------------------------------------|-----------------------------|------------------------------|-------------------------------|
-| UltraRAG-Embedding                       | 36.46                       | 40.05                        | 54.50                         |
-| UltraRAG-Embedding-Finetune(Qwen2.5-14B-instruction造的2800条) | 37.57                       | 42.12                        | 56.50                         |
-
+| **端到端效果**             | **咨询（3-8）****ROUGE-L** |
+| -------------------------------- | -------------------------------- |
+| **VanillaRAG**             | 23.65                            |
+| **UltraRAG-Adaptive-Note** | 24.62                            |
+| **VanillaRAG-finetune**    | 25.85                            |
 
 ## ‍🤝致谢
+
 感谢以下贡献者的代码提交和测试，欢迎新成员加入我们，致力于构建完整生态！
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
@@ -127,6 +132,7 @@ python UltraRAG/scripts/download_models.py
 - 源代码采用[Apache-2.0](https://github.com/OpenBMB/MiniCPM/blob/main/LICENSE)许可证授权。
 
 ## 📑引用
+
 如果您觉得这个仓库有用，请考虑给一个星标 ⭐ 并引用支持。
 
 ```bib
@@ -158,4 +164,3 @@ python UltraRAG/scripts/download_models.py
   year={2024}
 }
 ```
-
