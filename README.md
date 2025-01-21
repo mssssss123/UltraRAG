@@ -89,7 +89,7 @@ The architecture of UltraRAG is composed of three parts: **Frontend**, **Service
 * **Frontend:** The frontend is divided into Resource Management and Function Pages. Resource Management includes **Model Management** and **Knowledge Base Management**, while the Function Pages cover **Data Construction, Model Training, Effect Evaluation**, and **Inference Experience**, providing users with convenient interactive support.
 
 <div align="center">
-    <img src='../assets/zh/image3.png' width=600>
+    <img src='docs/assets/en/image3.png' width=600>
 </div>
 
 ## 💫 Performance Evaluation

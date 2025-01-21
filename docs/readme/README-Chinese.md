@@ -74,9 +74,9 @@ streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
 https://github.com/user-attachments/assets/b04d5317-3378-4d4f-80e4-0e84dea54778
 
 
-以上视频简单演示了上手体验过程，为了方便您使用 UltraRAG，我们提供了一份详细的说明文档，方便您上手 UltraRAG 完成体验和调优模型[使用说明](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink)。
+以上视频简单演示了上手体验过程，为了方便您使用 UltraRAG，我们提供了一份详细的说明文档，方便您上手 UltraRAG 完成体验和调优模型[使用说明](../user_guide/user_guide.md)。
 
-如果您对其中涉及到的技术方案更感兴趣，您可以通过[UltraRAG系列](https://modelbest.feishu.cn/docx/OW07d5tE5oIdGLxz8mnc7GFknMf?from=from_copylink)获取更全面的了解。
+如果您对其中涉及到的技术方案更感兴趣，您可以通过[UltraRAG系列](../typical_implementation/typical_implementation.md)获取更全面的了解。
 
 ## 🔧整体架构
 

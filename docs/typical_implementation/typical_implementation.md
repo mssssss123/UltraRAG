@@ -1,7 +1,5 @@
 ## 典型实现
 
-**暂时无法在飞书文档外展示此内容**
-
 ### General methods
 
 #### Vanilla RAG

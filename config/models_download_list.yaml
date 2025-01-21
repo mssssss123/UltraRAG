@@ -1,7 +1,6 @@
-# bge-m3:
-#   model_id: BAAI/bge-m3
-#   model_type: embedding
-
+bge-large-zh-v1.5:
+  model_id: BAAI/bge-large-zh-v1.5
+  model_type: embedding
 
 bge-reranker-large:
   model_id: BAAI/bge-reranker-large
