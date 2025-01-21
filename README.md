@@ -70,12 +70,8 @@ streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
 ```
 
 ### Easy to Get Started
-<div style="text-align: center;">
-  <video controls width="600">
-    <source src="docs/assets/en/quick_start.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
+
+https://github.com/user-attachments/assets/b07d20d9-4121-404a-9cba-e89590bd4f4e
 
 The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink).
 
