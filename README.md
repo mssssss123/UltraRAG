@@ -7,7 +7,7 @@
 
 ## 📖 Overview
 
-The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, Modelbest.Inc and 9#AISoft group. It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
+The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, Modelbest.Inc, and 9#AISoft team. It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
 
 <div align="center">
   <img src='docs/assets/en/feature.jpg' width=600>
