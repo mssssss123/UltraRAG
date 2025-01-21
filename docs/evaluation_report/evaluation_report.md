@@ -157,9 +157,9 @@ UltraRAG内置了一系列的模型调优方法和评价指标，为了验证这
 
 ### **UltraRAG-VisRAG的case 分析**
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=YjUwMWMxNWY5OTUwOTQxNjUzZTgzYjRiNWVkMjc0YWNfSW94S2NVZFJ2SlFGT2xRUmlMcWs1aGpPSlM3VTI3blVfVG9rZW46QTcyU2JoRkhEb2xONDh4TFdCMGNhZ3RybjZnXzE3Mzc0NDIwNTk6MTczNzQ0NTY1OV9WNA)
+![](../assets/en/visrag1.jpg)
 
-![](https://modelbest.feishu.cn/space/api/box/stream/download/asynccode/?code=YzQ2ZThiMjFkY2UwMmE0ZDYxNjI1MDAzN2I3NGE4ZDVfakN1Nm10Tm1RaHFRU0xEVXhya24waWplaGdXempUZDZfVG9rZW46T2hQcmJXU29Tb2xCMUh4T1g4eWNZSm4xbmdiXzE3Mzc0NDIwNTk6MTczNzQ0NTY1OV9WNA)
+![](../assets/en/visrag2.png)
 
 我们可以看到，对于"How can I charge my Tesla Model X?"这个query而言，VisRAG轻松检索到了汽车说明书中关于如何给汽车充电的那一页，并正确回答了问题。其相比于VanillaRAG，省去了包括OCR在内的繁琐的文档解析流程，也避免了对图文交错页面进行文档解析而引入的信息丢失，显著提高了端到端的性能。
 

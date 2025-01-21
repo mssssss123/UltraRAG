@@ -2,7 +2,7 @@
     <img src="../assets/logo.png" alt="UltraRAG Logo" width="450">
 </div>
 <p align="center">
-    【<a href="../README.md">English</a>   | Chinese | <a href="./README-Japanese.md">Japanese</a>】
+    【<a href="../README.md">English</a>   | Chinese】
 </p>
 <p align="center">
     【📚 <a href="https://modelbest.feishu.cn/docx/UDq0dzzm2omhWMxQ38bciLC7nyc">Document</a>】
@@ -71,7 +71,13 @@ streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
 
 ### 简单上手
 
-<video data-lark-video-uri="drivetoken://PfxmbQXoeoaCqNxTJs8c7mIinQd" data-lark-video-mime="video/quicktime" data-lark-video-size="24798978" data-lark-video-duration="0" data-lark-video-name="demo.mov" data-lark-video-width="1920" data-lark-video-height="1260"></video>
+<div style="text-align: center;">
+  <video controls width="600">
+    <source src="../assets/zh/quick_start_cn.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
 
 以上视频简单演示了上手体验过程，为了方便您使用 UltraRAG，我们提供了一份详细的说明文档，方便您上手 UltraRAG 完成体验和调优模型[使用说明](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink)。
 

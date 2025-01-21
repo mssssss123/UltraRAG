@@ -2,7 +2,7 @@
     <img src="docs/assets/logo.png" alt="UltraRAG Logo" width="450">
 </div>
 <p align="center">
-    【English | <a href="docs/readme/README-Chinese.md">Chinese</a> | <a href="docs/readme/README-Chinese.md">Japanese</a>】
+    【English | <a href="docs/readme/README-Chinese.md">Chinese</a>】
 </p>
 <p align="center">
     【📚 <a href="https://modelbest.feishu.cn/docx/UDq0dzzm2omhWMxQ38bciLC7nyc">Document</a>】
@@ -70,8 +70,12 @@ streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
 ```
 
 ### Easy to Get Started
-
-<video data-lark-video-uri="drivetoken://PfxmbQXoeoaCqNxTJs8c7mIinQd" data-lark-video-mime="video/quicktime" data-lark-video-size="24798978" data-lark-video-duration="0" data-lark-video-name="demo.mov" data-lark-video-width="1920" data-lark-video-height="1260"></video>
+<div style="text-align: center;">
+  <video controls width="600">
+    <source src="docs/assets/en/quick_start.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
 
 The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink).
 
@@ -162,7 +166,6 @@ If you find this repository useful, please consider giving it a star ⭐ and cit
   journal={arXiv preprint arXiv:2411.14790},
   year={2024}
 }
-
 
 @article{zhu2024rageval,
   title={Rageval: Scenario specific rag evaluation dataset generation framework},
