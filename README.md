@@ -1,4 +1,3 @@
-
 <div align="center">
     <img src="docs/assets/logo.png" alt="UltraRAG Logo" width="450">
 </div>
@@ -27,7 +26,6 @@ The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghu
 <div align="center">
   <img src='docs/assets/en/image2.png' width=600>
 </div>
-
 
 ## ⚡️ Quick Start
 
@@ -98,17 +96,17 @@ The architecture of UltraRAG is composed of three parts: **Frontend**, **Service
 
 To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](https://modelbest.feishu.cn/docx/Bdo3d3YG8ocPV1xA2zacuUP4nWg?from=from_copylink).
 
-| **End-to-End Performance**  | **Statute Prediction (3-2)****ROUGE-L** |
-| --------------------------- | ---------------------------------------- |
-| **VanillaRAG**              | 40.75                                    |
-| **UltraRAG-DDR**            | 53.14                                    |
-| **UltraRAG-KBAlign**        | 48.72                                    |
+| **End-to-End Performance** | **Statute Prediction (3-2)****ROUGE-L** |
+| -------------------------------- | --------------------------------------------- |
+| **VanillaRAG**             | 40.75                                         |
+| **UltraRAG-DDR**           | 53.14                                         |
+| **UltraRAG-KBAlign**       | 48.72                                         |
 
-| **End-to-End Performance**          | **Consultation (3-8)****ROUGE-L** |
-| ----------------------------------- | --------------------------------- |
-| **VanillaRAG**                      | 23.65                             |
-| **UltraRAG-Adaptive-Note**          | 24.62                             |
-| **VanillaRAG-finetune**             | 25.85                             |
+| **End-to-End Performance** | **Consultation (3-8)****ROUGE-L** |
+| -------------------------------- | --------------------------------------- |
+| **VanillaRAG**             | 23.65                                   |
+| **UltraRAG-Adaptive-Note** | 24.62                                   |
+| **VanillaRAG-finetune**    | 25.85                                   |
 
 ## ‍🤝 Acknowledgments
 
@@ -136,7 +134,6 @@ Thanks to the following contributors for code submissions and testing. New membe
 
 If you find this repository useful, please consider giving it a star ⭐ and citing it to show your support.
 
-
 ```bib
 @article{li2024rag,
   title={RAG-DDR: Optimizing Retrieval-Augmented Generation Using Differentiable Data Rewards},
@@ -163,6 +160,14 @@ If you find this repository useful, please consider giving it a star ⭐ and cit
   title={KBAlign: KBAlign: Efficient Self Adaptation on Specific Knowledge Bases},
   author={Zeng, Zheni and Chen, Yuxuan and Yu, Shi and Yan, Yukun and Liu, Zhenghao and Wang, Shuo and Han, Xu and Liu, Zhiyuan and Sun, Maosong},
   journal={arXiv preprint arXiv:2411.14790},
+  year={2024}
+}
+
+
+@article{zhu2024rageval,
+  title={Rageval: Scenario specific rag evaluation dataset generation framework},
+  author={Zhu, Kunlun and Luo, Yifan and Xu, Dingling and Wang, Ruobing and Yu, Shi and Wang, Shuo and Yan, Yukun and Liu, Zhenghao and Han, Xu and Liu, Zhiyuan and others},
+  journal={arXiv preprint arXiv:2408.01262},
   year={2024}
 }
 ```
