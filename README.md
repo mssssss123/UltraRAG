@@ -1,4 +1,3 @@
-# UltraRAG
 
 <div align="center">
     <img src="docs/assets/logo.png" alt="UltraRAG Logo" width="450">
@@ -12,110 +11,108 @@
 
 ## 📖 Overview
 
-UltraRAG is a one-stop RAG framework designed for typical implementations and flexible editing. It supports rapid research-oriented experiments, agile deployment, evaluation, and demonstration for individuals. Unlike existing RAG frameworks, UltraRAG offers the following advantages:
-
-- A plug-and-play, one-stop RAG framework that covers data construction, model fine-tuning, evaluation, and demonstration.
-- Provides a user-friendly WebUI that allows you to meet various needs without writing any code.
-- Continuously improving technical support to enrich and enhance UltraRAG's functionality, accelerating your research and project progress.
+The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, and Modelbest.Inc . It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
 
 <div align="center">
   <img src='docs/assets/en/image.png' width=600>
 </div>
 
-## ✨️ Key Features
+- **No-Code Programming WebUI Support:** Users with no programming experience can easily operate the full link setup and optimization process, including the **multimodal RAG solution VisRAG**;
+- **One-Click Solution for Synthesis and Fine-Tuning:** Centered around proprietary methods such as **KBAlign, RAG-DDR**, the system allows for one-click systematic data construction + retrieval, and supports performance optimization with diverse model fine-tuning strategies;
+- **Multidimensional, Multi-Stage Robust Evaluation:** Using the proprietary **RAGEval** method at its core, it incorporates multi-stage assessment methods focused on effective/key information, significantly enhancing the robustness of "model evaluation";
+- **Research-Friendly Exploration Work Integration:** It includes **THUNLP-RAG group's proprietary methods** and other cutting-edge RAG methods, supporting continuous module-level exploration and development.
 
-- **Performance Experience**: UltraRAG includes modular tools for flexible customization and personalized workflows. It also offers several preset workflows, such as VisRAG, Adaptive-Note, and VanillaRAG, to meet different usage requirements.
-- **Data Construction**: From retrieval models to generation models, UltraRAG offers end-to-end data construction solutions. It allows one-click data import and generation from knowledge bases.
-- **Fine-tuning Adaptation**: Supports training of embedding models and DPO/SFT fine-tuning of LLMs, with complete training scripts provided to facilitate model optimization using constructed data.
-- **Performance Evaluation**: Covers multidimensional evaluation metrics for retrieval and generation models, enabling comprehensive performance assessment from individual components to the overall system.
-  **All these features can be accessed directly through the web frontend.**
+**All of the above features can be quickly implemented directly through the web frontend.**
 
 <div align="center">
   <img src='docs/assets/en/image2.png' width=600>
 </div>
 
-## 🔧 Architecture
-
-UltraRAG's framework is divided into three main parts: frontend interface, backend modules, and microservices.
-
-- The frontend interface consists of resource management and functional pages. Resource management includes model and knowledge base management. Functional pages cover data construction, model training, performance evaluation, and inference experience.
-- Backend modules are categorized into workflow, modules, and model fine-tuning suites: datasets (data construction), finetune (model fine-tuning), and evaluate (performance evaluation). The workflow module implements several typical workflows, which you can use as examples to develop your own workflows. The modules provide typical components for RAG scenarios, which can be easily reused in workflow development. The model fine-tuning suite offers a complete pipeline and technical methods, incorporating results from various papers, and is continuously updated.
-- Microservice Interfaces: As a one-stop framework for RAG, UltraRAG involves microservice deployment capabilities for model fine-tuning. It currently supports mainstream RAG pipeline models and will continue to expand compatibility with more models.
-
-<div align="center">
-  <img src='docs/assets/en/image3.png' width=600>
-</div>
 
 ## ⚡️ Quick Start
 
-UltraRAG supports simple demo deployment on a single machine. You can deploy a basic UI dialogue demo locally by installing Python dependencies. Here are several ways to use the UltraRAG framework:
+### Environmental Dependencies
 
-1. Docker Deployment
+**CUDA** version should be **12.2** or above.
 
-   Run the following commands, then access "http://localhost:8843" in your browser:
+**Python** version should be **3.10** or above.
 
-   ```bash
-   docker-compose up --build -d
-   ```
-2. Conda Deployment
+### Quick Deployment
 
-   ```bash
-   # Create a conda environment
-   conda create -n UltraRAG python=3.10
+You can deploy UltraRAG and run the front-end page using the following methods:
 
-   # Activate the conda environment
-   conda activate UltraRAG
+1. **Deploy via Docker**
 
-   # Install dependencies
-   pip install -r requirements.txt
+Run the following command, then visit "[http://localhost:8843](http://localhost:8843/)" in your browser.
 
-   # Run the demo page
-   streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
-   ```
-
-### Model Download
-
-Run the following command to download models. By default, models will be downloaded to the **resources/models** directory. The list of downloadable models is in **UltraRAG/resources/models/model_list.txt**.
-
-```bash
-python UltraRAG/scripts/download_models.py
+```Bash
+docker-compose up --build -d
 ```
 
-### Environment Requirements
+2. **Deploy via Conda**
 
-**CUDA** version: **12.2** or higher
+Run the following commands, then visit "[http://localhost:8843](http://localhost:8843/)" in your browser.
 
-**Python** version: **3.10** or higher
+```Bash
+# Create a conda environment
+conda create -n ultrarag python=3.10
 
-## 💫Typical implementation
+# Activate the conda environment
+conda activate ultrarag
 
-### Evaluation of VanillaRAG Model Before and After Fine-tuning with Legal Domain Data
+# Install relevant dependencies
+pip install -r requirements.txt
 
-1. **VanillaRAG-original**Results evaluated using the default UltraRAG model (BGE-M3 + MiniCPM3-4B).
-2. **VanillaRAG-finetune**
-   Results after fine-tuning MiniCPM-Embedding-Light and UltraRAG-DDR with legal domain data.
+# Run the following script to download models, by default they will be downloaded to the resources/models directory
+# The list of downloaded models is in resources/models/model_list.txt
+python scripts/download_models.py
 
-The following results are obtained from the UltraRAG evaluation page for these two workflows. Fine-tuning led to an overall improvement of **3%**, with a slight decrease in knowledge Q&A performance but over **2% improvements** in the legal provision prediction and consultation datasets.
+# Run the demo page
+streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
+```
 
----
+### Easy to Get Started
 
-| **Method**    | **Knowledge Q&A (1-2)** | **Provision Prediction (3-2)** | **Consultation (3-8)** | **Average** |
-| ------------------- | ----------------------------- | ------------------------------------ | ---------------------------- | ----------------- |
-| **Vanilla**   | 68.8                          | 44.96                                | 23.65                        | 45.80             |
-| **Renote**    | -                             | -                                    | -                            | -                 |
-| **Embedding** | -                             | -                                    | -                            | -                 |
-| **DDR**       | -                             | 53.14                                | 23.59                        | -                 |
-| **KBAlign**   | -                             | -                                    | -                            | -                 |
-| **Finetune**  | 67.8                          | 52.80                                | 25.85                        | 48.82             |
+<video data-lark-video-uri="drivetoken://PfxmbQXoeoaCqNxTJs8c7mIinQd" data-lark-video-mime="video/quicktime" data-lark-video-size="24798978" data-lark-video-duration="0" data-lark-video-name="demo.mov" data-lark-video-width="1920" data-lark-video-height="1260"></video>
 
-| Model                                                              | MRR@10 for 200 Test Samples by GPT-4o | NDCG@10 for 200 Test Samples by GPT-4o | Recall@10 for 200 Test Samples by GPT-4o |
-| ------------------------------------------------------------------ | ------------------------------------- | -------------------------------------- | ---------------------------------------- |
-| MiniCPM-Embedding-Light                                                 | 36.46                                 | 40.05                                  | 54.50                                    |
-| MiniCPM-Embedding-Light-Finetune(Qwen2.5-14B-instruction, 2800 samples) | 37.57                                 | 42.12                                  | 56.50                                    |
+The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](https://modelbest.feishu.cn/docx/X7oKdIOcRoYZ4sxjWM4coFT2njh?from=from_copylink).
 
-## ‍🤝Acknowledgments
+If you are interested in the technical solutions involved, you can gain a more comprehensive understanding through the [UltraRAG Series](https://modelbest.feishu.cn/docx/OW07d5tE5oIdGLxz8mnc7GFknMf?from=from_copylink).
 
-We sincerely thank the following contributors for their code contributions and testing. New members are welcome to join us in building a complete ecosystem!
+## 🔧 Overall Architecture
+
+The architecture of UltraRAG is composed of three parts: **Frontend**, **Service**, and **Backend**. The specifics are as follows:
+
+* **Backend**
+  * **Modules (Module Layer):** Defines the key components in the RAG system, such as the knowledge base, retrieval model, and generation model, supporting users to customize flexibly based on standard classes.
+  * **Workflow (Process Layer):** Standardizes the composition patterns of the RAG system, provides a standardized basic RAG implementation, and integrates team-developed typical methods like Adaptive-Note and VisRAG. It supports users in building and adjusting flexibly and will continue to be supplemented and optimized.
+  * **Function (Function Layer):** Responsible for key operations in the optimization process of the RAG system, including data synthesis, system evaluation, and model fine-tuning, contributing to the comprehensive improvement of system performance.
+* **Service:** Apart from supporting instance-based RAG system construction, UltraRAG also provides a microservice deployment mode to optimize user experience during application, supporting flexible deployment of key services like Embedding Model, LLM, and vector databases.
+* **Frontend:** The frontend is divided into Resource Management and Function Pages. Resource Management includes **Model Management** and **Knowledge Base Management**, while the Function Pages cover **Data Construction, Model Training, Effect Evaluation**, and **Inference Experience**, providing users with convenient interactive support.
+
+<div align="center">
+    <img src='../assets/zh/image3.png' width=600>
+</div>
+
+## 💫 Performance Evaluation
+
+To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](https://modelbest.feishu.cn/docx/Bdo3d3YG8ocPV1xA2zacuUP4nWg?from=from_copylink).
+
+| **End-to-End Performance**  | **Statute Prediction (3-2)****ROUGE-L** |
+| --------------------------- | ---------------------------------------- |
+| **VanillaRAG**              | 40.75                                    |
+| **UltraRAG-DDR**            | 53.14                                    |
+| **UltraRAG-KBAlign**        | 48.72                                    |
+
+| **End-to-End Performance**          | **Consultation (3-8)****ROUGE-L** |
+| ----------------------------------- | --------------------------------- |
+| **VanillaRAG**                      | 23.65                             |
+| **UltraRAG-Adaptive-Note**          | 24.62                             |
+| **VanillaRAG-finetune**             | 25.85                             |
+
+## ‍🤝 Acknowledgments
+
+Thanks to the following contributors for code submissions and testing. New members are welcome to join us in striving to build a complete ecosystem!
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
   <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
@@ -137,7 +134,8 @@ We sincerely thank the following contributors for their code contributions and t
 
 ## 📑 Citation
 
-If you find this repository useful, please consider giving it a star ⭐ and citing it in your work.
+If you find this repository useful, please consider giving it a star ⭐ and citing it to show your support.
+
 
 ```bib
 @article{li2024rag,
