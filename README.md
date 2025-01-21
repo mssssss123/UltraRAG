@@ -4,9 +4,6 @@
 <p align="center">
     【English | <a href="docs/readme/README-Chinese.md">Chinese</a>】
 </p>
-<p align="center">
-    【📚 Document】
-</p>
 
 ## 📖 Overview
 

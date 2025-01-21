@@ -8,8 +8,8 @@ UltraRAG内置了一系列的模型调优方法和评价指标，为了验证这
 
 | **场景**                    | **模型**      | **值**       | **模型获取路径**                                                                                         |
 | --------------------------------- | ------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| VanilaRAG, Adaptive-Note, KBalign | 文本embedding 模型  | UltraRAG-Embedding | 国内｜国外                                                                                                     |
-| VanilaRAG, Adaptive-Note, KBalign | Reranker 模型       | bge-large-reranker | [国内](https://modelscope.cn/models/BAAI/bge-reranker-large)｜[国外](https://huggingface.co/BAAI/bge-reranker-large) |
+| VanilaRAG, Adaptive-Note, KBalign | 文本embedding 模型  | MiniCPM-Embedding-Light | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-Embedding-Light)｜[国外](https://huggingface.co/OpenBMB/MiniCPM-Embedding-Light) |
+| VanilaRAG, Adaptive-Note, KBalign | Reranker 模型       | MiniCPM-Reranker-Light | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-Reranker-Light)｜[国外](https://huggingface.co/OpenBMB/MiniCPM-Reranker-Light) |
 | VanilaRAG, Adaptive-Note, KBalign | 文本LLM             | MiniCPM3-4B        | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM3-4B)｜[国外](https://huggingface.co/openbmb/MiniCPM3-4B)         |
 | VisRAG                            | 图文 embedding 模型 | VisRAG-Ret         | [国外](https://huggingface.co/openbmb/VisRAG-Ret)                                                                 |
 | VisRAG                            | 多模态 LLM 模型     | MiniCPM-V-2_6      | [国内](https://modelscope.cn/models/OpenBMB/MiniCPM-V-2_6)｜[国外](https://huggingface.co/openbmb/MiniCPM-V-2_6)     |
@@ -49,8 +49,8 @@ UltraRAG内置了一系列的模型调优方法和评价指标，为了验证这
 
 | **检索效果**                                              | **由gpt4o造的测试集 200条****MRR@10** | **由gpt4o造的测试集 200条****NDCG@10** | **由gpt4o造的测试集 200条****Recall@10** |
 | --------------------------------------------------------------- | ------------------------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| UltraRAG-Embedding                                              | 36.46                                       | 40.05                                        | 54.50                                          |
-| UltraRAG-Embedding-Finetune(Qwen2.5-14B-instruction造的2800条） | 37.57                                       | 42.12                                        | 56.50                                          |
+| MiniCPM-Embedding-Light                                             | 36.46                                       | 40.05                                        | 54.50                                          |
+| MiniCPM-Embedding-Light-Finetune（Qwen2.5-14B-instruction造的2800条） | 37.57                                       | 42.12                                        | 56.50                                          |
 
 ### VanillaRAG的 case 分析
 

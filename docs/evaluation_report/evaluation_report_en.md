@@ -8,11 +8,11 @@ The list of models used in our experiments is shown below. Besides supporting th
 
 | **Scenario**                  | **Model**               | **Value**             | **Model Access Path**                                                                                      |
 | ----------------------------- | ----------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------- |
-| VanilaRAG, Adaptive-Note, KBalign | Text Embedding Model    | UltraRAG-Embedding    | Domestic｜Overseas                                                                                           |
-| VanilaRAG, Adaptive-Note, KBalign | Reranker Model         | bge-large-reranker    | [Domestic](https://modelscope.cn/models/BAAI/bge-reranker-large)｜[Overseas](https://huggingface.co/BAAI/bge-reranker-large) |
-| VanilaRAG, Adaptive-Note, KBalign | Text LLM                | MiniCPM3-4B           | [Domestic](https://modelscope.cn/models/OpenBMB/MiniCPM3-4B)｜[Overseas](https://huggingface.co/openbmb/MiniCPM3-4B)        |
-| VisRAG                          | Image-Text Embedding Model | VisRAG-Ret            | [Overseas](https://huggingface.co/openbmb/VisRAG-Ret)                                                        |
-| VisRAG                          | Multimodal LLM Model   | MiniCPM-V-2_6        | [Domestic](https://modelscope.cn/models/OpenBMB/MiniCPM-V-2_6)｜[Overseas](https://huggingface.co/openbmb/MiniCPM-V-2_6)    |
+| VanilaRAG, Adaptive-Note, KBalign | Text Embedding Model    | MiniCPM-Embedding-Light    | [ModelScope](https://modelscope.cn/models/OpenBMB/MiniCPM-Embedding-Light)｜[HuggingFace](https://huggingface.co/OpenBMB/MiniCPM-Embedding-Light)                                                                                       |
+| VanilaRAG, Adaptive-Note, KBalign | Reranker Model         | bge-large-reranker    | [ModelScope](https://modelscope.cn/models/OpenBMB/MiniCPM-Reranker-Light)｜[HuggingFace](https://huggingface.co/OpenBMB/MiniCPM-Reranker-Light) |
+| VanilaRAG, Adaptive-Note, KBalign | Text LLM                | MiniCPM3-4B           | [ModelScope](https://modelscope.cn/models/OpenBMB/MiniCPM3-4B)｜[HuggingFace](https://huggingface.co/openbmb/MiniCPM3-4B)        |
+| VisRAG                          | Image-Text Embedding Model | VisRAG-Ret            | [HuggingFace](https://huggingface.co/openbmb/VisRAG-Ret)                                                        |
+| VisRAG                          | Multimodal LLM Model   | MiniCPM-V-2_6        | [ModelScope](https://modelscope.cn/models/OpenBMB/MiniCPM-V-2_6)｜[HuggingFace](https://huggingface.co/openbmb/MiniCPM-V-2_6)    |
 
 The datasets and evaluation sets used in our evaluation process that can be disclosed are as follows:
 
@@ -49,8 +49,8 @@ The overall evaluation results are as follows.
 
 | **Retrieval Performance**                                          | **Test Set of 200 Items by gpt4o MRR@10** | **Test Set of 200 Items by gpt4o NDCG@10** | **Test Set of 200 Items by gpt4o Recall@10** |
 | ------------------------------------------------------------------ | ----------------------------------------- | ------------------------------------------ | -------------------------------------------- |
-| UltraRAG-Embedding                                                 | 36.46                                     | 40.05                                      | 54.50                                        |
-| UltraRAG-Embedding-Finetune (2800 Items Created by Qwen2.5-14B)   | 37.57                                     | 42.12                                      | 56.50                                        |
+| MiniCPM-Embedding-Light               | 36.46                                     | 40.05                                      | 54.50                                        |
+|MiniCPM-Embedding-Light-Finetune (2800 Items Created by Qwen2.5-14B)   | 37.57                                     | 42.12                                      | 56.50                                        |
 
 ### Case Analysis of VanillaRAG
 
