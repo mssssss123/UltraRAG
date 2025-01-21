@@ -1,5 +1,5 @@
 import streamlit as st
-st.set_page_config(page_title="UltraRAG", page_icon="docs/assets/icon.png", layout='wide')
+st.set_page_config(page_title="UltraRAG", page_icon="docs/assets/icon2.jpg", layout='wide')
 if "command_parameter" not in st.session_state: st.session_state.command_parameter = {}
 from components.global_config import global_config
 from components.tab_bar import tab_bar
