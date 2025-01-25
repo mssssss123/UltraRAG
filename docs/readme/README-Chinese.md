@@ -4,13 +4,11 @@
 <p align="center">
     【<a href="../README.md">English</a>   | Chinese】
 </p>
-<p align="center">
-    【📚 <a href="https://modelbest.feishu.cn/docx/UDq0dzzm2omhWMxQ38bciLC7nyc">Document</a>】
-</p>
+
 
 ## 📖 概述
 
-**UltraRAG 框架**由清华大学THUNLP联合东北大学NEUIR及面壁智能团队共同提出，基于敏捷化部署与模块化构造，引入了自动化的“数据构建-模型微调-推理评测”知识适配技术体系，提供了一站式、科研与开发双重友好的 RAG 系统解决方案。UltraRAG 显著简化了 RAG 系统在领域适配过程中，从数据构建到模型微调的全流程，助力科研人员与开发者高效应对复杂任务：
+**UltraRAG 框架**由清华大学THUNLP联合东北大学NEUIR、面壁智能团队及9#AISoft团队共同提出，基于敏捷化部署与模块化构造，引入了自动化的“数据构建-模型微调-推理评测”知识适配技术体系，提供了一站式、科研与开发双重友好的 RAG 系统解决方案。UltraRAG 显著简化了 RAG 系统在领域适配过程中，从数据构建到模型微调的全流程，助力科研人员与开发者高效应对复杂任务：
 
 <div align="center">
     <img src='../assets/zh/feature.png' width=600>

@@ -7,7 +7,7 @@
 
 ## 📖 Overview
 
-The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, and Modelbest.Inc . It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
+The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, Modelbest.Inc, and the 9#AISoft team. It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
 
 <div align="center">
   <img src='docs/assets/en/feature.jpg' width=600>
@@ -70,9 +70,9 @@ streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
 
 https://github.com/user-attachments/assets/b07d20d9-4121-404a-9cba-e89590bd4f4e
 
-The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](../user_guide/user_guide_en.md).
+The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](docs/user_guide/user_guide_en.md).
 
-If you are interested in the technical solutions involved, you can gain a more comprehensive understanding through the [UltraRAG Series](../typical_implementation/typical_implementation_en.md).
+If you are interested in the technical solutions involved, you can gain a more comprehensive understanding through the [UltraRAG Series](docs/typical_implementation/typical_implementation_en.md).
 
 ## 🔧 Overall Architecture
 
@@ -91,7 +91,7 @@ The architecture of UltraRAG is composed of three parts: **Frontend**, **Service
 
 ## 💫 Performance Evaluation
 
-To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](../evaluation_report/evaluation_report_en.md).
+To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](docs/evaluation_report/evaluation_report_en.md).
 
 | **End-to-End Performance** | **Statute Prediction (3-2) ROUGE-L** |
 | -------------------------------- | ------------------------------------------ |
