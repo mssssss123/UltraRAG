@@ -20,8 +20,8 @@ class FlagReranker:
             cache_dir: str = None,
             device: Union[str, int] = None
     ) -> None:
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, cache_dir=cache_dir)
-        self.model = AutoModelForSequenceClassification.from_pretrained(model_name_or_path, cache_dir=cache_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, cache_dir=cache_dir, trust_remote_code=True)
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_name_or_path, cache_dir=cache_dir, trust_remote_code=True)
 
         if device and isinstance(device, str):
             self.device = torch.device(device)
