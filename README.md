@@ -59,8 +59,8 @@ conda activate ultrarag
 pip install -r requirements.txt
 
 # Run the following script to download models, by default they will be downloaded to the resources/models directory
-# The list of downloaded models is in resources/models/model_list.txt
-python scripts/download_models.py
+# The list of downloaded models is in config/models_download_list.yaml
+python scripts/download_model.py
 
 # Run the demo page
 streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
