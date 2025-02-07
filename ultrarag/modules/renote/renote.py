@@ -1,11 +1,12 @@
 ''' The work is based on https://github.com/thunlp/Adaptive-Note.git, 
     but some detail and prompts maybe change to adapte our project.
 '''
-
+import re
 import os, json
 from pathlib import Path
 from typing import Callable, List
 from dataclasses import dataclass, asdict
+from ultrarag.common.utils import format_view
 
 from .prompts import RENOTE_PROMPTS
 
@@ -120,7 +121,7 @@ class ReNote:
         yield dict(state="allnote", value=best_note)
         final_answer = await self.answer_by_notes(query=query, notes=best_note)
         if self._stream:
-            async for item in final_answer:
+            async for item in format_view(final_answer):
                 yield dict(state="data", value=item)
         else:
             yield dict(state="data", value=final_answer)
@@ -131,19 +132,26 @@ class ReNote:
     async def define_notes(self, query: str, recalls: List[str]):
         content = self.define_notes_prompt.format(query=query, refs="\n".join(recalls))
         message = {"role": 'user', 'content': content}
-        return await self.generator(message)
+        response = await self.generator(message)
+        # Replace the incomplete line:
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        return response
 
 
     async def refine_notes(self, query: str, recalls: List[str], notes: str):
         content = self.refine_notes_prompt.format(query=query, refs="\n".join(recalls), note=notes)
         message = {"role": 'user', 'content': content}
-        return await self.generator(message)
+        response = await self.generator(message)
+        # Replace the incomplete line:
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        return response
 
 
     async def update_notes(self, query: str, curr_notes: str, best_notes: str):
         content = self.update_notes_prompt.format(query=query, new_note=curr_notes, best_note=best_notes)
         message = {"role": 'user', 'content': content}
         response = await self.generator(message)
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
         is_swap = "true" in response.lower()
         
         return curr_notes if is_swap else best_notes
@@ -152,7 +160,9 @@ class ReNote:
     async def gen_new_query(self, query: str, notes: str, history_query: List[str]):
         content = self.gen_new_query_prompt.format(query=query, note=notes, query_log="\n".join(history_query))
         message = {"role": 'user', 'content': content}
-        return await self.generator(message)
+        response = await self.generator(message)
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        return response
 
 
     async def answer_by_notes(self, query: str, notes: str):
@@ -162,6 +172,3 @@ class ReNote:
             message.append({"role": "system", "content": self._system_prompt})
         message.append({"role": 'user', 'content': content})
         return await self.generator(message, stream=self._stream)
-
-
-   
