@@ -93,9 +93,15 @@ def load_dataset(file_path):
     dataset = []
     with open(file_path, 'r', encoding='utf-8') as f:
         if file_path.endswith('.jsonl'):
-            dataset = [json.loads(line) for line in f]
+            try:
+                dataset = [json.loads(line) for line in f]
+            except:
+                dataset = json.load(f)
         elif file_path.endswith('.json'):
-            dataset = json.load(f)
+            try:
+                dataset = json.load(f)
+            except:
+                dataset = [json.loads(line) for line in f]
         else:
             raise ValueError("Unsupported file format: {}".format(file_path))
     return dataset
@@ -244,5 +250,5 @@ if __name__ == "__main__":
             asyncio.run(process_datasets(llm, flow, args.knowledge_id, args.test_dataset, args.evaluate_only, args.selected_generated_metrics))
             print(f"Processing completed. Results saved to {args.output_path}")
     except Exception as e:
-        logger.error(e)
+        logger.error(traceback.format_exc())
         
