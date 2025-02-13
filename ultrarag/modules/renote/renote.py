@@ -93,7 +93,7 @@ class ReNote:
         state_list.append(ReNoteState(curr_query=query, curr_refs=recalls, 
                                         curr_note=curr_note, best_note=best_note))
         refs_list.extend(recalls)
-        yield dict(state=f"Note Init {query}", value=dict(recalls=recalls, best_note=best_note))
+        yield dict(state=f"Note Init: {query}", value=dict(recalls=recalls, best_note=best_note))
 
         for step in range(self._max_step):
             if len(refs_list) > self._max_topn: break
@@ -115,10 +115,10 @@ class ReNote:
             state_list.append(ReNoteState(curr_query=curr_query, curr_refs=curr_refs, 
                                             curr_note=curr_note, best_note=best_note))
             new_query_str = curr_query.replace("\n", "")
-            yield dict(state=f"Note Revision {new_query_str}", 
+            yield dict(state=f"Note Update: {new_query_str}", 
                        value=dict(recalls=refs_filter, curr_note=curr_note, best_note=best_note))
         
-        yield dict(state="Note Revision", value=best_note)
+        yield dict(state="Note Summary: ", value=best_note)
         final_answer = await self.answer_by_notes(query=query, notes=best_note)
         if self._stream:
             async for item in format_view(final_answer):
