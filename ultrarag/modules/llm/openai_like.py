@@ -55,5 +55,7 @@ class OpenaiLLM(BaseLLM):
             except:
                 warnings.warn(f"retry {retry}: {traceback.format_exc()}")
         
-        raise RuntimeError(f"failed with {self.max_retries} times")
+        # raise RuntimeError(f"failed with {self.max_retries} times")
+        warnings.warn(f"failed with {self.max_retries} times")
+        return None
             
