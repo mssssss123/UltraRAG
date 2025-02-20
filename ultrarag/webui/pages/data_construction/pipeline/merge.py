@@ -35,7 +35,6 @@ def display():
         st.session_state.dc_config['merge'] = {}
 
     with st.expander(f"Merge {t('Configuration')}"):
-        cols = st.columns([4, 4])
 
         # Validate output directory
         if not output_path.exists():
@@ -54,6 +53,8 @@ def display():
         merge_config.setdefault('output_file', 'output/output.jsonl')
         merge_config.setdefault('output_format', "jsonl")
         merge_config.setdefault('random_merge', True)
+
+        cols = st.columns([4, 4],vertical_alignment='bottom')
 
         # File selection section
         with cols[0]:
@@ -79,14 +80,14 @@ def display():
 
         # Output configuration section
         with cols[1]:
-            st.text_input(
-                t("Output File"),
-                value=merge_config.get('output_file', 'output/output.jsonl'),
-                key="dc_output_file",
+            st.checkbox(
+                t("Random Merge"),
+                value=merge_config.get('random_merge', True),
+                key="dc_random_merge",
                 on_change=lambda: merge_config.update(
-                    {'output_file': st.session_state.dc_output_file}
+                    {'random_merge': st.session_state.dc_random_merge}
                 ),
-                help=t("Specify the name of the output file."),
+                help=t("Enable or disable random merging."),
             )
 
         # Merge parameters section
@@ -114,14 +115,14 @@ def display():
         # Additional options section
         cols = st.columns([4, 4])
         with cols[0]:
-            st.checkbox(
-                t("Random Merge"),
-                value=merge_config.get('random_merge', True),
-                key="dc_random_merge",
+            st.text_input(
+                t("Output File"),
+                value=merge_config.get('output_file', 'output/output.jsonl'),
+                key="dc_output_file",
                 on_change=lambda: merge_config.update(
-                    {'random_merge': st.session_state.dc_random_merge}
+                    {'output_file': st.session_state.dc_output_file}
                 ),
-                help=t("Enable or disable random merging."),
+                help=t("Specify the name of the output file."),
             )
         with cols[1]:
             st.selectbox(

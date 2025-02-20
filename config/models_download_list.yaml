@@ -1,13 +1,12 @@
 minicpm-embedding-light:
-  model_id: OpenBMB/MiniCPM-Embedding-Light
+  model_id: Openbmb/MiniCPM-Embedding-Light
   model_type: embedding
 
-
 minicpm-reranker-light:
-  model_id: OpenBMB/MiniCPM-Reranker-Light
+  model_id: Openbmb/MiniCPM-Reranker-Light
   model_type: reranker
 
-Qwen2.5-14B-Instruct:
-  model_id: Qwen/Qwen2.5-14B-Instruct
+MiniCPM3-4B:
+  model_id: Openbmb/MiniCPM3-4B
   model_type: llm
 

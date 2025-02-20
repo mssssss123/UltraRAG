@@ -25,7 +25,6 @@ class RenoteFlow:
             embed_model: Path or URL to the embedding model
             database_url: URL for vector database, defaults to in-memory
         """
-        # self._weather = Weather()
         self._synthesizer = OpenaiLLM(api_key=api_key, base_url=base_url, model=llm_model)
         self._router = BaseRouter(llm_call_back=self._synthesizer.arun, 
                                 intent_list=[{"intent": "retriever", "description": "检索知识库"}])

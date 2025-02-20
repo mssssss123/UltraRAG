@@ -14,8 +14,6 @@ from ultrarag.webui.components.collection_selectbox import close_existing_search
 from ultrarag.webui.utils.language import t
 
 
-
-
 def display_configurations():
     """
     Display Renote configurations in a Streamlit expander.
@@ -96,9 +94,7 @@ async def listen(query, container):
         
         # Handle different response states
         if isinstance(chunk, dict):
-            if chunk["state"].startswith("renote"): process_info = get_debug_fold(title=chunk["state"], context=chunk["value"])
-            if chunk["state"].startswith("thinking"): process_info += get_debug_fold(title=chunk["state"], context=chunk["value"])
-            if chunk['state'].startswith("allnote"): process_info += get_debug_fold(title=chunk["state"], context=chunk["value"])
+            if chunk["state"].startswith("Note"): process_info += get_debug_fold(title=chunk["state"], context=chunk["value"])
             if chunk['state'] == "data": buff += chunk['value']
         else:
             buff += chunk

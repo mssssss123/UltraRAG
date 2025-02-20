@@ -123,7 +123,7 @@ def select_cuda_devices(device_key):
     selected_devices = st.multiselect(
         t('Select CUDA Devices for') + f" {device_key}",
         cuda_devices,
-        default=st.session_state.config.get(f'selected_devices_{device_key.lower().replace(" ", "_")}', [])
+        default=st.session_state.config.get(f'selected_devices_{device_key.lower().replace("%20", "_")}', [])
     )
     return selected_devices
 
@@ -147,7 +147,7 @@ def display_model_fields():
                     value=st.session_state.config.get('model_name', ''),
                     key="config_model_name",
                     on_change=lambda: st.session_state.config.update(
-                        {'model_name': st.session_state.config_model_name}
+                        {'model_name': st.session_state.config_model_name.strip("%20")}
                     )
                 )
             with cols[1]:
@@ -156,7 +156,7 @@ def display_model_fields():
                     value=st.session_state.config.get('api_key', ''),
                     key="config_api_key",
                     on_change=lambda: st.session_state.config.update(
-                        {'api_key': st.session_state.config_api_key}
+                        {'api_key': st.session_state.config_api_key.strip("%20")}
                     )
                 )
             with cols[2]:
@@ -165,7 +165,7 @@ def display_model_fields():
                     value=st.session_state.config.get('base_url', ''),
                     key="config_base_url",
                     on_change=lambda: st.session_state.config.update(
-                        {'base_url': st.session_state.config_base_url}
+                        {'base_url': st.session_state.config_base_url.strip("%20")}
                     )
                 )
         elif model_type == 'Custom':
@@ -176,7 +176,7 @@ def display_model_fields():
                     value=st.session_state.config.get('model_path', ''),
                     key="config_model_path",
                     on_change=lambda: st.session_state.config.update(
-                        {'model_path': st.session_state.config_model_path}
+                        {'model_path': st.session_state.config_model_path.strip("%20")}
                     )
                 )
 def select_embedding_model():
@@ -203,7 +203,7 @@ def display_embedding_model_fields():
                 value=st.session_state.config.get('embedding_model_path', ''),
                 key="config_embedding_model_path",
                 on_change=lambda: st.session_state.config.update(
-                    {'embedding_model_path': st.session_state.config_embedding_model_path}
+                    {'embedding_model_path': st.session_state.config_embedding_model_path.strip("%20")}
                 )
             )
 
@@ -227,7 +227,7 @@ def display_reranker_model_fields():
                 value=st.session_state.config.get('reranker_model_path', ''),
                 key="config_reranker_model_path",
                 on_change=lambda: st.session_state.config.update(
-                    {'reranker_model_path': st.session_state.config_reranker_model_path}
+                    {'reranker_model_path': st.session_state.config_reranker_model_path.strip("%20")}
                 )
             )
             

@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    image: xrag:v1.5.0-beta
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8843:8843"
+      - "8844:8844"
+      - "8845:8845"
+      - "8846:8846"
+      - "8847:8847"
+      - "8848:8848"
+    volumes:
+      # - .:/app
+      - /data1/guodewen/models:/xrag/resource/models
+      - /data2/guodewen/XRAG/resource:/xrag/resource
+    environment:
+      - NODE_ENV=development
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu] 

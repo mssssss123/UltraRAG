@@ -26,7 +26,6 @@ class KBAlignFlow:
             database_url (str): URL for database connection
             **args: Additional arguments
         """
-        # self._weather = Weather()
         self._synthesizer = OpenaiLLM(api_key=api_key, base_url=base_url, model=llm_model)
         self._router = BaseRouter(llm_call_back=self._synthesizer.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
         self._index = QdrantIndex(database_url, encoder=EmbClient(url_or_path=embed_model))

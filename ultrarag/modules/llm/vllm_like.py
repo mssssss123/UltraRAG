@@ -58,7 +58,7 @@ class VllmServer(BaseLLM):
             "stop": sampling_params_dict.get('stop', None),
             "stop_token_ids": sampling_params_dict.get('stop_token_ids', None),
             "ignore_eos": sampling_params_dict.get('ignore_eos', False),
-            "max_tokens": sampling_params_dict.get('max_tokens', 100),
+            "max_tokens": sampling_params_dict.get('max_tokens', 1024),
             "logprobs": sampling_params_dict.get('logprobs', None),
             "prompt_logprobs": sampling_params_dict.get('prompt_logprobs', None),
             "skip_special_tokens": sampling_params_dict.get('skip_special_tokens', True),
@@ -77,15 +77,35 @@ class VllmServer(BaseLLM):
         ''' TODO: 支持流式输出
         '''
         if kargs:
-            params = SamplingParams(**kargs)
+            sampling_params_dict = kargs
         elif self.sampling_params:
-            params = SamplingParams(**self.sampling_params)
+            sampling_params_dict = self.sampling_params
         else:
-            params = SamplingParams(**kargs)
+            sampling_params_dict = kargs
+        
+        params_dict = {
+            "n": sampling_params_dict.get('n', 5),
+            "best_of": sampling_params_dict.get('best_of', 5),
+            "presence_penalty": sampling_params_dict.get('presence_penalty', 1.0),
+            "frequency_penalty": sampling_params_dict.get('frequency_penalty', 0.0),
+            "temperature": sampling_params_dict.get('temperature', 0.8),
+            "top_p": sampling_params_dict.get('top_p', 0.8),
+            "top_k": sampling_params_dict.get('top_k', -1),
+            "stop": sampling_params_dict.get('stop', None),
+            "stop_token_ids": sampling_params_dict.get('stop_token_ids', None),
+            "ignore_eos": sampling_params_dict.get('ignore_eos', False),
+            "max_tokens": sampling_params_dict.get('max_tokens', 1024),
+            "logprobs": sampling_params_dict.get('logprobs', None),
+            "prompt_logprobs": sampling_params_dict.get('prompt_logprobs', None),
+            "skip_special_tokens": sampling_params_dict.get('skip_special_tokens', True),
+        }
+
+        sampling_params = SamplingParams(**params_dict)
+                
         question_prompt = self._tokenizer.apply_chat_template(
             messages, add_generation_prompt=True, tokenize=False)
-        # print(question_prompt)  
-        resp = self._generator.generate(question_prompt, sampling_params=params)
+        print(question_prompt)
+        resp = self._generator.generate(question_prompt, sampling_params=sampling_params)
         return resp[0].outputs[0].text
     
     

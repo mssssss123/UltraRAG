@@ -1,11 +1,26 @@
 import streamlit as st
-st.set_page_config(page_title="UltraRAG", page_icon="X", layout='wide')
+st.set_page_config(page_title="UltraRAG", page_icon="docs/assets/icon2.jpg", layout='wide')
 if "command_parameter" not in st.session_state: st.session_state.command_parameter = {}
 from components.global_config import global_config
 from components.tab_bar import tab_bar
 from components.terminal import terminal
 from datetime import datetime
 if "now_time" not in st.session_state: st.session_state.now_time = datetime.now()
+
+st.markdown(
+    """
+    <style>
+    #root > div:nth-child(1) > div.withScreencast > div > div > div > div {
+        left: 5vw; 
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+st.logo(
+    "docs/assets/logo.png",
+    size='large',
+)
 
 def main():
     """

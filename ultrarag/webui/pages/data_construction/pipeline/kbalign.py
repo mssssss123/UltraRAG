@@ -133,7 +133,7 @@ def display():
                 on_change=lambda: kbalign.update(
                     {
                         'output_dir': st.session_state.kbalign_output_dir,
-                        'file_list': [f'{kbalign.output_dir}/kbalign_short_final_data/kbalign_short_final_data.jsonl',f'{kbalign.output_dir}/kbalign_long_final_data/kbalign_long_final_data.jsonl']
+                        'file_list': [f'{st.session_state.kbalign_output_dir}/kbalign_short_final_data/kbalign_short_final_data.jsonl',f'{st.session_state.kbalign_output_dir}/kbalign_long_final_data/kbalign_long_final_data.jsonl']
                     }
                 ),
                 help=t("Specify the path for saving output files."),
