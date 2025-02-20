@@ -8,7 +8,7 @@ class OthersClass:
     def __init__():
         pass
     
-    @classmethod
+    @staticmethod
     def merge(parser):
         merge_main(parser)
     

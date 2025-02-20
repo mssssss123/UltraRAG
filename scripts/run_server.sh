@@ -34,7 +34,7 @@ nohup python -m ultrarag.server.run_server_reranker \
     -host localhost \
     -port 8846 \
     -model_path $(pwd)/resource/models/MiniCPM-Reranker-Light \
-    -model_type bge_reranker \
+    -model_type minicpm_reranker \
 > $(pwd)/logs/MiniCPM-Reranker-Light.log 2>&1 &
 RERNK_PID=$!
 
