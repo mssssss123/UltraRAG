@@ -1,11 +1,12 @@
 ''' The work is based on https://github.com/thunlp/Adaptive-Note.git, 
     but some detail and prompts maybe change to adapte our project.
 '''
-
+import re
 import os, json
 from pathlib import Path
 from typing import Callable, List
 from dataclasses import dataclass, asdict
+from ultrarag.common.utils import format_view
 
 from .prompts import RENOTE_PROMPTS
 
@@ -92,7 +93,7 @@ class ReNote:
         state_list.append(ReNoteState(curr_query=query, curr_refs=recalls, 
                                         curr_note=curr_note, best_note=best_note))
         refs_list.extend(recalls)
-        yield dict(state=f"renote: {query}", value=dict(recalls=recalls, best_note=best_note))
+        yield dict(state=f"Note Init: {query}", value=dict(recalls=recalls, best_note=best_note))
 
         for step in range(self._max_step):
             if len(refs_list) > self._max_topn: break
@@ -114,10 +115,10 @@ class ReNote:
             state_list.append(ReNoteState(curr_query=curr_query, curr_refs=curr_refs, 
                                             curr_note=curr_note, best_note=best_note))
             new_query_str = curr_query.replace("\n", "")
-            yield dict(state=f"thinking {step+1}: {new_query_str}", 
+            yield dict(state=f"Note Update: {new_query_str}", 
                        value=dict(recalls=refs_filter, curr_note=curr_note, best_note=best_note))
         
-        yield dict(state="allnote", value=best_note)
+        yield dict(state="Note Summary: ", value=best_note)
         final_answer = await self.answer_by_notes(query=query, notes=best_note)
         
         if isinstance(final_answer, str):
@@ -132,19 +133,26 @@ class ReNote:
     async def define_notes(self, query: str, recalls: List[str]):
         content = self.define_notes_prompt.format(query=query, refs="\n".join(recalls))
         message = {"role": 'user', 'content': content}
-        return await self.generator(message)
+        response = await self.generator(message)
+        # Replace the incomplete line:
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        return response
 
 
     async def refine_notes(self, query: str, recalls: List[str], notes: str):
         content = self.refine_notes_prompt.format(query=query, refs="\n".join(recalls), note=notes)
         message = {"role": 'user', 'content': content}
-        return await self.generator(message)
+        response = await self.generator(message)
+        # Replace the incomplete line:
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        return response
 
 
     async def update_notes(self, query: str, curr_notes: str, best_notes: str):
         content = self.update_notes_prompt.format(query=query, new_note=curr_notes, best_note=best_notes)
         message = {"role": 'user', 'content': content}
         response = await self.generator(message)
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
         is_swap = "true" in response.lower()
         
         return curr_notes if is_swap else best_notes
@@ -153,7 +161,9 @@ class ReNote:
     async def gen_new_query(self, query: str, notes: str, history_query: List[str]):
         content = self.gen_new_query_prompt.format(query=query, note=notes, query_log="\n".join(history_query))
         message = {"role": 'user', 'content': content}
-        return await self.generator(message)
+        response = await self.generator(message)
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        return response
 
 
     async def answer_by_notes(self, query: str, notes: str):
@@ -163,6 +173,3 @@ class ReNote:
             message.append({"role": "system", "content": self._system_prompt})
         message.append({"role": 'user', 'content': content})
         return await self.generator(message, stream=self._stream)
-
-
-   

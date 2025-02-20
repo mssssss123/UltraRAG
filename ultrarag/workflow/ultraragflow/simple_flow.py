@@ -8,7 +8,7 @@ from ultrarag.modules.embedding import BGEClient
 from ultrarag.modules.database import BaseIndex, QdrantIndex
 from ultrarag.modules.reranker import BaseRerank, BGERerankClient
 from ultrarag.modules.knowledge_managment.knowledge_managment import QdrantIndexSearchWarper
-from ultrarag.common.utils import load_prompt, GENERATE_PROMPTS
+from ultrarag.common.utils import format_view, GENERATE_PROMPTS
 
 from pathlib import Path
 home_path = Path().resolve()
@@ -116,5 +116,5 @@ class NaiveFlow:
         if isinstance(response,str):
             yield dict(state='data',value=response)
         else:
-            async for item in response:
-                yield dict(state='data',value=item)
+            async for item in format_view(response):
+                yield dict(state='data', value=item)

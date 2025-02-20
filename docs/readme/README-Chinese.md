@@ -60,8 +60,8 @@ conda activate ultrarag
 pip install -r requirements.txt
 
 # 运行以下脚本下载模型，默认下载到resources/models目录下
-# 下载的模型列表在resources/models/model_list.txt中
-python scripts/download_models.py
+# 下载的模型列表在config/models_download_list.yaml中
+python scripts/download_model.py
 
 # 运行demo页面
 streamlit run ultrarag/webui/webui.py --server.fileWatcherType none

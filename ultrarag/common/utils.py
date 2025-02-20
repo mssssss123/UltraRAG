@@ -1,6 +1,7 @@
 import os
 import json
 import time
+import inspect
 import asyncio
 import hashlib
 from typing import List
@@ -116,7 +117,7 @@ TEMPLATE = \
 '''
 <details>
 
-<summary>{title}</summary>
+<summary> <b> {title} </b> </summary>
 
 ```json
    {context}
@@ -149,7 +150,7 @@ def get_image_md5(img_byte_array):
 FLOD_IMAGE_STYLE = '''
 <details>
 
-<summary>{title}</summary>
+<summary> <b> {title} </b> </summary>
 
 <style>
 .modal-image {{
@@ -228,3 +229,78 @@ def get_image_fold(title: str, context: List[str]):
     img_name = "\n\t".join(img_name)
     
     return FLOD_IMAGE_STYLE.format(title=title, img_url=img_url, img_name=img_name)
+
+
+async def format_view(response, buff_size: int=16):
+    """
+    Formats the given response into a specific markdown format and yields the result in chunks.
+    This function processes both synchronous and asynchronous generators. It replaces certain 
+    characters and tags in the response to convert it into a markdown format suitable for display.
+    Args:
+        response (generator or async generator): The response to be formatted. It can be a 
+            synchronous generator or an asynchronous generator.
+        buff_size (int, optional): The size of the buffer to use when yielding chunks of the 
+            formatted response. Defaults to 16.
+    Yields:
+        str: Chunks of the formatted response.
+    Notes:
+        - The function replaces the following characters in the response to support math formulas 
+          in markdown:
+            - '\[' with '$$'
+            - '\]' with '$$'
+            - '\(' with '$'
+            - '\)' with '$'
+        - It also replaces '<think>' with a markdown details block and '</think>' with the 
+          closing tag of the details block.
+    """
+
+    THINKING_LEFT = '''\
+<details open>
+
+<summary> <b> thinking </b> </summary>
+
+<blockquote>
+'''
+
+    THINKING_RIGHT = '''\
+</blockquote>
+</details>
+'''
+
+    cache = ""
+    if inspect.isgenerator(response):
+        for item in response:
+            cache += item
+            # 转换输出 markdown 格式
+            cache = cache.replace('\[', '$$')
+            cache = cache.replace('\]', '$$')
+            cache = cache.replace('\(', '$')
+            cache = cache.replace('\)', '$')
+
+            cache = cache.replace('<think>', THINKING_LEFT)
+            cache = cache.replace('</think>', THINKING_RIGHT)
+            
+            curr, cache = cache[ :-buff_size], cache[-buff_size: ]
+            
+            if curr:
+                yield curr
+        if cache:
+            yield cache
+    elif inspect.isasyncgen(response):
+        async for item in response:
+            cache += item
+            # 转换输出 markdown 格式
+            cache = cache.replace('\[', '$$')
+            cache = cache.replace('\]', '$$')
+            cache = cache.replace('\(', '$')
+            cache = cache.replace('\)', '$')
+
+            cache = cache.replace('<think>', THINKING_LEFT)
+            cache = cache.replace('</think>', THINKING_RIGHT)
+            
+            curr, cache = cache[ :-buff_size], cache[-buff_size: ]
+            
+            if curr:
+                yield curr
+        if cache:
+            yield cache

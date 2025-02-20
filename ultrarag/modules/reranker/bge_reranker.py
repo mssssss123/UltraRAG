@@ -5,7 +5,7 @@ import json, aiohttp
 import traceback
 import torch
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, is_torch_npu_available
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, is_torch_npu_available, AutoConfig
 
 HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
 
@@ -121,6 +121,7 @@ class BGERerankServer(BaseRerank):
             padding='longest',
             max_length=512,
             batch_size=256,
+            instruction="",
             **build_kwargs,
     ) -> None:
         self.rerank_model = FlagReranker(
@@ -130,12 +131,15 @@ class BGERerankServer(BaseRerank):
         self.padding = padding
         self.max_length = max_length
         self.batch_size = batch_size
-
+        self.instruction = instruction
+        architectures = AutoConfig.from_pretrained(model_path, trust_remote_code=True).architectures
+        if "MiniCPMModel" in architectures:
+            self.instruction = "Query: "
 
     async def scoring(self, query: str, contents: List[str]) -> List[float]:
         ''' 计算query和doc的打分结果
         '''
-        qd_pairs = [(query, item) for item in contents]
+        qd_pairs = [(self.instruction + query, item) for item in contents]
         scores = self.rerank_model.compute_score(
             qd_pairs, 
             batch_size=self.batch_size, 
@@ -148,6 +152,7 @@ class BGERerankServer(BaseRerank):
     def run_batch(self, texts: list[tuple[str, str]]) -> list[float]:
         ''' 计算两个文本的相似性得分
         '''
+        texts = [self.instruction + texts[0],texts[1]]
         scores = self.rerank_model.compute_score(
             texts,
             batch_size=self.batch_size,

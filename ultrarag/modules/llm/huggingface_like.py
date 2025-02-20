@@ -119,7 +119,7 @@ class HuggingFaceServer(BaseLLM):
         for msg in messages:
             role, content = msg["role"], msg['content']
             if isinstance(content, list):
-                content = [Image.open(item) if Path(item).exists() else item for item in content]
+                content = [Image.open(item) if len(item) < 256 and Path(item).exists() else item for item in content]
             new_messages.append(dict(role=role, content=content))
 
         if not stream:
