@@ -265,5 +265,8 @@ LANGUAGE_MAP = {
     "Start index for negative samples.": {"en": "Start index for negative samples.", "zh": "负样本的起始索引。"},
     "Input Prompt Path": {"en": "Input Prompt Path", "zh": "输入提示路径"},
     "Path to the input prompts.": {"en": "Path to the input prompts.", "zh": "输入提示的路径。"},
-    "Select Metric Model": {"en": "Select Metric Model", "zh": "选择指标模型"}
+    "Select Metric Model": {"en": "Select Metric Model", "zh": "选择指标模型"},
+    "Embedding Model Name": {"en": "Embedding Model Name", "zh": "Embedding模型名称"},
+    "Embedding Base URL": {"en": "Embedding Base URL", "zh": "Embedding基础URL"},
+    "Embedding API Key": {"en": "Embedding API Key", "zh": "Embedding API密钥"},
 }

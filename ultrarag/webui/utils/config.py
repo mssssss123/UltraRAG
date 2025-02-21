@@ -1,6 +1,6 @@
 LANGUAGES = ['en', 'zh']
 MODEL_TYPES = ['API', 'Custom']
-EMBEDDING_MODEL_TYPES = ['Custom']
+EMBEDDING_MODEL_TYPES = ['Custom','API']
 RERANKER_MODEL_TYPES = ['Custom']
 # MODEL_TYPES = ['openbmb/MiniCPM-2B-sft-bf16', 'openbmb/MiniCPM-2B-dpo-bf16', 'API', 'Custom']
 # EMBEDDING_MODEL_TYPES = ['OpenBMB/MiniCPM-Embedding-Light', 'OpenBMB/MiniCPM-Embedding-Light', 'Custom']

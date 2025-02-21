@@ -206,6 +206,35 @@ def display_embedding_model_fields():
                     {'embedding_model_path': st.session_state.config_embedding_model_path.strip("%20")}
                 )
             )
+        elif embedding_model_type == 'API':
+            cols = st.columns([3, 4, 4],vertical_alignment='bottom')
+            with cols[0]:
+                st.text_input(
+                    t('Embedding Model Name'),
+                    value=st.session_state.config.get('embedding_model_name', ''),
+                    key="config_embedding_model_name",
+                    on_change=lambda: st.session_state.config.update(
+                        {'embedding_model_name': st.session_state.config_embedding_model_name.strip("%20")}
+                    )
+                )
+            with cols[1]:
+                st.text_input(
+                    t('Embedding API Key'),
+                    value=st.session_state.config.get('embedding_api_key', ''),
+                    key="config_embedding_api_key",
+                    on_change=lambda: st.session_state.config.update(
+                        {'embedding_api_key': st.session_state.config_embedding_api_key.strip("%20")}
+                    )
+                )
+            with cols[2]:
+                st.text_input(
+                    t('Embedding Base URL'),
+                    value=st.session_state.config.get('embedding_base_url', ''),
+                    key="config_embedding_base_url",
+                    on_change=lambda: st.session_state.config.update(
+                        {'embedding_base_url': st.session_state.config_embedding_base_url.strip("%20")}
+                    )
+                )
 
 def select_reranker_model():
     cols = st.columns([4,7],vertical_alignment='bottom')

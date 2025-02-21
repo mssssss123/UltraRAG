@@ -5,7 +5,7 @@ import warnings
 import traceback
 from typing import Any, List, Dict
 from transformers import AutoTokenizer, AutoModel, AutoConfig
-from base import BaseEmbedding
+from .base import BaseEmbedding
 from tqdm import tqdm
 from openai import OpenAI, AsyncOpenAI
 from loguru import logger

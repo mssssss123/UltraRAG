@@ -3,7 +3,7 @@ import streamlit as st
 from pathlib import Path
 home_path = Path().resolve()
 sys.path.append(home_path.as_posix())
-from ultrarag.modules.embedding import EmbeddingClient, load_model
+from ultrarag.modules.embedding import EmbeddingClient, load_model, OpenAIEmbedding
 from ultrarag.modules.llm import OpenaiLLM, HuggingfaceClient, HuggingFaceServer, VllmServer
 from ultrarag.modules.reranker import RerankerClient, RerankerServer
 from ultrarag.webui.components.loading import loading
@@ -13,7 +13,7 @@ from transformers import AutoConfig
 from ultrarag.webui.utils.language import t
 
 @st.cache_resource
-def load_embedding_model(url, device):
+def load_embedding_model(base_url, api_key, model_name, model_path, device):
     """
     Load or connect to an embedding model.
     
@@ -23,11 +23,13 @@ def load_embedding_model(url, device):
     Returns:
         Model instance or client connection
     """
-    logger.info(f"load embedding model from {url}, device: {device}")
-    if Path(url).exists():
-        return load_model(url, device)
+    logger.info(f"load embedding model from {model_path}, device: {device}")
+    if model_path and Path(model_path).exists():
+        return load_model(base_url, device)
+    elif api_key and base_url and model_name:
+        return OpenAIEmbedding(base_url=base_url, api_key=api_key, model_name=model_name)
     else:
-        return EmbeddingClient(url)
+        return EmbeddingClient(model_path)
 
 @st.cache_resource
 def load_llm_model(base_url, api_key, model_name, model_path, device=None, **args):
@@ -99,7 +101,11 @@ def update_btn(label, key, base_url=None, api_key=None, model_name=None, model_p
                     embed_device = st.session_state.config['selected_devices_embedding'][0]
                 else:
                     embed_device = 'cpu'
-                st.session_state.embedding = load_embedding_model(st.session_state.config.get('embedding_model_path'), device=embed_device) 
+                st.session_state.embedding = load_embedding_model(st.session_state.config.get('embedding_base_url'),
+                                                                  st.session_state.config.get('embedding_api_key'),
+                                                                  st.session_state.config.get('embedding_model_name'),
+                                                                  st.session_state.config.get('embedding_model_path'),
+                                                                  device=embed_device) 
             elif "llm" in key:
                 llm_device = st.session_state.config['selected_devices_llm']
                 llm_device = llm_device[0] if llm_device else 'cpu'
@@ -160,12 +166,12 @@ def load_btn():
         st.session_state.last_api_key = st.session_state.config.get('api_key')
         st.session_state.last_base_url = st.session_state.config.get('base_url')
 
-    # Track embedding model changes
-    if "last_embedding_model_path" not in st.session_state:
-        st.session_state.last_embedding_model_path = st.session_state.config.get('embedding_model_path')
-    if st.session_state.config.get('embedding_model_path') != st.session_state.last_embedding_model_path:
-        st.session_state.embedding_button_loaded = False
-        st.session_state.last_embedding_model_path = st.session_state.config.get('embedding_model_path')
+    # # Track embedding model changes
+    # if "last_embedding_model_path" not in st.session_state:
+    #     st.session_state.last_embedding_model_path = st.session_state.config.get('embedding_model_path')
+    # if st.session_state.config.get('embedding_model_path') != st.session_state.last_embedding_model_path:
+    #     st.session_state.embedding_button_loaded = False
+    #     st.session_state.last_embedding_model_path = st.session_state.config.get('embedding_model_path')
 
     # Track reranker model changes
     if "last_reranker_model_path" not in st.session_state:
@@ -188,6 +194,9 @@ def load_btn():
         embedding_btn = update_btn(
             t("Load Embedding Model"),
             'embedding_button',
+            base_url=st.session_state.config.get('embedding_base_url'),
+            api_key=st.session_state.config.get('embedding_api_key'),
+            model_name=st.session_state.config.get('embedding_model_name'),
             model_path=st.session_state.config.get('embedding_model_path'),
         )
     with cols[4]:
