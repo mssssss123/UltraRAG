@@ -25,7 +25,7 @@ def load_embedding_model(base_url, api_key, model_name, model_path, device):
     """
     logger.info(f"load embedding model from {model_path}, device: {device}")
     if model_path and Path(model_path).exists():
-        return load_model(base_url, device)
+        return load_model(model_path, device)
     elif api_key and base_url and model_name:
         return OpenAIEmbedding(base_url=base_url, api_key=api_key, model_name=model_name)
     else:
