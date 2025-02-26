@@ -152,11 +152,12 @@ class ShortDependecy:
                 start_id = int(pf.read().strip()) + 1
         else:
             start_id = 0
+        step = len(data)//self.target_num
         for i, item in enumerate(
             tqdm(data[start_id:], initial=start_id, total=len(data))
         ):
-            # if i % 4000 != 0:
-            #     continue
+            if self.target_num<=0 or i % step != 0:
+                continue
             # todo
             try:
                 item = item.strip()
