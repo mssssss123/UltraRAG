@@ -20,7 +20,7 @@ from typing import Optional
 
 
 class LongDependecy:
-    def __init__(self, output_dir, language, model_name_or_path, config_path, embedding_model_path, knowledge_id, knowledge_stat_tab_path,clustering):
+    def __init__(self, output_dir, language, model_name_or_path, config_path, embedding_model_path, knowledge_id, knowledge_stat_tab_path,clustering, target_num):
         """
         Initializes the class with the given parameters.
         Args:
@@ -54,6 +54,7 @@ class LongDependecy:
         self.knowledge_id = knowledge_id
         self.llm_service = VllmServer(base_url=model_name_or_path, **self.vllm_params)
         self.clustering = clustering
+        self.target_num = target_num
         
         self.language = language
         self.output_dir1 = os.path.join(output_dir, "kbalign_long_final_data")
@@ -81,7 +82,11 @@ class LongDependecy:
         else:
             kb_data = get_nested_arrays(chunk_fils)
             
+        step = len(kb_data)//self.target_num
+
         for i, data in enumerate(tqdm(kb_data, desc="Processing data")):
+            if self.target_num<=0 or i % step != 0:
+                continue
             # todo
             questions, answers = [], []
             for d in data:

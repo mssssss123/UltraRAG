@@ -19,8 +19,7 @@ from ultrarag.datasets.KBAlign.utils import count_words, read_and_concatenate_js
 
 class ShortDependecy:
     def __init__(self, output_dir, language, model_name_or_path, config_path, 
-                
-                 functions_to_run, embedding_model_path, knowledge_id, knowledge_stat_tab_path):
+                 functions_to_run, embedding_model_path, knowledge_id, knowledge_stat_tab_path, target_num):
         """
         Initializes the class with the given parameters.
         Args:
@@ -54,6 +53,7 @@ class ShortDependecy:
         self.method = self.config.get('method', "dense")
         self.knowledge_id = knowledge_id
         self.llm_service = VllmServer(base_url=model_name_or_path, **self.vllm_params)
+        self.target_num = target_num
         
         self.language = language
         self.output_dir1 = os.path.join(output_dir, "kbalign_short_gen_data")
