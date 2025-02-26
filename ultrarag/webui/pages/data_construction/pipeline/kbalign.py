@@ -20,6 +20,8 @@ def display():
     kbalign.setdefault('file_list', [f'{kbalign["output_dir"]}/kbalign_short_final_data/kbalign_short_final_data.jsonl',f'{kbalign["output_dir"]}/kbalign_long_final_data/kbalign_long_final_data.jsonl'])
     kbalign.setdefault('ratios', [1,1])
     kbalign.setdefault('fixed_steps', 4)
+    kbalign.setdefault('short_target_num', 2000)
+    kbalign.setdefault('long_target_num', 2000)
     kbalign.setdefault('random_merge', False)
     kbalign.setdefault('clustering', False)
     kbalign.setdefault('output_file', "resource/dataset/train_dataset/kbalign.jsonl")
@@ -115,7 +117,26 @@ def display():
                 step=1,
                 help=t("Specify the fixed step size for merging."),
             )
-            
+            st.number_input(
+                t("Short Target Num"),
+                value=kbalign.get('short_target_num', 2000),
+                key="kbalign_short_target_num",
+                on_change=lambda: kbalign.update(
+                    {'short_target_num': st.session_state.kbalign_short_target_num}
+                ),
+                step=1,
+                help=t("If set to -1, the full dataset will be generated based on the knowledge base size."),
+            )
+            st.number_input(
+                t("Long Target Num"),
+                value=kbalign.get('long_target_num', 2000),
+                key="kbalign_long_target_num",
+                on_change=lambda: kbalign.update(
+                    {'long_target_num': st.session_state.kbalign_long_target_num}
+                ),
+                step=1,
+                help=t("If set to -1, the full dataset will be generated based on the knowledge base size."),
+            )            
             st.text_input(
                 t("Ratios (Space-separated)"),
                 value=" ".join(map(str, kbalign.get('ratios', []))),

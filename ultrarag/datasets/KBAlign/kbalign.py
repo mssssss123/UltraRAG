@@ -27,16 +27,18 @@ class KBAlignClass:
         parser.add_argument("--random_merge", action='store_true', help="Whether to shuffle data before merging.")
         parser.add_argument("--output_file", required=True, help="Output file for merged data.")
         parser.add_argument("--output_format", required=True, choices=['json', 'jsonl'], help="Output format: 'json' or 'jsonl'.")
+        parser.add_argument("--short_target_num", type=int, default=2000, help="Number of short dependecy data.")
+        parser.add_argument("--long_target_num", type=int, default=2000, help="Number of long dependecy data.")
         args, unknown=parser.parse_known_args()
         self.args = args
     
     def short_dependency(self):
-        short_dependecy = ShortDependecy(self.args.output_dir,self.args.language,self.args.model_name_or_path,self.args.config_path,self.args.functions_to_run,self.args.embedding_model_path,self.args.knowledge_id,self.args.knowledge_stat_tab_path)
+        short_dependecy = ShortDependecy(self.args.output_dir,self.args.language,self.args.model_name_or_path,self.args.config_path,self.args.functions_to_run,self.args.embedding_model_path,self.args.knowledge_id,self.args.knowledge_stat_tab_path,short_target_num=self.args.short_target_num)
         short_dependecy.gen_data()
         short_dependecy.merge_data()
     
     def long_dependency(self):
-        long_dependecy = LongDependecy(self.args.output_dir, self.args.language, self.args.model_name_or_path, self.args.config_path, self.args.embedding_model_path, self.args.knowledge_id, self.args.knowledge_stat_tab_path,self.args.clustering)
+        long_dependecy = LongDependecy(self.args.output_dir, self.args.language, self.args.model_name_or_path, self.args.config_path, self.args.embedding_model_path, self.args.knowledge_id, self.args.knowledge_stat_tab_path,self.args.clustering,long_target_num=self.args.long_target_num)
         long_dependecy.main()
     
     def main(self):

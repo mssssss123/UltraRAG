@@ -269,4 +269,7 @@ LANGUAGE_MAP = {
     "Embedding Model Name": {"en": "Embedding Model Name", "zh": "Embedding模型名称"},
     "Embedding Base URL": {"en": "Embedding Base URL", "zh": "Embedding基础URL"},
     "Embedding API Key": {"en": "Embedding API Key", "zh": "Embedding API密钥"},
+    "Short Target Num": {"en": "Short Target Num", "zh": "短依赖数据量"},
+    "Long Target Num": {"en": "Long Target Num", "zh": "长依赖数据量"},
+    "If set to -1, the full dataset will be generated based on the knowledge base size.": {"en": "If set to -1, the full dataset will be generated based on the knowledge base size.", "zh": "如果设置为 -1，则根据知识库大小生成全量数据。"},
 }
