@@ -81,7 +81,16 @@ def display():
                 ),
                 help=t("Specify the name of the output file."),
             )
-
+            st.number_input(
+                t("Short Target Num"),
+                value=kbalign.get('short_target_num', 2000),
+                key="kbalign_short_target_num",
+                on_change=lambda: kbalign.update(
+                    {'short_target_num': st.session_state.kbalign_short_target_num}
+                ),
+                step=1,
+                help=t("If set to -1, the full dataset will be generated based on the knowledge base size."),
+            )
 
 
         with cols[1]:
@@ -117,15 +126,14 @@ def display():
                 step=1,
                 help=t("Specify the fixed step size for merging."),
             )
-            st.number_input(
-                t("Short Target Num"),
-                value=kbalign.get('short_target_num', 2000),
-                key="kbalign_short_target_num",
+            st.text_input(
+                t("Ratios (Space-separated)"),
+                value=" ".join(map(str, kbalign.get('ratios', []))),
+                key="kbalign_ratios",
                 on_change=lambda: kbalign.update(
-                    {'short_target_num': st.session_state.kbalign_short_target_num}
+                    {'ratios': list(map(int, st.session_state.kbalign_ratios.split()))}
                 ),
-                step=1,
-                help=t("If set to -1, the full dataset will be generated based on the knowledge base size."),
+                help=t("Proportions for each file in format 1:2:3."),
             )
             st.number_input(
                 t("Long Target Num"),
@@ -136,16 +144,7 @@ def display():
                 ),
                 step=1,
                 help=t("If set to -1, the full dataset will be generated based on the knowledge base size."),
-            )            
-            st.text_input(
-                t("Ratios (Space-separated)"),
-                value=" ".join(map(str, kbalign.get('ratios', []))),
-                key="kbalign_ratios",
-                on_change=lambda: kbalign.update(
-                    {'ratios': list(map(int, st.session_state.kbalign_ratios.split()))}
-                ),
-                help=t("Proportions for each file in format 1:2:3."),
-            )
+            )         
         with cols[2]:
             st.text_input(
                 t("Output Dir"),
