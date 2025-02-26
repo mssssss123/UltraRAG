@@ -9,7 +9,7 @@ import argparse
 import yaml
 import asyncio
 from ultrarag.modules.llm import VllmServer
-from UltraRAG.ultrarag.modules.embedding.embedding import EmbServer
+from ultrarag.modules.embedding.embedding import EmbServer
 from ultrarag.modules.knowledge_managment.knowledge_managment import Knowledge_Managment
 from ultrarag.datasets.KBAlign.prompts import long_dependency_prompt
 from ultrarag.datasets.KBAlign.utils import get_nested_arrays, read_and_concatenate_jsonl

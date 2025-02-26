@@ -10,7 +10,7 @@ from ultrarag.datasets.KBAlign.filter_words import filter_words, filter_words2
 import yaml
 import asyncio
 from ultrarag.modules.llm import VllmServer
-from UltraRAG.ultrarag.modules.embedding.embedding import EmbServer
+from ultrarag.modules.embedding.embedding import EmbServer
 from ultrarag.modules.knowledge_managment.knowledge_managment import Knowledge_Managment
 from ultrarag.datasets.KBAlign.prompts import short_dependency_prompt, merge_data_prompt
 from ultrarag.datasets.KBAlign.utils import count_words, read_and_concatenate_jsonl, iter_jsonl, dump_jsonl
