@@ -23,6 +23,7 @@ def get_embedding_types(url):
     return json.loads(response.text)
 
 GENERATE_PROMPTS = """您是优秀的聊天助手，根据下面文档的内容回答问题，必要时请考虑之前的对话的历史记录。
+请在回答时遵循一个规则：如果问题是中文，请用中文回答；如果问题是英文，请用英文回答；务必遵循这条规则。
 
 问题：{query}
 
