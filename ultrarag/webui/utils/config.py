@@ -21,7 +21,7 @@ DATA_PIPELINE = [
 ]
 
 TRAIN_PIPELINE = [    
-    {"name": "Embedding", "module": "pages.train.pipeline.embedding", "pipeline": "embedding"},
+    {"name": "Embedding", "module": "pages.train.pipeline.bgem3", "pipeline": "bgem3"},
     {"name": "DPO", "module": "pages.train.pipeline.dpo", "pipeline": "dpo"},
     {"name": "SFT", "module": "pages.train.pipeline.sft", "pipeline": "sft"},
     # {"name": "KBAlign", "module": "pages.train.pipeline.kbalign", "pipeline": "kbalign"},
