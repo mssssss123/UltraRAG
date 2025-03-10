@@ -2,6 +2,7 @@ import streamlit as st
 from ultrarag.modules.knowledge_managment import Knowledge_Managment
 from ultrarag.webui.utils.language import t
 from loguru import logger
+import traceback
 
 def close_existing_searcher():
     """
@@ -28,8 +29,7 @@ def close_existing_searcher():
                 knowledge_stat_tab_path=st.session_state['kb_csv']
             )
     except Exception as e:
-        logger.warning(e)
-        pass
+        logger.warning(traceback.format_exc())
     
 def update_selection():
     """
