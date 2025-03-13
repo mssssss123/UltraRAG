@@ -15,9 +15,9 @@ class BaseSchema(BaseModel):
 
 class BaseNode(BaseModel):
     # idx: int | str
-    score: float | None
-    content: Any
-    # payload: Dict
+    score: float | None     # query and content similarity score
+    content: Any            # the content will be used generate vector
+    payload: Dict | None    # schema of the data
 
     def dump(self) -> Dict:
         return self.model_dump()

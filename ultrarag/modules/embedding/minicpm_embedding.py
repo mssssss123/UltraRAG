@@ -474,10 +474,12 @@ class MiniCPMEmbServer(BaseEmbedding):
             batch_size=self.batch_size,
             max_length=self.max_length,
             return_dense=True,
-            return_sparse=True,
+            return_sparse=False,
         )
         denses = result_dict['dense_vecs'].tolist()
-        sparses = [{int(k): float(v) for k, v in i.items()} for i in result_dict['lexical_weights']]
+        # TODO: not support sparse until now
+        # sparses = [{int(k): float(v) for k, v in i.items()} for i in result_dict['lexical_weights']]
+        sparses = [{} for _ in range(len(denses))]
         assert len(denses) == len(texts)
         assert len(sparses) == len(texts)
 
