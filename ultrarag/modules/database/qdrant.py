@@ -201,7 +201,7 @@ class QdrantIndex(BaseIndex):
                 search_result = search_result[0]
                 response_result.extend(
                     [
-                        BaseNode(content=item.payload['content'], score=item.score) 
+                        BaseNode(content=item.payload.get('content'), score=item.score) 
                         for item in search_result
                     ]
                 )
@@ -222,7 +222,7 @@ class QdrantIndex(BaseIndex):
                 search_result = search_result[0]
                 response_result.extend(
                     [
-                        BaseNode(content=item.payload['content'], score=item.score) 
+                        BaseNode(content=item.payload.get('content'), score=item.score) 
                         for item in search_result
                     ]
                 )

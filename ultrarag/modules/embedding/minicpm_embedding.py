@@ -349,7 +349,7 @@ class BGEM3FlagModel:
 
 
 class MiniCPMEmbServer(BaseEmbedding):
-    def __init__(self, url_or_path, batch_size=256, max_length=8192, query_instruction:str=None, **kargs) -> None:
+    def __init__(self, url_or_path, batch_size=32, max_length=8192, query_instruction:str=None, **kargs) -> None:
         super().__init__(query_instruction)
         self.model= BGEM3FlagModel(model_name_or_path=url_or_path, **kargs)
         self.max_length = max_length

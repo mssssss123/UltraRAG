@@ -41,5 +41,5 @@ data/
 
 !examples/**/*.jsonl
 !LICENSE.txt
-workspace/
+workspace*
 resource
