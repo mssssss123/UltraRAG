@@ -8,6 +8,9 @@ from loguru import logger
 AVAIL_ARGS = ["frequency_penalty", "presence_penalty", "temperature", "top_p", "max_tokens", "n", "model"]
 class OpenaiLLM(BaseLLM):
     def __init__(self, api_key: str, base_url: str, **kargs) -> None:
+        self.api_key = api_key
+        self.base_url = base_url
+        self.model = kargs.get('model', "")
         self.max_retries = kargs.pop('max_retries', 3)
         self.kargs = kargs
         self._generator = OpenAI(api_key=api_key, base_url=base_url)

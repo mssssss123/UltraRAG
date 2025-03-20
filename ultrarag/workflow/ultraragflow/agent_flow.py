@@ -15,7 +15,7 @@ class LLM:
     def __call__(self, 
         messages: List[Dict[str, str]], 
         stop_sequences: list[str] = '<end_action>') -> str:
-        logger.info(json.dumps(messages, ensure_ascii=False))
+        # logger.info(json.dumps(messages, ensure_ascii=False))
         if self.summarize_past and len(messages) > 4:
             past_observations = [m['content'] for m in messages[:-1]
                                  if ((m['role'] == 'tool-response') and not ("-> Error" in m['content']))]
@@ -63,7 +63,7 @@ from ultrarag.modules.embedding import EmbClient
 from ultrarag.modules.database import BaseIndex, QdrantIndex
 from ultrarag.modules.reranker import BaseRerank, RerankerClient
 from ultrarag.modules.knowledge_managment.knowledge_managment import QdrantIndexSearchWarper
-from ultrarag.common.utils import format_view, AGENT_SYSTEM_PROMPT
+from ultrarag.common import AGENT_SYSTEM_PROMPT
 
 from pathlib import Path
 home_path = Path().resolve()
@@ -88,7 +88,6 @@ class AgentRAGFlow:
             base_url (str): Base URL for LLM service
             llm_model (str): Name of the LLM model to use
             embedding_url (str): URL for embedding service
-            reranker_url (str): URL for reranker service 
             database_url (str): URL for vector database, defaults to in-memory
         """
         self.prompt = system_prompt or AGENT_SYSTEM_PROMPT
@@ -98,28 +97,27 @@ class AgentRAGFlow:
     
 
     @classmethod
-    def from_modules(cls, llm: BaseLLM, index: QdrantIndexSearchWarper, reranker: BaseRerank, system_prompt: str = None, **args):
+    def from_modules(cls, llm: BaseLLM, index: QdrantIndexSearchWarper, collection, system_prompt: str = None, **args):
         """
         Alternative constructor that creates NaiveFlow from pre-configured modules.
         
         Args:
             llm (BaseLLM): Language model instance
             index (QdrantIndexSearchWarper): Vector database instance
-            reranker (BaseRerank): Reranker instance
         
         Returns:
             NaiveFlow: Configured instance
         """
-        inst = LLM(api_key="", base_url="", llm_model="", embedding_url="", reranker_url="")
-        inst._synthesizer = llm
+        inst = AgentRAGFlow(api_key="", base_url="", llm_model="", embedding_url="")
         inst._index = index
-        inst._rerank = reranker
         inst.prompt = system_prompt or AGENT_SYSTEM_PROMPT
-    
+        chater = LLM(api_key=llm.api_key, model=llm.model, base_url=llm.base_url)
+        inst._synthesizer = ReactCodeAgent(system_prompt=inst.prompt, llm_engine=chater, tools=[inst.search_agent_tool()])
+        inst.collection = collection
         return inst
 
 
-    async def aquery(self, query: str, messages: List[Dict[str, str]], collection: List[str], system_prompt=""):
+    async def aquery(self, query: str, system_prompt=""):
         """
         Main query method that routes requests to appropriate handlers.
         
@@ -134,7 +132,14 @@ class AgentRAGFlow:
         """
         logger.info(f"query: {query}")
 
-        return self._synthesizer.run(task=query, stream=True)
+        async def response():
+            resp = self._synthesizer.run(task=query, stream=True)
+            for item in resp:
+                # logger.warning(f"item: {json.dumps(item, ensure_ascii=False)}")
+                if isinstance(item, dict):continue
+                yield dict(state='data', value=str(item))
+        
+        return response()
 
     
     def search_agent_tool(self) -> Tool:
@@ -149,6 +154,9 @@ class AgentRAGFlow:
             Returns:
                 str: The information retrieved.
             """
-            self._index.search()
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self._index.search(collection=self.collection, query=query))
+            response = "\n\n ".join([item.content for item in response])
+            return response
 
         return search_agent
