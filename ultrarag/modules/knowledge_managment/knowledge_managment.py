@@ -73,6 +73,14 @@ class QdrantIndexSearchWarper:
         if 'collection' in kargs:
             del kargs['collection']
         return self.qdrant_index.search(self.knowledge_id, query, topn, method, **kargs)
+    
+    def search_beta(self, query: str, topn: int=5, method: str="dense", **kargs) -> List[BaseNode]:
+        """
+        should be called after await, i.e. be called as <search_resaults = await search(...)>
+        """
+        if 'collection' in kargs:
+            del kargs['collection']
+        return self.qdrant_index.search_beta(self.knowledge_id, query, topn, method, **kargs)
 
     def close(self):
         """Release resources."""

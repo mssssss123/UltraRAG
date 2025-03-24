@@ -489,3 +489,15 @@ class MiniCPMEmbServer(BaseEmbedding):
 
     def run_batch(self, texts: List[str]):
         return self.encode(texts)
+
+
+    def query_encode_beta(self, query: str | List[str]) -> List[float]:
+        queries = [query] if isinstance(query, str) else query
+        if self.query_instruction is not None:
+            queries = [f"{self.query_instruction} {query}" for query in queries]
+        result = self.encode(queries)
+
+        if isinstance(query, str):
+            return result[0]
+        else:
+            return result

@@ -154,8 +154,8 @@ class AgentRAGFlow:
             Returns:
                 str: The information retrieved.
             """
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(self._index.search(collection=self.collection, query=query))
+ 
+            response = self._index.search_beta(collection=self.collection, query=query)
             response = "\n\n ".join([item.content for item in response])
             return response
 

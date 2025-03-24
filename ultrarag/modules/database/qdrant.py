@@ -239,3 +239,98 @@ class QdrantIndex(BaseIndex):
         
     async def remove(self, collection):
         self.client.delete_collection(collection_name=collection)
+
+
+    def search_beta(self, collection: Union[List[str], str], query: str, topn=5, method="dense", **kargs):
+        ''' refer to: https://qdrant.tech/articles/sparse-vectors/
+        
+        Search for similar documents in Qdrant collections using dense or hybrid retrieval.
+        
+        Args:
+            collection (List[str] or str): Collection name(s) to search in
+            query (str): Query text to search for
+            topn (int, optional): Number of results to return. Defaults to 5
+            method (str, optional): Search method, either "dense" or "hybrid". Defaults to "dense"
+            **kargs: Additional keyword arguments
+            
+        Returns:
+            List[BaseNode]: List of search results with content and relevance scores
+            
+        Example:
+            >>> query = "What is machine learning?"
+            >>> results = await search("my_collection", query, topn=3)
+            >>> print(results[0].content) # Most relevant document
+            >>> print(results[0].score)   # Relevance score
+        '''
+        collection = [collection] if isinstance(collection, str) else collection
+
+        response_result = []
+
+        for coll in collection:
+            if not isinstance(coll, str): continue
+            if not self.client.collection_exists(coll):
+                logger.warning(f"qdrant search collection:<{coll}> is not exist!")
+                continue
+
+            query_embedding = self.encoder.query_encode_beta(query)
+            if not isinstance(query_embedding, dict):
+                raise ValueError(f"embedding protocol error!")
+            
+            dense_embed = query_embedding.get("dense_embed", None)
+            sparse_embed = query_embedding.get("sparse_embed", None)
+
+            if method == "hybrid":
+                search_result = self.client.search_batch(
+                    collection_name=coll,
+                    requests=[
+                        models.SearchRequest(
+                            vector=models.NamedVector(
+                                name="dense",
+                                vector=dense_embed,
+                            ),
+                            limit=topn,
+                            with_payload=True,
+                        ),
+                        models.SearchRequest(
+                            vector=models.NamedSparseVector(
+                                name="sparse",
+                                vector=models.SparseVector(
+                                    indices=sparse_embed.keys(),
+                                    values=sparse_embed.values(),
+                                ),
+                            ),
+                            limit=topn,
+                            with_payload=True,
+                        ),
+                    ],
+                )
+                search_result = search_result[0]
+                response_result.extend(
+                    [
+                        BaseNode(content=item.payload['content'], score=item.score) 
+                        for item in search_result
+                    ]
+                )
+            elif method == "dense":
+                search_result = self.client.search_batch(
+                    collection_name=coll,
+                    requests=[
+                        models.SearchRequest(
+                            vector=models.NamedVector(
+                                name="dense",
+                                vector=dense_embed,
+                            ),
+                            limit=topn,
+                            with_payload=True,
+                        )
+                    ]
+                )
+                search_result = search_result[0]
+                response_result.extend(
+                    [
+                        BaseNode(content=item.payload['content'], score=item.score) 
+                        for item in search_result
+                    ]
+                )
+        
+        return response_result
