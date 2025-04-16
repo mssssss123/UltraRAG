@@ -334,3 +334,37 @@ class QdrantIndex(BaseIndex):
                 )
         
         return response_result
+    
+
+    def delete_collection(self, collection: str):
+        """
+        Delete a collection from Qdrant.
+        Args:
+            collection (str): Name of the collection to delete
+        """
+        if collection in self.get_collections():
+            self.client.delete_collection(collection_name=collection)
+
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+        Exit method for context manager to clean up resources when the instance is destroyed.
+
+        This method ensures proper cleanup of resources by closing the client connection when 
+        exiting the context manager. In this case, it releases any locks held by the Qdrant 
+        index instance to allow other processes to access the resources.
+
+        Args:
+            exc_type: The type of the exception that was raised
+            exc_val: The instance of the exception that was raised
+            exc_tb: The traceback of the exception that was raised
+
+        Returns:
+            False: Indicates that any exceptions should be re-raised
+        """
+        self.client.close()
+        return False
+    
+
+    def __enter__(self):
+        return self
