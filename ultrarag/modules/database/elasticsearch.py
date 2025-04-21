@@ -147,7 +147,7 @@ class ESIndex(BaseIndex):
             self._index.indices.delete(index=collection)
 
 
-    async def get_collection(self):
+    def get_collections(self):
         '''
         Get a list of all collections in the index.
         Returns:

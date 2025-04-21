@@ -93,7 +93,7 @@ class BaseIndex(ABC):
     
 
     @abstractmethod
-    async def get_collection(self) -> List[str]:
+    def get_collections(self) -> List[str]:
         '''
         Asynchronously retrieve a list of all collections in the index.
         Returns:

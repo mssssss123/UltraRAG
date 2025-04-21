@@ -4,6 +4,14 @@ from abc import ABC, abstractmethod
 
 class BaseEmbedding(ABC):
     def __init__(self, query_instruction: str="", document_instruction: str=""):
+        '''
+        Args:
+            query_instruction (str): Instruction for query encoding. 
+                                It will be used to prefix the query for encoding
+            document_instruction (str): Instruction for document encoding. 
+                                It will be used to prefix the document for encoding
+        '''
+
         self.query_instruction = query_instruction
         self.document_instruction = document_instruction
 
