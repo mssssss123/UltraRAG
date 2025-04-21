@@ -305,3 +305,10 @@ async def format_view(response, buff_size: int=16):
                 yield curr
         if cache:
             yield cache
+        
+
+import importlib.util
+
+def is_package_installed(package_name):
+    return importlib.util.find_spec(package_name) is not None
+
