@@ -1,0 +1,72 @@
+# config.yaml
+
+# COTGenerator
+VllmServer_params:  # Configuration for the VLLM server
+  gpu_memory_utilization: 0.9  # GPU memory utilization, 0.9 means 90%
+  dtype: "bfloat16"  # Precision of the model's computations
+  tensor_parallel_size: 1  # Number of tensor parallel units
+  tokenizer_mode: "auto"  # Automatically select tokenizer mode
+
+# gen_cot
+cot_sampling_params: # Parameters for controlling generation
+  n: 1
+  best_of: 1
+  presence_penalty: 1.0
+  frequency_penalty: 0.0
+  temperature: 0.5
+  top_p: 0.8
+  top_k: -1
+  stop: null
+  stop_token_ids: null
+  ignore_eos: false
+  max_tokens: 512
+  logprobs: null
+  prompt_logprobs: null
+  skip_special_tokens: True
+
+
+
+max_data_nums: 5000 # Maximum number of data constructions
+top_k: 5  # Number of top documents to retrieve
+method: "dense"
+
+# DPOGenerator
+Augment_template: |  # Template for augment data
+  Background:
+  {}
+  
+  Question: {}
+  Answer:
+
+QA_template: |  # Template for raw format
+  Question: {}
+  Answer:
+
+max_prompt_length: 4096  # Max length of prompt
+max_passage_length: 2000  # Max length of passage
+passage_separator: "\n"  # separator between passages
+model_type: minicpm3  # Specify the model type. Options are 'minicpm2', 'minicpm3', and 'llama_style'
+use_template: true  
+
+batch_size: 64  # Batch size for data processing
+
+dpo_sampling_params: # Sampling parameters for DPO data generation
+  n: 5
+  best_of: 5
+  presence_penalty: 1.0
+  frequency_penalty: 0.0
+  temperature: # Temperature values for diversity in sampling
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+  top_p: 0.8
+  top_k: -1
+  stop: null
+  stop_token_ids: null
+  ignore_eos: false
+
+# DPOScorer
+metric: rouge   # Metric for evaluation; options include em, accuracy, rouge, f1
+ratio: 0.1      # Ratio for splitting train and dev data; 0.1 means 10% is used as dev data
