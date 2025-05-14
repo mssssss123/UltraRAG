@@ -82,7 +82,7 @@ class COTGenerator:
         with open(self.input_path, 'r', encoding='utf-8') as f:
             for idx, line in enumerate(f):
                 item = json.loads(line.strip())
-                item['id'] = idx
+                
                 data.append(item)
         return data
     def create_dataset(self, input_data):
