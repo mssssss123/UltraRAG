@@ -47,6 +47,7 @@ CHAT_PIPELINE = [
     {"name": "UltraRAG-Adaptive-Note", "module": "pages.chat.pipeline.renote", "pipeline": "renote"},
     {"name": "VisRAG", "module": "pages.chat.pipeline.visrag", "pipeline": "visrag"},
     {"name": "AgentRAG", "module": "pages.chat.pipeline.agentrag", "pipeline": "agentrag"},
+    {"name": "RankCoT", "module": "pages.chat.pipeline.rankcot", "pipeline": "rankcot"},
 ]
 RETRIEVAL_METRICS = ["MRR","NDCG","Recall"]
 GENERATED_METRICS = ["completeness","rouge","em","accuracy","f1","bleu","meteor","bert","jec"]
