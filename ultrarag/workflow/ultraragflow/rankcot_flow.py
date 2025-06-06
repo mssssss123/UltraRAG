@@ -1,153 +1,122 @@
-import streamlit as st
-import os
-from pathlib import Path
-from ultrarag.webui.components.collection_selectbox import close_existing_searcher
-
-home_path = Path().resolve()
-output_path = home_path / "output"
-
-import asyncio
-import time
+import sys, json
+import asyncio, time
 from loguru import logger
-from ultrarag.workflow.ultraragflow import RankCoTFlow
-from ultrarag.common.utils import get_debug_fold
-import pandas as pd
-from ultrarag.webui.utils.language import t
+from typing import List, Dict
+from ultrarag.modules.llm import BaseLLM, OpenaiLLM
+from ultrarag.modules.router import BaseRouter
+from ultrarag.modules.embedding import EmbClient
+from ultrarag.modules.database import BaseIndex, QdrantIndex
+from ultrarag.modules.reranker import BaseRerank, RerankerClient
+from ultrarag.modules.knowledge_managment.knowledge_managment import QdrantIndexSearchWarper
+from ultrarag.modules.rankcot import RANKCOT_PROMPTS
+from ultrarag.common.utils import format_view, GENERATE_PROMPTS
 
+from pathlib import Path
+home_path = Path().resolve()
+sys.path.append(home_path.as_posix())
 
-
-def display_configurations():
-    """
-    Display RankCoT configurations in a Streamlit expander.
-    Initializes necessary session states and handles model/collection setup.
-    """
-    # Initialize session states if not exists
-    if 'chat_config' not in st.session_state:
-        st.session_state.chat_config = {}
-
-    if "rankcot_inst" not in st.session_state:
-        st.session_state.rankcot_inst = ""
-
-    if "collection" not in st.session_state:
-        st.session_state.collection = []
-
-    if "rankcot_history" not in st.session_state:
-        st.session_state.rankcot_history = []
-        st.session_state.rankcot_messages = []
-
-    # Display configuration expander
-    with st.expander("RankCoT"):
-        if 'selected_options' not in st.session_state:
-            st.session_state['selected_options'] = []
-        if 'current_kb_config_id' not in st.session_state:
-            st.session_state['current_kb_config_id'] = None
-            
-        # Initialize RankCoTFlow if knowledge base is loaded
-        kb_df = st.session_state.get('kb_df')
-        if (isinstance(kb_df, pd.DataFrame)) and not kb_df.empty:
-            try:
-                st.session_state.rankcot_inst = RankCoTFlow.from_modules(
-                    llm=st.session_state.llm,
-                    index=st.session_state.searcher,
-                    reranker=st.session_state.reranker
-                )
-                if st.button(t("clear history"), type="primary"):
-                    st.session_state.rankcot_history = []
-                    st.session_state.rankcot_messages = []
-            except Exception as e:
-                print(e)
-                st.warning(t("Please load the model and select the collections"))
-        else:
-            try:
-                st.session_state['selected_options'] = []
-                st.session_state['current_kb_config_id'] = None
-                st.session_state.rankcot_inst = ""
-            except:
-                pass
-            close_existing_searcher()
-            
-async def listen(query, container):
-    """
-    Listen for and process chat responses asynchronously.
-    
-    Args:
-        query: User input query
-        container: Streamlit container for displaying responses
-    
-    Returns:
-        tuple: (response with debug info, pure response)
-    """
-    process_info = ""
-    buff = ""
-    time_start, first_response = time.perf_counter(), 0            
-
-    # Get response from RAG instance
-    rag_link = st.session_state.rankcot_inst
-    response = await rag_link.aquery(
-        query=query, 
-        messages=st.session_state.rankcot_messages, 
-        collection=st.session_state.selected_collection
-    )
-
-    # Process streaming response
-    async for chunk in response:
-        if first_response == 0 and isinstance(chunk, dict) and chunk['state'] == "data": 
-            first_response = time.perf_counter() - time_start
+class RankCoTFlow:
+    def __init__(self, api_key, base_url, llm_model, embedding_url, reranker_url, database_url=":memory:", **args) -> None:
+        """
+        Initialize the RankCoTFlow with required components.
         
-        # Handle different response states
-        if isinstance(chunk, dict):
-            if chunk["state"] == "recall": 
-                process_info = get_debug_fold(title="recall", context=chunk['value'])
-            if chunk['state'] == "cot": 
-                buff += f"\n\n**Chain of Thought:**\n\n{chunk['value']}"
-            if chunk['state'] == "data": 
-                buff += chunk['value']
-        else:
-            buff += chunk
-            
-        # Update display
-        container.chat_message("assistant").markdown(process_info + buff, unsafe_allow_html=True)
+        Args:
+            api_key (str): API key for LLM service
+            base_url (str): Base URL for LLM service
+            llm_model (str): Name of the LLM model to use
+            embedding_url (str): URL for embedding service
+            reranker_url (str): URL for reranker service 
+            database_url (str): URL for vector database, defaults to in-memory
+        """
+        self._synthesizer = OpenaiLLM(api_key=api_key, base_url=base_url, model=llm_model)
+        self._router = BaseRouter(llm_call_back=self._synthesizer.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
+        self._index = QdrantIndex(database_url, encoder=EmbClient(url_or_path=embedding_url))
+        self._rerank = RerankerClient(url=reranker_url)
 
-    # Add timing information
-    extra_infos = f"\n\nspend: {time.perf_counter() - time_start :.2f} s, first response {first_response:.2f} s"
-    container.chat_message("assistant").markdown(process_info + buff + extra_infos, unsafe_allow_html=True)
-    return process_info + buff + extra_infos, buff
+        self.prompt = GENERATE_PROMPTS
 
-@st.fragment
-def chat_component():
-    """
-    Display the chat interface component.
-    Handles message history, user input, and response display.
-    """
-    st.subheader(f"{t('Welcome to ')}RankCoT")
-
-    # Setup chat container
-    his_container = st.container(height=500)
-    
-    with his_container:
-        # Display chat history
-        for (query, response) in st.session_state.rankcot_history:
-            with st.chat_message(name="user", avatar="user"):
-                st.markdown(query, unsafe_allow_html=True)
-            with st.chat_message(name="assistant", avatar="assistant"):
-                st.markdown(response, unsafe_allow_html=True)
-        container = st.empty()
-        container_a = st.empty()
+    @classmethod
+    def from_modules(cls, llm: BaseLLM, index: QdrantIndexSearchWarper, **args):
+        """
+        Alternative constructor that creates RankCoTFlow from pre-configured modules.
         
-    # Handle user input
-    chat_input_container = st.container()
-    with chat_input_container:
-        if query := st.chat_input(t("Please input your question")):
-            container.chat_message("user").markdown(query, unsafe_allow_html=True)
-            response_with_extra_info, pure_response = asyncio.run(listen(query,container_a))
-            
-            # Update chat history
-            st.session_state.rankcot_messages.append({"role": "user", "content": query})
-            st.session_state.rankcot_messages.append({"role": "assistant", "content": pure_response})
-            st.session_state.rankcot_history.append((query, response_with_extra_info))
-            st.rerun()
+        Args:
+            llm (BaseLLM): Language model instance
+            index (QdrantIndexSearchWarper): Vector database instance
+        
+        Returns:
+            NaiveFlow: Configured instance
+        """
+        inst = RankCoTFlow(api_key="", base_url="", llm_model="", embedding_url="", reranker_url="")
+        inst._synthesizer = llm
+        inst._router = BaseRouter(llm_call_back=llm.arun, intent_list=[{"intent": "retriever", "description": "检索知识库"}])
+        inst._index = index
+        inst.prompt = GENERATE_PROMPTS
+    
+        return inst
 
-def display():
-    display_configurations()
-    if st.session_state.get("rankcot_inst",""):
-        chat_component()
+
+    async def aquery(self, query: str, messages: List[Dict[str, str]], collection: List[str], system_prompt=""):
+        """
+        Main query method that routes requests to appropriate handlers.
+        
+        Args:
+            query (str): User query
+            messages (List[Dict]): Conversation history
+            collection (List[str]): Knowledge base collections to search
+            system_prompt (str): Optional system prompt
+            
+        Returns:
+            AsyncGenerator: Yields response chunks with state information
+        """
+        logger.info(f"query: {query}")
+
+        route = await self._router.arun(query=query, history_dialogue=messages)
+
+        if not route.get("intent", None):
+            raise ValueError("route output error")
+        
+        elif route.get("intent") == 'retriever':
+            return self.naive_rag(query, collection, messages, system_prompt)
+    
+        elif route.get('intent') == 'chat':
+            new_messages = messages + [{"role": "user", "content": query}]
+            return await self._synthesizer.arun(messages=new_messages, stream=True)
+
+
+    async def naive_rag(self, query, collection, messages, system_prompt=""):
+        """
+        Implements RAG workflow: retrieval -> reranking -> generation.
+        
+        Args:
+            query (str): User query
+            collection (List[str]): Knowledge base collections to search
+            messages (List[Dict]): Conversation history
+            system_prompt (str): Optional system prompt
+            
+        Yields:
+            Dict: Contains state ('recall' or 'data') and response values
+        """
+        logger.info(f"strat find {collection} collection")
+        recalls = await self._index.search(query=query, topn=25)
+        scores, reranks = await self._rerank.rerank(query=query, nodes=recalls, func=lambda x: x.content)
+        reranks = reranks[:5]
+
+        yield dict(state="recall", value=[item.content for item in reranks])
+        content = "\n".join([item.content for item in reranks])
+        history = "\n".join([f"{his['role']}: {his['content']}" for his in messages])
+
+        cot_prompt = RANKCOT_PROMPTS["cot"].format(history=history, content=content, query=query)
+        cot_messages = [{"role": "user", "content": cot_prompt}]
+        cot_response = await self._synthesizer.arun(messages=cot_messages, stream=False)
+        yield dict(state="cot", value=cot_response)
+
+        answer_prompt = RANKCOT_PROMPTS["answer"].format(query=query, cot_response=cot_response)
+        answer_messages = [{"role": "user", "content": answer_prompt}]
+        final_response = await self._synthesizer.arun(messages=answer_messages, stream=True)
+
+        if isinstance(final_response,str):
+            yield dict(state='data',value=final_response)
+        else:
+            async for item in format_view(final_response):
+                yield dict(state='data', value=item)
