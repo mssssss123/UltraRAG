@@ -274,6 +274,9 @@ class VisRAGNetServer(BaseEmbedding):
                 batch_embeddings = self._process_outputs(outputs)
                 embeddings.extend(batch_embeddings)
 
+                del batch_data, outputs, batch_embeddings
+                torch.cuda.empty_cache()
+
                 if callback:
                     callback(pos / len(images), "image embedding")
 
