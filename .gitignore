@@ -30,4 +30,3 @@ servers/*/server.yaml
 
 # Python package metadata
 src/*.egg-info/
-data/sample_nq_1000.jsonl
