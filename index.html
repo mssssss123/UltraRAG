@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="DESCRIPTION META TAG">
+  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG" />
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG" />
+  <meta property="og:url" content="URL OF THE WEBSITE" />
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+
+  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
+  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>UltraRAG 2.0</title>
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+  <!-- <style></style> -->
+  <style>
+    /* 放大整体容器（Bulma 的 widescreen 默认≈1216px，这里改为 1440px） */
+    :root {
+      --ur-container-max: 1440px;
+    }
+
+    .container.is-max-widescreen {
+      max-width: var(--ur-container-max);
+    }
+
+    /* 让原本 is-four-fifths 的内容在桌面端占满一整行 */
+    @media (min-width: 1024px) {
+      .column.is-full {
+        flex: 0 0 100%;
+        width: 100%;
+      }
+    }
+
+    /* 让 case 两列之间的间距略小，卡片实际可用宽度更大 */
+    .columns.is-variable.is-5 {
+      --columnGap: 1.25rem;
+    }
+
+    /* Light-gray outer frame for the case area; keep inner cards white */
+    .ur-case-wrap {
+      background: #f7f8fa;
+      /* subtle light gray */
+      border: 1px solid #e5e7eb;
+      /* thin light border */
+      border-radius: 12px;
+      padding: 1rem 1rem .5rem;
+      /* space around the two cards */
+      margin-top: .75rem;
+      /* gap from the image above */
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+    }
+
+    /* Keep inner case cards white on light gray wrapper */
+    .ur-case-wrap .box {
+      background-color: #fff;
+    }
+
+    /* Light-gray wrapper for code compare area; keep cards white */
+    .ur-code-wrap {
+      background: #f7f8fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1rem 1rem 1rem;
+      margin-top: .75rem;
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+    }
+
+    .ur-code-wrap .code-card {
+      background: #fff;
+    }
+
+    /* Line-highlight utility for code blocks (GitHub-style green) */
+    .code-card pre[data-hl] {
+      position: relative;
+    }
+
+    .code-card pre[data-hl]::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      /* 12px 对应你代码块预设的 padding-top */
+      top: calc(12px + (var(--hl-start, 1) - 1) * 1.55em);
+      height: calc((var(--hl-end, 1) - var(--hl-start, 1) + 1) * 1.55em);
+      background: #e6ffed;
+      /* 浅绿底 */
+      border-left: 3px solid #34d399;
+      /* 绿色侧边条 */
+      border-top: 1px solid #bbf7d0;
+      border-bottom: 1px solid #bbf7d0;
+      box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .code-card pre[data-hl] code {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Make highlight.js background transparent so the line-highlight shows fully */
+    .code-card pre code.hljs,
+    .ur-code-wrap pre code.hljs {
+      background: transparent !important;
+      /* override github.css white bg */
+      padding: 0 !important;
+      /* avoid double padding shifting the overlay */
+      display: block;
+      /* ensure block so overlay width matches */
+    }
+  </style>
+
+</head>
+
+<body>
+  <section class="hero hero-landing">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><img src="static/images/logo.svg" alt="UltraRAG 2.0 Logo"
+                style="max-height:96px;"></h1>
+
+            <h2 class="title is-4 publication-title">更少代码，更低门槛，更快实现</h2>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://github.com/OpenBMB/UltraRAG" target="_blank"
+                    class="external-link button is-normal is-rounded">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>项目链接</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://ultrarag.openbmb.cn" target="_blank"
+                    class="external-link button is-normal is-rounded">
+                    <span class="icon">
+                      <i class="fas fa-book"></i>
+                    </span>
+                    <span>教程文档</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark" target="_blank"
+                    class="external-link button is-normal is-rounded">
+                    <span class="icon">
+                      🤗
+                    </span>
+                    <span>数据集</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="index_en.html" class="external-link button is-normal is-rounded">
+                    <span class="icon">
+                      <i class="fas fa-language"></i>
+                    </span>
+                    <span>English</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section hero card-section" style="padding-top:0rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">UltraRAG 2.0：面向科研的“RAG实验”加速器</h2>
+          <div class="content has-text-justified">
+            <p>
+              检索增强生成系统（RAG）正从早期“检索+生成”的简单拼接，走向融合<strong>自适应知识组织、多轮推理、动态检索</strong>的复杂知识系统（典型代表如
+              DeepResearch、Search-o1）。但这种复杂度的提升，使开发者在<strong>方法复现、快速迭代新想法</strong>时，面临着高昂的工程实现成本。
+            </p>
+            <p>
+              为了解决这一痛点，清华大学 <a href="https://nlp.csai.tsinghua.edu.cn/" target="_blank">THUNLP</a> 实验室、东北大学 <a
+                href="https://neuir.github.io" target="_blank">NEUIR</a>
+              实验室、<a href="https://www.openbmb.cn/home" target="_blank">OpenBMB</a> 与 <a
+                href="https://github.com/AI9Stars" target="_blank">AI9Stars</a> 联合推出 UltraRAG 2.0 （UR-2.0）—— 首个基于 <a
+                href="https://modelcontextprotocol.io/overview" target="_blank">Model Context Protocol (MCP)</a> 架构设计的
+              RAG 框架。这一设计让科研人员只需编写 <strong>YAML
+              </strong>文件，就可以直接声明<strong>串行、循环、条件分支</strong>等复杂逻辑，<strong>从而以极低的代码量快速实现多阶段推理系统。</strong>
+            </p>
+            <p>其核心思路是：</p>
+            <ul>
+              <li>组件化封装：将 RAG 的核心组件封装为<strong>标准化的独立 MCP Server</strong>；</li>
+              <li>灵活调用与扩展：提供<strong>函数级 Tool 接口</strong>，支持功能的灵活调用与扩展；</li>
+              <li>轻量流程编排：借助 <strong>MCP Client</strong>，建立自上而下的简洁化链路搭建；</li>
+            </ul>
+            <p>
+              与传统框架相比，UltraRAG 2.0 显著降低了复杂 RAG
+              系统的<strong>技术门槛与学习成本</strong>，让研究者能够将更多精力投入到<strong>实验设计与算法创新</strong>上，而不是陷入冗长的工程实现。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 大道至简 -->
+  <section class="section hero card-section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">大道至简：让科研实验专注思想而非工程</h2>
+          <div class="content has-text-justified">
+            <p>
+              “简”的价值，在实践中尤为直观。以 <a href="https://arxiv.org/abs/2212.10509" target="_blank">IRCoT</a>
+              这一经典方法为例，它依赖基于模型生成的 CoT 进行多轮检索直至产出最终答案，整体流程相当复杂。
+            </p>
+
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/ircot.png" alt="MY ALT TEXT" style="width:90%; display:block; margin:0 auto;" />
+              <h2 class="subtitle has-text-centered">
+                IRCoT流程图
+              </h2>
+            </div>
+
+            <p>
+              其官方实现需要 <strong>近 900 行手写逻辑</strong>，FlashRAG 也需要 <strong>超过 110 行代码</strong>。而 UltraRAG 2.0 仅用
+              <strong>50 行代码</strong> 即可完成同等功能。更值得注意的是，其中约一半还是用于编排 Pipeline 的 Yaml 伪代码，这大幅降低了开发门槛与实现成本。
+            </p>
+
+            <div class="item">
+              <div class="columns is-variable is-5 is-multiline" style="align-items:center;">
+                <div class="column is-6">
+                  <img src="static/images/code_lines_total.svg" alt="不同框架代码行数总览"
+                    style="display:block; width:100%; height:auto; border-radius:12px; box-shadow: 0 10px 20px rgba(0,0,0,.06);" />
+                </div>
+                <div class="column is-6">
+                  <img src="static/images/split.svg" alt="不同框架代码构成拆分"
+                    style="display:block; width:100%; height:auto; border-radius:12px; box-shadow: 0 10px 20px rgba(0,0,0,.06);" />
+                </div>
+              </div>
+              <h2 class="subtitle has-text-centered">不同框架实现 IRCoT 的代码规模与结构差异</h2>
+            </div>
+
+
+
+
+            <p>
+              我们进一步展示了不同框架在相同功能实现上的差异。可以看到，FlashRAG 的实现仍然需要冗长的控制逻辑，涉及显式的循环、条件判断与状态更新。而在 UltraRAG 2.0 中，这些逻辑仅需 <strong>几行
+                Pipeline YAML 配置</strong> 即可表达，分支与循环均以简洁的声明方式完成，避免了繁琐的手动编码。
+            </p>
+
+            <!-- 代码对比：FlashRAG vs UltraRAG -->
+            <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+            <style>
+              /* 白色、简洁风格，与页面其他模块一致 */
+              .code-compare {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.25rem;
+                align-items: start;
+              }
+
+              @media (max-width: 900px) {
+                .code-compare {
+                  grid-template-columns: 1fr;
+                }
+              }
+
+              .code-card {
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                box-shadow: 0 6px 18px rgba(17, 24, 39, 0.04);
+                overflow: hidden;
+              }
+
+              .code-card__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 12px;
+                background: #fafafa;
+                border-bottom: 1px solid #eef2f6;
+                font-weight: 600;
+                color: #111827;
+              }
+
+              .code-badges {
+                display: inline-flex;
+                gap: 8px;
+              }
+
+              .code-badge {
+                font-size: 12px;
+                padding: 2px 8px;
+                border-radius: 999px;
+                border: 1px solid #e5e7eb;
+                color: #6b7280;
+                background: #ffffff;
+              }
+
+              .code-card__body {
+                height: 360px;
+                /* 固定高度，可根据需要调整 */
+                overflow: auto;
+                /* 内容超出时滚动 */
+              }
+
+              .code-card pre {
+                margin: 0;
+                padding: 12px 14px;
+                font-size: 13.5px;
+                line-height: 1.55;
+                background: transparent;
+                /* 保持白底 */
+              }
+            </style>
+
+            <div class="ur-code-wrap">
+              <div class="code-compare">
+                <!-- 左：FlashRAG (Python) -->
+                <section class="code-card" aria-label="FlashRAG code">
+                  <div class="code-card__header">
+                    <span>FlashRAG</span>
+                    <div class="code-badges">
+                      <span class="code-badge">Python</span>
+                      <span class="code-badge">Branch + Loop</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="FlashRAG source code">
+                    <pre><code class="language-python"># 1. 初始检索
+questions = [item.question for item in items]
+retrieval_results, scoress = self.retriever.batch_search(questions, return_score=True)
+for retrieval_result, scores in zip(retrieval_results,scoress):   
+    doc2score = {doc_item['id']: score for doc_item, score in zip(retrieval_result, scores)}
+    id2doc = {doc_item['id']: doc_item for doc_item in retrieval_result}
+    batch_retrieval_results.append(retrieval_result)
+    doc2score_batch.append(doc2score)
+    id2doc_batch.append(id2doc)
+# 2. 开始迭代过程
+active_item_ids = list(range(len(items)))  # Track items that need more iterations
+while iter_num < self.max_iter:
+    # 3. 构建提示词
+    input_prompts = [
+        self.prompt_template.get_string(
+            question=items[item_id].question,
+            retrieval_result=batch_retrieval_results[item_id],
+            previous_gen=' '.join(batch_thoughts[item_id])
+        )
+        for item_id in active_item_ids
+    ]
+    # 4. 生成思维链
+    new_thoughts_batch = self.generator.generate(input_prompts, stop=['.', '\n'])
+    # 5. 判断循环或结束
+    new_active_item_ids = []
+    for idx, item_id in enumerate(active_item_ids):
+        new_thought = new_thoughts_batch[idx]
+        batch_thoughts[item_id].append(new_thought)
+        items[item_id].update_output(
+                f'intermediate_output_iter{iter_num}', 
+                {
+                    'input_prompt': input_prompts[idx],
+                    'new_thought': new_thought,
+                },
+            )
+        if "So the answer is:" not in new_thought:
+            new_active_item_ids.append(item_id)
+    # 6. 继续循环
+    active_item_ids = new_active_item_ids
+    if active_item_ids:
+        new_thoughts_for_retrieval = [batch_thoughts[item_id][-1] for item_id in active_item_ids]
+        new_retrieval_results, new_scoress = self.retriever.batch_search(new_thoughts_for_retrieval, return_score=True)
+        for i, item_id in enumerate(active_item_ids):
+            new_retrieval_result, new_scores = new_retrieval_results[i],new_scoress[i]
+            for doc_item, score in zip(new_retrieval_result, new_scores):
+                doc_id = doc_item['id']
+                id2doc_batch[item_id][doc_id] = doc_item
+                if doc_id in doc2score_batch[item_id]:
+                    doc2score_batch[item_id][doc_id] = max(doc2score_batch[item_id][doc_id], score)
+                else:
+                    doc2score_batch[item_id][doc_id] = score
+            sorted_doc_score = sorted(doc2score_batch[item_id].items(), key=lambda x: x[1], reverse=False)
+            sorted_doc_id = [t[0] for t in sorted_doc_score]
+            batch_retrieval_results[item_id] = [id2doc_batch[item_id][id] for id in sorted_doc_id]
+    iter_num += 1
+# 7. 停止并保存结果
+for item_id, item in enumerate(items):
+    item.update_output('retrieval_result', batch_retrieval_results[item_id])
+    item.update_output('pred', ' '.join(batch_thoughts[item_id]))
+
+</code></pre>
+                  </div>
+                </section>
+
+                <!-- 右：UltraRAG (YAML) -->
+                <section class="code-card" aria-label="UltraRAG code">
+                  <div class="code-card__header">
+                    <span>UltraRAG</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Branch + Loop</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="UltraRAG source code">
+                    <pre><code class="language-yaml"># 1. 初始检索
+- benchmark.get_data
+- loop:
+    times: 2
+    # 2. 开始迭代过程
+    steps:
+    - retriever.retriever_deploy_search
+    # 3. 构建提示词
+    - prompt.ircot_next_prompt
+    # 4. 生成思维链
+    - generation.generate
+    # 5. 判断循环或结束
+    - branch:
+        router:
+        - router.ircot_check_end
+        branches:
+          # 6. 继续循环
+          incomplete:
+          - custom.ircot_get_first_sent
+          # 7. 停止并保存结果
+          complete: []
+- retriever.retriever_deploy_search
+- prompt.ircot_next_prompt
+- generation.generate
+- custom.ircot_extract_ans
+    </code></pre>
+                  </div>
+                </section>
+              </div>
+            </div>
+            <h2 class="subtitle has-text-centered" style="margin-top:.5rem;">FlashRAG 与 UltraRAG 的代码实现对比</h2>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+            <script>hljs.highlightAll();</script>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 简而不凡 -->
+  <section class="section hero card-section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">简而不凡：数十行代码实现高性能RAG系统</h2>
+          <div class="content has-text-justified">
+            <p>
+              对 UltraRAG 2.0 而言，“简”并不意味着功能受限。借助 MCP 架构与灵活的 YAML 流程定义，UltraRAG 2.0
+              为科研人员提供了一个高性能、可扩展的实验平台。<strong>研究者可以在极短时间内搭建出类似 DeepResearch
+                的多阶段推理系统</strong>，支持<strong>动态检索、条件判断、多轮交互等高级能力</strong>。
+            </p>
+
+            <p>
+              在示例中，我们将 <strong>Retriever、Generation、Router</strong> 等模块通过 YAML 串联，构建了一个同时具备循环与条件分支的推理流程，实现了 <strong>Plan
+                生成 →
+                知识整理 → 子问题生成</strong>等关键步骤，而这一切仅需 <strong>不到 100 行代码</strong>。
+            </p>
+
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/workflow.png" alt="MY ALT TEXT"
+                style="width:90%; display:block; margin:0 auto;" />
+              <h2 class="subtitle has-text-centered">
+                示例系统流程图
+              </h2>
+            </div>
+
+            <p>
+              在性能上，该系统在复杂多跳问题上，相较 Vanilla RAG <strong>性能提升约 12%</strong>，充分验证了 UltraRAG 2.0 在快速构建复杂推理系统方面的潜力。
+            </p>
+
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/performance.svg" alt="MY ALT TEXT"
+                style="width:55%; display:block; margin:0 auto;">
+              <h2 class="subtitle has-text-centered">
+                示例系统性能表现
+              </h2>
+            </div>
+
+            <p>
+              以下展示的是我们构建的示例系统在小红书平台上针对两个真实用户提问所生成的案例：
+            </p>
+
+            <!-- Case -->
+            <div class="ur-case-wrap">
+              <div class="columns is-variable is-5 is-multiline">
+                <!-- Case 1 -->
+                <div class="column is-6">
+                  <article class="box" style="height:100%;">
+                    <h3 class="title is-5" style="margin-bottom:.75rem;">Case 1：毕业秋招求职</h3>
+                    <figure class="image" style="text-align:center; margin-bottom:1rem;">
+                      <!-- Replace the placeholder with your actual image path -->
+                      <img src="static/images/case1.png" alt="毕业秋招求职案例图片"
+                        style="max-width:100%; border-radius:12px; display:inline-block;">
+                      <h2 class="subtitle has-text-centered">电子信息秋招求职</h2>
+                    </figure>
+                    <div class="content" style="max-height:520px; overflow:auto; padding-right:.5rem;">
+                      <h3 class="title is-6" style="color:#2563eb;">❓问题输入</h3>
+                      <p>个人情况大概是本科时没有好好学习 成绩很烂 然后来了一年水硕 硕士期间成绩还不错 但是真东西没怎么学到 只有一段实习 没有项目 现在感觉找技术岗对我来说很难
+                        很迷茫求一些就业方向的建议#应届生找工作 #应届生 #应届 #秋招 #校招 #26秋招 #水硕</p>
+
+                      <h3 class="title is-6" style="color:#2563eb;">✅生成结果</h3>
+
+                      <p><strong>电子信息专业应届生秋招求职方向建议</strong></p>
+
+                      <h5 class="title is-6">求职现状分析</h5>
+                      <p>
+                        当前电子信息专业应届生在求职过程中普遍面临多重挑战。本科阶段学习态度不积极、成绩不佳，导致基础知识薄弱，缺乏扎实的理论支撑。硕士阶段虽然成绩有所提升，但学习内容偏向“水硕”性质，实际技术能力提升有限，缺乏系统性的专业训练<a
+                          href="#case1-ref-1">[1]</a>。实习经历较为单一，缺乏实际项目经验和技术深度，难以在技术岗竞争中脱颖而出。此外，电子信息行业对技术能力的要求日益提高，尤其是在AI等新技术的冲击下，初级技术岗位需求减少，应届生求职难度加大<a
+                          href="#case1-ref-2">[2]</a>。因此，求职者需要正视自身技术储备的不足，同时寻找适合自身背景的就业方向，以提升竞争力。</p>
+
+                      <h5 class="title is-6">电子信息行业秋招概况</h5>
+                      <p>
+                        2026届电子信息行业秋招呈现出对技术人才，尤其是AI相关岗位的强烈需求。各大互联网大厂如阿里巴巴、字节跳动、腾讯、美团等纷纷扩大招聘规模，其中技术类岗位占据核心地位。例如，字节跳动计划招聘超过5000个岗位，研发类岗位占比显著，算法、前端等方向需求增幅最大；阿里巴巴则将AI相关岗位占比提升至六成以上<a
+                          href="#case1-ref-3">[3]</a>。企业对校招应届生的核心要求集中在技术能力、项目经验以及对AI工具的掌握程度上<a
+                          href="#case1-ref-4">[4]</a>。此外，实习经历成为重要的筛选标准，有大厂实习经历的本科生甚至比无实习经历的清北硕士生更受青睐。同时，非技术岗位也对求职者的数字化素养提出更高要求，如能熟练使用AI工具进行数据分析或内容创作等。
+                      </p>
+
+                      <h5 class="title is-6">求职方向探索</h5>
+                      <p>
+                        对于本科阶段基础薄弱、硕士阶段学习偏“水硕”、实习经历单一的电子信息专业应届生，技术岗的竞争力确实有限，但仍有多个方向可供探索。首先，可考虑技术岗中对项目经验要求相对较低的岗位，如嵌入式软件工程师、硬件测试工程师、软件技术支持工程师等，这些岗位更注重动手能力和基础技能，而非复杂的项目经验<a
+                          href="#case1-ref-5">[5]</a>。其次，非技术岗如产品经理、市场运营、销售支持等方向也值得考虑，尤其是那些对技术背景有一定要求但更看重沟通能力和市场敏感度的岗位。此外，电子信息专业在跨行业就业中也具备一定优势，例如进入消费电子品牌公司、智能硬件公司或新能源企业，从事产品策划、技术支持、客户服务等工作<a
+                          href="#case1-ref-6">[6]</a>。通过实习经历的包装和技能的针对性提升，仍有机会在秋招中找到适合自己的岗位。</p>
+
+                      <h5 class="title is-6">简历与面试准备</h5>
+                      <p>
+                        在简历优化方面，电子信息专业应届生应重点突出实习经历，并巧妙弥补项目经验的不足。首先，实习经历的描述应具体、量化，突出实际参与的任务和取得的成果。例如，可以强调在实习中掌握的技术工具、完成的具体任务、以及对团队或项目的具体贡献<a
+                          href="#case1-ref-7">[7]</a>。其次，如果缺乏项目经验，可以通过参与课程设计、竞赛项目或开源项目来弥补，将这些经历以项目形式写入简历，并突出其中的技术难点和解决方法<a
+                          href="#case1-ref-8">[8]</a>。此外，简历中的技能部分应结合岗位要求，选择性地列出与目标职位相关的技能，避免泛泛而谈。最后，建议使用简洁清晰的排版，突出重点，便于招聘人员快速捕捉关键信息。在面试准备方面，应针对简历中的内容进行深入准备，确保能够清晰、自信地回答与实习和项目相关的问题，同时展示出对目标岗位的理解和热情。
+                      </p>
+
+                      <h5 class="title is-6">求职心态与资源支持</h5>
+                      <p>在求职过程中，电子信息专业应届生常常会感到迷茫和焦虑，尤其是在面对激烈的竞争和不确定的未来时。首先，要培养成长性思维，相信自身能力是可以通过努力不断进步的，而不是一成不变的<a
+                          href="#case1-ref-9">[9]</a>。其次，要善于利用弱联系资源，通过参加各类活动、与不同背景的人交流，拓展人脉，获取更多求职信息和机会。同时，要保持积极的心态，通过运动、社交、表达等方式缓解压力，避免陷入“躺平”状态。此外，还可以寻求学校就业指导中心、校友网络、心理咨询等资源的支持，获取职业规划建议和心理调适方法<a
+                          href="#case1-ref-10">[10]</a>。最重要的是，要设定清晰的目标和计划，逐步提升自身竞争力，以更自信和从容的姿态面对秋招挑战。</p>
+
+                      <h5 class="title is-6">Reference</h5>
+                      <ol>
+                        <li id="case1-ref-1">24届电子信息应届硕士生秋招+春招心得与感悟 - CSDN博客. <a
+                            href="https://blog.csdn.net/hu_yinghui/article/details/140604878" target="_blank">链接</a>
+                        </li>
+                        <li id="case1-ref-2">电子信息（0854）专业学位12个领域详解与就业去向 - 微信公众号. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzU3OTY5ODc5MA==&mid=2247509014&idx=8&sn=a355538b27e253b49d527b3491386700"
+                            target="_blank">链接</a></li>
+                        <li id="case1-ref-3">毕业季 | Dream offer 这样拿！ - 微信公众号. <a
+                            href="http://mp.weixin.qq.com/s?__biz=Mzg4MzU1NDI2MA==&mid=2247568287&idx=1&sn=f4519216329e54646f9a485490f4217a"
+                            target="_blank">链接</a></li>
+                        <li id="case1-ref-4">筑梦研途｜南航研究生求职故事 - 微信公众号. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzA3NzM1MjYyMQ%3D%3D&chksm=85080417ceacd3e3f6b246b7a274cdd83ea658d72ebfa50c5776f8deac65f6072c5e15d7091b&idx=1&mid=2654522009&scene=27&sn=98102ec08bb47329b3ce855833eb4194"
+                            target="_blank">链接</a></li>
+                        <li id="case1-ref-5">成功签约最重要的是什么？如何拿下令人心动的offer…中南大学学子就业经验分享 - MBAChina网. <a
+                            href="http://mbachina.com/html/mbachina/20250505/611588.html" target="_blank">链接</a></li>
+                        <li id="case1-ref-6">【就业先锋】2025届毕业生程惠甜：筑梦起航，奋斗正当时 - 杭州电子科技大学材料与环境工程学院. <a
+                            href="http://cmee.hdu.edu.cn/2024/1223/c4767a273992/page.htm" target="_blank">链接</a></li>
+                        <li id="case1-ref-7">非科班转码，勤勤恳恳自学三年，为什么秋招0offer，颗粒无收！- 牛客网. <a
+                            href="http://nowcoder.com/discuss/700044492660805632" target="_blank">链接</a></li>
+                        <li id="case1-ref-8">毕业季 | Dream offer 这样拿！ - 微信公众号. <a
+                            href="http://mp.weixin.qq.com/s?__biz=Mzg4MzU1NDI2MA==&mid=2247568287&idx=1&sn=f4519216329e54646f9a485490f4217a"
+                            target="_blank">链接</a></li>
+                        <li id="case1-ref-9">筑梦研途｜南航研究生求职故事 - 微信公众号. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzA3NzM1MjYyMQ%3D%3D&chksm=85080417ceacd3e3f6b246b7a274cdd83ea658d72ebfa50c5776f8deac65f6072c5e15d7091b&idx=1&mid=2654522009&scene=27&sn=98102ec08bb47329b3ce855833eb4194"
+                            target="_blank">链接</a></li>
+                        <li id="case1-ref-10">24届电子信息应届硕士生秋招+春招心得与感悟 - CSDN博客. <a
+                            href="https://blog.csdn.net/hu_yinghui/article/details/140604878" target="_blank">链接</a>
+                        </li>
+                      </ol>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="column is-6">
+                  <article class="box" style="height:100%;">
+                    <h3 class="title is-5" style="margin-bottom:.75rem;">Case 2：高考志愿填报</h3>
+                    <figure class="image" style="text-align:center; margin-bottom:1rem;">
+                      <!-- Replace the placeholder with your actual image path -->
+                      <img src="static/images/case2.png" alt="高考志愿填报案例图片"
+                        style="max-width:100%; border-radius:12px; display:inline-block;">
+                      <h2 class="subtitle has-text-centered">士官学校 vs 大专走义务兵</h2>
+                    </figure>
+                    <div class="content" style="max-height:520px; overflow:auto; padding-right:.5rem;">
+                      <h3 class="title is-6" style="color:#2563eb;"> ❓问题输入</h3>
+                      <p>弟弟今年高考 马上报志愿 士官学校和大专走义务兵那个好一点呀？有没有过来人指点一下呀！
+                        #不懂就问有问必答 #万能的小红书</p>
+
+                      <h3 class="title is-6" style="color:#2563eb;">✅生成结果</h3>
+
+                      <p><strong>士官学校与大专走义务兵的优劣分析及选择建议</strong></p>
+
+                      <h5 class="title is-6">理解两种选择的基本定义与特点</h5>
+                      <p>士官学校是军队院校的一种，主要面向现役士兵招生，培养具备一定专业技术能力的士官人才<a
+                          href="#case2-ref-1">[1]</a>。士官学校通常设有严格的军事训练和专业课程，旨在为部队输送高素质的技术骨干。士官学校的学生在入学时已是现役军人，接受的是军事化管理和专业技能培训，毕业后直接进入部队服役。
+                      </p>
+                      <p>
+                        <strong>大专走义务兵的含义及政策要求</strong><br>大专走义务兵是指考生通过高考进入定向培养士官院校（即直招士官生），在高校完成前2.5年的学习后，进入部队进行半年的实习和入伍训练<a
+                          href="#case2-ref-2">[2]</a>。毕业后直接转为士官，享受现役士官待遇。报考该类院校需参加体格检查和政治考核，合格后方可录取。定向培养士官的招生对象为普通高中应届毕业生，年龄不超过20周岁，且未婚<a
+                          href="#case2-ref-3">[3]</a>。
+                      </p>
+                      <p>
+                        <strong>两种路径的共同点与差异点</strong><br>士官学校与大专走义务兵的共同点在于，两者最终目标都是为部队培养专业技术士官。不同之处在于，士官学校面向现役士兵招生，而大专走义务兵则是通过高考进入地方高校进行定向培养，毕业后直接入伍。士官学校的培养更偏向军事化，而大专走义务兵则融合了地方高校的教育和部队的实习训练，更具灵活性。
+                      </p>
+
+                      <h5 class="title is-6">分析两种选择的优劣势</h5>
+                      <p>
+                        <strong>士官学校的优势与局限</strong><br>士官学校的优势在于学生入学即为现役军人，享受军人待遇，训练体系成熟，军事化管理严格，专业技能培养针对性强，毕业后直接进入部队服役，无需担心就业问题。此外，士官学校的学生在部队中晋升路径清晰，可通过考核逐步提升军衔等级，待遇随军衔提升而增加。然而，士官学校的局限在于招生对象为现役士兵，普通高中生无法直接报考，且训练强度大、生活节奏紧张，适合有明确军旅志向、身体素质较强的学生<a
+                          href="#case2-ref-1">[1]</a>。
+                      </p>
+                      <p><strong>大专走义务兵的优势与风险</strong><br>大专走义务兵的最大优势在于通过高考即可进入高校学习，毕业后直接转为士官，享受现役士官待遇，且学费可全额返还<a
+                          href="#case2-ref-5">[5]</a>。这种模式适合分数不高但有军旅梦想的考生，既能接受地方高校的教育，又能在部队实习中提前适应军营生活。此外，定向培养士官的报考风险较低，即使未被录取也不会影响后续普通专科志愿的录取。然而，这种模式也存在一定风险，如体格检查和政治考核要求严格，部分学生可能在体检或面试阶段被淘汰；此外，部队生活纪律严明，训练强度大，不适合对纪律性要求不高的学生<a
+                          href="#case2-ref-6">[6]</a>。</p>
+                      <p>
+                        <strong>对未来就业和发展的潜在影响</strong><br>从职业发展来看，士官学校的学生在部队中晋升路径明确，适合长期在部队发展的学生。而大专走义务兵的学生则可以选择在部队长期服役，也可以在服役满一定年限后退役，享受国家安置政策或自主择业<a
+                          href="#case2-ref-7">[7]</a>。从待遇角度看，士官学校的学生毕业后即为士官，待遇稳定；而大专走义务兵的学生在实习后转为士官，待遇与士官学校毕业生基本一致。从灵活性来看，大专走义务兵的模式更具选择性，学生可以根据自身情况决定是否继续在部队服役或退役后进入地方工作。
+                      </p>
+
+                      <h5 class="title is-6">结合个人情况制定选择策略</h5>
+                      <p>
+                        在为考生制定士官学校或大专走义务兵的选择策略时，需综合考虑家庭背景、兴趣特长和经济状况等因素。首先，家庭背景是重要考量之一，如果家庭经济条件一般，且希望孩子有一份稳定职业，士官学校或大专走义务兵都是不错的选择，因为两者均提供学费代偿和稳定待遇，且毕业后直接进入部队服役，无需担心就业问题<a
+                          href="#case2-ref-8">[8]</a>。其次，兴趣特长决定了学生是否适合部队生活。如果学生对军事有浓厚兴趣，具备较强的纪律性和吃苦耐劳精神，士官学校或大专走义务兵都能提供良好的发展平台<a
+                          href="#case2-ref-9">[9]</a>。但如果学生对部队生活兴趣不大，或者更倾向于地方工作，则应慎重考虑是否选择此类路径。最后，经济状况也是关键因素，士官学校和大专走义务兵均能减轻家庭经济负担，但若家庭条件较好，学生希望接受更广泛的教育，可考虑先通过普通大专或本科教育提升学历，再选择是否入伍。
+                      </p>
+
+                      <h5 class="title is-6">过来人的经验与建议</h5>
+                      <p>定向培养军士毕业后直接进入部队服役，且在部队的晋升路径明确，但服役时间较长，通常至少5年，部分人服役满12年后才可转业<a
+                          href="#case2-ref-10">[10]</a>。士官学校的毕业生则在部队中发展稳定，但需具备较强的适应能力和吃苦精神。相比之下，大专走义务兵的学生在服役期满两年后可选择退役，灵活性更高，但部队中的专业技能可能在地方上应用有限。此外，有经验者指出，若家庭条件一般且希望孩子有一份稳定职业，士官学校或定向培养士官是较为稳妥的选择。而如果只是想体验军旅生活或短期服役，大专走义务兵更合适<a
+                          href="#case2-ref-11">[11]</a>。总体来看，选择哪种路径需结合个人职业规划和家庭实际情况综合考虑。</p>
+
+                      <h5 class="title is-6">最终决策建议与行动指南</h5>
+                      <p>
+                        在做出最终决策时，建议考生结合自身兴趣、家庭条件和未来职业规划，综合权衡士官学校和大专走义务兵的优劣势。如果希望长期在部队发展，并具备较强的纪律性和适应能力，士官学校或定向培养士官是较为理想的选择<a
+                          href="#case2-ref-12">[12]</a>。若更倾向于接受地方教育，同时对军旅生活有一定兴趣，大专走义务兵则更具灵活性。在志愿填报时，应优先选择与自身兴趣和特长匹配的院校和专业，并确保符合体检和政审要求。此外，考生应提前准备体检和政审材料，确保顺利通过相关考核<a
+                          href="#case2-ref-13">[13]</a>。最后，无论选择哪条路径，都应树立明确的职业目标，并为未来的发展做好充分准备。</p>
+
+                      <h5 class="title is-6">Reference</h5>
+                      <ol>
+                        <li id="case2-ref-1">士官学校冷门原因及转军校可能性解析 - 乐见教育. <a
+                            href="http://m.letianedu.cn/article/c6013741a07bd897.html" target="_blank">链接</a></li>
+                        <li id="case2-ref-2">定向培养军士和上完大专当兵有什么不同 - 智优志愿服务. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MwMjE1Mzk0MA==&mid=2648230877&idx=4&sn=a0a0cfc3cab3270d711ceea6ed0f521c"
+                            target="_blank">链接</a></li>
+                        <li id="case2-ref-3">高考后，直招士官学校是一个好选择？ - 搜狐. <a href="http://sohu.com/a/482188983_120260761"
+                            target="_blank">链接</a></li>
+                        <li id="case2-ref-4">大学毕业后参军的几大优势！（专科&本科） - 军界PLA. <a
+                            href="http://mp.weixin.qq.com/s?__biz=Mzg5NzU0Njc2Ng==&mid=2247508039&idx=1&sn=70607b30cf7c4bfdbfa5a706a68ce7c2"
+                            target="_blank">链接</a></li>
+                        <li id="case2-ref-5">定向培养士官值得报考吗?有什么优缺点? - 腾讯新闻. <a
+                            href="https://new.qq.com/omn/20240510/20240510A00Y4G00.html" target="_blank">链接</a></li>
+                        <li id="case2-ref-6">武警定向培养士官政策解答 - 辽宁省交通高等专科学校学生管理处. <a
+                            href="http://www.lncc.edu.cn/xsc/info/1017/2054.htm" target="_blank">链接</a></li>
+                        <li id="case2-ref-7">定向士官淘汰率多高？最新官方数据与淘汰情形 - 掌上高考. <a
+                            href="https://m.gaokao.cn/news/2025/0312/2039.html" target="_blank">链接</a></li>
+                        <li id="case2-ref-8">定向士官培养期间淘汰率与常见淘汰原因 - 瀚博招生网. <a
+                            href="https://www.hbzhaosheng.com/article/202407155740.html" target="_blank">链接</a></li>
+                        <li id="case2-ref-9">同是入伍，定向士官与义务兵的四个不同 - 微信公众号“从宇升学规划”. <a
+                            href="https://mp.weixin.qq.com/s?__biz=MzkyOTk2MTY3Nw==&mid=2247485123&idx=2&sn=8f7c6a0a6f4c5d4b2e0e6b98f2c7b2e6"
+                            target="_blank">链接</a></li>
+                        <li id="case2-ref-10">高考300-450的逆袭路：定向士官 vs 大专当兵 - 搜狐. <a
+                            href="https://www.sohu.com/a/804123456_121124715" target="_blank">链接</a></li>
+                        <li id="case2-ref-11">一次说清楚，大学毕业后当兵的三大优势！！！ - 锦州军创. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzU1ODM4NTg4Nw==&mid=2247492932&idx=3&sn=585275a2cfdaeadee82c18ac82eb00ac"
+                            target="_blank">链接</a></li>
+                        <li id="case2-ref-12">士官学校毕业去哪儿？解析技术岗、管理岗与跨军种分配 - 领航教育. <a
+                            href="http://lxjedu.com/sys-nd/3408.html" target="_blank">链接</a></li>
+                        <li id="case2-ref-13">军考辅导：考士官学校是不是比军官学校容易一些？ - 哔哩哔哩. <a
+                            href="http://bilibili.com/read/cv28662363" target="_blank">链接</a></li>
+                      </ol>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+            <h2 class="subtitle has-text-centered">示例系统生成案例</h2>
+
+            <p>
+              UltraRAG 2.0 让复杂推理系统的构建真正做到
+              <strong>低代码、高性能、可落地</strong>。用户不仅能在科研任务中获得性能提升，也能够在行业应用中快速落地，例如智能客服、教育辅导、医疗问答等典型场景，输出更可靠的知识增强答案。
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 秘诀 -->
+  <section class="section hero card-section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">秘诀：MCP 架构与原生流程控制</h2>
+          <div class="content has-text-justified">
+            <p>
+              在不同的 RAG 系统中，检索、生成等核心能力在功能上具有高度相似性，但由于开发者实现策略各异，模块之间往往缺乏统一接口，难以跨项目复用。<a
+                href="https://modelcontextprotocol.io/overview" target="_blank">Model Context Protocol (MCP)</a>
+              作为一种开放协议，规范了为大型语言模型（LLMs）提供上下文的标准方式，并采用 <strong>Client–Server 架构</strong>，使得遵循该协议开发的 Server
+              组件可以在不同系统间无缝复用。
+            </p>
+
+            <p>
+              受此启发，UltraRAG 2.0 基于 <strong>MCP 架构</strong>，将 RAG 系统中的检索、生成、评测等核心功能抽象并封装为相互独立的 <strong>MCP
+                Server</strong>，并通过标准化的 <strong>函数级 Tool
+                接口</strong>
+              实现调用。这一设计既保证了模块功能扩展的灵活性，又允许新模块以“热插拔”的方式接入，无需对全局代码进行侵入式修改。在科研场景中，这种架构让研究者能够以极低的代码量快速适配新的模型或算法，同时保持整体系统的稳定性与一致性。
+            </p>
+
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/architecture.png" alt="MY ALT TEXT"
+                style="width:90%; display:block; margin:0 auto;">
+              <h2 class="subtitle has-text-centered">
+                UltraRAG 2.0 框架示意图
+              </h2>
+            </div>
+
+            <p>
+              复杂 RAG 推理框架的开发具有显著挑战，而 UltraRAG 2.0 之所以能够在 <strong>低代码</strong> 条件下支持复杂系统的构建，核心在于其底层对多结构 <strong>Pipeline
+                流程控制</strong> 的原生支持。无论是 <strong>串行、循环</strong>还是<strong>条件分支</strong>，所有控制逻辑均可在 <strong>YAML
+                层</strong>完成定义与调度，覆盖复杂推理任务所需的多种流程表达方式。在实际运行中，推理流程的调度由内置 <strong>Client</strong>
+              执行，其逻辑完全由用户编写的外部 <strong>Pipeline YAML 脚本</strong> 描述，从而完成与底层实现的解耦。开发者可以像使用编程语言关键字一样调用 loop、step
+              等指令，以声明式方式快速构建多阶段推理流程。
+            </p>
+
+            <!-- 三种流程示例：顺序 / 循环 / 分支 -->
+            <style>
+              /* 三列代码卡片布局；窄屏自动折行 */
+              .code-compare--3 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 1.25rem;
+                align-items: start;
+              }
+
+              @media (max-width: 1200px) {
+                .code-compare--3 {
+                  grid-template-columns: 1fr 1fr;
+                }
+              }
+
+              @media (max-width: 900px) {
+                .code-compare--3 {
+                  grid-template-columns: 1fr;
+                }
+              }
+            </style>
+
+            <div class="ur-code-wrap">
+              <div class="code-compare--3">
+                <!-- 顺序（Serial） -->
+                <section class="code-card" aria-label="Serial YAML example">
+                  <div class="code-card__header">
+                    <span>串行</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Sequential</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="Serial YAML code">
+                    <pre><code class="language-yaml"># 串行：依次执行工具
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+</code></pre>
+                  </div>
+                </section>
+
+                <!-- 循环（Loop） -->
+                <section class="code-card" aria-label="Loop YAML example">
+                  <div class="code-card__header">
+                    <span>循环</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Loop</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="Loop YAML code">
+                    <pre data-hl style="--hl-start:5; --hl-end:10;"><code class="language-yaml"># 循环：循环执行一组工具
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search
+- loop:
+    times: 3  
+    steps: 
+      - prompt.generate_subquery
+      - generation.generate  
+      - retriever.retriever_deploy_search
+- prompt.generate_answer
+- generation.generate
+- evaluation.evaluate
+</code></pre>
+                  </div>
+                </section>
+
+                <!-- 分支（Branch） -->
+                <section class="code-card" aria-label="Branch YAML example">
+                  <div class="code-card__header">
+                    <span>分支</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Branch-Router</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="Branch YAML code">
+                    <pre data-hl style="--hl-start:10; --hl-end:16;"><code class="language-yaml"># 分支：根据路由结果执行不同工具
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search
+- loop:
+    times: 3         
+    steps:
+    - prompt.generate_query_or_answer
+    - generation.generate
+    - branch:
+        router:
+          - router.check_query_or_answer   
+        branches:
+          is_query:
+            - retriever.retriever_deploy_search
+          is_answer: []    
+- evaluation.evaluate
+      </code></pre>
+                  </div>
+                </section>
+              </div>
+            </div>
+            <h2 class="subtitle has-text-centered" style="margin-top:.5rem;">多结构 Pipeline 流程控制：顺序 / 循环 / 分支</h2>
+
+            <p>
+              通过将 <strong>MCP 架构</strong> 与 <strong>原生流程控制</strong> 深度融合，UltraRAG 2.0 让复杂 RAG 系统的搭建像“编排流程”一样自然高效。此外，框架内置
+              <strong>17 个主流 benchmark</strong> 任务与多种高质量 Baseline，配合统一的评测体系与知识库支持，进一步提升了系统开发的效率与实验的可复现性。
+            </p>
+
+            <p>
+              <strong>欢迎访问<a href="https://ultrarag.openbmb.cn">教程文档</a>快速上手 UltraRAG 2.0！</strong>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--BibTex citation -->
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Reference</h2>
+      <pre><code>@article{chen2025ultrarag,
+  title={UltraRAG: A Modular and Automated Toolkit for Adaptive Retrieval-Augmented Generation},
+  author={Chen, Yuxuan and Guo, Dewen and Mei, Sen and Li, Xinze and Chen, Hao and Li, Yishan and Wang, Yixuan and Tang, Chaoyue and Wang, Ruobing and Wu, Dingjun and others},
+  journal={arXiv preprint arXiv:2504.08761},
+  year={2025}
+}</code></pre>
+    </div>
+  </section> -->
+  <!--End BibTex citation -->
+
+
+  <footer class="footer"
+    style="background: var(--ur-bg); color: var(--ur-muted); border-top: 1px solid #e5e7eb; padding:.85rem 0;">
+    <div class="container">
+      <div class="columns is-vcentered is-variable is-6">
+        <!-- Left: icon links only -->
+        <div class="column is-6">
+          <div class="buttons" style="margin-bottom:0;">
+            <a class="button is-normal is-light" href="https://github.com/OpenBMB/UltraRAG" target="_blank"
+              aria-label="GitHub" style="color: inherit;">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>GitHub</span>
+            </a>
+            <a class="button is-normal is-light" href="https://ultrarag.openbmb.cn" target="_blank" aria-label="Docs"
+              style="color: inherit;">
+              <span class="icon"><i class="fas fa-book"></i></span>
+              <span>Docs</span>
+            </a>
+            <a class="button is-normal is-light" href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"
+              target="_blank" aria-label="Dataset" style="color: inherit;">
+              <span class="icon">🤗</span>
+              <span>Dataset</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: copyright line -->
+        <div class="column is-6 has-text-right">
+          <p class="is-size-7 has-text-grey" style="margin-bottom:.5rem;">
+            UltraRAG <i class="far fa-copyright" aria-hidden="true"></i> <span id="footer-year">2025</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Statcounter tracking code -->
+
+  <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+  <!-- End of Statcounter Code -->
+
+  <script>
+    (function () {
+      try {
+        var y = new Date().getFullYear();
+        var yearEl = document.getElementById('footer-year');
+        if (yearEl) yearEl.textContent = y;
+      } catch (e) { }
+    })();
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,440 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+
+.publication-title {}
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {}
+
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+  color: #555;
+  width: fit-content;
+  font-weight: bold;
+}
+
+.publication-awards {
+  color: #ff3860;
+  width: fit-content;
+  font-weight: bolder;
+}
+
+.publication-authors {}
+
+.publication-authors a {
+  color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+
+.publication-body img {}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  padding: 20px;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+.slider-pagination .slider-page {
+  background: #000000;
+}
+
+.eql-cntrb {
+  font-size: smaller;
+}
+
+
+
+/* custom css */
+:root {
+  --ur-primary: #3a7bd5;
+  --ur-accent: #00d2ff;
+  --ur-text: #1f2d3d;
+  --ur-muted: #6b7280;
+  --ur-card-bg: #ffffff;
+  --ur-bg: #f6f8fb;
+}
+
+html,
+body {
+  background: var(--ur-bg);
+  color: var(--ur-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--ur-primary);
+}
+
+a:hover {
+  color: #285ea6;
+}
+
+/* Landing hero */
+.hero-landing {
+  background: radial-gradient(1000px 400px at 50% -150px, rgba(0, 210, 255, .25), rgba(0, 0, 0, 0)), linear-gradient(180deg, #fff 0%, #f6f8fb 100%);
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
+}
+
+.hero-landing .publication-title img {
+  max-height: 110px;
+}
+
+.publication-links .button {
+  margin: .25rem .35rem;
+}
+
+.publication-links .button .icon {
+  margin-right: .35rem;
+}
+
+/* Card-like content sections */
+.card-section .container.is-max-desktop {
+  background: var(--ur-card-bg);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(16, 24, 40, .08);
+  padding: 2.25rem 2rem;
+}
+
+.card-section h2.title {
+  margin-bottom: 1.1rem
+}
+
+.content p {
+  line-height: 1.85
+}
+
+.content ul {
+  margin-left: 1.2rem
+}
+
+.content ul li {
+  margin: .25rem 0
+}
+
+/* Media prettify */
+.content .item img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(16, 24, 40, .12);
+}
+
+.subtitle.has-text-centered {
+  font-size: .95rem;
+  color: var(--ur-muted);
+  margin-top: .5rem
+}
+
+/* Table improvements */
+.table thead th {
+  background: linear-gradient(180deg, #f9fbff 0%, #eef4ff 100%);
+  color: #0f172a;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  vertical-align: middle
+}
+
+.table-container {
+  margin: .75rem 0 1.25rem;
+}
+
+/* Section rhythm */
+section.section.hero {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Responsive video (YouTube iframe, if used) */
+.publication-video {
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.publication-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(16, 24, 40, .12);
+}
+
+/* Footer */
+.footer {
+  background: #0b1220;
+  color: #cfd6e4
+}
+
+.footer a {
+  color: #93c5fd
+}
+
+.footer a:hover {
+  color: #60a5fa
+}
+
+/* === Apple-inspired visual refresh (overrides) === */
+/* 使用系统字体栈：在 Apple 设备上会映射到 SF Pro，无需分发字体文件 */
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  letter-spacing: -0.005em;
+}
+
+/* 标题更紧的字距 + 更有力量的字重 */
+.publication-title,
+h1.title,
+h2.title,
+h3.title {
+  letter-spacing: -0.02em;
+}
+
+h1.title {
+  font-weight: 700;
+}
+
+h2.title {
+  font-weight: 600;
+}
+
+/* 顶部 Hero 更干净的底色渐变与节制的留白 */
+.hero-landing {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f8fb 100%);
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+  /* 你之前已缩小间距，这里再保持小而干净 */
+}
+
+/* 胶囊按钮：细边框、透明底、悬停轻微变浅，贴近 apple.com 调性 */
+.publication-links .button {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: var(--ur-text);
+  border-radius: 9999px;
+  padding: .7rem 1.1rem;
+  box-shadow: none;
+}
+
+.publication-links .button:hover {
+  background: #f2f4f8;
+  border-color: #cfd6e4;
+}
+
+/* 卡片：更大的圆角 + 更柔的阴影 */
+.card-section .container.is-max-desktop {
+  border-radius: 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
+}
+
+/* 图片：降低阴影强度，让画面更“干净” */
+.content .item img {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .06);
+}
+
+/* 表头稍加字重，提升对比度与可读性 */
+.table thead th {
+  font-weight: 600;
+}
+
+/* 页脚保持浅色，与整体一致 */
+footer.footer {
+  background: var(--ur-bg);
+  color: var(--ur-muted);
+}
+
+/* === Apple-like section content refresh === */
+/* Content container: tighter measure and calmer rhythm */
+.card-section .content {
+  max-width: 84ch;
+  /* comfortable line length */
+  margin: 0 auto;
+  /* center within column */
+  text-align: left;
+  /* avoid justified rivers */
+}
+
+.card-section .content p {
+  font-size: 1.0625rem;
+  /* ~17px */
+  line-height: 1.7;
+  color: var(--ur-text);
+  margin: 0 0 1.05rem;
+  /* slightly tighter */
+}
+
+.card-section .content p.lead {
+  font-size: 1.1875rem;
+  /* ~19px for first lead paragraph */
+  line-height: 1.75;
+  color: #0f172a;
+}
+
+.card-section h2.title {
+  font-size: 1.75rem;
+  /* calmer than h1, still prominent */
+  font-weight: 700;
+  margin: 0 0 1.1rem;
+  letter-spacing: -0.015em;
+}
+
+.card-section h3.title,
+.card-section h4.title,
+.card-section h5.title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Lists: cleaner bullets and spacing */
+.card-section .content ul {
+  list-style: disc;
+  margin: .5rem 0 1.1rem 1.25rem;
+  padding: 0;
+}
+
+.card-section .content ul li {
+  margin: .35rem 0;
+}
+
+/* Captions (Bulma subtitle) subtler */
+.card-section .subtitle.has-text-centered {
+  color: var(--ur-muted);
+  font-size: .9rem;
+  margin-top: .6rem;
+}
+
+/* Tables: remove gradient, use lighter rules */
+.card-section .table thead th {
+  background: #fafafa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-section .table.is-bordered td,
+.card-section .table.is-bordered th {
+  border-color: #e5e7eb;
+}
+
+.card-section .table.is-striped tbody tr:nth-child(2n) {
+  background: #fbfdff;
+}
+
+/* Case cards: softer chrome */
+.card-section article.box {
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
+  border: 1px solid #eef2f7;
+}
+
+.card-section article.box .title {
+  margin-bottom: .5rem;
+}
+
+/* Images: consistent radius & gentle shadow already set; ensure spacing */
+.card-section .item {
+  margin-top: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-section .item img {
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .06);
+}
+
+/* Eyebrow label (optional small overline) */
+.eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .72rem;
+  color: var(--ur-muted);
+  margin-bottom: .4rem;
+}
+
+/* === Wider layout overrides === */
+@media screen and (min-width: 1024px) {
+  .container.is-max-desktop {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (min-width: 1408px) {
+  .container.is-max-desktop {
+    max-width: 1320px;
+  }
+}

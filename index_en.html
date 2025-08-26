@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="DESCRIPTION META TAG">
+  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG" />
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG" />
+  <meta property="og:url" content="URL OF THE WEBSITE" />
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+
+  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
+  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>UltraRAG 2.0</title>
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+  <!-- <style></style> -->
+  <style>
+    /* 放大整体容器（Bulma 的 widescreen 默认≈1216px，这里改为 1440px） */
+    :root {
+      --ur-container-max: 1440px;
+    }
+
+    .container.is-max-widescreen {
+      max-width: var(--ur-container-max);
+    }
+
+    /* 让原本 is-four-fifths 的内容在桌面端占满一整行 */
+    @media (min-width: 1024px) {
+      .column.is-full {
+        flex: 0 0 100%;
+        width: 100%;
+      }
+    }
+
+    /* 让 case 两列之间的间距略小，卡片实际可用宽度更大 */
+    .columns.is-variable.is-5 {
+      --columnGap: 1.25rem;
+    }
+
+    /* Light-gray outer frame for the case area; keep inner cards white */
+    .ur-case-wrap {
+      background: #f7f8fa;
+      /* subtle light gray */
+      border: 1px solid #e5e7eb;
+      /* thin light border */
+      border-radius: 12px;
+      padding: 1rem 1rem .5rem;
+      /* space around the two cards */
+      margin-top: .75rem;
+      /* gap from the image above */
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+    }
+
+    /* Keep inner case cards white on light gray wrapper */
+    .ur-case-wrap .box {
+      background-color: #fff;
+    }
+
+    /* Light-gray wrapper for code compare area; keep cards white */
+    .ur-code-wrap {
+      background: #f7f8fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1rem 1rem 1rem;
+      margin-top: .75rem;
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+    }
+
+    .ur-code-wrap .code-card {
+      background: #fff;
+    }
+
+    /* Line-highlight utility for code blocks (GitHub-style green) */
+    .code-card pre[data-hl] {
+      position: relative;
+    }
+
+    .code-card pre[data-hl]::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      /* 12px 对应你代码块预设的 padding-top */
+      top: calc(12px + (var(--hl-start, 1) - 1) * 1.55em);
+      height: calc((var(--hl-end, 1) - var(--hl-start, 1) + 1) * 1.55em);
+      background: #e6ffed;
+      /* 浅绿底 */
+      border-left: 3px solid #34d399;
+      /* 绿色侧边条 */
+      border-top: 1px solid #bbf7d0;
+      border-bottom: 1px solid #bbf7d0;
+      box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .code-card pre[data-hl] code {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Make highlight.js background transparent so the line-highlight shows fully */
+    .code-card pre code.hljs,
+    .ur-code-wrap pre code.hljs {
+      background: transparent !important;
+      /* override github.css white bg */
+      padding: 0 !important;
+      /* avoid double padding shifting the overlay */
+      display: block;
+      /* ensure block so overlay width matches */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Hero -->
+  <section class="hero hero-landing">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              <img src="static/images/logo.svg" alt="UltraRAG 2.0 Logo" style="max-height:96px;">
+            </h1>
+
+            <h2 class="title is-4 publication-title">Less Code, Lower Barrier, Faster Deployment</h2>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://github.com/OpenBMB/UltraRAG" target="_blank"
+                    class="external-link button is-normal is-rounded">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Project</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://ultrarag.openbmb.cn" target="_blank"
+                    class="external-link button is-normal is-rounded">
+                    <span class="icon"><i class="fas fa-book"></i></span>
+                    <span>Docs</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark" target="_blank"
+                    class="external-link button is-normal is-rounded">
+                    <span class="icon">🤗</span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="index.html" class="external-link button is-normal is-rounded">
+                    <span class="icon"><i class="fas fa-language"></i></span>
+                    <span>简体中文</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section hero card-section" style="padding-top:0rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">UltraRAG 2.0: Accelerating RAG for Scientific Research</h2>
+          <div class="content has-text-justified">
+            <p>
+              Retrieval-Augmented Generation (RAG) systems are evolving from early-stage simple concatenations of
+              “retrieval + generation” to complex knowledge systems integrating
+              <strong>adaptive knowledge organization, multi-turn reasoning, and dynamic retrieval</strong>
+              (e.g., DeepResearch, Search-o1). This rising complexity raises implementation costs for
+              <strong>reproducibility and rapid iteration</strong>.
+            </p>
+            <p>
+              To address this challenge, <a href="https://nlp.csai.tsinghua.edu.cn/" target="_blank">THUNLP</a>, <a
+                href="https://neuir.github.io" target="_blank">NEUIR</a>, <a href="https://www.openbmb.cn/home"
+                target="_blank">OpenBMB</a>, and
+              <a href="https://github.com/AI9Stars" target="_blank">AI9Stars</a> jointly launched UltraRAG 2.0 (UR-2.0)
+              — the first RAG framework based on the
+              <a href="https://modelcontextprotocol.io/overview" target="_blank">Model Context Protocol (MCP)</a>
+              architecture design.
+              This design allows researchers to declare complex logic such as <strong>sequential, loop, and conditional
+                branching</strong> simply by writing <strong>YAML</strong> files,
+              enabling rapid implementation of multi-stage reasoning systems with minimal code.
+            </p>
+            <p>Its core ideas are:</p>
+            <ul>
+              <li>Modular encapsulation: Encapsulate RAG core components as <strong>standardized independent MCP
+                  Servers</strong>;</li>
+              <li>Flexible invocation and extension: Provide <strong>function-level Tool interfaces</strong> to support
+                flexible function calls and extensions;</li>
+              <li>Lightweight workflow orchestration: Use <strong>MCP Client</strong> to build a top-down simplified
+                linkage;</li>
+            </ul>
+            <p>
+              Compared with traditional frameworks, UltraRAG 2.0 significantly lowers the
+              <strong>technical threshold and learning cost</strong> of complex RAG systems, allowing researchers to
+              focus more on
+              <strong>experimental design and algorithm innovation</strong> rather than lengthy engineering
+              implementations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simplicity -->
+  <section class="section hero card-section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">Simplicity First: Focus on Ideas, Not Engineering</h2>
+          <div class="content has-text-justified">
+            <p>
+              The value of simplicity becomes especially evident in practice. Take
+              <a href="https://arxiv.org/abs/2212.10509" target="_blank">IRCoT</a>, a classic method that relies on
+              model-generated CoT to perform multi-round retrieval until reaching a final answer—an inherently complex
+              workflow.
+            </p>
+
+            <div class="item">
+              <!-- Your image here -->
+              <img src="static/images/ircot.png" alt="IRCoT Workflow Diagram"
+                style="width:90%; display:block; margin:0 auto;" />
+              <h2 class="subtitle has-text-centered">
+                IRCoT Workflow
+              </h2>
+            </div>
+
+            <p>
+              Its official implementation requires <strong>nearly 900 lines of handwritten logic</strong>, and even
+              FlashRAG still takes
+              <strong>over 110 lines of code</strong>. In contrast, UltraRAG 2.0 achieves the same functionality with
+              just
+              <strong>50 lines</strong>. Notably, about half of this is merely Pipeline Yaml pseudo-code, dramatically
+              lowering the development barrier and implementation cost.
+            </p>
+
+            <div class="item">
+              <div class="columns is-variable is-5 is-multiline" style="align-items:center;">
+                <div class="column is-6">
+                  <img src="static/images/code_lines_total.svg" alt="Total code lines across frameworks"
+                    style="display:block; width:100%; height:auto; border-radius:12px; box-shadow: 0 10px 20px rgba(0,0,0,.06);" />
+                </div>
+                <div class="column is-6">
+                  <img src="static/images/split.svg" alt="Code composition split"
+                    style="display:block; width:100%; height:auto; border-radius:12px; box-shadow: 0 10px 20px rgba(0,0,0,.06);" />
+                </div>
+              </div>
+              <h2 class="subtitle has-text-centered">How Different Frameworks Implement IRCoT: Code Scale and Structure
+                Compared</h2>
+            </div>
+
+            <p>
+              We showcase how frameworks differ in implementing the same functionality.
+              FlashRAG requires verbose control logic with explicit loops, conditionals, and state updates.
+              UltraRAG 2.0, on the other hand, simplifies everything into just <strong>a few lines of Pipeline
+                YAML—branches and loops</strong> are expressed declaratively,
+              removing the burden of manual coding.
+            </p>
+
+            <!-- Code compare block kept identical to CN version for style parity -->
+            <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+            <style>
+              .code-compare {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.25rem;
+                align-items: start;
+              }
+
+              @media (max-width: 900px) {
+                .code-compare {
+                  grid-template-columns: 1fr;
+                }
+              }
+
+              .code-card {
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                box-shadow: 0 6px 18px rgba(17, 24, 39, .04);
+                overflow: hidden;
+              }
+
+              .code-card__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 12px;
+                background: #fafafa;
+                border-bottom: 1px solid #eef2f6;
+                font-weight: 600;
+                color: #111827;
+              }
+
+              .code-badges {
+                display: inline-flex;
+                gap: 8px;
+              }
+
+              .code-badge {
+                font-size: 12px;
+                padding: 2px 8px;
+                border-radius: 999px;
+                border: 1px solid #e5e7eb;
+                color: #6b7280;
+                background: #fff;
+              }
+
+              .code-card__body {
+                height: 360px;
+                overflow: auto;
+              }
+
+              .code-card pre {
+                margin: 0;
+                padding: 12px 14px;
+                font-size: 13.5px;
+                line-height: 1.55;
+                background: transparent;
+              }
+            </style>
+
+            <div class="ur-code-wrap">
+              <div class="code-compare">
+                <section class="code-card" aria-label="FlashRAG code">
+                  <div class="code-card__header">
+                    <span>FlashRAG</span>
+                    <div class="code-badges"><span class="code-badge">Python</span><span class="code-badge">Branch +
+                        Loop</span></div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="FlashRAG source code">
+                    <pre><code class="language-python"># 1. Initial retrieval
+questions = [item.question for item in items]
+retrieval_results, scoress = self.retriever.batch_search(questions, return_score=True)
+for retrieval_result, scores in zip(retrieval_results,scoress):   
+    doc2score = {doc_item['id']: score for doc_item, score in zip(retrieval_result, scores)}
+    id2doc = {doc_item['id']: doc_item for doc_item in retrieval_result}
+    batch_retrieval_results.append(retrieval_result)
+    doc2score_batch.append(doc2score)
+    id2doc_batch.append(id2doc)
+# 2. Start the iterative process
+active_item_ids = list(range(len(items)))  # Track items that need more iterations
+while iter_num < self.max_iter:
+    # 3. Construct prompts
+    input_prompts = [
+        self.prompt_template.get_string(
+            question=items[item_id].question,
+            retrieval_result=batch_retrieval_results[item_id],
+            previous_gen=' '.join(batch_thoughts[item_id])
+        )
+        for item_id in active_item_ids
+    ]
+    # 4. Generate cot
+    new_thoughts_batch = self.generator.generate(input_prompts, stop=['.', '\n'])
+    # 5. determine loop or end
+    new_active_item_ids = []
+    for idx, item_id in enumerate(active_item_ids):
+        new_thought = new_thoughts_batch[idx]
+        batch_thoughts[item_id].append(new_thought)
+        items[item_id].update_output(
+                f'intermediate_output_iter{iter_num}', 
+                {
+                    'input_prompt': input_prompts[idx],
+                    'new_thought': new_thought,
+                },
+            )
+        if "So the answer is:" not in new_thought:
+            new_active_item_ids.append(item_id)
+    # 6. contiue loop
+    active_item_ids = new_active_item_ids
+    if active_item_ids:
+        new_thoughts_for_retrieval = [batch_thoughts[item_id][-1] for item_id in active_item_ids]
+        new_retrieval_results, new_scoress = self.retriever.batch_search(new_thoughts_for_retrieval, return_score=True)
+        for i, item_id in enumerate(active_item_ids):
+            new_retrieval_result, new_scores = new_retrieval_results[i],new_scoress[i]
+            for doc_item, score in zip(new_retrieval_result, new_scores):
+                doc_id = doc_item['id']
+                id2doc_batch[item_id][doc_id] = doc_item
+                if doc_id in doc2score_batch[item_id]:
+                    doc2score_batch[item_id][doc_id] = max(doc2score_batch[item_id][doc_id], score)
+                else:
+                    doc2score_batch[item_id][doc_id] = score
+            sorted_doc_score = sorted(doc2score_batch[item_id].items(), key=lambda x: x[1], reverse=False)
+            sorted_doc_id = [t[0] for t in sorted_doc_score]
+            batch_retrieval_results[item_id] = [id2doc_batch[item_id][id] for id in sorted_doc_id]
+    iter_num += 1
+# 7. Stop and save results
+for item_id, item in enumerate(items):
+    item.update_output('retrieval_result', batch_retrieval_results[item_id])
+    item.update_output('pred', ' '.join(batch_thoughts[item_id]))
+</code></pre>
+                  </div>
+                </section>
+
+                <section class="code-card" aria-label="UltraRAG code">
+                  <div class="code-card__header">
+                    <span>UltraRAG</span>
+                    <div class="code-badges"><span class="code-badge">YAML</span><span class="code-badge">Branch +
+                        Loop</span></div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="UltraRAG source code">
+                    <pre><code class="language-yaml"># 1. Initial retrieval
+- benchmark.get_data
+- loop:
+    times: 2
+    # 2. Start the iterative process
+    steps:
+    - retriever.retriever_deploy_search
+    # 3. Construct prompts
+    - prompt.ircot_next_prompt
+    # 4. Generate cot
+    - generation.generate
+    # 5. determine loop or end
+    - branch:
+        router:
+        - router.ircot_check_end
+        branches:
+          # 6. contiue loop
+          incomplete:
+          - custom.ircot_get_first_sent
+          # 7. Stop and save results
+          complete: []
+- retriever.retriever_deploy_search
+- prompt.ircot_next_prompt
+- generation.generate
+- custom.ircot_extract_ans
+    </code></pre>
+                  </div>
+                </section>
+              </div>
+
+            </div>
+            <h2 class="subtitle has-text-centered">FlashRAG vs. UltraRAG: A Comparison in Code Implementation</h2>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+            <script>hljs.highlightAll();</script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capability -->
+  <section class="section hero card-section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">Simplicity with Power: High-Performance RAG in Dozens of Lines</h2>
+          <div class="content has-text-justified">
+            <p>
+              In UltraRAG 2.0, simplicity never comes at the cost of functionality. With the MCP architecture and
+              flexible YAML workflows,
+              it empowers researchers with a high-performance, scalable platform.
+              Complex multi-stage reasoning systems—like DeepResearch—can be built in minutes, supporting
+              <strong>dynamic retrieval, conditional logic, and multi-turn interactions</strong>.
+            </p>
+            <p>
+              In our example, <strong>Retriever, Generation, and Router</strong> modules are orchestrated with YAML to
+              form a reasoning workflow featuring both loops and conditional branches.
+              It covers essential steps like <strong>plan generation, knowledge structuring, and sub-question
+                creation</strong>—achieved in <strong>less than 100 lines of code</strong>.
+            </p>
+
+            <div class="item">
+              <img src="static/images/workflow.png" alt="Workflow demo"
+                style="width:90%; display:block; margin:0 auto;" />
+              <h2 class="subtitle has-text-centered">Illustration of System Workflow</h2>
+            </div>
+
+            <p>
+              In terms of performance, the system achieves a <strong>~12%</strong> improvement over Vanilla RAG on
+              complex multi-hop questions,
+              demonstrating the potential of UltraRAG 2.0 for rapidly building advanced reasoning systems.
+            </p>
+
+            <div class="item">
+              <img src="static/images/performance.svg" alt="Performance"
+                style="width:55%; display:block; margin:0 auto;">
+              <h2 class="subtitle has-text-centered">Performance of the Example System</h2>
+            </div>
+
+            <p>Below are cases generated by our example system for two real user questions from RedNote platform.</p>
+
+            <!-- Cases (content kept from CN version for authenticity; headings translated) -->
+            <div class="ur-case-wrap">
+              <div class="columns is-variable is-5 is-multiline">
+
+                <!-- Case 1 -->
+                <div class="column is-6">
+                  <article class="box" style="height:100%;">
+                    <h3 class="title is-5" style="margin-bottom:.75rem;">Case 1: Job Hunting for EIE Graduate</h3>
+                    <figure class="image" style="text-align:center; margin-bottom:1rem;">
+                      <img src="static/images/case1.png" alt="Case 1"
+                        style="max-width:100%; border-radius:12px; display:inline-block;">
+                      <h2 class="subtitle has-text-centered">Electronics & Information Job Hunting in the Fall</h2>
+                    </figure>
+                    <div class="content" style="max-height:520px; overflow:auto; padding-right:.5rem;">
+                      <h3 class="title is-6" style="color:#2563eb;">❓Problem Input</h3>
+                      <p>My background is roughly as follows: I didn’t study well during my undergraduate years and had
+                        poor grades.
+                        Later, I went on to a one-year master’s program that wasn’t very rigorous. During my master’s,
+                        my grades improved, but I didn’t really gain much solid knowledge.
+                        I only have one internship experience and no projects.
+                        Now I feel that finding a technical position is very difficult for me.
+                        I’m feeling quite lost and would appreciate some career direction advice.
+                        #freshgraduatejobsearch #freshgraduate #campusrecruitment #Fall2026 #masterprogram</p>
+                      <h3 class="title is-6" style="color:#2563eb;">✅Model Output</h3>
+                      <p><strong>Career Guidance for Electronics and Information Engineering Graduates in Fall
+                          Recruitment</strong></p>
+
+                      <h5 class="title is-6">Job Market Analysis</h5>
+                      <p>
+                        Fresh graduates in Electronics and Information Engineering often face multiple challenges during
+                        job hunting. A lack of focus during undergraduate studies and poor academic performance can lead
+                        to weak fundamentals and limited theoretical grounding. Although grades may improve at the
+                        master’s level, many programs are considered less rigorous, offering limited opportunities for
+                        genuine technical growth and systematic training<a href="#case1-ref-1">[1]</a>. Internship
+                        experience is often narrow, with little exposure to real-world projects or technical depth,
+                        making it difficult to stand out in technical roles. Meanwhile, the industry’s expectations for
+                        technical competence are rising. With the rapid adoption of AI and other emerging technologies,
+                        the demand for entry-level technical positions has decreased, further intensifying the
+                        challenges for graduates<a href="#case1-ref-2">[2]</a>. Therefore, job seekers must acknowledge
+                        gaps in their technical skill sets while actively seeking employment directions aligned with
+                        their background to enhance competitiveness.
+                      </p>
+
+                      <h5 class="title is-6">Industry Overview: Fall 2026 Recruitment</h5>
+                      <p>
+                        The Fall 2026 recruitment season in the electronics and information industry is characterized by
+                        strong demand for technical talent, especially in AI-related roles. Leading internet companies
+                        such as Alibaba, ByteDance, Tencent, and Meituan are all expanding hiring, with technical
+                        positions forming the core. For example, ByteDance plans to recruit over 5,000 positions, with a
+                        significant share in R&D, and particularly strong demand growth in algorithms and front-end
+                        development; Alibaba has increased the proportion of AI-related roles to over 60%<a
+                          href="#case1-ref-3">[3]</a>. Core requirements for fresh graduates center around technical
+                        ability, project experience, and proficiency in AI tools<a href="#case1-ref-4">[4]</a>.
+                        Internship experience has also become a critical screening criterion—undergraduates with
+                        internships at top tech firms are sometimes preferred over graduates from elite universities
+                        without such experience. In addition, non-technical roles now also require higher levels of
+                        digital literacy, such as the ability to use AI tools for data analysis or content creation.
+                      </p>
+
+                      <h5 class="title is-6">Exploring Career Directions</h5>
+                      <p>
+                        For graduates with weak fundamentals at the undergraduate level, less rigorous master’s
+                        programs, and limited internship experience, competitiveness in purely technical roles is indeed
+                        constrained. However, multiple pathways remain available. One option is to consider technical
+                        positions that place less emphasis on project experience, such as embedded software engineer,
+                        hardware testing engineer, or technical support engineer—roles that value practical skills and
+                        hands-on ability over complex project portfolios<a href="#case1-ref-5">[5]</a>. Another option
+                        is non-technical positions, such as product manager, marketing operations, or sales support,
+                        particularly roles where a technical background is valued but communication skills and market
+                        awareness are more important. Furthermore, the electronics and information background provides
+                        advantages in cross-industry opportunities, such as working in consumer electronics, smart
+                        hardware, or new energy companies in roles like product planning, technical support, or customer
+                        service<a href="#case1-ref-6">[6]</a>. With careful presentation of internship experience and
+                        targeted skill-building, graduates can still secure suitable positions in the fall recruitment
+                        season.
+                      </p>
+
+                      <h5 class="title is-6">Resume and Interview Preparation</h5>
+                      <p>
+                        When optimizing resumes, graduates should highlight internship experience and strategically
+                        compensate for a lack of project work. Internship descriptions should be specific and
+                        measurable, emphasizing the tools learned, tasks completed, and concrete contributions to the
+                        team or project<a href="#case1-ref-7">[7]</a>. If project experience is lacking, candidates can
+                        highlight coursework, competitions, or open-source contributions, framing them as projects and
+                        emphasizing technical challenges and solutions<a href="#case1-ref-8">[8]</a>. The skills section
+                        should be tailored to match job requirements, listing only relevant abilities rather than
+                        generic skills. Clear and concise formatting should be used to highlight key information for
+                        recruiters. For interviews, candidates should be well-prepared to discuss resume content in
+                        depth, confidently articulating internship and project experience while also demonstrating
+                        enthusiasm and understanding of the target role.
+                      </p>
+
+                      <h5 class="title is-6">Mindset and Resource Support</h5>
+                      <p>
+                        During the job search, graduates in Electronics and Information Engineering often feel lost or
+                        anxious, especially in the face of intense competition and uncertainty about the future. It is
+                        important to cultivate a growth mindset, recognizing that abilities can improve through effort
+                        rather than being fixed<a href="#case1-ref-9">[9]</a>. Graduates should also leverage weak-tie
+                        networks by attending events and engaging with people from diverse backgrounds to expand
+                        opportunities. Maintaining a positive mindset is essential—through sports, socializing, or
+                        self-expression—to relieve stress and avoid “giving up.” In addition, resources such as
+                        university career centers, alumni networks, and counseling services can provide valuable
+                        guidance and support<a href="#case1-ref-10">[10]</a>. Most importantly, setting clear goals and
+                        actionable plans will help graduates steadily build competitiveness and approach the fall
+                        recruitment season with greater confidence and resilience.
+                      </p>
+
+                      <h5 class="title is-6">Reference</h5>
+                      <ol>
+                        <li id="case1-ref-1">CSDN Blog: Job Hunting Reflections of 2024 Electronics and Information
+                          Graduates. <a href="https://blog.csdn.net/hu_yinghui/article/details/140604878"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-2">WeChat: Detailed Explanation of 12 Areas in the Electronics (0854)
+                          Professional Degree and Employment Directions. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzU3OTY5ODc5MA==&mid=2247509014&idx=8&sn=a355538b27e253b49d527b3491386700"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-3">WeChat: Graduation Season | How to Get a Dream Offer! <a
+                            href="http://mp.weixin.qq.com/s?__biz=Mzg4MzU1NDI2MA==&mid=2247568287&idx=1&sn=f4519216329e54646f9a485490f4217a"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-4">WeChat: Job Hunting Stories of Nanjing University of Aeronautics and
+                          Astronautics Graduate Students. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzA3NzM1MjYyMQ%3D%3D&chksm=85080417ceacd3e3f6b246b7a274cdd83ea658d72ebfa50c5776f8deac65f6072c5e15d7091b&idx=1&mid=2654522009&scene=27&sn=98102ec08bb47329b3ce855833eb4194"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-5">MBAChina: How to Secure an Ideal Offer—Career Experience Sharing from
+                          Central South University Students. <a
+                            href="http://mbachina.com/html/mbachina/20250505/611588.html" target="_blank">Link</a></li>
+                        <li id="case1-ref-6">Hangzhou Dianzi University: Graduate Story of 2025 Class—Dreams Take
+                          Flight, Strive for Success. <a href="http://cmee.hdu.edu.cn/2024/1223/c4767a273992/page.htm"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-7">Nowcoder: Why Did I Get Zero Offers Despite Three Years of Self-Learning
+                          and Coding Practice? <a href="http://nowcoder.com/discuss/700044492660805632"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-8">WeChat: Graduation Season | How to Get a Dream Offer! <a
+                            href="http://mp.weixin.qq.com/s?__biz=Mzg4MzU1NDI2MA==&mid=2247568287&idx=1&sn=f4519216329e54646f9a485490f4217a"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-9">WeChat: Job Hunting Stories of Nanjing University of Aeronautics and
+                          Astronautics Graduate Students. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzA3NzM1MjYyMQ%3D%3D&chksm=85080417ceacd3e3f6b246b7a274cdd83ea658d72ebfa50c5776f8deac65f6072c5e15d7091b&idx=1&mid=2654522009&scene=27&sn=98102ec08bb47329b3ce855833eb4194"
+                            target="_blank">Link</a></li>
+                        <li id="case1-ref-10">CSDN Blog: Job Hunting Reflections of 2024 Electronics and Information
+                          Graduates. <a href="https://blog.csdn.net/hu_yinghui/article/details/140604878"
+                            target="_blank">Link</a></li>
+                      </ol>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="column is-6">
+                  <article class="box" style="height:100%;">
+                    <h3 class="title is-5" style="margin-bottom:.75rem;">Case 2: College Application Decision</h3>
+                    <figure class="image" style="text-align:center; margin-bottom:1rem;">
+                      <img src="static/images/case2.png" alt="Case 2"
+                        style="max-width:100%; border-radius:12px; display:inline-block;">
+                      <h2 class="subtitle has-text-centered">NCO School vs. Associate + Conscription</h2>
+                    </figure>
+                    <div class="content" style="max-height:520px; overflow:auto; padding-right:.5rem;">
+                      <h3 class="title is-6" style="color:#2563eb;">❓Problem Input</h3>
+                      <p>My younger brother just finished the college entrance exam and is about to choose his path.
+                        Which is better: enrolling in an NCO (non-commissioned officer) school or going through a junior
+                        college program with compulsory military service? Any advice from those with experience?
+                        #JustAsking #NeedAdvice #Xiaohongshu</p>
+                      <h3 class="title is-6" style="color:#2563eb;">✅Model Output</h3>
+                      <p><strong>Analysis of Pros and Cons Between NCO Schools and Junior Colleges with Conscription,
+                          and Suggestions for Choosing</strong></p>
+
+                      <h5 class="title is-6">Understanding the Basic Definitions and Features</h5>
+                      <p>NCO schools are a type of military academy, primarily recruiting active-duty soldiers to
+                        cultivate non-commissioned officers with strong technical expertise<a
+                          href="#case2-ref-1">[1]</a>. These schools feature strict military training and professional
+                        courses, aiming to supply the military with highly skilled technical personnel. Students enter
+                        as active-duty soldiers, receive military-style management and technical training, and directly
+                        serve in the military upon graduation.
+                      </p>
+
+                      <p><strong>Meaning and Policy Requirements of Junior College with Conscription</strong><br>
+                        This pathway refers to candidates enrolling in designated NCO training programs through the
+                        national college entrance examination. Students spend 2.5 years at a civilian college, followed
+                        by a half-year of military internship and training<a href="#case2-ref-2">[2]</a>. After
+                        graduation, they directly become NCOs with full benefits. Applicants must pass physical and
+                        political examinations to be admitted, and are generally restricted to recent high school
+                        graduates, under 20 years old, and unmarried<a href="#case2-ref-3">[3]</a>.
+                      </p>
+
+                      <p><strong>Similarities and Differences</strong><br>
+                        Both paths aim to cultivate professional NCOs. The difference lies in admissions and training
+                        models: NCO schools admit active-duty soldiers, while junior college conscription recruits
+                        through the college entrance exam. The former emphasizes military-focused training, whereas the
+                        latter blends civilian higher education with military internship, offering more flexibility.
+                      </p>
+
+                      <h5 class="title is-6">Analyzing Advantages and Disadvantages</h5>
+                      <p><strong>Advantages and Limitations of NCO Schools</strong><br>
+                        NCO schools offer immediate military status upon enrollment, stable treatment, strict
+                        management, and targeted technical training. Graduates transition directly into service without
+                        employment concerns, and promotion paths within the military are well-defined<a
+                          href="#case2-ref-1">[1]</a>. However, enrollment is limited to active-duty soldiers, excluding
+                        most high school graduates. The lifestyle is demanding and intense, suitable only for those with
+                        strong military aspirations and physical fitness.
+                      </p>
+
+                      <p><strong>Advantages and Risks of Junior College Conscription</strong><br>
+                        The main advantage is accessibility: students can enter via the college entrance exam, receive
+                        tuition reimbursement, and directly become NCOs after graduation<a href="#case2-ref-5">[5]</a>.
+                        It suits candidates with modest scores but strong interest in a military career. The system
+                        provides both civilian education and military adaptation. Risks include strict health and
+                        political checks, as well as the demanding discipline of military life<a
+                          href="#case2-ref-6">[6]</a>.
+                      </p>
+
+                      <p><strong>Impact on Future Career Development</strong><br>
+                        NCO school graduates typically pursue long-term military careers with clear promotion tracks.
+                        Junior college conscription graduates may choose to continue serving or retire after a set
+                        number of years, benefiting from government resettlement or pursuing civilian careers<a
+                          href="#case2-ref-7">[7]</a>. Both enjoy stable treatment upon becoming NCOs, but the junior
+                        college pathway offers more flexibility for post-service transitions.
+                      </p>
+
+                      <h5 class="title is-6">Developing a Choice Strategy Based on Personal Circumstances</h5>
+                      <p>
+                        Candidates should consider family background, interests, and financial situation. Families
+                        seeking stability may prefer either option since both ensure tuition reimbursement, direct
+                        service, and stable benefits<a href="#case2-ref-8">[8]</a>. Passion for military life,
+                        discipline, and resilience are also crucial: those with strong motivation will thrive<a
+                          href="#case2-ref-9">[9]</a>. For students less interested in military careers, or who aim for
+                        broader civilian opportunities, these pathways may be less suitable. Students from financially
+                        secure families may choose general higher education first, postponing military service
+                        decisions.
+                      </p>
+
+                      <h5 class="title is-6">Insights and Suggestions from Experienced Individuals</h5>
+                      <p>
+                        Graduates of designated NCO training programs serve directly in the military, with clear
+                        promotion pathways. However, service commitments are often lengthy, typically 5 years or more,
+                        with some requiring up to 12 years before transfer<a href="#case2-ref-10">[10]</a>. NCO school
+                        graduates enjoy stability but must adapt well to strict discipline. Junior college conscription
+                        offers more flexibility—students may retire after 2 years, though their technical skills may
+                        have limited civilian application. Many experienced voices suggest NCO schools or designated NCO
+                        programs for those seeking long-term stability, while junior college conscription is more
+                        suitable for those wanting short-term service or the experience of military life<a
+                          href="#case2-ref-11">[11]</a>.
+                      </p>
+
+                      <h5 class="title is-6">Final Decision-Making and Action Guide</h5>
+                      <p>
+                        When deciding, candidates should weigh personal interests, family conditions, and career goals.
+                        Those committed to long-term military service with strong adaptability should choose NCO schools
+                        or designated training programs<a href="#case2-ref-12">[12]</a>. Those who prefer a blend of
+                        civilian education and military experience may opt for junior college conscription. Candidates
+                        should ensure they meet health and political requirements, prepare documentation in advance, and
+                        choose schools and majors aligning with their strengths<a href="#case2-ref-13">[13]</a>.
+                        Ultimately, whichever path is chosen, having clear career goals and preparation is essential for
+                        future success.
+                      </p>
+
+                      <h5 class="title is-6">Reference</h5>
+                      <ol>
+                        <li id="case2-ref-1">Lejian Education: Analysis of Why NCO Schools Are Less Popular and Transfer
+                          Possibilities. <a href="http://m.letianedu.cn/article/c6013741a07bd897.html"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-2">Zhiyou Service: Differences Between Designated NCO Training and Junior
+                          College Conscription. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MwMjE1Mzk0MA==&mid=2648230877&idx=4&sn=a0a0cfc3cab3270d711ceea6ed0f521c"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-3">Sohu: Is Enrolling in an NCO School After the College Entrance Exam a Good
+                          Choice? <a href="http://sohu.com/a/482188983_120260761" target="_blank">Link</a></li>
+                        <li id="case2-ref-4">PLA WeChat: Advantages of Joining the Army After College Graduation (Junior
+                          College & Undergraduate). <a
+                            href="http://mp.weixin.qq.com/s?__biz=Mzg5NzU0Njc2Ng==&mid=2247508039&idx=1&sn=70607b30cf7c4bfdbfa5a706a68ce7c2"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-5">Tencent News: Is Designated NCO Training Worth Applying For? Pros and Cons.
+                          <a href="https://new.qq.com/omn/20240510/20240510A00Y4G00.html" target="_blank">Link</a>
+                        </li>
+                        <li id="case2-ref-6">Liaoning Transportation Vocational College: Policy Explanation for Armed
+                          Police Designated NCO Training. <a href="http://www.lncc.edu.cn/xsc/info/1017/2054.htm"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-7">Zhangshang Gaokao: Elimination Rates and Situations in Designated NCO
+                          Training. <a href="https://m.gaokao.cn/news/2025/0312/2039.html" target="_blank">Link</a></li>
+                        <li id="case2-ref-8">Hanbo Admissions: Elimination Rates and Common Reasons During Designated
+                          NCO Training. <a href="https://www.hbzhaosheng.com/article/202407155740.html"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-9">WeChat (Congyu Career Planning): Four Key Differences Between Designated
+                          NCO Training and Conscription. <a
+                            href="https://mp.weixin.qq.com/s?__biz=MzkyOTk2MTY3Nw==&mid=2247485123&idx=2&sn=8f7c6a0a6f4c5d4b2e0e6b98f2c7b2e6"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-10">Sohu: The Path of Candidates with 300–450 Exam Scores: Designated NCO
+                          Training vs. Junior College Conscription. <a href="https://www.sohu.com/a/804123456_121124715"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-11">Jinzhou Military Entrepreneurship: Three Major Advantages of Joining the
+                          Army After College Graduation. <a
+                            href="http://mp.weixin.qq.com/s?__biz=MzU1ODM4NTg4Nw==&mid=2247492932&idx=3&sn=585275a2cfdaeadee82c18ac82eb00ac"
+                            target="_blank">Link</a></li>
+                        <li id="case2-ref-12">Linghang Education: Where Do NCO School Graduates Go? Analysis of
+                          Technical, Management, and Cross-Branch Assignments. <a
+                            href="http://lxjedu.com/sys-nd/3408.html" target="_blank">Link</a></li>
+                        <li id="case2-ref-13">Bilibili: Is It Easier to Enter NCO Schools Compared to Officer Schools?
+                          <a href="http://bilibili.com/read/cv28662363" target="_blank">Link</a>
+                        </li>
+                      </ol>
+                    </div>
+                  </article>
+                </div>
+
+              </div>
+            </div>
+            <h2 class="subtitle has-text-centered">Showcase of System-Generated Cases</h2>
+
+            <p>
+              UltraRAG 2.0 makes building complex reasoning systems truly <strong>low-code, high-performance, and
+                production-ready</strong>.
+              Beyond boosting performance in research, it also empowers rapid deployment in real-world applications such
+              as customer service,
+              education, and healthcare, providing more reliable knowledge-augmented answers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secret Sauce -->
+  <section class="section hero card-section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">The Secret Sauce: MCP Architecture and Native Pipeline Control</h2>
+          <div class="content has-text-justified">
+            <p>
+              In different RAG systems, core capabilities such as retrieval and generation share high functional
+              similarity,
+              but due to diverse implementation strategies by developers, modules often lack unified interfaces, making
+              cross-project reuse difficult.
+              The <a href="https://modelcontextprotocol.io/overview" target="_blank">Model Context Protocol (MCP)</a> is
+              an open protocol that standardizes
+              the way to provide context for large language models (LLMs) and adopts a <strong>Client–Server</strong>
+              architecture,
+              enabling MCP-compliant Server components to be seamlessly reused across different systems.
+            </p>
+
+            <p>
+              Inspired by this, UltraRAG 2.0 is based on <strong>the MCP architecture</strong>,
+              abstracting and encapsulating core functions such as retrieval, generation, and evaluation in RAG systems
+              into independent <strong>MCP Servers</strong>, and invoking them through standardized
+              <strong>function-level Tool interfaces</strong>.
+              This design ensures flexible module function extension and allows new modules to be “hot-plugged” without
+              invasive modifications to global code.
+              In scientific research scenarios, this architecture enables researchers to quickly adapt new models
+              or algorithms with minimal code while maintaining overall system stability and consistency.
+            </p>
+
+            <div class="item">
+              <img src="static/images/architecture.png" alt="Architecture"
+                style="width:90%; display:block; margin:0 auto;">
+              <h2 class="subtitle has-text-centered">Illustration of the UltraRAG 2.0 Framework</h2>
+            </div>
+
+            <p>
+              Developing complex RAG inference frameworks is significantly challenging.
+              UltraRAG 2.0’s ability to support complex systems under <strong>low-code</strong> conditions lies in its
+              native support for multi-structured <strong>pipeline workflow control</strong>.
+              Whether sequential, loop, or conditional branching, all control logic can be defined and orchestrated at
+              the YAML level,
+              covering various workflow expression forms needed for complex inference tasks.
+              During runtime, inference workflow scheduling is executed by the built-in <strong>Client</strong>,
+              whose logic is fully described by user-written external <strong>Pipeline YAML scripts</strong>, achieving
+              decoupling from the underlying implementation.
+              Developers can call instructions like loop and step as if using programming language keywords, quickly
+              constructing multi-stage inference workflows in a declarative manner.
+            </p>
+
+            <!-- 三种流程示例：顺序 / 循环 / 分支 -->
+            <style>
+              /* 三列代码卡片布局；窄屏自动折行 */
+              .code-compare--3 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 1.25rem;
+                align-items: start;
+              }
+
+              @media (max-width: 1200px) {
+                .code-compare--3 {
+                  grid-template-columns: 1fr 1fr;
+                }
+              }
+
+              @media (max-width: 900px) {
+                .code-compare--3 {
+                  grid-template-columns: 1fr;
+                }
+              }
+            </style>
+
+            <div class="ur-code-wrap">
+              <div class="code-compare--3">
+                <!-- 顺序（Serial） -->
+                <section class="code-card" aria-label="Serial YAML example">
+                  <div class="code-card__header">
+                    <span>Sequential</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Sequential</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="Serial YAML code">
+                    <pre data-hl style="--hl-start:3; --hl-end:8;"><code class="language-yaml"># Sequential: Tools are executed in order
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+</code></pre>
+                  </div>
+                </section>
+
+                <!-- 循环（Loop） -->
+                <section class="code-card" aria-label="Loop YAML example">
+                  <div class="code-card__header">
+                    <span>Loop</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Loop</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="Loop YAML code">
+                    <pre data-hl style="--hl-start:5; --hl-end:10;"><code class="language-yaml"># Loop: Iteratively execute a group of tools
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search
+- loop:
+    times: 3  
+    steps: 
+      - prompt.generate_subquery
+      - generation.generate  
+      - retriever.retriever_deploy_search
+- prompt.generate_answer
+- generation.generate
+- evaluation.evaluate
+  </code></pre>
+                  </div>
+                </section>
+
+                <!-- 分支（Branch） -->
+                <section class="code-card" aria-label="Branch YAML example">
+                  <div class="code-card__header">
+                    <span>Branch</span>
+                    <div class="code-badges">
+                      <span class="code-badge">YAML</span>
+                      <span class="code-badge">Branch-Router</span>
+                    </div>
+                  </div>
+                  <div class="code-card__body" role="region" aria-label="Branch YAML code">
+                    <pre data-hl style="--hl-start:10; --hl-end:18;"><code class="language-yaml"># Branch: Execute different tools based on routing results
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search
+- loop:
+    times: 3         
+    steps:
+    - prompt.generate_query_or_answer
+    - generation.generate
+    - branch:
+        router:
+          - router.check_query_or_answer   
+        branches:
+          is_query:
+            - retriever.retriever_deploy_search
+          is_answer: []    
+- evaluation.evaluate
+      </code></pre>
+                  </div>
+                </section>
+              </div>
+            </div>
+            <h2 class="subtitle has-text-centered" style="margin-top:.5rem;">Multi-structured Pipeline Control:
+              Sequential, Loop, and Branching</h2>
+
+            <p>
+              By deeply integrating <strong>the MCP architecture</strong> with <strong>native workflow control</strong>,
+              UltraRAG 2.0 makes building complex RAG systems as natural and efficient as “orchestrating workflows.”
+              Additionally, the framework includes 17 mainstream benchmark tasks and multiple high-quality baselines,
+              combined with a unified evaluation system and knowledge base support, further enhancing system development
+              efficiency and experiment reproducibility.
+            </p>
+
+            <p><strong>Explore the <a href="https://ultrarag.openbmb.cn" target="_blank">tutorials</a> and start
+                building
+                with UltraRAG 2.0!</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer"
+    style="background: var(--ur-bg); color: var(--ur-muted); border-top: 1px solid #e5e7eb; padding:.85rem 0;">
+    <div class="container">
+      <div class="columns is-vcentered is-variable is-6">
+        <div class="column is-6">
+          <div class="buttons" style="margin-bottom:0;">
+            <a class="button is-normal is-light" href="https://github.com/OpenBMB/UltraRAG" target="_blank"
+              style="color: inherit;">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>GitHub</span>
+            </a>
+            <a class="button is-normal is-light" href="https://ultrarag.openbmb.cn" target="_blank"
+              style="color: inherit;">
+              <span class="icon"><i class="fas fa-book"></i></span>
+              <span>Docs</span>
+            </a>
+            <a class="button is-normal is-light" href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"
+              target="_blank" style="color: inherit;">
+              <span class="icon">🤗</span>
+              <span>Dataset</span>
+            </a>
+          </div>
+        </div>
+        <div class="column is-6 has-text-right">
+          <p class="is-size-7 has-text-grey" style="margin-bottom:.5rem;">
+            UltraRAG <i class="far fa-copyright" aria-hidden="true"></i> <span id="footer-year">2025</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () { try { var y = new Date().getFullYear(); var el = document.getElementById('footer-year'); if (el) el.textContent = y; } catch (e) { } })();
+  </script>
+</body>
+
+</html>
