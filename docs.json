@@ -204,11 +204,11 @@
     "links": [
       {
         "label": "Home",
-        "href": "https://ultrarag.github.io/project/"
+        "href": "https://openbmb.github.io/UltraRAG/"
       },
       {
         "label": "Datasets",
-        "href": "https://huggingface.co/datasets/msss123/msssssragdata123123"
+        "href": "https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"
       },
       {
         "label": "Leaderboard",
@@ -218,7 +218,7 @@
     "primary": {
       "type": "button",
       "label": "GitHub",
-      "href": "https://github.com/ultrarag/UltraRAG-MCP"
+      "href": "https://github.com/OpenBMB/UltraRAG"
     }
   },
   "contextual": {
@@ -232,7 +232,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/ultrarag/UltraRAG-MCP"
+      "github": "https://github.com/OpenBMB/UltraRAG"
     }
   },
   "logo": {
