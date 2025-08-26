@@ -1,0 +1,16 @@
+# servers/prompt/parameter.yaml
+
+# QA
+template: prompt/qa_boxed.jinja
+
+# RankCoT
+kr_template: prompt/RankCoT_knowledge_refinement.jinja
+qa_template: prompt/RankCoT_question_answering.jinja
+
+# Search-R1
+search_r1_gen_template: prompt/search_r1_append.jinja
+
+# R1-Searcher
+r1_searcher_gen_template: prompt/r1_searcher_append.jinja
+
+# For other prompts, please add parameters here as needed
