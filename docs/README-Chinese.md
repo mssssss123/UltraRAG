@@ -11,11 +11,11 @@
 
 <p align="center">
 | 
-<a href="https://ultrarag.github.io/project/"><b>项目主页</b></a> 
+<a href="https://openbmb.github.io/UltraRAG"><b>项目主页</b></a> 
 | 
-<a href="https://ur.xinhaidong.top"><b>教程文档</b></a> 
+<a href="https://ultrarag.openbmb.cn"><b>教程文档</b></a> 
 | 
-<a href="https://huggingface.co/datasets/msss123/msssssragdata123123"><b>数据集</b></a> 
+<a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>数据集</b></a> 
 | 
 <a href="https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"><b>评测榜</b></a>
 |
@@ -128,11 +128,12 @@ uv pip install -e ."[all]"
 ```
 
 
-我们配套提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ur.xinhaidong.top)快速上手 UltraRAG 2.0！
+我们配套提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
+)快速上手 UltraRAG 2.0！
 
 ## 支持
 
-UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开评测数据集**、**大规模语料库** 以及 **典型基线方法**，方便科研人员快速复现与扩展实验。你也可以参考[数据格式说明](https://ur.xinhaidong.top/pages/cn/tutorials/part_3/prepare_dataset)，灵活地自定义并添加任意数据集或语料库。完整的[数据集](https://huggingface.co/datasets/msss123/msssssragdata123123)可通过该链接访问与下载。
+UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开评测数据集**、**大规模语料库** 以及 **典型基线方法**，方便科研人员快速复现与扩展实验。你也可以参考[数据格式说明](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/prepare_dataset)，灵活地自定义并添加任意数据集或语料库。完整的[数据集](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark)可通过该链接访问与下载。
 
 ### 1. 支持的数据集
 

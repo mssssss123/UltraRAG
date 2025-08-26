@@ -10,11 +10,11 @@ Less Code, Lower Barrier, Faster Deployment
 
 <p align="center">
 | 
-<a href="https://ultrarag.github.io/project/"><b>Project Page</b></a> 
+<a href="https://openbmb.github.io/UltraRAG"><b>Project Page</b></a> 
 | 
-<a href="https://ur.xinhaidong.top"><b>Documentation</b></a> 
+<a href="https://ultrarag.openbmb.cn"><b>Documentation</b></a> 
 | 
-<a href="https://huggingface.co/datasets/msss123/msssssragdata123123"><b>Datasets</b></a> 
+<a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>Datasets</b></a> 
 | 
 <a href="https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"><b>Leaderboard</b></a>
 |
@@ -127,11 +127,12 @@ uv pip install -e ."[all]"
 ```
 
 
-We provide complete tutorial examples from beginner to advanced levels. Welcome to visit the [Tutorial Documentation](https://ur.xinhaidong.top) to quickly get started with UltraRAG 2.0!
+We provide complete tutorial examples from beginner to advanced levels. Welcome to visit the [Tutorial Documentation](https://ultrarag.openbmb.cn
+) to quickly get started with UltraRAG 2.0!
 
 ## Support
 
-UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most commonly used **public evaluation datasets**, **large-scale corpus**, and **typical baseline methods** in the current RAG field, facilitating rapid reproduction and extension of experiments for researchers. You can also refer to the [Data Format Specification](https://ur.xinhaidong.top/pages/cn/tutorials/part_3/prepare_dataset) to flexibly customize and add any datasets or corpus. The full [datasets](https://huggingface.co/datasets/msss123/msssssragdata123123) are available for access and download through this link.
+UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most commonly used **public evaluation datasets**, **large-scale corpus**, and **typical baseline methods** in the current RAG field, facilitating rapid reproduction and extension of experiments for researchers. You can also refer to the [Data Format Specification](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/prepare_dataset) to flexibly customize and add any datasets or corpus. The full [datasets](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark) are available for access and download through this link.
 
 ### 1. Supported Datasets
 
