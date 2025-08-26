@@ -265,12 +265,11 @@
             </div>
 
             <p>
-              Its official implementation requires <strong>nearly 900 lines of handwritten logic</strong>, and even
-              FlashRAG still takes
-              <strong>over 110 lines of code</strong>. In contrast, UltraRAG 2.0 achieves the same functionality with
-              just
-              <strong>50 lines</strong>. Notably, about half of this is merely Pipeline Yaml pseudo-code, dramatically
-              lowering the development barrier and implementation cost.
+              In the official implementation, the Pipeline alone requires <strong>nearly 900 lines of handwritten logic</strong>. 
+              Even with a benchmark RAG framework such as FlashRAG, it still takes <strong>over 110 lines of code</strong>. 
+              In contrast, UltraRAG 2.0 achieves the same functionality with just <strong>around 50 lines of code</strong>—and notably, 
+              nearly half of these are simply Yaml pseudo-code for pipeline orchestration. 
+              This dramatically lowers the development barrier and implementation cost.
             </p>
 
             <div class="item">
@@ -290,7 +289,7 @@
 
             <p>
               We showcase how frameworks differ in implementing the same functionality.
-              FlashRAG requires verbose control logic with explicit loops, conditionals, and state updates.
+              FlashRAG requires lengthy control logic with explicit loops, conditionals, and state updates.
               UltraRAG 2.0, on the other hand, simplifies everything into just <strong>a few lines of Pipeline
                 YAML—branches and loops</strong> are expressed declaratively,
               removing the burden of manual coding.
