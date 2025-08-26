@@ -1,0 +1,64 @@
+# WebNote demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  generation: servers/generation
+  retriever: servers/retriever
+  prompt: servers/prompt
+  evaluation: servers/evaluation
+  custom: servers/custom
+  router: servers/router
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+# 初始化检索服务
+- retriever.retriever_deploy_search
+# 加载数据集
+
+# 生成plan
+- prompt.webnote_gen_plan
+- generation.generate:
+    output:
+      ans_ls: plan_ls
+# 初始化page
+- prompt.webnote_init_page
+- generation.generate:
+    output:
+      ans_ls: page_ls
+# 循环，生成子问题，检索，逐步填充page
+- loop:
+    times: 10
+    steps:
+    # 触发器检查，判断page是否完成
+    - branch:
+        router:
+        - router.webnote_check_page
+        branches:
+          # 如果page没有完成，继续
+          incomplete:
+          # 生成子问题
+          - prompt.webnote_gen_subq
+          - generation.generate:
+              output:
+                ans_ls: subq_ls
+          # 检索答案
+          - retriever.retriever_deploy_search:
+              input:
+                query_list: subq_ls
+              output:
+                ret_psg: psg_ls
+          # 填充page
+          - prompt.webnote_fill_page
+          - generation.generate:
+              output:
+                ans_ls: page_ls
+          # 如果page完成，结束
+          complete: []
+# 生成答案
+- prompt.webnote_gen_answer
+- generation.generate
+# 评估结果
+- custom.output_extract_from_boxed
+- evaluation.evaluate
