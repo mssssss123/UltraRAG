@@ -1,0 +1,118 @@
+---
+title: "Retriever Server"
+icon: "magnifying-glass"
+---
+
+## Configuration Parameters
+
+- **retriever_path** (`str`): Path or name of the embedding model  
+- **corpus_path** (`str`): Path to the corpus file (JSONL format)  
+- **embedding_path** (`str`): Path to the `.npy` file storing generated embedding vectors  
+- **index_path** (`str`): Path to the `.index` file storing the Faiss index  
+- **infinity_kwargs** (`dict`): Model configuration passed to `infinity_emb.EngineArgs`  
+  - **bettertransformer** (`bool`): Whether to enable BetterTransformer acceleration (default `false`)  
+  - **pooling_method** (`str`): Vector pooling method (`auto`, `cls`, `mean`)  
+  - **device** (`str`): Device to load the model on (e.g., `cuda`, `cpu`)  
+  - **batch_size** (`int`): Batch size when embedding in batches  
+- **cuda_devices** (`str`): Visible GPU settings, e.g., `"0,1"` means using GPU 0 and GPU 1  
+- **query_instruction** (`str`): Prefix prompt for queries  
+- **faiss_use_gpu** (`bool`): Whether to enable GPU Faiss (fallback to CPU if failed)  
+- **top_k** (`int`): Number of retrieved documents to return  
+- **overwrite** (`bool`): Whether to overwrite if the target exists  
+- **retriever_url** (`str`): Service address (can be `host:port` or full `http://host:port`, default port `8080` if not specified)  
+- **index_chunk_size** (`int`): Batch size for `add_with_ids` in chunks  
+
+---
+
+## API Description
+
+### `retriever_init`
+
+#### Function
+Initialize the retriever model based on the Infinity Embedding library and load the corpus file; if `index_path` is provided and exists, load the Faiss index (GPU/CPU).
+
+#### Input Parameters
+- **retriever_path** (`str`): Infinity model path or name (passed to `EngineArgs`)  
+- **corpus_path** (`str`): Corpus file (JSONL), each line must contain the key `"contents"`  
+- **index_path** (`Optional[str]`): Existing `.index` file path of the built index, load if exists  
+- **faiss_use_gpu** (`bool`): Whether to enable GPU Faiss (fallback to CPU if failed)  
+- **infinity_kwargs** (`Optional[Dict[str, Any]]`): Other parameters passed to `EngineArgs` (e.g., `dtype`, `batch_size`, etc.)  
+- **cuda_devices** (`Optional[str]`): Visible GPUs, e.g., `"0,1"`; will be set to `CUDA_VISIBLE_DEVICES`  
+
+#### Return Parameters
+- None  
+
+---
+
+### `retriever_embed`
+
+#### Function
+Encode the corpus using the retriever model into embeddings and save as `.npy`.
+
+#### Input Parameters
+- **embedding_path** (`Optional[str]`): Output `.npy` file path; if not provided, defaults to `<project_root>/output/embedding/embedding.npy`  
+- **overwrite** (`bool`): Whether to overwrite if the target exists  
+
+#### Return Parameters
+- None  
+
+---
+
+### `retriever_index`
+
+#### Function
+Build Faiss Index (`IndexIDMap2(FlatIP)`) based on `.npy` embeddings, supports chunked insertion and GPU construction.
+
+#### Input Parameters
+- **embedding_path** (`str`): File storing the encoded embeddings, `.npy` file  
+- **index_path** (`Optional[str]`): Output `.index` file path; defaults to `<project_root>/output/index/index.index` if not provided  
+- **overwrite** (`bool`): Whether to overwrite if exists  
+- **index_chunk_size** (`int`): Batch size for `add_with_ids` in chunks  
+
+#### Return Parameters
+- None  
+
+---
+
+### `retriever_search`
+
+#### Function
+Perform vector retrieval on the Faiss index.
+
+#### Input Parameters
+- **query_list** (`List[str]`): List of queries or a single string (automatically wrapped into a list)  
+- **top_k** (`int`): Number of results to return  
+- **query_instruction** (`str`): Prefix prompt added to each query (instruction-based query)  
+- **use_openai** (`bool`): Whether to use OpenAI to generate query vectors; otherwise use the Infinity model by default  
+
+#### Return Parameters
+- **ret_psg** (`Dict[str, List[List[str]]]`): Retrieved passages  
+
+---
+
+### `retriever_deploy_service`
+
+#### Function
+Start a lightweight Flask service to deploy the retriever model.
+
+#### Input Parameters
+- **retriever_url** (`str`): Service address (can be `host:port` or full `http://host:port`, default port `8080` if not specified)  
+
+#### Return Parameters
+- None  
+
+---
+
+### `retriever_deploy_search`
+
+#### Function
+Call the remote `/search` endpoint of the `retriever_deploy_service` as a client and return remote retrieval results.
+
+#### Input Parameters
+- **retriever_url** (`str`): Remote base address  
+- **query_list** (`List[str]`): List of queries or a single string (automatically wrapped into a list)  
+- **top_k** (`int`): Number of results to return  
+- **query_instruction** (`str`): Prefix prompt added to each query (instruction-based query)  
+
+#### Return Parameters
+- **ret_psg** (`Dict[str, List[List[str]]]`): Retrieved passages  

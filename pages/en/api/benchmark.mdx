@@ -1,0 +1,28 @@
+---
+title: "Benchmark Server"
+icon: "chart-line"
+---
+
+## Configuration Parameters
+
+- **name** (`str`): Benchmark dataset name, e.g.: `nq`  
+- **path** (`str`): Path to the dataset file  
+- **key_map** (`Dict[str, str]`): Field mapping rules, where `key` represents the name used in the returned result, and `value` represents the field name in the original dataset  
+- **shuffle** (`bool`): Whether to shuffle the dataset after loading  
+- **seed** (`int`): Random seed to ensure reproducible `shuffle` results  
+- **limit** (`int`): Number of dataset entries to load, default `-1` loads all  
+
+---
+
+## API Description
+
+### `get_data`
+
+#### Function
+Loads the benchmark dataset from a local file and returns results according to the field mapping.
+
+#### Input Parameters
+- **benchmark** (`Dict[str, Any]`): Configuration parameter dictionary  
+
+#### Return Parameters
+- **data** (`Dict[str, List[Any]]`): Data dictionary containing the mapped content  

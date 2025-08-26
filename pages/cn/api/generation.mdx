@@ -1,0 +1,49 @@
+---
+title: "Generation Server"
+icon: "pen-nib"
+---
+
+## 配置参数说明
+
+- **model_name** (`str`): vLLM 加载的模型名称，用于 `--served-model-name`  
+- **model_path** (`str`): vLLM 加载的模型传入路径  
+- **base_url** (`str`): 通过 vLLM 部署的 LLM 服务地址  
+- **port** (`int`): vLLM 服务监听端口  
+- **gpu_ids** (`str | int`): 可见 GPU，例如 `"0,1"`  
+- **api_key** (`str`): 若提供，将通过 `--api-key` 启用 vLLM 接口鉴权  
+- **sampling_params** (`Dict[str, Any]`): LLMs 采样参数，详见 [vLLM SamplingParams 文档](https://docs.vllm.ai/en/latest/api/vllm/sampling_params.html#vllm.sampling_params.SamplingParams)  
+
+---
+
+## API 说明
+
+### `initialize_local_vllm`
+
+#### 功能
+启动 vLLM 服务，部署 LLMs，返回兼容 OpenAI API 的 `base_url`（形如 `http://localhost:{port}/v1`）。
+
+#### 输入参数
+- **model_path** (`str`): vLLM 加载的模型传入路径  
+- **model_name** (`str`): vLLM 加载的模型名称，用于 `--served-model-name`  
+- **port** (`int`): vLLM 服务监听端口  
+- **gpu_ids** (`str | int`): 可见 GPU，例如 `"0,1"`  
+- **api_key** (`str`): 若提供，将通过 `--api-key` 启用 vLLM 接口鉴权  
+
+#### 返回参数
+- **base_url** (`Dict[str, str]`): 返回 vLLM 服务地址，例如 `"http://localhost:<port>/v1"`  
+
+---
+
+### `generate`
+
+#### 功能
+并发调用兼容 OpenAI Chat Completions 的接口进行文本生成。
+
+#### 输入参数
+- **prompt_ls** (`List[Union[str, Dict[str, Any]]]`): 大模型输入  
+- **model_name** (`str`): `chat.completions.create` 的 `model` 字段；需与 vLLM `--served-model-name` 一致  
+- **base_url** (`str`): OpenAI 兼容服务的基址（如 `http://localhost:8000/v1`）  
+- **sampling_params** (`Dict[str, Any]`): 传给 `chat.completions.create` 的采样参数，例如 `temperature`、`max_tokens`、`top_p`、`n`、`stop` 等  
+
+#### 返回参数
+- **ans_ls** (`Dict[str, List[str]]`): 模型生成结果  

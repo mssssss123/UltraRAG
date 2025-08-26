@@ -1,0 +1,28 @@
+---
+title: "Benchmark Server"
+icon: "chart-line"
+---
+
+## 配置参数说明
+
+- **name** (`str`): 基准数据集名称，例如：`nq`  
+- **path** (`str`): 数据集文件路径  
+- **key_map** (`Dict[str, str]`): 字段映射规则，`key` 代表返回结果中使用的名称，`value` 代表原始数据集中的字段名  
+- **shuffle** (`bool`): 是否在加载后打乱数据集顺序  
+- **seed** (`int`): 随机数种子，确保 `shuffle` 结果可复现  
+- **limit** (`int`): 加载数据集的数目，默认 `-1` 为全部加载  
+
+---
+
+## API 说明
+
+### `get_data`
+
+#### 功能
+统一从本地文件加载基准数据集，并返回按字段映射后的结果。
+
+#### 输入参数
+- **benchmark** (`Dict[str, Any]`): 配置参数字典  
+
+#### 返回参数
+- **data** (`Dict[str, List[Any]]`): 数据字典，包含字段映射后的内容  

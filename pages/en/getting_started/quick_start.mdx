@@ -1,0 +1,66 @@
+---
+title: "Quick Start"
+icon: "rocket-launch"
+---
+
+This section will guide you through a minimal runnable example **sayhello** to help you quickly understand how to implement a minimal system based on UR-2.0, including:
+
+- The basic structure of the Pipeline configuration file
+- How to modify parameters
+- How to run the complete process
+
+<Tip>If you have not installed UR-2.0 yet, please refer to [Environment Setup](/pages/cn/getting_started/installation) first.</Tip>
+
+<Tip>For more advanced RAG practices, please visit [Development Guide](/pages/cn/tutorials/part_1/server_index).</Tip>
+
+## Step 1: Understand the Pipeline Configuration Structure
+
+<Info>Make sure the development root directory is under the UltraRAG folder</Info>
+
+Below is a minimal example configuration file:
+
+```yaml examples/sayhello.yaml icon="/images/yaml.svg"
+servers:
+  sayhello: servers/sayhello
+
+pipeline:
+  - sayhello.greet
+```
+
+This configuration file contains two core parts:
+
+- `servers`: Declares all components (Servers) used in the current process. Here, the example `sayhello` Server is used.
+- `pipeline`: Defines the calling order of the functional functions (Tools) in the Server. In this example, the `greet` tool function of the `sayhello` Server is called, which outputs a welcome message.
+
+## Step 2: Automatically Generate Parameter Configuration File
+
+Before running the code, the primary step is to configure the parameters required for execution. UR-2.0 provides a convenient Build command to automate this process: the system reads the parameter.yaml of each Server, parses all parameter items involved in this process, and aggregates them into a unified configuration file. Run the following command:
+
+```shell
+ultrarag build examples/sayhello.yaml
+```
+
+Terminal output:
+
+![](/images/getting_started/sayhello_build.png)
+
+You will get an automatically generated parameter configuration file with a basic format as follows:
+
+```yaml examples/parameters/sayhello_parameter.yaml icon="/images/yaml.svg"
+sayhello:
+  name: UltraRAG 2.0  # You can modify this to the name you want to pass in
+```
+
+Fill in the parameters you want to pass to the `greet` tool here (such as the name in the welcome message).
+
+## Step 3: Run the Pipeline
+
+Once everything is ready, run the following command to execute the complete process:
+
+```shell
+ultrarag run examples/sayhello.yaml
+```
+
+You will see similar output in the terminal and log files:
+
+![](/images/getting_started/sayhello_run.png)

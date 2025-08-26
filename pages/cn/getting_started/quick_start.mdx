@@ -1,0 +1,66 @@
+---
+title: "快速开始"
+icon: "rocket-launch"
+---
+
+本节将通过一个最小可运行示例 **sayhello**，帮助你快速了解如何基于 UR-2.0 实现最小系统，包括：
+
+- Pipeline 配置文件的基本结构
+- 如何修改参数
+- 如何运行完整流程
+
+<Tip>如果尚未安装 UR-2.0，请先参考 [环境部署](/pages/cn/getting_started/installation)。</Tip>
+
+<Tip>更复杂的 RAG 实践，请前往 [开发指南](/pages/cn/tutorials/part_1/server_index) 查看。</Tip>
+
+## Step 1：了解 Pipeline 配置结构
+
+<Info>确保开发根目录在 UltraRAG 文件夹下</Info>
+
+以下是一个最简示例配置文件：
+
+```yaml examples/sayhello.yaml icon="/images/yaml.svg"
+servers:
+  sayhello: servers/sayhello
+
+pipeline:
+  - sayhello.greet
+```
+
+该配置文件包含两个核心部分：
+ 
+- `servers`：声明当前流程所使用的所有组件（Server）。此处使用了示例 `sayhello` Server。
+- `pipeline`：定义 Server 中各功能函数（Tool）的调用顺序。本例中调用了 `sayhello` Server 中的 `greet` 工具函数，它会输出一条欢迎语句。
+
+## Step 2：自动生成参数配置文件
+
+在运行代码前，首要步骤便是配置运行所需的参数。UR-2.0 提供了快捷的 Build 指令，用于自动完成这一过程：系统会读取各个 Server 的 parameter.yaml，解析本次流程涉及的所有参数项，并将其统一汇总生成到一个配置文件中。执行以下命令：
+
+```shell
+ultrarag build examples/sayhello.yaml
+```
+
+终端输出：
+
+![](/images/getting_started/sayhello_build.png)
+
+你将获得一个自动生成的参数配置文件，基本格式如下：
+
+```yaml examples/parameters/sayhello_parameter.yaml icon="/images/yaml.svg"
+sayhello:
+  name: UltraRAG 2.0  # 你可以在这里修改为你想传入的名称
+```
+
+在此处填写你希望传入 `greet` 工具的参数（如欢迎语中的名称等）。
+
+## Step 3：运行 Pipeline
+
+一切准备就绪后，运行以下命令执行完整流程：
+
+```shell
+ultrarag run examples/sayhello.yaml
+```
+
+你将在终端和日志文件看到类似输出：
+
+![](/images/getting_started/sayhello_run.png)

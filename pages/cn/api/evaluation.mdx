@@ -1,0 +1,27 @@
+---
+title: "Evaluation Server"
+icon: "clipboard-check"
+---
+
+## 配置参数说明
+
+- **metrics** (`List[str] | None`): 评价指标名称列表  
+- **save_path** (`str`): 保存路径（文件名会自动加时间戳）  
+
+---
+
+## API 说明
+
+### `evaluate`
+
+#### 功能
+计算指定指标，返回评测结果，同时支持存储评测结果。
+
+#### 输入参数
+- **pred_ls** (`List[str]`): 预测答案列表  
+- **gt_ls** (`List[List[str]]`): 参考答案列表，可能为 1 个或多个  
+- **metrics** (`List[str] | None`): 评价指标名称列表  
+- **save_path** (`str`): 保存路径（文件名会自动加时间戳）  
+
+#### 返回参数
+- **eval_res** (`Dict[str, Any]`): 评估结果  

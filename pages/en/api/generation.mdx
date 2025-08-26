@@ -1,0 +1,49 @@
+---
+title: "Generation Server"
+icon: "pen-nib"
+---
+
+## Configuration Parameters
+
+- **model_name** (`str`): Name of the model loaded by vLLM, used for `--served-model-name`  
+- **model_path** (`str`): Path to the model for vLLM to load  
+- **base_url** (`str`): Address of the LLM service deployed via vLLM  
+- **port** (`int`): Port on which the vLLM service listens  
+- **gpu_ids** (`str | int`): Visible GPUs, e.g., `"0,1"`  
+- **api_key** (`str`): If provided, enables vLLM API authentication via `--api-key`  
+- **sampling_params** (`Dict[str, Any]`): Sampling parameters for LLMs; see [vLLM SamplingParams documentation](https://docs.vllm.ai/en/latest/api/vllm/sampling_params.html#vllm.sampling_params.SamplingParams)  
+
+---
+
+## API Description
+
+### `initialize_local_vllm`
+
+#### Function
+Starts the vLLM service, deploys LLMs, and returns an OpenAI API-compatible `base_url` (e.g., `http://localhost:{port}/v1`).
+
+#### Input Parameters
+- **model_path** (`str`): Path to the model for vLLM to load  
+- **model_name** (`str`): Name of the model loaded by vLLM, used for `--served-model-name`  
+- **port** (`int`): Port on which the vLLM service listens  
+- **gpu_ids** (`str | int`): Visible GPUs, e.g., `"0,1"`  
+- **api_key** (`str`): If provided, enables vLLM API authentication via `--api-key`  
+
+#### Return Parameters
+- **base_url** (`Dict[str, str]`): The address of the vLLM service, e.g., `"http://localhost:<port>/v1"`  
+
+---
+
+### `generate`
+
+#### Function
+Concurrently calls an OpenAI Chat Completions-compatible API for text generation.
+
+#### Input Parameters
+- **prompt_ls** (`List[Union[str, Dict[str, Any]]]`): Inputs for the large language model  
+- **model_name** (`str`): The `model` field for `chat.completions.create`; must match vLLM `--served-model-name`  
+- **base_url** (`str`): Base URL of the OpenAI-compatible service (e.g., `http://localhost:8000/v1`)  
+- **sampling_params** (`Dict[str, Any]`): Sampling parameters passed to `chat.completions.create`, such as `temperature`, `max_tokens`, `top_p`, `n`, `stop`, etc.  
+
+#### Return Parameters
+- **ans_ls** (`Dict[str, List[str]]`): Model-generated results  

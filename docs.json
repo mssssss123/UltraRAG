@@ -1,0 +1,255 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "UltraRAG 2.0",
+  "colors": {
+    "primary": "#722EA5",
+    "dark": "#9B5BB7",
+    "light": "#C8A6D6"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "languages": [
+      {
+        "language": "cn",
+        "tabs": [
+          {
+            "tab": "项目文档",
+            "groups": [
+              {
+                "group": "开始使用",
+                "pages": [
+                  "pages/cn/getting_started/introduction",
+                  "pages/cn/getting_started/installation",
+                  "pages/cn/getting_started/quick_start"
+                ]
+              },
+              {
+                "group": "开发指南",
+                "pages": [
+                  {
+                    "group": "RAG 组件开发指南",
+                    "icon": "compass",
+                    "pages": [
+                      "pages/cn/tutorials/part_1/server_index",
+                      "pages/cn/tutorials/part_1/benchmark",
+                      "pages/cn/tutorials/part_1/retriever",
+                      "pages/cn/tutorials/part_1/prompt",
+                      "pages/cn/tutorials/part_1/generation",
+                      "pages/cn/tutorials/part_1/evaluation",
+                      "pages/cn/tutorials/part_1/router",
+                      "pages/cn/tutorials/part_1/custom"
+                    ]
+                  },
+                  {
+                    "group": "掌握 RAG 推理流程",
+                    "icon": "share-nodes",
+                    "pages": [
+                      "pages/cn/tutorials/part_2/pipeline",
+                      "pages/cn/tutorials/part_2/serial",
+                      "pages/cn/tutorials/part_2/loop",
+                      "pages/cn/tutorials/part_2/branch",
+                      "pages/cn/tutorials/part_2/data_and_params"
+                    ]
+                  },
+                  {
+                    "group": "数据构建与基线复现",
+                    "icon": "database",
+                    "pages": [
+                      "pages/cn/tutorials/part_3/prepare_dataset",
+                      "pages/cn/tutorials/part_3/emb_and_index",
+                      "pages/cn/tutorials/part_3/reproduction"
+                    ]
+                  },
+                  {
+                    "group": "开发进阶与部署指南",
+                    "icon": "code",
+                    "pages": [
+                      "pages/cn/tutorials/part_4/debug",
+                      "pages/cn/tutorials/part_4/deploy_retriever_serve",
+                      "pages/cn/tutorials/part_4/multi_agent",
+                      "pages/cn/tutorials/part_4/memory",
+                      "pages/cn/tutorials/part_4/case_study"
+                    ]
+                  },
+                  {
+                    "group": "UltraRAG 开发实战",
+                    "icon": "screwdriver-wrench",
+                    "pages": [
+                      "pages/cn/tutorials/part_5/series",
+                      "pages/cn/tutorials/part_5/loop",
+                      "pages/cn/tutorials/part_5/branch",
+                      "pages/cn/tutorials/part_5/memory",
+                      "pages/cn/tutorials/part_5/alias",
+                      "pages/cn/tutorials/part_5/deep_research"
+                    ]
+                  }
+                ]
+              }
+            ] 
+          },
+          {
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "RAG Servers",
+                "pages": [
+                  "pages/cn/api/benchmark",
+                  "pages/cn/api/retriever",
+                  "pages/cn/api/generation",
+                  "pages/cn/api/evaluation"
+                ]
+              }
+            ] 
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "tabs": [
+          {
+            "tab": "Project Docs",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "pages/en/getting_started/introduction",
+                  "pages/en/getting_started/installation",
+                  "pages/en/getting_started/quick_start"
+                ]
+              },
+              {
+                "group": "Developer Guide",
+                "pages": [
+                  {
+                    "group": "RAG Component Development Guide",
+                    "icon": "compass",
+                    "pages": [
+                      "pages/en/tutorials/part_1/server_index",
+                      "pages/en/tutorials/part_1/benchmark",
+                      "pages/en/tutorials/part_1/retriever",
+                      "pages/en/tutorials/part_1/prompt",
+                      "pages/en/tutorials/part_1/generation",
+                      "pages/en/tutorials/part_1/evaluation",
+                      "pages/en/tutorials/part_1/router",
+                      "pages/en/tutorials/part_1/custom"
+                    ]
+                  },
+                  {
+                    "group": "Mastering RAG Inference Flow",
+                    "icon": "share-nodes",
+                    "pages": [
+                      "pages/en/tutorials/part_2/pipeline",
+                      "pages/en/tutorials/part_2/serial",
+                      "pages/en/tutorials/part_2/loop",
+                      "pages/en/tutorials/part_2/branch",
+                      "pages/en/tutorials/part_2/data_and_params"
+                    ]
+                  },
+                  {
+                    "group": "Data Construction and Baseline Reproduction",
+                    "icon": "database",
+                    "pages": [
+                      "pages/en/tutorials/part_3/prepare_dataset",
+                      "pages/en/tutorials/part_3/emb_and_index",
+                      "pages/en/tutorials/part_3/reproduction"
+                    ]
+                  },
+                  {
+                    "group": "Advanced Development and Deployment Guide",
+                    "icon": "code",
+                    "pages": [
+                      "pages/en/tutorials/part_4/debug",
+                      "pages/en/tutorials/part_4/deploy_retriever_serve",
+                      "pages/en/tutorials/part_4/multi_agent",
+                      "pages/en/tutorials/part_4/memory",
+                      "pages/en/tutorials/part_4/case_study"
+                    ]
+                  },
+                  {
+                    "group": "UltraRAG Development Practice",
+                    "icon": "screwdriver-wrench",
+                    "pages": [
+                      "pages/en/tutorials/part_5/series",
+                      "pages/en/tutorials/part_5/loop",
+                      "pages/en/tutorials/part_5/branch",
+                      "pages/en/tutorials/part_5/memory",
+                      "pages/en/tutorials/part_5/alias",
+                      "pages/en/tutorials/part_5/deep_research"
+                    ]
+                  }
+                ]
+              }
+            ] 
+          },
+          {
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "RAG Servers",
+                "pages": [
+                  "pages/en/api/benchmark",
+                  "pages/en/api/retriever",
+                  "pages/en/api/generation",
+                  "pages/en/api/evaluation"
+                ]
+              }
+            ] 
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Home",
+        "href": "https://ultrarag.github.io/project/"
+      },
+      {
+        "label": "Datasets",
+        "href": "https://huggingface.co/datasets/msss123/msssssragdata123123"
+      },
+      {
+        "label": "Leaderboard",
+        "href": "https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "GitHub",
+      "href": "https://github.com/ultrarag/UltraRAG-MCP"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/ultrarag/UltraRAG-MCP"
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-S6SKS1CJRG"
+    },
+    "gtm": {
+      "tagId": "GTM-5KL4LNM2"
+    }
+  },
+  "errors": {
+    "404": {
+      "redirect": true
+    }
+  }
+}

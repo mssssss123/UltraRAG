@@ -1,0 +1,56 @@
+---
+title: "分支型结构"
+icon: "code-branch"
+---
+
+在复杂的推理任务中，我们常常需要根据模型当前的输出或中间状态决定流程是否继续。例如：
+
+- 如果模型生成的是查询，就进行下一轮检索；
+- 如果模型已经生成了最终答案，就结束流程。
+
+为实现上述能力，UR-2.0 提供了 分支结构（branch），用于构建具备 条件跳转逻辑 的动态推理流程。
+
+<Check>Router Server 是分支结构的搭档，它负责对当前状态进行判断并返回状态标签，驱动流程走向。</Check>
+
+<Note>若你尚未了解如何实现 Router Tool，请参考 [Router Server](/pages/cn/tutorials/part_1/router)。</Note>
+
+## 示例：动态判断是否进入下一轮检索
+
+以下 pipeline 会在每轮生成后判断：当前生成内容是查询还是最终答案。若是查询，则进行下一轮检索与生成；否则流程结束。
+
+```yaml
+servers:
+  router: servers/router
+  ...
+
+pipeline:
+  - benchmark.get_data
+  - retriever.retriever_init
+
+  - prompt.generate_query_or_answer
+  - generation.generate
+
+  - loop:
+      times: 3         
+      steps:
+      - branch:
+          router:
+            - router.check_query_or_answer   # 输出 e.g. status=is_query/is_answer
+          branches:
+            is_query:
+              - retriever.retriever_search
+              - prompt.generate_query_or_answer
+              - generation.generate
+
+            is_answer: []    # is_answer表示终止跳出循环输出答案
+
+  - evaluation.evaluate
+```
+
+说明
+- `branch`：表示一个分支结构的开始。
+- `router`：指定用于判断分支逻辑的 Router Tool（通常返回一个状态标签如 is_query / is_answer）。
+- `branches`：定义每个状态下要执行的步骤序列，键是状态标签，值是对应的执行步骤列表（可为空表示终止）。
+- `branches` 中定义的键必须对应 Router tool 返回的 state 值。
+
+通过分支结构，UR-2.0 不仅支持多轮流程的灵活组合，还能实现动态判断与策略控制，使你能够构建**真正可控**、**具备推理能力**的 RAG 系统。

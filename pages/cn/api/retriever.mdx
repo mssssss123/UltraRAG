@@ -1,0 +1,118 @@
+---
+title: "Retriever Server"
+icon: "magnifying-glass"
+---
+
+## 配置参数说明
+
+- **retriever_path** (`str`): 嵌入模型路径或模型名  
+- **corpus_path** (`str`): 语料文件路径（JSONL 格式）  
+- **embedding_path** (`str`): 存储生成嵌入向量的 `.npy` 文件路径  
+- **index_path** (`str`): 存储 Faiss 索引的 `.index` 文件路径  
+- **infinity_kwargs** (`dict`): 传递给 `infinity_emb.EngineArgs` 的模型配置  
+  - **bettertransformer** (`bool`): 是否启用 BetterTransformer 加速（默认 `false`）  
+  - **pooling_method** (`str`): 向量池化方式（`auto`, `cls`, `mean`）  
+  - **device** (`str`): 模型加载的设备（如 `cuda`, `cpu`）  
+  - **batch_size** (`int`): 批量嵌入时的批大小  
+- **cuda_devices** (`str`): 可见 GPU 设置，例如 `"0,1"` 表示使用第 0 和第 1 张 GPU  
+- **query_instruction** (`str`): 查询前缀提示词  
+- **faiss_use_gpu** (`bool`): 是否启用 GPU Faiss（失败则回退 CPU）  
+- **top_k** (`int`): 返回检索文档数  
+- **overwrite** (`bool`): 若目标存在是否覆盖  
+- **retriever_url** (`str`): 服务地址（可为 `host:port` 或完整 `http://host:port`，未指定端口时默认 `8080`）  
+- **index_chunk_size** (`int`): 分批 `add_with_ids` 的批大小  
+
+---
+
+## API 说明
+
+### `retriever_init`
+
+#### 功能
+基于 Infinity Embedding 库初始化检索器模型并加载语料库文件；若提供 `index_path` 且存在，则加载 Faiss 索引（GPU/CPU）。
+
+#### 输入参数
+- **retriever_path** (`str`): Infinity 模型路径或名称（传给 `EngineArgs`）  
+- **corpus_path** (`str`): 语料文件（JSONL），每行需包含键 `"contents"`  
+- **index_path** (`Optional[str]`): 已建索引 `.index` 文件路径，存在则加载  
+- **faiss_use_gpu** (`bool`): 是否启用 GPU Faiss（失败则回退 CPU）  
+- **infinity_kwargs** (`Optional[Dict[str, Any]]`): 传入 `EngineArgs` 的其它参数（如 `dtype`, `batch_size` 等）  
+- **cuda_devices** (`Optional[str]`): 可见 GPU，如 `"0,1"`；将写入 `CUDA_VISIBLE_DEVICES`  
+
+#### 返回参数
+- 无  
+
+---
+
+### `retriever_embed`
+
+#### 功能
+使用检索模型将语料库编码为 embedding 并保存为 `.npy`。
+
+#### 输入参数
+- **embedding_path** (`Optional[str]`): 输出 `.npy` 文件路径；未提供时默认写到 `<project_root>/output/embedding/embedding.npy`  
+- **overwrite** (`bool`): 若目标存在是否覆盖  
+
+#### 返回参数
+- 无  
+
+---
+
+### `retriever_index`
+
+#### 功能
+基于 `.npy` 嵌入构建 Faiss Index（`IndexIDMap2(FlatIP)`），支持分块写入与 GPU 构建。
+
+#### 输入参数
+- **embedding_path** (`str`): 编码好的 embedding 存储文件，`.npy` 文件  
+- **index_path** (`Optional[str]`): 输出 `.index` 文件路径；未提供则默认 `<project_root>/output/index/index.index`  
+- **overwrite** (`bool`): 存在是否覆盖  
+- **index_chunk_size** (`int`): 分批 `add_with_ids` 的批大小  
+
+#### 返回参数
+- 无  
+
+---
+
+### `retriever_search`
+
+#### 功能
+在 Faiss 索引上进行向量召回。
+
+#### 输入参数
+- **query_list** (`List[str]`): 查询列表或单个字符串（自动封装为列表）  
+- **top_k** (`int`): 返回条数  
+- **query_instruction** (`str`): 为每个 query 添加的前缀提示（指令化查询）  
+- **use_openai** (`bool`): 是否用 OpenAI 生成查询向量；否则默认使用 Infinity 模型  
+
+#### 返回参数
+- **ret_psg** (`Dict[str, List[List[str]]]`): 检索到的 passage  
+
+---
+
+### `retriever_deploy_service`
+
+#### 功能
+启动一个轻量 Flask 服务，用于部署 retriever 模型。
+
+#### 输入参数
+- **retriever_url** (`str`): 服务地址（可为 `host:port` 或完整 `http://host:port`，未指定端口时默认 `8080`）  
+
+#### 返回参数
+- 无  
+
+---
+
+### `retriever_deploy_search`
+
+#### 功能
+作为客户端调用远端 `retriever_deploy_service` 的 `/search` 接口，返回远端检索结果。
+
+#### 输入参数
+- **retriever_url** (`str`): 远端基础地址  
+- **query_list** (`List[str]`): 查询列表或单个字符串（自动封装为列表）  
+- **top_k** (`int`): 返回条数  
+- **query_instruction** (`str`): 为每个 query 添加的前缀提示（指令化查询）  
+
+#### 返回参数
+- **ret_psg** (`Dict[str, List[List[str]]]`): 检索到的 passage  

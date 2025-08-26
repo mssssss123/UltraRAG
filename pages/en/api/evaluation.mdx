@@ -1,0 +1,27 @@
+---
+title: "Evaluation Server"
+icon: "clipboard-check"
+---
+
+## Configuration Parameters
+
+- **metrics** (`List[str] | None`): List of evaluation metric names  
+- **save_path** (`str`): Save path (filename will automatically include a timestamp)  
+
+---
+
+## API Description
+
+### `evaluate`
+
+#### Function
+Computes the specified metrics, returns evaluation results, and also supports saving the results.
+
+#### Input Parameters
+- **pred_ls** (`List[str]`): List of predicted answers  
+- **gt_ls** (`List[List[str]]`): List of reference answers, may contain one or multiple  
+- **metrics** (`List[str] | None`): List of evaluation metric names  
+- **save_path** (`str`): Save path (filename will automatically include a timestamp)  
+
+#### Return Parameters
+- **eval_res** (`Dict[str, Any]`): Evaluation results  
