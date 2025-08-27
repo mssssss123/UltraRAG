@@ -203,21 +203,17 @@
   "navbar": {
     "links": [
       {
-        "label": "Home",
+        "label": "Project Home",
         "href": "https://openbmb.github.io/UltraRAG/"
       },
       {
         "label": "Datasets",
         "href": "https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"
-      },
-      {
-        "label": "Leaderboard",
-        "href": "https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "GitHub",
+      "label": "⭐ Star on GitHub",
       "href": "https://github.com/OpenBMB/UltraRAG"
     }
   },
