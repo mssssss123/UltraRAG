@@ -202,30 +202,25 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 | [Search-r1](https://arxiv.org/abs/2503.09516)   | examples/search_r1.yaml     |
 | WebNote   | examples/webnote.yaml    |
 
-## 致谢
+## 贡献
 
 感谢以下贡献者在代码提交和测试中的付出。我们也欢迎新的成员加入，共同构建完善的 RAG 生态！
+
+您可以通过以下标准流程来贡献：**Fork 本仓库 → 提交 Issue → 发起 Pull Request (PR)**。
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
   <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG&nocache=true" />
 </a>
 
-
-
-
 ## 支持我们
 
 如果您觉得本项目对您的研究有所帮助，欢迎点亮一颗 ⭐ 来支持我们！
 
-
-
-## 贡献指南
-
-我们欢迎社区贡献！  
-- 提交 Bug 或功能请求：请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues)  
-- 提交代码：请先在 Issue 中讨论，再通过 Pull Request 提交  
-
-
 ## 联系我们
 
 - 关于技术问题及功能请求，请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) 功能。
+- 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入飞书群与我们交流：  
+
+<p align="left">
+  <img src="../docs/feishu_qr.png" alt="Feishu Group QR Code" width="200"/>
+</p>
