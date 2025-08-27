@@ -1,0 +1,11 @@
+# Deploy Retriever Search Demo
+
+# MCP Server
+servers:
+  retriever: servers/retriever
+  benchmark: servers/benchmark
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_deploy_search

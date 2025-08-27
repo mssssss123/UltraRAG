@@ -1,174 +1,205 @@
-<div align="center">
-    <img src="docs/assets/logo.png" alt="UltraRAG Logo" width="450">
-</div>
 <p align="center">
-    【English | <a href="docs/readme/README-Chinese.md">Chinese</a>】
-     <a href="https://deepwiki.com/OpenBMB/UltraRAG">
-     <img src="https://devin.ai/assets/deepwiki-badge.png" alt="Ask DeepWiki.com" height="18"/></a>
+  <picture>
+    <img alt="UltraRAG" src="./docs/ultrarag.svg" width=55%>
+  </picture>
 </p>
 
+<h3 align="center">
+Less Code, Lower Barrier, Faster Deployment
+</h3>
 
+<p align="center">
+| 
+<a href="https://openbmb.github.io/UltraRAG"><b>Project Page</b></a> 
+| 
+<a href="https://ultrarag.openbmb.cn"><b>Documentation</b></a> 
+| 
+<a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>Datasets</b></a> 
+| 
+<a href="https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"><b>Leaderboard</b></a>
+|
+<b>English</b>
+|
+<a href="./docs/README-Chinese.md"><b>Chinese</b></a>
+|
+</p>
 
+---
+## UltraRAG 2.0: Accelerating RAG for Scientific Research
 
-## 📖 Overview
+Retrieval-Augmented Generation (RAG) systems are evolving from early-stage simple concatenations of “retrieval + generation” to complex knowledge systems integrating **adaptive knowledge organization**, **multi-turn reasoning**, and **dynamic retrieval** (typical examples include *DeepResearch* and *Search-o1*). However, this increase in complexity imposes high engineering costs on researchers when it comes to **method reproduction** and **rapid iteration of new ideas**.
 
-The **UltraRAG framework** was jointly proposed by the THUNLP group from Tsinghua University, the NEUIR group from Northeastern University, Modelbest.Inc, and the 9#AISoft team. It is based on agile deployment and modular construction, introducing an automated "data construction-model fine-tuning-inference evaluation" knowledge adaptation technology system. This provides a one-stop, researcher and developer-friendly RAG system solution. UltraRAG significantly simplifies the entire process from data construction to model fine-tuning in domain adaptation for RAG systems, assisting researchers and developers in efficiently tackling complex tasks.
+To address this challenge, [THUNLP](https://nlp.csai.tsinghua.edu.cn/), [NEUIR](https://neuir.github.io), [OpenBMB](https://www.openbmb.cn/home), and [AI9stars](https://github.com/AI9Stars) jointly launched UltraRAG 2.0 (UR-2.0) — the first RAG framework based on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) architecture design. This design allows researchers to declare complex logic such as sequential, loop, and conditional branching simply by writing YAML files, enabling rapid implementation of multi-stage reasoning systems with minimal code.
 
-<div align="center">
-  <img src='docs/assets/en/feature.jpg' width=600>
-</div>
+Its core ideas are:
+- Modular encapsulation: Encapsulate RAG core components as **standardized independent MCP Servers**;
+- Flexible invocation and extension: Provide **function-level Tool** interfaces to support flexible function calls and extensions;
+- Lightweight workflow orchestration: Use **MCP Client** to build a top-down simplified linkage;
 
-- **No-Code Programming WebUI Support:** Users with no programming experience can easily operate the full link setup and optimization process, including the **multimodal RAG solution VisRAG**;
-- **One-Click Solution for Synthesis and Fine-Tuning:** Centered around proprietary methods such as **KBAlign, RAG-DDR**, the system allows for one-click systematic data construction + retrieval, and supports performance optimization with diverse model fine-tuning strategies;
-- **Multidimensional, Multi-Stage Robust Evaluation:** Using the proprietary **RAGEval** method at its core, it incorporates multi-stage assessment methods focused on effective/key information, significantly enhancing the robustness of "model evaluation";
-- **Research-Friendly Exploration Work Integration:** It includes **THUNLP-RAG group's proprietary methods** and other cutting-edge RAG methods, supporting continuous module-level exploration and development.
+Compared with traditional frameworks, UltraRAG 2.0 significantly lowers the **technical threshold and learning cost** of complex RAG systems, allowing researchers to focus more on **experimental design and algorithm innovation** rather than lengthy engineering implementations.
 
-**All of the above features can be quickly implemented directly through the web frontend.**
+## 🌟 Key Highlights
 
-<div align="center">
-  <img src='docs/assets/en/image2.png' width=600>
-</div>
+- 🚀 **Low-Code Construction of Complex Pipelines**  
+  Natively supports **sequential, loop, conditional branching** and other inference control structures. Developers only need to write YAML files to build **iterative RAG workflows** with dozens of lines of code (e.g., *Search-o1*).
 
-## ⚡️ Quick Start
+- ⚡ **Rapid Reproduction and Functional Extension**  
+  Based on the **MCP architecture**, all modules are encapsulated as independent, reusable **Servers**.  
+  - Users can customize Servers as needed or directly reuse existing modules;  
+  - Each Server’s functions are registered as function-level **Tools**, and new functions can be integrated into the complete workflow by adding a single function;  
+  - It also supports calling **external MCP Servers**, easily extending pipeline capabilities and application scenarios.
 
-### Environmental Dependencies
+- 📊 **Unified Evaluation and Comparison**  
+  Built-in **standardized evaluation workflows and metric management**, out-of-the-box support for 17 mainstream scientific benchmarks.  
+  - Continuously integrate the latest baselines;  
+  - Provide leaderboard results;  
+  - Facilitate systematic comparison and optimization experiments for researchers.
 
-**CUDA** version should be **12.2** or above.
+## The Secret Sauce: MCP Architecture and Native Pipeline Control
 
-**Python** version should be **3.10** or above.
+In different RAG systems, core capabilities such as retrieval and generation share high functional similarity, but due to diverse implementation strategies by developers, modules often lack unified interfaces, making cross-project reuse difficult. The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) is an open protocol that standardizes the way to provide context for large language models (LLMs) and adopts a **Client–Server** architecture, enabling MCP-compliant Server components to be seamlessly reused across different systems.
 
-### Quick Deployment
+Inspired by this, UltraRAG 2.0 is based on the **MCP architecture**, abstracting and encapsulating core functions such as retrieval, generation, and evaluation in RAG systems into independent **MCP Servers**, and invoking them through standardized function-level **Tool interfaces**. This design ensures flexible module function extension and allows new modules to be “hot-plugged” without invasive modifications to global code. In scientific research scenarios, this architecture enables researchers to quickly adapt new models or algorithms with minimal code while maintaining overall system stability and consistency.
 
-You can deploy UltraRAG and run the front-end page using the following methods:
+<p align="center">
+  <picture>
+    <img alt="UltraRAG" src="./docs/architecture.png" width=90%>
+  </picture>
+</p>
 
-1. **Deploy via Docker**
+Developing complex RAG inference frameworks is significantly challenging. UltraRAG 2.0’s ability to support complex systems under **low-code** conditions lies in its native support for multi-structured **pipeline workflow control**. Whether sequential, loop, or conditional branching, all control logic can be defined and orchestrated at the YAML level, covering various workflow expression forms needed for complex inference tasks. During runtime, inference workflow scheduling is executed by the built-in **Client**, whose logic is fully described by user-written external **Pipeline YAML scripts**, achieving decoupling from the underlying implementation. Developers can call instructions like loop and step as if using programming language keywords, quickly constructing multi-stage inference workflows in a declarative manner.
 
-Run the following command, then visit "[http://localhost:8843](http://localhost:8843/)" in your browser.
+By deeply integrating the **MCP architecture** with **native workflow control**, UltraRAG 2.0 makes building complex RAG systems as natural and efficient as “orchestrating workflows.” Additionally, the framework includes 17 mainstream benchmark tasks and multiple high-quality baselines, combined with a unified evaluation system and knowledge base support, further enhancing system development efficiency and experiment reproducibility.
 
-```Bash
-docker-compose up --build -d
-```
+## Quick Start
 
-2. **Deploy via Conda**
+Create a virtual environment using Conda:
 
-Run the following commands, then visit "[http://localhost:8843](http://localhost:8843/)" in your browser.
-
-```Bash
-# Create a conda environment
-conda create -n ultrarag python=3.10
-
-# Activate the conda environment
+```shell
+conda create -n ultrarag python=3.11
 conda activate ultrarag
+```
+Clone the project locally or on a server via git:
 
-# Install relevant dependencies
-pip install -r requirements.txt
-
-# Run the following script to download models, by default they will be downloaded to the resources/models directory
-# The list of downloaded models is in config/models_download_list.yaml
-python scripts/download_model.py
-
-# Run the demo page
-streamlit run ultrarag/webui/webui.py --server.fileWatcherType none
+```shell
+git clone https://github.com/OpenBMB/UltraRAG.git
+cd UltraRAG
 ```
 
-### Easy to Get Started
+We recommend using uv for package management, providing faster and more reliable Python dependency management:
 
-https://github.com/user-attachments/assets/b07d20d9-4121-404a-9cba-e89590bd4f4e
+```shell
+pip install uv
+uv pip install -e .
+```
 
-The above video provides a simple demonstration of the getting started experience. To facilitate your use of UltraRAG, we offer a detailed guide to help you get started with UltraRAG, complete the experience, and optimize the model [User Guide](docs/user_guide/user_guide_en.md).
+If you prefer pip, you can directly run:
 
-If you are interested in the technical solutions involved, you can gain a more comprehensive understanding through the [UltraRAG Series](docs/typical_implementation/typical_implementation_en.md).
+```shell
+pip install -e .
+```
 
-## 🔧 Overall Architecture
 
-The architecture of UltraRAG is composed of three parts: **Frontend**, **Service**, and **Backend**. The specifics are as follows:
+[Optional] UR-2.0 supports rich Server components; developers can flexibly install dependencies according to actual tasks:
 
-* **Backend**
-  * **Modules (Module Layer):** Defines the key components in the RAG system, such as the knowledge base, retrieval model, and generation model, supporting users to customize flexibly based on standard classes.
-  * **Workflow (Process Layer):** Standardizes the composition patterns of the RAG system, provides a standardized basic RAG implementation, and integrates team-developed typical methods like Adaptive-Note and VisRAG. It supports users in building and adjusting flexibly and will continue to be supplemented and optimized.
-  * **Function (Function Layer):** Responsible for key operations in the optimization process of the RAG system, including data synthesis, system evaluation, and model fine-tuning, contributing to the comprehensive improvement of system performance.
-* **Service:** Apart from supporting instance-based RAG system construction, UltraRAG also provides a microservice deployment mode to optimize user experience during application, supporting flexible deployment of key services like Embedding Model, LLM, and vector databases.
-* **Frontend:** The frontend is divided into Resource Management and Function Pages. Resource Management includes **Model Management** and **Knowledge Base Management**, while the Function Pages cover **Data Construction, Model Training, Effect Evaluation**, and **Inference Experience**, providing users with convenient interactive support.
+```shell
+# If you want to use faiss for vector indexing:
+# You need to manually compile and install the CPU or GPU version of FAISS depending on your hardware environment:
+# CPU version:
+uv pip install faiss-cpu
+# GPU version:
+uv pip install faiss-gpu-cu12
 
-<div align="center">
-    <img src='docs/assets/en/image3.png' width=600>
-</div>
+# If you want to use infinity_emb for corpus encoding and indexing:
+uv pip install -e ."[infinity_emb]"
 
-## 💫 Performance Evaluation
+# If you want to use lancedb vector database:
+uv pip install -e ."[lancedb]"
 
-To verify the application effectiveness of UltraRAG in vertical domains, we took the legal field as an example, collected various professional books, and built a knowledge base containing **880,000 slices**. We then performed a systematic evaluation on UltraRAG based on a relatively comprehensive evaluation dataset. The following are our evaluation results. For more detailed evaluation content, please refer to the relevant document. [Evaluation Report](docs/evaluation_report/evaluation_report_en.md).
+# If you want to deploy models with vLLM service:
+uv pip install -e ."[vllm]"
 
-| **End-to-End Performance** | **Statute Prediction (3-2) ROUGE-L** |
-| -------------------------------- | ------------------------------------------ |
-| **VanillaRAG**             | 40.75                                      |
-| **UltraRAG-DDR**           | 53.14                                      |
-| **UltraRAG-KBAlign**       | 48.72                                      |
+# If you want to use corpus document parsing functionality:
+uv pip install -e ."[corpus]"
 
-| **End-to-End Performance** | **Consultation (3-8) ROUGE-L** |
-| -------------------------------- | ------------------------------------ |
-| **VanillaRAG**             | 23.65                                |
-| **UltraRAG-Adaptive-Note** | 24.62                                |
-| **VanillaRAG-finetune**    | 25.85                                |
+# ====== Install all dependencies (except faiss) ======
+uv pip install -e ."[all]"
+```
 
-## ‍🤝 Acknowledgments
 
-Thanks to the following contributors for code submissions and testing. New members are welcome to join us in striving to build a complete ecosystem!
+We provide complete tutorial examples from beginner to advanced levels. Welcome to visit the [Tutorial Documentation](https://ultrarag.openbmb.cn
+) to quickly get started with UltraRAG 2.0!
 
-<a href="https://github.com/OpenBMB/UltraRAG/contributors">
-  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
-</a>
+## Support
 
-## 🌟 Trends
+UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most commonly used **public evaluation datasets**, **large-scale corpus**, and **typical baseline methods** in the current RAG field, facilitating rapid reproduction and extension of experiments for researchers. You can also refer to the [Data Format Specification](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/prepare_dataset) to flexibly customize and add any datasets or corpus. The full [datasets](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark) are available for access and download through this link.
 
-<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
- </picture>
-</a>
+### 1. Supported Datasets
 
-## ⚖️ License
+| Task Type         | Dataset Name           | Original Data Size                               | Evaluation Sample Size       |
+|------------------|----------------------|--------------------------------------------|--------------------|
+| QA               | [NQ](https://huggingface.co/datasets/google-research-datasets/nq_open)                   | 3,610                                      | 1,000              |
+| QA               | [TriviaQA](https://nlp.cs.washington.edu/triviaqa/)             | 11,313                                     | 1,000              |
+| QA               | [PopQA](https://huggingface.co/datasets/akariasai/PopQA)                | 14,267                                     | 1,000              |
+| QA               | [AmbigQA](https://huggingface.co/datasets/sewon/ambig_qa)              | 2,002                                      | 1,000              |
+| QA               | [MarcoQA](https://huggingface.co/datasets/microsoft/ms_marco/viewer/v2.1/validation)              | 55,636           | 1,000 |
+| QA               | [WebQuestions](https://huggingface.co/datasets/stanfordnlp/web_questions)         | 2,032                                      | 1,000              |
+| Multi-hop QA     | [HotpotQA](https://huggingface.co/datasets/hotpotqa/hotpot_qa)             | 7,405                                      | 1,000              |
+| Multi-hop QA     | [2WikiMultiHopQA](https://www.dropbox.com/scl/fi/heid2pkiswhfaqr5g0piw/data.zip?e=2&file_subpath=%2Fdata&rlkey=ira57daau8lxfj022xvk1irju)      | 12,576                                     | 1,000              |
+| Multi-hop QA     | [Musique](https://drive.google.com/file/d/1tGdADlNjWFaHLeZZGShh2IRcpO6Lv24h/view)              | 2,417                                      | 1,000              |
+| Multi-hop QA     | [Bamboogle](https://huggingface.co/datasets/chiayewken/bamboogle)            | 125                                        | 125                |
+| Multi-hop QA     | [StrategyQA](https://huggingface.co/datasets/tasksource/strategy-qa)          | 2,290                                      | 1,000              |
+| Multiple-choice  | [ARC](https://huggingface.co/datasets/allenai/ai2_arc)                  | 3,548    | 1,000              |
+| Multiple-choice  | [MMLU](https://huggingface.co/datasets/cais/mmlu)                 | 14,042                     | 1,000              |
+| Long-form QA     | [ASQA](https://huggingface.co/datasets/din0s/asqa)                 | 948                                        | 948                |
+| Fact-verification| [FEVER](https://fever.ai/dataset/fever.html)                | 13,332    | 1,000              |
+| Dialogue         | [WoW](https://huggingface.co/datasets/facebook/kilt_tasks)                  | 3,054                                      | 1,000              |
+| Slot-filling     | [T-REx](https://huggingface.co/datasets/facebook/kilt_tasks)                | 5,000                                      | 1,000              |
 
-- The source code is licensed under the [Apache-2.0](https://github.com/OpenBMB/MiniCPM/blob/main/LICENSE) license.
+---
 
-## 📑 Citation
+### 2. Supported Corpus
 
-If you find this repository useful, please consider giving it a star ⭐ and citing it to show your support.
+| Corpus Name | Document Count     |
+|------------|--------------|
+| [wiki-2018](https://huggingface.co/datasets/RUC-NLPIR/FlashRAG_datasets/tree/main/retrieval-corpus)   | 21,015,324   |
+| wiki-2024   | Under preparation, coming soon |
 
-```bib
-@article{li2024rag,
-  title={RAG-DDR: Optimizing Retrieval-Augmented Generation Using Differentiable Data Rewards},
-  author={Li, Xinze and Mei, Sen and Liu, Zhenghao and Yan, Yukun and Wang, Shuo and Yu, Shi and Zeng, Zheni and Chen, Hao and Yu, Ge and Liu, Zhiyuan and others},
-  journal={arXiv preprint arXiv:2410.13509},
-  year={2024}
-}
+---
 
-@article{yu2024visrag,
-  title={Visrag: Vision-based retrieval-augmented generation on multi-modality documents},
-  author={Yu, Shi and Tang, Chaoyue and Xu, Bokai and Cui, Junbo and Ran, Junhao and Yan, Yukun and Liu, Zhenghao and Wang, Shuo and Han, Xu and Liu, Zhiyuan and others},
-  journal={arXiv preprint arXiv:2410.10594},
-  year={2024}
-}
+### 3. Supported Baseline Methods (Continuously Updated)
 
-@article{wang2024retriever,
-  title={Retriever-and-Memory: Towards Adaptive Note-Enhanced Retrieval-Augmented Generation},
-  author={Wang, Ruobing and Zha, Daren and Yu, Shi and Zhao, Qingfei and Chen, Yuxuan and Wang, Yixuan and Wang, Shuo and Yan, Yukun and Liu, Zhenghao and Han, Xu and others},
-  journal={arXiv preprint arXiv:2410.08821},
-  year={2024}
-}
+| Baseline Name | Script     |
+|------------|--------------|
+| Vanilla LLM   | examples/vanilla.yaml   |
+| Vanilla RAG   | examples/rag.yaml     |
+| [IRCoT](https://arxiv.org/abs/2212.10509)   | examples/IRCoT.yaml   |
+| [IterRetGen](https://arxiv.org/abs/2305.15294)   | examples/IterRetGen.yaml     |
+| [RankCoT](https://arxiv.org/abs/2502.17888)   | examples/RankCoT.yaml   |
+| [R1-searcher](https://arxiv.org/abs/2503.05592)   | examples/r1_searcher.yaml     |
+| [Search-o1](https://arxiv.org/abs/2501.05366)   | examples/search_o1.yaml   |
+| [Search-r1](https://arxiv.org/abs/2503.09516)   | examples/search_r1.yaml     |
+| WebNote   | examples/webnote.yaml    |
 
-@article{zeng2024kbalign,
-  title={KBAlign: KBAlign: Efficient Self Adaptation on Specific Knowledge Bases},
-  author={Zeng, Zheni and Chen, Yuxuan and Yu, Shi and Yan, Yukun and Liu, Zhenghao and Wang, Shuo and Han, Xu and Liu, Zhiyuan and Sun, Maosong},
-  journal={arXiv preprint arXiv:2411.14790},
-  year={2024}
-}
+## Citation
 
-@article{zhu2024rageval,
-  title={Rageval: Scenario specific rag evaluation dataset generation framework},
-  author={Zhu, Kunlun and Luo, Yifan and Xu, Dingling and Wang, Ruobing and Yu, Shi and Wang, Shuo and Yan, Yukun and Liu, Zhenghao and Han, Xu and Liu, Zhiyuan and others},
-  journal={arXiv preprint arXiv:2408.01262},
-  year={2024}
+If you find this repository valuable for your research, please ⭐ support us and cite this work in your related studies.
+
+```bibtex
+@article{chen2025ultrarag,
+  title={UltraRAG: A Modular and Automated Toolkit for Adaptive Retrieval-Augmented Generation},
+  author={Chen, Yuxuan and Guo, Dewen and Mei, Sen and Li, Xinze and Chen, Hao and Li, Yishan and Wang, Yixuan and Tang, Chaoyue and Wang, Ruobing and Wu, Dingjun and others},
+  journal={arXiv preprint arXiv:2504.08761},
+  year={2025}
 }
 ```
+
+## Contribution Guide
+
+We welcome community contributions!  
+- Submit bugs or feature requests via [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues)  
+- Submit code: please discuss in Issues first, then submit via Pull Request  
+
+## Contact Us
+
+- For technical questions and feature requests, please use the [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) feature.
