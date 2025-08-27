@@ -20,7 +20,7 @@ Less Code, Lower Barrier, Faster Deployment
 |
 <b>English</b>
 |
-<a href="./docs/README-Chinese.md"><b>中文</b></a>
+<a href="./docs/README-Chinese.md"><b>简体中文</b></a>
 |
 </p>
 

@@ -21,7 +21,7 @@
 |
 <a href="../README.md"><b>English</b></a>
 |
-<b>中文</b>
+<b>简体中文</b>
 |
 </p>
 
