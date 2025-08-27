@@ -64,7 +64,7 @@
 
 <p align="center">
   <picture>
-    <img alt="UltraRAG" src="../docs/architecture.svg" width=55%>
+    <img alt="UltraRAG" src="../docs/architecture.png" width=90%>
   </picture>
 </p>
 
