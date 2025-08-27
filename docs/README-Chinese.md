@@ -219,8 +219,15 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 ## 联系我们
 
 - 关于技术问题及功能请求，请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) 功能。
-- 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入飞书群与我们交流：  
+- 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入我们的交流社群。
 
-<p align="left">
-  <img src="../docs/feishu_qr.png" alt="Feishu Group QR Code" width="200"/>
+<p align="center">
+  <figure style="display:inline-block; text-align:center; margin: 0 30px;">
+    <img src="../docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/>
+    <figcaption>飞书群组</figcaption>
+  </figure>
+  <figure style="display:inline-block; text-align:center; margin: 0 30px;">
+    <img src="../docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/>
+    <figcaption>微信群组</figcaption>
+  </figure>
 </p>
