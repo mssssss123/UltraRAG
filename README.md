@@ -219,13 +219,15 @@ If you find this repository helpful for your research, please consider giving us
 - For technical issues and feature requests, please use [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues).  
 - For questions about usage, feedback, or any discussions related to RAG technologies, please scan the QR codes below to join our community groups.
 
-<p align="center">
-  <span style="display:inline-block; text-align:center; margin: 0 30px;">
-    <img src="docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
-    <b>Feishu Group</b>
-  </span>
-  <span style="display:inline-block; text-align:center; margin: 0 30px;">
-    <img src="docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
-    <b>WeChat Group</b>
-  </span>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
+      <b>Feishu Group</b>
+    </td>
+    <td align="center">
+      <img src="docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
+      <b>WeChat Group</b>
+    </td>
+  </tr>
+</table>
