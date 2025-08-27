@@ -108,8 +108,9 @@ pip install -e .
 # 需要根据自己的硬件环境，手动编译安装 CPU 或 GPU 版本的 FAISS：
 # CPU版本：
 uv pip install faiss-cpu
-# GPU版本：
+# GPU 版本（示例：CUDA 12.x）
 uv pip install faiss-gpu-cu12
+# 其他 CUDA 版本请安装对应的包（例如：CUDA 11.x 使用 faiss-gpu-cu11）
 
 # 如需使用infinity_emb进行语料库编码和索引：
 uv pip install -e ."[infinity_emb]"
@@ -138,6 +139,8 @@ ultrarag run examples/sayhello.yaml
 
 我们提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
 )快速上手 UltraRAG 2.0！
+
+阅读[快速上手](https://ultrarag.openbmb.cn/pages/cn/getting_started/quick_start)，了解 UltraRAG 的使用流程。整体分为三步：① 编译 Pipeline 文件生成参数配置；② 修改参数文件；③ 运行 Pipeline 文件。
 
 此外，我们整理了一份科研中常用功能的目录，您可以直接点击跳转到所需模块：
 
