@@ -222,12 +222,12 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 - 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入我们的交流社群。
 
 <p align="center">
-  <figure style="display:inline-block; text-align:center; margin: 0 30px;">
-    <img src="../docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/>
-    <figcaption>飞书群组</figcaption>
-  </figure>
-  <figure style="display:inline-block; text-align:center; margin: 0 30px;">
-    <img src="../docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/>
-    <figcaption>微信群组</figcaption>
-  </figure>
+  <span style="display:inline-block; text-align:center; margin: 0 30px;">
+    <img src="feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
+    <b>飞书群组</b>
+  </span>
+  <span style="display:inline-block; text-align:center; margin: 0 30px;">
+    <img src="wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
+    <b>微信群组</b>
+  </span>
 </p>
