@@ -8,17 +8,17 @@ icon: "hand-wave"
 UltraRAG 2.0 (UR-2.0) is the first lightweight RAG system construction framework designed based on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) architecture, aimed at providing efficient modeling support for scientific research scenarios. It standardizes and encapsulates the core components of RAG (such as [Retriever](/pages/cn/tutorials/part_1/retriever), [Generation](/pages/cn/tutorials/part_1/generation), etc.) into independent MCP Servers, and achieves flexible invocation and functional extension through function-level Tool interfaces. With the MCP Client serving as the workflow scheduler, developers only need to write concise YAML files to efficiently build reasoning workflows that support complex control structures such as sequential, loop, and conditional branching, significantly lowering the technical barriers and learning costs for constructing and debugging complex RAG systems.
 
 <p align="center">
-  <img src="/images/getting_started/intro.svg" width="70%" />
+  <img src="/images/getting_started/intro.png" width="70%" />
 </p>
 <Columns cols={3}>
 
-  <Card title="📑Pipeline">
+  <Card title="📑 Pipeline">
     A user-defined workflow file written in YAML to describe the calling order and execution logic of various components and Tools
   </Card>
-  <Card title="🕹️Client">
+  <Card title="🕹️ Client">
     The central scheduler of the workflow, responsible for parsing the Pipeline and uniformly coordinating the execution and calling order of Tools within each Server.
   </Card>
-  <Card title="🔧Server">
+  <Card title="🔧 Server">
     Contains all independently callable functional modules, enabling developers to conveniently add new features or modules through standardized interfaces, achieving flexible extension and efficient composition of the system.
   </Card>
 </Columns>
@@ -31,7 +31,7 @@ RAG systems are evolving from early simple modular chaining models to complex ar
 
 To address these challenges, UltraRAG 2.0 aims to provide:
 
-<Card title="🚀Low-code construction of complex Pipelines">
+<Card title="🚀 Low-code construction of complex Pipelines">
   Native support for reasoning control structures such as sequential, loop, and conditional branching. Developers only need to write YAML files and customize a few dozen lines of code to implement complex iterative RAG workflows (e.g., [Search-o1](/pages/cn/tutorials/part_5/branch)).
 </Card>
 
