@@ -20,7 +20,7 @@ Less Code, Lower Barrier, Faster Deployment
 |
 <b>English</b>
 |
-<a href="./docs/README-Chinese.md"><b>中文</b></a>
+<a href="./docs/README-Chinese.md"><b>简体中文</b></a>
 |
 </p>
 
@@ -136,7 +136,7 @@ ultrarag run examples/sayhello.yaml
 
 ## Quick Start
 
-We provide a complete set of tutorials ranging from beginner to advanced. Visit the [tutorial documentation](https://ultrarag.openbmb.cn) to quickly get started with UltraRAG 2.0!  
+We provide a complete set of tutorials ranging from beginner to advanced. Visit the [tutorial documentation](https://ultrarag.openbmb.cn/pages/en/getting_started/introduction) to quickly get started with UltraRAG 2.0!  
 
 Read the [Quick Start](https://ultrarag.openbmb.cn/pages/en/getting_started/quick_start) guide to learn the UltraRAG workflow, which consists of three steps: (1) compile the Pipeline file to generate the parameter configuration, (2) modify the parameter file, and (3) run the Pipeline file.
 
@@ -153,7 +153,7 @@ In addition, we have prepared a directory of commonly used research functions, w
 
 ## Support
 
-UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most commonly used **public evaluation datasets**, **large-scale corpus**, and **typical baseline methods** in the current RAG field, facilitating rapid reproduction and extension of experiments for researchers. You can also refer to the [Data Format Specification](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/prepare_dataset) to flexibly customize and add any datasets or corpus. The full [datasets](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark) are available for access and download through this link.
+UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most commonly used **public evaluation datasets**, **large-scale corpus**, and **typical baseline methods** in the current RAG field, facilitating rapid reproduction and extension of experiments for researchers. You can also refer to the [Data Format Specification](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/prepare_dataset) to flexibly customize and add any datasets or corpus. The full [datasets](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark) are available for access and download through this link.
 
 ### 1. Supported Datasets
 
