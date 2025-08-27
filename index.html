@@ -264,8 +264,8 @@
             </div>
 
             <p>
-              其官方实现需要 <strong>近 900 行手写逻辑</strong>，FlashRAG 也需要 <strong>超过 110 行代码</strong>。而 UltraRAG 2.0 仅用
-              <strong>50 行代码</strong> 即可完成同等功能。更值得注意的是，其中约一半还是用于编排 Pipeline 的 Yaml 伪代码，这大幅降低了开发门槛与实现成本。
+              在官方实现中，仅 <strong>Pipeline 部分就需要近 900 行手写逻辑</strong>；即便使用标杆级 RAG 框架（如 FlashRAG），也仍需 <strong>超过 110 行代码</strong>。相比之下，UltraRAG 2.0 只需
+              <strong>约 50 行代码</strong> 即可完成同等功能。更值得强调的是，其中约一半还是用于编排的 Yaml 伪代码，这大幅降低了开发门槛与实现成本。
             </p>
 
             <div class="item">
@@ -286,7 +286,7 @@
 
 
             <p>
-              我们进一步展示了不同框架在相同功能实现上的差异。可以看到，FlashRAG 的实现仍然需要冗长的控制逻辑，涉及显式的循环、条件判断与状态更新。而在 UltraRAG 2.0 中，这些逻辑仅需 <strong>几行
+              我们进一步展示了不同框架在相同功能实现上的差异。可以看到，FlashRAG 的实现仍然需要较长的控制逻辑，涉及显式的循环、条件判断与状态更新。而在 UltraRAG 2.0 中，这些逻辑仅需 <strong>几行
                 Pipeline YAML 配置</strong> 即可表达，分支与循环均以简洁的声明方式完成，避免了繁琐的手动编码。
             </p>
 
