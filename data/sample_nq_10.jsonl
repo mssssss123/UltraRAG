@@ -8,4 +8,3 @@
 {"id": 7, "question": "who was the ruler of england in 1616", "golden_answers": ["James I"], "meta_data": {}}
 {"id": 8, "question": "what is the hot coffee mod in san andreas", "golden_answers": ["a normally inaccessible mini-game"], "meta_data": {}}
 {"id": 9, "question": "what is the maximum data rate for the 802.11a standard select one", "golden_answers": ["54 Mbit/s"], "meta_data": {}}
-{"id": 10, "question": "which state is located in the centre of india", "golden_answers": ["Chhattisgarh", "Madhya Pradesh"], "meta_data": {}}
