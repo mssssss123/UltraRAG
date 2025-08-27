@@ -63,7 +63,7 @@ Inspired by this, UltraRAG 2.0 is based on the **MCP architecture**, abstracting
 
 <p align="center">
   <picture>
-    <img alt="UltraRAG" src="./docs/architecture.svg" width=55%>
+    <img alt="UltraRAG" src="./docs/architecture.png" width=90%>
   </picture>
 </p>
 
