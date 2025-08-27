@@ -182,18 +182,28 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 | [Search-r1](https://arxiv.org/abs/2503.09516)   | examples/search_r1.yaml     |
 | WebNote   | examples/webnote.yaml    |
 
-## 引用
+## 致谢
 
-如果您认为本仓库对研究有价值，欢迎给予 ⭐ 支持，并在相关研究中引用本工作。
+感谢以下贡献者在代码提交和测试中的付出。我们也欢迎新的成员加入，共同构建完善的 RAG 生态！
 
-```bibtex
-@article{chen2025ultrarag,
-  title={UltraRAG: A Modular and Automated Toolkit for Adaptive Retrieval-Augmented Generation},
-  author={Chen, Yuxuan and Guo, Dewen and Mei, Sen and Li, Xinze and Chen, Hao and Li, Yishan and Wang, Yixuan and Tang, Chaoyue and Wang, Ruobing and Wu, Dingjun and others},
-  journal={arXiv preprint arXiv:2504.08761},
-  year={2025}
-}
-```
+<a href="https://github.com/OpenBMB/UltraRAG/contributors">
+  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
+</a>
+
+
+
+
+## 趋势
+
+如果您觉得本项目对您的研究有所帮助，欢迎点亮一颗 ⭐ 来支持我们！
+
+<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+ </picture>
+</a>
 
 ## 贡献指南
 

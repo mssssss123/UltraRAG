@@ -181,18 +181,27 @@ UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most common
 | [Search-r1](https://arxiv.org/abs/2503.09516)   | examples/search_r1.yaml     |
 | WebNote   | examples/webnote.yaml    |
 
-## Citation
+## Acknowledgments
 
-If you find this repository valuable for your research, please ⭐ support us and cite this work in your related studies.
+Thanks to the following contributors for their code submissions and testing. We also welcome new members to join us in collectively building a comprehensive RAG ecosystem!
 
-```bibtex
-@article{chen2025ultrarag,
-  title={UltraRAG: A Modular and Automated Toolkit for Adaptive Retrieval-Augmented Generation},
-  author={Chen, Yuxuan and Guo, Dewen and Mei, Sen and Li, Xinze and Chen, Hao and Li, Yishan and Wang, Yixuan and Tang, Chaoyue and Wang, Ruobing and Wu, Dingjun and others},
-  journal={arXiv preprint arXiv:2504.08761},
-  year={2025}
-}
-```
+<a href="https://github.com/OpenBMB/UltraRAG/contributors">
+  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
+</a>
+
+
+
+## Trends
+
+If you find this repository helpful for your research, please consider giving us a ⭐ to show your support.
+
+<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+ </picture>
+</a>
 
 ## Contribution Guide
 
