@@ -107,8 +107,9 @@ pip install -e .
 # You need to manually compile and install the CPU or GPU version of FAISS depending on your hardware environment:
 # CPU version:
 uv pip install faiss-cpu
-# GPU version:
+# GPU version (example: CUDA 12.x)
 uv pip install faiss-gpu-cu12
+# For other CUDA versions, install the corresponding package (e.g., faiss-gpu-cu11 for CUDA 11.x).
 
 # If you want to use infinity_emb for corpus encoding and indexing:
 uv pip install -e ."[infinity_emb]"
@@ -137,9 +138,11 @@ ultrarag run examples/sayhello.yaml
 
 We provide a complete set of tutorials ranging from beginner to advanced. Visit the [tutorial documentation](https://ultrarag.openbmb.cn) to quickly get started with UltraRAG 2.0!  
 
+Read the [Quick Start](https://ultrarag.openbmb.cn/pages/en/getting_started/quick_start) guide to learn the UltraRAG workflow, which consists of three steps: (1) compile the Pipeline file to generate the parameter configuration, (2) modify the parameter file, and (3) run the Pipeline file.
+
 In addition, we have prepared a directory of commonly used research functions, where you can directly jump to the desired module:  
 
-- [Corpus Encoding and Indexing with Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/emb_and_index)
+- [Corpus Embedding and Indexing with Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/emb_and_index)
 - [Deploying Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/deploy_retriever_serve)
 - [Deploying LLM](https://github.com/OpenBMB/UltraRAG/blob/main/script/vllm_serve.sh)
 - [Baseline Reproduction](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/reproduction)
@@ -217,10 +220,17 @@ If you find this repository helpful for your research, please consider giving us
 ## Contact Us
 
 - For technical issues and feature requests, please use [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues).  
-- For questions about usage, feedback, or any discussions related to RAG technologies, please scan the QR code below to join our Feishu group:  
+- For questions about usage, feedback, or any discussions related to RAG technologies, please scan the QR codes below to join our community groups.
 
-
-
-<p align="left">
-  <img src="docs/feishu_qr.png" alt="Feishu Group QR Code" width="200"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
+      <b>Feishu Group</b>
+    </td>
+    <td align="center">
+      <img src="docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
+      <b>WeChat Group</b>
+    </td>
+  </tr>
+</table>

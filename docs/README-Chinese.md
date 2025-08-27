@@ -108,8 +108,9 @@ pip install -e .
 # 需要根据自己的硬件环境，手动编译安装 CPU 或 GPU 版本的 FAISS：
 # CPU版本：
 uv pip install faiss-cpu
-# GPU版本：
+# GPU 版本（示例：CUDA 12.x）
 uv pip install faiss-gpu-cu12
+# 其他 CUDA 版本请安装对应的包（例如：CUDA 11.x 使用 faiss-gpu-cu11）
 
 # 如需使用infinity_emb进行语料库编码和索引：
 uv pip install -e ."[infinity_emb]"
@@ -138,6 +139,8 @@ ultrarag run examples/sayhello.yaml
 
 我们提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
 )快速上手 UltraRAG 2.0！
+
+阅读[快速上手](https://ultrarag.openbmb.cn/pages/cn/getting_started/quick_start)，了解 UltraRAG 的使用流程。整体分为三步：① 编译 Pipeline 文件生成参数配置；② 修改参数文件；③ 运行 Pipeline 文件。
 
 此外，我们整理了一份科研中常用功能的目录，您可以直接点击跳转到所需模块：
 
@@ -219,8 +222,17 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 ## 联系我们
 
 - 关于技术问题及功能请求，请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) 功能。
-- 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入飞书群与我们交流：  
+- 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入我们的交流社群。
 
-<p align="left">
-  <img src="../docs/feishu_qr.png" alt="Feishu Group QR Code" width="200"/>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
+      <b>飞书群组</b>
+    </td>
+    <td align="center">
+      <img src="wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
+      <b>微信群组</b>
+    </td>
+  </tr>
+</table>
