@@ -20,7 +20,7 @@ Less Code, Lower Barrier, Faster Deployment
 |
 <b>English</b>
 |
-<a href="./docs/README-Chinese.md"><b>简体中文</b></a>
+<a href="./docs/README-Chinese.md"><b>中文</b></a>
 |
 </p>
 
@@ -71,7 +71,7 @@ Developing complex RAG inference frameworks is significantly challenging. UltraR
 
 By deeply integrating the **MCP architecture** with **native workflow control**, UltraRAG 2.0 makes building complex RAG systems as natural and efficient as “orchestrating workflows.” Additionally, the framework includes 17 mainstream benchmark tasks and multiple high-quality baselines, combined with a unified evaluation system and knowledge base support, further enhancing system development efficiency and experiment reproducibility.
 
-## Quick Start
+## Installation
 
 Create a virtual environment using Conda:
 
@@ -126,9 +126,27 @@ uv pip install -e ."[corpus]"
 uv pip install -e ."[all]"
 ```
 
+Run the following command to verify a successful installation:
 
-We provide complete tutorial examples from beginner to advanced levels. Welcome to visit the [Tutorial Documentation](https://ultrarag.openbmb.cn
-) to quickly get started with UltraRAG 2.0!
+```shell
+# If the installation was successful, you should see the welcome message 'Hello, UltraRAG 2.0!'
+ultrarag run examples/sayhello.yaml
+```
+
+## Quick Start
+
+We provide a complete set of tutorials ranging from beginner to advanced. Visit the [tutorial documentation](https://ultrarag.openbmb.cn) to quickly get started with UltraRAG 2.0!  
+
+In addition, we have prepared a directory of commonly used research functions, where you can directly jump to the desired module:  
+
+- [Corpus Encoding and Indexing with Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/emb_and_index)
+- [Deploying Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/deploy_retriever_serve)
+- [Deploying LLM](https://github.com/OpenBMB/UltraRAG/blob/main/script/vllm_serve.sh)
+- [Baseline Reproduction](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/reproduction)
+- [Case Study of Experimental Results](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/case_study)
+- [Debugging Guide](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/debug)
+
+
 
 ## Support
 
@@ -186,22 +204,16 @@ UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most common
 Thanks to the following contributors for their code submissions and testing. We also welcome new members to join us in collectively building a comprehensive RAG ecosystem!
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
-  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
+  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG&nocache=true" />
 </a>
 
 
 
-## Trends
+## Support Us
 
 If you find this repository helpful for your research, please consider giving us a ⭐ to show your support.
 
-<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
- </picture>
-</a>
+
 
 ## Contribution Guide
 

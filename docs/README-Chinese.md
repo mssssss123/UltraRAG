@@ -19,7 +19,7 @@
 | 
 <a href="https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"><b>评测榜</b></a>
 |
-<a href="../README.md"><b>英文</b></a>
+<a href="../README.md"><b>English</b></a>
 |
 <b>中文</b>
 |
@@ -72,7 +72,7 @@
 
 通过将 **MCP 架构** 与 **原生流程控制**深度融合，UltraRAG 2.0 让复杂 RAG 系统的搭建像“编排流程”一样自然高效。此外，框架内置 17 个主流 benchmark 任务与多种高质量 baseline，配合统一的评测体系与知识库支持，进一步提升了系统开发的效率与实验的可复现性。
 
-## 快速开始
+## 安装
 
 使用 Conda 创建虚拟环境：
 
@@ -127,9 +127,29 @@ uv pip install -e ."[corpus]"
 uv pip install -e ."[all]"
 ```
 
+运行以下命令验证安装是否成功：
 
-我们配套提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
+```shell
+# 成功运行显示'Hello, UltraRAG 2.0!' 欢迎语
+ultrarag run examples/sayhello.yaml
+```
+
+## 快速上手
+
+我们提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
 )快速上手 UltraRAG 2.0！
+
+此外，我们整理了一份科研中常用功能的目录，您可以直接点击跳转到所需模块：
+
+- [使用检索器对语料库编码与索引](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/emb_and_index)
+- [部署检索器](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_4/deploy_retriever_serve)
+- [部署LLM](https://github.com/OpenBMB/UltraRAG/blob/main/script/vllm_serve.sh)
+- [基线复现](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/reproduction)
+- [实验结果Case分析](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_4/case_study)
+- [Debug调试教程](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_4/debug)
+
+
+
 
 ## 支持
 
@@ -187,23 +207,17 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 感谢以下贡献者在代码提交和测试中的付出。我们也欢迎新的成员加入，共同构建完善的 RAG 生态！
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
-  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG" />
+  <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG&nocache=true" />
 </a>
 
 
 
 
-## 趋势
+## 支持我们
 
 如果您觉得本项目对您的研究有所帮助，欢迎点亮一颗 ⭐ 来支持我们！
 
-<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
- </picture>
-</a>
+
 
 ## 贡献指南
 
