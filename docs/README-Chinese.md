@@ -18,8 +18,6 @@
 | 
 <a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>数据集</b></a> 
 | 
-<a href="https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"><b>评测榜</b></a>
-|
 <a href="../README.md"><b>English</b></a>
 |
 <b>简体中文</b>

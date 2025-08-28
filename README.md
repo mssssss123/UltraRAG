@@ -18,8 +18,6 @@ Less Code, Lower Barrier, Faster Deployment
 | 
 <a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>Datasets</b></a> 
 | 
-<a href="https://pbem31gvoj.feishu.cn/sheets/TfbisiADfhOpnnt9wBhcE5gsn4o?from=from_copylink&sheet=4d3449"><b>Leaderboard</b></a>
-|
 <b>English</b>
 |
 <a href="./docs/README-Chinese.md"><b>简体中文</b></a>
