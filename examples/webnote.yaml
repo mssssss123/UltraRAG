@@ -13,52 +13,52 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-# 初始化检索服务
+# Initialize Retrieval Service
 - retriever.retriever_deploy_search
-# 加载数据集
+# load dataset
 
-# 生成plan
+# generate plan
 - prompt.webnote_gen_plan
 - generation.generate:
     output:
       ans_ls: plan_ls
-# 初始化page
+# Initialize page
 - prompt.webnote_init_page
 - generation.generate:
     output:
       ans_ls: page_ls
-# 循环，生成子问题，检索，逐步填充page
+# Iteratively generate sub-questions, retrieve information, and progressively fill the page
 - loop:
     times: 10
     steps:
-    # 触发器检查，判断page是否完成
+    # Trigger Check: determine whether the page is complete
     - branch:
         router:
         - router.webnote_check_page
         branches:
-          # 如果page没有完成，继续
+          # If the page is not complete, continue.
           incomplete:
-          # 生成子问题
+          # generate sub question
           - prompt.webnote_gen_subq
           - generation.generate:
               output:
                 ans_ls: subq_ls
-          # 检索答案
+          # retrieve answer
           - retriever.retriever_deploy_search:
               input:
                 query_list: subq_ls
               output:
                 ret_psg: psg_ls
-          # 填充page
+          # fill page
           - prompt.webnote_fill_page
           - generation.generate:
               output:
                 ans_ls: page_ls
-          # 如果page完成，结束
+          # If the page has been completed, stop.
           complete: []
-# 生成答案
+# generate answer
 - prompt.webnote_gen_answer
 - generation.generate
-# 评估结果
+# evaluate
 - custom.output_extract_from_boxed
 - evaluation.evaluate
