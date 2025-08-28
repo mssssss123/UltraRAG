@@ -29,9 +29,10 @@ Less Code, Lower Barrier, Faster Deployment
 *Latest News* 🔥
 
 - [2025.08.28] 🎉 Released UltraRAG 2.0! UltraRAG 2.0 is fully upgraded: build high-performance RAG with just a few dozen lines of code, empowering researchers to focus on ideas and innovation!
+- [2025.01.23] UltraRAG Released! Enabling large models to better comprehend and utilize knowledge bases. The UltraRAG 1.0 code is still available at [v1](https://github.com/OpenBMB/UltraRAG/tree/v1).
 
 ---
-## UltraRAG 2.0: Accelerating RAG for Scientific Research
+## UltraRAG 2.0: Accelerating RAG Research
 
 Retrieval-Augmented Generation (RAG) systems are evolving from early-stage simple concatenations of “retrieval + generation” to complex knowledge systems integrating **adaptive knowledge organization**, **multi-turn reasoning**, and **dynamic retrieval** (typical examples include *DeepResearch* and *Search-o1*). However, this increase in complexity imposes high engineering costs on researchers when it comes to **method reproduction** and **rapid iteration of new ideas**.
 
