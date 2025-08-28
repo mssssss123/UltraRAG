@@ -29,7 +29,7 @@
 *更新日志* 🔥
 
 - [2025.08.28] 🎉 发布 UltraRAG 2.0! UltraRAG 2.0 全新升级：几十行代码实现高性能 RAG，让科研专注思想创新！
-- [2025.01.23] 发布 UltraRAG! 让大模型读懂善用知识库！我们保留了UltraRAG 1.0的代码，可以点击[v1](https://github.com/OpenBMB/UltraRAG/tree/v1)查看。
+- [2025.01.23] 发布 UltraRAG! 让大模型读懂善用知识库！我们保留了UltraRAG 1.0的代码，可以点击 [v1](https://github.com/OpenBMB/UltraRAG/tree/v1) 查看。
 
 ---
 
