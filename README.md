@@ -27,6 +27,12 @@ Less Code, Lower Barrier, Faster Deployment
 </p>
 
 ---
+
+*Latest News* 🔥
+
+- [2025.08.28] 🎉 Released UltraRAG 2.0! UltraRAG 2.0 is fully upgraded: build high-performance RAG with just a few dozen lines of code, empowering researchers to focus on ideas and innovation!
+
+---
 ## UltraRAG 2.0: Accelerating RAG for Scientific Research
 
 Retrieval-Augmented Generation (RAG) systems are evolving from early-stage simple concatenations of “retrieval + generation” to complex knowledge systems integrating **adaptive knowledge organization**, **multi-turn reasoning**, and **dynamic retrieval** (typical examples include *DeepResearch* and *Search-o1*). However, this increase in complexity imposes high engineering costs on researchers when it comes to **method reproduction** and **rapid iteration of new ideas**.
@@ -140,7 +146,7 @@ ultrarag run examples/sayhello.yaml
 
 We provide a complete set of tutorials ranging from beginner to advanced. Visit the [tutorial documentation](https://ultrarag.openbmb.cn/pages/en/getting_started/introduction) to quickly get started with UltraRAG 2.0!  
 
-Read the [Quick Start](https://ultrarag.openbmb.cn/pages/en/getting_started/quick_start) guide to learn the UltraRAG workflow, which consists of three steps: (1) compile the Pipeline file to generate the parameter configuration, (2) modify the parameter file, and (3) run the Pipeline file.
+Read the [Quick Start](https://ultrarag.openbmb.cn/pages/en/getting_started/quick_start) guide to learn the UltraRAG workflow, which consists of three steps: **(1) compile the Pipeline file to generate the parameter configuration, (2) modify the parameter file, and (3) run the Pipeline file**.
 
 In addition, we have prepared a directory of commonly used research functions, where you can directly jump to the desired module:  
 
@@ -222,17 +228,5 @@ If you find this repository helpful for your research, please consider giving us
 ## Contact Us
 
 - For technical issues and feature requests, please use [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues).  
-- For questions about usage, feedback, or any discussions related to RAG technologies, please scan the QR codes below to join our community groups.
+- For questions about usage, feedback, or any discussions related to RAG technologies, you are welcome to join our [WeChat group](https://github.com/OpenBMB/UltraRAG/blob/main/docs/wechat_qr.png), [Feishu group](https://github.com/OpenBMB/UltraRAG/blob/main/docs/feishu_qr.png), and [Discord](https://discord.gg/yRFFjjJnnS) to exchange ideas with us.
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
-      <b>Feishu Group</b>
-    </td>
-    <td align="center">
-      <img src="docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
-      <b>WeChat Group</b>
-    </td>
-  </tr>
-</table>

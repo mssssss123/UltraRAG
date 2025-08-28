@@ -27,6 +27,13 @@
 </p>
 
 ---
+
+*更新日志* 🔥
+
+- [2025.08.28] 🎉 发布 UltraRAG 2.0! UltraRAG 2.0 全新升级：几十行代码实现高性能 RAG，让科研专注思想创新！
+
+---
+
 ## UltraRAG 2.0：面向科研的“RAG实验”加速器 
 
 检索增强生成系统（RAG）正从早期“检索+生成”的简单拼接，走向融合 **自适应知识组织**、**多轮推理**、**动态检索** 的复杂知识系统（典型代表如 *DeepResearch*、*Search-o1*）。但这种复杂度的提升，使科研人员在 **方法复现**、**快速迭代新想法** 时，面临着高昂的工程实现成本。
@@ -141,7 +148,7 @@ ultrarag run examples/sayhello.yaml
 我们提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
 )快速上手 UltraRAG 2.0！
 
-阅读[快速上手](https://ultrarag.openbmb.cn/pages/cn/getting_started/quick_start)，了解 UltraRAG 的使用流程。整体分为三步：① 编译 Pipeline 文件生成参数配置；② 修改参数文件；③ 运行 Pipeline 文件。
+阅读[快速上手](https://ultrarag.openbmb.cn/pages/cn/getting_started/quick_start)，了解 UltraRAG 的使用流程。整体分为三步：**① 编译 Pipeline 文件生成参数配置；② 修改参数文件；③ 运行 Pipeline 文件**。
 
 此外，我们整理了一份科研中常用功能的目录，您可以直接点击跳转到所需模块：
 
@@ -223,17 +230,5 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 ## 联系我们
 
 - 关于技术问题及功能请求，请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) 功能。
-- 关于使用上的问题、意见以及任何相关 RAG 技术讨论，欢迎扫描下方二维码进入我们的交流社群。
+- 关于使用上的问题、意见以及任何关于 RAG 技术的讨论，欢迎加入我们的[微信群组](https://github.com/OpenBMB/UltraRAG/blob/main/docs/wechat_qr.png)，[飞书群组](https://github.com/OpenBMB/UltraRAG/blob/main/docs/feishu_qr.png)和[discord](https://discord.gg/yRFFjjJnnS)，与我们共同交流。
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
-      <b>飞书群组</b>
-    </td>
-    <td align="center">
-      <img src="wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
-      <b>微信群组</b>
-    </td>
-  </tr>
-</table>
