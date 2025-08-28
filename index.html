@@ -11,6 +11,17 @@
 
     gtag('config', 'G-B0Q1B0GTDB');
   </script>
+  <!-- Baidu Analytics -->
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d620d2c44a6d47d20de35afcb8d8ed97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
   <meta charset="utf-8">
   <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
@@ -264,7 +275,8 @@
             </div>
 
             <p>
-              在官方实现中，仅 <strong>Pipeline 部分就需要近 900 行手写逻辑</strong>；即便使用标杆级 RAG 框架（如 FlashRAG），也仍需 <strong>超过 110 行代码</strong>。相比之下，UltraRAG 2.0 只需
+              在官方实现中，仅 <strong>Pipeline 部分就需要近 900 行手写逻辑</strong>；即便使用标杆级 RAG 框架（如 FlashRAG），也仍需 <strong>超过 110
+                行代码</strong>。相比之下，UltraRAG 2.0 只需
               <strong>约 50 行代码</strong> 即可完成同等功能。更值得强调的是，其中约一半还是用于编排的 Yaml 伪代码，这大幅降低了开发门槛与实现成本。
             </p>
 
