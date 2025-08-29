@@ -7,66 +7,67 @@
 </p>
 
 <h3 align="center">
-Less Code, Lower Barrier, Faster Deployment
+更少代码，更低门槛，更快实现
 </h3>
 
 <p align="center">
 | 
-<a href="https://openbmb.github.io/UltraRAG"><b>Project Page</b></a> 
+<a href="https://openbmb.github.io/UltraRAG"><b>项目主页</b></a> 
 | 
-<a href="https://ultrarag.openbmb.cn"><b>Documentation</b></a> 
+<a href="https://ultrarag.openbmb.cn"><b>教程文档</b></a> 
 | 
-<a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>Datasets</b></a> 
+<a href="https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"><b>数据集</b></a> 
 | 
-<b>English</b>
+<b>简体中文</b>
 |
-<a href="./docs/README-Chinese.md"><b>简体中文</b></a>
+<a href="./docs/README-English.md"><b>English</b></a>
 |
 </p>
 
 ---
 
-*Latest News* 🔥
+*更新日志* 🔥
 
-- [2025.08.28] 🎉 Released UltraRAG 2.0! UltraRAG 2.0 is fully upgraded: build high-performance RAG with just a few dozen lines of code, empowering researchers to focus on ideas and innovation!
-- [2025.01.23] UltraRAG Released! Enabling large models to better comprehend and utilize knowledge bases. The UltraRAG 1.0 code is still available at [v1](https://github.com/OpenBMB/UltraRAG/tree/v1).
+- [2025.08.28] 🎉 发布 UltraRAG 2.0! UltraRAG 2.0 全新升级：几十行代码实现高性能 RAG，让科研专注思想创新！
+- [2025.01.23] 发布 UltraRAG! 让大模型读懂善用知识库！我们保留了UltraRAG 1.0的代码，可以点击 [v1](https://github.com/OpenBMB/UltraRAG/tree/v1) 查看。
 
 ---
-## UltraRAG 2.0: Accelerating RAG Research
 
-Retrieval-Augmented Generation (RAG) systems are evolving from early-stage simple concatenations of “retrieval + generation” to complex knowledge systems integrating **adaptive knowledge organization**, **multi-turn reasoning**, and **dynamic retrieval** (typical examples include *DeepResearch* and *Search-o1*). However, this increase in complexity imposes high engineering costs on researchers when it comes to **method reproduction** and **rapid iteration of new ideas**.
+## UltraRAG 2.0：面向科研的“RAG实验”加速器 
 
-To address this challenge, [THUNLP](https://nlp.csai.tsinghua.edu.cn/), [NEUIR](https://neuir.github.io), [OpenBMB](https://www.openbmb.cn/home), and [AI9stars](https://github.com/AI9Stars) jointly launched UltraRAG 2.0 (UR-2.0) — the first RAG framework based on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) architecture design. This design allows researchers to declare complex logic such as sequential, loop, and conditional branching simply by writing YAML files, enabling rapid implementation of multi-stage reasoning systems with minimal code.
+检索增强生成系统（RAG）正从早期“检索+生成”的简单拼接，走向融合 **自适应知识组织**、**多轮推理**、**动态检索** 的复杂知识系统（典型代表如 *DeepResearch*、*Search-o1*）。但这种复杂度的提升，使科研人员在 **方法复现**、**快速迭代新想法** 时，面临着高昂的工程实现成本。
 
-Its core ideas are:
-- Modular encapsulation: Encapsulate RAG core components as **standardized independent MCP Servers**;
-- Flexible invocation and extension: Provide **function-level Tool** interfaces to support flexible function calls and extensions;
-- Lightweight workflow orchestration: Use **MCP Client** to build a top-down simplified linkage;
+为了解决这一痛点，清华大学 [THUNLP](https://nlp.csai.tsinghua.edu.cn/) 实验室、东北大学 [NEUIR](https://neuir.github.io) 实验室、[OpenBMB](https://www.openbmb.cn/home) 与 [AI9stars](https://github.com/AI9Stars) 联合推出 UltraRAG 2.0 （UR-2.0）—— 首个基于 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) 架构设计的 RAG 框架。这一设计让科研人员只需编写 YAML 文件，就可以直接声明串行、循环、条件分支等复杂逻辑，从而以极低的代码量快速实现多阶段推理系统。
 
-Compared with traditional frameworks, UltraRAG 2.0 significantly lowers the **technical threshold and learning cost** of complex RAG systems, allowing researchers to focus more on **experimental design and algorithm innovation** rather than lengthy engineering implementations.
+其核心思路是：
+- 组件化封装：将RAG 的核心组件封装为**标准化的独立 MCP Server**；
+- 灵活调用与扩展：提供 **函数级 Tool** 接口，支持功能的灵活调用与扩展；
+- 轻量流程编排：借助 **MCP Client**，建立自上而下的简洁化链路搭建；
 
-## 🌟 Key Highlights
+与传统框架相比，UltraRAG 2.0 显著降低了复杂 RAG 系统的 **技术门槛与学习成本**，让研究者能够将更多精力投入到 **实验设计与算法创新** 上，而不是陷入冗长的工程实现。
 
-- 🚀 **Low-Code Construction of Complex Pipelines**  
-  Natively supports **sequential, loop, conditional branching** and other inference control structures. Developers only need to write YAML files to build **iterative RAG workflows** with dozens of lines of code (e.g., *Search-o1*).
+## 🌟 核心亮点
 
-- ⚡ **Rapid Reproduction and Functional Extension**  
-  Based on the **MCP architecture**, all modules are encapsulated as independent, reusable **Servers**.  
-  - Users can customize Servers as needed or directly reuse existing modules;  
-  - Each Server’s functions are registered as function-level **Tools**, and new functions can be integrated into the complete workflow by adding a single function;  
-  - It also supports calling **external MCP Servers**, easily extending pipeline capabilities and application scenarios.
+- 🚀 **低代码构建复杂 Pipeline**  
+  原生支持 **串行、循环、条件分支** 等推理控制结构。开发者只需编写 YAML 文件，即可实现几十行代码构建的 **迭代式 RAG 流程**（如 *Search-o1* 等）。  
 
-- 📊 **Unified Evaluation and Comparison**  
-  Built-in **standardized evaluation workflows and metric management**, out-of-the-box support for 17 mainstream scientific benchmarks.  
-  - Continuously integrate the latest baselines;  
-  - Provide leaderboard results;  
-  - Facilitate systematic comparison and optimization experiments for researchers.
+- ⚡ **快速复现与功能扩展**  
+  基于 **MCP 架构**，所有模块均封装为独立、可复用的 **Server**。  
+  - 用户可按需自定义 Server 或直接复用现有模块；  
+  - 每个 Server 的功能以函数级 **Tool** 注册，新增功能仅需添加一个函数即可接入完整流程；  
+  - 同时支持调用 **外部 MCP Server**，轻松扩展 Pipeline 能力与应用场景。  
 
-## The Secret Sauce: MCP Architecture and Native Pipeline Control
+- 📊 **统一评测与对比**  
+  内置 **标准化评测流程与指标管理**，开箱即用支持 17 个主流科研 Benchmark。  
+  - 持续集成最新基线；  
+  - 提供 Leaderboard 结果；  
+  - 方便科研人员进行系统性对比与优化实验。  
 
-In different RAG systems, core capabilities such as retrieval and generation share high functional similarity, but due to diverse implementation strategies by developers, modules often lack unified interfaces, making cross-project reuse difficult. The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) is an open protocol that standardizes the way to provide context for large language models (LLMs) and adopts a **Client–Server** architecture, enabling MCP-compliant Server components to be seamlessly reused across different systems.
+## 秘诀：MCP 架构与原生流程控制
 
-Inspired by this, UltraRAG 2.0 is based on the **MCP architecture**, abstracting and encapsulating core functions such as retrieval, generation, and evaluation in RAG systems into independent **MCP Servers**, and invoking them through standardized function-level **Tool interfaces**. This design ensures flexible module function extension and allows new modules to be “hot-plugged” without invasive modifications to global code. In scientific research scenarios, this architecture enables researchers to quickly adapt new models or algorithms with minimal code while maintaining overall system stability and consistency.
+在不同的 RAG 系统中，检索、生成等核心能力在功能上具有高度相似性，但由于开发者实现策略各异，模块之间往往缺乏统一接口，难以跨项目复用。[Model Context Protocol (MCP)](https://modelcontextprotocol.io/overview) 作为一种开放协议，规范了为大型语言模型（LLMs）提供上下文的标准方式，并采用 **Client–Server** 架构，使得遵循该协议开发的 Server 组件可以在不同系统间无缝复用。
+
+受此启发，UltraRAG 2.0 基于 **MCP 架构**，将 RAG 系统中的检索、生成、评测等核心功能抽象并封装为相互独立的 **MCP Server**，并通过标准化的函数级 **Tool 接口**实现调用。这一设计既保证了模块功能扩展的灵活性，又允许新模块以“热插拔”的方式接入，无需对全局代码进行侵入式修改。在科研场景中，这种架构让研究者能够以极低的代码量快速适配新的模型或算法，同时保持整体系统的稳定性与一致性。
 
 <p align="center">
   <picture>
@@ -74,103 +75,105 @@ Inspired by this, UltraRAG 2.0 is based on the **MCP architecture**, abstracting
   </picture>
 </p>
 
-Developing complex RAG inference frameworks is significantly challenging. UltraRAG 2.0’s ability to support complex systems under **low-code** conditions lies in its native support for multi-structured **pipeline workflow control**. Whether sequential, loop, or conditional branching, all control logic can be defined and orchestrated at the YAML level, covering various workflow expression forms needed for complex inference tasks. During runtime, inference workflow scheduling is executed by the built-in **Client**, whose logic is fully described by user-written external **Pipeline YAML scripts**, achieving decoupling from the underlying implementation. Developers can call instructions like loop and step as if using programming language keywords, quickly constructing multi-stage inference workflows in a declarative manner.
+复杂 RAG 推理框架的开发具有显著挑战，而 UltraRAG 2.0 之所以能够在**低代码**条件下支持复杂系统的构建，核心在于其底层对多结构 **Pipeline 流程控制**的原生支持。无论是串行、循环还是条件分支，所有控制逻辑均可在 YAML 层完成定义与调度，覆盖复杂推理任务所需的多种流程表达方式。在实际运行中，推理流程的调度由内置 **Client** 执行，其逻辑完全由用户编写的外部 **Pipeline YAML 脚本** 脚本描述，从而实现与底层实现的解耦。开发者可以像使用编程语言关键字一样调用 loop、step 等指令，以声明的方式快速构建多阶段推理流程。
 
-By deeply integrating the **MCP architecture** with **native workflow control**, UltraRAG 2.0 makes building complex RAG systems as natural and efficient as “orchestrating workflows.” Additionally, the framework includes 17 mainstream benchmark tasks and multiple high-quality baselines, combined with a unified evaluation system and knowledge base support, further enhancing system development efficiency and experiment reproducibility.
+通过将 **MCP 架构** 与 **原生流程控制**深度融合，UltraRAG 2.0 让复杂 RAG 系统的搭建像“编排流程”一样自然高效。此外，框架内置 17 个主流 benchmark 任务与多种高质量 baseline，配合统一的评测体系与知识库支持，进一步提升了系统开发的效率与实验的可复现性。
 
-## Installation
+## 安装
 
-Create a virtual environment using Conda:
+使用 Conda 创建虚拟环境：
 
 ```shell
 conda create -n ultrarag python=3.11
 conda activate ultrarag
 ```
-Clone the project locally or on a server via git:
+通过 git 克隆项目到本地或服务器：
 
 ```shell
 git clone https://github.com/OpenBMB/UltraRAG.git
 cd UltraRAG
 ```
 
-We recommend using uv for package management, providing faster and more reliable Python dependency management:
+我们推荐使用 uv 来进行包管理，提供更快、更可靠的 Python 依赖管理体验：
 
 ```shell
 pip install uv
 uv pip install -e .
 ```
 
-If you prefer pip, you can directly run:
+如果您更习惯 pip，也可以直接运行：
 
 ```shell
 pip install -e .
 ```
 
 
-[Optional] UR-2.0 supports rich Server components; developers can flexibly install dependencies according to actual tasks:
+【可选】UR-2.0支持丰富的Server组件，开发者可根据实际任务灵活安装所需依赖：
 
 ```shell
-# If you want to use faiss for vector indexing:
-# You need to manually compile and install the CPU or GPU version of FAISS depending on your hardware environment:
-# CPU version:
+# 如需使用faiss进行向量索引：
+# 需要根据自己的硬件环境，手动编译安装 CPU 或 GPU 版本的 FAISS：
+# CPU版本：
 uv pip install faiss-cpu
-# GPU version (example: CUDA 12.x)
+# GPU 版本（示例：CUDA 12.x）
 uv pip install faiss-gpu-cu12
-# For other CUDA versions, install the corresponding package (e.g., faiss-gpu-cu11 for CUDA 11.x).
+# 其他 CUDA 版本请安装对应的包（例如：CUDA 11.x 使用 faiss-gpu-cu11）
 
-# If you want to use infinity_emb for corpus encoding and indexing:
+# 如需使用infinity_emb进行语料库编码和索引：
 uv pip install -e ."[infinity_emb]"
 
-# If you want to use lancedb vector database:
+# 如需使用lancedb向量数据库：
 uv pip install -e ."[lancedb]"
 
-# If you want to deploy models with vLLM service:
+# 如需使用vLLM服务部署模型：
 uv pip install -e ."[vllm]"
 
-# If you want to use corpus document parsing functionality:
+# 如需使用语料库文档解析功能：
 uv pip install -e ."[corpus]"
 
-# ====== Install all dependencies (except faiss) ======
+# ====== 安装所有依赖（除faiss） ======
 uv pip install -e ."[all]"
 ```
 
-Run the following command to verify a successful installation:
+运行以下命令验证安装是否成功：
 
 ```shell
-# If the installation was successful, you should see the welcome message 'Hello, UltraRAG 2.0!'
+# 成功运行显示'Hello, UltraRAG 2.0!' 欢迎语
 ultrarag run examples/sayhello.yaml
 ```
 
-## Quick Start
+## 快速上手
 
-We provide a complete set of tutorials ranging from beginner to advanced. Visit the [tutorial documentation](https://ultrarag.openbmb.cn/pages/en/getting_started/introduction) to quickly get started with UltraRAG 2.0!  
+我们提供了从入门到进阶的完整教学示例，欢迎访问[教程文档](https://ultrarag.openbmb.cn
+)快速上手 UltraRAG 2.0！
 
-Read the [Quick Start](https://ultrarag.openbmb.cn/pages/en/getting_started/quick_start) guide to learn the UltraRAG workflow, which consists of three steps: **(1) compile the Pipeline file to generate the parameter configuration, (2) modify the parameter file, and (3) run the Pipeline file**.
+阅读[快速上手](https://ultrarag.openbmb.cn/pages/cn/getting_started/quick_start)，了解 UltraRAG 的使用流程。整体分为三步：**① 编译 Pipeline 文件生成参数配置；② 修改参数文件；③ 运行 Pipeline 文件**。
 
-In addition, we have prepared a directory of commonly used research functions, where you can directly jump to the desired module:  
+此外，我们整理了一份科研中常用功能的目录，您可以直接点击跳转到所需模块：
 
-- [Corpus Embedding and Indexing with Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/emb_and_index)
-- [Deploying Retriever](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/deploy_retriever_serve)
-- [Deploying LLM](https://github.com/OpenBMB/UltraRAG/blob/main/script/vllm_serve.sh)
-- [Baseline Reproduction](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/reproduction)
-- [Case Study of Experimental Results](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/case_study)
-- [Debugging Guide](https://ultrarag.openbmb.cn/pages/en/tutorials/part_4/debug)
+- [使用检索器对语料库编码与索引](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/emb_and_index)
+- [部署检索器](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_4/deploy_retriever_serve)
+- [部署LLM](https://github.com/OpenBMB/UltraRAG/blob/main/script/vllm_serve.sh)
+- [基线复现](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/reproduction)
+- [实验结果Case分析](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_4/case_study)
+- [Debug调试教程](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_4/debug)
 
 
 
-## Support
 
-UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most commonly used **public evaluation datasets**, **large-scale corpus**, and **typical baseline methods** in the current RAG field, facilitating rapid reproduction and extension of experiments for researchers. You can also refer to the [Data Format Specification](https://ultrarag.openbmb.cn/pages/en/tutorials/part_3/prepare_dataset) to flexibly customize and add any datasets or corpus. The full [datasets](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark) are available for access and download through this link.
+## 支持
 
-### 1. Supported Datasets
+UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开评测数据集**、**大规模语料库** 以及 **典型基线方法**，方便科研人员快速复现与扩展实验。你也可以参考[数据格式说明](https://ultrarag.openbmb.cn/pages/cn/tutorials/part_3/prepare_dataset)，灵活地自定义并添加任意数据集或语料库。完整的[数据集](https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark)可通过该链接访问与下载。
 
-| Task Type         | Dataset Name           | Original Data Size                               | Evaluation Sample Size       |
+### 1. 支持的数据集
+
+| 任务类型         | 数据集名称           | 原始数据数量                               | 评测采样数量       |
 |------------------|----------------------|--------------------------------------------|--------------------|
 | QA               | [NQ](https://huggingface.co/datasets/google-research-datasets/nq_open)                   | 3,610                                      | 1,000              |
 | QA               | [TriviaQA](https://nlp.cs.washington.edu/triviaqa/)             | 11,313                                     | 1,000              |
 | QA               | [PopQA](https://huggingface.co/datasets/akariasai/PopQA)                | 14,267                                     | 1,000              |
 | QA               | [AmbigQA](https://huggingface.co/datasets/sewon/ambig_qa)              | 2,002                                      | 1,000              |
-| QA               | [MarcoQA](https://huggingface.co/datasets/microsoft/ms_marco/viewer/v2.1/validation)              | 55,636           | 1,000 |
+| QA               | [MarcoQA](https://huggingface.co/datasets/microsoft/ms_marco/viewer/v2.1/validation)              | 55,636         | 1,000|
 | QA               | [WebQuestions](https://huggingface.co/datasets/stanfordnlp/web_questions)         | 2,032                                      | 1,000              |
 | Multi-hop QA     | [HotpotQA](https://huggingface.co/datasets/hotpotqa/hotpot_qa)             | 7,405                                      | 1,000              |
 | Multi-hop QA     | [2WikiMultiHopQA](https://www.dropbox.com/scl/fi/heid2pkiswhfaqr5g0piw/data.zip?e=2&file_subpath=%2Fdata&rlkey=ira57daau8lxfj022xvk1irju)      | 12,576                                     | 1,000              |
@@ -178,7 +181,7 @@ UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most common
 | Multi-hop QA     | [Bamboogle](https://huggingface.co/datasets/chiayewken/bamboogle)            | 125                                        | 125                |
 | Multi-hop QA     | [StrategyQA](https://huggingface.co/datasets/tasksource/strategy-qa)          | 2,290                                      | 1,000              |
 | Multiple-choice  | [ARC](https://huggingface.co/datasets/allenai/ai2_arc)                  | 3,548    | 1,000              |
-| Multiple-choice  | [MMLU](https://huggingface.co/datasets/cais/mmlu)                 | 14,042                     | 1,000              |
+| Multiple-choice  | [MMLU](https://huggingface.co/datasets/cais/mmlu)                 | 14,042                      | 1,000              |
 | Long-form QA     | [ASQA](https://huggingface.co/datasets/din0s/asqa)                 | 948                                        | 948                |
 | Fact-verification| [FEVER](https://fever.ai/dataset/fever.html)                | 13,332    | 1,000              |
 | Dialogue         | [WoW](https://huggingface.co/datasets/facebook/kilt_tasks)                  | 3,054                                      | 1,000              |
@@ -186,18 +189,18 @@ UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most common
 
 ---
 
-### 2. Supported Corpus
+### 2. 支持的语料库
 
-| Corpus Name | Document Count     |
+| 语料库名称 | 文档数量     |
 |------------|--------------|
 | [wiki-2018](https://huggingface.co/datasets/RUC-NLPIR/FlashRAG_datasets/tree/main/retrieval-corpus)   | 21,015,324   |
-| wiki-2024   | Under preparation, coming soon |
+| wiki-2024   | 整理中，即将上线 |
 
 ---
 
-### 3. Supported Baseline Methods (Continuously Updated)
+### 3. 支持的基线方法（持续更新）
 
-| Baseline Name | Script     |
+| 基线名称 | 脚本     |
 |------------|--------------|
 | Vanilla LLM   | examples/vanilla.yaml   |
 | Vanilla RAG   | examples/rag.yaml     |
@@ -209,23 +212,22 @@ UltraRAG 2.0 is ready to use out-of-the-box, natively supporting the most common
 | [Search-r1](https://arxiv.org/abs/2503.09516)   | examples/search_r1.yaml     |
 | WebNote   | examples/webnote.yaml    |
 
-## Contributing
+## 贡献
 
-Thanks to the following contributors for their code submissions and testing. We also welcome new members to join us in collectively building a comprehensive RAG ecosystem!
+感谢以下贡献者在代码提交和测试中的付出。我们也欢迎新的成员加入，共同构建完善的 RAG 生态！
 
-You can contribute by following the standard process: **fork this repository, submit issues, and create pull requests (PRs)**.
+您可以通过以下标准流程来贡献：**Fork 本仓库 → 提交 Issue → 发起 Pull Request (PR)**。
 
 <a href="https://github.com/OpenBMB/UltraRAG/contributors">
   <img src="https://contrib.rocks/image?repo=OpenBMB/UltraRAG&nocache=true" />
 </a>
 
-## Support Us
+## 支持我们
 
-If you find this repository helpful for your research, please consider giving us a ⭐ to show your support.
+如果您觉得本项目对您的研究有所帮助，欢迎点亮一颗 ⭐ 来支持我们！
 
+## 联系我们
 
-## Contact Us
-
-- For technical issues and feature requests, please use [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues).  
-- For questions about usage, feedback, or any discussions related to RAG technologies, you are welcome to join our [WeChat group](https://github.com/OpenBMB/UltraRAG/blob/main/docs/wechat_qr.png), [Feishu group](https://github.com/OpenBMB/UltraRAG/blob/main/docs/feishu_qr.png), and [Discord](https://discord.gg/yRFFjjJnnS) to exchange ideas with us.
+- 关于技术问题及功能请求，请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) 功能。
+- 关于使用上的问题、意见以及任何关于 RAG 技术的讨论，欢迎加入我们的[微信群组](https://github.com/OpenBMB/UltraRAG/blob/main/docs/wechat_qr.png)，[飞书群组](https://github.com/OpenBMB/UltraRAG/blob/main/docs/feishu_qr.png)和[discord](https://discord.gg/yRFFjjJnnS)，与我们共同交流。
 
