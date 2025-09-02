@@ -229,3 +229,21 @@ If you find this repository helpful for your research, please consider giving us
 - For technical issues and feature requests, please use [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues).  
 - For questions about usage, feedback, or any discussions related to RAG technologies, you are welcome to join our [WeChat group](https://github.com/OpenBMB/UltraRAG/blob/main/docs/wechat_qr.png), [Feishu group](https://github.com/OpenBMB/UltraRAG/blob/main/docs/feishu_qr.png), and [Discord](https://discord.gg/yRFFjjJnnS) to exchange ideas with us.
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
+      <b>WeChat Group</b>
+    </td>
+    <td align="center">
+      <img src="feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
+      <b>Feishu Group</b>
+    </td>
+    <td align="center">
+      <a href="https://discord.gg/yRFFjjJnnS">
+        <img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Join Discord"/>
+      </a><br/>
+      <b>Discord</b>
+  </td>
+  </tr>
+</table>
