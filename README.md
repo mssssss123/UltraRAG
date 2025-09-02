@@ -28,6 +28,7 @@
 
 *更新日志* 🔥
 
+- [2025.09.01] 我们录了一期上手视频，手把手教你安装 UltraRAG 并跑通完整的 RAG 👉[📺 bilibili](https://www.bilibili.com/video/BV1B9apz4E7K/?share_source=copy_web&vd_source=7035ae721e76c8149fb74ea7a2432710)
 - [2025.08.28] 🎉 发布 UltraRAG 2.0! UltraRAG 2.0 全新升级：几十行代码实现高性能 RAG，让科研专注思想创新！
 - [2025.01.23] 发布 UltraRAG! 让大模型读懂善用知识库！我们保留了UltraRAG 1.0的代码，可以点击 [v1](https://github.com/OpenBMB/UltraRAG/tree/v1) 查看。
 
@@ -231,3 +232,21 @@ UltraRAG 2.0 开箱即用，内置支持当前 RAG 领域最常用的 **公开�
 - 关于技术问题及功能请求，请使用 [GitHub Issues](https://github.com/OpenBMB/UltraRAG/issues) 功能。
 - 关于使用上的问题、意见以及任何关于 RAG 技术的讨论，欢迎加入我们的[微信群组](https://github.com/OpenBMB/UltraRAG/blob/main/docs/wechat_qr.png)，[飞书群组](https://github.com/OpenBMB/UltraRAG/blob/main/docs/feishu_qr.png)和[discord](https://discord.gg/yRFFjjJnnS)，与我们共同交流。
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/wechat_qr.png" alt="WeChat Group QR Code" width="220"/><br/>
+      <b>微信群组</b>
+    </td>
+    <td align="center">
+      <img src="docs/feishu_qr.png" alt="Feishu Group QR Code" width="220"/><br/>
+      <b>飞书群组</b>
+    </td>
+    <td align="center">
+      <a href="https://discord.gg/yRFFjjJnnS">
+        <img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Join Discord"/>
+      </a><br/>
+      <b>Discord</b>
+  </td>
+  </tr>
+</table>
