@@ -22,7 +22,7 @@ To help you understand how to use a Server, we will demonstrate the complete dev
 First, we instantiate a Server named `calculator` through UltraRAG_MCP_Server:
 
 ```python servers/calculator/src/calculator.py icon="python"
-from ultrarag_mcp.server import UltraRAG_MCP_Server
+from ultrarag.server import UltraRAG_MCP_Server
 
 app = UltraRAG_MCP_Server("calculator")
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 Register tool functions using the `@app.tool` decorator, which will be called in the pipeline:
 
 ```python servers/calculator/src/calculator.py icon="python"
-from ultrarag_mcp.server import UltraRAG_MCP_Server
+from ultrarag.server import UltraRAG_MCP_Server
 
 app = UltraRAG_MCP_Server("calculator")
 
@@ -80,7 +80,7 @@ UR-2.0 will automatically read the parameter.yaml file under each Server directo
 In some scenarios, we may want to maintain some shared state or variables inside the Server, such as initializing a model. You can encapsulate the Server as a class. Below is an example of encapsulating the Calculator Server as a class:
 
 ```python servers/calculator/src/calculator.py icon="python"
-from ultrarag_mcp.server import UltraRAG_MCP_Server
+from ultrarag.server import UltraRAG_MCP_Server
 
 app = UltraRAG_MCP_Server("calculator")
 
