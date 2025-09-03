@@ -64,17 +64,17 @@ conda install -c pytorch faiss-cpu
 conda install -c pytorch faiss-gpu
 
 # 如需使用infinity_emb进行语料库编码和索引：
-uv pip install -e ."[infinity_emb]"
+uv pip install -e ".[infinity_emb]"
 
 # 如需使用lancedb向量数据库：
-uv pip install -e ."[lancedb]"
+uv pip install -e ".[lancedb]"
 
 # 如需使用vLLM服务部署模型：
-uv pip install -e ."[vllm]"
+uv pip install -e ".[vllm]"
 
 # 如需使用语料库文档解析功能：
-uv pip install -e ."[corpus]"
+uv pip install -e ".[corpus]"
 
 # 安装所有依赖（除faiss）
-uv pip install -e ."[all]"
+uv pip install -e ".[all]"
 ```
