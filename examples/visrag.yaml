@@ -1,0 +1,21 @@
+# VisRAG demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_search_maxsim
+- prompt.qa_boxed
+- generation.generate
+- evaluation.evaluate:
+    input:
+      pred_ls: ans_ls
