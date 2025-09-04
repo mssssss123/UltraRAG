@@ -119,19 +119,19 @@ uv pip install faiss-gpu-cu12
 # For other CUDA versions, install the corresponding package (e.g., faiss-gpu-cu11 for CUDA 11.x).
 
 # If you want to use infinity_emb for corpus encoding and indexing:
-uv pip install -e ."[infinity_emb]"
+uv pip install -e ".[infinity_emb]"
 
 # If you want to use lancedb vector database:
-uv pip install -e ."[lancedb]"
+uv pip install -e ".[lancedb]"
 
 # If you want to deploy models with vLLM service:
-uv pip install -e ."[vllm]"
+uv pip install -e ".[vllm]"
 
 # If you want to use corpus document parsing functionality:
-uv pip install -e ."[corpus]"
+uv pip install -e ".[corpus]"
 
 # ====== Install all dependencies (except faiss) ======
-uv pip install -e ."[all]"
+uv pip install -e ".[all]"
 ```
 
 Run the following command to verify a successful installation:
