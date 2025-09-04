@@ -14,7 +14,7 @@ from openai import AsyncOpenAI, OpenAIError
 
 from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
 from ultrarag.server import UltraRAG_MCP_Server
-
+from pathlib import Path
 
 app = UltraRAG_MCP_Server("retriever")
 retriever_app = Flask(__name__)
@@ -114,29 +114,20 @@ class Retriever:
         )[0]
 
         self.contents = []
+        corpus_path_obj = Path(corpus_path)
+        corpus_dir = corpus_path_obj.parent  
         if not is_multimodal:
             with jsonlines.open(corpus_path, mode="r") as reader:
                 self.contents = [item["contents"] for item in reader]
         else:
-            import pandas as pd
-            from PIL import Image
-            import io
-
-            df = pd.read_parquet(corpus_path)
-
-            if "image" not in df.columns:
-                raise ValueError(f"Expected column 'image' in parquet, got {df.columns.tolist()}")
-
-            self.contents = []
-            for i, val in enumerate(df["image"]):
-                if isinstance(val, (bytes, bytearray, memoryview)):
-                    img = Image.open(io.BytesIO(val)).convert("RGB")
-                elif isinstance(val, Image.Image):
-                    img = val.convert("RGB")
-                else:
-                    raise ValueError(f"Row {i}: Unsupported image type {type(val)}")
-                self.contents.append(img)
-
+            with jsonlines.open(corpus_path, mode="r") as reader:
+                for i, item in enumerate(reader):
+                    if "image_path" not in item:
+                        raise ValueError(f"Line {i}: expected key 'image_path' in multimodal corpus JSONL, got keys={list(item.keys())}")
+                    rel = str(item["image_path"])
+                    abs_path = str((corpus_dir / rel).resolve())
+                    self.contents.append(abs_path)
+                   
         self.faiss_index = None
         if index_path is not None and os.path.exists(index_path):
             cpu_index = faiss.read_index(index_path)
@@ -218,7 +209,17 @@ class Retriever:
 
         async with self.model:
             if is_multimodal:
-                embeddings, usage = await self.model.image_embed(images=self.contents)
+                from PIL import Image
+                images = []
+                for i, p in enumerate(self.contents):
+                    try:
+                        with Image.open(p) as im:
+                            images.append(im.convert("RGB").copy())
+                    except Exception as e:
+                        err_msg = f"Failed to load image at index {i}: {p} ({e})"
+                        app.logger.error(err_msg)
+                        raise RuntimeError(err_msg)
+                embeddings, usage = await self.model.image_embed(images=images)
             else:
                 embeddings, usage = await self.model.embed(sentences=self.contents)
 
