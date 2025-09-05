@@ -82,7 +82,7 @@
 
 ## 安装
 
-使用 Conda 创建虚拟环境：
+### 使用 Conda 创建虚拟环境：
 
 ```shell
 conda create -n ultrarag python=3.11
@@ -134,6 +134,34 @@ uv pip install -e ".[corpus]"
 
 # ====== 安装所有依赖（除faiss） ======
 uv pip install -e ".[all]"
+```
+
+运行以下命令验证安装是否成功：
+
+```shell
+# 成功运行显示'Hello, UltraRAG 2.0!' 欢迎语
+ultrarag run examples/sayhello.yaml
+```
+
+### 使用 Docker 构建运行环境
+
+通过 git 克隆项目到本地或服务器：
+
+```shell
+git clone https://github.com/OpenBMB/UltraRAG.git
+cd UltraRAG
+```
+
+构建镜像：
+
+```shell
+docker build -t ultrarag:v2.0.0-beta .
+```
+
+运行交互环境：
+
+```shell
+docker run -it --rm --gpus all ultrarag:v2.0.0-beta bash
 ```
 
 运行以下命令验证安装是否成功：

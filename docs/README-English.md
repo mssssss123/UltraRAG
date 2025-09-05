@@ -80,7 +80,7 @@ By deeply integrating the **MCP architecture** with **native workflow control**,
 
 ## Installation
 
-Create a virtual environment using Conda:
+### Create a virtual environment using Conda:
 
 ```shell
 conda create -n ultrarag python=3.11
@@ -138,6 +138,34 @@ Run the following command to verify a successful installation:
 
 ```shell
 # If the installation was successful, you should see the welcome message 'Hello, UltraRAG 2.0!'
+ultrarag run examples/sayhello.yaml
+```
+
+### Build and Run Environment with Docker
+
+Clone the project to your local machine or server via git:
+
+```shell
+git clone https://github.com/OpenBMB/UltraRAG.git
+cd UltraRAG
+```
+
+Build the image:
+
+```shell
+docker build -t ultrarag:v2.0.0-beta .
+```
+
+Run an interactive environment:
+
+```shell
+docker run -it --rm --gpus all ultrarag:v2.0.0-beta bash
+```
+
+Run the following command to verify whether the installation is successful:
+
+```shell
+# If successful, it will display the welcome message 'Hello, UltraRAG 2.0!'
 ultrarag run examples/sayhello.yaml
 ```
 
