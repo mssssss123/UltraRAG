@@ -84,7 +84,7 @@ def output_extract_from_boxed(ans_ls: List[str]) -> Dict[str, List[str]]:
             if content.startswith(r"\text{") and content.endswith("}"):
                 content = content[len(r"\text{") : -1].strip()
             content = content.strip("()").strip()
-        
+
         content = content.replace("\\", " ")
         content = content.replace("  ", " ")
         return content
@@ -125,7 +125,6 @@ def search_o1_query_extract(ans_ls: List[str]) -> Dict[str, List[str]]:
     def get_query(text):
         import re
 
-    
         pattern = (
             re.escape("<|begin_search_query|>")
             + r"(.*?)"

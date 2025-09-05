@@ -28,6 +28,7 @@ import atexit, asyncio
 
 from ultrarag.mcp_logging import get_logger
 
+
 class UltraRAG_MCP_Server(FastMCP):
     def __init__(
         self,
@@ -341,5 +342,6 @@ class UltraRAG_MCP_Server(FastMCP):
             show_banner=show_banner,
             **transport_kwargs,
         )
+
 
 logging.getLogger("mcp").setLevel(logging.WARNING)

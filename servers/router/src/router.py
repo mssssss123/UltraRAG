@@ -33,7 +33,6 @@ def ircot_check_end(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
     return {"ans_ls": ans_ls}
 
 
-
 @app.tool(output="ans_ls->ans_ls")
 def search_r1_check(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
     """Check if the answer is complete or incomplete.
@@ -79,7 +78,6 @@ def webnote_check_page(page_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
     return {"page_ls": page_ls}
 
 
-
 @app.tool(output="ans_ls->ans_ls")
 def r1_searcher_check(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
     """Check if the answer is complete or incomplete.
@@ -110,7 +108,7 @@ def r1_searcher_check(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
 @app.tool(output="ans_ls->ans_ls")
 def search_o1_check(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
     def get_eos(text):
-        
+
         if "<|im_end|>" in text:
             return True
         elif "<|end_search_query|>" in text:
