@@ -115,7 +115,7 @@ class Retriever:
 
         self.contents = []
         corpus_path_obj = Path(corpus_path)
-        corpus_dir = corpus_path_obj.parent  
+        corpus_dir = corpus_path_obj.parent
         if not is_multimodal:
             with jsonlines.open(corpus_path, mode="r") as reader:
                 self.contents = [item["contents"] for item in reader]
@@ -123,11 +123,13 @@ class Retriever:
             with jsonlines.open(corpus_path, mode="r") as reader:
                 for i, item in enumerate(reader):
                     if "image_path" not in item:
-                        raise ValueError(f"Line {i}: expected key 'image_path' in multimodal corpus JSONL, got keys={list(item.keys())}")
+                        raise ValueError(
+                            f"Line {i}: expected key 'image_path' in multimodal corpus JSONL, got keys={list(item.keys())}"
+                        )
                     rel = str(item["image_path"])
                     abs_path = str((corpus_dir / rel).resolve())
                     self.contents.append(abs_path)
-                   
+
         self.faiss_index = None
         if index_path is not None and os.path.exists(index_path):
             cpu_index = faiss.read_index(index_path)
@@ -210,6 +212,7 @@ class Retriever:
         async with self.model:
             if is_multimodal:
                 from PIL import Image
+
                 images = []
                 for i, p in enumerate(self.contents):
                     try:
@@ -442,7 +445,7 @@ class Retriever:
             rets.append(cur_ret)
         app.logger.debug(f"ret_psg: {rets}")
         return {"ret_psg": rets}
-    
+
     async def retriever_search_maxsim(
         self,
         query_list: List[str],
@@ -457,17 +460,28 @@ class Retriever:
         queries = [f"{query_instruction}{query}" for query in query_list]
 
         async with self.model:
-            query_embedding, usage = await self.model.embed(sentences=queries) # (Q, Kq, D)
-        
-        doc_embeddings = np.load(embedding_path) # (N, Kd, D)
+            query_embedding, usage = await self.model.embed(
+                sentences=queries
+            )  # (Q, Kq, D)
+
+        doc_embeddings = np.load(embedding_path)  # (N, Kd, D)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        if isinstance(doc_embeddings, np.ndarray) and doc_embeddings.dtype != object and doc_embeddings.ndim == 3:
+        if (
+            isinstance(doc_embeddings, np.ndarray)
+            and doc_embeddings.dtype != object
+            and doc_embeddings.ndim == 3
+        ):
             # (N,Kd,D)
-            docs_tensor = torch.from_numpy(doc_embeddings.astype("float32", copy=False)).to(device)
+            docs_tensor = torch.from_numpy(
+                doc_embeddings.astype("float32", copy=False)
+            ).to(device)
         elif isinstance(doc_embeddings, np.ndarray) and doc_embeddings.dtype == object:
             try:
-                stacked = np.stack([np.asarray(x, dtype=np.float32) for x in doc_embeddings.tolist()], axis=0)  # (N,Kd,D)
+                stacked = np.stack(
+                    [np.asarray(x, dtype=np.float32) for x in doc_embeddings.tolist()],
+                    axis=0,
+                )  # (N,Kd,D)
                 docs_tensor = torch.from_numpy(stacked).to(device)
             except Exception:
                 raise ValueError(
@@ -478,44 +492,38 @@ class Retriever:
             raise ValueError(
                 f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, shape={getattr(doc_embeddings, 'shape', None)}"
             )
-        
+
         results = []
 
         def _l2norm(t: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
             return t / t.norm(dim=-1, keepdim=True).clamp_min(eps)
 
-        # 文档维度
         N, Kd, D_docs = docs_tensor.shape
 
-        # 文档先统一 L2 归一化（逐 token）
         docs_tensor = _l2norm(docs_tensor)  # (N,Kd,D)
 
         results = []
         k_pick = min(top_k, N)
 
-        # 逐 query：你的 self.model.embed 返回的是 list[np.ndarray(Kq,D)]（Kq 可能不同）
         for q_np in query_embedding:
-            # 转 torch + float32
+
             q = torch.as_tensor(q_np, dtype=torch.float32, device=device)  # (Kq,D)
 
-            # 维度对齐检查
             D_query = q.shape[-1]
             if D_query != D_docs:
                 raise ValueError(f"Dim mismatch: query D={D_query} vs doc D={D_docs}")
 
-            # 逐 token 归一化
             q = _l2norm(q)  # (Kq,D)
 
-            # MaxSim：对所有文档批量算分
+            # MaxSim
             # sim[n, i, j] = dot(q[i], docs_tensor[n, j])
             # (Kq,D) x (N,Kd,D) -> (N,Kq,Kd)
             sim = torch.einsum("qd,nkd->nqk", q, docs_tensor)
-            # 对 doc tokens 取最大 -> (N,Kq)
+            # doc tokens -> (N,Kq)
             sim_max = sim.max(dim=2).values
-            # 对 query tokens 求和 -> (N,)
+            # query tokens-> (N,)
             scores = sim_max.sum(dim=1)
 
-            # 取 top-k 文档
             top_idx = torch.topk(scores, k=k_pick, largest=True).indices.tolist()
             top_contents = [self.contents[i] for i in top_idx]
             results.append(top_contents)

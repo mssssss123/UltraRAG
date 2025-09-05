@@ -17,7 +17,7 @@ pipeline:
     output:
       ret_psg: ret_path
 - prompt.qa_boxed
-- generation.generate
+- generation.multimodal_generate
 - evaluation.evaluate:
     input:
       pred_ls: ans_ls

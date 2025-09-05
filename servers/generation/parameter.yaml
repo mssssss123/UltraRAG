@@ -3,8 +3,6 @@ model_name: minicpm4-8b # vllm served name
 model_path: openbmb/MiniCPM4-8B # model name or path
 base_url: http://localhost:8000/v1 # vllm server url
 
-is_multimodal: false # whether the model is multimodal
-
 # init vllm server configs
 port: 8000
 gpu_ids: "0,1"
