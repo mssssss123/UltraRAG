@@ -13,7 +13,9 @@ pipeline:
 - benchmark.get_data
 - retriever.retriever_init
 - retriever.retriever_embed
-- retriever.retriever_search_maxsim
+- retriever.retriever_search_maxsim:
+    output:
+      ret_psg: ret_path
 - prompt.qa_boxed
 - generation.generate
 - evaluation.evaluate:

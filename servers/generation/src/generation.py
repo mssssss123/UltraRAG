@@ -96,14 +96,14 @@ def initialize_local_vllm(
     return {"base_url": base_url}
 
 
-@app.tool(output="prompt_ls,model_name,base_url,sampling_params,ret_psg,is_multimodal->ans_ls")
+@app.tool(output="prompt_ls,model_name,base_url,sampling_params,is_multimodal,ret_path->ans_ls")
 async def generate(
     prompt_ls: List[Union[str, Dict[str, Any]]],
     model_name: str,
     base_url: str,
     sampling_params: Dict[str, Any],
-    ret_psg: Optional[List[List[str]]] = None,   
     is_multimodal: bool = False,    
+    ret_path: Optional[List[List[str]]] = None,   
 ) -> Dict[str, List[str]]:
     api_key = os.environ.get("LLM_API_KEY", "")
     client = AsyncOpenAI(base_url=base_url, api_key=api_key if api_key else "EMPTY")
@@ -138,8 +138,8 @@ async def generate(
     async def call_with_retry(idx: int, prompt: str, retries=3, delay=1):
         content = [{"type": "text", "text": prompt}]
 
-        if is_multimodal and ret_psg and idx < len(ret_psg):
-            for p in ret_psg[idx] or []:
+        if is_multimodal and ret_path and idx < len(ret_path):
+            for p in ret_path[idx] or []:
                 if not p:
                     continue
                 try:

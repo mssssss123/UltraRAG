@@ -5,9 +5,6 @@ base_url: http://localhost:8000/v1 # vllm server url
 
 is_multimodal: false # whether the model is multimodal
 
-# i have no idea for this, keep it None to make it work
-ret_psg: null
-
 # init vllm server configs
 port: 8000
 gpu_ids: "0,1"
@@ -22,5 +19,5 @@ sampling_params:
     top_k: 20
     chat_template_kwargs:
       enable_thinking: false # as qwen3, switch to true if you want to enable thinking
-    include_stop_str_in_output: true # use in search-o1 pipeline
-  # stop: [ "<|im_end|>", "<|end_search_query|>" ] # use in search-o1 pipeline
+    # include_stop_str_in_output: true # use in search-o1 pipeline
+    # stop: [ "<|im_end|>", "<|end_search_query|>" ] # use in search-o1 pipeline
