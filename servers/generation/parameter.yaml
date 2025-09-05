@@ -17,5 +17,5 @@ sampling_params:
     top_k: 20
     chat_template_kwargs:
       enable_thinking: false # as qwen3, switch to true if you want to enable thinking
-    include_stop_str_in_output: true # use in search-o1 pipeline
-  # stop: [ "<|im_end|>", "<|end_search_query|>" ] # use in search-o1 pipeline
+    # include_stop_str_in_output: true # use in search-o1 pipeline
+    # stop: [ "<|im_end|>", "<|end_search_query|>" ] # use in search-o1 pipeline

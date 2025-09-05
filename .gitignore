@@ -13,6 +13,7 @@ __pycache__/
 # Runtime and download caches
 .infinity_cache/
 pretrained_models/
+embedding/
 index/
 output/
 logs/

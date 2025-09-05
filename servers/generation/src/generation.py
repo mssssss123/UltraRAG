@@ -6,12 +6,14 @@ import signal
 import socket
 import subprocess
 import time
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
+import mimetypes
 
 import requests
 from openai import AsyncOpenAI, AuthenticationError
 from openai._utils._logs import httpx_logger
 from tqdm import tqdm
+import base64
 
 from fastmcp.exceptions import ToolError
 from ultrarag.server import UltraRAG_MCP_Server
@@ -119,6 +121,91 @@ async def generate(
 
     async def call_with_retry(idx: int, prompt: str, retries=3, delay=1):
         msg = [{"role": "user", "content": prompt}]
+        async with sem:
+            for attempt in range(retries):
+                try:
+                    resp = await client.chat.completions.create(
+                        model=model_name,
+                        messages=msg,
+                        **sampling_params,
+                    )
+                    return idx, resp.choices[0].message.content
+                except AuthenticationError as e:
+                    raise ToolError(
+                        f"Unauthorized (401): Access denied at {base_url}."
+                        "Invalid or missing LLM_API_KEY."
+                    ) from e
+                except Exception as e:
+                    app.logger.warning(f"[Retry {attempt+1}] Failed (idx={idx}): {e}")
+                    await asyncio.sleep(delay)
+            return idx, "[ERROR]"
+
+    tasks = [asyncio.create_task(call_with_retry(i, p)) for i, p in enumerate(prompts)]
+    ret = [None] * len(prompts)
+
+    for coro in tqdm(
+        asyncio.as_completed(tasks), total=len(tasks), desc="Generating: "
+    ):
+        idx, ans = await coro
+        ret[idx] = ans
+
+    return {"ans_ls": ret}
+
+
+@app.tool(output="prompt_ls,model_name,base_url,sampling_params,ret_path->ans_ls")
+async def multimodal_generate(
+    prompt_ls: List[Union[str, Dict[str, Any]]],
+    model_name: str,
+    base_url: str,
+    sampling_params: Dict[str, Any],
+    ret_path: List[List[str]],
+) -> Dict[str, List[str]]:
+    api_key = os.environ.get("LLM_API_KEY", "")
+    client = AsyncOpenAI(base_url=base_url, api_key=api_key if api_key else "EMPTY")
+
+    prompts = []
+    for m in prompt_ls:
+        if hasattr(m, "content") and hasattr(m.content, "text"):
+            prompts.append(m.content.text)
+        elif isinstance(m, dict):
+            prompts.append(m.get("content", {}).get("text", ""))
+        elif isinstance(m, str):
+            prompts.append(m)
+        else:
+            raise ValueError(f"Unsupported message format: {m}")
+
+    sem = asyncio.Semaphore(16)
+
+    def to_data_url(path_or_url: str) -> str:
+        s = str(path_or_url).strip()
+        # 已是远程或 data URL，直接返回
+        if s.startswith(("http://", "https://", "data:image/")):
+            return s
+        # 本地文件：先校验存在再转 base64
+        if not os.path.isfile(s):
+            raise FileNotFoundError(f"image not found: {s}")
+        mime, _ = mimetypes.guess_type(s)
+        mime = mime or "image/jpeg"
+        with open(s, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode("utf-8")
+        return f"data:{mime};base64,{b64}"
+
+    async def call_with_retry(idx: int, prompt: str, retries=3, delay=1):
+        content = [{"type": "text", "text": prompt}]
+
+        if idx < len(ret_path):
+            for p in ret_path[idx] or []:
+                if not p:
+                    continue
+                try:
+                    content.append(
+                        {"type": "image_url", "image_url": {"url": to_data_url(p)}}
+                    )
+                except Exception as e:
+                    app.logger.warning(f"[Image skip] idx={idx}, path={p}, err={e}")
+
+        msg = [{"role": "user", "content": content}]
+
         async with sem:
             for attempt in range(retries):
                 try:

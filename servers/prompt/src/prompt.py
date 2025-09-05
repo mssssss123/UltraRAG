@@ -134,7 +134,7 @@ def ircot_next_prompt(
     data_num = len(memory_q_ls[0])
     round_cnt = len(memory_q_ls)
     for i in range(data_num):
-        if memory_q_ls[0][i] is None:  
+        if memory_q_ls[0][i] is None:
             continue
         all_passages, all_cots = [], []
         for r in range(round_cnt):
@@ -143,7 +143,7 @@ def ircot_next_prompt(
                 round_psg = memory_ret_psg[r]
                 if round_psg is not None and i < len(round_psg):
                     psg = round_psg[i]
-            if psg:  
+            if psg:
                 all_passages.extend(psg)
             if r > 0:
                 cot = memory_q_ls[r][i]
@@ -274,6 +274,7 @@ def r1_searcher_gen(
         ret.append(p)
     return ret
 
+
 # prompt for search-o1
 @app.prompt(output="q_ls,template->prompt_ls")
 def search_o1_init(
@@ -302,7 +303,7 @@ def searcho1_reasoning_indocument(
     template: Template = load_prompt_template(template)
     ret = []
     for prompt, squery, psg in zip(prompt_ls, extract_query_list, ret_psg):
-        
+
         passages = psg[:3]
         passage_text = "\n".join(passages)
         _pro = prompt.content.text

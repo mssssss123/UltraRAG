@@ -2,6 +2,7 @@
 
 retriever_path: openbmb/MiniCPM-Embedding-Light
 corpus_path: data/corpus_example.jsonl
+is_multimodal: false
 embedding_path: embedding/embedding.npy
 index_path: index/index.index
 
@@ -10,9 +11,10 @@ infinity_kwargs:
   bettertransformer: false
   pooling_method: auto
   device: cuda
-  batch_size: 1024
+  batch_size: 16
+  model_warmup: false
 
-cuda_devices: "0,1"
+cuda_devices: "2,3"
 query_instruction: "Query: "
 faiss_use_gpu: True
 top_k: 5
