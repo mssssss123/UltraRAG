@@ -12,6 +12,7 @@ infinity_kwargs:
   pooling_method: auto
   device: cuda
   batch_size: 16
+  model_warmup: false
 
 cuda_devices: "2,3"
 query_instruction: "Query: "
