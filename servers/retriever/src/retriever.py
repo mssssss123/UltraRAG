@@ -28,7 +28,7 @@ class Retriever:
         )
         mcp_inst.tool(
             self.retriever_init_openai,
-            output="corpus_path,openai_model,api_base,api_key->None",
+            output="corpus_path,openai_model,api_base,api_key,faiss_use_gpu->None",
         )
         mcp_inst.tool(
             self.retriever_embed,
@@ -163,6 +163,7 @@ class Retriever:
         openai_model: str,
         api_base: str,
         api_key: str,
+        faiss_use_gpu: bool = False,
     ):
         if not openai_model:
             raise ValueError("openai_model must be provided.")
@@ -171,6 +172,8 @@ class Retriever:
         if not api_key or not isinstance(api_key, str):
             raise ValueError("api_key must be a non-empty string.")
 
+        self.faiss_use_gpu = faiss_use_gpu
+        self.faiss_index = None
         self.contents = []
         with jsonlines.open(corpus_path, mode="r") as reader:
             self.contents = [item["contents"] for item in reader]
