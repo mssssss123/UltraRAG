@@ -93,12 +93,9 @@ class UltraData:
             name: cfg.load_parameter_config(os.path.join(path, "parameter.yaml"))
             for name, path in server_paths.items()
         }
-        all_local_vals = cfg.load_parameter_config(
-            os.path.join(
-                pipeline_yaml_path.rsplit("/", 1)[0]
-                + f"/parameter/{pipeline_yaml_path.split('/')[-1].replace('.yaml', '')}_parameter.yaml"
-            )
-        )
+        cfg_path = Path(pipeline_yaml_path)
+        param_file = cfg_path.parent / "parameter" / f"{cfg_path.stem}_parameter.yaml"
+        all_local_vals = cfg.load_parameter_config(param_file)
         self.local_vals.update(all_local_vals)
         self.io = {}
         self.global_vars = {}
@@ -582,7 +579,8 @@ class UltraData:
 
 async def build(config_path: str):
     logger.info(f"Building configuration {config_path}")
-    pipline_name = config_path.split("/")[-1].replace(".yaml", "")
+    cfg_path = Path(config_path)
+    pipline_name = cfg_path.stem
     loader = Configuration()
     init_cfg = loader.load_config(config_path)
     servers = init_cfg.get("servers", {})
@@ -606,7 +604,7 @@ async def build(config_path: str):
         actual_server_path = path
         base_dir_name = os.path.basename(os.path.normpath(actual_server_path))
         server_cfgs[name]["path"] = server_cfgs[name].get(
-            "path", os.path.join(actual_server_path, f"src/{base_dir_name}.py")
+            "path", str(Path(actual_server_path) / "src" / f"{base_dir_name}.py")
         )
 
     logger.debug("Server configurations loaded: %s", server_cfgs)
@@ -787,15 +785,11 @@ async def build(config_path: str):
     async with client:
         await build_steps(init_cfg.get("pipeline", []))
 
-    param_save_path = (
-        config_path.rsplit("/", 1)[0] + f"/parameter/{pipline_name}_parameter.yaml"
-    )
-    server_save_path = (
-        config_path.rsplit("/", 1)[0] + f"/server/{pipline_name}_server.yaml"
-    )
-    os.makedirs(os.path.dirname(param_save_path), exist_ok=True)
+    param_save_path = cfg_path.parent / "parameter" / f"{pipline_name}_parameter.yaml"
+    server_save_path = cfg_path.parent / "server" / f"{pipline_name}_server.yaml"
+    param_save_path.parent.mkdir(parents=True, exist_ok=True)
     logger.info(f"Saving all parameters to {param_save_path}")
-    os.makedirs(os.path.dirname(server_save_path), exist_ok=True)
+    server_save_path.parent.mkdir(parents=True, exist_ok=True)
     logger.info(f"Saving all server configs to {server_save_path}")
 
     with open(param_save_path, "w", encoding="utf-8") as f:
@@ -812,7 +806,8 @@ async def build(config_path: str):
 
 
 async def run(config_path: str):
-    log_server_banner(config_path.split("/")[-1].replace(".yaml", ""))
+    cfg_path = Path(config_path)
+    log_server_banner(cfg_path.stem)
     logger.info(f"Executing pipeline with configuration {config_path}")
     cfg = Configuration()
     init_cfg = cfg.load_config(config_path)
@@ -820,10 +815,10 @@ async def run(config_path: str):
     pipeline_cfg: List[PipelineStep] = init_cfg.get("pipeline", [])
     server_paths = servers
 
-    cfg_name = config_path.split("/")[-1].replace(".yaml", "")
-    root_path = config_path.rsplit("/", 1)[0]
+    cfg_name = cfg_path.stem
+    root_path = cfg_path.parent
 
-    server_config_path = os.path.join(root_path, "server", f"{cfg_name}_server.yaml")
+    server_config_path = root_path / "server" / f"{cfg_name}_server.yaml"
     all_server_configs = cfg.load_config(server_config_path)
     server_cfg = {
         name: all_server_configs[name]
@@ -831,9 +826,7 @@ async def run(config_path: str):
         if name in all_server_configs
     }
 
-    param_config_path = os.path.join(
-        root_path, "parameter", f"{cfg_name}_parameter.yaml"
-    )
+    param_config_path = root_path / "parameter" / f"{cfg_name}_parameter.yaml"
     param_cfg = cfg.load_parameter_config(param_config_path)
     for srv_name in server_cfg.keys():
         server_cfg[srv_name]["parameter"] = param_cfg.get(srv_name, {})
@@ -1193,18 +1186,10 @@ ToolCall = _Router()
 def pipeline(pipeline_file: str, log_level: str = "info"):
     global logger
     logger = get_logger("Client", log_level)
-    pipeline = pipeline_file.rsplit("/", 1)
-    if os.path.exists(
-        os.path.join(
-            pipeline[0], f"parameter/{pipeline[1].replace('.yaml', '')}_parameter.yaml"
-        )
-    ) and os.path.exists(
-        os.path.join(
-            pipeline[0], f"server/{pipeline[1].replace('.yaml', '')}_server.yaml"
-        )
-    ):
-        pass
-    else:
+    pf = Path(pipeline_file)
+    param_expected = pf.parent / "parameter" / f"{pf.stem}_parameter.yaml"
+    server_expected = pf.parent / "server" / f"{pf.stem}_server.yaml"
+    if not (param_expected.exists() and server_expected.exists()):
         asyncio.run(build(pipeline_file))
     return asyncio.run(run(pipeline_file))
     # return result
