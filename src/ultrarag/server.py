@@ -308,11 +308,13 @@ class UltraRAG_MCP_Server(FastMCP):
     def build(self, parameter_file: str):
         cfg_path = Path(parameter_file)
         base_dir = cfg_path.parent
-        srv_name = str(base_dir).split("/")[-1]
+        srv_name = base_dir.name
         self.param_cfg = self.load_config(str(cfg_path)) if cfg_path.exists() else {}
         out_path = base_dir / "server.yaml"
         build_yaml = {
-            "path": self.param_cfg.get("path", f"{base_dir}/src/{srv_name}.py"),
+            "path": self.param_cfg.get(
+                "path", str(base_dir / "src" / f"{srv_name}.py")
+            ),
             "parameter": parameter_file,
             "tools": {
                 name: self._build_entry(self.fn_meta[name], self.param_cfg)
