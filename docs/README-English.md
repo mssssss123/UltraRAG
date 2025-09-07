@@ -80,7 +80,7 @@ By deeply integrating the **MCP architecture** with **native workflow control**,
 
 ## Installation
 
-Create a virtual environment using Conda:
+### Create a virtual environment using Conda:
 
 ```shell
 conda create -n ultrarag python=3.11
@@ -119,25 +119,53 @@ uv pip install faiss-gpu-cu12
 # For other CUDA versions, install the corresponding package (e.g., faiss-gpu-cu11 for CUDA 11.x).
 
 # If you want to use infinity_emb for corpus encoding and indexing:
-uv pip install -e ."[infinity_emb]"
+uv pip install -e ".[infinity_emb]"
 
 # If you want to use lancedb vector database:
-uv pip install -e ."[lancedb]"
+uv pip install -e ".[lancedb]"
 
 # If you want to deploy models with vLLM service:
-uv pip install -e ."[vllm]"
+uv pip install -e ".[vllm]"
 
 # If you want to use corpus document parsing functionality:
-uv pip install -e ."[corpus]"
+uv pip install -e ".[corpus]"
 
 # ====== Install all dependencies (except faiss) ======
-uv pip install -e ."[all]"
+uv pip install -e ".[all]"
 ```
 
 Run the following command to verify a successful installation:
 
 ```shell
 # If the installation was successful, you should see the welcome message 'Hello, UltraRAG 2.0!'
+ultrarag run examples/sayhello.yaml
+```
+
+### Build and Run Environment with Docker
+
+Clone the project to your local machine or server via git:
+
+```shell
+git clone https://github.com/OpenBMB/UltraRAG.git
+cd UltraRAG
+```
+
+Build the image:
+
+```shell
+docker build -t ultrarag:v2.0.0-beta .
+```
+
+Run an interactive environment:
+
+```shell
+docker run -it --rm --gpus all ultrarag:v2.0.0-beta bash
+```
+
+Run the following command to verify whether the installation is successful:
+
+```shell
+# If successful, it will display the welcome message 'Hello, UltraRAG 2.0!'
 ultrarag run examples/sayhello.yaml
 ```
 

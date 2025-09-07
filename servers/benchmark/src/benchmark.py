@@ -63,6 +63,7 @@ def _load_from_local(
         length = len(next(iter(ret.values())))
         idx = list(range(length))
         import random
+
         random.seed(seed)
         random.shuffle(idx)
         idx = idx if limit == -1 else idx[:limit]
@@ -77,13 +78,12 @@ def _load_from_local(
     return ret
 
 
-
 @app.tool(output="benchmark->q_ls,gt_ls")
 def get_data(
     benchmark: Dict[str, Any],
 ) -> Dict[str, List[Any]]:
     app.logger.info(f"Loading data: {benchmark.get('path')}")
-   
+
     path = benchmark.get("path")
     key_map = benchmark.get("key_map", {})
     is_shuffle = benchmark.get("shuffle", False)

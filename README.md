@@ -82,7 +82,7 @@
 
 ## 安装
 
-使用 Conda 创建虚拟环境：
+### 使用 Conda 创建虚拟环境：
 
 ```shell
 conda create -n ultrarag python=3.11
@@ -121,19 +121,47 @@ uv pip install faiss-gpu-cu12
 # 其他 CUDA 版本请安装对应的包（例如：CUDA 11.x 使用 faiss-gpu-cu11）
 
 # 如需使用infinity_emb进行语料库编码和索引：
-uv pip install -e ."[infinity_emb]"
+uv pip install -e ".[infinity_emb]"
 
 # 如需使用lancedb向量数据库：
-uv pip install -e ."[lancedb]"
+uv pip install -e ".[lancedb]"
 
 # 如需使用vLLM服务部署模型：
-uv pip install -e ."[vllm]"
+uv pip install -e ".[vllm]"
 
 # 如需使用语料库文档解析功能：
-uv pip install -e ."[corpus]"
+uv pip install -e ".[corpus]"
 
 # ====== 安装所有依赖（除faiss） ======
-uv pip install -e ."[all]"
+uv pip install -e ".[all]"
+```
+
+运行以下命令验证安装是否成功：
+
+```shell
+# 成功运行显示'Hello, UltraRAG 2.0!' 欢迎语
+ultrarag run examples/sayhello.yaml
+```
+
+### 使用 Docker 构建运行环境
+
+通过 git 克隆项目到本地或服务器：
+
+```shell
+git clone https://github.com/OpenBMB/UltraRAG.git
+cd UltraRAG
+```
+
+构建镜像：
+
+```shell
+docker build -t ultrarag:v2.0.0-beta .
+```
+
+运行交互环境：
+
+```shell
+docker run -it --rm --gpus all ultrarag:v2.0.0-beta bash
 ```
 
 运行以下命令验证安装是否成功：

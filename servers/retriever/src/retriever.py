@@ -14,7 +14,7 @@ from openai import AsyncOpenAI, OpenAIError
 
 from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
 from ultrarag.server import UltraRAG_MCP_Server
-
+from pathlib import Path
 
 app = UltraRAG_MCP_Server("retriever")
 retriever_app = Flask(__name__)
@@ -24,7 +24,7 @@ class Retriever:
     def __init__(self, mcp_inst: UltraRAG_MCP_Server):
         mcp_inst.tool(
             self.retriever_init,
-            output="retriever_path,corpus_path,index_path,faiss_use_gpu,infinity_kwargs,cuda_devices->None",
+            output="retriever_path,corpus_path,index_path,faiss_use_gpu,infinity_kwargs,cuda_devices,is_multimodal->None",
         )
         mcp_inst.tool(
             self.retriever_init_openai,
@@ -32,7 +32,7 @@ class Retriever:
         )
         mcp_inst.tool(
             self.retriever_embed,
-            output="embedding_path,overwrite->None",
+            output="embedding_path,overwrite,is_multimodal->None",
         )
         mcp_inst.tool(
             self.retriever_embed_openai,
@@ -49,6 +49,10 @@ class Retriever:
         mcp_inst.tool(
             self.retriever_search,
             output="q_ls,top_k,query_instruction,use_openai->ret_psg",
+        )
+        mcp_inst.tool(
+            self.retriever_search_maxsim,
+            output="q_ls,embedding_path,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
             self.retriever_search_lancedb,
@@ -79,6 +83,7 @@ class Retriever:
         faiss_use_gpu: bool = False,
         infinity_kwargs: Optional[Dict[str, Any]] = None,
         cuda_devices: Optional[str] = None,
+        is_multimodal: bool = False,
     ):
 
         try:
@@ -109,8 +114,21 @@ class Retriever:
         )[0]
 
         self.contents = []
-        with jsonlines.open(corpus_path, mode="r") as reader:
-            self.contents = [item["contents"] for item in reader]
+        corpus_path_obj = Path(corpus_path)
+        corpus_dir = corpus_path_obj.parent
+        if not is_multimodal:
+            with jsonlines.open(corpus_path, mode="r") as reader:
+                self.contents = [item["contents"] for item in reader]
+        else:
+            with jsonlines.open(corpus_path, mode="r") as reader:
+                for i, item in enumerate(reader):
+                    if "image_path" not in item:
+                        raise ValueError(
+                            f"Line {i}: expected key 'image_path' in multimodal corpus JSONL, got keys={list(item.keys())}"
+                        )
+                    rel = str(item["image_path"])
+                    abs_path = str((corpus_dir / rel).resolve())
+                    self.contents.append(abs_path)
 
         self.faiss_index = None
         if index_path is not None and os.path.exists(index_path):
@@ -170,6 +188,7 @@ class Retriever:
         self,
         embedding_path: Optional[str] = None,
         overwrite: bool = False,
+        is_multimodal: bool = False,
     ):
 
         if embedding_path is not None:
@@ -186,11 +205,26 @@ class Retriever:
 
         if not overwrite and os.path.exists(embedding_path):
             app.logger.info("embedding already exists, skipping")
+            return
 
         os.makedirs(output_dir, exist_ok=True)
 
         async with self.model:
-            embeddings, usage = await self.model.embed(sentences=self.contents)
+            if is_multimodal:
+                from PIL import Image
+
+                images = []
+                for i, p in enumerate(self.contents):
+                    try:
+                        with Image.open(p) as im:
+                            images.append(im.convert("RGB").copy())
+                    except Exception as e:
+                        err_msg = f"Failed to load image at index {i}: {p} ({e})"
+                        app.logger.error(err_msg)
+                        raise RuntimeError(err_msg)
+                embeddings, usage = await self.model.image_embed(images=images)
+            else:
+                embeddings, usage = await self.model.embed(sentences=self.contents)
 
         embeddings = np.array(embeddings, dtype=np.float16)
         np.save(embedding_path, embeddings)
@@ -277,6 +311,7 @@ class Retriever:
 
         if not overwrite and os.path.exists(index_path):
             app.logger.info("Index already exists, skipping")
+            return
 
         os.makedirs(output_dir, exist_ok=True)
 
@@ -410,6 +445,90 @@ class Retriever:
             rets.append(cur_ret)
         app.logger.debug(f"ret_psg: {rets}")
         return {"ret_psg": rets}
+
+    async def retriever_search_maxsim(
+        self,
+        query_list: List[str],
+        embedding_path: str,
+        top_k: int = 5,
+        query_instruction: str = "",
+    ) -> Dict[str, List[List[str]]]:
+        import torch
+
+        if isinstance(query_list, str):
+            query_list = [query_list]
+        queries = [f"{query_instruction}{query}" for query in query_list]
+
+        async with self.model:
+            query_embedding, usage = await self.model.embed(
+                sentences=queries
+            )  # (Q, Kq, D)
+
+        doc_embeddings = np.load(embedding_path)  # (N, Kd, D)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        if (
+            isinstance(doc_embeddings, np.ndarray)
+            and doc_embeddings.dtype != object
+            and doc_embeddings.ndim == 3
+        ):
+            # (N,Kd,D)
+            docs_tensor = torch.from_numpy(
+                doc_embeddings.astype("float32", copy=False)
+            ).to(device)
+        elif isinstance(doc_embeddings, np.ndarray) and doc_embeddings.dtype == object:
+            try:
+                stacked = np.stack(
+                    [np.asarray(x, dtype=np.float32) for x in doc_embeddings.tolist()],
+                    axis=0,
+                )  # (N,Kd,D)
+                docs_tensor = torch.from_numpy(stacked).to(device)
+            except Exception:
+                raise ValueError(
+                    f"Document embeddings in {embedding_path} have inconsistent shapes, cannot stack into (N,Kd,D). "
+                    f"Check your retriever_embed."
+                )
+        else:
+            raise ValueError(
+                f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, shape={getattr(doc_embeddings, 'shape', None)}"
+            )
+
+        results = []
+
+        def _l2norm(t: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
+            return t / t.norm(dim=-1, keepdim=True).clamp_min(eps)
+
+        N, Kd, D_docs = docs_tensor.shape
+
+        docs_tensor = _l2norm(docs_tensor)  # (N,Kd,D)
+
+        results = []
+        k_pick = min(top_k, N)
+
+        for q_np in query_embedding:
+
+            q = torch.as_tensor(q_np, dtype=torch.float32, device=device)  # (Kq,D)
+
+            D_query = q.shape[-1]
+            if D_query != D_docs:
+                raise ValueError(f"Dim mismatch: query D={D_query} vs doc D={D_docs}")
+
+            q = _l2norm(q)  # (Kq,D)
+
+            # MaxSim
+            # sim[n, i, j] = dot(q[i], docs_tensor[n, j])
+            # (Kq,D) x (N,Kd,D) -> (N,Kq,Kd)
+            sim = torch.einsum("qd,nkd->nqk", q, docs_tensor)
+            # doc tokens -> (N,Kq)
+            sim_max = sim.max(dim=2).values
+            # query tokens-> (N,)
+            scores = sim_max.sum(dim=1)
+
+            top_idx = torch.topk(scores, k=k_pick, largest=True).indices.tolist()
+            top_contents = [self.contents[i] for i in top_idx]
+            results.append(top_contents)
+
+        return {"ret_psg": results}
 
     async def retriever_search_lancedb(
         self,
