@@ -173,12 +173,12 @@ class Retriever:
             err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
             app.logger.error(err_msg)
             raise ImportError(err_msg)
-        
+
         if not openai_model:
             raise ValueError("openai_model must be provided.")
         if not api_base or not isinstance(api_base, str):
             raise ValueError("api_base must be a non-empty string.")
-        
+
         api_key = os.environ.get("RETRIEVER_API_KEY") or api_key
 
         if not api_key or not isinstance(api_key, str):

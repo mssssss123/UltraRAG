@@ -12,6 +12,7 @@ dependencies = [
     "fastmcp==2.11.3",
     "Jinja2",
     "openai",
+    "httpx[socks]",
     "pandas",
     "python-dotenv",
     "PyYAML",
