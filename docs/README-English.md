@@ -28,6 +28,7 @@ Less Code, Lower Barrier, Faster Deployment
 
 *Latest News* 🔥
 
+- [2025.09.01] We recorded a beginner-friendly tutorial video that walks you through installing UltraRAG and running a complete RAG workflow 👉 |[📺 bilibili](https://www.bilibili.com/video/BV1B9apz4E7K/?share_source=copy_web&vd_source=7035ae721e76c8149fb74ea7a2432710)|[📖 blog](https://github.com/OpenBMB/UltraRAG/blob/page/project/blog/en/00_Installing_and_Running_RAG.md)|
 - [2025.08.28] 🎉 Released UltraRAG 2.0! UltraRAG 2.0 is fully upgraded: build high-performance RAG with just a few dozen lines of code, empowering researchers to focus on ideas and innovation!
 - [2025.01.23] UltraRAG Released! Enabling large models to better comprehend and utilize knowledge bases. The UltraRAG 1.0 code is still available at [v1](https://github.com/OpenBMB/UltraRAG/tree/v1).
 
@@ -250,6 +251,14 @@ You can contribute by following the standard process: **fork this repository, su
 ## Support Us
 
 If you find this repository helpful for your research, please consider giving us a ⭐ to show your support.
+
+<a href="https://star-history.com/#OpenBMB/UltraRAG&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=OpenBMB/UltraRAG&type=Date" />
+ </picture>
+</a>
 
 
 ## Contact Us
