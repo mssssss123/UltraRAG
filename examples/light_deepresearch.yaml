@@ -1,4 +1,4 @@
-# WebNote demo
+# light deepresearch demo
 
 # MCP Server
 servers:
@@ -11,8 +11,6 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-# Initialize Retrieval Service
-- retriever.retriever_tavily_search
 # generate plan
 - prompt.webnote_gen_plan
 - generation.generate:
