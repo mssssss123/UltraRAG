@@ -13,10 +13,6 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-# Initialize Retrieval Service
-- retriever.retriever_deploy_search
-# load dataset
-
 # generate plan
 - prompt.webnote_gen_plan
 - generation.generate:
