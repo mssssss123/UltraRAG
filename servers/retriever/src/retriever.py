@@ -29,10 +29,6 @@ class Retriever:
             output="embedding_path,overwrite,is_multimodal->None",
         )
         mcp_inst.tool(
-            self.retriever_embed_openai,
-            output="embedding_path,overwrite->None",
-        )
-        mcp_inst.tool(
             self.retriever_index,
             output="embedding_path,index_path,overwrite,index_chunk_size->None",
         )
@@ -83,8 +79,9 @@ class Retriever:
 
         self.faiss_use_gpu = faiss_use_gpu
         self.backend = backend.lower()
-        self.batch_size = batch_size
+        self.batch_size = int(batch_size)
 
+        self.cuda_devices = cuda_devices
         if cuda_devices is not None:
             if isinstance(cuda_devices, int):
                 cuda_devices = str(cuda_devices)
@@ -95,8 +92,10 @@ class Retriever:
             else:
                 raise TypeError("cuda_devices must be str | int | list[int|str] | tuple, e.g. '0', 0 or [0,1]")
             os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
+        
 
-        cfg = (backend_configs or {}).get(self.backend, {}) or {}
+        self.backend_configs = backend_configs or {}
+        cfg = self.backend_configs.get(self.backend, {}) or {}
         
         if self.backend == "infinity":
             try:
@@ -216,63 +215,122 @@ class Retriever:
 
         os.makedirs(output_dir, exist_ok=True)
 
-        async with self.model:
-            if is_multimodal:
-                from PIL import Image
+        if self.backend == "infinity":
+            async with self.model:
+                if is_multimodal:
+                    from PIL import Image
+                    images = []
+                    for i, p in enumerate(self.contents):
+                        try:
+                            with Image.open(p) as im:
+                                images.append(im.convert("RGB").copy())
+                        except Exception as e:
+                            err_msg = f"Failed to load image at index {i}: {p} ({e})"
+                            app.logger.error(err_msg)
+                            raise RuntimeError(err_msg)
+                    embeddings, usage = await self.model.image_embed(images=images)
+                else:
+                    embeddings, usage = await self.model.embed(sentences=self.contents)
+        
+        elif self.backend == "sentencetransformers":
+            import asyncio
+            from PIL import Image
 
-                images = []
-                for i, p in enumerate(self.contents):
-                    try:
-                        with Image.open(p) as im:
-                            images.append(im.convert("RGB").copy())
-                    except Exception as e:
-                        err_msg = f"Failed to load image at index {i}: {p} ({e})"
-                        app.logger.error(err_msg)
-                        raise RuntimeError(err_msg)
-                embeddings, usage = await self.model.image_embed(images=images)
+            device_param = self._to_st_device_list()  
+            st_embed_cfg = getattr(self, "backend_configs", {}).get("sentencetransformers_encode", {}) or {}
+            bs = int(getattr(self, "batch_size", 16))
+            normalize = bool(
+                st_embed_cfg.get("normalize_embeddings", False)
+            )
+
+            # 多卡且纯文本：用多进程池
+            if isinstance(device_param, list) and len(device_param) > 1 and not is_multimodal:
+                pool = self.model.start_multi_process_pool(target_devices=device_param)
+                try:
+                    def _encode_pool():
+                        return self.model.encode(
+                            self.contents,
+                            pool=pool,
+                            batch_size=bs,
+                            convert_to_numpy=True,
+                            normalize_embeddings=normalize,
+                        )
+                    embeddings = await asyncio.to_thread(_encode_pool)
+                finally:
+                    self.model.stop_multi_process_pool(pool)
+
             else:
-                embeddings, usage = await self.model.embed(sentences=self.contents)
+                # 单卡或多模态
+                def _encode_data():
+                    data = self.contents
+                    if is_multimodal:
+                        from PIL import Image
+                        imgs = []
+                        for i, p in enumerate(data):
+                            with Image.open(p) as im:
+                                imgs.append(im.convert("RGB").copy())
+                        data = imgs
+                    return self.model.encode(
+                        data,
+                        device=device_param,
+                        batch_size=bs,
+                        convert_to_numpy=True,
+                        normalize_embeddings=normalize,
+                    )
+                embeddings = await asyncio.to_thread(_encode_data)
 
-        embeddings = np.array(embeddings, dtype=np.float16)
-        np.save(embedding_path, embeddings)
-        app.logger.info("embedding success")
 
-    async def retriever_embed_openai(
-        self,
-        embedding_path: Optional[str] = None,
-        overwrite: bool = False,
-    ):
-        if embedding_path is not None:
-            if not embedding_path.endswith(".npy"):
-                err_msg = f"Embedding save path must end with .npy, now the path is {embedding_path}"
-                app.logger.error(err_msg)
-                raise ValidationError(err_msg)
-            output_dir = os.path.dirname(embedding_path)
+        elif self.backend == "openai":
+            if is_multimodal:
+                raise ValueError("openai backend does not support image embeddings in this path.")
+
+            bs = max(1, int(getattr(self, "batch_size", 16)))
+            chunks = [self.contents[i:i+bs] for i in range(0, len(self.contents), bs)]
+            semaphore = asyncio.Semaphore(5)  # 允许最多 5 个并发请求
+
+            async def fetch_embed(chunk):
+                async with semaphore:
+                    resp = await self.model.embeddings.create(
+                        model=self.openai_model,
+                        input=chunk,
+                    )
+                    return [d.embedding for d in resp.data]
+
+            results = await asyncio.gather(*(fetch_embed(c) for c in chunks))
+            embeddings = [emb for batch in results for emb in batch]
+
         else:
-            current_file = os.path.abspath(__file__)
-            project_root = os.path.dirname(os.path.dirname(current_file))
-            output_dir = os.path.join(project_root, "output", "embedding")
-            embedding_path = os.path.join(output_dir, "embedding.npy")
+            raise ValueError(f"Unsupported backend: {self.backend}")
 
-        if not overwrite and os.path.exists(embedding_path):
-            app.logger.info("embedding already exists, skipping")
-
-        os.makedirs(output_dir, exist_ok=True)
-
-        async def openai_embed(texts):
-            embeddings = []
-            for text in texts:
-                response = await self.client.embeddings.create(
-                    input=text, model=self.openai_model
-                )
-                embeddings.append(response.data[0].embedding)
-            return embeddings
-
-        embeddings = await openai_embed(self.contents)
-
-        embeddings = np.array(embeddings, dtype=np.float16)
+        embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
         app.logger.info("embedding success")
+
+    def _to_st_device_list(self) -> str | list[str]:
+        """
+        将 self.cuda_devices 转换为 SentenceTransformer.encode() 支持的 device 格式。
+        - None         -> "cuda" (或 "cpu")
+        - int / "0"    -> "cuda:0"
+        - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
+        - 注意: 如果设置了 CUDA_VISIBLE_DEVICES="2,3"，进程内设备会重新映射为 0/1
+        """
+        cd = getattr(self, "cuda_devices", None)
+        if cd is None:
+            import torch
+            return "cuda" if torch.cuda.is_available() else "cpu"
+
+        if isinstance(cd, int):
+            return f"cuda:{cd}"
+
+        if isinstance(cd, str):
+            parts = [p.strip() for p in cd.split(",") if p.strip()]
+            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
+
+        if isinstance(cd, (list, tuple)):
+            parts = [str(p).strip() for p in cd if str(p).strip()]
+            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
+
+        raise TypeError("cuda_devices must be None, int, str, or list[int|str]")
 
     def retriever_index(
         self,
@@ -281,15 +339,7 @@ class Retriever:
         overwrite: bool = False,
         index_chunk_size: int = 50000,
     ):
-        """
-        Build a Faiss index from an embedding matrix.
 
-        Args:
-            embedding_path (str): .npy file of shape (N, dim), dtype float32.
-            index_path (str, optional): where to save .index file.
-            overwrite (bool): overwrite existing index.
-            index_chunk_size (int): batch size for add_with_ids.
-        """
         try:
             import faiss
         except ImportError:

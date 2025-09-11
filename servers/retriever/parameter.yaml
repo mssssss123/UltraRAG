@@ -18,8 +18,10 @@ backend_configs:
     trust_remote_code: true
   openai:
     openai_model: text-embedding-3-small
-    api_base: ""
+    api_base: "https://api.openai.com/v1"
     api_key: ""
+  sentencetransformers_encode:
+    normalize_embeddings: false
 
 batch_size: 16
 top_k: 5
