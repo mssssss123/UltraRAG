@@ -1,10 +1,7 @@
 import asyncio
-import ctypes
 import logging
 import os
-import signal
 import socket
-import subprocess
 import time
 from typing import Any, Dict, List, Union, Optional
 import mimetypes
@@ -17,8 +14,9 @@ import base64
 
 from fastmcp.exceptions import ToolError
 from ultrarag.server import UltraRAG_MCP_Server
+from ultrarag.utils import popen_follow_parent
 
-libc = ctypes.CDLL(None)
+
 app = UltraRAG_MCP_Server("generation")
 httpx_logger.setLevel(logging.WARNING)
 
@@ -26,10 +24,6 @@ httpx_logger.setLevel(logging.WARNING)
 def _is_port_in_use(port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(("localhost", port)) == 0
-
-
-def _set_pdeathsig():
-    libc.prctl(1, signal.SIGTERM)
 
 
 def _wait_for_vllm_ready(base_url: str, timeout: int, api_key: str):
@@ -87,7 +81,7 @@ def initialize_local_vllm(
     env["CUDA_VISIBLE_DEVICES"] = gpu_ids
 
     app.logger.info(f"Starting vLLM model on GPU(s): {gpu_ids}")
-    subprocess.Popen(command, env=env, preexec_fn=_set_pdeathsig)
+    popen_follow_parent(command, env=env)
 
     base_url = f"http://localhost:{port}/v1"
     timeout = 999
@@ -96,15 +90,22 @@ def initialize_local_vllm(
     return {"base_url": base_url}
 
 
-@app.tool(output="prompt_ls,model_name,base_url,sampling_params->ans_ls")
+@app.tool(output="prompt_ls,model_name,base_url,sampling_params,api_key->ans_ls")
 async def generate(
     prompt_ls: List[Union[str, Dict[str, Any]]],
     model_name: str,
     base_url: str,
     sampling_params: Dict[str, Any],
+    api_key: str = "EMPTY",
 ) -> Dict[str, List[str]]:
-    api_key = os.environ.get("LLM_API_KEY", "")
-    client = AsyncOpenAI(base_url=base_url, api_key=api_key if api_key else "EMPTY")
+
+    api_key = (
+        api_key
+        if api_key and api_key != "EMPTY"
+        else os.environ.get("LLM_API_KEY", "EMPTY")
+    )
+
+    client = AsyncOpenAI(base_url=base_url, api_key=api_key)
 
     prompts = []
     for m in prompt_ls:
@@ -117,7 +118,7 @@ async def generate(
         else:
             raise ValueError(f"Unsupported message format: {m}")
 
-    sem = asyncio.Semaphore(16)
+    sem = asyncio.Semaphore(8)
 
     async def call_with_retry(idx: int, prompt: str, retries=3, delay=1):
         msg = [{"role": "user", "content": prompt}]
@@ -152,16 +153,25 @@ async def generate(
     return {"ans_ls": ret}
 
 
-@app.tool(output="prompt_ls,model_name,base_url,sampling_params,ret_path->ans_ls")
+@app.tool(
+    output="prompt_ls,model_name,base_url,sampling_params,ret_path,api_key->ans_ls"
+)
 async def multimodal_generate(
     prompt_ls: List[Union[str, Dict[str, Any]]],
     model_name: str,
     base_url: str,
     sampling_params: Dict[str, Any],
     ret_path: List[List[str]],
+    api_key: str = "EMPTY",
 ) -> Dict[str, List[str]]:
-    api_key = os.environ.get("LLM_API_KEY", "")
-    client = AsyncOpenAI(base_url=base_url, api_key=api_key if api_key else "EMPTY")
+
+    api_key = (
+        api_key
+        if api_key and api_key != "EMPTY"
+        else os.environ.get("LLM_API_KEY", "EMPTY")
+    )
+
+    client = AsyncOpenAI(base_url=base_url, api_key=api_key)
 
     prompts = []
     for m in prompt_ls:
@@ -174,14 +184,14 @@ async def multimodal_generate(
         else:
             raise ValueError(f"Unsupported message format: {m}")
 
-    sem = asyncio.Semaphore(16)
+    sem = asyncio.Semaphore(8)
 
     def to_data_url(path_or_url: str) -> str:
         s = str(path_or_url).strip()
-        # 已是远程或 data URL，直接返回
+
         if s.startswith(("http://", "https://", "data:image/")):
             return s
-        # 本地文件：先校验存在再转 base64
+
         if not os.path.isfile(s):
             raise FileNotFoundError(f"image not found: {s}")
         mime, _ = mimetypes.guess_type(s)

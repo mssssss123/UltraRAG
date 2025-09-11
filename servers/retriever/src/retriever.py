@@ -28,7 +28,7 @@ class Retriever:
         )
         mcp_inst.tool(
             self.retriever_init_openai,
-            output="corpus_path,openai_model,api_base,api_key->None",
+            output="corpus_path,openai_model,api_base,api_key,faiss_use_gpu,index_path,cuda_devices->None",
         )
         mcp_inst.tool(
             self.retriever_embed,
@@ -162,14 +162,59 @@ class Retriever:
         corpus_path: str,
         openai_model: str,
         api_base: str,
-        api_key: str,
+        api_key: str = None,
+        faiss_use_gpu: bool = False,
+        index_path: Optional[str] = None,
+        cuda_devices: Optional[str] = None,
     ):
+        try:
+            import faiss
+        except ImportError:
+            err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
+            app.logger.error(err_msg)
+            raise ImportError(err_msg)
+
         if not openai_model:
             raise ValueError("openai_model must be provided.")
         if not api_base or not isinstance(api_base, str):
             raise ValueError("api_base must be a non-empty string.")
+
+        api_key = os.environ.get("RETRIEVER_API_KEY") or api_key
+
         if not api_key or not isinstance(api_key, str):
             raise ValueError("api_key must be a non-empty string.")
+
+        self.faiss_use_gpu = faiss_use_gpu
+        if cuda_devices is not None:
+            assert isinstance(cuda_devices, str), "cuda_devices should be a string"
+            os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
+
+        self.faiss_index = None
+        if index_path is not None and os.path.exists(index_path):
+            cpu_index = faiss.read_index(index_path)
+
+            if self.faiss_use_gpu:
+                co = faiss.GpuMultipleClonerOptions()
+                co.shard = True
+                co.useFloat16 = True
+                try:
+                    self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
+                    app.logger.info(f"Loaded index to GPU(s).")
+                except RuntimeError as e:
+                    app.logger.error(
+                        f"GPU index load failed: {e}. Falling back to CPU."
+                    )
+                    self.faiss_use_gpu = False
+                    self.faiss_index = cpu_index
+            else:
+                self.faiss_index = cpu_index
+                app.logger.info("Loaded index on CPU.")
+
+            app.logger.info(f"Retriever index path has already been built")
+        else:
+            app.logger.warning(f"Cannot find path: {index_path}")
+            self.faiss_index = None
+            app.logger.info(f"Retriever initialized")
 
         self.contents = []
         with jsonlines.open(corpus_path, mode="r") as reader:
