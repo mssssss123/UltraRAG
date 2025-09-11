@@ -1,34 +1,32 @@
 # servers/retriever/parameter.yaml
 
-retriever_path: openbmb/MiniCPM-Embedding-Light
+model_name_or_path: openbmb/MiniCPM-Embedding-Light
 corpus_path: data/corpus_example.jsonl
-is_multimodal: false
 embedding_path: embedding/embedding.npy
 index_path: index/index.index
 
-# infinify_emb config
-infinity_kwargs:
-  bettertransformer: false
-  pooling_method: auto
-  device: cuda
-  batch_size: 16
-  model_warmup: false
+backend: infinity # options: infinity, sentencetransformers, openai
+backend_configs:
+  infinity:
+    bettertransformer: false
+    pooling_method: auto
+    device: cuda
+    model_warmup: false
+    trust_remote_code: true
+  sentencetransformers:
+    device: cuda
+    trust_remote_code: true
+  openai:
+    openai_model: text-embedding-3-small
+    api_base: ""
+    api_key: ""
 
+batch_size: 16
+top_k: 5
 cuda_devices: "2,3"
 query_instruction: "Query: "
+is_multimodal: false
 faiss_use_gpu: True
-top_k: 5
 overwrite: false
 retriever_url: http://localhost:8080
 index_chunk_size: 50000
-
-# OpenAI API configuration (if used)
-use_openai: false
-openai_model: "text-embedding-3-small"
-api_base: ""
-api_key: ""
-
-# LanceDB configuration (if used)
-lancedb_path: "lancedb/"
-table_name: "vector_index"
-filter_expr: null
