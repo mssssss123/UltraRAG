@@ -254,35 +254,39 @@ class Retriever:
             normalize = bool(
                 st_embed_cfg.get("normalize_embeddings", False)
             )
+            csz = int(st_embed_cfg.get("chunk_size", 10000))
 
-            # 多卡 + 纯文本：多进程池（不再手动外层切片）
             if isinstance(device_param, list) and len(device_param) > 1 and not is_multimodal:
-                os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
-                # 依赖 CUDA_VISIBLE_DEVICES；不传 target_devices，内部自动用所有可见 GPU
-                pool = self.model.start_multi_process_pool()
+                pool = self.model.start_multi_process_pool(target_devices=device_param)
                 try:
                     def _encode_all():
-                        return self.model.encode(
-                            self.contents,
-                            pool=pool,
-                            batch_size=bs,
-                            convert_to_numpy=True,
-                            normalize_embeddings=normalize,
-                            task="retrieval",          # 新模型/Jina 需要；老模型会忽略
-                            show_progress_bar=True,
-                            chunk_size=10000,
-                        )
+                        try:
+                            return self.model.encode_document(
+                                self.contents,
+                                pool=pool,
+                                batch_size=bs,
+                                chunk_size=csz,             
+                                show_progress_bar=True,
+                                normalize_embeddings=normalize,
+                                precision="float32",         
+                            )
+                        except AttributeError:
+                            return self.model.encode(
+                                self.contents,
+                                pool=pool,
+                                batch_size=bs,
+                                chunk_size=csz,
+                                show_progress_bar=True,
+                                normalize_embeddings=normalize,
+                                precision="float32",
+                            )
                     embeddings = await asyncio.to_thread(_encode_all)
-                    embeddings = embeddings.astype(np.float32, copy=False)
                 finally:
                     self.model.stop_multi_process_pool(pool)
 
             else:
-                # 单卡或多模态
                 def _encode_data():
                     data = self.contents
-
-                    # 如果用户传入了多卡设备，则只用第一张卡并给出提示
                     dev_param = device_param
                     if isinstance(device_param, list) and len(device_param) > 1:
                         app.logger.warning(
@@ -291,24 +295,41 @@ class Retriever:
                             f"Using the first device: {device_param[0]}"
                         )
                         dev_param = device_param[0]
-
                     if is_multimodal:
                         from PIL import Image
                         imgs = []
                         for i, p in enumerate(data):
                             with Image.open(p) as im:
                                 imgs.append(im.convert("RGB").copy())
-                        data = imgs
-                    
-                    return self.model.encode(
-                        data,
-                        device=dev_param,
-                        batch_size=bs,
-                        convert_to_numpy=True,
-                        normalize_embeddings=normalize,
-                        task="retrieval",
-                        show_progress_bar=True,
-                    )
+                        return self.model.encode(
+                            imgs,
+                            device=dev_param,
+                            batch_size=bs,
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",
+                            task="retrieval",   
+                        )
+                    else:
+                        try:
+                            return self.model.encode_document(
+                                data,
+                                device=dev_param,
+                                batch_size=bs,
+                                show_progress_bar=True,
+                                normalize_embeddings=normalize,
+                                precision="float32",
+                                task="retrieval",
+                            )
+                        except AttributeError:
+                            return self.model.encode(
+                                data,
+                                device=dev_param,
+                                batch_size=bs,
+                                show_progress_bar=True,
+                                normalize_embeddings=normalize,
+                                precision="float32",
+                            )
                 embeddings = await asyncio.to_thread(_encode_data)
 
 
@@ -317,19 +338,17 @@ class Retriever:
                 raise ValueError("openai backend does not support image embeddings in this path.")
 
             bs = max(1, int(getattr(self, "batch_size", 16)))
-            chunks = [self.contents[i:i+bs] for i in range(0, len(self.contents), bs)]
-            semaphore = asyncio.Semaphore(5)  # 允许最多 5 个并发请求
 
-            async def fetch_embed(chunk):
-                async with semaphore:
+            embeddings: list = []
+            with tqdm(total=len(self.contents), desc="OpenAI Embedding", unit="item") as pbar:
+                for start in range(0, len(self.contents), bs):
+                    chunk = self.contents[start:start + bs]
                     resp = await self.model.embeddings.create(
                         model=self.openai_model,
                         input=chunk,
                     )
-                    return [d.embedding for d in resp.data]
-
-            results = await asyncio.gather(*(fetch_embed(c) for c in chunks))
-            embeddings = [emb for batch in results for emb in batch]
+                    embeddings.extend([d.embedding for d in resp.data])
+                    pbar.update(len(chunk))
 
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
@@ -340,11 +359,11 @@ class Retriever:
 
     def _to_st_device_list(self) -> str | list[str]:
         """
-        将 self.cuda_devices 转换为 SentenceTransformer.encode() 支持的 device 格式。
+        Convert self.cuda_devices to SentenceTransformers device format:
         - None         -> "cuda" (或 "cpu")
         - int / "0"    -> "cuda:0"
         - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
-        - 注意: 如果设置了 CUDA_VISIBLE_DEVICES="2,3"，进程内设备会重新映射为 0/1
+        - CUDA_VISIBLE_DEVICES="2,3" -> 0/1
         """
         cd = getattr(self, "cuda_devices", None)
         if cd is None:
