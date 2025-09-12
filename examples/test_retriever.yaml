@@ -5,3 +5,4 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - retriever.retriever_init
+- retriever.retriever_embed

@@ -219,18 +219,30 @@ class Retriever:
             async with self.model:
                 if is_multimodal:
                     from PIL import Image
-                    images = []
+                    data = []
                     for i, p in enumerate(self.contents):
                         try:
                             with Image.open(p) as im:
-                                images.append(im.convert("RGB").copy())
+                                data.append(im.convert("RGB").copy())
                         except Exception as e:
                             err_msg = f"Failed to load image at index {i}: {p} ({e})"
                             app.logger.error(err_msg)
                             raise RuntimeError(err_msg)
-                    embeddings, usage = await self.model.image_embed(images=images)
+                    call = self.model.image_embed
                 else:
-                    embeddings, usage = await self.model.embed(sentences=self.contents)
+                    data = self.contents
+                    call = self.model.embed
+                
+                bs = max(1, int(getattr(self, "batch_size", 16)))
+                n = len(data)
+                pbar = tqdm(total=n, desc="Embedding (Infinity)")
+                embeddings = []
+                for i in range(0, n, bs):
+                    chunk = data[i:i+bs]
+                    vecs, _usage = await call(images=chunk) if is_multimodal else await call(sentences=chunk)
+                    embeddings.extend(vecs)
+                    pbar.update(len(chunk))
+                pbar.close()
         
         elif self.backend == "sentencetransformers":
             import asyncio
@@ -243,19 +255,25 @@ class Retriever:
                 st_embed_cfg.get("normalize_embeddings", False)
             )
 
-            # 多卡且纯文本：用多进程池
+            # 多卡 + 纯文本：多进程池（不再手动外层切片）
             if isinstance(device_param, list) and len(device_param) > 1 and not is_multimodal:
-                pool = self.model.start_multi_process_pool(target_devices=device_param)
+                os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+                # 依赖 CUDA_VISIBLE_DEVICES；不传 target_devices，内部自动用所有可见 GPU
+                pool = self.model.start_multi_process_pool()
                 try:
-                    def _encode_pool():
+                    def _encode_all():
                         return self.model.encode(
                             self.contents,
                             pool=pool,
                             batch_size=bs,
                             convert_to_numpy=True,
                             normalize_embeddings=normalize,
+                            task="retrieval",          # 新模型/Jina 需要；老模型会忽略
+                            show_progress_bar=True,
+                            chunk_size=10000,
                         )
-                    embeddings = await asyncio.to_thread(_encode_pool)
+                    embeddings = await asyncio.to_thread(_encode_all)
+                    embeddings = embeddings.astype(np.float32, copy=False)
                 finally:
                     self.model.stop_multi_process_pool(pool)
 
@@ -263,6 +281,17 @@ class Retriever:
                 # 单卡或多模态
                 def _encode_data():
                     data = self.contents
+
+                    # 如果用户传入了多卡设备，则只用第一张卡并给出提示
+                    dev_param = device_param
+                    if isinstance(device_param, list) and len(device_param) > 1:
+                        app.logger.warning(
+                            "SentenceTransformers encode: multiple devices were specified "
+                            f"({device_param}), but this branch only supports a single device. "
+                            f"Using the first device: {device_param[0]}"
+                        )
+                        dev_param = device_param[0]
+
                     if is_multimodal:
                         from PIL import Image
                         imgs = []
@@ -270,12 +299,15 @@ class Retriever:
                             with Image.open(p) as im:
                                 imgs.append(im.convert("RGB").copy())
                         data = imgs
+                    
                     return self.model.encode(
                         data,
-                        device=device_param,
+                        device=dev_param,
                         batch_size=bs,
                         convert_to_numpy=True,
                         normalize_embeddings=normalize,
+                        task="retrieval",
+                        show_progress_bar=True,
                     )
                 embeddings = await asyncio.to_thread(_encode_data)
 
