@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from flask import Flask, jsonify, request
+from PIL import Image
 
 from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
 from ultrarag.server import UltraRAG_MCP_Server
@@ -34,7 +35,7 @@ class Retriever:
         )
         mcp_inst.tool(
             self.retriever_search,
-            output="q_ls,top_k,query_instruction,use_openai->ret_psg",
+            output="q_ls,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
             self.retriever_search_colbert_maxsim,
@@ -218,7 +219,6 @@ class Retriever:
         if self.backend == "infinity":
             async with self.model:
                 if is_multimodal:
-                    from PIL import Image
                     data = []
                     for i, p in enumerate(self.contents):
                         try:
@@ -245,31 +245,7 @@ class Retriever:
                 pbar.close()
         
         elif self.backend == "sentencetransformers":
-            import asyncio
-            from PIL import Image
-
-            def _to_st_device_list(cd) -> str | list[str]:
-                """
-                Convert cuda_devices to SentenceTransformers device format:
-                - None         -> "cuda" (or "cpu")
-                - int / "0"    -> "cuda:0"
-                - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
-                - If CUDA_VISIBLE_DEVICES="2,3", local process sees GPUs as 0/1
-                """
-                import torch
-                if cd is None:
-                    return "cuda" if torch.cuda.is_available() else "cpu"
-                if isinstance(cd, int):
-                    return f"cuda:{cd}"
-                if isinstance(cd, str):
-                    parts = [p.strip() for p in cd.split(",") if p.strip()]
-                    return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
-                if isinstance(cd, (list, tuple)):
-                    parts = [str(p).strip() for p in cd if str(p).strip()]
-                    return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
-                raise TypeError("cuda_devices must be None, int, str, or list[int|str]")
-
-            device_param = _to_st_device_list(getattr(self, "cuda_devices", None))
+            device_param = self._to_st_device_list()  
             st_embed_cfg = getattr(self, "backend_configs", {}).get("sentencetransformers_encode", {}) or {}
             bs = int(getattr(self, "batch_size", 16))
             normalize = bool(
@@ -278,7 +254,7 @@ class Retriever:
             csz = int(st_embed_cfg.get("chunk_size", 10000))
 
             if isinstance(device_param, list) and len(device_param) > 1 and not is_multimodal:
-                pool = self.model.start_multi_process_pool(target_devices=device_param)
+                pool = self.model.start_multi_process_pool()
                 try:
                     def _encode_all():
                         try:
@@ -300,13 +276,14 @@ class Retriever:
                                 show_progress_bar=True,
                                 normalize_embeddings=normalize,
                                 precision="float32",
+                                task="document",
                             )
                     embeddings = await asyncio.to_thread(_encode_all)
                 finally:
                     self.model.stop_multi_process_pool(pool)
 
             else:
-                def _encode_data():
+                def _encode_single():
                     data = self.contents
                     dev_param = device_param
                     if isinstance(device_param, list) and len(device_param) > 1:
@@ -317,7 +294,6 @@ class Retriever:
                         )
                         dev_param = device_param[0]
                     if is_multimodal:
-                        from PIL import Image
                         imgs = []
                         for i, p in enumerate(data):
                             with Image.open(p) as im:
@@ -329,7 +305,7 @@ class Retriever:
                             show_progress_bar=True,
                             normalize_embeddings=normalize,
                             precision="float32",
-                            task="retrieval",   
+                            task="document",  
                         )
                     else:
                         try:
@@ -340,7 +316,6 @@ class Retriever:
                                 show_progress_bar=True,
                                 normalize_embeddings=normalize,
                                 precision="float32",
-                                task="retrieval",
                             )
                         except AttributeError:
                             return self.model.encode(
@@ -350,8 +325,9 @@ class Retriever:
                                 show_progress_bar=True,
                                 normalize_embeddings=normalize,
                                 precision="float32",
+                                task="document",
                             )
-                embeddings = await asyncio.to_thread(_encode_data)
+                embeddings = await asyncio.to_thread(_encode_single)
 
 
         elif self.backend == "openai":
@@ -377,7 +353,35 @@ class Retriever:
         embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
         app.logger.info("embedding success")
+    
+    def _to_st_device_list(self) -> str | list[str]:
+        """
+        Convert cuda_devices to SentenceTransformers device format:
+        - None         -> "cuda" (or "cpu")
+        - int / "0"    -> "cuda:0"
+        - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
+        - If CUDA_VISIBLE_DEVICES="2,3", local process sees GPUs as 0/1
+        """
 
+        cd = getattr(self, "cuda_devices", None)
+        if cd is None:
+            import torch
+            return "cuda" if torch.cuda.is_available() else "cpu"
+
+        if isinstance(cd, int):
+            return f"cuda:{cd}"
+
+        if isinstance(cd, str):
+            parts = [p.strip() for p in cd.split(",") if p.strip()]
+            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
+
+        if isinstance(cd, (list, tuple)):
+            parts = [str(p).strip() for p in cd if str(p).strip()]
+            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
+
+        raise TypeError("cuda_devices must be None, int, str, or list[int|str]")
+    
+    
     def retriever_index(
         self,
         embedding_path: str,
@@ -459,36 +463,91 @@ class Retriever:
 
         app.logger.info("Indexing success")
 
-
-
     async def retriever_search(
         self,
         query_list: List[str],
         top_k: int = 5,
         query_instruction: str = "",
-        use_openai: bool = False,
     ) -> Dict[str, List[List[str]]]:
 
         if isinstance(query_list, str):
             query_list = [query_list]
         queries = [f"{query_instruction}{query}" for query in query_list]
 
-        if use_openai:
-
-            async def openai_embed(texts):
-                embeddings = []
-                for text in texts:
-                    response = await self.client.embeddings.create(
-                        input=text, model=self.openai_model
-                    )
-                    embeddings.append(response.data[0].embedding)
-                return embeddings
-
-            query_embedding = await openai_embed(queries)
-        else:
+        if self.backend == "infinity":
             async with self.model:
                 query_embedding, usage = await self.model.embed(sentences=queries)
-        query_embedding = np.array(query_embedding, dtype=np.float16)
+        elif self.backend == "sentencetransformers":
+            device_param = self._to_st_device_list()  
+            st_embed_cfg = getattr(self, "backend_configs", {}).get("sentencetransformers_encode", {}) or {}
+            bs = int(getattr(self, "batch_size", 16))
+            normalize = bool(
+                st_embed_cfg.get("normalize_embeddings", False)
+            )
+            if isinstance(device_param, list) and len(device_param) > 1:
+                pool = self.model.start_multi_process_pool()
+                try:
+                    def _encode_all():
+                        try:
+                            return self.model.encode_query(
+                                queries,
+                                pool=pool,
+                                batch_size=bs,            
+                                show_progress_bar=True,
+                                normalize_embeddings=normalize,
+                                precision="float32",         
+                            )
+                        except AttributeError:
+                            return self.model.encode(
+                                queries,
+                                pool=pool,
+                                batch_size=bs,            
+                                show_progress_bar=True,
+                                normalize_embeddings=normalize,
+                                precision="float32", 
+                                task="query",
+                            )
+                    query_embedding = await asyncio.to_thread(_encode_all)
+                finally:
+                    self.model.stop_multi_process_pool(pool)
+            else:
+                def _encode_single():
+                    try:
+                        return self.model.encode_query(
+                            queries,
+                            device=device_param,
+                            batch_size=bs,            
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",      
+                        )
+                    except AttributeError:
+                        return self.model.encode(
+                            queries,
+                            device=device_param,
+                            batch_size=bs,            
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",   
+                            task="query",
+                        )
+
+                query_embedding = await asyncio.to_thread(_encode_single)
+       
+        elif self.backend == "openai":
+            # OpenAI：按 batch 顺序请求（你前面 embed 的写法一致）
+            bs = max(1, int(getattr(self, "batch_size", 16)))
+            query_embedding = []
+            for i in tqdm(range(0, len(queries), bs), desc="Embedding (OpenAI: query)", unit="batch"):
+                chunk = queries[i:i + bs]
+                resp = await self.model.embeddings.create(model=self.openai_model, input=chunk)
+                query_embedding.extend([d.embedding for d in resp.data])
+
+        else:
+            raise ValueError(f"Unsupported backend: {self.backend}")
+        
+        
+        query_embedding = np.array(query_embedding, dtype=np.float32)
         app.logger.info("query embedding finish")
 
         scores, ids = self.faiss_index.search(query_embedding, top_k)
@@ -498,7 +557,7 @@ class Retriever:
             for _, id in enumerate(ids[i]):
                 cur_ret.append(self.contents[id])
             rets.append(cur_ret)
-        app.logger.debug(f"ret_psg: {rets}")
+
         return {"ret_psg": rets}
 
     async def retriever_search_colbert_maxsim(
