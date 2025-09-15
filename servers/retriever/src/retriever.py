@@ -252,9 +252,7 @@ class Retriever:
                 st_embed_cfg.get("normalize_embeddings", False)
             )
             csz = int(st_embed_cfg.get("chunk_size", 10000))
-
-            if not hasattr(self.model, "encode_document"):
-                raise RuntimeError("SentenceTransformers >=5.x required: encode_document not found.")
+            document_task = st_embed_cfg.get("document_task", None)
 
             if is_multimodal:
                 data = []
@@ -264,62 +262,34 @@ class Retriever:
             else:
                 data = self.contents
 
-
             if isinstance(device_param, list) and len(device_param) > 1:
                 pool = self.model.start_multi_process_pool()
                 try:
                     def _encode_all():
-                        try:
-                            return self.model.encode_document(
-                                data,
-                                pool=pool,
-                                batch_size=bs,
-                                chunk_size=csz,
-                                show_progress_bar=True,
-                                normalize_embeddings=normalize,
-                                precision="float32",
-                            )
-                        except (AttributeError, ValueError):
-                            app.logger.warning(
-                                "encode_document failed, fallback to encode(task='retrieval')"
-                            )
-                            return self.model.encode(
-                                data,
-                                pool=pool,
-                                batch_size=bs,
-                                chunk_size=csz,
-                                show_progress_bar=True,
-                                normalize_embeddings=normalize,
-                                precision="float32",
-                                task="retrieval",
-                            )
+                        return self.model.encode(
+                            data,
+                            pool=pool,
+                            batch_size=bs,
+                            chunk_size=csz,
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",
+                            task=document_task,
+                        )
                     embeddings = await asyncio.to_thread(_encode_all)
                 finally:
                     self.model.stop_multi_process_pool(pool)
             else:
                 def _encode_single():
-                    try:
-                        return self.model.encode_document(
-                            data,
-                            device=device_param,
-                            batch_size=bs,
-                            show_progress_bar=True,
-                            normalize_embeddings=normalize,
-                            precision="float32",
-                        )
-                    except (AttributeError, ValueError):
-                        app.logger.warning(
-                            "encode_document failed, fallback to encode(task='retrieval')"
-                        )
-                        return self.model.encode(
-                            data,
-                            device=device_param,
-                            batch_size=bs,
-                            show_progress_bar=True,
-                            normalize_embeddings=normalize,
-                            precision="float32",
-                            task="retrieval",
-                        )
+                    return self.model.encode(
+                        data,
+                        device=device_param,
+                        batch_size=bs,
+                        show_progress_bar=True,
+                        normalize_embeddings=normalize,
+                        precision="float32",
+                        task=document_task,
+                    )
                 embeddings = await asyncio.to_thread(_encode_single)
 
 
@@ -477,90 +447,35 @@ class Retriever:
             normalize = bool(
                 st_embed_cfg.get("normalize_embeddings", False)
             )
-
-            if not hasattr(self.model, "encode_query"):
-                raise RuntimeError("SentenceTransformers >=5.x required: encode_query not found.")
-
-            # if isinstance(device_param, list) and len(device_param) > 1:
-            #     pool = self.model.start_multi_process_pool()
-            #     try:
-            #         def _encode_all():
-            #             return self.model.encode_query(
-            #                 queries,
-            #                 pool=pool,
-            #                 batch_size=bs,            
-            #                 show_progress_bar=True,
-            #                 normalize_embeddings=normalize,
-            #                 precision="float32",         
-            #             )
-            #         query_embedding = await asyncio.to_thread(_encode_all)
-            #     finally:
-            #         self.model.stop_multi_process_pool(pool)
-            # else:
-            #     def _encode_single():
-            #         return self.model.encode_query(
-            #             queries,
-            #             device=device_param,
-            #             batch_size=bs,            
-            #             show_progress_bar=True,
-            #             normalize_embeddings=normalize,
-            #             precision="float32",      
-            #         )
-            #     query_embedding = await asyncio.to_thread(_encode_single)
+            query_task = st_embed_cfg.get("query_task", None)
 
             if isinstance(device_param, list) and len(device_param) > 1:
                 pool = self.model.start_multi_process_pool()
                 try:
                     def _encode_all():
-                        try:
-                            return self.model.encode_query(
-                                queries,
-                                pool=pool,
-                                batch_size=bs,
-                                show_progress_bar=True,
-                                normalize_embeddings=normalize,
-                                precision="float32",
-                            )
-                        except (AttributeError, ValueError) as e:
-                            app.logger.warning(
-                                f"encode_query failed ({e}); fallback to encode(task='retrieval')"
-                            )
-                            return self.model.encode(
-                                queries,
-                                pool=pool,
-                                batch_size=bs,
-                                show_progress_bar=True,
-                                normalize_embeddings=normalize,
-                                precision="float32",
-                                task="retrieval",  
-                            )
+                        return self.model.encode(
+                            queries,
+                            pool=pool,
+                            batch_size=bs,
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",
+                            task=query_task,  
+                        )
                     query_embedding = await asyncio.to_thread(_encode_all)
                 finally:
                     self.model.stop_multi_process_pool(pool)
             else:
                 def _encode_single():
-                    try:
-                        return self.model.encode_query(
-                            queries,
-                            device=device_param,
-                            batch_size=bs,
-                            show_progress_bar=True,
-                            normalize_embeddings=normalize,
-                            precision="float32",
-                        )
-                    except (AttributeError, ValueError) as e:
-                        app.logger.warning(
-                            f"encode_query failed ({e}); fallback to encode(task='retrieval')"
-                        )
-                        return self.model.encode(
-                            queries,
-                            device=device_param,
-                            batch_size=bs,
-                            show_progress_bar=True,
-                            normalize_embeddings=normalize,
-                            precision="float32",
-                            task="retrieval",
-                        )
+                    return self.model.encode(
+                        queries,
+                        device=device_param,
+                        batch_size=bs,
+                        show_progress_bar=True,
+                        normalize_embeddings=normalize,
+                        precision="float32",
+                        task=query_task,
+                    )
                 query_embedding = await asyncio.to_thread(_encode_single)
        
         elif self.backend == "openai":
@@ -676,6 +591,8 @@ class Retriever:
         self,
         retriever_url: str,
     ):
+        if getattr(self, "backend", None) != "infinity":
+            raise ValueError("retriever_deploy_service is only supported when backend='infinity'")
         # Ensure URL is valid, adding "http://" prefix if necessary
         retriever_url = retriever_url.strip()
         if not retriever_url.startswith("http://") and not retriever_url.startswith(

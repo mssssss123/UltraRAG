@@ -23,6 +23,11 @@ backend_configs:
   sentencetransformers_encode:
     normalize_embeddings: false
     chunk_size: 10000
+    # Optional: specify different tasks for query and document encoding
+    # jina-embeddings-v4 needs both tasks to be set 'retrieval'
+    # some may need to be None
+    query_task: query
+    document_task: document
 
 batch_size: 16
 top_k: 5
