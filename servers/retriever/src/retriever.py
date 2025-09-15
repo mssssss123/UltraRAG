@@ -248,7 +248,28 @@ class Retriever:
             import asyncio
             from PIL import Image
 
-            device_param = self._to_st_device_list()  
+            def _to_st_device_list(cd) -> str | list[str]:
+                """
+                Convert cuda_devices to SentenceTransformers device format:
+                - None         -> "cuda" (or "cpu")
+                - int / "0"    -> "cuda:0"
+                - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
+                - If CUDA_VISIBLE_DEVICES="2,3", local process sees GPUs as 0/1
+                """
+                import torch
+                if cd is None:
+                    return "cuda" if torch.cuda.is_available() else "cpu"
+                if isinstance(cd, int):
+                    return f"cuda:{cd}"
+                if isinstance(cd, str):
+                    parts = [p.strip() for p in cd.split(",") if p.strip()]
+                    return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
+                if isinstance(cd, (list, tuple)):
+                    parts = [str(p).strip() for p in cd if str(p).strip()]
+                    return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
+                raise TypeError("cuda_devices must be None, int, str, or list[int|str]")
+
+            device_param = _to_st_device_list(getattr(self, "cuda_devices", None))
             st_embed_cfg = getattr(self, "backend_configs", {}).get("sentencetransformers_encode", {}) or {}
             bs = int(getattr(self, "batch_size", 16))
             normalize = bool(
@@ -356,32 +377,6 @@ class Retriever:
         embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
         app.logger.info("embedding success")
-
-    def _to_st_device_list(self) -> str | list[str]:
-        """
-        Convert self.cuda_devices to SentenceTransformers device format:
-        - None         -> "cuda" (或 "cpu")
-        - int / "0"    -> "cuda:0"
-        - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
-        - CUDA_VISIBLE_DEVICES="2,3" -> 0/1
-        """
-        cd = getattr(self, "cuda_devices", None)
-        if cd is None:
-            import torch
-            return "cuda" if torch.cuda.is_available() else "cpu"
-
-        if isinstance(cd, int):
-            return f"cuda:{cd}"
-
-        if isinstance(cd, str):
-            parts = [p.strip() for p in cd.split(",") if p.strip()]
-            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
-
-        if isinstance(cd, (list, tuple)):
-            parts = [str(p).strip() for p in cd if str(p).strip()]
-            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
-
-        raise TypeError("cuda_devices must be None, int, str, or list[int|str]")
 
     def retriever_index(
         self,
