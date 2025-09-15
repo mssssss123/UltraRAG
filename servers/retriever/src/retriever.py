@@ -433,10 +433,13 @@ class Retriever:
 
         # chunk to write
         total = embedding.shape[0]
-        for start in range(0, total, index_chunk_size):
-            end = min(start + index_chunk_size, total)
-            cpu_index.add_with_ids(embedding[start:end], vec_ids[start:end])
-
+        app.logger.info(f"Start building FAISS index, total vectors: {total}")
+        with tqdm(total=total, desc="Indexing (FAISS)", unit="vec") as pbar:
+            for start in range(0, total, index_chunk_size):
+                end = min(start + index_chunk_size, total)
+                cpu_index.add_with_ids(embedding[start:end], vec_ids[start:end])
+                pbar.update(end - start)
+        
         # with gpu
         if self.faiss_use_gpu:
             co = faiss.GpuMultipleClonerOptions()
