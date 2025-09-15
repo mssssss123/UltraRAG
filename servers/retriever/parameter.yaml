@@ -32,7 +32,7 @@ backend_configs:
 batch_size: 16
 top_k: 5
 cuda_devices: "2,3"
-query_instruction: "Query: "
+query_instruction: ""
 is_multimodal: false
 faiss_use_gpu: True
 overwrite: false
