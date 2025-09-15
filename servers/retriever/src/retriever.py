@@ -37,7 +37,7 @@ class Retriever:
             output="q_ls,top_k,query_instruction,use_openai->ret_psg",
         )
         mcp_inst.tool(
-            self.retriever_search_maxsim,
+            self.retriever_search_colbert_maxsim,
             output="q_ls,embedding_path,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
@@ -506,7 +506,7 @@ class Retriever:
         app.logger.debug(f"ret_psg: {rets}")
         return {"ret_psg": rets}
 
-    async def retriever_search_maxsim(
+    async def retriever_search_colbert_maxsim(
         self,
         query_list: List[str],
         embedding_path: str,
@@ -515,16 +515,26 @@ class Retriever:
     ) -> Dict[str, List[List[str]]]:
         import torch
 
+        # Ensure that backend is Infinity (i.e., ColBERT/ColPali multi-vector)
+        if getattr(self, "backend", None) != "infinity":
+            raise ValueError(
+                "retriever_search_colbert_maxsim only supports 'infinity' backend "
+                "with ColBERT/ColPali multi-vector models. "
+                "Use retriever_search or other backend-specific retrieval functions instead."
+            )
+
         if isinstance(query_list, str):
             query_list = [query_list]
         queries = [f"{query_instruction}{query}" for query in query_list]
 
+        # Encode queries -> expected shape (Q, Kq, D)
         async with self.model:
             query_embedding, usage = await self.model.embed(
                 sentences=queries
-            )  # (Q, Kq, D)
-
-        doc_embeddings = np.load(embedding_path)  # (N, Kd, D)
+            )  
+        
+        # Load document embeddings -> expected shape (N, Kd, D)
+        doc_embeddings = np.load(embedding_path)  
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         if (
@@ -532,7 +542,6 @@ class Retriever:
             and doc_embeddings.dtype != object
             and doc_embeddings.ndim == 3
         ):
-            # (N,Kd,D)
             docs_tensor = torch.from_numpy(
                 doc_embeddings.astype("float32", copy=False)
             ).to(device)
@@ -553,40 +562,30 @@ class Retriever:
                 f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, shape={getattr(doc_embeddings, 'shape', None)}"
             )
 
-        results = []
-
         def _l2norm(t: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
             return t / t.norm(dim=-1, keepdim=True).clamp_min(eps)
 
         N, Kd, D_docs = docs_tensor.shape
-
-        docs_tensor = _l2norm(docs_tensor)  # (N,Kd,D)
-
-        results = []
+        docs_tensor = _l2norm(docs_tensor)  
         k_pick = min(top_k, N)
 
+        results = []
         for q_np in query_embedding:
+            q = torch.as_tensor(q_np, dtype=torch.float32, device=device)  # Shape: (Kq, D)
+            if q.shape[-1] != D_docs:
+                raise ValueError(f"Dimension mismatch: query D={q.shape[-1]} vs doc D={D_docs}")
+            q = _l2norm(q)  
 
-            q = torch.as_tensor(q_np, dtype=torch.float32, device=device)  # (Kq,D)
-
-            D_query = q.shape[-1]
-            if D_query != D_docs:
-                raise ValueError(f"Dim mismatch: query D={D_query} vs doc D={D_docs}")
-
-            q = _l2norm(q)  # (Kq,D)
-
-            # MaxSim
+            # MaxSim calculation:
             # sim[n, i, j] = dot(q[i], docs_tensor[n, j])
-            # (Kq,D) x (N,Kd,D) -> (N,Kq,Kd)
+            # Result shape: (N, Kq, Kd)
             sim = torch.einsum("qd,nkd->nqk", q, docs_tensor)
-            # doc tokens -> (N,Kq)
-            sim_max = sim.max(dim=2).values
-            # query tokens-> (N,)
-            scores = sim_max.sum(dim=1)
+            sim_max = sim.max(dim=2).values # Max over Kd -> shape (N, Kq)
+            scores = sim_max.sum(dim=1)     # Sum over Kq -> shape (N,)
+
 
             top_idx = torch.topk(scores, k=k_pick, largest=True).indices.tolist()
-            top_contents = [self.contents[i] for i in top_idx]
-            results.append(top_contents)
+            results.append([self.contents[i] for i in top_idx])
 
         return {"ret_psg": results}
 
