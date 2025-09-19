@@ -1,0 +1,6 @@
+# 让 Pages 使用 Jekyll 读取 README.md 作为首页
+theme: minima          # 官方简洁主题，可换 cayman、architect 等
+title: RAG Paper Daily # 站点标题
+description: Daily arXiv papers with 61.8 % : 38.2 % title-authors table
+plugins:
+  - jekyll-readme-index # 把 README.md 当成 index.html
