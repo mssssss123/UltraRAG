@@ -1,21 +1,28 @@
 # servers/generation/parameter.yaml
-model_name: minicpm4-8b # vllm served name
-model_path: openbmb/MiniCPM4-8B # model name or path
-base_url: http://localhost:8000/v1 # vllm server url
-api_key: "EMPTY" # set to "EMPTY" if no api key is needed
-# init vllm server configs
-port: 8000
-gpu_ids: "0,1"
-api_key: ""
 
-# generation parameters
+backend: vllm # options: vllm, openai
+backend_configs:
+  vllm:
+    model_name_or_path: openbmb/MiniCPM4-8B
+    gpu_ids: "2,3"
+    tensor_parallel_size: 2
+    gpu_memory_utilization: 0.9
+    dtype: auto
+  openai:
+    model_name: MiniCPM4-8B
+    api_base: http://localhost:8000/v1
+    api_key: ""
+    concurrency: 8
+    retries: 3
+    base_delay: 1.0
+
 sampling_params:
   temperature: 0.7
   top_p: 0.8
   max_tokens: 2048
-  extra_body:
-    top_k: 20
-    chat_template_kwargs:
-      enable_thinking: false # as qwen3, switch to true if you want to enable thinking
-    # include_stop_str_in_output: true # use in search-o1 pipeline
-    # stop: [ "<|im_end|>", "<|end_search_query|>" ] # use in search-o1 pipeline
+  presence_penalty: 1.5
+  top_k: 20
+  chat_template_kwargs:
+    enable_thinking: false
+
+system_prompt: ""
