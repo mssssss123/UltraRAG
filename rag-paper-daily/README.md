@@ -1,68 +1,7 @@
 # 📚 RAG Paper Daily
 
-
-<!-- 简易日历 -->
-<details open>
-<summary style="cursor:pointer;font-size:1.2em;font-weight:bold">📅 快速跳转</summary>
-<div id="cal-wrap" style="margin:10px 0">
-<style>
-#cal{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:4px;
-    max-width:280px;
-    font:12px/1.5 sans-serif;
-}
-#cal a{
-    display:block;
-    padding:4px 0;
-    text-align:center;
-    text-decoration:none;
-    border:1px solid #ddd;
-    color:#0366d6;
-}
-#cal a.exist{background:#0366d6;color:#fff;font-weight:bold}
-#cal a:hover{background:#f0f0f0}
-#cal a.exist:hover{background:#024ea4}
-</style>
-<div id="cal"></div>
-<script>
-(function(){
-const wrap = document.currentScript.previousElementSibling;
-const cal = wrap.querySelector('#cal');
-const exist = new Set(['2025-09-18', '2025-09-17', '2025-09-16', '2025-09-15', '2025-09-14', '2025-09-13', '2025-09-12']);
-const today = new Date();
-const y = today.getFullYear(), m = today.getMonth();
-const first = new Date(y, m, 1);
-const last = new Date(y, m + 1, 0);
-const prefix = ['日','一','二','三','四','五','六'];
-prefix.forEach(d=>{
-    const div = document.createElement('div');
-    div.textContent = d;
-    div.style.fontWeight = 'bold';
-    cal.appendChild(div);
-});
-for(let i=0;i<first.getDay();i++){
-    cal.appendChild(document.createElement('div'));
-}
-for(let d=1;d<=last.getDate();d++){
-    const date = y +'-'+ String(m+1).padStart(2,'0') +'-'+ String(d).padStart(2,'0');
-    const a = document.createElement('a');
-    a.textContent = d;
-    a.href = '#'+date;
-    if(exist.has(date)) a.classList.add('exist');
-    cal.appendChild(a);
-}
-})();
-</script>
-</div>
-</details>
-
----
-
-
-<h3 id="2025-09-18">📅 2025-09-18</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.15210v1'>Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a></td><td>Realistic sound simulation plays a critical role in many applications. A key
+### 📅 2025-09-18
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.15210v1'>Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a></td><td>Realistic sound simulation plays a critical role in many applications. A key
 element in sound simulation is the room impulse response (RIR), which
 characterizes how sound propagates from a source to a listener within a given
 space. Recent studies have applied neural implicit methods to learn RIR using
@@ -560,8 +499,8 @@ the multilingual OmniGEC corpora and achieve state-of-the-art (SOTA) results
 for paragraph-level multilingual GEC. The dataset collection and the
 best-performing models are available on Hugging Face.</td></tr></tbody></table>
 
-<h3 id="2025-09-17">📅 2025-09-17</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.14233v1'>Apertus: Democratizing Open and Compliant LLMs for Global Language Environments</a></td><td>We present Apertus, a fully open suite of large language models (LLMs)
+### 📅 2025-09-17
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.14233v1'>Apertus: Democratizing Open and Compliant LLMs for Global Language Environments</a></td><td>We present Apertus, a fully open suite of large language models (LLMs)
 designed to address two systemic shortcomings in today's open model ecosystem:
 data compliance and multilingual representation. Unlike many prior models that
 release weights without reproducible data pipelines or regard for content-owner
@@ -933,8 +872,8 @@ online metrics and LLM-based evaluation. This work offers practical insights
 for deploying and evaluating advanced retrieval systems in large-scale,
 real-world social platforms.</td></tr></tbody></table>
 
-<h3 id="2025-09-16">📅 2025-09-16</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.13255v1'>ResidualViT for Efficient Temporally Dense Video Encoding</a></td><td>Several video understanding tasks, such as natural language temporal video
+### 📅 2025-09-16
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.13255v1'>ResidualViT for Efficient Temporally Dense Video Encoding</a></td><td>Several video understanding tasks, such as natural language temporal video
 grounding, temporal activity localization, and audio description generation,
 require "temporally dense" reasoning over frames sampled at high temporal
 resolution. However, computing frame-level features for these tasks is
@@ -1489,8 +1428,8 @@ distribution shifts. Our results demonstrate that PVMs are highly successful in
 promoting robustness in visual policy learning, providing compelling evidence
 for their wider adoption in model-based robotic learning applications.</td></tr></tbody></table>
 
-<h3 id="2025-09-15">📅 2025-09-15</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.12187v1'>HoloGarment: 360° Novel View Synthesis of In-the-Wild Garments</a></td><td>Novel view synthesis (NVS) of in-the-wild garments is a challenging task due
+### 📅 2025-09-15
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.12187v1'>HoloGarment: 360° Novel View Synthesis of In-the-Wild Garments</a></td><td>Novel view synthesis (NVS) of in-the-wild garments is a challenging task due
 significant occlusions, complex human poses, and cloth deformations. Prior
 methods rely on synthetic 3D training data consisting of mostly unoccluded and
 static objects, leading to poor generalization on real-world clothing. In this
@@ -1958,8 +1897,8 @@ the target token and to rank candidates by incorporating semantic similarity
 between the original and substituted sentences. Experiments on the LS07 and
 SWORDS datasets demonstrate that both approaches improve ranking performance.</td></tr></tbody></table>
 
-<h3 id="2025-09-14">📅 2025-09-14</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11478v1'>Designing and Evaluating a Conversational Agent for Early Detection of Alzheimer's Disease and Related Dementias</a></td><td>Early detection of Alzheimer's disease and related dementias (ADRD) is
+### 📅 2025-09-14
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11478v1'>Designing and Evaluating a Conversational Agent for Early Detection of Alzheimer's Disease and Related Dementias</a></td><td>Early detection of Alzheimer's disease and related dementias (ADRD) is
 critical for timely intervention, yet most diagnoses are delayed until advanced
 stages. While comprehensive patient narratives are essential for accurate
 diagnosis, prior work has largely focused on screening studies that classify
@@ -2452,8 +2391,8 @@ assembly. Experiments and ablation studies on real-world cancer datasets
 demonstrate its ability to generate chemically valid, high-quality molecules
 tailored for downstream drug discovery tasks.</td></tr></tbody></table>
 
-<h3 id="2025-09-13">📅 2025-09-13</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11000v1'>Hardness, Structural Knowledge, and Opportunity: An Analytical Framework for Modular Performance Modeling</a></td><td>Performance-influence models are beneficial for understanding how
+### 📅 2025-09-13
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11000v1'>Hardness, Structural Knowledge, and Opportunity: An Analytical Framework for Modular Performance Modeling</a></td><td>Performance-influence models are beneficial for understanding how
 configurations affect system performance, but their creation is challenging due
 to the exponential growth of configuration spaces. While gray-box approaches
 leverage selective "structural knowledge" (like the module execution graph of
@@ -2591,8 +2530,8 @@ decision-making. Our EMM algorithm for LLM prompt engineering has four steps:
 generating a generalized expert mental model specification, and (4) generating
 a detailed generalized expert mental model from that specification.</td></tr></tbody></table>
 
-<h3 id="2025-09-12">📅 2025-09-12</h3>
-<table style='width:100%;'><colgroup><col style="width:38.2%;"><col style="width:61.8%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.10744v1'>Automated MCQA Benchmarking at Scale: Evaluating Reasoning Traces as Retrieval Sources for Domain Adaptation of Small Language Models</a></td><td>As scientific knowledge grows at an unprecedented pace, evaluation benchmarks
+### 📅 2025-09-12
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.10744v1'>Automated MCQA Benchmarking at Scale: Evaluating Reasoning Traces as Retrieval Sources for Domain Adaptation of Small Language Models</a></td><td>As scientific knowledge grows at an unprecedented pace, evaluation benchmarks
 must evolve to reflect new discoveries and ensure language models are tested on
 current, diverse literature. We propose a scalable, modular framework for
 generating multiple-choice question-answering (MCQA) benchmarks directly from
