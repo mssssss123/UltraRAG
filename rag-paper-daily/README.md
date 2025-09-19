@@ -1,2908 +1,2908 @@
 # 📚 RAG Paper Daily
 
 ### 📅 2025-09-18
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.15210v1'>Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a></td><td>R, e, a, l, i, s, t, i, c,  , s, o, u, n, d,  , s, i, m, u, l, a, t, i, o, n,  , p, l, a, y, s,  , a,  , c, r, i, t, i, c, a, l,  , r, o, l, e,  , i, n,  , m, a, n, y,  , a, p, p, l, i, c, a, t, i, o, n, s, .,  , A,  , k, e, y, 
-, e, l, e, m, e, n, t,  , i, n,  , s, o, u, n, d,  , s, i, m, u, l, a, t, i, o, n,  , i, s,  , t, h, e,  , r, o, o, m,  , i, m, p, u, l, s, e,  , r, e, s, p, o, n, s, e,  , (, R, I, R, ), ,,  , w, h, i, c, h, 
-, c, h, a, r, a, c, t, e, r, i, z, e, s,  , h, o, w,  , s, o, u, n, d,  , p, r, o, p, a, g, a, t, e, s,  , f, r, o, m,  , a,  , s, o, u, r, c, e,  , t, o,  , a,  , l, i, s, t, e, n, e, r,  , w, i, t, h, i, n,  , a,  , g, i, v, e, n, 
-, s, p, a, c, e, .,  , R, e, c, e, n, t,  , s, t, u, d, i, e, s,  , h, a, v, e,  , a, p, p, l, i, e, d,  , n, e, u, r, a, l,  , i, m, p, l, i, c, i, t,  , m, e, t, h, o, d, s,  , t, o,  , l, e, a, r, n,  , R, I, R,  , u, s, i, n, g, 
-, c, o, n, t, e, x, t,  , i, n, f, o, r, m, a, t, i, o, n,  , c, o, l, l, e, c, t, e, d,  , f, r, o, m,  , t, h, e,  , e, n, v, i, r, o, n, m, e, n, t, ,,  , s, u, c, h,  , a, s,  , s, c, e, n, e,  , i, m, a, g, e, s, ., 
-, H, o, w, e, v, e, r, ,,  , t, h, e, s, e,  , a, p, p, r, o, a, c, h, e, s,  , d, o,  , n, o, t,  , e, f, f, e, c, t, i, v, e, l, y,  , l, e, v, e, r, a, g, e,  , e, x, p, l, i, c, i, t,  , g, e, o, m, e, t, r, i, c, 
-, i, n, f, o, r, m, a, t, i, o, n,  , f, r, o, m,  , t, h, e,  , e, n, v, i, r, o, n, m, e, n, t, .,  , T, o,  , f, u, r, t, h, e, r,  , e, x, p, l, o, i, t,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , o, f,  , n, e, u, r, a, l, 
-, i, m, p, l, i, c, i, t,  , m, o, d, e, l, s,  , w, i, t, h,  , d, i, r, e, c, t,  , g, e, o, m, e, t, r, i, c,  , f, e, a, t, u, r, e, s, ,,  , w, e,  , p, r, e, s, e, n, t,  , M, e, s, h, -, i, n, f, u, s, e, d,  , N, e, u, r, a, l, 
-, A, c, o, u, s, t, i, c,  , F, i, e, l, d,  , (, M, i, N, A, F, ), ,,  , w, h, i, c, h,  , q, u, e, r, i, e, s,  , a,  , r, o, u, g, h,  , r, o, o, m,  , m, e, s, h,  , a, t,  , g, i, v, e, n,  , l, o, c, a, t, i, o, n, s,  , a, n, d, 
-, e, x, t, r, a, c, t, s,  , d, i, s, t, a, n, c, e,  , d, i, s, t, r, i, b, u, t, i, o, n, s,  , a, s,  , a, n,  , e, x, p, l, i, c, i, t,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , o, f,  , l, o, c, a, l,  , c, o, n, t, e, x, t, ., 
-, O, u, r,  , a, p, p, r, o, a, c, h,  , d, e, m, o, n, s, t, r, a, t, e, s,  , t, h, a, t,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , e, x, p, l, i, c, i, t,  , l, o, c, a, l,  , g, e, o, m, e, t, r, i, c,  , f, e, a, t, u, r, e, s, 
-, c, a, n,  , b, e, t, t, e, r,  , g, u, i, d, e,  , t, h, e,  , n, e, u, r, a, l,  , n, e, t, w, o, r, k,  , i, n,  , g, e, n, e, r, a, t, i, n, g,  , m, o, r, e,  , a, c, c, u, r, a, t, e,  , R, I, R, 
-, p, r, e, d, i, c, t, i, o, n, s, .,  , T, h, r, o, u, g, h,  , c, o, m, p, a, r, i, s, o, n, s,  , w, i, t, h,  , c, o, n, v, e, n, t, i, o, n, a, l,  , a, n, d,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t, 
-, b, a, s, e, l, i, n, e,  , m, e, t, h, o, d, s, ,,  , w, e,  , s, h, o, w,  , t, h, a, t,  , M, i, N, A, F,  , p, e, r, f, o, r, m, s,  , c, o, m, p, e, t, i, t, i, v, e, l, y,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s, 
-, e, v, a, l, u, a, t, i, o, n,  , m, e, t, r, i, c, s, .,  , F, u, r, t, h, e, r, m, o, r, e, ,,  , w, e,  , v, e, r, i, f, y,  , t, h, e,  , r, o, b, u, s, t, n, e, s, s,  , o, f,  , M, i, N, A, F,  , i, n,  , d, a, t, a, s, e, t, s, 
-, w, i, t, h,  , l, i, m, i, t, e, d,  , t, r, a, i, n, i, n, g,  , s, a, m, p, l, e, s, ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , a, n,  , a, d, v, a, n, c, e,  , i, n,  , h, i, g, h, -, f, i, d, e, l, i, t, y,  , s, o, u, n, d, 
-, s, i, m, u, l, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15207v1'>FlowRL: Matching Reward Distributions for LLM Reasoning</a></td><td>W, e,  , p, r, o, p, o, s, e,  , F, l, o, w, R, L, :,  , m, a, t, c, h, i, n, g,  , t, h, e,  , f, u, l, l,  , r, e, w, a, r, d,  , d, i, s, t, r, i, b, u, t, i, o, n,  , v, i, a,  , f, l, o, w,  , b, a, l, a, n, c, i, n, g, 
-, i, n, s, t, e, a, d,  , o, f,  , m, a, x, i, m, i, z, i, n, g,  , r, e, w, a, r, d, s,  , i, n,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l,  , (, L, L, M, ),  , r, e, i, n, f, o, r, c, e, m, e, n, t, 
-, l, e, a, r, n, i, n, g,  , (, R, L, ), .,  , R, e, c, e, n, t,  , a, d, v, a, n, c, e, d,  , r, e, a, s, o, n, i, n, g,  , m, o, d, e, l, s,  , a, d, o, p, t,  , r, e, w, a, r, d, -, m, a, x, i, m, i, z, i, n, g,  , m, e, t, h, o, d, s, 
-, (, \, e, g, ,,  , P, P, O,  , a, n, d,  , G, R, P, O, ), ,,  , w, h, i, c, h,  , t, e, n, d,  , t, o,  , o, v, e, r, -, o, p, t, i, m, i, z, e,  , d, o, m, i, n, a, n, t,  , r, e, w, a, r, d,  , s, i, g, n, a, l, s,  , w, h, i, l, e, 
-, n, e, g, l, e, c, t, i, n, g,  , l, e, s, s,  , f, r, e, q, u, e, n, t,  , b, u, t,  , v, a, l, i, d,  , r, e, a, s, o, n, i, n, g,  , p, a, t, h, s, ,,  , t, h, u, s,  , r, e, d, u, c, i, n, g,  , d, i, v, e, r, s, i, t, y, .,  , I, n, 
-, c, o, n, t, r, a, s, t, ,,  , w, e,  , t, r, a, n, s, f, o, r, m,  , s, c, a, l, a, r,  , r, e, w, a, r, d, s,  , i, n, t, o,  , a,  , n, o, r, m, a, l, i, z, e, d,  , t, a, r, g, e, t,  , d, i, s, t, r, i, b, u, t, i, o, n, 
-, u, s, i, n, g,  , a,  , l, e, a, r, n, a, b, l, e,  , p, a, r, t, i, t, i, o, n,  , f, u, n, c, t, i, o, n, ,,  , a, n, d,  , t, h, e, n,  , m, i, n, i, m, i, z, e,  , t, h, e,  , r, e, v, e, r, s, e,  , K, L, 
-, d, i, v, e, r, g, e, n, c, e,  , b, e, t, w, e, e, n,  , t, h, e,  , p, o, l, i, c, y,  , a, n, d,  , t, h, e,  , t, a, r, g, e, t,  , d, i, s, t, r, i, b, u, t, i, o, n, .,  , W, e,  , i, m, p, l, e, m, e, n, t,  , t, h, i, s, 
-, i, d, e, a,  , a, s,  , a,  , f, l, o, w, -, b, a, l, a, n, c, e, d,  , o, p, t, i, m, i, z, a, t, i, o, n,  , m, e, t, h, o, d,  , t, h, a, t,  , p, r, o, m, o, t, e, s,  , d, i, v, e, r, s, e,  , e, x, p, l, o, r, a, t, i, o, n, 
-, a, n, d,  , g, e, n, e, r, a, l, i, z, a, b, l, e,  , r, e, a, s, o, n, i, n, g,  , t, r, a, j, e, c, t, o, r, i, e, s, .,  , W, e,  , c, o, n, d, u, c, t,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , m, a, t, h,  , a, n, d, 
-, c, o, d, e,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s, :,  , F, l, o, w, R, L,  , a, c, h, i, e, v, e, s,  , a,  , s, i, g, n, i, f, i, c, a, n, t,  , a, v, e, r, a, g, e,  , i, m, p, r, o, v, e, m, e, n, t,  , o, f, 
-, $, 1, 0, ., 0, \, %, $,  , o, v, e, r,  , G, R, P, O,  , a, n, d,  , $, 5, ., 1, \, %, $,  , o, v, e, r,  , P, P, O,  , o, n,  , m, a, t, h,  , b, e, n, c, h, m, a, r, k, s, ,,  , a, n, d,  , p, e, r, f, o, r, m, s, 
-, c, o, n, s, i, s, t, e, n, t, l, y,  , b, e, t, t, e, r,  , o, n,  , c, o, d, e,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , h, i, g, h, l, i, g, h, t,  , r, e, w, a, r, d, 
-, d, i, s, t, r, i, b, u, t, i, o, n, -, m, a, t, c, h, i, n, g,  , a, s,  , a,  , k, e, y,  , s, t, e, p,  , t, o, w, a, r, d,  , e, f, f, i, c, i, e, n, t,  , e, x, p, l, o, r, a, t, i, o, n,  , a, n, d,  , d, i, v, e, r, s, e, 
-, r, e, a, s, o, n, i, n, g,  , i, n,  , L, L, M,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15174v1'>SMARTER: A Data-efficient Framework to Improve Toxicity Detection with Explanation via Self-augmenting Large Language Models</a></td><td>W, A, R, N, I, N, G, :,  , T, h, i, s,  , p, a, p, e, r,  , c, o, n, t, a, i, n, s,  , e, x, a, m, p, l, e, s,  , o, f,  , o, f, f, e, n, s, i, v, e,  , m, a, t, e, r, i, a, l, s, .,  , T, o, x, i, c,  , c, o, n, t, e, n, t, 
-, h, a, s,  , b, e, c, o, m, e,  , p, e, r, v, a, s, i, v, e,  , o, n,  , s, o, c, i, a, l,  , m, e, d, i, a,  , p, l, a, t, f, o, r, m, s, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , S, M, A, R, T, E, R, ,,  , a, 
-, d, a, t, a, -, e, f, f, i, c, i, e, n, t,  , t, w, o, -, s, t, a, g, e,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , e, x, p, l, a, i, n, a, b, l, e,  , c, o, n, t, e, n, t,  , m, o, d, e, r, a, t, i, o, n,  , u, s, i, n, g, 
-, L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ), .,  , I, n,  , S, t, a, g, e,  , 1, ,,  , w, e,  , l, e, v, e, r, a, g, e,  , L, L, M, s, ',  , o, w, n,  , o, u, t, p, u, t, s,  , t, o, 
-, g, e, n, e, r, a, t, e,  , s, y, n, t, h, e, t, i, c,  , e, x, p, l, a, n, a, t, i, o, n, s,  , f, o, r,  , b, o, t, h,  , c, o, r, r, e, c, t,  , a, n, d,  , i, n, c, o, r, r, e, c, t,  , l, a, b, e, l, s, ,,  , e, n, a, b, l, i, n, g, 
-, a, l, i, g, n, m, e, n, t,  , v, i, a,  , p, r, e, f, e, r, e, n, c, e,  , o, p, t, i, m, i, z, a, t, i, o, n,  , w, i, t, h,  , m, i, n, i, m, a, l,  , h, u, m, a, n,  , s, u, p, e, r, v, i, s, i, o, n, .,  , I, n,  , S, t, a, g, e, 
-, 2, ,,  , w, e,  , r, e, f, i, n, e,  , e, x, p, l, a, n, a, t, i, o, n,  , q, u, a, l, i, t, y,  , t, h, r, o, u, g, h,  , c, r, o, s, s, -, m, o, d, e, l,  , t, r, a, i, n, i, n, g, ,,  , a, l, l, o, w, i, n, g,  , w, e, a, k, e, r, 
-, m, o, d, e, l, s,  , t, o,  , a, l, i, g, n,  , s, t, y, l, i, s, t, i, c, a, l, l, y,  , a, n, d,  , s, e, m, a, n, t, i, c, a, l, l, y,  , w, i, t, h,  , s, t, r, o, n, g, e, r,  , o, n, e, s, .,  , E, x, p, e, r, i, m, e, n, t, s, 
-, o, n,  , t, h, r, e, e,  , b, e, n, c, h, m, a, r, k,  , t, a, s, k, s,  , -, -,  , H, a, t, e, X, p, l, a, i, n, ,,  , L, a, t, e, n, t,  , H, a, t, e, ,,  , a, n, d,  , I, m, p, l, i, c, i, t,  , H, a, t, e,  , -, -, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , S, M, A, R, T, E, R,  , e, n, a, b, l, e, s,  , L, L, M, s,  , t, o,  , a, c, h, i, e, v, e,  , u, p,  , t, o,  , a,  , 1, 3, ., 5, %,  , m, a, c, r, o, -, F, 1, 
-, i, m, p, r, o, v, e, m, e, n, t,  , o, v, e, r,  , s, t, a, n, d, a, r, d,  , f, e, w, -, s, h, o, t,  , b, a, s, e, l, i, n, e, s,  , w, h, i, l, e,  , u, s, i, n, g,  , o, n, l, y,  , a,  , f, r, a, c, t, i, o, n,  , o, f,  , t, h, e, 
-, f, u, l, l,  , t, r, a, i, n, i, n, g,  , d, a, t, a, .,  , O, u, r,  , f, r, a, m, e, w, o, r, k,  , o, f, f, e, r, s,  , a,  , s, c, a, l, a, b, l, e,  , s, t, r, a, t, e, g, y,  , f, o, r,  , l, o, w, -, r, e, s, o, u, r, c, e, 
-, s, e, t, t, i, n, g, s,  , b, y,  , h, a, r, n, e, s, s, i, n, g,  , L, L, M, s, ',  , s, e, l, f, -, i, m, p, r, o, v, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s,  , f, o, r,  , b, o, t, h, 
-, c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , a, n, d,  , e, x, p, l, a, n, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15172v1'>Internalizing Self-Consistency in Language Models: Multi-Agent Consensus Alignment</a></td><td>L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, M, s, ),  , a, r, e,  , i, n, c, o, n, s, i, s, t, e, n, t,  , r, e, a, s, o, n, e, r, s, ,,  , o, f, t, e, n,  , g, e, n, e, r, a, t, i, n, g, 
-, c, o, n, t, r, a, d, i, c, t, o, r, y,  , r, e, s, p, o, n, s, e, s,  , t, o,  , i, d, e, n, t, i, c, a, l,  , p, r, o, m, p, t, s, .,  , W, h, i, l, e,  , i, n, f, e, r, e, n, c, e, -, t, i, m, e,  , m, e, t, h, o, d, s,  , c, a, n, 
-, m, i, t, i, g, a, t, e,  , t, h, e, s, e,  , i, n, c, o, n, s, i, s, t, e, n, c, i, e, s, ,,  , t, h, e, y,  , f, a, i, l,  , t, o,  , a, d, d, r, e, s, s,  , t, h, e,  , c, o, r, e,  , p, r, o, b, l, e, m, :,  , L, M, s, 
-, s, t, r, u, g, g, l, e,  , t, o,  , r, e, l, i, a, b, l, y,  , s, e, l, e, c, t,  , r, e, a, s, o, n, i, n, g,  , p, a, t, h, w, a, y, s,  , l, e, a, d, i, n, g,  , t, o,  , c, o, n, s, i, s, t, e, n, t,  , o, u, t, c, o, m, e, s, 
-, u, n, d, e, r,  , e, x, p, l, o, r, a, t, o, r, y,  , s, a, m, p, l, i, n, g, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s, ,,  , w, e,  , f, o, r, m, a, l, i, z, e,  , s, e, l, f, -, c, o, n, s, i, s, t, e, n, c, y,  , a, s, 
-, a, n,  , i, n, t, r, i, n, s, i, c,  , p, r, o, p, e, r, t, y,  , o, f,  , w, e, l, l, -, a, l, i, g, n, e, d,  , r, e, a, s, o, n, i, n, g,  , m, o, d, e, l, s,  , a, n, d,  , i, n, t, r, o, d, u, c, e, 
-, M, u, l, t, i, -, A, g, e, n, t,  , C, o, n, s, e, n, s, u, s,  , A, l, i, g, n, m, e, n, t,  , (, M, A, C, A, ), ,,  , a,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t, 
-, p, o, s, t, -, t, r, a, i, n, s,  , m, o, d, e, l, s,  , t, o,  , f, a, v, o, r,  , r, e, a, s, o, n, i, n, g,  , t, r, a, j, e, c, t, o, r, i, e, s,  , a, l, i, g, n, e, d,  , w, i, t, h,  , t, h, e, i, r,  , i, n, t, e, r, n, a, l, 
-, c, o, n, s, e, n, s, u, s,  , u, s, i, n, g,  , m, a, j, o, r, i, t, y, /, m, i, n, o, r, i, t, y,  , o, u, t, c, o, m, e, s,  , f, r, o, m,  , m, u, l, t, i, -, a, g, e, n, t,  , d, e, b, a, t, e, .,  , T, h, e, s, e, 
-, t, r, a, j, e, c, t, o, r, i, e, s,  , e, m, e, r, g, e,  , f, r, o, m,  , d, e, l, i, b, e, r, a, t, i, v, e,  , e, x, c, h, a, n, g, e, s,  , w, h, e, r, e,  , a, g, e, n, t, s,  , g, r, o, u, n, d,  , r, e, a, s, o, n, i, n, g, 
-, i, n,  , p, e, e, r,  , a, r, g, u, m, e, n, t, s, ,,  , n, o, t,  , j, u, s, t,  , a, g, g, r, e, g, a, t, i, o, n,  , o, f,  , i, n, d, e, p, e, n, d, e, n, t,  , a, t, t, e, m, p, t, s, ,,  , c, r, e, a, t, i, n, g, 
-, r, i, c, h, e, r,  , c, o, n, s, e, n, s, u, s,  , s, i, g, n, a, l, s,  , t, h, a, n,  , s, i, n, g, l, e, -, r, o, u, n, d,  , m, a, j, o, r, i, t, y,  , v, o, t, i, n, g, .,  , M, A, C, A,  , e, n, a, b, l, e, s,  , a, g, e, n, t, s, 
-, t, o,  , t, e, a, c, h,  , t, h, e, m, s, e, l, v, e, s,  , t, o,  , b, e,  , m, o, r, e,  , d, e, c, i, s, i, v, e,  , a, n, d,  , c, o, n, c, i, s, e, ,,  , a, n, d,  , b, e, t, t, e, r,  , l, e, v, e, r, a, g, e,  , p, e, e, r, 
-, i, n, s, i, g, h, t, s,  , i, n,  , m, u, l, t, i, -, a, g, e, n, t,  , s, e, t, t, i, n, g, s,  , w, i, t, h, o, u, t,  , e, x, t, e, r, n, a, l,  , s, u, p, e, r, v, i, s, i, o, n, ,,  , d, r, i, v, i, n, g, 
-, s, u, b, s, t, a, n, t, i, a, l,  , i, m, p, r, o, v, e, m, e, n, t, s,  , a, c, r, o, s, s,  , s, e, l, f, -, c, o, n, s, i, s, t, e, n, c, y,  , (, +, 2, 7, ., 6, %,  , o, n,  , G, S, M, 8, K, ), ,, 
-, s, i, n, g, l, e, -, a, g, e, n, t,  , r, e, a, s, o, n, i, n, g,  , (, +, 2, 3, ., 7, %,  , o, n,  , M, A, T, H, ), ,,  , s, a, m, p, l, i, n, g, -, b, a, s, e, d,  , i, n, f, e, r, e, n, c, e,  , (, +, 2, 2, ., 4, %, 
-, P, a, s, s, @, 2, 0,  , o, n,  , M, A, T, H, ), ,,  , a, n, d,  , m, u, l, t, i, -, a, g, e, n, t,  , e, n, s, e, m, b, l, e,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , (, +, 4, 2, ., 7, %,  , o, n,  , M, a, t, h, Q, A, ), ., 
-, T, h, e, s, e,  , f, i, n, d, i, n, g, s, ,,  , c, o, u, p, l, e, d,  , w, i, t, h,  , s, t, r, o, n, g,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , t, o,  , u, n, s, e, e, n,  , b, e, n, c, h, m, a, r, k, s,  , (, +, 1, 6, ., 3, %, 
-, o, n,  , G, P, Q, A, ,,  , +, 1, 1, ., 6, %,  , o, n,  , C, o, m, m, o, n, s, e, n, s, e, Q, A, ), ,,  , d, e, m, o, n, s, t, r, a, t, e,  , r, o, b, u, s, t,  , s, e, l, f, -, a, l, i, g, n, m, e, n, t,  , t, h, a, t,  , m, o, r, e, 
-, r, e, l, i, a, b, l, y,  , u, n, l, o, c, k, s,  , l, a, t, e, n, t,  , r, e, a, s, o, n, i, n, g,  , p, o, t, e, n, t, i, a, l,  , o, f,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15156v1'>Leveraging Geometric Visual Illusions as Perceptual Inductive Biases for Vision Models</a></td><td>C, o, n, t, e, m, p, o, r, a, r, y,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, o, d, e, l, s,  , h, a, v, e,  , a, c, h, i, e, v, e, d,  , i, m, p, r, e, s, s, i, v, e,  , p, e, r, f, o, r, m, a, n, c, e,  , i, n, 
-, i, m, a, g, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , b, y,  , p, r, i, m, a, r, i, l, y,  , l, e, v, e, r, a, g, i, n, g,  , s, t, a, t, i, s, t, i, c, a, l,  , r, e, g, u, l, a, r, i, t, i, e, s,  , w, i, t, h, i, n, 
-, l, a, r, g, e,  , d, a, t, a, s, e, t, s, ,,  , b, u, t,  , t, h, e, y,  , r, a, r, e, l, y,  , i, n, c, o, r, p, o, r, a, t, e,  , s, t, r, u, c, t, u, r, e, d,  , i, n, s, i, g, h, t, s,  , d, r, a, w, n,  , d, i, r, e, c, t, l, y, 
-, f, r, o, m,  , p, e, r, c, e, p, t, u, a, l,  , p, s, y, c, h, o, l, o, g, y, .,  , T, o,  , e, x, p, l, o, r, e,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , o, f,  , p, e, r, c, e, p, t, u, a, l, l, y,  , m, o, t, i, v, a, t, e, d, 
-, i, n, d, u, c, t, i, v, e,  , b, i, a, s, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , i, n, t, e, g, r, a, t, i, n, g,  , c, l, a, s, s, i, c,  , g, e, o, m, e, t, r, i, c,  , v, i, s, u, a, l,  , i, l, l, u, s, i, o, n, s, 
-, w, e, l, l, -, s, t, u, d, i, e, d,  , p, h, e, n, o, m, e, n, a,  , f, r, o, m,  , h, u, m, a, n,  , p, e, r, c, e, p, t, i, o, n,  , i, n, t, o,  , s, t, a, n, d, a, r, d,  , i, m, a, g, e, -, c, l, a, s, s, i, f, i, c, a, t, i, o, n, 
-, t, r, a, i, n, i, n, g,  , p, i, p, e, l, i, n, e, s, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a,  , s, y, n, t, h, e, t, i, c, ,,  , p, a, r, a, m, e, t, r, i, c, 
-, g, e, o, m, e, t, r, i, c, -, i, l, l, u, s, i, o, n,  , d, a, t, a, s, e, t,  , a, n, d,  , e, v, a, l, u, a, t, e,  , t, h, r, e, e,  , m, u, l, t, i, -, s, o, u, r, c, e,  , l, e, a, r, n, i, n, g,  , s, t, r, a, t, e, g, i, e, s, 
-, t, h, a, t,  , c, o, m, b, i, n, e,  , i, l, l, u, s, i, o, n,  , r, e, c, o, g, n, i, t, i, o, n,  , t, a, s, k, s,  , w, i, t, h,  , I, m, a, g, e, N, e, t,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, 
-, o, b, j, e, c, t, i, v, e, s, .,  , O, u, r,  , e, x, p, e, r, i, m, e, n, t, s,  , r, e, v, e, a, l,  , t, w, o,  , k, e, y,  , c, o, n, c, e, p, t, u, a, l,  , i, n, s, i, g, h, t, s, :,  , (, i, ), 
-, i, n, c, o, r, p, o, r, a, t, i, n, g,  , g, e, o, m, e, t, r, i, c,  , i, l, l, u, s, i, o, n, s,  , a, s,  , a, u, x, i, l, i, a, r, y,  , s, u, p, e, r, v, i, s, i, o, n,  , s, y, s, t, e, m, a, t, i, c, a, l, l, y, 
-, i, m, p, r, o, v, e, s,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n, ,,  , e, s, p, e, c, i, a, l, l, y,  , i, n,  , v, i, s, u, a, l, l, y,  , c, h, a, l, l, e, n, g, i, n, g,  , c, a, s, e, s,  , i, n, v, o, l, v, i, n, g, 
-, i, n, t, r, i, c, a, t, e,  , c, o, n, t, o, u, r, s,  , a, n, d,  , f, i, n, e,  , t, e, x, t, u, r, e, s, ;,  , a, n, d,  , (, i, i, ),  , p, e, r, c, e, p, t, u, a, l, l, y,  , d, r, i, v, e, n,  , i, n, d, u, c, t, i, v, e, 
-, b, i, a, s, e, s, ,,  , e, v, e, n,  , w, h, e, n,  , d, e, r, i, v, e, d,  , f, r, o, m,  , s, y, n, t, h, e, t, i, c,  , s, t, i, m, u, l, i,  , t, r, a, d, i, t, i, o, n, a, l, l, y,  , c, o, n, s, i, d, e, r, e, d, 
-, u, n, r, e, l, a, t, e, d,  , t, o,  , n, a, t, u, r, a, l,  , i, m, a, g, e,  , r, e, c, o, g, n, i, t, i, o, n, ,,  , c, a, n,  , e, n, h, a, n, c, e,  , t, h, e,  , s, t, r, u, c, t, u, r, a, l,  , s, e, n, s, i, t, i, v, i, t, y, 
-, o, f,  , b, o, t, h,  , C, N, N,  , a, n, d,  , t, r, a, n, s, f, o, r, m, e, r, -, b, a, s, e, d,  , a, r, c, h, i, t, e, c, t, u, r, e, s, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , a, 
-, n, o, v, e, l,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , p, e, r, c, e, p, t, u, a, l,  , s, c, i, e, n, c, e,  , a, n, d,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g,  , a, n, d,  , s, u, g, g, e, s, t,  , n, e, w, 
-, d, i, r, e, c, t, i, o, n, s,  , f, o, r,  , e, m, b, e, d, d, i, n, g,  , p, e, r, c, e, p, t, u, a, l,  , p, r, i, o, r, s,  , i, n, t, o,  , v, i, s, i, o, n,  , m, o, d, e, l,  , d, e, s, i, g, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15151v1'>Exploring How Audio Effects Alter Emotion with Foundation Models</a></td><td>A, u, d, i, o,  , e, f, f, e, c, t, s,  , (, F, X, ),  , s, u, c, h,  , a, s,  , r, e, v, e, r, b, e, r, a, t, i, o, n, ,,  , d, i, s, t, o, r, t, i, o, n, ,,  , m, o, d, u, l, a, t, i, o, n, ,,  , a, n, d,  , d, y, n, a, m, i, c, 
-, r, a, n, g, e,  , p, r, o, c, e, s, s, i, n, g,  , p, l, a, y,  , a,  , p, i, v, o, t, a, l,  , r, o, l, e,  , i, n,  , s, h, a, p, i, n, g,  , e, m, o, t, i, o, n, a, l,  , r, e, s, p, o, n, s, e, s,  , d, u, r, i, n, g, 
-, m, u, s, i, c,  , l, i, s, t, e, n, i, n, g, .,  , W, h, i, l, e,  , p, r, i, o, r,  , s, t, u, d, i, e, s,  , h, a, v, e,  , e, x, a, m, i, n, e, d,  , l, i, n, k, s,  , b, e, t, w, e, e, n,  , l, o, w, -, l, e, v, e, l, 
-, a, u, d, i, o,  , f, e, a, t, u, r, e, s,  , a, n, d,  , a, f, f, e, c, t, i, v, e,  , p, e, r, c, e, p, t, i, o, n, ,,  , t, h, e,  , s, y, s, t, e, m, a, t, i, c,  , i, m, p, a, c, t,  , o, f,  , a, u, d, i, o,  , F, X,  , o, n, 
-, e, m, o, t, i, o, n,  , r, e, m, a, i, n, s,  , u, n, d, e, r, e, x, p, l, o, r, e, d, .,  , T, h, i, s,  , w, o, r, k,  , i, n, v, e, s, t, i, g, a, t, e, s,  , h, o, w,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, s,  , -, 
-, l, a, r, g, e, -, s, c, a, l, e,  , n, e, u, r, a, l,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , p, r, e, t, r, a, i, n, e, d,  , o, n,  , m, u, l, t, i, m, o, d, a, l,  , d, a, t, a,  , -,  , c, a, n,  , b, e, 
-, l, e, v, e, r, a, g, e, d,  , t, o,  , a, n, a, l, y, z, e,  , t, h, e, s, e,  , e, f, f, e, c, t, s, .,  , S, u, c, h,  , m, o, d, e, l, s,  , e, n, c, o, d, e,  , r, i, c, h,  , a, s, s, o, c, i, a, t, i, o, n, s, 
-, b, e, t, w, e, e, n,  , m, u, s, i, c, a, l,  , s, t, r, u, c, t, u, r, e, ,,  , t, i, m, b, r, e, ,,  , a, n, d,  , a, f, f, e, c, t, i, v, e,  , m, e, a, n, i, n, g, ,,  , o, f, f, e, r, i, n, g,  , a,  , p, o, w, e, r, f, u, l, 
-, f, r, a, m, e, w, o, r, k,  , f, o, r,  , p, r, o, b, i, n, g,  , t, h, e,  , e, m, o, t, i, o, n, a, l,  , c, o, n, s, e, q, u, e, n, c, e, s,  , o, f,  , s, o, u, n, d,  , d, e, s, i, g, n,  , t, e, c, h, n, i, q, u, e, s, .,  , B, y, 
-, a, p, p, l, y, i, n, g,  , v, a, r, i, o, u, s,  , p, r, o, b, i, n, g,  , m, e, t, h, o, d, s,  , t, o,  , e, m, b, e, d, d, i, n, g, s,  , f, r, o, m,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, o, d, e, l, s, ,,  , w, e, 
-, e, x, a, m, i, n, e,  , t, h, e,  , c, o, m, p, l, e, x, ,,  , n, o, n, l, i, n, e, a, r,  , r, e, l, a, t, i, o, n, s, h, i, p, s,  , b, e, t, w, e, e, n,  , a, u, d, i, o,  , F, X,  , a, n, d,  , e, s, t, i, m, a, t, e, d, 
-, e, m, o, t, i, o, n, ,,  , u, n, c, o, v, e, r, i, n, g,  , p, a, t, t, e, r, n, s,  , t, i, e, d,  , t, o,  , s, p, e, c, i, f, i, c,  , e, f, f, e, c, t, s,  , a, n, d,  , e, v, a, l, u, a, t, i, n, g,  , t, h, e, 
-, r, o, b, u, s, t, n, e, s, s,  , o, f,  , f, o, u, n, d, a, t, i, o, n,  , a, u, d, i, o,  , m, o, d, e, l, s, .,  , O, u, r,  , f, i, n, d, i, n, g, s,  , a, i, m,  , t, o,  , a, d, v, a, n, c, e, 
-, u, n, d, e, r, s, t, a, n, d, i, n, g,  , o, f,  , t, h, e,  , p, e, r, c, e, p, t, u, a, l,  , i, m, p, a, c, t,  , o, f,  , a, u, d, i, o,  , p, r, o, d, u, c, t, i, o, n,  , p, r, a, c, t, i, c, e, s, ,,  , w, i, t, h, 
-, i, m, p, l, i, c, a, t, i, o, n, s,  , f, o, r,  , m, u, s, i, c,  , c, o, g, n, i, t, i, o, n, ,,  , p, e, r, f, o, r, m, a, n, c, e, ,,  , a, n, d,  , a, f, f, e, c, t, i, v, e,  , c, o, m, p, u, t, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15130v1'>WorldForge: Unlocking Emergent 3D/4D Generation in Video Diffusion Model via Training-Free Guidance</a></td><td>R, e, c, e, n, t,  , v, i, d, e, o,  , d, i, f, f, u, s, i, o, n,  , m, o, d, e, l, s,  , d, e, m, o, n, s, t, r, a, t, e,  , s, t, r, o, n, g,  , p, o, t, e, n, t, i, a, l,  , i, n,  , s, p, a, t, i, a, l, 
-, i, n, t, e, l, l, i, g, e, n, c, e,  , t, a, s, k, s,  , d, u, e,  , t, o,  , t, h, e, i, r,  , r, i, c, h,  , l, a, t, e, n, t,  , w, o, r, l, d,  , p, r, i, o, r, s, .,  , H, o, w, e, v, e, r, ,,  , t, h, i, s, 
-, p, o, t, e, n, t, i, a, l,  , i, s,  , h, i, n, d, e, r, e, d,  , b, y,  , t, h, e, i, r,  , l, i, m, i, t, e, d,  , c, o, n, t, r, o, l, l, a, b, i, l, i, t, y,  , a, n, d,  , g, e, o, m, e, t, r, i, c, 
-, i, n, c, o, n, s, i, s, t, e, n, c, y, ,,  , c, r, e, a, t, i, n, g,  , a,  , g, a, p,  , b, e, t, w, e, e, n,  , t, h, e, i, r,  , s, t, r, o, n, g,  , p, r, i, o, r, s,  , a, n, d,  , t, h, e, i, r,  , p, r, a, c, t, i, c, a, l, 
-, u, s, e,  , i, n,  , 3, D, /, 4, D,  , t, a, s, k, s, .,  , A, s,  , a,  , r, e, s, u, l, t, ,,  , c, u, r, r, e, n, t,  , a, p, p, r, o, a, c, h, e, s,  , o, f, t, e, n,  , r, e, l, y,  , o, n,  , r, e, t, r, a, i, n, i, n, g,  , o, r, 
-, f, i, n, e, -, t, u, n, i, n, g, ,,  , w, h, i, c, h,  , r, i, s, k, s,  , d, e, g, r, a, d, i, n, g,  , p, r, e, t, r, a, i, n, e, d,  , k, n, o, w, l, e, d, g, e,  , a, n, d,  , i, n, c, u, r, s,  , h, i, g, h, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , W, o, r, l, d, F, o, r, g, e, ,,  , a,  , t, r, a, i, n, i, n, g, -, f, r, e, e, ,, 
-, i, n, f, e, r, e, n, c, e, -, t, i, m, e,  , f, r, a, m, e, w, o, r, k,  , c, o, m, p, o, s, e, d,  , o, f,  , t, h, r, e, e,  , t, i, g, h, t, l, y,  , c, o, u, p, l, e, d,  , m, o, d, u, l, e, s, .,  , I, n, t, r, a, -, S, t, e, p, 
-, R, e, c, u, r, s, i, v, e,  , R, e, f, i, n, e, m, e, n, t,  , i, n, t, r, o, d, u, c, e, s,  , a,  , r, e, c, u, r, s, i, v, e,  , r, e, f, i, n, e, m, e, n, t,  , m, e, c, h, a, n, i, s, m,  , d, u, r, i, n, g, 
-, i, n, f, e, r, e, n, c, e, ,,  , w, h, i, c, h,  , r, e, p, e, a, t, e, d, l, y,  , o, p, t, i, m, i, z, e, s,  , n, e, t, w, o, r, k,  , p, r, e, d, i, c, t, i, o, n, s,  , w, i, t, h, i, n,  , e, a, c, h,  , d, e, n, o, i, s, i, n, g, 
-, s, t, e, p,  , t, o,  , e, n, a, b, l, e,  , p, r, e, c, i, s, e,  , t, r, a, j, e, c, t, o, r, y,  , i, n, j, e, c, t, i, o, n, .,  , F, l, o, w, -, G, a, t, e, d,  , L, a, t, e, n, t,  , F, u, s, i, o, n,  , l, e, v, e, r, a, g, e, s, 
-, o, p, t, i, c, a, l,  , f, l, o, w,  , s, i, m, i, l, a, r, i, t, y,  , t, o,  , d, e, c, o, u, p, l, e,  , m, o, t, i, o, n,  , f, r, o, m,  , a, p, p, e, a, r, a, n, c, e,  , i, n,  , t, h, e,  , l, a, t, e, n, t,  , s, p, a, c, e, 
-, a, n, d,  , s, e, l, e, c, t, i, v, e, l, y,  , i, n, j, e, c, t,  , t, r, a, j, e, c, t, o, r, y,  , g, u, i, d, a, n, c, e,  , i, n, t, o,  , m, o, t, i, o, n, -, r, e, l, a, t, e, d,  , c, h, a, n, n, e, l, s, ., 
-, D, u, a, l, -, P, a, t, h,  , S, e, l, f, -, C, o, r, r, e, c, t, i, v, e,  , G, u, i, d, a, n, c, e,  , c, o, m, p, a, r, e, s,  , g, u, i, d, e, d,  , a, n, d,  , u, n, g, u, i, d, e, d,  , d, e, n, o, i, s, i, n, g,  , p, a, t, h, s, 
-, t, o,  , a, d, a, p, t, i, v, e, l, y,  , c, o, r, r, e, c, t,  , t, r, a, j, e, c, t, o, r, y,  , d, r, i, f, t,  , c, a, u, s, e, d,  , b, y,  , n, o, i, s, y,  , o, r,  , m, i, s, a, l, i, g, n, e, d,  , s, t, r, u, c, t, u, r, a, l, 
-, s, i, g, n, a, l, s, .,  , T, o, g, e, t, h, e, r, ,,  , t, h, e, s, e,  , c, o, m, p, o, n, e, n, t, s,  , i, n, j, e, c, t,  , f, i, n, e, -, g, r, a, i, n, e, d, ,,  , t, r, a, j, e, c, t, o, r, y, -, a, l, i, g, n, e, d, 
-, g, u, i, d, a, n, c, e,  , w, i, t, h, o, u, t,  , t, r, a, i, n, i, n, g, ,,  , a, c, h, i, e, v, i, n, g,  , b, o, t, h,  , a, c, c, u, r, a, t, e,  , m, o, t, i, o, n,  , c, o, n, t, r, o, l,  , a, n, d, 
-, p, h, o, t, o, r, e, a, l, i, s, t, i, c,  , c, o, n, t, e, n, t,  , g, e, n, e, r, a, t, i, o, n, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e, 
-, b, e, n, c, h, m, a, r, k, s,  , v, a, l, i, d, a, t, e,  , o, u, r,  , m, e, t, h, o, d, ', s,  , s, u, p, e, r, i, o, r, i, t, y,  , i, n,  , r, e, a, l, i, s, m, ,,  , t, r, a, j, e, c, t, o, r, y, 
-, c, o, n, s, i, s, t, e, n, c, y, ,,  , a, n, d,  , v, i, s, u, a, l,  , f, i, d, e, l, i, t, y, .,  , T, h, i, s,  , w, o, r, k,  , i, n, t, r, o, d, u, c, e, s,  , a,  , n, o, v, e, l,  , p, l, u, g, -, a, n, d, -, p, l, a, y, 
-, p, a, r, a, d, i, g, m,  , f, o, r,  , c, o, n, t, r, o, l, l, a, b, l, e,  , v, i, d, e, o,  , s, y, n, t, h, e, s, i, s, ,,  , o, f, f, e, r, i, n, g,  , a,  , n, e, w,  , p, e, r, s, p, e, c, t, i, v, e,  , o, n, 
-, l, e, v, e, r, a, g, i, n, g,  , g, e, n, e, r, a, t, i, v, e,  , p, r, i, o, r, s,  , f, o, r,  , s, p, a, t, i, a, l,  , i, n, t, e, l, l, i, g, e, n, c, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15095v1'>Listening, Imagining \& Refining: A Heuristic Optimized ASR Correction Framework with LLMs</a></td><td>A, u, t, o, m, a, t, i, c,  , S, p, e, e, c, h,  , R, e, c, o, g, n, i, t, i, o, n,  , (, A, S, R, ),  , s, y, s, t, e, m, s,  , r, e, m, a, i, n,  , p, r, o, n, e,  , t, o,  , e, r, r, o, r, s,  , t, h, a, t,  , a, f, f, e, c, t, 
-, d, o, w, n, s, t, r, e, a, m,  , a, p, p, l, i, c, a, t, i, o, n, s, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , L, I, R, -, A, S, R, ,,  , a,  , h, e, u, r, i, s, t, i, c, 
-, o, p, t, i, m, i, z, e, d,  , i, t, e, r, a, t, i, v, e,  , c, o, r, r, e, c, t, i, o, n,  , f, r, a, m, e, w, o, r, k,  , u, s, i, n, g,  , L, L, M, s, ,,  , i, n, s, p, i, r, e, d,  , b, y,  , h, u, m, a, n,  , a, u, d, i, t, o, r, y, 
-, p, e, r, c, e, p, t, i, o, n, .,  , L, I, R, -, A, S, R,  , a, p, p, l, i, e, s,  , a,  , ", L, i, s, t, e, n, i, n, g, -, I, m, a, g, i, n, i, n, g, -, R, e, f, i, n, i, n, g, ",  , s, t, r, a, t, e, g, y, ,, 
-, g, e, n, e, r, a, t, i, n, g,  , p, h, o, n, e, t, i, c,  , v, a, r, i, a, n, t, s,  , a, n, d,  , r, e, f, i, n, i, n, g,  , t, h, e, m,  , i, n,  , c, o, n, t, e, x, t, .,  , A,  , h, e, u, r, i, s, t, i, c, 
-, o, p, t, i, m, i, z, a, t, i, o, n,  , w, i, t, h,  , f, i, n, i, t, e,  , s, t, a, t, e,  , m, a, c, h, i, n, e,  , (, F, S, M, ),  , i, s,  , i, n, t, r, o, d, u, c, e, d,  , t, o,  , p, r, e, v, e, n, t,  , t, h, e, 
-, c, o, r, r, e, c, t, i, o, n,  , p, r, o, c, e, s, s,  , f, r, o, m,  , b, e, i, n, g,  , t, r, a, p, p, e, d,  , i, n,  , l, o, c, a, l,  , o, p, t, i, m, a,  , a, n, d,  , r, u, l, e, -, b, a, s, e, d, 
-, c, o, n, s, t, r, a, i, n, t, s,  , h, e, l, p,  , m, a, i, n, t, a, i, n,  , s, e, m, a, n, t, i, c,  , f, i, d, e, l, i, t, y, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , b, o, t, h,  , E, n, g, l, i, s, h,  , a, n, d, 
-, C, h, i, n, e, s, e,  , A, S, R,  , o, u, t, p, u, t, s,  , s, h, o, w,  , t, h, a, t,  , L, I, R, -, A, S, R,  , a, c, h, i, e, v, e, s,  , a, v, e, r, a, g, e,  , r, e, d, u, c, t, i, o, n, s,  , i, n,  , C, E, R, /, W, E, R,  , o, f, 
-, u, p,  , t, o,  , 1, ., 5,  , p, e, r, c, e, n, t, a, g, e,  , p, o, i, n, t, s,  , c, o, m, p, a, r, e, d,  , t, o,  , b, a, s, e, l, i, n, e, s, ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , s, u, b, s, t, a, n, t, i, a, l, 
-, a, c, c, u, r, a, c, y,  , g, a, i, n, s,  , i, n,  , t, r, a, n, s, c, r, i, p, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15058v1'>Communication Efficient Split Learning of ViTs with Attention-based Double Compression</a></td><td>T, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , a,  , n, o, v, e, l,  , c, o, m, m, u, n, i, c, a, t, i, o, n, -, e, f, f, i, c, i, e, n, t,  , S, p, l, i, t,  , L, e, a, r, n, i, n, g,  , (, S, L, ), 
-, f, r, a, m, e, w, o, r, k, ,,  , n, a, m, e, d,  , A, t, t, e, n, t, i, o, n, -, b, a, s, e, d,  , D, o, u, b, l, e,  , C, o, m, p, r, e, s, s, i, o, n,  , (, A, D, C, ), ,,  , w, h, i, c, h,  , r, e, d, u, c, e, s,  , t, h, e, 
-, c, o, m, m, u, n, i, c, a, t, i, o, n,  , o, v, e, r, h, e, a, d,  , r, e, q, u, i, r, e, d,  , f, o, r,  , t, r, a, n, s, m, i, t, t, i, n, g,  , i, n, t, e, r, m, e, d, i, a, t, e,  , V, i, s, i, o, n, 
-, T, r, a, n, s, f, o, r, m, e, r, s,  , a, c, t, i, v, a, t, i, o, n, s,  , d, u, r, i, n, g,  , t, h, e,  , S, L,  , t, r, a, i, n, i, n, g,  , p, r, o, c, e, s, s, .,  , A, D, C,  , i, n, c, o, r, p, o, r, a, t, e, s,  , t, w, o, 
-, p, a, r, a, l, l, e, l,  , c, o, m, p, r, e, s, s, i, o, n,  , s, t, r, a, t, e, g, i, e, s, .,  , T, h, e,  , f, i, r, s, t,  , o, n, e,  , m, e, r, g, e, s,  , s, a, m, p, l, e, s, ',  , a, c, t, i, v, a, t, i, o, n, s,  , t, h, a, t, 
-, a, r, e,  , s, i, m, i, l, a, r, ,,  , b, a, s, e, d,  , o, n,  , t, h, e,  , a, v, e, r, a, g, e,  , a, t, t, e, n, t, i, o, n,  , s, c, o, r, e,  , c, a, l, c, u, l, a, t, e, d,  , i, n,  , t, h, e,  , l, a, s, t,  , c, l, i, e, n, t, 
-, l, a, y, e, r, ;,  , t, h, i, s,  , s, t, r, a, t, e, g, y,  , i, s,  , c, l, a, s, s, -, a, g, n, o, s, t, i, c, ,,  , m, e, a, n, i, n, g,  , t, h, a, t,  , i, t,  , c, a, n,  , a, l, s, o,  , m, e, r, g, e,  , s, a, m, p, l, e, s, 
-, h, a, v, i, n, g,  , d, i, f, f, e, r, e, n, t,  , c, l, a, s, s, e, s, ,,  , w, i, t, h, o, u, t,  , l, o, s, i, n, g,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , a, b, i, l, i, t, y,  , n, o, r,  , d, e, c, r, e, a, s, i, n, g, 
-, f, i, n, a, l,  , r, e, s, u, l, t, s, .,  , T, h, e,  , s, e, c, o, n, d,  , s, t, r, a, t, e, g, y,  , f, o, l, l, o, w, s,  , t, h, e,  , f, i, r, s, t,  , a, n, d,  , d, i, s, c, a, r, d, s,  , t, h, e,  , l, e, a, s, t, 
-, m, e, a, n, i, n, g, f, u, l,  , t, o, k, e, n, s, ,,  , f, u, r, t, h, e, r,  , r, e, d, u, c, i, n, g,  , t, h, e,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , c, o, s, t, .,  , C, o, m, b, i, n, i, n, g,  , t, h, e, s, e, 
-, s, t, r, a, t, e, g, i, e, s,  , n, o, t,  , o, n, l, y,  , a, l, l, o, w, s,  , f, o, r,  , s, e, n, d, i, n, g,  , l, e, s, s,  , d, u, r, i, n, g,  , t, h, e,  , f, o, r, w, a, r, d,  , p, a, s, s, ,,  , b, u, t,  , a, l, s, o, 
-, t, h, e,  , g, r, a, d, i, e, n, t, s,  , a, r, e,  , n, a, t, u, r, a, l, l, y,  , c, o, m, p, r, e, s, s, e, d, ,,  , a, l, l, o, w, i, n, g,  , t, h, e,  , w, h, o, l, e,  , m, o, d, e, l,  , t, o,  , b, e,  , t, r, a, i, n, e, d, 
-, w, i, t, h, o, u, t,  , a, d, d, i, t, i, o, n, a, l,  , t, u, n, i, n, g,  , o, r,  , a, p, p, r, o, x, i, m, a, t, i, o, n, s,  , o, f,  , t, h, e,  , g, r, a, d, i, e, n, t, s, .,  , S, i, m, u, l, a, t, i, o, n, 
-, r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , A, t, t, e, n, t, i, o, n, -, b, a, s, e, d,  , D, o, u, b, l, e,  , C, o, m, p, r, e, s, s, i, o, n,  , o, u, t, p, e, r, f, o, r, m, s, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , S, L,  , f, r, a, m, e, w, o, r, k, s,  , b, y,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , r, e, d, u, c, i, n, g,  , c, o, m, m, u, n, i, c, a, t, i, o, n, 
-, o, v, e, r, h, e, a, d, s,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , h, i, g, h,  , a, c, c, u, r, a, c, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15027v1'>CLEAR: A Comprehensive Linguistic Evaluation of Argument Rewriting by Large Language Models</a></td><td>W, h, i, l, e,  , L, L, M, s,  , h, a, v, e,  , b, e, e, n,  , e, x, t, e, n, s, i, v, e, l, y,  , s, t, u, d, i, e, d,  , o, n,  , g, e, n, e, r, a, l,  , t, e, x, t,  , g, e, n, e, r, a, t, i, o, n,  , t, a, s, k, s, ,, 
-, t, h, e, r, e,  , i, s,  , l, e, s, s,  , r, e, s, e, a, r, c, h,  , o, n,  , t, e, x, t,  , r, e, w, r, i, t, i, n, g, ,,  , a,  , t, a, s, k,  , r, e, l, a, t, e, d,  , t, o,  , g, e, n, e, r, a, l,  , t, e, x, t, 
-, g, e, n, e, r, a, t, i, o, n, ,,  , a, n, d,  , p, a, r, t, i, c, u, l, a, r, l, y,  , o, n,  , t, h, e,  , b, e, h, a, v, i, o, r,  , o, f,  , m, o, d, e, l, s,  , o, n,  , t, h, i, s,  , t, a, s, k, .,  , I, n,  , t, h, i, s, 
-, p, a, p, e, r,  , w, e,  , a, n, a, l, y, z, e,  , w, h, a, t,  , c, h, a, n, g, e, s,  , L, L, M, s,  , m, a, k, e,  , i, n,  , a,  , t, e, x, t,  , r, e, w, r, i, t, i, n, g,  , s, e, t, t, i, n, g, .,  , W, e,  , f, o, c, u, s, 
-, s, p, e, c, i, f, i, c, a, l, l, y,  , o, n,  , a, r, g, u, m, e, n, t, a, t, i, v, e,  , t, e, x, t, s,  , a, n, d,  , t, h, e, i, r,  , i, m, p, r, o, v, e, m, e, n, t, ,,  , a,  , t, a, s, k,  , n, a, m, e, d, 
-, A, r, g, u, m, e, n, t,  , I, m, p, r, o, v, e, m, e, n, t,  , (, A, r, g, I, m, p, ), .,  , W, e,  , p, r, e, s, e, n, t,  , C, L, E, A, R, :,  , a, n,  , e, v, a, l, u, a, t, i, o, n,  , p, i, p, e, l, i, n, e, 
-, c, o, n, s, i, s, t, i, n, g,  , o, f,  , 5, 7,  , m, e, t, r, i, c, s,  , m, a, p, p, e, d,  , t, o,  , f, o, u, r,  , l, i, n, g, u, i, s, t, i, c,  , l, e, v, e, l, s, :,  , l, e, x, i, c, a, l, ,,  , s, y, n, t, a, c, t, i, c, ,, 
-, s, e, m, a, n, t, i, c,  , a, n, d,  , p, r, a, g, m, a, t, i, c, .,  , T, h, i, s,  , p, i, p, e, l, i, n, e,  , i, s,  , u, s, e, d,  , t, o,  , e, x, a, m, i, n, e,  , t, h, e,  , q, u, a, l, i, t, i, e, s,  , o, f, 
-, L, L, M, -, r, e, w, r, i, t, t, e, n,  , a, r, g, u, m, e, n, t, s,  , o, n,  , a,  , b, r, o, a, d,  , s, e, t,  , o, f,  , a, r, g, u, m, e, n, t, a, t, i, o, n,  , c, o, r, p, o, r, a,  , a, n, d,  , c, o, m, p, a, r, e,  , t, h, e, 
-, b, e, h, a, v, i, o, r,  , o, f,  , d, i, f, f, e, r, e, n, t,  , L, L, M, s,  , o, n,  , t, h, i, s,  , t, a, s, k,  , a, n, d,  , a, n, a, l, y, z, e,  , t, h, e,  , b, e, h, a, v, i, o, r,  , o, f,  , d, i, f, f, e, r, e, n, t, 
-, L, L, M, s,  , o, n,  , t, h, i, s,  , t, a, s, k,  , i, n,  , t, e, r, m, s,  , o, f,  , l, i, n, g, u, i, s, t, i, c,  , l, e, v, e, l, s, .,  , B, y,  , t, a, k, i, n, g,  , a, l, l,  , f, o, u, r,  , l, i, n, g, u, i, s, t, i, c, 
-, l, e, v, e, l, s,  , i, n, t, o,  , c, o, n, s, i, d, e, r, a, t, i, o, n, ,,  , w, e,  , f, i, n, d,  , t, h, a, t,  , t, h, e,  , m, o, d, e, l, s,  , p, e, r, f, o, r, m,  , A, r, g, I, m, p,  , b, y,  , s, h, o, r, t, e, n, i, n, g, 
-, t, h, e,  , t, e, x, t, s,  , w, h, i, l, e,  , s, i, m, u, l, t, a, n, e, o, u, s, l, y,  , i, n, c, r, e, a, s, i, n, g,  , a, v, e, r, a, g, e,  , w, o, r, d,  , l, e, n, g, t, h,  , a, n, d,  , m, e, r, g, i, n, g, 
-, s, e, n, t, e, n, c, e, s, .,  , O, v, e, r, a, l, l,  , w, e,  , n, o, t, e,  , a, n,  , i, n, c, r, e, a, s, e,  , i, n,  , t, h, e,  , p, e, r, s, u, a, s, i, o, n,  , a, n, d,  , c, o, h, e, r, e, n, c, e, 
-, d, i, m, e, n, s, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14998v1'>A Knowledge-driven Adaptive Collaboration of LLMs for Enhancing Medical Decision-making</a></td><td>M, e, d, i, c, a, l,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , o, f, t, e, n,  , i, n, v, o, l, v, e, s,  , i, n, t, e, g, r, a, t, i, n, g,  , k, n, o, w, l, e, d, g, e,  , f, r, o, m,  , m, u, l, t, i, p, l, e, 
-, c, l, i, n, i, c, a, l,  , s, p, e, c, i, a, l, t, i, e, s, ,,  , t, y, p, i, c, a, l, l, y,  , a, c, h, i, e, v, e, d,  , t, h, r, o, u, g, h,  , m, u, l, t, i, d, i, s, c, i, p, l, i, n, a, r, y,  , t, e, a, m, s, ., 
-, I, n, s, p, i, r, e, d,  , b, y,  , t, h, i, s,  , c, o, l, l, a, b, o, r, a, t, i, v, e,  , p, r, o, c, e, s, s, ,,  , r, e, c, e, n, t,  , w, o, r, k,  , h, a, s,  , l, e, v, e, r, a, g, e, d,  , l, a, r, g, e, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , i, n,  , m, u, l, t, i, -, a, g, e, n, t,  , c, o, l, l, a, b, o, r, a, t, i, o, n,  , f, r, a, m, e, w, o, r, k, s,  , t, o,  , e, m, u, l, a, t, e, 
-, e, x, p, e, r, t,  , t, e, a, m, w, o, r, k, .,  , W, h, i, l, e,  , t, h, e, s, e,  , a, p, p, r, o, a, c, h, e, s,  , i, m, p, r, o, v, e,  , r, e, a, s, o, n, i, n, g,  , t, h, r, o, u, g, h,  , a, g, e, n, t, 
-, i, n, t, e, r, a, c, t, i, o, n, ,,  , t, h, e, y,  , a, r, e,  , l, i, m, i, t, e, d,  , b, y,  , s, t, a, t, i, c, ,,  , p, r, e, -, a, s, s, i, g, n, e, d,  , r, o, l, e, s, ,,  , w, h, i, c, h,  , h, i, n, d, e, r, 
-, a, d, a, p, t, a, b, i, l, i, t, y,  , a, n, d,  , d, y, n, a, m, i, c,  , k, n, o, w, l, e, d, g, e,  , i, n, t, e, g, r, a, t, i, o, n, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,, 
-, w, e,  , p, r, o, p, o, s, e,  , K, A, M, A, C, ,,  , a,  , K, n, o, w, l, e, d, g, e, -, d, r, i, v, e, n,  , A, d, a, p, t, i, v, e,  , M, u, l, t, i, -, A, g, e, n, t,  , C, o, l, l, a, b, o, r, a, t, i, o, n, 
-, f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , e, n, a, b, l, e, s,  , L, L, M,  , a, g, e, n, t, s,  , t, o,  , d, y, n, a, m, i, c, a, l, l, y,  , f, o, r, m,  , a, n, d,  , e, x, p, a, n, d,  , e, x, p, e, r, t,  , t, e, a, m, s, 
-, b, a, s, e, d,  , o, n,  , t, h, e,  , e, v, o, l, v, i, n, g,  , d, i, a, g, n, o, s, t, i, c,  , c, o, n, t, e, x, t, .,  , K, A, M, A, C,  , b, e, g, i, n, s,  , w, i, t, h,  , o, n, e,  , o, r,  , m, o, r, e,  , e, x, p, e, r, t, 
-, a, g, e, n, t, s,  , a, n, d,  , t, h, e, n,  , c, o, n, d, u, c, t, s,  , a,  , k, n, o, w, l, e, d, g, e, -, d, r, i, v, e, n,  , d, i, s, c, u, s, s, i, o, n,  , t, o,  , i, d, e, n, t, i, f, y,  , a, n, d,  , f, i, l, l, 
-, k, n, o, w, l, e, d, g, e,  , g, a, p, s,  , b, y,  , r, e, c, r, u, i, t, i, n, g,  , a, d, d, i, t, i, o, n, a, l,  , s, p, e, c, i, a, l, i, s, t, s,  , a, s,  , n, e, e, d, e, d, .,  , T, h, i, s,  , s, u, p, p, o, r, t, s, 
-, f, l, e, x, i, b, l, e, ,,  , s, c, a, l, a, b, l, e,  , c, o, l, l, a, b, o, r, a, t, i, o, n,  , i, n,  , c, o, m, p, l, e, x,  , c, l, i, n, i, c, a, l,  , s, c, e, n, a, r, i, o, s, ,,  , w, i, t, h,  , d, e, c, i, s, i, o, n, s, 
-, f, i, n, a, l, i, z, e, d,  , t, h, r, o, u, g, h,  , r, e, v, i, e, w, i, n, g,  , u, p, d, a, t, e, d,  , a, g, e, n, t,  , c, o, m, m, e, n, t, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, w, o, 
-, r, e, a, l, -, w, o, r, l, d,  , m, e, d, i, c, a, l,  , b, e, n, c, h, m, a, r, k, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , K, A, M, A, C,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s, 
-, b, o, t, h,  , s, i, n, g, l, e, -, a, g, e, n, t,  , a, n, d,  , a, d, v, a, n, c, e, d,  , m, u, l, t, i, -, a, g, e, n, t,  , m, e, t, h, o, d, s, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , i, n,  , c, o, m, p, l, e, x, 
-, c, l, i, n, i, c, a, l,  , s, c, e, n, a, r, i, o, s,  , (, i, ., e, ., ,,  , c, a, n, c, e, r,  , p, r, o, g, n, o, s, i, s, ),  , r, e, q, u, i, r, i, n, g,  , d, y, n, a, m, i, c, ,,  , c, r, o, s, s, -, s, p, e, c, i, a, l, t, y, 
-, e, x, p, e, r, t, i, s, e, .,  , O, u, r,  , c, o, d, e,  , i, s,  , p, u, b, l, i, c, l, y,  , a, v, a, i, l, a, b, l, e,  , a, t, :, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, X, i, a, o, X, i, a, o, -, W, o, o, /, K, A, M, A, C, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14980v1'>M4Diffuser: Multi-View Diffusion Policy with Manipulability-Aware Control for Robust Mobile Manipulation</a></td><td>M, o, b, i, l, e,  , m, a, n, i, p, u, l, a, t, i, o, n,  , r, e, q, u, i, r, e, s,  , t, h, e,  , c, o, o, r, d, i, n, a, t, e, d,  , c, o, n, t, r, o, l,  , o, f,  , a,  , m, o, b, i, l, e,  , b, a, s, e,  , a, n, d,  , a, 
-, r, o, b, o, t, i, c,  , a, r, m,  , w, h, i, l, e,  , s, i, m, u, l, t, a, n, e, o, u, s, l, y,  , p, e, r, c, e, i, v, i, n, g,  , b, o, t, h,  , g, l, o, b, a, l,  , s, c, e, n, e,  , c, o, n, t, e, x, t,  , a, n, d, 
-, f, i, n, e, -, g, r, a, i, n, e, d,  , o, b, j, e, c, t,  , d, e, t, a, i, l, s, .,  , E, x, i, s, t, i, n, g,  , s, i, n, g, l, e, -, v, i, e, w,  , a, p, p, r, o, a, c, h, e, s,  , o, f, t, e, n,  , f, a, i, l,  , i, n, 
-, u, n, s, t, r, u, c, t, u, r, e, d,  , e, n, v, i, r, o, n, m, e, n, t, s,  , d, u, e,  , t, o,  , l, i, m, i, t, e, d,  , f, i, e, l, d, s,  , o, f,  , v, i, e, w, ,,  , e, x, p, l, o, r, a, t, i, o, n, ,,  , a, n, d, 
-, g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , a, b, i, l, i, t, i, e, s, .,  , M, o, r, e, o, v, e, r, ,,  , c, l, a, s, s, i, c, a, l,  , c, o, n, t, r, o, l, l, e, r, s, ,,  , a, l, t, h, o, u, g, h,  , s, t, a, b, l, e, ,, 
-, s, t, r, u, g, g, l, e,  , w, i, t, h,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d,  , m, a, n, i, p, u, l, a, b, i, l, i, t, y,  , n, e, a, r,  , s, i, n, g, u, l, a, r, i, t, i, e, s, .,  , T, o,  , a, d, d, r, e, s, s, 
-, t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , M, 4, D, i, f, f, u, s, e, r, ,,  , a,  , h, y, b, r, i, d,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , i, n, t, e, g, r, a, t, e, s,  , a, 
-, M, u, l, t, i, -, V, i, e, w,  , D, i, f, f, u, s, i, o, n,  , P, o, l, i, c, y,  , w, i, t, h,  , a,  , n, o, v, e, l,  , R, e, d, u, c, e, d,  , a, n, d,  , M, a, n, i, p, u, l, a, b, i, l, i, t, y, -, a, w, a, r, e,  , Q, P, 
-, (, R, e, M, -, Q, P, ),  , c, o, n, t, r, o, l, l, e, r,  , f, o, r,  , m, o, b, i, l, e,  , m, a, n, i, p, u, l, a, t, i, o, n, .,  , T, h, e,  , d, i, f, f, u, s, i, o, n,  , p, o, l, i, c, y,  , l, e, v, e, r, a, g, e, s, 
-, p, r, o, p, r, i, o, c, e, p, t, i, v, e,  , s, t, a, t, e, s,  , a, n, d,  , c, o, m, p, l, e, m, e, n, t, a, r, y,  , c, a, m, e, r, a,  , p, e, r, s, p, e, c, t, i, v, e, s,  , w, i, t, h,  , b, o, t, h, 
-, c, l, o, s, e, -, r, a, n, g, e,  , o, b, j, e, c, t,  , d, e, t, a, i, l, s,  , a, n, d,  , g, l, o, b, a, l,  , s, c, e, n, e,  , c, o, n, t, e, x, t,  , t, o,  , g, e, n, e, r, a, t, e,  , t, a, s, k, -, r, e, l, e, v, a, n, t, 
-, e, n, d, -, e, f, f, e, c, t, o, r,  , g, o, a, l, s,  , i, n,  , t, h, e,  , w, o, r, l, d,  , f, r, a, m, e, .,  , T, h, e, s, e,  , h, i, g, h, -, l, e, v, e, l,  , g, o, a, l, s,  , a, r, e,  , t, h, e, n,  , e, x, e, c, u, t, e, d, 
-, b, y,  , t, h, e,  , R, e, M, -, Q, P,  , c, o, n, t, r, o, l, l, e, r, ,,  , w, h, i, c, h,  , e, l, i, m, i, n, a, t, e, s,  , s, l, a, c, k,  , v, a, r, i, a, b, l, e, s,  , f, o, r,  , c, o, m, p, u, t, a, t, i, o, n, a, l, 
-, e, f, f, i, c, i, e, n, c, y,  , a, n, d,  , i, n, c, o, r, p, o, r, a, t, e, s,  , m, a, n, i, p, u, l, a, b, i, l, i, t, y, -, a, w, a, r, e,  , p, r, e, f, e, r, e, n, c, e, s,  , f, o, r,  , r, o, b, u, s, t, n, e, s, s, 
-, n, e, a, r,  , s, i, n, g, u, l, a, r, i, t, i, e, s, .,  , C, o, m, p, r, e, h, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , i, n,  , s, i, m, u, l, a, t, i, o, n,  , a, n, d,  , r, e, a, l, -, w, o, r, l, d, 
-, e, n, v, i, r, o, n, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , M, 4, D, i, f, f, u, s, e, r,  , a, c, h, i, e, v, e, s,  , 7,  , t, o,  , 5, 6,  , p, e, r, c, e, n, t,  , h, i, g, h, e, r,  , s, u, c, c, e, s, s,  , r, a, t, e, s, 
-, a, n, d,  , r, e, d, u, c, e, s,  , c, o, l, l, i, s, i, o, n, s,  , b, y,  , 3,  , t, o,  , 3, 1,  , p, e, r, c, e, n, t,  , o, v, e, r,  , b, a, s, e, l, i, n, e, s, .,  , O, u, r,  , a, p, p, r, o, a, c, h, 
-, d, e, m, o, n, s, t, r, a, t, e, s,  , r, o, b, u, s, t,  , p, e, r, f, o, r, m, a, n, c, e,  , f, o, r,  , s, m, o, o, t, h,  , w, h, o, l, e, -, b, o, d, y,  , c, o, o, r, d, i, n, a, t, i, o, n, ,,  , a, n, d,  , s, t, r, o, n, g, 
-, g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , t, o,  , u, n, s, e, e, n,  , t, a, s, k, s, ,,  , p, a, v, i, n, g,  , t, h, e,  , w, a, y,  , f, o, r,  , r, e, l, i, a, b, l, e,  , m, o, b, i, l, e,  , m, a, n, i, p, u, l, a, t, i, o, n, 
-, i, n,  , u, n, s, t, r, u, c, t, u, r, e, d,  , e, n, v, i, r, o, n, m, e, n, t, s, .,  , D, e, t, a, i, l, s,  , o, f,  , t, h, e,  , d, e, m, o,  , a, n, d,  , s, u, p, p, l, e, m, e, n, t, a, l,  , m, a, t, e, r, i, a, l,  , a, r, e, 
-, a, v, a, i, l, a, b, l, e,  , o, n,  , o, u, r,  , p, r, o, j, e, c, t,  , w, e, b, s, i, t, e,  , h, t, t, p, s, :, /, /, s, i, t, e, s, ., g, o, o, g, l, e, ., c, o, m, /, v, i, e, w, /, m, 4, d, i, f, f, u, s, e, r, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14930v1'>Cross-Modal Knowledge Distillation for Speech Large Language Models</a></td><td>I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e,  , p, r, e, s, e, n, t,  , t, h, e,  , f, i, r, s, t,  , s, y, s, t, e, m, a, t, i, c,  , e, v, a, l, u, a, t, i, o, n,  , o, f,  , c, a, t, a, s, t, r, o, p, h, i, c, 
-, f, o, r, g, e, t, t, i, n, g,  , a, n, d,  , m, o, d, a, l, i, t, y,  , i, n, e, q, u, i, v, a, l, e, n, c, e,  , i, n,  , s, p, e, e, c, h,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, ,,  , s, h, o, w, i, n, g, 
-, t, h, a, t,  , i, n, t, r, o, d, u, c, i, n, g,  , s, p, e, e, c, h,  , c, a, p, a, b, i, l, i, t, i, e, s,  , c, a, n,  , d, e, g, r, a, d, e,  , k, n, o, w, l, e, d, g, e,  , a, n, d,  , r, e, a, s, o, n, i, n, g,  , e, v, e, n, 
-, w, h, e, n,  , i, n, p, u, t, s,  , r, e, m, a, i, n,  , t, e, x, t, u, a, l, ,,  , a, n, d,  , p, e, r, f, o, r, m, a, n, c, e,  , f, u, r, t, h, e, r,  , d, e, c, r, e, a, s, e, s,  , w, i, t, h,  , s, p, o, k, e, n, 
-, q, u, e, r, i, e, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , c, r, o, s, s, -, m, o, d, a, l,  , k, n, o, w, l, e, d, g, e, 
-, d, i, s, t, i, l, l, a, t, i, o, n,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , b, o, t, h,  , t, e, x, t, -, t, o, -, t, e, x, t,  , a, n, d,  , s, p, e, e, c, h, -, t, o, -, t, e, x, t, 
-, c, h, a, n, n, e, l, s,  , t, o,  , t, r, a, n, s, f, e, r,  , k, n, o, w, l, e, d, g, e,  , f, r, o, m,  , a,  , t, e, x, t, -, b, a, s, e, d,  , t, e, a, c, h, e, r,  , m, o, d, e, l,  , t, o,  , a,  , s, p, e, e, c, h,  , L, L, M, ., 
-, E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , d, i, a, l, o, g, u, e,  , a, n, d,  , a, u, d, i, o,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , t, a, s, k, s,  , v, a, l, i, d, a, t, e,  , t, h, e, 
-, e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , o, u, r,  , a, p, p, r, o, a, c, h,  , i, n,  , p, r, e, s, e, r, v, i, n, g,  , t, e, x, t, u, a, l,  , k, n, o, w, l, e, d, g, e, ,,  , i, m, p, r, o, v, i, n, g, 
-, c, r, o, s, s, -, m, o, d, a, l,  , a, l, i, g, n, m, e, n, t, ,,  , a, n, d,  , e, n, h, a, n, c, i, n, g,  , r, e, a, s, o, n, i, n, g,  , i, n,  , s, p, e, e, c, h, -, b, a, s, e, d,  , i, n, t, e, r, a, c, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14886v1'>A Multi-To-One Interview Paradigm for Efficient MLLM Evaluation</a></td><td>T, h, e,  , r, a, p, i, d,  , p, r, o, g, r, e, s, s,  , o, f,  , M, u, l, t, i, -, M, o, d, a, l,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, M, L, L, M, s, ),  , h, a, s,  , s, p, u, r, r, e, d, 
-, t, h, e,  , c, r, e, a, t, i, o, n,  , o, f,  , n, u, m, e, r, o, u, s,  , b, e, n, c, h, m, a, r, k, s, .,  , H, o, w, e, v, e, r, ,,  , c, o, n, v, e, n, t, i, o, n, a, l,  , f, u, l, l, -, c, o, v, e, r, a, g, e, 
-, Q, u, e, s, t, i, o, n, -, A, n, s, w, e, r, i, n, g,  , e, v, a, l, u, a, t, i, o, n, s,  , s, u, f, f, e, r,  , f, r, o, m,  , h, i, g, h,  , r, e, d, u, n, d, a, n, c, y,  , a, n, d,  , l, o, w,  , e, f, f, i, c, i, e, n, c, y, ., 
-, I, n, s, p, i, r, e, d,  , b, y,  , h, u, m, a, n,  , i, n, t, e, r, v, i, e, w,  , p, r, o, c, e, s, s, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , m, u, l, t, i, -, t, o, -, o, n, e,  , i, n, t, e, r, v, i, e, w, 
-, p, a, r, a, d, i, g, m,  , f, o, r,  , e, f, f, i, c, i, e, n, t,  , M, L, L, M,  , e, v, a, l, u, a, t, i, o, n, .,  , O, u, r,  , f, r, a, m, e, w, o, r, k,  , c, o, n, s, i, s, t, s,  , o, f,  , (, i, ),  , a, 
-, t, w, o, -, s, t, a, g, e,  , i, n, t, e, r, v, i, e, w,  , s, t, r, a, t, e, g, y,  , w, i, t, h,  , p, r, e, -, i, n, t, e, r, v, i, e, w,  , a, n, d,  , f, o, r, m, a, l,  , i, n, t, e, r, v, i, e, w,  , p, h, a, s, e, s, ,, 
-, (, i, i, ),  , d, y, n, a, m, i, c,  , a, d, j, u, s, t, m, e, n, t,  , o, f,  , i, n, t, e, r, v, i, e, w, e, r,  , w, e, i, g, h, t, s,  , t, o,  , e, n, s, u, r, e,  , f, a, i, r, n, e, s, s, ,,  , a, n, d,  , (, i, i, i, ),  , a, n, 
-, a, d, a, p, t, i, v, e,  , m, e, c, h, a, n, i, s, m,  , f, o, r,  , q, u, e, s, t, i, o, n,  , d, i, f, f, i, c, u, l, t, y, -, l, e, v, e, l,  , c, h, o, s, e, n, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n, 
-, d, i, f, f, e, r, e, n, t,  , b, e, n, c, h, m, a, r, k, s,  , s, h, o, w,  , t, h, a, t,  , t, h, e,  , p, r, o, p, o, s, e, d,  , p, a, r, a, d, i, g, m,  , a, c, h, i, e, v, e, s,  , s, i, g, n, i, f, i, c, a, n, t, l, y, 
-, h, i, g, h, e, r,  , c, o, r, r, e, l, a, t, i, o, n,  , w, i, t, h,  , f, u, l, l, -, c, o, v, e, r, a, g, e,  , r, e, s, u, l, t, s,  , t, h, a, n,  , r, a, n, d, o, m,  , s, a, m, p, l, i, n, g, ,,  , w, i, t, h, 
-, i, m, p, r, o, v, e, m, e, n, t, s,  , o, f,  , u, p,  , t, o,  , 1, 7, ., 6, %,  , i, n,  , P, L, C, C,  , a, n, d,  , 1, 6, ., 7, %,  , i, n,  , S, R, C, C, ,,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g,  , t, h, e, 
-, n, u, m, b, e, r,  , o, f,  , r, e, q, u, i, r, e, d,  , q, u, e, s, t, i, o, n, s, .,  , T, h, e, s, e,  , f, i, n, d, i, n, g, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , t, h, e,  , p, r, o, p, o, s, e, d, 
-, p, a, r, a, d, i, g, m,  , p, r, o, v, i, d, e, s,  , a,  , r, e, l, i, a, b, l, e,  , a, n, d,  , e, f, f, i, c, i, e, n, t,  , a, l, t, e, r, n, a, t, i, v, e,  , f, o, r,  , l, a, r, g, e, -, s, c, a, l, e,  , M, L, L, M, 
-, b, e, n, c, h, m, a, r, k, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14860v1'>MARIC: Multi-Agent Reasoning for Image Classification</a></td><td>I, m, a, g, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , h, a, s,  , t, r, a, d, i, t, i, o, n, a, l, l, y,  , r, e, l, i, e, d,  , o, n,  , p, a, r, a, m, e, t, e, r, -, i, n, t, e, n, s, i, v, e,  , m, o, d, e, l, 
-, t, r, a, i, n, i, n, g, ,,  , r, e, q, u, i, r, i, n, g,  , l, a, r, g, e, -, s, c, a, l, e,  , a, n, n, o, t, a, t, e, d,  , d, a, t, a, s, e, t, s,  , a, n, d,  , e, x, t, e, n, s, i, v, e,  , f, i, n, e,  , t, u, n, i, n, g,  , t, o, 
-, a, c, h, i, e, v, e,  , c, o, m, p, e, t, i, t, i, v, e,  , p, e, r, f, o, r, m, a, n, c, e, .,  , W, h, i, l, e,  , r, e, c, e, n, t,  , v, i, s, i, o, n,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, V, L, M, s, ), 
-, a, l, l, e, v, i, a, t, e,  , s, o, m, e,  , o, f,  , t, h, e, s, e,  , c, o, n, s, t, r, a, i, n, t, s, ,,  , t, h, e, y,  , r, e, m, a, i, n,  , l, i, m, i, t, e, d,  , b, y,  , t, h, e, i, r,  , r, e, l, i, a, n, c, e,  , o, n, 
-, s, i, n, g, l, e,  , p, a, s, s,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, ,,  , o, f, t, e, n,  , f, a, i, l, i, n, g,  , t, o,  , c, a, p, t, u, r, e,  , c, o, m, p, l, e, m, e, n, t, a, r, y,  , a, s, p, e, c, t, s,  , o, f, 
-, v, i, s, u, a, l,  , c, o, n, t, e, n, t, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , M, u, l, t, i,  , A, g, e, n, t,  , b, a, s, e, d,  , R, e, a, s, o, n, i, n, g,  , f, o, r, 
-, I, m, a, g, e,  , C, l, a, s, s, i, f, i, c, a, t, i, o, n,  , (, M, A, R, I, C, ), ,,  , a,  , m, u, l, t, i,  , a, g, e, n, t,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , r, e, f, o, r, m, u, l, a, t, e, s,  , i, m, a, g, e, 
-, c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , a, s,  , a,  , c, o, l, l, a, b, o, r, a, t, i, v, e,  , r, e, a, s, o, n, i, n, g,  , p, r, o, c, e, s, s, .,  , M, A, R, I, C,  , f, i, r, s, t,  , u, t, i, l, i, z, e, s,  , a, n, 
-, O, u, t, l, i, n, e, r,  , A, g, e, n, t,  , t, o,  , a, n, a, l, y, z, e,  , t, h, e,  , g, l, o, b, a, l,  , t, h, e, m, e,  , o, f,  , t, h, e,  , i, m, a, g, e,  , a, n, d,  , g, e, n, e, r, a, t, e,  , t, a, r, g, e, t, e, d, 
-, p, r, o, m, p, t, s, .,  , B, a, s, e, d,  , o, n,  , t, h, e, s, e,  , p, r, o, m, p, t, s, ,,  , t, h, r, e, e,  , A, s, p, e, c, t,  , A, g, e, n, t, s,  , e, x, t, r, a, c, t,  , f, i, n, e,  , g, r, a, i, n, e, d, 
-, d, e, s, c, r, i, p, t, i, o, n, s,  , a, l, o, n, g,  , d, i, s, t, i, n, c, t,  , v, i, s, u, a, l,  , d, i, m, e, n, s, i, o, n, s, .,  , F, i, n, a, l, l, y, ,,  , a,  , R, e, a, s, o, n, i, n, g,  , A, g, e, n, t, 
-, s, y, n, t, h, e, s, i, z, e, s,  , t, h, e, s, e,  , c, o, m, p, l, e, m, e, n, t, a, r, y,  , o, u, t, p, u, t, s,  , t, h, r, o, u, g, h,  , i, n, t, e, g, r, a, t, e, d,  , r, e, f, l, e, c, t, i, o, n,  , s, t, e, p, ,, 
-, p, r, o, d, u, c, i, n, g,  , a,  , u, n, i, f, i, e, d,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , f, o, r,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, .,  , B, y,  , e, x, p, l, i, c, i, t, l, y, 
-, d, e, c, o, m, p, o, s, i, n, g,  , t, h, e,  , t, a, s, k,  , i, n, t, o,  , m, u, l, t, i, p, l, e,  , p, e, r, s, p, e, c, t, i, v, e, s,  , a, n, d,  , e, n, c, o, u, r, a, g, i, n, g,  , r, e, f, l, e, c, t, i, v, e, 
-, s, y, n, t, h, e, s, i, s, ,,  , M, A, R, I, C,  , m, i, t, i, g, a, t, e, s,  , t, h, e,  , s, h, o, r, t, c, o, m, i, n, g, s,  , o, f,  , b, o, t, h,  , p, a, r, a, m, e, t, e, r, -, h, e, a, v, y,  , t, r, a, i, n, i, n, g, 
-, a, n, d,  , m, o, n, o, l, i, t, h, i, c,  , V, L, M,  , r, e, a, s, o, n, i, n, g, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , 4,  , d, i, v, e, r, s, e,  , i, m, a, g, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, 
-, b, e, n, c, h, m, a, r, k,  , d, a, t, a, s, e, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , M, A, R, I, C,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , b, a, s, e, l, i, n, e, s, ,, 
-, h, i, g, h, l, i, g, h, t, i, n, g,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , m, u, l, t, i, -, a, g, e, n, t,  , v, i, s, u, a, l,  , r, e, a, s, o, n, i, n, g,  , f, o, r,  , r, o, b, u, s, t,  , a, n, d, 
-, i, n, t, e, r, p, r, e, t, a, b, l, e,  , i, m, a, g, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14858v1'>MeanFlowSE: one-step generative speech enhancement via conditional mean flow</a></td><td>M, u, l, t, i, s, t, e, p,  , i, n, f, e, r, e, n, c, e,  , i, s,  , a,  , b, o, t, t, l, e, n, e, c, k,  , f, o, r,  , r, e, a, l, -, t, i, m, e,  , g, e, n, e, r, a, t, i, v, e,  , s, p, e, e, c, h, 
-, e, n, h, a, n, c, e, m, e, n, t,  , b, e, c, a, u, s, e,  , f, l, o, w, -,  , a, n, d,  , d, i, f, f, u, s, i, o, n, -, b, a, s, e, d,  , s, y, s, t, e, m, s,  , l, e, a, r, n,  , a, n,  , i, n, s, t, a, n, t, a, n, e, o, u, s, 
-, v, e, l, o, c, i, t, y,  , f, i, e, l, d,  , a, n, d,  , t, h, e, r, e, f, o, r, e,  , r, e, l, y,  , o, n,  , i, t, e, r, a, t, i, v, e,  , o, r, d, i, n, a, r, y,  , d, i, f, f, e, r, e, n, t, i, a, l,  , e, q, u, a, t, i, o, n, 
-, (, O, D, E, ),  , s, o, l, v, e, r, s, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , M, e, a, n, F, l, o, w, S, E, ,,  , a,  , c, o, n, d, i, t, i, o, n, a, l,  , g, e, n, e, r, a, t, i, v, e,  , m, o, d, e, l,  , t, h, a, t, 
-, l, e, a, r, n, s,  , t, h, e,  , a, v, e, r, a, g, e,  , v, e, l, o, c, i, t, y,  , o, v, e, r,  , f, i, n, i, t, e,  , i, n, t, e, r, v, a, l, s,  , a, l, o, n, g,  , a,  , t, r, a, j, e, c, t, o, r, y, .,  , U, s, i, n, g,  , a, 
-, J, a, c, o, b, i, a, n, -, v, e, c, t, o, r,  , p, r, o, d, u, c, t,  , (, J, V, P, ),  , t, o,  , i, n, s, t, a, n, t, i, a, t, e,  , t, h, e,  , M, e, a, n, F, l, o, w,  , i, d, e, n, t, i, t, y, ,,  , w, e,  , d, e, r, i, v, e,  , a, 
-, l, o, c, a, l,  , t, r, a, i, n, i, n, g,  , o, b, j, e, c, t, i, v, e,  , t, h, a, t,  , d, i, r, e, c, t, l, y,  , s, u, p, e, r, v, i, s, e, s,  , f, i, n, i, t, e, -, i, n, t, e, r, v, a, l,  , d, i, s, p, l, a, c, e, m, e, n, t, 
-, w, h, i, l, e,  , r, e, m, a, i, n, i, n, g,  , c, o, n, s, i, s, t, e, n, t,  , w, i, t, h,  , t, h, e,  , i, n, s, t, a, n, t, a, n, e, o, u, s, -, f, i, e, l, d,  , c, o, n, s, t, r, a, i, n, t,  , o, n,  , t, h, e, 
-, d, i, a, g, o, n, a, l, .,  , A, t,  , i, n, f, e, r, e, n, c, e, ,,  , M, e, a, n, F, l, o, w, S, E,  , p, e, r, f, o, r, m, s,  , s, i, n, g, l, e, -, s, t, e, p,  , g, e, n, e, r, a, t, i, o, n,  , v, i, a,  , a, 
-, b, a, c, k, w, a, r, d, -, i, n, -, t, i, m, e,  , d, i, s, p, l, a, c, e, m, e, n, t, ,,  , r, e, m, o, v, i, n, g,  , t, h, e,  , n, e, e, d,  , f, o, r,  , m, u, l, t, i, s, t, e, p,  , s, o, l, v, e, r, s, ;,  , a, n, 
-, o, p, t, i, o, n, a, l,  , f, e, w, -, s, t, e, p,  , v, a, r, i, a, n, t,  , o, f, f, e, r, s,  , a, d, d, i, t, i, o, n, a, l,  , r, e, f, i, n, e, m, e, n, t, .,  , O, n,  , V, o, i, c, e, B, a, n, k, -, D, E, M, A, N, D, ,, 
-, t, h, e,  , s, i, n, g, l, e, -, s, t, e, p,  , m, o, d, e, l,  , a, c, h, i, e, v, e, s,  , s, t, r, o, n, g,  , i, n, t, e, l, l, i, g, i, b, i, l, i, t, y, ,,  , f, i, d, e, l, i, t, y, ,,  , a, n, d,  , p, e, r, c, e, p, t, u, a, l, 
-, q, u, a, l, i, t, y,  , w, i, t, h,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , l, o, w, e, r,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t,  , t, h, a, n,  , m, u, l, t, i, s, t, e, p,  , b, a, s, e, l, i, n, e, s, ., 
-, T, h, e,  , m, e, t, h, o, d,  , r, e, q, u, i, r, e, s,  , n, o,  , k, n, o, w, l, e, d, g, e,  , d, i, s, t, i, l, l, a, t, i, o, n,  , o, r,  , e, x, t, e, r, n, a, l,  , t, e, a, c, h, e, r, s, ,,  , p, r, o, v, i, d, i, n, g, 
-, a, n,  , e, f, f, i, c, i, e, n, t, ,,  , h, i, g, h, -, f, i, d, e, l, i, t, y,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , r, e, a, l, -, t, i, m, e,  , g, e, n, e, r, a, t, i, v, e,  , s, p, e, e, c, h, 
-, e, n, h, a, n, c, e, m, e, n, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14832v1'>Diffusion-Based Scenario Tree Generation for Multivariate Time Series Prediction and Multistage Stochastic Optimization</a></td><td>S, t, o, c, h, a, s, t, i, c,  , f, o, r, e, c, a, s, t, i, n, g,  , i, s,  , c, r, i, t, i, c, a, l,  , f, o, r,  , e, f, f, i, c, i, e, n, t,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , i, n,  , u, n, c, e, r, t, a, i, n, 
-, s, y, s, t, e, m, s, ,,  , s, u, c, h,  , a, s,  , e, n, e, r, g, y,  , m, a, r, k, e, t, s,  , a, n, d,  , f, i, n, a, n, c, e, ,,  , w, h, e, r, e,  , e, s, t, i, m, a, t, i, n, g,  , t, h, e,  , f, u, l, l, 
-, d, i, s, t, r, i, b, u, t, i, o, n,  , o, f,  , f, u, t, u, r, e,  , s, c, e, n, a, r, i, o, s,  , i, s,  , e, s, s, e, n, t, i, a, l, .,  , W, e,  , p, r, o, p, o, s, e,  , D, i, f, f, u, s, i, o, n,  , S, c, e, n, a, r, i, o, 
-, T, r, e, e,  , (, D, S, T, ), ,,  , a,  , g, e, n, e, r, a, l,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , c, o, n, s, t, r, u, c, t, i, n, g,  , s, c, e, n, a, r, i, o,  , t, r, e, e, s,  , f, o, r, 
-, m, u, l, t, i, v, a, r, i, a, t, e,  , p, r, e, d, i, c, t, i, o, n,  , t, a, s, k, s,  , u, s, i, n, g,  , d, i, f, f, u, s, i, o, n, -, b, a, s, e, d,  , p, r, o, b, a, b, i, l, i, s, t, i, c,  , f, o, r, e, c, a, s, t, i, n, g, 
-, m, o, d, e, l, s, .,  , D, S, T,  , r, e, c, u, r, s, i, v, e, l, y,  , s, a, m, p, l, e, s,  , f, u, t, u, r, e,  , t, r, a, j, e, c, t, o, r, i, e, s,  , a, n, d,  , o, r, g, a, n, i, z, e, s,  , t, h, e, m,  , i, n, t, o,  , a, 
-, t, r, e, e,  , v, i, a,  , c, l, u, s, t, e, r, i, n, g, ,,  , e, n, s, u, r, i, n, g,  , n, o, n, -, a, n, t, i, c, i, p, a, t, i, v, i, t, y,  , (, d, e, c, i, s, i, o, n, s,  , d, e, p, e, n, d, i, n, g,  , o, n, l, y,  , o, n, 
-, o, b, s, e, r, v, e, d,  , h, i, s, t, o, r, y, ),  , a, t,  , e, a, c, h,  , s, t, a, g, e, .,  , W, e,  , e, v, a, l, u, a, t, e,  , t, h, e,  , f, r, a, m, e, w, o, r, k,  , o, n,  , t, h, e,  , o, p, t, i, m, i, z, a, t, i, o, n, 
-, t, a, s, k,  , o, f,  , e, n, e, r, g, y,  , a, r, b, i, t, r, a, g, e,  , i, n,  , N, e, w,  , Y, o, r, k,  , S, t, a, t, e, ', s,  , d, a, y, -, a, h, e, a, d,  , e, l, e, c, t, r, i, c, i, t, y,  , m, a, r, k, e, t, ., 
-, E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , o, u, r,  , a, p, p, r, o, a, c, h,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , t, h, e,  , s, a, m, e, 
-, o, p, t, i, m, i, z, a, t, i, o, n,  , a, l, g, o, r, i, t, h, m, s,  , t, h, a, t,  , u, s, e,  , s, c, e, n, a, r, i, o,  , t, r, e, e, s,  , f, r, o, m,  , m, o, r, e,  , c, o, n, v, e, n, t, i, o, n, a, l,  , m, o, d, e, l, s, 
-, a, n, d,  , M, o, d, e, l, -, F, r, e, e,  , R, e, i, n, f, o, r, c, e, m, e, n, t,  , L, e, a, r, n, i, n, g,  , b, a, s, e, l, i, n, e, s, .,  , F, u, r, t, h, e, r, m, o, r, e, ,,  , u, s, i, n, g,  , D, S, T,  , f, o, r, 
-, s, t, o, c, h, a, s, t, i, c,  , o, p, t, i, m, i, z, a, t, i, o, n,  , y, i, e, l, d, s,  , m, o, r, e,  , e, f, f, i, c, i, e, n, t,  , d, e, c, i, s, i, o, n,  , p, o, l, i, c, i, e, s, ,,  , a, c, h, i, e, v, i, n, g, 
-, h, i, g, h, e, r,  , p, e, r, f, o, r, m, a, n, c, e,  , b, y,  , b, e, t, t, e, r,  , h, a, n, d, l, i, n, g,  , u, n, c, e, r, t, a, i, n, t, y,  , t, h, a, n,  , d, e, t, e, r, m, i, n, i, s, t, i, c,  , a, n, d, 
-, s, t, o, c, h, a, s, t, i, c,  , M, P, C,  , v, a, r, i, a, n, t, s,  , u, s, i, n, g,  , t, h, e,  , s, a, m, e,  , d, i, f, f, u, s, i, o, n, -, b, a, s, e, d,  , f, o, r, e, c, a, s, t, e, r, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14750v1'>Enhancing Retrieval Augmentation via Adversarial Collaboration</a></td><td>R, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , i, s,  , a,  , p, r, e, v, a, l, e, n, t,  , a, p, p, r, o, a, c, h,  , f, o, r, 
-, d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , L, L, M, s, ,,  , y, e, t,  , i, t,  , i, s,  , o, f, t, e, n,  , p, l, a, g, u, e, d,  , b, y,  , ", R, e, t, r, i, e, v, a, l,  , H, a, l, l, u, c, i, n, a, t, i, o, n, s, ", -, -, a, 
-, p, h, e, n, o, m, e, n, o, n,  , w, h, e, r, e,  , f, i, n, e, -, t, u, n, e, d,  , m, o, d, e, l, s,  , f, a, i, l,  , t, o,  , r, e, c, o, g, n, i, z, e,  , a, n, d,  , a, c, t,  , u, p, o, n,  , p, o, o, r, -, q, u, a, l, i, t, y, 
-, r, e, t, r, i, e, v, e, d,  , d, o, c, u, m, e, n, t, s, ,,  , t, h, u, s,  , u, n, d, e, r, m, i, n, i, n, g,  , p, e, r, f, o, r, m, a, n, c, e, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s, ,,  , w, e,  , p, r, o, p, o, s, e, 
-, t, h, e,  , A, d, v, e, r, s, a, r, i, a, l,  , C, o, l, l, a, b, o, r, a, t, i, o, n,  , R, A, G,  , (, A, C, -, R, A, G, ),  , f, r, a, m, e, w, o, r, k, .,  , A, C, -, R, A, G,  , e, m, p, l, o, y, s,  , t, w, o, 
-, h, e, t, e, r, o, g, e, n, e, o, u, s,  , a, g, e, n, t, s, :,  , a,  , g, e, n, e, r, a, l, i, s, t,  , D, e, t, e, c, t, o, r,  , t, h, a, t,  , i, d, e, n, t, i, f, i, e, s,  , k, n, o, w, l, e, d, g, e,  , g, a, p, s, ,,  , a, n, d, 
-, a,  , d, o, m, a, i, n, -, s, p, e, c, i, a, l, i, z, e, d,  , R, e, s, o, l, v, e, r,  , t, h, a, t,  , p, r, o, v, i, d, e, s,  , p, r, e, c, i, s, e,  , s, o, l, u, t, i, o, n, s, .,  , G, u, i, d, e, d,  , b, y,  , a, 
-, m, o, d, e, r, a, t, o, r, ,,  , t, h, e, s, e,  , a, g, e, n, t, s,  , e, n, g, a, g, e,  , i, n,  , a, n,  , a, d, v, e, r, s, a, r, i, a, l,  , c, o, l, l, a, b, o, r, a, t, i, o, n, ,,  , w, h, e, r, e,  , t, h, e, 
-, D, e, t, e, c, t, o, r, ', s,  , p, e, r, s, i, s, t, e, n, t,  , q, u, e, s, t, i, o, n, i, n, g,  , c, h, a, l, l, e, n, g, e, s,  , t, h, e,  , R, e, s, o, l, v, e, r, ', s,  , e, x, p, e, r, t, i, s, e, .,  , T, h, i, s, 
-, d, y, n, a, m, i, c,  , p, r, o, c, e, s, s,  , a, l, l, o, w, s,  , f, o, r,  , i, t, e, r, a, t, i, v, e,  , p, r, o, b, l, e, m,  , d, i, s, s, e, c, t, i, o, n,  , a, n, d,  , r, e, f, i, n, e, d,  , k, n, o, w, l, e, d, g, e, 
-, r, e, t, r, i, e, v, a, l, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , A, C, -, R, A, G,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , i, m, p, r, o, v, e, s, 
-, r, e, t, r, i, e, v, a, l,  , a, c, c, u, r, a, c, y,  , a, n, d,  , o, u, t, p, e, r, f, o, r, m, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , R, A, G,  , m, e, t, h, o, d, s,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s, 
-, v, e, r, t, i, c, a, l,  , d, o, m, a, i, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14693v1'>RationAnomaly: Log Anomaly Detection with Rationality via Chain-of-Thought and Reinforcement Learning</a></td><td>L, o, g, s,  , c, o, n, s, t, i, t, u, t, e,  , a,  , f, o, r, m,  , o, f,  , e, v, i, d, e, n, c, e,  , s, i, g, n, a, l, i, n, g,  , t, h, e,  , o, p, e, r, a, t, i, o, n, a, l,  , s, t, a, t, u, s,  , o, f, 
-, s, o, f, t, w, a, r, e,  , s, y, s, t, e, m, s, .,  , A, u, t, o, m, a, t, e, d,  , l, o, g,  , a, n, o, m, a, l, y,  , d, e, t, e, c, t, i, o, n,  , i, s,  , c, r, u, c, i, a, l,  , f, o, r,  , e, n, s, u, r, i, n, g,  , t, h, e, 
-, r, e, l, i, a, b, i, l, i, t, y,  , o, f,  , m, o, d, e, r, n,  , s, o, f, t, w, a, r, e,  , s, y, s, t, e, m, s, .,  , H, o, w, e, v, e, r, ,,  , e, x, i, s, t, i, n, g,  , a, p, p, r, o, a, c, h, e, s,  , f, a, c, e, 
-, s, i, g, n, i, f, i, c, a, n, t,  , l, i, m, i, t, a, t, i, o, n, s, :,  , t, r, a, d, i, t, i, o, n, a, l,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, o, d, e, l, s,  , l, a, c, k,  , i, n, t, e, r, p, r, e, t, a, b, i, l, i, t, y, 
-, a, n, d,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n, ,,  , w, h, i, l, e,  , m, e, t, h, o, d, s,  , l, e, v, e, r, a, g, i, n, g,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , a, r, e,  , o, f, t, e, n, 
-, h, i, n, d, e, r, e, d,  , b, y,  , u, n, r, e, l, i, a, b, i, l, i, t, y,  , a, n, d,  , f, a, c, t, u, a, l,  , i, n, a, c, c, u, r, a, c, i, e, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , i, s, s, u, e, s, ,,  , w, e, 
-, p, r, o, p, o, s, e,  , R, a, t, i, o, n, A, n, o, m, a, l, y, ,,  , a,  , n, o, v, e, l,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , e, n, h, a, n, c, e, s,  , l, o, g,  , a, n, o, m, a, l, y,  , d, e, t, e, c, t, i, o, n,  , b, y, 
-, s, y, n, e, r, g, i, z, i, n, g,  , C, h, a, i, n, -, o, f, -, T, h, o, u, g, h, t,  , (, C, o, T, ),  , f, i, n, e, -, t, u, n, i, n, g,  , w, i, t, h,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g, .,  , O, u, r, 
-, a, p, p, r, o, a, c, h,  , f, i, r, s, t,  , i, n, s, t, i, l, l, s,  , e, x, p, e, r, t, -, l, i, k, e,  , r, e, a, s, o, n, i, n, g,  , p, a, t, t, e, r, n, s,  , u, s, i, n, g,  , C, o, T, -, g, u, i, d, e, d, 
-, s, u, p, e, r, v, i, s, e, d,  , f, i, n, e, -, t, u, n, i, n, g, ,,  , g, r, o, u, n, d, e, d,  , i, n,  , a,  , h, i, g, h, -, q, u, a, l, i, t, y,  , d, a, t, a, s, e, t,  , c, o, r, r, e, c, t, e, d,  , t, h, r, o, u, g, h,  , a, 
-, r, i, g, o, r, o, u, s,  , e, x, p, e, r, t, -, d, r, i, v, e, n,  , p, r, o, c, e, s, s, .,  , S, u, b, s, e, q, u, e, n, t, l, y, ,,  , a,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g,  , p, h, a, s, e, 
-, w, i, t, h,  , a,  , m, u, l, t, i, -, f, a, c, e, t, e, d,  , r, e, w, a, r, d,  , f, u, n, c, t, i, o, n,  , o, p, t, i, m, i, z, e, s,  , f, o, r,  , a, c, c, u, r, a, c, y,  , a, n, d,  , l, o, g, i, c, a, l, 
-, c, o, n, s, i, s, t, e, n, c, y, ,,  , e, f, f, e, c, t, i, v, e, l, y,  , m, i, t, i, g, a, t, i, n, g,  , h, a, l, l, u, c, i, n, a, t, i, o, n, s, .,  , E, x, p, e, r, i, m, e, n, t, a, l, l, y, ,, 
-, R, a, t, i, o, n, A, n, o, m, a, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , b, a, s, e, l, i, n, e, s, ,,  , a, c, h, i, e, v, i, n, g,  , s, u, p, e, r, i, o, r, 
-, F, 1, -, s, c, o, r, e, s,  , o, n,  , k, e, y,  , b, e, n, c, h, m, a, r, k, s,  , w, h, i, l, e,  , p, r, o, v, i, d, i, n, g,  , t, r, a, n, s, p, a, r, e, n, t, ,,  , s, t, e, p, -, b, y, -, s, t, e, p, 
-, a, n, a, l, y, t, i, c, a, l,  , o, u, t, p, u, t, s, .,  , W, e,  , h, a, v, e,  , r, e, l, e, a, s, e, d,  , t, h, e,  , c, o, r, r, e, s, p, o, n, d, i, n, g,  , r, e, s, o, u, r, c, e, s, ,,  , i, n, c, l, u, d, i, n, g, 
-, c, o, d, e,  , a, n, d,  , d, a, t, a, s, e, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14671v1'>TableDART: Dynamic Adaptive Multi-Modal Routing for Table Understanding</a></td><td>M, o, d, e, l, i, n, g,  , s, e, m, a, n, t, i, c,  , a, n, d,  , s, t, r, u, c, t, u, r, a, l,  , i, n, f, o, r, m, a, t, i, o, n,  , f, r, o, m,  , t, a, b, u, l, a, r,  , d, a, t, a,  , r, e, m, a, i, n, s,  , a,  , c, o, r, e, 
-, c, h, a, l, l, e, n, g, e,  , f, o, r,  , e, f, f, e, c, t, i, v, e,  , t, a, b, l, e,  , u, n, d, e, r, s, t, a, n, d, i, n, g, .,  , E, x, i, s, t, i, n, g,  , T, a, b, l, e, -, a, s, -, T, e, x, t,  , a, p, p, r, o, a, c, h, e, s, 
-, f, l, a, t, t, e, n,  , t, a, b, l, e, s,  , f, o, r,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ), ,,  , b, u, t,  , l, o, s, e,  , c, r, u, c, i, a, l,  , s, t, r, u, c, t, u, r, a, l, 
-, c, u, e, s, ,,  , w, h, i, l, e,  , T, a, b, l, e, -, a, s, -, I, m, a, g, e,  , m, e, t, h, o, d, s,  , p, r, e, s, e, r, v, e,  , s, t, r, u, c, t, u, r, e,  , y, e, t,  , s, t, r, u, g, g, l, e,  , w, i, t, h, 
-, f, i, n, e, -, g, r, a, i, n, e, d,  , s, e, m, a, n, t, i, c, s, .,  , R, e, c, e, n, t,  , T, a, b, l, e, -, a, s, -, M, u, l, t, i, m, o, d, a, l, i, t, y,  , s, t, r, a, t, e, g, i, e, s,  , a, t, t, e, m, p, t,  , t, o, 
-, c, o, m, b, i, n, e,  , t, e, x, t, u, a, l,  , a, n, d,  , v, i, s, u, a, l,  , v, i, e, w, s, ,,  , b, u, t,  , t, h, e, y,  , (, 1, ),  , s, t, a, t, i, c, a, l, l, y,  , p, r, o, c, e, s, s,  , b, o, t, h, 
-, m, o, d, a, l, i, t, i, e, s,  , f, o, r,  , e, v, e, r, y,  , q, u, e, r, y, -, t, a, b, l, e,  , p, a, i, r,  , w, i, t, h, i, n,  , a,  , l, a, r, g, e,  , m, u, l, t, i, m, o, d, a, l,  , L, L, M, s,  , (, M, L, L, M, s, ), ,, 
-, i, n, e, v, i, t, a, b, l, y,  , i, n, t, r, o, d, u, c, i, n, g,  , r, e, d, u, n, d, a, n, c, y,  , a, n, d,  , e, v, e, n,  , c, o, n, f, l, i, c, t, s, ,,  , a, n, d,  , (, 2, ),  , d, e, p, e, n, d,  , o, n,  , c, o, s, t, l, y, 
-, f, i, n, e, -, t, u, n, i, n, g,  , o, f,  , M, L, L, M, s, .,  , I, n,  , l, i, g, h, t,  , o, f,  , t, h, i, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , T, a, b, l, e, D, A, R, T, ,,  , a, 
-, t, r, a, i, n, i, n, g, -, e, f, f, i, c, i, e, n, t,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , i, n, t, e, g, r, a, t, e, s,  , m, u, l, t, i, m, o, d, a, l,  , v, i, e, w, s,  , b, y,  , r, e, u, s, i, n, g, 
-, p, r, e, t, r, a, i, n, e, d,  , s, i, n, g, l, e, -, m, o, d, a, l, i, t, y,  , m, o, d, e, l, s, .,  , T, a, b, l, e, D, A, R, T,  , i, n, t, r, o, d, u, c, e, s,  , a,  , l, i, g, h, t, w, e, i, g, h, t, 
-, 2, ., 5, 9, M, -, p, a, r, a, m, e, t, e, r,  , M, L, P,  , g, a, t, i, n, g,  , n, e, t, w, o, r, k,  , t, h, a, t,  , d, y, n, a, m, i, c, a, l, l, y,  , s, e, l, e, c, t, s,  , t, h, e,  , o, p, t, i, m, a, l,  , p, a, t, h, 
-, (, e, i, t, h, e, r,  , T, e, x, t, -, o, n, l, y, ,,  , I, m, a, g, e, -, o, n, l, y, ,,  , o, r,  , F, u, s, i, o, n, ),  , f, o, r,  , e, a, c, h,  , t, a, b, l, e, -, q, u, e, r, y,  , p, a, i, r, ,, 
-, e, f, f, e, c, t, i, v, e, l, y,  , r, e, d, u, c, i, n, g,  , r, e, d, u, n, d, a, n, c, y,  , a, n, d,  , c, o, n, f, l, i, c, t, s,  , f, r, o, m,  , b, o, t, h,  , m, o, d, a, l, i, t, i, e, s, .,  , I, n, 
-, a, d, d, i, t, i, o, n, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , a, g, e, n, t,  , t, o,  , m, e, d, i, a, t, e,  , c, r, o, s, s, -, m, o, d, a, l,  , k, n, o, w, l, e, d, g, e,  , i, n, t, e, g, r, a, t, i, o, n, 
-, b, y,  , a, n, a, l, y, z, i, n, g,  , o, u, t, p, u, t, s,  , f, r, o, m,  , t, e, x, t, -,  , a, n, d,  , i, m, a, g, e, -, b, a, s, e, d,  , m, o, d, e, l, s, ,,  , e, i, t, h, e, r,  , s, e, l, e, c, t, i, n, g,  , t, h, e, 
-, b, e, s, t,  , r, e, s, u, l, t,  , o, r,  , s, y, n, t, h, e, s, i, z, i, n, g,  , a,  , n, e, w,  , a, n, s, w, e, r,  , t, h, r, o, u, g, h,  , r, e, a, s, o, n, i, n, g, .,  , T, h, i, s,  , d, e, s, i, g, n,  , a, v, o, i, d, s, 
-, t, h, e,  , p, r, o, h, i, b, i, t, i, v, e,  , c, o, s, t, s,  , o, f,  , f, u, l, l,  , M, L, L, M,  , f, i, n, e, -, t, u, n, i, n, g, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , s, e, v, e, n, 
-, b, e, n, c, h, m, a, r, k, s,  , s, h, o, w,  , t, h, a, t,  , T, a, b, l, e, D, A, R, T,  , e, s, t, a, b, l, i, s, h, e, s,  , n, e, w,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , p, e, r, f, o, r, m, a, n, c, e, 
-, a, m, o, n, g,  , o, p, e, n, -, s, o, u, r, c, e,  , m, o, d, e, l, s, ,,  , s, u, r, p, a, s, s, i, n, g,  , t, h, e,  , s, t, r, o, n, g, e, s, t,  , b, a, s, e, l, i, n, e,  , b, y,  , a, n,  , a, v, e, r, a, g, e,  , o, f, 
-, 4, ., 0, 2, %, .,  , T, h, e,  , c, o, d, e,  , i, s,  , a, v, a, i, l, a, b, l, e,  , a, t, :, 
-, h, t, t, p, s, :, /, /, a, n, o, n, y, m, o, u, s, ., 4, o, p, e, n, ., s, c, i, e, n, c, e, /, r, /, T, a, b, l, e, D, A, R, T, -, C, 5, 2, B</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14662v1'>Understanding the Thinking Process of Reasoning Models: A Perspective from Schoenfeld's Episode Theory</a></td><td>W, h, i, l, e,  , L, a, r, g, e,  , R, e, a, s, o, n, i, n, g,  , M, o, d, e, l, s,  , (, L, R, M, s, ),  , g, e, n, e, r, a, t, e,  , e, x, t, e, n, s, i, v, e,  , c, h, a, i, n, -, o, f, -, t, h, o, u, g, h, t, 
-, r, e, a, s, o, n, i, n, g, ,,  , w, e,  , l, a, c, k,  , a,  , p, r, i, n, c, i, p, l, e, d,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , h, o, w,  , t, h, e, s, e,  , t, h, o, u, g, h, t, s, 
-, a, r, e,  , s, t, r, u, c, t, u, r, e, d, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a,  , n, o, v, e, l,  , a, p, p, r, o, a, c, h,  , b, y,  , a, p, p, l, y, i, n, g, 
-, S, c, h, o, e, n, f, e, l, d, ', s,  , E, p, i, s, o, d, e,  , T, h, e, o, r, y, ,,  , a,  , c, l, a, s, s, i, c,  , c, o, g, n, i, t, i, v, e,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , h, u, m, a, n, 
-, m, a, t, h, e, m, a, t, i, c, a, l,  , p, r, o, b, l, e, m, -, s, o, l, v, i, n, g, ,,  , t, o,  , a, n, a, l, y, z, e,  , t, h, e,  , r, e, a, s, o, n, i, n, g,  , t, r, a, c, e, s,  , o, f,  , L, R, M, s, .,  , W, e, 
-, a, n, n, o, t, a, t, e, d,  , t, h, o, u, s, a, n, d, s,  , o, f,  , s, e, n, t, e, n, c, e, s,  , a, n, d,  , p, a, r, a, g, r, a, p, h, s,  , f, r, o, m,  , m, o, d, e, l, -, g, e, n, e, r, a, t, e, d,  , s, o, l, u, t, i, o, n, s, 
-, t, o,  , m, a, t, h,  , p, r, o, b, l, e, m, s,  , u, s, i, n, g,  , s, e, v, e, n,  , c, o, g, n, i, t, i, v, e,  , l, a, b, e, l, s,  , (, e, ., g, ., ,,  , P, l, a, n, ,,  , I, m, p, l, e, m, e, n, t, ,,  , V, e, r, i, f, y, ), ., 
-, T, h, e,  , r, e, s, u, l, t,  , i, s,  , t, h, e,  , f, i, r, s, t,  , p, u, b, l, i, c, l, y,  , a, v, a, i, l, a, b, l, e,  , b, e, n, c, h, m, a, r, k,  , f, o, r,  , t, h, e,  , f, i, n, e, -, g, r, a, i, n, e, d, 
-, a, n, a, l, y, s, i, s,  , o, f,  , m, a, c, h, i, n, e,  , r, e, a, s, o, n, i, n, g, ,,  , i, n, c, l, u, d, i, n, g,  , a,  , l, a, r, g, e,  , a, n, n, o, t, a, t, e, d,  , c, o, r, p, u, s,  , a, n, d,  , d, e, t, a, i, l, e, d, 
-, a, n, n, o, t, a, t, i, o, n,  , g, u, i, d, e, b, o, o, k, s, .,  , O, u, r,  , p, r, e, l, i, m, i, n, a, r, y,  , a, n, a, l, y, s, i, s,  , r, e, v, e, a, l, s,  , d, i, s, t, i, n, c, t,  , p, a, t, t, e, r, n, s,  , i, n, 
-, L, R, M,  , r, e, a, s, o, n, i, n, g, ,,  , s, u, c, h,  , a, s,  , t, h, e,  , t, r, a, n, s, i, t, i, o, n,  , d, y, n, a, m, i, c, s,  , b, e, t, w, e, e, n,  , c, o, g, n, i, t, i, v, e,  , s, t, a, t, e, s, .,  , T, h, i, s, 
-, f, r, a, m, e, w, o, r, k,  , p, r, o, v, i, d, e, s,  , a,  , t, h, e, o, r, e, t, i, c, a, l, l, y,  , g, r, o, u, n, d, e, d,  , m, e, t, h, o, d, o, l, o, g, y,  , f, o, r,  , i, n, t, e, r, p, r, e, t, i, n, g,  , L, R, M, 
-, c, o, g, n, i, t, i, o, n,  , a, n, d,  , e, n, a, b, l, e, s,  , f, u, t, u, r, e,  , w, o, r, k,  , o, n,  , m, o, r, e,  , c, o, n, t, r, o, l, l, a, b, l, e,  , a, n, d,  , t, r, a, n, s, p, a, r, e, n, t, 
-, r, e, a, s, o, n, i, n, g,  , s, y, s, t, e, m, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14623v1'>Automating Modelica Module Generation Using Large Language Models: A Case Study on Building Control Description Language</a></td><td>D, y, n, a, m, i, c,  , e, n, e, r, g, y,  , s, y, s, t, e, m, s,  , a, n, d,  , c, o, n, t, r, o, l, s,  , r, e, q, u, i, r, e,  , a, d, v, a, n, c, e, d,  , m, o, d, e, l, i, n, g,  , f, r, a, m, e, w, o, r, k, s,  , t, o, 
-, d, e, s, i, g, n,  , a, n, d,  , t, e, s, t,  , s, u, p, e, r, v, i, s, o, r, y,  , a, n, d,  , f, a, u, l, t,  , t, o, l, e, r, a, n, t,  , s, t, r, a, t, e, g, i, e, s, .,  , M, o, d, e, l, i, c, a,  , i, s,  , a,  , w, i, d, e, l, y, 
-, u, s, e, d,  , e, q, u, a, t, i, o, n,  , b, a, s, e, d,  , l, a, n, g, u, a, g, e, ,,  , b, u, t,  , d, e, v, e, l, o, p, i, n, g,  , c, o, n, t, r, o, l,  , m, o, d, u, l, e, s,  , i, s,  , l, a, b, o, r,  , i, n, t, e, n, s, i, v, e, 
-, a, n, d,  , r, e, q, u, i, r, e, s,  , s, p, e, c, i, a, l, i, z, e, d,  , e, x, p, e, r, t, i, s, e, .,  , T, h, i, s,  , p, a, p, e, r,  , e, x, a, m, i, n, e, s,  , t, h, e,  , u, s, e,  , o, f,  , l, a, r, g, e, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , t, o,  , a, u, t, o, m, a, t, e,  , t, h, e,  , g, e, n, e, r, a, t, i, o, n,  , o, f,  , C, o, n, t, r, o, l,  , D, e, s, c, r, i, p, t, i, o, n, 
-, L, a, n, g, u, a, g, e,  , m, o, d, u, l, e, s,  , i, n,  , t, h, e,  , B, u, i, l, d, i, n, g,  , M, o, d, e, l, i, c, a,  , L, i, b, r, a, r, y,  , a, s,  , a,  , c, a, s, e,  , s, t, u, d, y, .,  , W, e,  , d, e, v, e, l, o, p, e, d, 
-, a,  , s, t, r, u, c, t, u, r, e, d,  , w, o, r, k, f, l, o, w,  , t, h, a, t,  , c, o, m, b, i, n, e, s,  , s, t, a, n, d, a, r, d, i, z, e, d,  , p, r, o, m, p, t,  , s, c, a, f, f, o, l, d, s, ,,  , l, i, b, r, a, r, y, 
-, a, w, a, r, e,  , g, r, o, u, n, d, i, n, g, ,,  , a, u, t, o, m, a, t, e, d,  , c, o, m, p, i, l, a, t, i, o, n,  , w, i, t, h,  , O, p, e, n, M, o, d, e, l, i, c, a, ,,  , a, n, d,  , h, u, m, a, n,  , i, n,  , t, h, e,  , l, o, o, p, 
-, e, v, a, l, u, a, t, i, o, n, .,  , E, x, p, e, r, i, m, e, n, t, s,  , w, e, r, e,  , c, a, r, r, i, e, d,  , o, u, t,  , o, n,  , f, o, u, r,  , b, a, s, i, c,  , l, o, g, i, c,  , t, a, s, k, s,  , (, A, n, d, ,,  , O, r, ,, 
-, N, o, t, ,,  , a, n, d,  , S, w, i, t, c, h, ),  , a, n, d,  , f, i, v, e,  , c, o, n, t, r, o, l,  , m, o, d, u, l, e, s,  , (, c, h, i, l, l, e, r,  , e, n, a, b, l, e, /, d, i, s, a, b, l, e, ,,  , b, y, p, a, s, s,  , v, a, l, v, e, 
-, c, o, n, t, r, o, l, ,,  , c, o, o, l, i, n, g,  , t, o, w, e, r,  , f, a, n,  , s, p, e, e, d, ,,  , p, l, a, n, t,  , r, e, q, u, e, s, t, s, ,,  , a, n, d,  , r, e, l, i, e, f,  , d, a, m, p, e, r,  , c, o, n, t, r, o, l, ), ., 
-, T, h, e,  , r, e, s, u, l, t, s,  , s, h, o, w, e, d,  , t, h, a, t,  , G, P, T,  , 4, o,  , f, a, i, l, e, d,  , t, o,  , p, r, o, d, u, c, e,  , e, x, e, c, u, t, a, b, l, e,  , M, o, d, e, l, i, c, a,  , c, o, d, e,  , i, n, 
-, z, e, r, o,  , s, h, o, t,  , m, o, d, e, ,,  , w, h, i, l, e,  , C, l, a, u, d, e,  , S, o, n, n, e, t,  , 4,  , a, c, h, i, e, v, e, d,  , u, p,  , t, o,  , f, u, l, l,  , s, u, c, c, e, s, s,  , f, o, r,  , b, a, s, i, c, 
-, l, o, g, i, c,  , b, l, o, c, k, s,  , w, i, t, h,  , c, a, r, e, f, u, l, l, y,  , e, n, g, i, n, e, e, r, e, d,  , p, r, o, m, p, t, s, .,  , F, o, r,  , c, o, n, t, r, o, l,  , m, o, d, u, l, e, s, ,,  , s, u, c, c, e, s, s, 
-, r, a, t, e, s,  , r, e, a, c, h, e, d,  , 8, 3,  , p, e, r, c, e, n, t, ,,  , a, n, d,  , f, a, i, l, e, d,  , o, u, t, p, u, t, s,  , r, e, q, u, i, r, e, d,  , m, e, d, i, u, m,  , l, e, v, e, l,  , h, u, m, a, n,  , r, e, p, a, i, r, 
-, (, e, s, t, i, m, a, t, e, d,  , o, n, e,  , t, o,  , e, i, g, h, t,  , h, o, u, r, s, ), .,  , R, e, t, r, i, e, v, a, l,  , a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n,  , o, f, t, e, n,  , p, r, o, d, u, c, e, d, 
-, m, i, s, m, a, t, c, h, e, s,  , i, n,  , m, o, d, u, l, e,  , s, e, l, e, c, t, i, o, n,  , (, f, o, r,  , e, x, a, m, p, l, e, ,,  , A, n, d,  , r, e, t, r, i, e, v, e, d,  , a, s,  , O, r, ), ,,  , w, h, i, l, e,  , a, 
-, d, e, t, e, r, m, i, n, i, s, t, i, c,  , h, a, r, d,  , r, u, l, e,  , s, e, a, r, c, h,  , s, t, r, a, t, e, g, y,  , a, v, o, i, d, e, d,  , t, h, e, s, e,  , e, r, r, o, r, s, .,  , H, u, m, a, n,  , e, v, a, l, u, a, t, i, o, n, 
-, a, l, s, o,  , o, u, t, p, e, r, f, o, r, m, e, d,  , A, I,  , e, v, a, l, u, a, t, i, o, n, ,,  , s, i, n, c, e,  , c, u, r, r, e, n, t,  , L, L, M, s,  , c, a, n, n, o, t,  , a, s, s, e, s, s,  , s, i, m, u, l, a, t, i, o, n, 
-, r, e, s, u, l, t, s,  , o, r,  , v, a, l, i, d, a, t, e,  , b, e, h, a, v, i, o, r, a, l,  , c, o, r, r, e, c, t, n, e, s, s, .,  , D, e, s, p, i, t, e,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , t, h, e,  , L, L, M, 
-, a, s, s, i, s, t, e, d,  , w, o, r, k, f, l, o, w,  , r, e, d, u, c, e, d,  , t, h, e,  , a, v, e, r, a, g, e,  , d, e, v, e, l, o, p, m, e, n, t,  , t, i, m, e,  , f, r, o, m,  , 1, 0,  , t, o,  , 2, 0,  , h, o, u, r, s,  , d, o, w, n, 
-, t, o,  , 4,  , t, o,  , 6,  , h, o, u, r, s,  , p, e, r,  , m, o, d, u, l, e, ,,  , c, o, r, r, e, s, p, o, n, d, i, n, g,  , t, o,  , 4, 0,  , t, o,  , 6, 0,  , p, e, r, c, e, n, t,  , t, i, m, e,  , s, a, v, i, n, g, s, ., 
-, T, h, e, s, e,  , r, e, s, u, l, t, s,  , h, i, g, h, l, i, g, h, t,  , b, o, t, h,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , a, n, d,  , c, u, r, r, e, n, t,  , l, i, m, i, t, a, t, i, o, n, s,  , o, f,  , L, L, M, 
-, a, s, s, i, s, t, e, d,  , M, o, d, e, l, i, c, a,  , g, e, n, e, r, a, t, i, o, n, ,,  , a, n, d,  , p, o, i, n, t,  , t, o,  , f, u, t, u, r, e,  , r, e, s, e, a, r, c, h,  , i, n,  , p, r, e,  , s, i, m, u, l, a, t, i, o, n, 
-, v, a, l, i, d, a, t, i, o, n, ,,  , s, t, r, o, n, g, e, r,  , g, r, o, u, n, d, i, n, g, ,,  , a, n, d,  , c, l, o, s, e, d,  , l, o, o, p,  , e, v, a, l, u, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14622v1'>Adversarial Distilled Retrieval-Augmented Guarding Model for Online Malicious Intent Detection</a></td><td>W, i, t, h,  , t, h, e,  , d, e, p, l, o, y, m, e, n, t,  , o, f,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , i, n,  , i, n, t, e, r, a, c, t, i, v, e, 
-, a, p, p, l, i, c, a, t, i, o, n, s, ,,  , o, n, l, i, n, e,  , m, a, l, i, c, i, o, u, s,  , i, n, t, e, n, t,  , d, e, t, e, c, t, i, o, n,  , h, a, s,  , b, e, c, o, m, e,  , i, n, c, r, e, a, s, i, n, g, l, y, 
-, c, r, i, t, i, c, a, l, .,  , H, o, w, e, v, e, r, ,,  , e, x, i, s, t, i, n, g,  , a, p, p, r, o, a, c, h, e, s,  , f, a, l, l,  , s, h, o, r, t,  , o, f,  , h, a, n, d, l, i, n, g,  , d, i, v, e, r, s, e,  , a, n, d, 
-, c, o, m, p, l, e, x,  , u, s, e, r,  , q, u, e, r, i, e, s,  , i, n,  , r, e, a, l,  , t, i, m, e, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, ,,  , w, e,  , i, n, t, r, o, d, u, c, e, 
-, A, D, R, A, G,  , (, A, d, v, e, r, s, a, r, i, a, l,  , D, i, s, t, i, l, l, e, d,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, u, a, r, d, ), ,,  , a,  , t, w, o, -, s, t, a, g, e,  , f, r, a, m, e, w, o, r, k, 
-, f, o, r,  , r, o, b, u, s, t,  , a, n, d,  , e, f, f, i, c, i, e, n, t,  , o, n, l, i, n, e,  , m, a, l, i, c, i, o, u, s,  , i, n, t, e, n, t,  , d, e, t, e, c, t, i, o, n, .,  , I, n,  , t, h, e,  , t, r, a, i, n, i, n, g, 
-, s, t, a, g, e, ,,  , a,  , h, i, g, h, -, c, a, p, a, c, i, t, y,  , t, e, a, c, h, e, r,  , m, o, d, e, l,  , i, s,  , t, r, a, i, n, e, d,  , o, n,  , a, d, v, e, r, s, a, r, i, a, l, l, y,  , p, e, r, t, u, r, b, e, d, ,, 
-, r, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , i, n, p, u, t, s,  , t, o,  , l, e, a, r, n,  , r, o, b, u, s, t,  , d, e, c, i, s, i, o, n,  , b, o, u, n, d, a, r, i, e, s,  , o, v, e, r,  , d, i, v, e, r, s, e,  , a, n, d, 
-, c, o, m, p, l, e, x,  , u, s, e, r,  , q, u, e, r, i, e, s, .,  , I, n,  , t, h, e,  , i, n, f, e, r, e, n, c, e,  , s, t, a, g, e, ,,  , a,  , d, i, s, t, i, l, l, a, t, i, o, n,  , s, c, h, e, d, u, l, e, r, 
-, t, r, a, n, s, f, e, r, s,  , t, h, e,  , t, e, a, c, h, e, r, ', s,  , k, n, o, w, l, e, d, g, e,  , i, n, t, o,  , a,  , c, o, m, p, a, c, t,  , s, t, u, d, e, n, t,  , m, o, d, e, l, ,,  , w, i, t, h,  , a, 
-, c, o, n, t, i, n, u, a, l, l, y,  , u, p, d, a, t, e, d,  , k, n, o, w, l, e, d, g, e,  , b, a, s, e,  , c, o, l, l, e, c, t, e, d,  , o, n, l, i, n, e, .,  , A, t,  , d, e, p, l, o, y, m, e, n, t, ,,  , t, h, e,  , c, o, m, p, a, c, t, 
-, s, t, u, d, e, n, t,  , m, o, d, e, l,  , l, e, v, e, r, a, g, e, s,  , t, o, p, -, K,  , s, i, m, i, l, a, r,  , s, a, f, e, t, y,  , e, x, e, m, p, l, a, r, s,  , r, e, t, r, i, e, v, e, d,  , f, r, o, m,  , t, h, e, 
-, o, n, l, i, n, e, -, u, p, d, a, t, e, d,  , k, n, o, w, l, e, d, g, e,  , b, a, s, e,  , t, o,  , e, n, a, b, l, e,  , b, o, t, h,  , o, n, l, i, n, e,  , a, n, d,  , r, e, a, l, -, t, i, m, e,  , m, a, l, i, c, i, o, u, s, 
-, q, u, e, r, y,  , d, e, t, e, c, t, i, o, n, .,  , E, v, a, l, u, a, t, i, o, n, s,  , a, c, r, o, s, s,  , t, e, n,  , s, a, f, e, t, y,  , b, e, n, c, h, m, a, r, k, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t, 
-, A, D, R, A, G, ,,  , w, i, t, h,  , a,  , 1, 4, 9, M, -, p, a, r, a, m, e, t, e, r,  , m, o, d, e, l, ,,  , a, c, h, i, e, v, e, s,  , 9, 8, ., 5, %,  , o, f,  , W, i, l, d, G, u, a, r, d, -, 7, B, ', s, 
-, p, e, r, f, o, r, m, a, n, c, e, ,,  , s, u, r, p, a, s, s, e, s,  , G, P, T, -, 4,  , b, y,  , 3, ., 3, %,  , a, n, d,  , L, l, a, m, a, -, G, u, a, r, d, -, 3, -, 8, B,  , b, y,  , 9, ., 5, %,  , o, n, 
-, o, u, t, -, o, f, -, d, i, s, t, r, i, b, u, t, i, o, n,  , d, e, t, e, c, t, i, o, n, ,,  , w, h, i, l, e,  , s, i, m, u, l, t, a, n, e, o, u, s, l, y,  , d, e, l, i, v, e, r, i, n, g,  , u, p,  , t, o,  , 5, ., 6, x,  , l, o, w, e, r, 
-, l, a, t, e, n, c, y,  , a, t,  , 3, 0, 0,  , q, u, e, r, i, e, s,  , p, e, r,  , s, e, c, o, n, d,  , (, Q, P, S, ),  , i, n,  , r, e, a, l, -, t, i, m, e,  , a, p, p, l, i, c, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14608v1'>Enterprise AI Must Enforce Participant-Aware Access Control</a></td><td>L, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , a, r, e,  , i, n, c, r, e, a, s, i, n, g, l, y,  , d, e, p, l, o, y, e, d,  , i, n,  , e, n, t, e, r, p, r, i, s, e,  , s, e, t, t, i, n, g, s, 
-, w, h, e, r, e,  , t, h, e, y,  , i, n, t, e, r, a, c, t,  , w, i, t, h,  , m, u, l, t, i, p, l, e,  , u, s, e, r, s,  , a, n, d,  , a, r, e,  , t, r, a, i, n, e, d,  , o, r,  , f, i, n, e, -, t, u, n, e, d,  , o, n, 
-, s, e, n, s, i, t, i, v, e,  , i, n, t, e, r, n, a, l,  , d, a, t, a, .,  , W, h, i, l, e,  , f, i, n, e, -, t, u, n, i, n, g,  , e, n, h, a, n, c, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , b, y, 
-, i, n, t, e, r, n, a, l, i, z, i, n, g,  , d, o, m, a, i, n,  , k, n, o, w, l, e, d, g, e, ,,  , i, t,  , a, l, s, o,  , i, n, t, r, o, d, u, c, e, s,  , a,  , c, r, i, t, i, c, a, l,  , s, e, c, u, r, i, t, y,  , r, i, s, k, :, 
-, l, e, a, k, a, g, e,  , o, f,  , c, o, n, f, i, d, e, n, t, i, a, l,  , t, r, a, i, n, i, n, g,  , d, a, t, a,  , t, o,  , u, n, a, u, t, h, o, r, i, z, e, d,  , u, s, e, r, s, .,  , T, h, e, s, e,  , r, i, s, k, s,  , a, r, e, 
-, e, x, a, c, e, r, b, a, t, e, d,  , w, h, e, n,  , L, L, M, s,  , a, r, e,  , c, o, m, b, i, n, e, d,  , w, i, t, h,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ), 
-, p, i, p, e, l, i, n, e, s,  , t, h, a, t,  , d, y, n, a, m, i, c, a, l, l, y,  , f, e, t, c, h,  , c, o, n, t, e, x, t, u, a, l,  , d, o, c, u, m, e, n, t, s,  , a, t,  , i, n, f, e, r, e, n, c, e,  , t, i, m, e, ., 
-,  ,  , W, e,  , d, e, m, o, n, s, t, r, a, t, e,  , d, a, t, a,  , e, x, f, i, l, t, r, a, t, i, o, n,  , a, t, t, a, c, k, s,  , o, n,  , A, I,  , a, s, s, i, s, t, a, n, t, s,  , w, h, e, r, e,  , a, d, v, e, r, s, a, r, i, e, s, 
-, c, a, n,  , e, x, p, l, o, i, t,  , c, u, r, r, e, n, t,  , f, i, n, e, -, t, u, n, i, n, g,  , a, n, d,  , R, A, G,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , t, o,  , l, e, a, k,  , s, e, n, s, i, t, i, v, e, 
-, i, n, f, o, r, m, a, t, i, o, n,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , t, h, e,  , l, a, c, k,  , o, f,  , a, c, c, e, s, s,  , c, o, n, t, r, o, l,  , e, n, f, o, r, c, e, m, e, n, t, .,  , W, e,  , s, h, o, w,  , t, h, a, t, 
-, e, x, i, s, t, i, n, g,  , d, e, f, e, n, s, e, s, ,,  , i, n, c, l, u, d, i, n, g,  , p, r, o, m, p, t,  , s, a, n, i, t, i, z, a, t, i, o, n, ,,  , o, u, t, p, u, t,  , f, i, l, t, e, r, i, n, g, ,,  , s, y, s, t, e, m, 
-, i, s, o, l, a, t, i, o, n, ,,  , a, n, d,  , t, r, a, i, n, i, n, g, -, l, e, v, e, l,  , p, r, i, v, a, c, y,  , m, e, c, h, a, n, i, s, m, s, ,,  , a, r, e,  , f, u, n, d, a, m, e, n, t, a, l, l, y, 
-, p, r, o, b, a, b, i, l, i, s, t, i, c,  , a, n, d,  , f, a, i, l,  , t, o,  , o, f, f, e, r,  , r, o, b, u, s, t,  , p, r, o, t, e, c, t, i, o, n,  , a, g, a, i, n, s, t,  , s, u, c, h,  , a, t, t, a, c, k, s, ., 
-,  ,  , W, e,  , t, a, k, e,  , t, h, e,  , p, o, s, i, t, i, o, n,  , t, h, a, t,  , o, n, l, y,  , a,  , d, e, t, e, r, m, i, n, i, s, t, i, c,  , a, n, d,  , r, i, g, o, r, o, u, s,  , e, n, f, o, r, c, e, m, e, n, t,  , o, f, 
-, f, i, n, e, -, g, r, a, i, n, e, d,  , a, c, c, e, s, s,  , c, o, n, t, r, o, l,  , d, u, r, i, n, g,  , b, o, t, h,  , f, i, n, e, -, t, u, n, i, n, g,  , a, n, d,  , R, A, G, -, b, a, s, e, d,  , i, n, f, e, r, e, n, c, e,  , c, a, n, 
-, r, e, l, i, a, b, l, y,  , p, r, e, v, e, n, t,  , t, h, e,  , l, e, a, k, a, g, e,  , o, f,  , s, e, n, s, i, t, i, v, e,  , d, a, t, a,  , t, o,  , u, n, a, u, t, h, o, r, i, z, e, d,  , r, e, c, i, p, i, e, n, t, s, ., 
-,  ,  , W, e,  , i, n, t, r, o, d, u, c, e,  , a,  , f, r, a, m, e, w, o, r, k,  , c, e, n, t, e, r, e, d,  , o, n,  , t, h, e,  , p, r, i, n, c, i, p, l, e,  , t, h, a, t,  , a, n, y,  , c, o, n, t, e, n, t,  , u, s, e, d,  , i, n, 
-, t, r, a, i, n, i, n, g, ,,  , r, e, t, r, i, e, v, a, l, ,,  , o, r,  , g, e, n, e, r, a, t, i, o, n,  , b, y,  , a, n,  , L, L, M,  , i, s,  , e, x, p, l, i, c, i, t, l, y,  , a, u, t, h, o, r, i, z, e, d,  , f, o, r, 
-, \, e, m, p, h, {, a, l, l,  , u, s, e, r, s,  , i, n, v, o, l, v, e, d,  , i, n,  , t, h, e,  , i, n, t, e, r, a, c, t, i, o, n, }, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , o, f, f, e, r, s,  , a,  , s, i, m, p, l, e,  , y, e, t, 
-, p, o, w, e, r, f, u, l,  , p, a, r, a, d, i, g, m,  , s, h, i, f, t,  , f, o, r,  , b, u, i, l, d, i, n, g,  , s, e, c, u, r, e,  , m, u, l, t, i, -, u, s, e, r,  , L, L, M,  , s, y, s, t, e, m, s,  , t, h, a, t,  , a, r, e, 
-, g, r, o, u, n, d, e, d,  , i, n,  , c, l, a, s, s, i, c, a, l,  , a, c, c, e, s, s,  , c, o, n, t, r, o, l,  , b, u, t,  , a, d, a, p, t, e, d,  , t, o,  , t, h, e,  , u, n, i, q, u, e,  , c, h, a, l, l, e, n, g, e, s,  , o, f, 
-, m, o, d, e, r, n,  , A, I,  , w, o, r, k, f, l, o, w, s, .,  , O, u, r,  , s, o, l, u, t, i, o, n,  , h, a, s,  , b, e, e, n,  , d, e, p, l, o, y, e, d,  , i, n,  , M, i, c, r, o, s, o, f, t,  , C, o, p, i, l, o, t, 
-, T, u, n, i, n, g, ,,  , a,  , p, r, o, d, u, c, t,  , o, f, f, e, r, i, n, g,  , t, h, a, t,  , e, n, a, b, l, e, s,  , o, r, g, a, n, i, z, a, t, i, o, n, s,  , t, o,  , f, i, n, e, -, t, u, n, e,  , m, o, d, e, l, s,  , u, s, i, n, g, 
-, t, h, e, i, r,  , o, w, n,  , e, n, t, e, r, p, r, i, s, e, -, s, p, e, c, i, f, i, c,  , d, a, t, a, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14589v1'>ATLANTIS: AI-driven Threat Localization, Analysis, and Triage Intelligence System</a></td><td>W, e,  , p, r, e, s, e, n, t,  , A, T, L, A, N, T, I, S, ,,  , t, h, e,  , c, y, b, e, r,  , r, e, a, s, o, n, i, n, g,  , s, y, s, t, e, m,  , d, e, v, e, l, o, p, e, d,  , b, y,  , T, e, a, m,  , A, t, l, a, n, t, a, 
-, t, h, a, t,  , w, o, n,  , 1, s, t,  , p, l, a, c, e,  , i, n,  , t, h, e,  , F, i, n, a, l,  , C, o, m, p, e, t, i, t, i, o, n,  , o, f,  , D, A, R, P, A, ', s,  , A, I,  , C, y, b, e, r,  , C, h, a, l, l, e, n, g, e, 
-, (, A, I, x, C, C, ),  , a, t,  , D, E, F,  , C, O, N,  , 3, 3,  , (, A, u, g, u, s, t,  , 2, 0, 2, 5, ), .,  , A, I, x, C, C,  , (, 2, 0, 2, 3, -, 2, 0, 2, 5, ),  , c, h, a, l, l, e, n, g, e, d,  , t, e, a, m, s,  , t, o, 
-, b, u, i, l, d,  , a, u, t, o, n, o, m, o, u, s,  , c, y, b, e, r,  , r, e, a, s, o, n, i, n, g,  , s, y, s, t, e, m, s,  , c, a, p, a, b, l, e,  , o, f,  , d, i, s, c, o, v, e, r, i, n, g,  , a, n, d,  , p, a, t, c, h, i, n, g, 
-, v, u, l, n, e, r, a, b, i, l, i, t, i, e, s,  , a, t,  , t, h, e,  , s, p, e, e, d,  , a, n, d,  , s, c, a, l, e,  , o, f,  , m, o, d, e, r, n,  , s, o, f, t, w, a, r, e, .,  , A, T, L, A, N, T, I, S,  , i, n, t, e, g, r, a, t, e, s, 
-, l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , w, i, t, h,  , p, r, o, g, r, a, m,  , a, n, a, l, y, s, i, s,  , -, -,  , c, o, m, b, i, n, i, n, g,  , s, y, m, b, o, l, i, c, 
-, e, x, e, c, u, t, i, o, n, ,,  , d, i, r, e, c, t, e, d,  , f, u, z, z, i, n, g, ,,  , a, n, d,  , s, t, a, t, i, c,  , a, n, a, l, y, s, i, s,  , -, -,  , t, o,  , a, d, d, r, e, s, s,  , l, i, m, i, t, a, t, i, o, n, s,  , i, n, 
-, a, u, t, o, m, a, t, e, d,  , v, u, l, n, e, r, a, b, i, l, i, t, y,  , d, i, s, c, o, v, e, r, y,  , a, n, d,  , p, r, o, g, r, a, m,  , r, e, p, a, i, r, .,  , D, e, v, e, l, o, p, e, d,  , b, y,  , r, e, s, e, a, r, c, h, e, r, s, 
-, a, t,  , G, e, o, r, g, i, a,  , I, n, s, t, i, t, u, t, e,  , o, f,  , T, e, c, h, n, o, l, o, g, y, ,,  , S, a, m, s, u, n, g,  , R, e, s, e, a, r, c, h, ,,  , K, A, I, S, T, ,,  , a, n, d,  , P, O, S, T, E, C, H, ,,  , t, h, e, 
-, s, y, s, t, e, m,  , a, d, d, r, e, s, s, e, s,  , c, o, r, e,  , c, h, a, l, l, e, n, g, e, s, :,  , s, c, a, l, i, n, g,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , c, o, d, e, b, a, s, e, s,  , f, r, o, m,  , C,  , t, o, 
-, J, a, v, a, ,,  , a, c, h, i, e, v, i, n, g,  , h, i, g, h,  , p, r, e, c, i, s, i, o, n,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , b, r, o, a, d,  , c, o, v, e, r, a, g, e, ,,  , a, n, d,  , p, r, o, d, u, c, i, n, g, 
-, s, e, m, a, n, t, i, c, a, l, l, y,  , c, o, r, r, e, c, t,  , p, a, t, c, h, e, s,  , t, h, a, t,  , p, r, e, s, e, r, v, e,  , i, n, t, e, n, d, e, d,  , b, e, h, a, v, i, o, r, .,  , W, e,  , d, e, t, a, i, l,  , t, h, e, 
-, d, e, s, i, g, n,  , p, h, i, l, o, s, o, p, h, y, ,,  , a, r, c, h, i, t, e, c, t, u, r, a, l,  , d, e, c, i, s, i, o, n, s, ,,  , a, n, d,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n,  , s, t, r, a, t, e, g, i, e, s, 
-, b, e, h, i, n, d,  , A, T, L, A, N, T, I, S, ,,  , s, h, a, r, e,  , l, e, s, s, o, n, s,  , l, e, a, r, n, e, d,  , f, r, o, m,  , p, u, s, h, i, n, g,  , t, h, e,  , b, o, u, n, d, a, r, i, e, s,  , o, f,  , a, u, t, o, m, a, t, e, d, 
-, s, e, c, u, r, i, t, y,  , w, h, e, n,  , p, r, o, g, r, a, m,  , a, n, a, l, y, s, i, s,  , m, e, e, t, s,  , m, o, d, e, r, n,  , A, I, ,,  , a, n, d,  , r, e, l, e, a, s, e,  , a, r, t, i, f, a, c, t, s,  , t, o, 
-, s, u, p, p, o, r, t,  , r, e, p, r, o, d, u, c, i, b, i, l, i, t, y,  , a, n, d,  , f, u, t, u, r, e,  , r, e, s, e, a, r, c, h, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14547v1'>(P)rior(D)yna(F)low: A Priori Dynamic Workflow Construction via Multi-Agent Collaboration</a></td><td>R, e, c, e, n, t,  , s, t, u, d, i, e, s,  , h, a, v, e,  , s, h, o, w, n,  , t, h, a, t,  , c, a, r, e, f, u, l, l, y,  , d, e, s, i, g, n, e, d,  , w, o, r, k, f, l, o, w, s,  , c, o, o, r, d, i, n, a, t, i, n, g, 
-, l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, (, L, L, M, s, ),  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , e, n, h, a, n, c, e,  , t, a, s, k, -, s, o, l, v, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s, 
-, c, o, m, p, a, r, e, d,  , t, o,  , u, s, i, n, g,  , a,  , s, i, n, g, l, e,  , m, o, d, e, l, .,  , W, h, i, l, e,  , a, n,  , i, n, c, r, e, a, s, i, n, g,  , n, u, m, b, e, r,  , o, f,  , w, o, r, k, s,  , f, o, c, u, s,  , o, n, 
-, a, u, t, o, n, o, m, o, u, s,  , w, o, r, k, f, l, o, w,  , c, o, n, s, t, r, u, c, t, i, o, n, ,,  , m, o, s, t,  , e, x, i, s, t, i, n, g,  , a, p, p, r, o, a, c, h, e, s,  , r, e, l, y,  , s, o, l, e, l, y,  , o, n, 
-, h, i, s, t, o, r, i, c, a, l,  , e, x, p, e, r, i, e, n, c, e, ,,  , l, e, a, d, i, n, g,  , t, o,  , l, i, m, i, t, a, t, i, o, n, s,  , i, n,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d,  , a, d, a, p, t, a, b, i, l, i, t, y, ., 
-, W, e,  , a, r, g, u, e,  , t, h, a, t,  , w, h, i, l, e,  , h, i, s, t, o, r, i, c, a, l,  , e, x, p, e, r, i, e, n, c, e,  , i, s,  , v, a, l, u, a, b, l, e, ,,  , w, o, r, k, f, l, o, w,  , c, o, n, s, t, r, u, c, t, i, o, n, 
-, s, h, o, u, l, d,  , a, l, s, o,  , f, l, e, x, i, b, l, y,  , r, e, s, p, o, n, d,  , t, o,  , t, h, e,  , u, n, i, q, u, e,  , c, h, a, r, a, c, t, e, r, i, s, t, i, c, s,  , o, f,  , e, a, c, h,  , t, a, s, k, .,  , T, o, 
-, t, h, i, s,  , e, n, d, ,,  , w, e,  , p, r, o, p, o, s, e,  , a, n,  , a,  , p, r, i, o, r, i,  , d, y, n, a, m, i, c,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , a, u, t, o, m, a, t, e, d,  , w, o, r, k, f, l, o, w, 
-, c, o, n, s, t, r, u, c, t, i, o, n, .,  , O, u, r,  , f, r, a, m, e, w, o, r, k,  , f, i, r, s, t,  , l, e, v, e, r, a, g, e, s,  , Q, -, t, a, b, l, e,  , l, e, a, r, n, i, n, g,  , t, o,  , o, p, t, i, m, i, z, e,  , t, h, e, 
-, d, e, c, i, s, i, o, n,  , s, p, a, c, e, ,,  , g, u, i, d, i, n, g,  , a, g, e, n, t,  , d, e, c, i, s, i, o, n, s,  , a, n, d,  , e, n, a, b, l, i, n, g,  , e, f, f, e, c, t, i, v, e,  , u, s, e,  , o, f, 
-, h, i, s, t, o, r, i, c, a, l,  , e, x, p, e, r, i, e, n, c, e, .,  , A, t,  , t, h, e,  , s, a, m, e,  , t, i, m, e, ,,  , a, g, e, n, t, s,  , e, v, a, l, u, a, t, e,  , t, h, e,  , c, u, r, r, e, n, t,  , t, a, s, k, 
-, p, r, o, g, r, e, s, s,  , a, n, d,  , m, a, k, e,  , a,  , p, r, i, o, r, i,  , d, e, c, i, s, i, o, n, s,  , r, e, g, a, r, d, i, n, g,  , t, h, e,  , n, e, x, t,  , e, x, e, c, u, t, i, n, g,  , a, g, e, n, t, ,, 
-, a, l, l, o, w, i, n, g,  , t, h, e,  , s, y, s, t, e, m,  , t, o,  , p, r, o, a, c, t, i, v, e, l, y,  , s, e, l, e, c, t,  , t, h, e,  , m, o, r, e,  , s, u, i, t, a, b, l, e,  , w, o, r, k, f, l, o, w,  , s, t, r, u, c, t, u, r, e, 
-, f, o, r,  , e, a, c, h,  , g, i, v, e, n,  , t, a, s, k, .,  , A, d, d, i, t, i, o, n, a, l, l, y, ,,  , w, e,  , i, n, c, o, r, p, o, r, a, t, e,  , m, e, c, h, a, n, i, s, m, s,  , s, u, c, h,  , a, s,  , c, o, l, d, -, s, t, a, r, t, 
-, i, n, i, t, i, a, l, i, z, a, t, i, o, n, ,,  , e, a, r, l, y,  , s, t, o, p, p, i, n, g, ,,  , a, n, d,  , p, r, u, n, i, n, g,  , t, o,  , f, u, r, t, h, e, r,  , i, m, p, r, o, v, e,  , s, y, s, t, e, m, 
-, e, f, f, i, c, i, e, n, c, y, .,  , E, x, p, e, r, i, m, e, n, t, a, l,  , e, v, a, l, u, a, t, i, o, n, s,  , o, n,  , f, o, u, r,  , b, e, n, c, h, m, a, r, k,  , d, a, t, a, s, e, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, e, 
-, f, e, a, s, i, b, i, l, i, t, y,  , a, n, d,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , o, u, r,  , a, p, p, r, o, a, c, h, .,  , C, o, m, p, a, r, e, d,  , t, o,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t, 
-, b, a, s, e, l, i, n, e, s, ,,  , o, u, r,  , m, e, t, h, o, d,  , a, c, h, i, e, v, e, s,  , a, n,  , a, v, e, r, a, g, e,  , i, m, p, r, o, v, e, m, e, n, t,  , o, f,  , 4, ., 0, 5, %, ,,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g, 
-, w, o, r, k, f, l, o, w,  , c, o, n, s, t, r, u, c, t, i, o, n,  , a, n, d,  , i, n, f, e, r, e, n, c, e,  , c, o, s, t, s,  , t, o,  , o, n, l, y,  , 3, 0, ., 6, 8, %, -, 4, 8, ., 3, 1, %,  , o, f,  , t, h, o, s, e, 
-, r, e, q, u, i, r, e, d,  , b, y,  , e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14532v1'>Leveraging Artificial Intelligence as a Strategic Growth Catalyst for Small and Medium-sized Enterprises</a></td><td>A, r, t, i, f, i, c, i, a, l,  , I, n, t, e, l, l, i, g, e, n, c, e,  , (, A, I, ),  , h, a, s,  , t, r, a, n, s, i, t, i, o, n, e, d,  , f, r, o, m,  , a,  , f, u, t, u, r, i, s, t, i, c,  , c, o, n, c, e, p, t, 
-, r, e, s, e, r, v, e, d,  , f, o, r,  , l, a, r, g, e,  , c, o, r, p, o, r, a, t, i, o, n, s,  , t, o,  , a,  , p, r, e, s, e, n, t, -, d, a, y, ,,  , a, c, c, e, s, s, i, b, l, e, ,,  , a, n, d,  , e, s, s, e, n, t, i, a, l, 
-, g, r, o, w, t, h,  , l, e, v, e, r,  , f, o, r,  , S, m, a, l, l,  , a, n, d,  , M, e, d, i, u, m, -, s, i, z, e, d,  , E, n, t, e, r, p, r, i, s, e, s,  , (, S, M, E, s, ), .,  , F, o, r,  , e, n, t, r, e, p, r, e, n, e, u, r, s, 
-, a, n, d,  , b, u, s, i, n, e, s, s,  , l, e, a, d, e, r, s, ,,  , s, t, r, a, t, e, g, i, c,  , A, I,  , a, d, o, p, t, i, o, n,  , i, s,  , n, o,  , l, o, n, g, e, r,  , a, n,  , o, p, t, i, o, n,  , b, u, t,  , a, n, 
-, i, m, p, e, r, a, t, i, v, e,  , f, o, r,  , c, o, m, p, e, t, i, t, i, v, e, n, e, s, s, ,,  , o, p, e, r, a, t, i, o, n, a, l,  , e, f, f, i, c, i, e, n, c, y, ,,  , a, n, d,  , l, o, n, g, -, t, e, r, m,  , s, u, r, v, i, v, a, l, ., 
-, T, h, i, s,  , r, e, p, o, r, t,  , p, r, o, v, i, d, e, s,  , a,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , S, M, E,  , l, e, a, d, e, r, s,  , t, o,  , n, a, v, i, g, a, t, e,  , t, h, i, s, 
-, t, e, c, h, n, o, l, o, g, i, c, a, l,  , s, h, i, f, t, ,,  , o, f, f, e, r, i, n, g,  , t, h, e,  , f, o, u, n, d, a, t, i, o, n, a, l,  , k, n, o, w, l, e, d, g, e, ,,  , b, u, s, i, n, e, s, s,  , c, a, s, e, ,, 
-, p, r, a, c, t, i, c, a, l,  , a, p, p, l, i, c, a, t, i, o, n, s, ,,  , a, n, d,  , s, t, r, a, t, e, g, i, c,  , g, u, i, d, a, n, c, e,  , n, e, c, e, s, s, a, r, y,  , t, o,  , h, a, r, n, e, s, s,  , t, h, e,  , p, o, w, e, r, 
-, o, f,  , A, I, .,  , T, h, e,  , q, u, a, n, t, i, t, a, t, i, v, e,  , e, v, i, d, e, n, c, e,  , s, u, p, p, o, r, t, i, n, g,  , A, I,  , a, d, o, p, t, i, o, n,  , i, s,  , c, o, m, p, e, l, l, i, n, g, ;,  , 9, 1, %,  , o, f, 
-, S, M, E, s,  , u, s, i, n, g,  , A, I,  , r, e, p, o, r, t,  , t, h, a, t,  , i, t,  , d, i, r, e, c, t, l, y,  , b, o, o, s, t, s,  , t, h, e, i, r,  , r, e, v, e, n, u, e, .,  , B, e, y, o, n, d,  , t, o, p, -, l, i, n, e, 
-, g, r, o, w, t, h, ,,  , A, I,  , d, r, i, v, e, s,  , p, r, o, f, o, u, n, d,  , o, p, e, r, a, t, i, o, n, a, l,  , e, f, f, i, c, i, e, n, c, i, e, s, ,,  , w, i, t, h,  , s, t, u, d, i, e, s,  , s, h, o, w, i, n, g,  , i, t, 
-, c, a, n,  , r, e, d, u, c, e,  , o, p, e, r, a, t, i, o, n, a, l,  , c, o, s, t, s,  , b, y,  , u, p,  , t, o,  , 3, 0, %,  , a, n, d,  , s, a, v, e,  , b, u, s, i, n, e, s, s, e, s,  , m, o, r, e,  , t, h, a, n,  , 2, 0, 
-, h, o, u, r, s,  , o, f,  , v, a, l, u, a, b, l, e,  , t, i, m, e,  , e, a, c, h,  , m, o, n, t, h, .,  , T, h, i, s,  , t, r, a, n, s, f, o, r, m, a, t, i, o, n,  , i, s,  , o, c, c, u, r, r, i, n, g,  , w, i, t, h, i, n,  , t, h, e, 
-, c, o, n, t, e, x, t,  , o, f,  , a,  , s, e, i, s, m, i, c,  , e, c, o, n, o, m, i, c,  , s, h, i, f, t, ;,  , t, h, e,  , g, l, o, b, a, l,  , A, I,  , m, a, r, k, e, t,  , i, s,  , p, r, o, j, e, c, t, e, d,  , t, o,  , s, u, r, g, e, 
-, f, r, o, m,  , $, 2, 3, 3, ., 4, 6,  , B, i, l, l, i, o, n,  , i, n,  , 2, 0, 2, 4,  , t, o,  , a, n,  , a, s, t, o, n, i, s, h, i, n, g,  , $, 1, ., 7, 7,  , T, r, i, l, l, i, o, n,  , b, y,  , 2, 0, 3, 2, .,  , T, h, i, s, 
-, p, a, p, e, r,  , d, e, m, y, s, t, i, f, i, e, s,  , t, h, e,  , c, o, r, e,  , c, o, n, c, e, p, t, s,  , o, f,  , A, I, ,,  , p, r, e, s, e, n, t, s,  , a,  , b, u, s, i, n, e, s, s,  , c, a, s, e,  , b, a, s, e, d,  , o, n, 
-, m, a, r, k, e, t,  , d, a, t, a, ,,  , d, e, t, a, i, l, s,  , p, r, a, c, t, i, c, a, l,  , a, p, p, l, i, c, a, t, i, o, n, s, ,,  , a, n, d,  , l, a, y, s,  , o, u, t,  , a,  , p, h, a, s, e, d, ,,  , a, c, t, i, o, n, a, b, l, e, 
-, a, d, o, p, t, i, o, n,  , s, t, r, a, t, e, g, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14526v1'>Delta Knowledge Distillation for Large Language Models</a></td><td>K, n, o, w, l, e, d, g, e,  , d, i, s, t, i, l, l, a, t, i, o, n,  , (, K, D, ),  , i, s,  , a,  , w, i, d, e, l, y,  , a, d, o, p, t, e, d,  , a, p, p, r, o, a, c, h,  , f, o, r,  , c, o, m, p, r, e, s, s, i, n, g, 
-, l, a, r, g, e,  , n, e, u, r, a, l,  , n, e, t, w, o, r, k, s,  , b, y,  , t, r, a, n, s, f, e, r, r, i, n, g,  , k, n, o, w, l, e, d, g, e,  , f, r, o, m,  , a,  , l, a, r, g, e,  , t, e, a, c, h, e, r,  , m, o, d, e, l,  , t, o,  , a, 
-, s, m, a, l, l, e, r,  , s, t, u, d, e, n, t,  , m, o, d, e, l, .,  , I, n,  , t, h, e,  , c, o, n, t, e, x, t,  , o, f,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, ,,  , t, o, k, e, n,  , l, e, v, e, l,  , K, D, ,, 
-, t, y, p, i, c, a, l, l, y,  , m, i, n, i, m, i, z, i, n, g,  , t, h, e,  , K, L,  , d, i, v, e, r, g, e, n, c, e,  , b, e, t, w, e, e, n,  , s, t, u, d, e, n, t,  , o, u, t, p, u, t,  , d, i, s, t, r, i, b, u, t, i, o, n,  , a, n, d, 
-, t, e, a, c, h, e, r,  , o, u, t, p, u, t,  , d, i, s, t, r, i, b, u, t, i, o, n, ,,  , h, a, s,  , s, h, o, w, n,  , s, t, r, o, n, g,  , e, m, p, i, r, i, c, a, l,  , p, e, r, f, o, r, m, a, n, c, e, .,  , H, o, w, e, v, e, r, ,, 
-, p, r, i, o, r,  , w, o, r, k,  , a, s, s, u, m, e, s,  , s, t, u, d, e, n, t,  , o, u, t, p, u, t,  , d, i, s, t, r, i, b, u, t, i, o, n,  , a, n, d,  , t, e, a, c, h, e, r,  , o, u, t, p, u, t,  , d, i, s, t, r, i, b, u, t, i, o, n, 
-, s, h, a, r, e,  , t, h, e,  , s, a, m, e,  , o, p, t, i, m, a, l,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , s, p, a, c, e, ,,  , a,  , p, r, e, m, i, s, e,  , t, h, a, t,  , m, a, y,  , n, o, t,  , h, o, l, d,  , i, n, 
-, m, a, n, y,  , c, a, s, e, s, .,  , T, o,  , s, o, l, v, e,  , t, h, i, s,  , p, r, o, b, l, e, m, ,,  , w, e,  , p, r, o, p, o, s, e,  , D, e, l, t, a,  , K, n, o, w, l, e, d, g, e,  , D, i, s, t, i, l, l, a, t, i, o, n, 
-, (, D, e, l, t, a, -, K, D, ), ,,  , a,  , n, o, v, e, l,  , e, x, t, e, n, s, i, o, n,  , o, f,  , t, o, k, e, n,  , l, e, v, e, l,  , K, D,  , t, h, a, t,  , e, n, c, o, u, r, a, g, e, s,  , t, h, e,  , s, t, u, d, e, n, t,  , t, o, 
-, a, p, p, r, o, x, i, m, a, t, e,  , a, n,  , o, p, t, i, m, a, l,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , s, p, a, c, e,  , b, y,  , e, x, p, l, i, c, i, t, l, y,  , p, r, e, s, e, r, v, i, n, g,  , t, h, e, 
-, d, i, s, t, r, i, b, u, t, i, o, n, a, l,  , s, h, i, f, t,  , D, e, l, t, a,  , i, n, t, r, o, d, u, c, e, d,  , d, u, r, i, n, g,  , t, h, e,  , t, e, a, c, h, e, r, ', s,  , s, u, p, e, r, v, i, s, e, d, 
-, f, i, n, e, t, u, n, i, n, g,  , (, S, F, T, ), .,  , E, m, p, i, r, i, c, a, l,  , r, e, s, u, l, t, s,  , o, n,  , R, O, U, G, E,  , m, e, t, r, i, c, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , D, e, l, t, a,  , K, D, 
-, s, u, b, s, t, a, n, t, i, a, l, l, y,  , i, m, p, r, o, v, e, s,  , s, t, u, d, e, n, t,  , p, e, r, f, o, r, m, a, n, c, e,  , w, h, i, l, e,  , p, r, e, s, e, r, v, i, n, g,  , m, o, r, e,  , o, f,  , t, h, e, 
-, t, e, a, c, h, e, r, ', s,  , k, n, o, w, l, e, d, g, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14519v1'>BEACON: Behavioral Malware Classification with Large Language Model Embeddings and Deep Learning</a></td><td>M, a, l, w, a, r, e,  , i, s,  , b, e, c, o, m, i, n, g,  , i, n, c, r, e, a, s, i, n, g, l, y,  , c, o, m, p, l, e, x,  , a, n, d,  , w, i, d, e, s, p, r, e, a, d, ,,  , m, a, k, i, n, g,  , i, t,  , e, s, s, e, n, t, i, a, l, 
-, t, o,  , d, e, v, e, l, o, p,  , m, o, r, e,  , e, f, f, e, c, t, i, v, e,  , a, n, d,  , t, i, m, e, l, y,  , d, e, t, e, c, t, i, o, n,  , m, e, t, h, o, d, s, .,  , T, r, a, d, i, t, i, o, n, a, l,  , s, t, a, t, i, c, 
-, a, n, a, l, y, s, i, s,  , o, f, t, e, n,  , f, a, i, l, s,  , t, o,  , d, e, f, e, n, d,  , a, g, a, i, n, s, t,  , m, o, d, e, r, n,  , t, h, r, e, a, t, s,  , t, h, a, t,  , e, m, p, l, o, y,  , c, o, d, e, 
-, o, b, f, u, s, c, a, t, i, o, n, ,,  , p, o, l, y, m, o, r, p, h, i, s, m, ,,  , a, n, d,  , o, t, h, e, r,  , e, v, a, s, i, o, n,  , t, e, c, h, n, i, q, u, e, s, .,  , I, n,  , c, o, n, t, r, a, s, t, ,, 
-, b, e, h, a, v, i, o, r, a, l,  , m, a, l, w, a, r, e,  , d, e, t, e, c, t, i, o, n, ,,  , w, h, i, c, h,  , m, o, n, i, t, o, r, s,  , r, u, n, t, i, m, e,  , a, c, t, i, v, i, t, i, e, s, ,,  , p, r, o, v, i, d, e, s,  , a, 
-, m, o, r, e,  , r, e, l, i, a, b, l, e,  , a, n, d,  , c, o, n, t, e, x, t, -, a, w, a, r, e,  , s, o, l, u, t, i, o, n, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e,  , p, r, o, p, o, s, e,  , B, E, A, C, O, N, ,,  , a, 
-, n, o, v, e, l,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , t, o, 
-, g, e, n, e, r, a, t, e,  , d, e, n, s, e, ,,  , c, o, n, t, e, x, t, u, a, l,  , e, m, b, e, d, d, i, n, g, s,  , f, r, o, m,  , r, a, w,  , s, a, n, d, b, o, x, -, g, e, n, e, r, a, t, e, d,  , b, e, h, a, v, i, o, r, 
-, r, e, p, o, r, t, s, .,  , T, h, e, s, e,  , e, m, b, e, d, d, i, n, g, s,  , c, a, p, t, u, r, e,  , s, e, m, a, n, t, i, c,  , a, n, d,  , s, t, r, u, c, t, u, r, a, l,  , p, a, t, t, e, r, n, s,  , o, f,  , e, a, c, h, 
-, s, a, m, p, l, e,  , a, n, d,  , a, r, e,  , p, r, o, c, e, s, s, e, d,  , b, y,  , a,  , o, n, e, -, d, i, m, e, n, s, i, o, n, a, l,  , c, o, n, v, o, l, u, t, i, o, n, a, l,  , n, e, u, r, a, l,  , n, e, t, w, o, r, k,  , (, 1, D, 
-, C, N, N, ),  , f, o, r,  , m, u, l, t, i, -, c, l, a, s, s,  , m, a, l, w, a, r, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, .,  , E, v, a, l, u, a, t, e, d,  , o, n,  , t, h, e,  , A, v, a, s, t, -, C, T, U,  , P, u, b, l, i, c, 
-, C, A, P, E,  , D, a, t, a, s, e, t, ,,  , o, u, r,  , f, r, a, m, e, w, o, r, k,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s, ,, 
-, h, i, g, h, l, i, g, h, t, i, n, g,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , L, L, M, -, b, a, s, e, d,  , b, e, h, a, v, i, o, r, a, l,  , e, m, b, e, d, d, i, n, g, s,  , a, n, d,  , t, h, e, 
-, o, v, e, r, a, l, l,  , d, e, s, i, g, n,  , o, f,  , B, E, A, C, O, N,  , f, o, r,  , r, o, b, u, s, t,  , m, a, l, w, a, r, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14507v1'>DeKeyNLU: Enhancing Natural Language to SQL Generation through Task Decomposition and Keyword Extraction</a></td><td>N, a, t, u, r, a, l,  , L, a, n, g, u, a, g, e,  , t, o,  , S, Q, L,  , (, N, L, 2, S, Q, L, ),  , p, r, o, v, i, d, e, s,  , a,  , n, e, w,  , m, o, d, e, l, -, c, e, n, t, r, i, c,  , p, a, r, a, d, i, g, m,  , t, h, a, t, 
-, s, i, m, p, l, i, f, i, e, s,  , d, a, t, a, b, a, s, e,  , a, c, c, e, s, s,  , f, o, r,  , n, o, n, -, t, e, c, h, n, i, c, a, l,  , u, s, e, r, s,  , b, y,  , c, o, n, v, e, r, t, i, n, g,  , n, a, t, u, r, a, l, 
-, l, a, n, g, u, a, g, e,  , q, u, e, r, i, e, s,  , i, n, t, o,  , S, Q, L,  , c, o, m, m, a, n, d, s, .,  , R, e, c, e, n, t,  , a, d, v, a, n, c, e, m, e, n, t, s, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , t, h, o, s, e, 
-, i, n, t, e, g, r, a, t, i, n, g,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , a, n, d,  , C, h, a, i, n, -, o, f, -, T, h, o, u, g, h, t,  , (, C, o, T, ), 
-, r, e, a, s, o, n, i, n, g, ,,  , h, a, v, e,  , m, a, d, e,  , s, i, g, n, i, f, i, c, a, n, t,  , s, t, r, i, d, e, s,  , i, n,  , e, n, h, a, n, c, i, n, g,  , N, L, 2, S, Q, L,  , p, e, r, f, o, r, m, a, n, c, e, ., 
-, H, o, w, e, v, e, r, ,,  , c, h, a, l, l, e, n, g, e, s,  , s, u, c, h,  , a, s,  , i, n, a, c, c, u, r, a, t, e,  , t, a, s, k,  , d, e, c, o, m, p, o, s, i, t, i, o, n,  , a, n, d,  , k, e, y, w, o, r, d, 
-, e, x, t, r, a, c, t, i, o, n,  , b, y,  , L, L, M, s,  , r, e, m, a, i, n,  , m, a, j, o, r,  , b, o, t, t, l, e, n, e, c, k, s, ,,  , o, f, t, e, n,  , l, e, a, d, i, n, g,  , t, o,  , e, r, r, o, r, s,  , i, n,  , S, Q, L, 
-, g, e, n, e, r, a, t, i, o, n, .,  , W, h, i, l, e,  , e, x, i, s, t, i, n, g,  , d, a, t, a, s, e, t, s,  , a, i, m,  , t, o,  , m, i, t, i, g, a, t, e,  , t, h, e, s, e,  , i, s, s, u, e, s,  , b, y,  , f, i, n, e, -, t, u, n, i, n, g, 
-, m, o, d, e, l, s, ,,  , t, h, e, y,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , o, v, e, r, -, f, r, a, g, m, e, n, t, a, t, i, o, n,  , o, f,  , t, a, s, k, s,  , a, n, d,  , l, a, c, k,  , o, f, 
-, d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , k, e, y, w, o, r, d,  , a, n, n, o, t, a, t, i, o, n, s, ,,  , l, i, m, i, t, i, n, g,  , t, h, e, i, r,  , e, f, f, e, c, t, i, v, e, n, e, s, s, .,  , T, o,  , a, d, d, r, e, s, s, 
-, t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , p, r, e, s, e, n, t,  , D, e, K, e, y, N, L, U, ,,  , a,  , n, o, v, e, l,  , d, a, t, a, s, e, t,  , w, h, i, c, h,  , c, o, n, t, a, i, n, s,  , 1, ,, 5, 0, 0, 
-, m, e, t, i, c, u, l, o, u, s, l, y,  , a, n, n, o, t, a, t, e, d,  , Q, A,  , p, a, i, r, s,  , a, i, m, e, d,  , a, t,  , r, e, f, i, n, i, n, g,  , t, a, s, k,  , d, e, c, o, m, p, o, s, i, t, i, o, n,  , a, n, d, 
-, e, n, h, a, n, c, i, n, g,  , k, e, y, w, o, r, d,  , e, x, t, r, a, c, t, i, o, n,  , p, r, e, c, i, s, i, o, n,  , f, o, r,  , t, h, e,  , R, A, G,  , p, i, p, e, l, i, n, e, .,  , F, i, n, e, -, t, u, n, e, d,  , w, i, t, h, 
-, D, e, K, e, y, N, L, U, ,,  , w, e,  , p, r, o, p, o, s, e,  , D, e, K, e, y, S, Q, L, ,,  , a,  , R, A, G, -, b, a, s, e, d,  , N, L, 2, S, Q, L,  , p, i, p, e, l, i, n, e,  , t, h, a, t,  , e, m, p, l, o, y, s,  , t, h, r, e, e, 
-, d, i, s, t, i, n, c, t,  , m, o, d, u, l, e, s,  , f, o, r,  , u, s, e, r,  , q, u, e, s, t, i, o, n,  , u, n, d, e, r, s, t, a, n, d, i, n, g, ,,  , e, n, t, i, t, y,  , r, e, t, r, i, e, v, a, l, ,,  , a, n, d, 
-, g, e, n, e, r, a, t, i, o, n,  , t, o,  , i, m, p, r, o, v, e,  , S, Q, L,  , g, e, n, e, r, a, t, i, o, n,  , a, c, c, u, r, a, c, y, .,  , W, e,  , b, e, n, c, h, m, a, r, k, e, d,  , m, u, l, t, i, p, l, e,  , m, o, d, e, l, 
-, c, o, n, f, i, g, u, r, a, t, i, o, n, s,  , w, i, t, h, i, n,  , D, e, K, e, y, S, Q, L,  , R, A, G,  , p, i, p, e, l, i, n, e, .,  , E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e, 
-, t, h, a, t,  , f, i, n, e, -, t, u, n, i, n, g,  , w, i, t, h,  , D, e, K, e, y, N, L, U,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , i, m, p, r, o, v, e, s,  , S, Q, L,  , g, e, n, e, r, a, t, i, o, n,  , a, c, c, u, r, a, c, y, 
-, o, n,  , b, o, t, h,  , B, I, R, D,  , (, 6, 2, ., 3, 1, %,  , t, o,  , 6, 9, ., 1, 0, %, ),  , a, n, d,  , S, p, i, d, e, r,  , (, 8, 4, ., 2, %,  , t, o,  , 8, 8, ., 7, %, ),  , d, e, v,  , d, a, t, a, s, e, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14504v1'>Introducing OmniGEC: A Silver Multilingual Dataset for Grammatical Error Correction</a></td><td>I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , O, m, n, i, G, E, C, ,,  , a,  , c, o, l, l, e, c, t, i, o, n,  , o, f,  , m, u, l, t, i, l, i, n, g, u, a, l, 
-, s, i, l, v, e, r, -, s, t, a, n, d, a, r, d,  , d, a, t, a, s, e, t, s,  , f, o, r,  , t, h, e,  , t, a, s, k,  , o, f,  , G, r, a, m, m, a, t, i, c, a, l,  , E, r, r, o, r,  , C, o, r, r, e, c, t, i, o, n,  , (, G, E, C, ), ,, 
-, c, o, v, e, r, i, n, g,  , e, l, e, v, e, n,  , l, a, n, g, u, a, g, e, s, :,  , C, z, e, c, h, ,,  , E, n, g, l, i, s, h, ,,  , E, s, t, o, n, i, a, n, ,,  , G, e, r, m, a, n, ,,  , G, r, e, e, k, ,,  , I, c, e, l, a, n, d, i, c, ,, 
-, I, t, a, l, i, a, n, ,,  , L, a, t, v, i, a, n, ,,  , S, l, o, v, e, n, e, ,,  , S, w, e, d, i, s, h, ,,  , a, n, d,  , U, k, r, a, i, n, i, a, n, .,  , T, h, e, s, e,  , d, a, t, a, s, e, t, s,  , f, a, c, i, l, i, t, a, t, e, 
-, t, h, e,  , d, e, v, e, l, o, p, m, e, n, t,  , o, f,  , m, u, l, t, i, l, i, n, g, u, a, l,  , G, E, C,  , s, o, l, u, t, i, o, n, s,  , a, n, d,  , h, e, l, p,  , b, r, i, d, g, e,  , t, h, e,  , d, a, t, a,  , g, a, p,  , i, n, 
-, a, d, a, p, t, i, n, g,  , E, n, g, l, i, s, h,  , G, E, C,  , s, o, l, u, t, i, o, n, s,  , t, o,  , m, u, l, t, i, l, i, n, g, u, a, l,  , G, E, C, .,  , T, h, e,  , t, e, x, t, s,  , i, n,  , t, h, e,  , d, a, t, a, s, e, t, s, 
-, o, r, i, g, i, n, a, t, e,  , f, r, o, m,  , t, h, r, e, e,  , s, o, u, r, c, e, s, :,  , W, i, k, i, p, e, d, i, a,  , e, d, i, t, s,  , f, o, r,  , t, h, e,  , e, l, e, v, e, n,  , t, a, r, g, e, t,  , l, a, n, g, u, a, g, e, s, ,, 
-, s, u, b, r, e, d, d, i, t, s,  , f, r, o, m,  , R, e, d, d, i, t,  , i, n,  , t, h, e,  , e, l, e, v, e, n,  , t, a, r, g, e, t,  , l, a, n, g, u, a, g, e, s, ,,  , a, n, d,  , t, h, e,  , U, k, r, a, i, n, i, a, n, -, o, n, l, y, 
-, U, b, e, r, T, e, x, t,  , 2, ., 0,  , s, o, c, i, a, l,  , m, e, d, i, a,  , c, o, r, p, u, s, .,  , W, h, i, l, e,  , W, i, k, i, p, e, d, i, a,  , e, d, i, t, s,  , w, e, r, e,  , d, e, r, i, v, e, d,  , f, r, o, m, 
-, h, u, m, a, n, -, m, a, d, e,  , c, o, r, r, e, c, t, i, o, n, s, ,,  , t, h, e,  , R, e, d, d, i, t,  , a, n, d,  , U, b, e, r, T, e, x, t,  , 2, ., 0,  , d, a, t, a,  , w, e, r, e,  , a, u, t, o, m, a, t, i, c, a, l, l, y, 
-, c, o, r, r, e, c, t, e, d,  , w, i, t, h,  , t, h, e,  , G, P, T, -, 4, o, -, m, i, n, i,  , m, o, d, e, l, .,  , T, h, e,  , q, u, a, l, i, t, y,  , o, f,  , t, h, e,  , c, o, r, r, e, c, t, i, o, n, s,  , i, n,  , t, h, e, 
-, d, a, t, a, s, e, t, s,  , w, a, s,  , e, v, a, l, u, a, t, e, d,  , b, o, t, h,  , a, u, t, o, m, a, t, i, c, a, l, l, y,  , a, n, d,  , m, a, n, u, a, l, l, y, .,  , F, i, n, a, l, l, y, ,,  , w, e,  , f, i, n, e, -, t, u, n, e, 
-, t, w, o,  , o, p, e, n, -, s, o, u, r, c, e,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , -,  , A, y, a, -, E, x, p, a, n, s, e,  , (, 8, B, ),  , a, n, d,  , G, e, m, m, a, -, 3,  , (, 1, 2, B, ),  , -,  , o, n, 
-, t, h, e,  , m, u, l, t, i, l, i, n, g, u, a, l,  , O, m, n, i, G, E, C,  , c, o, r, p, o, r, a,  , a, n, d,  , a, c, h, i, e, v, e,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , (, S, O, T, A, ),  , r, e, s, u, l, t, s, 
-, f, o, r,  , p, a, r, a, g, r, a, p, h, -, l, e, v, e, l,  , m, u, l, t, i, l, i, n, g, u, a, l,  , G, E, C, .,  , T, h, e,  , d, a, t, a, s, e, t,  , c, o, l, l, e, c, t, i, o, n,  , a, n, d,  , t, h, e, 
-, b, e, s, t, -, p, e, r, f, o, r, m, i, n, g,  , m, o, d, e, l, s,  , a, r, e,  , a, v, a, i, l, a, b, l, e,  , o, n,  , H, u, g, g, i, n, g,  , F, a, c, e, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.15210v1'>Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a></td><td>Realistic sound simulation plays a critical role in many applications. A key
+element in sound simulation is the room impulse response (RIR), which
+characterizes how sound propagates from a source to a listener within a given
+space. Recent studies have applied neural implicit methods to learn RIR using
+context information collected from the environment, such as scene images.
+However, these approaches do not effectively leverage explicit geometric
+information from the environment. To further exploit the potential of neural
+implicit models with direct geometric features, we present Mesh-infused Neural
+Acoustic Field (MiNAF), which queries a rough room mesh at given locations and
+extracts distance distributions as an explicit representation of local context.
+Our approach demonstrates that incorporating explicit local geometric features
+can better guide the neural network in generating more accurate RIR
+predictions. Through comparisons with conventional and state-of-the-art
+baseline methods, we show that MiNAF performs competitively across various
+evaluation metrics. Furthermore, we verify the robustness of MiNAF in datasets
+with limited training samples, demonstrating an advance in high-fidelity sound
+simulation.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15207v1'>FlowRL: Matching Reward Distributions for LLM Reasoning</a></td><td>We propose FlowRL: matching the full reward distribution via flow balancing
+instead of maximizing rewards in large language model (LLM) reinforcement
+learning (RL). Recent advanced reasoning models adopt reward-maximizing methods
+(\eg, PPO and GRPO), which tend to over-optimize dominant reward signals while
+neglecting less frequent but valid reasoning paths, thus reducing diversity. In
+contrast, we transform scalar rewards into a normalized target distribution
+using a learnable partition function, and then minimize the reverse KL
+divergence between the policy and the target distribution. We implement this
+idea as a flow-balanced optimization method that promotes diverse exploration
+and generalizable reasoning trajectories. We conduct experiments on math and
+code reasoning tasks: FlowRL achieves a significant average improvement of
+$10.0\%$ over GRPO and $5.1\%$ over PPO on math benchmarks, and performs
+consistently better on code reasoning tasks. These results highlight reward
+distribution-matching as a key step toward efficient exploration and diverse
+reasoning in LLM reinforcement learning.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15174v1'>SMARTER: A Data-efficient Framework to Improve Toxicity Detection with Explanation via Self-augmenting Large Language Models</a></td><td>WARNING: This paper contains examples of offensive materials. Toxic content
+has become pervasive on social media platforms. We introduce SMARTER, a
+data-efficient two-stage framework for explainable content moderation using
+Large Language Models (LLMs). In Stage 1, we leverage LLMs' own outputs to
+generate synthetic explanations for both correct and incorrect labels, enabling
+alignment via preference optimization with minimal human supervision. In Stage
+2, we refine explanation quality through cross-model training, allowing weaker
+models to align stylistically and semantically with stronger ones. Experiments
+on three benchmark tasks -- HateXplain, Latent Hate, and Implicit Hate --
+demonstrate that SMARTER enables LLMs to achieve up to a 13.5% macro-F1
+improvement over standard few-shot baselines while using only a fraction of the
+full training data. Our framework offers a scalable strategy for low-resource
+settings by harnessing LLMs' self-improving capabilities for both
+classification and explanation.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15172v1'>Internalizing Self-Consistency in Language Models: Multi-Agent Consensus Alignment</a></td><td>Language Models (LMs) are inconsistent reasoners, often generating
+contradictory responses to identical prompts. While inference-time methods can
+mitigate these inconsistencies, they fail to address the core problem: LMs
+struggle to reliably select reasoning pathways leading to consistent outcomes
+under exploratory sampling. To address this, we formalize self-consistency as
+an intrinsic property of well-aligned reasoning models and introduce
+Multi-Agent Consensus Alignment (MACA), a reinforcement learning framework that
+post-trains models to favor reasoning trajectories aligned with their internal
+consensus using majority/minority outcomes from multi-agent debate. These
+trajectories emerge from deliberative exchanges where agents ground reasoning
+in peer arguments, not just aggregation of independent attempts, creating
+richer consensus signals than single-round majority voting. MACA enables agents
+to teach themselves to be more decisive and concise, and better leverage peer
+insights in multi-agent settings without external supervision, driving
+substantial improvements across self-consistency (+27.6% on GSM8K),
+single-agent reasoning (+23.7% on MATH), sampling-based inference (+22.4%
+Pass@20 on MATH), and multi-agent ensemble decision-making (+42.7% on MathQA).
+These findings, coupled with strong generalization to unseen benchmarks (+16.3%
+on GPQA, +11.6% on CommonsenseQA), demonstrate robust self-alignment that more
+reliably unlocks latent reasoning potential of language models.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15156v1'>Leveraging Geometric Visual Illusions as Perceptual Inductive Biases for Vision Models</a></td><td>Contemporary deep learning models have achieved impressive performance in
+image classification by primarily leveraging statistical regularities within
+large datasets, but they rarely incorporate structured insights drawn directly
+from perceptual psychology. To explore the potential of perceptually motivated
+inductive biases, we propose integrating classic geometric visual illusions
+well-studied phenomena from human perception into standard image-classification
+training pipelines. Specifically, we introduce a synthetic, parametric
+geometric-illusion dataset and evaluate three multi-source learning strategies
+that combine illusion recognition tasks with ImageNet classification
+objectives. Our experiments reveal two key conceptual insights: (i)
+incorporating geometric illusions as auxiliary supervision systematically
+improves generalization, especially in visually challenging cases involving
+intricate contours and fine textures; and (ii) perceptually driven inductive
+biases, even when derived from synthetic stimuli traditionally considered
+unrelated to natural image recognition, can enhance the structural sensitivity
+of both CNN and transformer-based architectures. These results demonstrate a
+novel integration of perceptual science and machine learning and suggest new
+directions for embedding perceptual priors into vision model design.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15151v1'>Exploring How Audio Effects Alter Emotion with Foundation Models</a></td><td>Audio effects (FX) such as reverberation, distortion, modulation, and dynamic
+range processing play a pivotal role in shaping emotional responses during
+music listening. While prior studies have examined links between low-level
+audio features and affective perception, the systematic impact of audio FX on
+emotion remains underexplored. This work investigates how foundation models -
+large-scale neural architectures pretrained on multimodal data - can be
+leveraged to analyze these effects. Such models encode rich associations
+between musical structure, timbre, and affective meaning, offering a powerful
+framework for probing the emotional consequences of sound design techniques. By
+applying various probing methods to embeddings from deep learning models, we
+examine the complex, nonlinear relationships between audio FX and estimated
+emotion, uncovering patterns tied to specific effects and evaluating the
+robustness of foundation audio models. Our findings aim to advance
+understanding of the perceptual impact of audio production practices, with
+implications for music cognition, performance, and affective computing.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15130v1'>WorldForge: Unlocking Emergent 3D/4D Generation in Video Diffusion Model via Training-Free Guidance</a></td><td>Recent video diffusion models demonstrate strong potential in spatial
+intelligence tasks due to their rich latent world priors. However, this
+potential is hindered by their limited controllability and geometric
+inconsistency, creating a gap between their strong priors and their practical
+use in 3D/4D tasks. As a result, current approaches often rely on retraining or
+fine-tuning, which risks degrading pretrained knowledge and incurs high
+computational costs. To address this, we propose WorldForge, a training-free,
+inference-time framework composed of three tightly coupled modules. Intra-Step
+Recursive Refinement introduces a recursive refinement mechanism during
+inference, which repeatedly optimizes network predictions within each denoising
+step to enable precise trajectory injection. Flow-Gated Latent Fusion leverages
+optical flow similarity to decouple motion from appearance in the latent space
+and selectively inject trajectory guidance into motion-related channels.
+Dual-Path Self-Corrective Guidance compares guided and unguided denoising paths
+to adaptively correct trajectory drift caused by noisy or misaligned structural
+signals. Together, these components inject fine-grained, trajectory-aligned
+guidance without training, achieving both accurate motion control and
+photorealistic content generation. Extensive experiments across diverse
+benchmarks validate our method's superiority in realism, trajectory
+consistency, and visual fidelity. This work introduces a novel plug-and-play
+paradigm for controllable video synthesis, offering a new perspective on
+leveraging generative priors for spatial intelligence.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15095v1'>Listening, Imagining \& Refining: A Heuristic Optimized ASR Correction Framework with LLMs</a></td><td>Automatic Speech Recognition (ASR) systems remain prone to errors that affect
+downstream applications. In this paper, we propose LIR-ASR, a heuristic
+optimized iterative correction framework using LLMs, inspired by human auditory
+perception. LIR-ASR applies a "Listening-Imagining-Refining" strategy,
+generating phonetic variants and refining them in context. A heuristic
+optimization with finite state machine (FSM) is introduced to prevent the
+correction process from being trapped in local optima and rule-based
+constraints help maintain semantic fidelity. Experiments on both English and
+Chinese ASR outputs show that LIR-ASR achieves average reductions in CER/WER of
+up to 1.5 percentage points compared to baselines, demonstrating substantial
+accuracy gains in transcription.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15058v1'>Communication Efficient Split Learning of ViTs with Attention-based Double Compression</a></td><td>This paper proposes a novel communication-efficient Split Learning (SL)
+framework, named Attention-based Double Compression (ADC), which reduces the
+communication overhead required for transmitting intermediate Vision
+Transformers activations during the SL training process. ADC incorporates two
+parallel compression strategies. The first one merges samples' activations that
+are similar, based on the average attention score calculated in the last client
+layer; this strategy is class-agnostic, meaning that it can also merge samples
+having different classes, without losing generalization ability nor decreasing
+final results. The second strategy follows the first and discards the least
+meaningful tokens, further reducing the communication cost. Combining these
+strategies not only allows for sending less during the forward pass, but also
+the gradients are naturally compressed, allowing the whole model to be trained
+without additional tuning or approximations of the gradients. Simulation
+results demonstrate that Attention-based Double Compression outperforms
+state-of-the-art SL frameworks by significantly reducing communication
+overheads while maintaining high accuracy.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.15027v1'>CLEAR: A Comprehensive Linguistic Evaluation of Argument Rewriting by Large Language Models</a></td><td>While LLMs have been extensively studied on general text generation tasks,
+there is less research on text rewriting, a task related to general text
+generation, and particularly on the behavior of models on this task. In this
+paper we analyze what changes LLMs make in a text rewriting setting. We focus
+specifically on argumentative texts and their improvement, a task named
+Argument Improvement (ArgImp). We present CLEAR: an evaluation pipeline
+consisting of 57 metrics mapped to four linguistic levels: lexical, syntactic,
+semantic and pragmatic. This pipeline is used to examine the qualities of
+LLM-rewritten arguments on a broad set of argumentation corpora and compare the
+behavior of different LLMs on this task and analyze the behavior of different
+LLMs on this task in terms of linguistic levels. By taking all four linguistic
+levels into consideration, we find that the models perform ArgImp by shortening
+the texts while simultaneously increasing average word length and merging
+sentences. Overall we note an increase in the persuasion and coherence
+dimensions.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14998v1'>A Knowledge-driven Adaptive Collaboration of LLMs for Enhancing Medical Decision-making</a></td><td>Medical decision-making often involves integrating knowledge from multiple
+clinical specialties, typically achieved through multidisciplinary teams.
+Inspired by this collaborative process, recent work has leveraged large
+language models (LLMs) in multi-agent collaboration frameworks to emulate
+expert teamwork. While these approaches improve reasoning through agent
+interaction, they are limited by static, pre-assigned roles, which hinder
+adaptability and dynamic knowledge integration. To address these limitations,
+we propose KAMAC, a Knowledge-driven Adaptive Multi-Agent Collaboration
+framework that enables LLM agents to dynamically form and expand expert teams
+based on the evolving diagnostic context. KAMAC begins with one or more expert
+agents and then conducts a knowledge-driven discussion to identify and fill
+knowledge gaps by recruiting additional specialists as needed. This supports
+flexible, scalable collaboration in complex clinical scenarios, with decisions
+finalized through reviewing updated agent comments. Experiments on two
+real-world medical benchmarks demonstrate that KAMAC significantly outperforms
+both single-agent and advanced multi-agent methods, particularly in complex
+clinical scenarios (i.e., cancer prognosis) requiring dynamic, cross-specialty
+expertise. Our code is publicly available at:
+https://github.com/XiaoXiao-Woo/KAMAC.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14980v1'>M4Diffuser: Multi-View Diffusion Policy with Manipulability-Aware Control for Robust Mobile Manipulation</a></td><td>Mobile manipulation requires the coordinated control of a mobile base and a
+robotic arm while simultaneously perceiving both global scene context and
+fine-grained object details. Existing single-view approaches often fail in
+unstructured environments due to limited fields of view, exploration, and
+generalization abilities. Moreover, classical controllers, although stable,
+struggle with efficiency and manipulability near singularities. To address
+these challenges, we propose M4Diffuser, a hybrid framework that integrates a
+Multi-View Diffusion Policy with a novel Reduced and Manipulability-aware QP
+(ReM-QP) controller for mobile manipulation. The diffusion policy leverages
+proprioceptive states and complementary camera perspectives with both
+close-range object details and global scene context to generate task-relevant
+end-effector goals in the world frame. These high-level goals are then executed
+by the ReM-QP controller, which eliminates slack variables for computational
+efficiency and incorporates manipulability-aware preferences for robustness
+near singularities. Comprehensive experiments in simulation and real-world
+environments show that M4Diffuser achieves 7 to 56 percent higher success rates
+and reduces collisions by 3 to 31 percent over baselines. Our approach
+demonstrates robust performance for smooth whole-body coordination, and strong
+generalization to unseen tasks, paving the way for reliable mobile manipulation
+in unstructured environments. Details of the demo and supplemental material are
+available on our project website https://sites.google.com/view/m4diffuser.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14930v1'>Cross-Modal Knowledge Distillation for Speech Large Language Models</a></td><td>In this work, we present the first systematic evaluation of catastrophic
+forgetting and modality inequivalence in speech large language models, showing
+that introducing speech capabilities can degrade knowledge and reasoning even
+when inputs remain textual, and performance further decreases with spoken
+queries. To address these challenges, we propose a cross-modal knowledge
+distillation framework that leverages both text-to-text and speech-to-text
+channels to transfer knowledge from a text-based teacher model to a speech LLM.
+Extensive experiments on dialogue and audio understanding tasks validate the
+effectiveness of our approach in preserving textual knowledge, improving
+cross-modal alignment, and enhancing reasoning in speech-based interactions.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14886v1'>A Multi-To-One Interview Paradigm for Efficient MLLM Evaluation</a></td><td>The rapid progress of Multi-Modal Large Language Models (MLLMs) has spurred
+the creation of numerous benchmarks. However, conventional full-coverage
+Question-Answering evaluations suffer from high redundancy and low efficiency.
+Inspired by human interview processes, we propose a multi-to-one interview
+paradigm for efficient MLLM evaluation. Our framework consists of (i) a
+two-stage interview strategy with pre-interview and formal interview phases,
+(ii) dynamic adjustment of interviewer weights to ensure fairness, and (iii) an
+adaptive mechanism for question difficulty-level chosen. Experiments on
+different benchmarks show that the proposed paradigm achieves significantly
+higher correlation with full-coverage results than random sampling, with
+improvements of up to 17.6% in PLCC and 16.7% in SRCC, while reducing the
+number of required questions. These findings demonstrate that the proposed
+paradigm provides a reliable and efficient alternative for large-scale MLLM
+benchmarking.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14860v1'>MARIC: Multi-Agent Reasoning for Image Classification</a></td><td>Image classification has traditionally relied on parameter-intensive model
+training, requiring large-scale annotated datasets and extensive fine tuning to
+achieve competitive performance. While recent vision language models (VLMs)
+alleviate some of these constraints, they remain limited by their reliance on
+single pass representations, often failing to capture complementary aspects of
+visual content. In this paper, we introduce Multi Agent based Reasoning for
+Image Classification (MARIC), a multi agent framework that reformulates image
+classification as a collaborative reasoning process. MARIC first utilizes an
+Outliner Agent to analyze the global theme of the image and generate targeted
+prompts. Based on these prompts, three Aspect Agents extract fine grained
+descriptions along distinct visual dimensions. Finally, a Reasoning Agent
+synthesizes these complementary outputs through integrated reflection step,
+producing a unified representation for classification. By explicitly
+decomposing the task into multiple perspectives and encouraging reflective
+synthesis, MARIC mitigates the shortcomings of both parameter-heavy training
+and monolithic VLM reasoning. Experiments on 4 diverse image classification
+benchmark datasets demonstrate that MARIC significantly outperforms baselines,
+highlighting the effectiveness of multi-agent visual reasoning for robust and
+interpretable image classification.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14858v1'>MeanFlowSE: one-step generative speech enhancement via conditional mean flow</a></td><td>Multistep inference is a bottleneck for real-time generative speech
+enhancement because flow- and diffusion-based systems learn an instantaneous
+velocity field and therefore rely on iterative ordinary differential equation
+(ODE) solvers. We introduce MeanFlowSE, a conditional generative model that
+learns the average velocity over finite intervals along a trajectory. Using a
+Jacobian-vector product (JVP) to instantiate the MeanFlow identity, we derive a
+local training objective that directly supervises finite-interval displacement
+while remaining consistent with the instantaneous-field constraint on the
+diagonal. At inference, MeanFlowSE performs single-step generation via a
+backward-in-time displacement, removing the need for multistep solvers; an
+optional few-step variant offers additional refinement. On VoiceBank-DEMAND,
+the single-step model achieves strong intelligibility, fidelity, and perceptual
+quality with substantially lower computational cost than multistep baselines.
+The method requires no knowledge distillation or external teachers, providing
+an efficient, high-fidelity framework for real-time generative speech
+enhancement.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14832v1'>Diffusion-Based Scenario Tree Generation for Multivariate Time Series Prediction and Multistage Stochastic Optimization</a></td><td>Stochastic forecasting is critical for efficient decision-making in uncertain
+systems, such as energy markets and finance, where estimating the full
+distribution of future scenarios is essential. We propose Diffusion Scenario
+Tree (DST), a general framework for constructing scenario trees for
+multivariate prediction tasks using diffusion-based probabilistic forecasting
+models. DST recursively samples future trajectories and organizes them into a
+tree via clustering, ensuring non-anticipativity (decisions depending only on
+observed history) at each stage. We evaluate the framework on the optimization
+task of energy arbitrage in New York State's day-ahead electricity market.
+Experimental results show that our approach consistently outperforms the same
+optimization algorithms that use scenario trees from more conventional models
+and Model-Free Reinforcement Learning baselines. Furthermore, using DST for
+stochastic optimization yields more efficient decision policies, achieving
+higher performance by better handling uncertainty than deterministic and
+stochastic MPC variants using the same diffusion-based forecaster.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14750v1'>Enhancing Retrieval Augmentation via Adversarial Collaboration</a></td><td>Retrieval-augmented Generation (RAG) is a prevalent approach for
+domain-specific LLMs, yet it is often plagued by "Retrieval Hallucinations"--a
+phenomenon where fine-tuned models fail to recognize and act upon poor-quality
+retrieved documents, thus undermining performance. To address this, we propose
+the Adversarial Collaboration RAG (AC-RAG) framework. AC-RAG employs two
+heterogeneous agents: a generalist Detector that identifies knowledge gaps, and
+a domain-specialized Resolver that provides precise solutions. Guided by a
+moderator, these agents engage in an adversarial collaboration, where the
+Detector's persistent questioning challenges the Resolver's expertise. This
+dynamic process allows for iterative problem dissection and refined knowledge
+retrieval. Extensive experiments show that AC-RAG significantly improves
+retrieval accuracy and outperforms state-of-the-art RAG methods across various
+vertical domains.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14693v1'>RationAnomaly: Log Anomaly Detection with Rationality via Chain-of-Thought and Reinforcement Learning</a></td><td>Logs constitute a form of evidence signaling the operational status of
+software systems. Automated log anomaly detection is crucial for ensuring the
+reliability of modern software systems. However, existing approaches face
+significant limitations: traditional deep learning models lack interpretability
+and generalization, while methods leveraging Large Language Models are often
+hindered by unreliability and factual inaccuracies. To address these issues, we
+propose RationAnomaly, a novel framework that enhances log anomaly detection by
+synergizing Chain-of-Thought (CoT) fine-tuning with reinforcement learning. Our
+approach first instills expert-like reasoning patterns using CoT-guided
+supervised fine-tuning, grounded in a high-quality dataset corrected through a
+rigorous expert-driven process. Subsequently, a reinforcement learning phase
+with a multi-faceted reward function optimizes for accuracy and logical
+consistency, effectively mitigating hallucinations. Experimentally,
+RationAnomaly outperforms state-of-the-art baselines, achieving superior
+F1-scores on key benchmarks while providing transparent, step-by-step
+analytical outputs. We have released the corresponding resources, including
+code and datasets.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14671v1'>TableDART: Dynamic Adaptive Multi-Modal Routing for Table Understanding</a></td><td>Modeling semantic and structural information from tabular data remains a core
+challenge for effective table understanding. Existing Table-as-Text approaches
+flatten tables for large language models (LLMs), but lose crucial structural
+cues, while Table-as-Image methods preserve structure yet struggle with
+fine-grained semantics. Recent Table-as-Multimodality strategies attempt to
+combine textual and visual views, but they (1) statically process both
+modalities for every query-table pair within a large multimodal LLMs (MLLMs),
+inevitably introducing redundancy and even conflicts, and (2) depend on costly
+fine-tuning of MLLMs. In light of this, we propose TableDART, a
+training-efficient framework that integrates multimodal views by reusing
+pretrained single-modality models. TableDART introduces a lightweight
+2.59M-parameter MLP gating network that dynamically selects the optimal path
+(either Text-only, Image-only, or Fusion) for each table-query pair,
+effectively reducing redundancy and conflicts from both modalities. In
+addition, we propose a novel agent to mediate cross-modal knowledge integration
+by analyzing outputs from text- and image-based models, either selecting the
+best result or synthesizing a new answer through reasoning. This design avoids
+the prohibitive costs of full MLLM fine-tuning. Extensive experiments on seven
+benchmarks show that TableDART establishes new state-of-the-art performance
+among open-source models, surpassing the strongest baseline by an average of
+4.02%. The code is available at:
+https://anonymous.4open.science/r/TableDART-C52B</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14662v1'>Understanding the Thinking Process of Reasoning Models: A Perspective from Schoenfeld's Episode Theory</a></td><td>While Large Reasoning Models (LRMs) generate extensive chain-of-thought
+reasoning, we lack a principled framework for understanding how these thoughts
+are structured. In this paper, we introduce a novel approach by applying
+Schoenfeld's Episode Theory, a classic cognitive framework for human
+mathematical problem-solving, to analyze the reasoning traces of LRMs. We
+annotated thousands of sentences and paragraphs from model-generated solutions
+to math problems using seven cognitive labels (e.g., Plan, Implement, Verify).
+The result is the first publicly available benchmark for the fine-grained
+analysis of machine reasoning, including a large annotated corpus and detailed
+annotation guidebooks. Our preliminary analysis reveals distinct patterns in
+LRM reasoning, such as the transition dynamics between cognitive states. This
+framework provides a theoretically grounded methodology for interpreting LRM
+cognition and enables future work on more controllable and transparent
+reasoning systems.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14623v1'>Automating Modelica Module Generation Using Large Language Models: A Case Study on Building Control Description Language</a></td><td>Dynamic energy systems and controls require advanced modeling frameworks to
+design and test supervisory and fault tolerant strategies. Modelica is a widely
+used equation based language, but developing control modules is labor intensive
+and requires specialized expertise. This paper examines the use of large
+language models (LLMs) to automate the generation of Control Description
+Language modules in the Building Modelica Library as a case study. We developed
+a structured workflow that combines standardized prompt scaffolds, library
+aware grounding, automated compilation with OpenModelica, and human in the loop
+evaluation. Experiments were carried out on four basic logic tasks (And, Or,
+Not, and Switch) and five control modules (chiller enable/disable, bypass valve
+control, cooling tower fan speed, plant requests, and relief damper control).
+The results showed that GPT 4o failed to produce executable Modelica code in
+zero shot mode, while Claude Sonnet 4 achieved up to full success for basic
+logic blocks with carefully engineered prompts. For control modules, success
+rates reached 83 percent, and failed outputs required medium level human repair
+(estimated one to eight hours). Retrieval augmented generation often produced
+mismatches in module selection (for example, And retrieved as Or), while a
+deterministic hard rule search strategy avoided these errors. Human evaluation
+also outperformed AI evaluation, since current LLMs cannot assess simulation
+results or validate behavioral correctness. Despite these limitations, the LLM
+assisted workflow reduced the average development time from 10 to 20 hours down
+to 4 to 6 hours per module, corresponding to 40 to 60 percent time savings.
+These results highlight both the potential and current limitations of LLM
+assisted Modelica generation, and point to future research in pre simulation
+validation, stronger grounding, and closed loop evaluation.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14622v1'>Adversarial Distilled Retrieval-Augmented Guarding Model for Online Malicious Intent Detection</a></td><td>With the deployment of Large Language Models (LLMs) in interactive
+applications, online malicious intent detection has become increasingly
+critical. However, existing approaches fall short of handling diverse and
+complex user queries in real time. To address these challenges, we introduce
+ADRAG (Adversarial Distilled Retrieval-Augmented Guard), a two-stage framework
+for robust and efficient online malicious intent detection. In the training
+stage, a high-capacity teacher model is trained on adversarially perturbed,
+retrieval-augmented inputs to learn robust decision boundaries over diverse and
+complex user queries. In the inference stage, a distillation scheduler
+transfers the teacher's knowledge into a compact student model, with a
+continually updated knowledge base collected online. At deployment, the compact
+student model leverages top-K similar safety exemplars retrieved from the
+online-updated knowledge base to enable both online and real-time malicious
+query detection. Evaluations across ten safety benchmarks demonstrate that
+ADRAG, with a 149M-parameter model, achieves 98.5% of WildGuard-7B's
+performance, surpasses GPT-4 by 3.3% and Llama-Guard-3-8B by 9.5% on
+out-of-distribution detection, while simultaneously delivering up to 5.6x lower
+latency at 300 queries per second (QPS) in real-time applications.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14608v1'>Enterprise AI Must Enforce Participant-Aware Access Control</a></td><td>Large language models (LLMs) are increasingly deployed in enterprise settings
+where they interact with multiple users and are trained or fine-tuned on
+sensitive internal data. While fine-tuning enhances performance by
+internalizing domain knowledge, it also introduces a critical security risk:
+leakage of confidential training data to unauthorized users. These risks are
+exacerbated when LLMs are combined with Retrieval-Augmented Generation (RAG)
+pipelines that dynamically fetch contextual documents at inference time.
+  We demonstrate data exfiltration attacks on AI assistants where adversaries
+can exploit current fine-tuning and RAG architectures to leak sensitive
+information by leveraging the lack of access control enforcement. We show that
+existing defenses, including prompt sanitization, output filtering, system
+isolation, and training-level privacy mechanisms, are fundamentally
+probabilistic and fail to offer robust protection against such attacks.
+  We take the position that only a deterministic and rigorous enforcement of
+fine-grained access control during both fine-tuning and RAG-based inference can
+reliably prevent the leakage of sensitive data to unauthorized recipients.
+  We introduce a framework centered on the principle that any content used in
+training, retrieval, or generation by an LLM is explicitly authorized for
+\emph{all users involved in the interaction}. Our approach offers a simple yet
+powerful paradigm shift for building secure multi-user LLM systems that are
+grounded in classical access control but adapted to the unique challenges of
+modern AI workflows. Our solution has been deployed in Microsoft Copilot
+Tuning, a product offering that enables organizations to fine-tune models using
+their own enterprise-specific data.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14589v1'>ATLANTIS: AI-driven Threat Localization, Analysis, and Triage Intelligence System</a></td><td>We present ATLANTIS, the cyber reasoning system developed by Team Atlanta
+that won 1st place in the Final Competition of DARPA's AI Cyber Challenge
+(AIxCC) at DEF CON 33 (August 2025). AIxCC (2023-2025) challenged teams to
+build autonomous cyber reasoning systems capable of discovering and patching
+vulnerabilities at the speed and scale of modern software. ATLANTIS integrates
+large language models (LLMs) with program analysis -- combining symbolic
+execution, directed fuzzing, and static analysis -- to address limitations in
+automated vulnerability discovery and program repair. Developed by researchers
+at Georgia Institute of Technology, Samsung Research, KAIST, and POSTECH, the
+system addresses core challenges: scaling across diverse codebases from C to
+Java, achieving high precision while maintaining broad coverage, and producing
+semantically correct patches that preserve intended behavior. We detail the
+design philosophy, architectural decisions, and implementation strategies
+behind ATLANTIS, share lessons learned from pushing the boundaries of automated
+security when program analysis meets modern AI, and release artifacts to
+support reproducibility and future research.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14547v1'>(P)rior(D)yna(F)low: A Priori Dynamic Workflow Construction via Multi-Agent Collaboration</a></td><td>Recent studies have shown that carefully designed workflows coordinating
+large language models(LLMs) significantly enhance task-solving capabilities
+compared to using a single model. While an increasing number of works focus on
+autonomous workflow construction, most existing approaches rely solely on
+historical experience, leading to limitations in efficiency and adaptability.
+We argue that while historical experience is valuable, workflow construction
+should also flexibly respond to the unique characteristics of each task. To
+this end, we propose an a priori dynamic framework for automated workflow
+construction. Our framework first leverages Q-table learning to optimize the
+decision space, guiding agent decisions and enabling effective use of
+historical experience. At the same time, agents evaluate the current task
+progress and make a priori decisions regarding the next executing agent,
+allowing the system to proactively select the more suitable workflow structure
+for each given task. Additionally, we incorporate mechanisms such as cold-start
+initialization, early stopping, and pruning to further improve system
+efficiency. Experimental evaluations on four benchmark datasets demonstrate the
+feasibility and effectiveness of our approach. Compared to state-of-the-art
+baselines, our method achieves an average improvement of 4.05%, while reducing
+workflow construction and inference costs to only 30.68%-48.31% of those
+required by existing methods.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14532v1'>Leveraging Artificial Intelligence as a Strategic Growth Catalyst for Small and Medium-sized Enterprises</a></td><td>Artificial Intelligence (AI) has transitioned from a futuristic concept
+reserved for large corporations to a present-day, accessible, and essential
+growth lever for Small and Medium-sized Enterprises (SMEs). For entrepreneurs
+and business leaders, strategic AI adoption is no longer an option but an
+imperative for competitiveness, operational efficiency, and long-term survival.
+This report provides a comprehensive framework for SME leaders to navigate this
+technological shift, offering the foundational knowledge, business case,
+practical applications, and strategic guidance necessary to harness the power
+of AI. The quantitative evidence supporting AI adoption is compelling; 91% of
+SMEs using AI report that it directly boosts their revenue. Beyond top-line
+growth, AI drives profound operational efficiencies, with studies showing it
+can reduce operational costs by up to 30% and save businesses more than 20
+hours of valuable time each month. This transformation is occurring within the
+context of a seismic economic shift; the global AI market is projected to surge
+from $233.46 Billion in 2024 to an astonishing $1.77 Trillion by 2032. This
+paper demystifies the core concepts of AI, presents a business case based on
+market data, details practical applications, and lays out a phased, actionable
+adoption strategy.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14526v1'>Delta Knowledge Distillation for Large Language Models</a></td><td>Knowledge distillation (KD) is a widely adopted approach for compressing
+large neural networks by transferring knowledge from a large teacher model to a
+smaller student model. In the context of large language models, token level KD,
+typically minimizing the KL divergence between student output distribution and
+teacher output distribution, has shown strong empirical performance. However,
+prior work assumes student output distribution and teacher output distribution
+share the same optimal representation space, a premise that may not hold in
+many cases. To solve this problem, we propose Delta Knowledge Distillation
+(Delta-KD), a novel extension of token level KD that encourages the student to
+approximate an optimal representation space by explicitly preserving the
+distributional shift Delta introduced during the teacher's supervised
+finetuning (SFT). Empirical results on ROUGE metrics demonstrate that Delta KD
+substantially improves student performance while preserving more of the
+teacher's knowledge.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14519v1'>BEACON: Behavioral Malware Classification with Large Language Model Embeddings and Deep Learning</a></td><td>Malware is becoming increasingly complex and widespread, making it essential
+to develop more effective and timely detection methods. Traditional static
+analysis often fails to defend against modern threats that employ code
+obfuscation, polymorphism, and other evasion techniques. In contrast,
+behavioral malware detection, which monitors runtime activities, provides a
+more reliable and context-aware solution. In this work, we propose BEACON, a
+novel deep learning framework that leverages large language models (LLMs) to
+generate dense, contextual embeddings from raw sandbox-generated behavior
+reports. These embeddings capture semantic and structural patterns of each
+sample and are processed by a one-dimensional convolutional neural network (1D
+CNN) for multi-class malware classification. Evaluated on the Avast-CTU Public
+CAPE Dataset, our framework consistently outperforms existing methods,
+highlighting the effectiveness of LLM-based behavioral embeddings and the
+overall design of BEACON for robust malware classification.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14507v1'>DeKeyNLU: Enhancing Natural Language to SQL Generation through Task Decomposition and Keyword Extraction</a></td><td>Natural Language to SQL (NL2SQL) provides a new model-centric paradigm that
+simplifies database access for non-technical users by converting natural
+language queries into SQL commands. Recent advancements, particularly those
+integrating Retrieval-Augmented Generation (RAG) and Chain-of-Thought (CoT)
+reasoning, have made significant strides in enhancing NL2SQL performance.
+However, challenges such as inaccurate task decomposition and keyword
+extraction by LLMs remain major bottlenecks, often leading to errors in SQL
+generation. While existing datasets aim to mitigate these issues by fine-tuning
+models, they struggle with over-fragmentation of tasks and lack of
+domain-specific keyword annotations, limiting their effectiveness. To address
+these limitations, we present DeKeyNLU, a novel dataset which contains 1,500
+meticulously annotated QA pairs aimed at refining task decomposition and
+enhancing keyword extraction precision for the RAG pipeline. Fine-tuned with
+DeKeyNLU, we propose DeKeySQL, a RAG-based NL2SQL pipeline that employs three
+distinct modules for user question understanding, entity retrieval, and
+generation to improve SQL generation accuracy. We benchmarked multiple model
+configurations within DeKeySQL RAG pipeline. Experimental results demonstrate
+that fine-tuning with DeKeyNLU significantly improves SQL generation accuracy
+on both BIRD (62.31% to 69.10%) and Spider (84.2% to 88.7%) dev datasets.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14504v1'>Introducing OmniGEC: A Silver Multilingual Dataset for Grammatical Error Correction</a></td><td>In this paper, we introduce OmniGEC, a collection of multilingual
+silver-standard datasets for the task of Grammatical Error Correction (GEC),
+covering eleven languages: Czech, English, Estonian, German, Greek, Icelandic,
+Italian, Latvian, Slovene, Swedish, and Ukrainian. These datasets facilitate
+the development of multilingual GEC solutions and help bridge the data gap in
+adapting English GEC solutions to multilingual GEC. The texts in the datasets
+originate from three sources: Wikipedia edits for the eleven target languages,
+subreddits from Reddit in the eleven target languages, and the Ukrainian-only
+UberText 2.0 social media corpus. While Wikipedia edits were derived from
+human-made corrections, the Reddit and UberText 2.0 data were automatically
+corrected with the GPT-4o-mini model. The quality of the corrections in the
+datasets was evaluated both automatically and manually. Finally, we fine-tune
+two open-source large language models - Aya-Expanse (8B) and Gemma-3 (12B) - on
+the multilingual OmniGEC corpora and achieve state-of-the-art (SOTA) results
+for paragraph-level multilingual GEC. The dataset collection and the
+best-performing models are available on Hugging Face.</td></tr></tbody></table>
 
 ### 📅 2025-09-17
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.14233v1'>Apertus: Democratizing Open and Compliant LLMs for Global Language Environments</a></td><td>W, e,  , p, r, e, s, e, n, t,  , A, p, e, r, t, u, s, ,,  , a,  , f, u, l, l, y,  , o, p, e, n,  , s, u, i, t, e,  , o, f,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ), 
-, d, e, s, i, g, n, e, d,  , t, o,  , a, d, d, r, e, s, s,  , t, w, o,  , s, y, s, t, e, m, i, c,  , s, h, o, r, t, c, o, m, i, n, g, s,  , i, n,  , t, o, d, a, y, ', s,  , o, p, e, n,  , m, o, d, e, l,  , e, c, o, s, y, s, t, e, m, :, 
-, d, a, t, a,  , c, o, m, p, l, i, a, n, c, e,  , a, n, d,  , m, u, l, t, i, l, i, n, g, u, a, l,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, .,  , U, n, l, i, k, e,  , m, a, n, y,  , p, r, i, o, r,  , m, o, d, e, l, s,  , t, h, a, t, 
-, r, e, l, e, a, s, e,  , w, e, i, g, h, t, s,  , w, i, t, h, o, u, t,  , r, e, p, r, o, d, u, c, i, b, l, e,  , d, a, t, a,  , p, i, p, e, l, i, n, e, s,  , o, r,  , r, e, g, a, r, d,  , f, o, r,  , c, o, n, t, e, n, t, -, o, w, n, e, r, 
-, r, i, g, h, t, s, ,,  , A, p, e, r, t, u, s,  , m, o, d, e, l, s,  , a, r, e,  , p, r, e, t, r, a, i, n, e, d,  , e, x, c, l, u, s, i, v, e, l, y,  , o, n,  , o, p, e, n, l, y,  , a, v, a, i, l, a, b, l, e,  , d, a, t, a, ,, 
-, r, e, t, r, o, a, c, t, i, v, e, l, y,  , r, e, s, p, e, c, t, i, n, g,  , r, o, b, o, t, s, ., t, x, t,  , e, x, c, l, u, s, i, o, n, s,  , a, n, d,  , f, i, l, t, e, r, i, n, g,  , f, o, r, 
-, n, o, n, -, p, e, r, m, i, s, s, i, v, e, ,,  , t, o, x, i, c, ,,  , a, n, d,  , p, e, r, s, o, n, a, l, l, y,  , i, d, e, n, t, i, f, i, a, b, l, e,  , c, o, n, t, e, n, t, .,  , T, o,  , m, i, t, i, g, a, t, e,  , r, i, s, k, s, 
-, o, f,  , m, e, m, o, r, i, z, a, t, i, o, n, ,,  , w, e,  , a, d, o, p, t,  , t, h, e,  , G, o, l, d, f, i, s, h,  , o, b, j, e, c, t, i, v, e,  , d, u, r, i, n, g,  , p, r, e, t, r, a, i, n, i, n, g, ,,  , s, t, r, o, n, g, l, y, 
-, s, u, p, p, r, e, s, s, i, n, g,  , v, e, r, b, a, t, i, m,  , r, e, c, a, l, l,  , o, f,  , d, a, t, a,  , w, h, i, l, e,  , r, e, t, a, i, n, i, n, g,  , d, o, w, n, s, t, r, e, a, m,  , t, a, s, k, 
-, p, e, r, f, o, r, m, a, n, c, e, .,  , T, h, e,  , A, p, e, r, t, u, s,  , m, o, d, e, l, s,  , a, l, s, o,  , e, x, p, a, n, d,  , m, u, l, t, i, l, i, n, g, u, a, l,  , c, o, v, e, r, a, g, e, ,,  , t, r, a, i, n, i, n, g,  , o, n, 
-, 1, 5, T,  , t, o, k, e, n, s,  , f, r, o, m,  , o, v, e, r,  , 1, 8, 0, 0,  , l, a, n, g, u, a, g, e, s, ,,  , w, i, t, h,  , ~, 4, 0, %,  , o, f,  , p, r, e, t, r, a, i, n, i, n, g,  , d, a, t, a,  , a, l, l, o, c, a, t, e, d,  , t, o, 
-, n, o, n, -, E, n, g, l, i, s, h,  , c, o, n, t, e, n, t, .,  , R, e, l, e, a, s, e, d,  , a, t,  , 8, B,  , a, n, d,  , 7, 0, B,  , s, c, a, l, e, s, ,,  , A, p, e, r, t, u, s,  , a, p, p, r, o, a, c, h, e, s, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , r, e, s, u, l, t, s,  , a, m, o, n, g,  , f, u, l, l, y,  , o, p, e, n,  , m, o, d, e, l, s,  , o, n,  , m, u, l, t, i, l, i, n, g, u, a, l,  , b, e, n, c, h, m, a, r, k, s, ,, 
-, r, i, v, a, l, l, i, n, g,  , o, r,  , s, u, r, p, a, s, s, i, n, g,  , o, p, e, n, -, w, e, i, g, h, t,  , c, o, u, n, t, e, r, p, a, r, t, s, .,  , B, e, y, o, n, d,  , m, o, d, e, l,  , w, e, i, g, h, t, s, ,,  , w, e, 
-, r, e, l, e, a, s, e,  , a, l, l,  , s, c, i, e, n, t, i, f, i, c,  , a, r, t, i, f, a, c, t, s,  , f, r, o, m,  , o, u, r,  , d, e, v, e, l, o, p, m, e, n, t,  , c, y, c, l, e,  , w, i, t, h,  , a,  , p, e, r, m, i, s, s, i, v, e, 
-, l, i, c, e, n, s, e, ,,  , i, n, c, l, u, d, i, n, g,  , d, a, t, a,  , p, r, e, p, a, r, a, t, i, o, n,  , s, c, r, i, p, t, s, ,,  , c, h, e, c, k, p, o, i, n, t, s, ,,  , e, v, a, l, u, a, t, i, o, n,  , s, u, i, t, e, s, ,, 
-, a, n, d,  , t, r, a, i, n, i, n, g,  , c, o, d, e, ,,  , e, n, a, b, l, i, n, g,  , t, r, a, n, s, p, a, r, e, n, t,  , a, u, d, i, t,  , a, n, d,  , e, x, t, e, n, s, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14223v1'>Language models' activations linearly encode training-order recency</a></td><td>W, e,  , s, h, o, w,  , t, h, a, t,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, ',  , a, c, t, i, v, a, t, i, o, n, s,  , l, i, n, e, a, r, l, y,  , e, n, c, o, d, e,  , w, h, e, n,  , i, n, f, o, r, m, a, t, i, o, n, 
-, w, a, s,  , l, e, a, r, n, e, d,  , d, u, r, i, n, g,  , t, r, a, i, n, i, n, g, .,  , O, u, r,  , s, e, t, u, p,  , i, n, v, o, l, v, e, s,  , c, r, e, a, t, i, n, g,  , a,  , m, o, d, e, l,  , w, i, t, h,  , a,  , k, n, o, w, n, 
-, t, r, a, i, n, i, n, g,  , o, r, d, e, r,  , b, y,  , s, e, q, u, e, n, t, i, a, l, l, y,  , f, i, n, e, -, t, u, n, i, n, g,  , L, l, a, m, a, -, 3, ., 2, -, 1, B,  , o, n,  , s, i, x,  , d, i, s, j, o, i, n, t,  , b, u, t, 
-, o, t, h, e, r, w, i, s, e,  , s, i, m, i, l, a, r,  , d, a, t, a, s, e, t, s,  , a, b, o, u, t,  , n, a, m, e, d,  , e, n, t, i, t, i, e, s, .,  , W, e,  , f, i, n, d,  , t, h, a, t,  , t, h, e,  , a, v, e, r, a, g, e, 
-, a, c, t, i, v, a, t, i, o, n, s,  , o, f,  , t, e, s, t,  , s, a, m, p, l, e, s,  , f, o, r,  , t, h, e,  , s, i, x,  , t, r, a, i, n, i, n, g,  , d, a, t, a, s, e, t, s,  , e, n, c, o, d, e,  , t, h, e,  , t, r, a, i, n, i, n, g, 
-, o, r, d, e, r, :,  , w, h, e, n,  , p, r, o, j, e, c, t, e, d,  , i, n, t, o,  , a,  , 2, D,  , s, u, b, s, p, a, c, e, ,,  , t, h, e, s, e,  , c, e, n, t, r, o, i, d, s,  , a, r, e,  , a, r, r, a, n, g, e, d,  , e, x, a, c, t, l, y, 
-, i, n,  , t, h, e,  , o, r, d, e, r,  , o, f,  , t, r, a, i, n, i, n, g,  , a, n, d,  , l, i, e,  , o, n,  , a,  , s, t, r, a, i, g, h, t,  , l, i, n, e, .,  , F, u, r, t, h, e, r, ,,  , w, e,  , s, h, o, w,  , t, h, a, t, 
-, l, i, n, e, a, r,  , p, r, o, b, e, s,  , c, a, n,  , a, c, c, u, r, a, t, e, l, y,  , (, ~, 9, 0, %, ),  , d, i, s, t, i, n, g, u, i, s, h,  , ", e, a, r, l, y, ",  , v, s, .,  , ", l, a, t, e, ",  , e, n, t, i, t, i, e, s, ,, 
-, g, e, n, e, r, a, l, i, z, i, n, g,  , t, o,  , e, n, t, i, t, i, e, s,  , u, n, s, e, e, n,  , d, u, r, i, n, g,  , t, h, e,  , p, r, o, b, e, s, ',  , o, w, n,  , t, r, a, i, n, i, n, g, .,  , T, h, e,  , m, o, d, e, l,  , c, a, n, 
-, a, l, s, o,  , b, e,  , f, i, n, e, -, t, u, n, e, d,  , t, o,  , e, x, p, l, i, c, i, t, l, y,  , r, e, p, o, r, t,  , a, n,  , u, n, s, e, e, n,  , e, n, t, i, t, y, ', s,  , t, r, a, i, n, i, n, g,  , s, t, a, g, e,  , (, ~, 8, 0, %, 
-, a, c, c, u, r, a, c, y, ), .,  , I, n, t, e, r, e, s, t, i, n, g, l, y, ,,  , t, h, i, s,  , t, e, m, p, o, r, a, l,  , s, i, g, n, a, l,  , d, o, e, s,  , n, o, t,  , s, e, e, m,  , a, t, t, r, i, b, u, t, a, b, l, e,  , t, o, 
-, s, i, m, p, l, e,  , d, i, f, f, e, r, e, n, c, e, s,  , i, n,  , a, c, t, i, v, a, t, i, o, n,  , m, a, g, n, i, t, u, d, e, s, ,,  , l, o, s, s, e, s, ,,  , o, r,  , m, o, d, e, l,  , c, o, n, f, i, d, e, n, c, e, .,  , O, u, r, 
-, p, a, p, e, r,  , d, e, m, o, n, s, t, r, a, t, e, s,  , t, h, a, t,  , m, o, d, e, l, s,  , a, r, e,  , c, a, p, a, b, l, e,  , o, f,  , d, i, f, f, e, r, e, n, t, i, a, t, i, n, g,  , i, n, f, o, r, m, a, t, i, o, n,  , b, y, 
-, i, t, s,  , a, c, q, u, i, s, i, t, i, o, n,  , t, i, m, e, ,,  , a, n, d,  , c, a, r, r, i, e, s,  , s, i, g, n, i, f, i, c, a, n, t,  , i, m, p, l, i, c, a, t, i, o, n, s,  , f, o, r,  , h, o, w,  , t, h, e, y,  , m, i, g, h, t, 
-, m, a, n, a, g, e,  , c, o, n, f, l, i, c, t, i, n, g,  , d, a, t, a,  , a, n, d,  , r, e, s, p, o, n, d,  , t, o,  , k, n, o, w, l, e, d, g, e,  , m, o, d, i, f, i, c, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14093v1'>Reasoning Efficiently Through Adaptive Chain-of-Thought Compression: A Self-Optimizing Framework</a></td><td>C, h, a, i, n, -, o, f, -, T, h, o, u, g, h, t,  , (, C, o, T, ),  , r, e, a, s, o, n, i, n, g,  , e, n, h, a, n, c, e, s,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , b, y, 
-, p, r, o, m, p, t, i, n, g,  , i, n, t, e, r, m, e, d, i, a, t, e,  , s, t, e, p, s, ,,  , i, m, p, r, o, v, i, n, g,  , a, c, c, u, r, a, c, y,  , a, n, d,  , r, o, b, u, s, t, n, e, s, s,  , i, n,  , a, r, i, t, h, m, e, t, i, c, ,, 
-, l, o, g, i, c, ,,  , a, n, d,  , c, o, m, m, o, n, s, e, n, s, e,  , t, a, s, k, s, .,  , H, o, w, e, v, e, r, ,,  , t, h, i, s,  , b, e, n, e, f, i, t,  , c, o, m, e, s,  , w, i, t, h,  , h, i, g, h, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, s, :,  , l, o, n, g, e, r,  , o, u, t, p, u, t, s,  , i, n, c, r, e, a, s, e,  , l, a, t, e, n, c, y, ,,  , m, e, m, o, r, y,  , u, s, a, g, e, ,,  , a, n, d, 
-, K, V, -, c, a, c, h, e,  , d, e, m, a, n, d, s, .,  , T, h, e, s, e,  , i, s, s, u, e, s,  , a, r, e,  , e, s, p, e, c, i, a, l, l, y,  , c, r, i, t, i, c, a, l,  , i, n,  , s, o, f, t, w, a, r, e,  , e, n, g, i, n, e, e, r, i, n, g, 
-, t, a, s, k, s,  , w, h, e, r, e,  , c, o, n, c, i, s, e,  , a, n, d,  , d, e, t, e, r, m, i, n, i, s, t, i, c,  , o, u, t, p, u, t, s,  , a, r, e,  , r, e, q, u, i, r, e, d, .,  , T, o,  , i, n, v, e, s, t, i, g, a, t, e, 
-, t, h, e, s, e,  , t, r, a, d, e, -, o, f, f, s, ,,  , w, e,  , c, o, n, d, u, c, t,  , a, n,  , e, m, p, i, r, i, c, a, l,  , s, t, u, d, y,  , b, a, s, e, d,  , o, n,  , c, o, d, e,  , g, e, n, e, r, a, t, i, o, n, 
-, b, e, n, c, h, m, a, r, k, s, .,  , T, h, e,  , r, e, s, u, l, t, s,  , r, e, v, e, a, l,  , t, h, a, t,  , l, o, n, g, e, r,  , C, o, T,  , d, o, e, s,  , n, o, t,  , a, l, w, a, y, s,  , h, e, l, p, .,  , E, x, c, e, s, s, i, v, e, 
-, r, e, a, s, o, n, i, n, g,  , o, f, t, e, n,  , c, a, u, s, e, s,  , t, r, u, n, c, a, t, i, o, n, ,,  , a, c, c, u, r, a, c, y,  , d, r, o, p, s, ,,  , a, n, d,  , l, a, t, e, n, c, y,  , u, p,  , t, o,  , f, i, v, e,  , t, i, m, e, s, 
-, h, i, g, h, e, r, ,,  , w, i, t, h,  , f, a, i, l, e, d,  , o, u, t, p, u, t, s,  , c, o, n, s, i, s, t, e, n, t, l, y,  , l, o, n, g, e, r,  , t, h, a, n,  , s, u, c, c, e, s, s, f, u, l,  , o, n, e, s, .,  , T, h, e, s, e, 
-, f, i, n, d, i, n, g, s,  , c, h, a, l, l, e, n, g, e,  , t, h, e,  , a, s, s, u, m, p, t, i, o, n,  , t, h, a, t,  , l, o, n, g, e, r,  , r, e, a, s, o, n, i, n, g,  , i, s,  , i, n, h, e, r, e, n, t, l, y,  , b, e, t, t, e, r, 
-, a, n, d,  , h, i, g, h, l, i, g, h, t,  , t, h, e,  , n, e, e, d,  , f, o, r,  , a, d, a, p, t, i, v, e,  , C, o, T,  , c, o, n, t, r, o, l, .,  , M, o, t, i, v, a, t, e, d,  , b, y,  , t, h, i, s, ,,  , w, e,  , p, r, o, p, o, s, e, 
-, S, E, E, R,  , (, S, e, l, f, -, E, n, h, a, n, c, i, n, g,  , E, f, f, i, c, i, e, n, t,  , R, e, a, s, o, n, i, n, g, ), ,,  , a, n,  , a, d, a, p, t, i, v, e,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t, 
-, c, o, m, p, r, e, s, s, e, s,  , C, o, T,  , w, h, i, l, e,  , p, r, e, s, e, r, v, i, n, g,  , a, c, c, u, r, a, c, y, .,  , S, E, E, R,  , c, o, m, b, i, n, e, s,  , B, e, s, t, -, o, f, -, N,  , s, a, m, p, l, i, n, g,  , w, i, t, h, 
-, t, a, s, k, -, a, w, a, r, e,  , a, d, a, p, t, i, v, e,  , f, i, l, t, e, r, i, n, g, ,,  , d, y, n, a, m, i, c, a, l, l, y,  , a, d, j, u, s, t, i, n, g,  , t, h, r, e, s, h, o, l, d, s,  , b, a, s, e, d,  , o, n, 
-, p, r, e, -, i, n, f, e, r, e, n, c, e,  , o, u, t, p, u, t, s,  , t, o,  , r, e, d, u, c, e,  , v, e, r, b, o, s, i, t, y,  , a, n, d,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , o, v, e, r, h, e, a, d, .,  , W, e,  , t, h, e, n, 
-, e, v, a, l, u, a, t, e,  , S, E, E, R,  , o, n,  , t, h, r, e, e,  , s, o, f, t, w, a, r, e,  , e, n, g, i, n, e, e, r, i, n, g,  , t, a, s, k, s,  , a, n, d,  , o, n, e,  , m, a, t, h,  , t, a, s, k, .,  , O, n, 
-, a, v, e, r, a, g, e, ,,  , S, E, E, R,  , s, h, o, r, t, e, n, s,  , C, o, T,  , b, y,  , 4, 2, ., 1, %, ,,  , i, m, p, r, o, v, e, s,  , a, c, c, u, r, a, c, y,  , b, y,  , r, e, d, u, c, i, n, g,  , t, r, u, n, c, a, t, i, o, n, ,, 
-, a, n, d,  , e, l, i, m, i, n, a, t, e, s,  , m, o, s, t,  , i, n, f, i, n, i, t, e,  , l, o, o, p, s, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , S, E, E, R,  , a, s,  , a, 
-, p, r, a, c, t, i, c, a, l,  , m, e, t, h, o, d,  , t, o,  , m, a, k, e,  , C, o, T, -, e, n, h, a, n, c, e, d,  , L, L, M, s,  , m, o, r, e,  , e, f, f, i, c, i, e, n, t,  , a, n, d,  , r, o, b, u, s, t, ,,  , e, v, e, n, 
-, u, n, d, e, r,  , r, e, s, o, u, r, c, e,  , c, o, n, s, t, r, a, i, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14036v1'>SSL-SSAW: Self-Supervised Learning with Sigmoid Self-Attention Weighting for Question-Based Sign Language Translation</a></td><td>S, i, g, n,  , L, a, n, g, u, a, g, e,  , T, r, a, n, s, l, a, t, i, o, n,  , (, S, L, T, ),  , b, r, i, d, g, e, s,  , t, h, e,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , g, a, p,  , b, e, t, w, e, e, n,  , d, e, a, f, 
-, p, e, o, p, l, e,  , a, n, d,  , h, e, a, r, i, n, g,  , p, e, o, p, l, e, ,,  , w, h, e, r, e,  , d, i, a, l, o, g, u, e,  , p, r, o, v, i, d, e, s,  , c, r, u, c, i, a, l,  , c, o, n, t, e, x, t, u, a, l,  , c, u, e, s,  , t, o, 
-, a, i, d,  , i, n,  , t, r, a, n, s, l, a, t, i, o, n, .,  , B, u, i, l, d, i, n, g,  , o, n,  , t, h, i, s,  , f, o, u, n, d, a, t, i, o, n, a, l,  , c, o, n, c, e, p, t, ,,  , t, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s, 
-, Q, u, e, s, t, i, o, n, -, b, a, s, e, d,  , S, i, g, n,  , L, a, n, g, u, a, g, e,  , T, r, a, n, s, l, a, t, i, o, n,  , (, Q, B, -, S, L, T, ), ,,  , a,  , n, o, v, e, l,  , t, a, s, k,  , t, h, a, t,  , e, x, p, l, o, r, e, s, 
-, t, h, e,  , e, f, f, i, c, i, e, n, t,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , d, i, a, l, o, g, u, e, .,  , U, n, l, i, k, e,  , g, l, o, s, s,  , (, s, i, g, n,  , l, a, n, g, u, a, g, e, 
-, t, r, a, n, s, c, r, i, p, t, i, o, n, ),  , a, n, n, o, t, a, t, i, o, n, s, ,,  , d, i, a, l, o, g, u, e,  , n, a, t, u, r, a, l, l, y,  , o, c, c, u, r, s,  , i, n,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , a, n, d,  , i, s, 
-, e, a, s, i, e, r,  , t, o,  , a, n, n, o, t, a, t, e, .,  , T, h, e,  , k, e, y,  , c, h, a, l, l, e, n, g, e,  , l, i, e, s,  , i, n,  , a, l, i, g, n, i, n, g,  , m, u, l, t, i, m, o, d, a, l, i, t, y,  , f, e, a, t, u, r, e, s, 
-, w, h, i, l, e,  , l, e, v, e, r, a, g, i, n, g,  , t, h, e,  , c, o, n, t, e, x, t,  , o, f,  , t, h, e,  , q, u, e, s, t, i, o, n,  , t, o,  , i, m, p, r, o, v, e,  , t, r, a, n, s, l, a, t, i, o, n, .,  , T, o,  , a, d, d, r, e, s, s, 
-, t, h, i, s,  , i, s, s, u, e, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , c, r, o, s, s, -, m, o, d, a, l, i, t, y,  , S, e, l, f, -, s, u, p, e, r, v, i, s, e, d,  , L, e, a, r, n, i, n, g,  , w, i, t, h,  , S, i, g, m, o, i, d, 
-, S, e, l, f, -, a, t, t, e, n, t, i, o, n,  , W, e, i, g, h, t, i, n, g,  , (, S, S, L, -, S, S, A, W, ),  , f, u, s, i, o, n,  , m, e, t, h, o, d,  , f, o, r,  , s, i, g, n,  , l, a, n, g, u, a, g, e, 
-, t, r, a, n, s, l, a, t, i, o, n, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , e, m, p, l, o, y,  , c, o, n, t, r, a, s, t, i, v, e,  , l, e, a, r, n, i, n, g,  , t, o,  , a, l, i, g, n, 
-, m, u, l, t, i, m, o, d, a, l, i, t, y,  , f, e, a, t, u, r, e, s,  , i, n,  , Q, B, -, S, L, T, ,,  , t, h, e, n,  , i, n, t, r, o, d, u, c, e,  , a,  , S, i, g, m, o, i, d,  , S, e, l, f, -, a, t, t, e, n, t, i, o, n, 
-, W, e, i, g, h, t, i, n, g,  , (, S, S, A, W, ),  , m, o, d, u, l, e,  , f, o, r,  , a, d, a, p, t, i, v, e,  , f, e, a, t, u, r, e,  , e, x, t, r, a, c, t, i, o, n,  , f, r, o, m,  , q, u, e, s, t, i, o, n,  , a, n, d,  , s, i, g, n, 
-, l, a, n, g, u, a, g, e,  , s, e, q, u, e, n, c, e, s, .,  , A, d, d, i, t, i, o, n, a, l, l, y, ,,  , w, e,  , l, e, v, e, r, a, g, e,  , a, v, a, i, l, a, b, l, e,  , q, u, e, s, t, i, o, n,  , t, e, x, t,  , t, h, r, o, u, g, h, 
-, s, e, l, f, -, s, u, p, e, r, v, i, s, e, d,  , l, e, a, r, n, i, n, g,  , t, o,  , e, n, h, a, n, c, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , a, n, d,  , t, r, a, n, s, l, a, t, i, o, n, 
-, c, a, p, a, b, i, l, i, t, i, e, s, .,  , W, e,  , e, v, a, l, u, a, t, e, d,  , o, u, r,  , a, p, p, r, o, a, c, h,  , o, n,  , n, e, w, l, y,  , c, o, n, s, t, r, u, c, t, e, d,  , C, S, L, -, D, a, i, l, y, -, Q, A,  , a, n, d, 
-, P, H, O, E, N, I, X, -, 2, 0, 1, 4, T, -, Q, A,  , d, a, t, a, s, e, t, s, ,,  , w, h, e, r, e,  , S, S, L, -, S, S, A, W,  , a, c, h, i, e, v, e, d,  , S, O, T, A,  , p, e, r, f, o, r, m, a, n, c, e, .,  , N, o, t, a, b, l, y, ,, 
-, e, a, s, i, l, y,  , a, c, c, e, s, s, i, b, l, e,  , q, u, e, s, t, i, o, n,  , a, s, s, i, s, t, a, n, c, e,  , c, a, n,  , a, c, h, i, e, v, e,  , o, r,  , e, v, e, n,  , s, u, r, p, a, s, s,  , t, h, e, 
-, p, e, r, f, o, r, m, a, n, c, e,  , o, f,  , g, l, o, s, s,  , a, s, s, i, s, t, a, n, c, e, .,  , F, u, r, t, h, e, r, m, o, r, e, ,,  , v, i, s, u, a, l, i, z, a, t, i, o, n,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e, 
-, t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , d, i, a, l, o, g, u, e,  , i, n,  , i, m, p, r, o, v, i, n, g,  , t, r, a, n, s, l, a, t, i, o, n,  , q, u, a, l, i, t, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14031v1'>You Are What You Train: Effects of Data Composition on Training Context-aware Machine Translation Models</a></td><td>A, c, h, i, e, v, i, n, g,  , h, u, m, a, n, -, l, e, v, e, l,  , t, r, a, n, s, l, a, t, i, o, n, s,  , r, e, q, u, i, r, e, s,  , l, e, v, e, r, a, g, i, n, g,  , c, o, n, t, e, x, t,  , t, o,  , e, n, s, u, r, e, 
-, c, o, h, e, r, e, n, c, e,  , a, n, d,  , h, a, n, d, l, e,  , c, o, m, p, l, e, x,  , p, h, e, n, o, m, e, n, a,  , l, i, k, e,  , p, r, o, n, o, u, n,  , d, i, s, a, m, b, i, g, u, a, t, i, o, n, .,  , S, p, a, r, s, i, t, y,  , o, f, 
-, c, o, n, t, e, x, t, u, a, l, l, y,  , r, i, c, h,  , e, x, a, m, p, l, e, s,  , i, n,  , t, h, e,  , s, t, a, n, d, a, r, d,  , t, r, a, i, n, i, n, g,  , d, a, t, a,  , h, a, s,  , b, e, e, n,  , h, y, p, o, t, h, e, s, i, z, e, d, 
-, a, s,  , t, h, e,  , r, e, a, s, o, n,  , f, o, r,  , t, h, e,  , d, i, f, f, i, c, u, l, t, y,  , o, f,  , c, o, n, t, e, x, t,  , u, t, i, l, i, z, a, t, i, o, n, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e, 
-, s, y, s, t, e, m, a, t, i, c, a, l, l, y,  , v, a, l, i, d, a, t, e,  , t, h, i, s,  , c, l, a, i, m,  , i, n,  , b, o, t, h,  , s, i, n, g, l, e, -,  , a, n, d,  , m, u, l, t, i, l, i, n, g, u, a, l,  , s, e, t, t, i, n, g, s,  , b, y, 
-, c, o, n, s, t, r, u, c, t, i, n, g,  , t, r, a, i, n, i, n, g,  , d, a, t, a, s, e, t, s,  , w, i, t, h,  , a,  , c, o, n, t, r, o, l, l, e, d,  , p, r, o, p, o, r, t, i, o, n, s,  , o, f,  , c, o, n, t, e, x, t, u, a, l, l, y, 
-, r, e, l, e, v, a, n, t,  , e, x, a, m, p, l, e, s, .,  , W, e,  , d, e, m, o, n, s, t, r, a, t, e,  , a,  , s, t, r, o, n, g,  , a, s, s, o, c, i, a, t, i, o, n,  , b, e, t, w, e, e, n,  , t, r, a, i, n, i, n, g,  , d, a, t, a, 
-, s, p, a, r, s, i, t, y,  , a, n, d,  , m, o, d, e, l,  , p, e, r, f, o, r, m, a, n, c, e,  , c, o, n, f, i, r, m, i, n, g,  , s, p, a, r, s, i, t, y,  , a, s,  , a,  , k, e, y,  , b, o, t, t, l, e, n, e, c, k, ., 
-, I, m, p, o, r, t, a, n, t, l, y, ,,  , w, e,  , r, e, v, e, a, l,  , t, h, a, t,  , i, m, p, r, o, v, e, m, e, n, t, s,  , i, n,  , o, n, e,  , c, o, n, t, e, x, t, u, a, l,  , p, h, e, n, o, m, e, n, o, n,  , d, o,  , n, o, 
-, g, e, n, e, r, a, l, i, z, e,  , t, o,  , o, t, h, e, r, s, .,  , W, h, i, l, e,  , w, e,  , o, b, s, e, r, v, e,  , s, o, m, e,  , c, r, o, s, s, -, l, i, n, g, u, a, l,  , t, r, a, n, s, f, e, r, ,,  , i, t,  , i, s,  , n, o, t, 
-, s, i, g, n, i, f, i, c, a, n, t, l, y,  , h, i, g, h, e, r,  , b, e, t, w, e, e, n,  , l, a, n, g, u, a, g, e, s,  , w, i, t, h, i, n,  , t, h, e,  , s, a, m, e,  , s, u, b, -, f, a, m, i, l, y, .,  , F, i, n, a, l, l, y, ,,  , w, e, 
-, p, r, o, p, o, s, e,  , a, n, d,  , e, m, p, i, r, i, c, a, l, l, y,  , e, v, a, l, u, a, t, e,  , t, w, o,  , t, r, a, i, n, i, n, g,  , s, t, r, a, t, e, g, i, e, s,  , d, e, s, i, g, n, e, d,  , t, o,  , l, e, v, e, r, a, g, e, 
-, t, h, e,  , a, v, a, i, l, a, b, l, e,  , d, a, t, a, .,  , T, h, e, s, e,  , s, t, r, a, t, e, g, i, e, s,  , i, m, p, r, o, v, e,  , c, o, n, t, e, x, t,  , u, t, i, l, i, z, a, t, i, o, n, ,,  , r, e, s, u, l, t, i, n, g,  , i, n, 
-, a, c, c, u, r, a, c, y,  , g, a, i, n, s,  , o, f,  , u, p,  , t, o,  , 6,  , a, n, d,  , 8,  , p, e, r, c, e, n, t, a, g, e,  , p, o, i, n, t, s,  , o, n,  , t, h, e,  , c, t, x, P, r, o,  , e, v, a, l, u, a, t, i, o, n,  , i, n, 
-, s, i, n, g, l, e, -,  , a, n, d,  , m, u, l, t, i, l, i, n, g, u, a, l,  , s, e, t, t, i, n, g, s,  , r, e, s, p, e, c, t, i, v, e, l, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14030v1'>CrowdAgent: Multi-Agent Managed Multi-Source Annotation System</a></td><td>H, i, g, h, -, q, u, a, l, i, t, y,  , a, n, n, o, t, a, t, e, d,  , d, a, t, a,  , i, s,  , a,  , c, o, r, n, e, r, s, t, o, n, e,  , o, f,  , m, o, d, e, r, n,  , N, a, t, u, r, a, l,  , L, a, n, g, u, a, g, e, 
-, P, r, o, c, e, s, s, i, n, g,  , (, N, L, P, ), .,  , W, h, i, l, e,  , r, e, c, e, n, t,  , m, e, t, h, o, d, s,  , b, e, g, i, n,  , t, o,  , l, e, v, e, r, a, g, e,  , d, i, v, e, r, s, e,  , a, n, n, o, t, a, t, i, o, n, 
-, s, o, u, r, c, e, s, -, i, n, c, l, u, d, i, n, g,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ), ,,  , S, m, a, l, l,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, S, L, M, s, ), ,, 
-, a, n, d,  , h, u, m, a, n,  , e, x, p, e, r, t, s, -, t, h, e, y,  , o, f, t, e, n,  , f, o, c, u, s,  , n, a, r, r, o, w, l, y,  , o, n,  , t, h, e,  , l, a, b, e, l, i, n, g,  , s, t, e, p,  , i, t, s, e, l, f, .,  , A, 
-, c, r, i, t, i, c, a, l,  , g, a, p,  , r, e, m, a, i, n, s,  , i, n,  , t, h, e,  , h, o, l, i, s, t, i, c,  , p, r, o, c, e, s, s,  , c, o, n, t, r, o, l,  , r, e, q, u, i, r, e, d,  , t, o,  , m, a, n, a, g, e,  , t, h, e, s, e, 
-, s, o, u, r, c, e, s,  , d, y, n, a, m, i, c, a, l, l, y, ,,  , a, d, d, r, e, s, s, i, n, g,  , c, o, m, p, l, e, x,  , s, c, h, e, d, u, l, i, n, g,  , a, n, d,  , q, u, a, l, i, t, y, -, c, o, s, t,  , t, r, a, d, e, -, o, f, f, s, 
-, i, n,  , a,  , u, n, i, f, i, e, d,  , m, a, n, n, e, r, .,  , I, n, s, p, i, r, e, d,  , b, y,  , r, e, a, l, -, w, o, r, l, d,  , c, r, o, w, d, s, o, u, r, c, i, n, g,  , c, o, m, p, a, n, i, e, s, ,,  , w, e, 
-, i, n, t, r, o, d, u, c, e,  , C, r, o, w, d, A, g, e, n, t, ,,  , a,  , m, u, l, t, i, -, a, g, e, n, t,  , s, y, s, t, e, m,  , t, h, a, t,  , p, r, o, v, i, d, e, s,  , e, n, d, -, t, o, -, e, n, d,  , p, r, o, c, e, s, s, 
-, c, o, n, t, r, o, l,  , b, y,  , i, n, t, e, g, r, a, t, i, n, g,  , t, a, s, k,  , a, s, s, i, g, n, m, e, n, t, ,,  , d, a, t, a,  , a, n, n, o, t, a, t, i, o, n, ,,  , a, n, d,  , q, u, a, l, i, t, y, /, c, o, s, t, 
-, m, a, n, a, g, e, m, e, n, t, .,  , I, t,  , i, m, p, l, e, m, e, n, t, s,  , a,  , n, o, v, e, l,  , m, e, t, h, o, d, o, l, o, g, y,  , t, h, a, t,  , r, a, t, i, o, n, a, l, l, y,  , a, s, s, i, g, n, s,  , t, a, s, k, s, ,, 
-, e, n, a, b, l, i, n, g,  , L, L, M, s, ,,  , S, L, M, s, ,,  , a, n, d,  , h, u, m, a, n,  , e, x, p, e, r, t, s,  , t, o,  , a, d, v, a, n, c, e,  , s, y, n, e, r, g, i, s, t, i, c, a, l, l, y,  , i, n,  , a, 
-, c, o, l, l, a, b, o, r, a, t, i, v, e,  , a, n, n, o, t, a, t, i, o, n,  , w, o, r, k, f, l, o, w, .,  , W, e,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f, 
-, C, r, o, w, d, A, g, e, n, t,  , t, h, r, o, u, g, h,  , e, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , s, i, x,  , d, i, v, e, r, s, e,  , m, u, l, t, i, m, o, d, a, l, 
-, c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , t, a, s, k, s, .,  , T, h, e,  , s, o, u, r, c, e,  , c, o, d, e,  , a, n, d,  , v, i, d, e, o,  , d, e, m, o,  , a, r, e,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, Q, M, M, M, S, /, C, r, o, w, d, A, g, e, n, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14001v1'>MOCHA: Multi-modal Objects-aware Cross-arcHitecture Alignment</a></td><td>W, e,  , i, n, t, r, o, d, u, c, e,  , M, O, C, H, A,  , (, M, u, l, t, i, -, m, o, d, a, l,  , O, b, j, e, c, t, s, -, a, w, a, r, e,  , C, r, o, s, s, -, a, r, c, H, i, t, e, c, t, u, r, e,  , A, l, i, g, n, m, e, n, t, ), ,, 
-, a,  , k, n, o, w, l, e, d, g, e,  , d, i, s, t, i, l, l, a, t, i, o, n,  , a, p, p, r, o, a, c, h,  , t, h, a, t,  , t, r, a, n, s, f, e, r, s,  , r, e, g, i, o, n, -, l, e, v, e, l,  , m, u, l, t, i, m, o, d, a, l, 
-, s, e, m, a, n, t, i, c, s,  , f, r, o, m,  , a,  , l, a, r, g, e,  , v, i, s, i, o, n, -, l, a, n, g, u, a, g, e,  , t, e, a, c, h, e, r,  , (, e, ., g, ., ,,  , L, L, a, V, a, ),  , i, n, t, o,  , a,  , l, i, g, h, t, w, e, i, g, h, t, 
-, v, i, s, i, o, n, -, o, n, l, y,  , o, b, j, e, c, t,  , d, e, t, e, c, t, o, r,  , s, t, u, d, e, n, t,  , (, e, ., g, ., ,,  , Y, O, L, O, ), .,  , A,  , t, r, a, n, s, l, a, t, i, o, n,  , m, o, d, u, l, e,  , m, a, p, s, 
-, s, t, u, d, e, n, t,  , f, e, a, t, u, r, e, s,  , i, n, t, o,  , a,  , j, o, i, n, t,  , s, p, a, c, e, ,,  , w, h, e, r, e,  , t, h, e,  , t, r, a, i, n, i, n, g,  , o, f,  , t, h, e,  , s, t, u, d, e, n, t,  , a, n, d, 
-, t, r, a, n, s, l, a, t, o, r,  , i, s,  , g, u, i, d, e, d,  , b, y,  , a,  , d, u, a, l, -, o, b, j, e, c, t, i, v, e,  , l, o, s, s,  , t, h, a, t,  , e, n, f, o, r, c, e, s,  , b, o, t, h,  , l, o, c, a, l, 
-, a, l, i, g, n, m, e, n, t,  , a, n, d,  , g, l, o, b, a, l,  , r, e, l, a, t, i, o, n, a, l,  , c, o, n, s, i, s, t, e, n, c, y, .,  , U, n, l, i, k, e,  , p, r, i, o, r,  , a, p, p, r, o, a, c, h, e, s,  , f, o, c, u, s, e, d,  , o, n, 
-, d, e, n, s, e,  , o, r,  , g, l, o, b, a, l,  , a, l, i, g, n, m, e, n, t, ,,  , M, O, C, H, A,  , o, p, e, r, a, t, e, s,  , a, t,  , t, h, e,  , o, b, j, e, c, t,  , l, e, v, e, l, ,,  , e, n, a, b, l, i, n, g, 
-, e, f, f, i, c, i, e, n, t,  , t, r, a, n, s, f, e, r,  , o, f,  , s, e, m, a, n, t, i, c, s,  , w, i, t, h, o, u, t,  , m, o, d, i, f, y, i, n, g,  , t, h, e,  , t, e, a, c, h, e, r,  , o, r,  , r, e, q, u, i, r, i, n, g, 
-, t, e, x, t, u, a, l,  , i, n, p, u, t,  , a, t,  , i, n, f, e, r, e, n, c, e, .,  , W, e,  , v, a, l, i, d, a, t, e,  , o, u, r,  , m, e, t, h, o, d,  , a, c, r, o, s, s,  , f, o, u, r,  , p, e, r, s, o, n, a, l, i, z, e, d, 
-, d, e, t, e, c, t, i, o, n,  , b, e, n, c, h, m, a, r, k, s,  , u, n, d, e, r,  , f, e, w, -, s, h, o, t,  , r, e, g, i, m, e, s, .,  , R, e, s, u, l, t, s,  , s, h, o, w,  , c, o, n, s, i, s, t, e, n, t,  , g, a, i, n, s,  , o, v, e, r, 
-, b, a, s, e, l, i, n, e, s, ,,  , w, i, t, h,  , a,  , +, 1, 0, ., 1,  , a, v, e, r, a, g, e,  , s, c, o, r, e,  , i, m, p, r, o, v, e, m, e, n, t, .,  , D, e, s, p, i, t, e,  , i, t, s,  , c, o, m, p, a, c, t, 
-, a, r, c, h, i, t, e, c, t, u, r, e, ,,  , M, O, C, H, A,  , r, e, a, c, h, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n,  , p, a, r,  , w, i, t, h,  , l, a, r, g, e, r,  , m, u, l, t, i, m, o, d, a, l,  , m, o, d, e, l, s, ,, 
-, p, r, o, v, i, n, g,  , i, t, s,  , s, u, i, t, a, b, i, l, i, t, y,  , f, o, r,  , r, e, a, l, -, w, o, r, l, d,  , d, e, p, l, o, y, m, e, n, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13978v1'>LLM Agents for Interactive Workflow Provenance: Reference Architecture and Evaluation Methodology</a></td><td>M, o, d, e, r, n,  , s, c, i, e, n, t, i, f, i, c,  , d, i, s, c, o, v, e, r, y,  , i, n, c, r, e, a, s, i, n, g, l, y,  , r, e, l, i, e, s,  , o, n,  , w, o, r, k, f, l, o, w, s,  , t, h, a, t,  , p, r, o, c, e, s, s, 
-, d, a, t, a,  , a, c, r, o, s, s,  , t, h, e,  , E, d, g, e, ,,  , C, l, o, u, d, ,,  , a, n, d,  , H, i, g, h,  , P, e, r, f, o, r, m, a, n, c, e,  , C, o, m, p, u, t, i, n, g,  , (, H, P, C, ),  , c, o, n, t, i, n, u, u, m, ., 
-, C, o, m, p, r, e, h, e, n, s, i, v, e,  , a, n, d,  , i, n, -, d, e, p, t, h,  , a, n, a, l, y, s, e, s,  , o, f,  , t, h, e, s, e,  , d, a, t, a,  , a, r, e,  , c, r, i, t, i, c, a, l,  , f, o, r,  , h, y, p, o, t, h, e, s, i, s, 
-, v, a, l, i, d, a, t, i, o, n, ,,  , a, n, o, m, a, l, y,  , d, e, t, e, c, t, i, o, n, ,,  , r, e, p, r, o, d, u, c, i, b, i, l, i, t, y, ,,  , a, n, d,  , i, m, p, a, c, t, f, u, l,  , f, i, n, d, i, n, g, s, ., 
-, A, l, t, h, o, u, g, h,  , w, o, r, k, f, l, o, w,  , p, r, o, v, e, n, a, n, c, e,  , t, e, c, h, n, i, q, u, e, s,  , s, u, p, p, o, r, t,  , s, u, c, h,  , a, n, a, l, y, s, e, s, ,,  , a, t,  , l, a, r, g, e,  , s, c, a, l, e, ,, 
-, t, h, e,  , p, r, o, v, e, n, a, n, c, e,  , d, a, t, a,  , b, e, c, o, m, e,  , c, o, m, p, l, e, x,  , a, n, d,  , d, i, f, f, i, c, u, l, t,  , t, o,  , a, n, a, l, y, z, e, .,  , E, x, i, s, t, i, n, g,  , s, y, s, t, e, m, s, 
-, d, e, p, e, n, d,  , o, n,  , c, u, s, t, o, m,  , s, c, r, i, p, t, s, ,,  , s, t, r, u, c, t, u, r, e, d,  , q, u, e, r, i, e, s, ,,  , o, r,  , s, t, a, t, i, c,  , d, a, s, h, b, o, a, r, d, s, ,,  , l, i, m, i, t, i, n, g, 
-, d, a, t, a,  , i, n, t, e, r, a, c, t, i, o, n, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a, n,  , e, v, a, l, u, a, t, i, o, n,  , m, e, t, h, o, d, o, l, o, g, y, ,, 
-, r, e, f, e, r, e, n, c, e,  , a, r, c, h, i, t, e, c, t, u, r, e, ,,  , a, n, d,  , o, p, e, n, -, s, o, u, r, c, e,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s, 
-, i, n, t, e, r, a, c, t, i, v, e,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, L, L, M, ),  , a, g, e, n, t, s,  , f, o, r,  , r, u, n, t, i, m, e,  , d, a, t, a,  , a, n, a, l, y, s, i, s, .,  , O, u, r, 
-, a, p, p, r, o, a, c, h,  , u, s, e, s,  , a,  , l, i, g, h, t, w, e, i, g, h, t, ,,  , m, e, t, a, d, a, t, a, -, d, r, i, v, e, n,  , d, e, s, i, g, n,  , t, h, a, t,  , t, r, a, n, s, l, a, t, e, s,  , n, a, t, u, r, a, l, 
-, l, a, n, g, u, a, g, e,  , i, n, t, o,  , s, t, r, u, c, t, u, r, e, d,  , p, r, o, v, e, n, a, n, c, e,  , q, u, e, r, i, e, s, .,  , E, v, a, l, u, a, t, i, o, n, s,  , a, c, r, o, s, s,  , L, L, a, M, A, ,,  , G, P, T, ,, 
-, G, e, m, i, n, i, ,,  , a, n, d,  , C, l, a, u, d, e, ,,  , c, o, v, e, r, i, n, g,  , d, i, v, e, r, s, e,  , q, u, e, r, y,  , c, l, a, s, s, e, s,  , a, n, d,  , a,  , r, e, a, l, -, w, o, r, l, d,  , c, h, e, m, i, s, t, r, y, 
-, w, o, r, k, f, l, o, w, ,,  , s, h, o, w,  , t, h, a, t,  , m, o, d, u, l, a, r,  , d, e, s, i, g, n, ,,  , p, r, o, m, p, t,  , t, u, n, i, n, g, ,,  , a, n, d,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d, 
-, G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , e, n, a, b, l, e,  , a, c, c, u, r, a, t, e,  , a, n, d,  , i, n, s, i, g, h, t, f, u, l,  , L, L, M,  , a, g, e, n, t,  , r, e, s, p, o, n, s, e, s,  , b, e, y, o, n, d, 
-, r, e, c, o, r, d, e, d,  , p, r, o, v, e, n, a, n, c, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13926v1'>MAP: End-to-End Autonomous Driving with Map-Assisted Planning</a></td><td>I, n,  , r, e, c, e, n, t,  , y, e, a, r, s, ,,  , e, n, d, -, t, o, -, e, n, d,  , a, u, t, o, n, o, m, o, u, s,  , d, r, i, v, i, n, g,  , h, a, s,  , a, t, t, r, a, c, t, e, d,  , i, n, c, r, e, a, s, i, n, g, 
-, a, t, t, e, n, t, i, o, n,  , f, o, r,  , i, t, s,  , a, b, i, l, i, t, y,  , t, o,  , j, o, i, n, t, l, y,  , m, o, d, e, l,  , p, e, r, c, e, p, t, i, o, n, ,,  , p, r, e, d, i, c, t, i, o, n, ,,  , a, n, d,  , p, l, a, n, n, i, n, g, 
-, w, i, t, h, i, n,  , a,  , u, n, i, f, i, e, d,  , f, r, a, m, e, w, o, r, k, .,  , H, o, w, e, v, e, r, ,,  , m, o, s, t,  , e, x, i, s, t, i, n, g,  , a, p, p, r, o, a, c, h, e, s,  , u, n, d, e, r, u, t, i, l, i, z, e,  , t, h, e, 
-, o, n, l, i, n, e,  , m, a, p, p, i, n, g,  , m, o, d, u, l, e, ,,  , l, e, a, v, i, n, g,  , i, t, s,  , p, o, t, e, n, t, i, a, l,  , t, o,  , e, n, h, a, n, c, e,  , t, r, a, j, e, c, t, o, r, y,  , p, l, a, n, n, i, n, g, 
-, l, a, r, g, e, l, y,  , u, n, t, a, p, p, e, d, .,  , T, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , M, A, P,  , (, M, a, p, -, A, s, s, i, s, t, e, d,  , P, l, a, n, n, i, n, g, ), ,,  , a,  , n, o, v, e, l, 
-, m, a, p, -, a, s, s, i, s, t, e, d,  , e, n, d, -, t, o, -, e, n, d,  , t, r, a, j, e, c, t, o, r, y,  , p, l, a, n, n, i, n, g,  , f, r, a, m, e, w, o, r, k, .,  , M, A, P,  , e, x, p, l, i, c, i, t, l, y, 
-, i, n, t, e, g, r, a, t, e, s,  , s, e, g, m, e, n, t, a, t, i, o, n, -, b, a, s, e, d,  , m, a, p,  , f, e, a, t, u, r, e, s,  , a, n, d,  , t, h, e,  , c, u, r, r, e, n, t,  , e, g, o,  , s, t, a, t, u, s,  , t, h, r, o, u, g, h,  , a, 
-, P, l, a, n, -, e, n, h, a, n, c, i, n, g,  , O, n, l, i, n, e,  , M, a, p, p, i, n, g,  , m, o, d, u, l, e, ,,  , a, n,  , E, g, o, -, s, t, a, t, u, s, -, g, u, i, d, e, d,  , P, l, a, n, n, i, n, g,  , m, o, d, u, l, e, ,,  , a, n, d, 
-, a,  , W, e, i, g, h, t,  , A, d, a, p, t, e, r,  , b, a, s, e, d,  , o, n,  , c, u, r, r, e, n, t,  , e, g, o,  , s, t, a, t, u, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , c, o, n, d, u, c, t, e, d,  , o, n,  , t, h, e, 
-, D, A, I, R, -, V, 2, X, -, s, e, q, -, S, P, D,  , d, a, t, a, s, e, t,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , t, h, e,  , p, r, o, p, o, s, e, d,  , m, e, t, h, o, d,  , a, c, h, i, e, v, e, s,  , a,  , 1, 6, ., 6, %, 
-, r, e, d, u, c, t, i, o, n,  , i, n,  , L, 2,  , d, i, s, p, l, a, c, e, m, e, n, t,  , e, r, r, o, r, ,,  , a,  , 5, 6, ., 2, %,  , r, e, d, u, c, t, i, o, n,  , i, n,  , o, f, f, -, r, o, a, d,  , r, a, t, e, ,,  , a, n, d,  , a, 
-, 4, 4, ., 5, %,  , i, m, p, r, o, v, e, m, e, n, t,  , i, n,  , o, v, e, r, a, l, l,  , s, c, o, r, e,  , c, o, m, p, a, r, e, d,  , t, o,  , t, h, e,  , U, n, i, V, 2, X,  , b, a, s, e, l, i, n, e, ,,  , e, v, e, n, 
-, w, i, t, h, o, u, t,  , p, o, s, t, -, p, r, o, c, e, s, s, i, n, g, .,  , F, u, r, t, h, e, r, m, o, r, e, ,,  , i, t,  , a, c, h, i, e, v, e, s,  , t, o, p,  , r, a, n, k, i, n, g,  , i, n,  , T, r, a, c, k,  , 2,  , o, f,  , t, h, e, 
-, E, n, d, -, t, o, -, E, n, d,  , A, u, t, o, n, o, m, o, u, s,  , D, r, i, v, i, n, g,  , t, h, r, o, u, g, h,  , V, 2, X,  , C, o, o, p, e, r, a, t, i, o, n,  , C, h, a, l, l, e, n, g, e,  , o, f,  , M, E, I, S, 
-, W, o, r, k, s, h, o, p,  , @, C, V, P, R, 2, 0, 2, 5, ,,  , o, u, t, p, e, r, f, o, r, m, i, n, g,  , t, h, e,  , s, e, c, o, n, d, -, b, e, s, t,  , m, o, d, e, l,  , b, y,  , 3, 9, ., 5, %,  , i, n,  , t, e, r, m, s,  , o, f, 
-, o, v, e, r, a, l, l,  , s, c, o, r, e, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , h, i, g, h, l, i, g, h, t,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , e, x, p, l, i, c, i, t, l, y, 
-, l, e, v, e, r, a, g, i, n, g,  , s, e, m, a, n, t, i, c,  , m, a, p,  , f, e, a, t, u, r, e, s,  , i, n,  , p, l, a, n, n, i, n, g,  , a, n, d,  , s, u, g, g, e, s, t,  , n, e, w,  , d, i, r, e, c, t, i, o, n, s,  , f, o, r, 
-, i, m, p, r, o, v, i, n, g,  , s, t, r, u, c, t, u, r, e,  , d, e, s, i, g, n,  , i, n,  , e, n, d, -, t, o, -, e, n, d,  , a, u, t, o, n, o, m, o, u, s,  , d, r, i, v, i, n, g,  , s, y, s, t, e, m, s, .,  , O, u, r,  , c, o, d, e, 
-, i, s,  , a, v, a, i, l, a, b, l, e,  , a, t,  , h, t, t, p, s, :, /, /, g, i, t, e, e, ., c, o, m, /, k, y, m, k, y, m, /, m, a, p, ., g, i, t</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13914v1'>Ensemble of Pre-Trained Models for Long-Tailed Trajectory Prediction</a></td><td>T, h, i, s,  , w, o, r, k,  , e, x, p, l, o, r, e, s,  , t, h, e,  , a, p, p, l, i, c, a, t, i, o, n,  , o, f,  , e, n, s, e, m, b, l, e,  , m, o, d, e, l, i, n, g,  , t, o,  , t, h, e, 
-, m, u, l, t, i, d, i, m, e, n, s, i, o, n, a, l,  , r, e, g, r, e, s, s, i, o, n,  , p, r, o, b, l, e, m,  , o, f,  , t, r, a, j, e, c, t, o, r, y,  , p, r, e, d, i, c, t, i, o, n,  , f, o, r,  , v, e, h, i, c, l, e, s,  , i, n, 
-, u, r, b, a, n,  , e, n, v, i, r, o, n, m, e, n, t, s, .,  , A, s,  , n, e, w, e, r,  , a, n, d,  , b, i, g, g, e, r,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , p, r, e, d, i, c, t, i, o, n,  , m, o, d, e, l, s,  , f, o, r, 
-, a, u, t, o, n, o, m, o, u, s,  , d, r, i, v, i, n, g,  , c, o, n, t, i, n, u, e,  , t, o,  , e, m, e, r, g, e, ,,  , a, n,  , i, m, p, o, r, t, a, n, t,  , o, p, e, n,  , c, h, a, l, l, e, n, g, e,  , i, s,  , t, h, e, 
-, p, r, o, b, l, e, m,  , o, f,  , h, o, w,  , t, o,  , c, o, m, b, i, n, e,  , t, h, e,  , s, t, r, e, n, g, t, h, s,  , o, f,  , t, h, e, s, e,  , b, i, g,  , m, o, d, e, l, s,  , w, i, t, h, o, u, t,  , t, h, e,  , n, e, e, d, 
-, f, o, r,  , c, o, s, t, l, y,  , r, e, -, t, r, a, i, n, i, n, g, .,  , W, e,  , s, h, o, w,  , h, o, w, ,,  , p, e, r, h, a, p, s,  , s, u, r, p, r, i, s, i, n, g, l, y, ,,  , c, o, m, b, i, n, i, n, g, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, o, d, e, l, s,  , o, u, t, -, o, f, -, t, h, e, -, b, o, x,  , (, w, i, t, h, o, u, t,  , r, e, t, r, a, i, n, i, n, g,  , o, r, 
-, f, i, n, e, -, t, u, n, i, n, g, ),  , w, i, t, h,  , a,  , s, i, m, p, l, e,  , c, o, n, f, i, d, e, n, c, e, -, w, e, i, g, h, t, e, d,  , a, v, e, r, a, g, e,  , m, e, t, h, o, d,  , c, a, n,  , e, n, h, a, n, c, e,  , t, h, e, 
-, o, v, e, r, a, l, l,  , p, r, e, d, i, c, t, i, o, n, .,  , I, n, d, e, e, d, ,,  , w, h, i, l, e,  , c, o, m, b, i, n, i, n, g,  , t, r, a, j, e, c, t, o, r, y,  , p, r, e, d, i, c, t, i, o, n,  , m, o, d, e, l, s,  , i, s,  , n, o, t, 
-, s, t, r, a, i, g, h, t, f, o, r, w, a, r, d, ,,  , t, h, i, s,  , s, i, m, p, l, e,  , a, p, p, r, o, a, c, h,  , e, n, h, a, n, c, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , b, y,  , 1, 0, %,  , o, v, e, r,  , t, h, e,  , b, e, s, t, 
-, p, r, e, d, i, c, t, i, o, n,  , m, o, d, e, l, ,,  , e, s, p, e, c, i, a, l, l, y,  , i, n,  , t, h, e,  , l, o, n, g, -, t, a, i, l, e, d,  , m, e, t, r, i, c, s, .,  , W, e,  , s, h, o, w,  , t, h, a, t,  , t, h, i, s, 
-, p, e, r, f, o, r, m, a, n, c, e,  , i, m, p, r, o, v, e, m, e, n, t,  , h, o, l, d, s,  , o, n,  , b, o, t, h,  , t, h, e,  , N, u, S, c, e, n, e, s,  , a, n, d,  , A, r, g, o, v, e, r, s, e,  , d, a, t, a, s, e, t, s, ,,  , a, n, d, 
-, t, h, a, t,  , t, h, e, s, e,  , i, m, p, r, o, v, e, m, e, n, t, s,  , a, r, e,  , m, a, d, e,  , a, c, r, o, s, s,  , t, h, e,  , d, a, t, a, s, e, t,  , d, i, s, t, r, i, b, u, t, i, o, n, .,  , T, h, e,  , c, o, d, e,  , f, o, r, 
-, o, u, r,  , w, o, r, k,  , i, s,  , o, p, e, n,  , s, o, u, r, c, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13895v1'>FedSSG: Expectation-Gated and History-Aware Drift Alignment for Federated Learning</a></td><td>N, o, n, -, I, I, D,  , d, a, t, a,  , a, n, d,  , p, a, r, t, i, a, l,  , p, a, r, t, i, c, i, p, a, t, i, o, n,  , i, n, d, u, c, e,  , c, l, i, e, n, t,  , d, r, i, f, t,  , a, n, d,  , i, n, c, o, n, s, i, s, t, e, n, t, 
-, l, o, c, a, l,  , o, p, t, i, m, a,  , i, n,  , f, e, d, e, r, a, t, e, d,  , l, e, a, r, n, i, n, g, ,,  , c, a, u, s, i, n, g,  , u, n, s, t, a, b, l, e,  , c, o, n, v, e, r, g, e, n, c, e,  , a, n, d,  , a, c, c, u, r, a, c, y, 
-, l, o, s, s, .,  , W, e,  , p, r, e, s, e, n, t,  , F, e, d, S, S, G, ,,  , a,  , s, t, o, c, h, a, s, t, i, c,  , s, a, m, p, l, i, n, g, -, g, u, i, d, e, d, ,,  , h, i, s, t, o, r, y, -, a, w, a, r, e,  , d, r, i, f, t, 
-, a, l, i, g, n, m, e, n, t,  , m, e, t, h, o, d, .,  , F, e, d, S, S, G,  , m, a, i, n, t, a, i, n, s,  , a,  , p, e, r, -, c, l, i, e, n, t,  , d, r, i, f, t,  , m, e, m, o, r, y,  , t, h, a, t,  , a, c, c, u, m, u, l, a, t, e, s, 
-, l, o, c, a, l,  , m, o, d, e, l,  , d, i, f, f, e, r, e, n, c, e, s,  , a, s,  , a,  , l, i, g, h, t, w, e, i, g, h, t,  , s, k, e, t, c, h,  , o, f,  , h, i, s, t, o, r, i, c, a, l,  , g, r, a, d, i, e, n, t, s, ;, 
-, c, r, u, c, i, a, l, l, y, ,,  , i, t,  , g, a, t, e, s,  , b, o, t, h,  , t, h, e,  , m, e, m, o, r, y,  , u, p, d, a, t, e,  , a, n, d,  , t, h, e,  , l, o, c, a, l,  , a, l, i, g, n, m, e, n, t,  , t, e, r, m,  , b, y,  , a, 
-, s, m, o, o, t, h,  , f, u, n, c, t, i, o, n,  , o, f,  , t, h, e,  , o, b, s, e, r, v, e, d, /, e, x, p, e, c, t, e, d,  , p, a, r, t, i, c, i, p, a, t, i, o, n,  , r, a, t, i, o,  , (, a, 
-, p, h, a, s, e, -, b, y, -, e, x, p, e, c, t, a, t, i, o, n,  , s, i, g, n, a, l,  , d, e, r, i, v, e, d,  , f, r, o, m,  , t, h, e,  , s, e, r, v, e, r,  , s, a, m, p, l, e, r, ), .,  , T, h, i, s, 
-, s, t, a, t, i, s, t, i, c, a, l, l, y,  , g, r, o, u, n, d, e, d,  , g, a, t, e,  , s, t, a, y, s,  , w, e, a, k,  , a, n, d,  , s, m, o, o, t, h,  , w, h, e, n,  , s, a, m, p, l, i, n, g,  , n, o, i, s, e,  , d, o, m, i, n, a, t, e, s, 
-, e, a, r, l, y, ,,  , t, h, e, n,  , s, t, r, e, n, g, t, h, e, n, s,  , o, n, c, e,  , p, a, r, t, i, c, i, p, a, t, i, o, n,  , s, t, a, t, i, s, t, i, c, s,  , s, t, a, b, i, l, i, z, e, ,,  , c, o, n, t, r, a, c, t, i, n, g, 
-, t, h, e,  , l, o, c, a, l, -, g, l, o, b, a, l,  , g, a, p,  , w, i, t, h, o, u, t,  , e, x, t, r, a,  , c, o, m, m, u, n, i, c, a, t, i, o, n, .,  , A, c, r, o, s, s,  , C, I, F, A, R, -, 1, 0, /, 1, 0, 0,  , w, i, t, h, 
-, 1, 0, 0, /, 5, 0, 0,  , c, l, i, e, n, t, s,  , a, n, d,  , 2, -, 1, 5,  , p, e, r, c, e, n, t,  , p, a, r, t, i, c, i, p, a, t, i, o, n, ,,  , F, e, d, S, S, G,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s, 
-, s, t, r, o, n, g,  , d, r, i, f, t, -, a, w, a, r, e,  , b, a, s, e, l, i, n, e, s,  , a, n, d,  , a, c, c, e, l, e, r, a, t, e, s,  , c, o, n, v, e, r, g, e, n, c, e, ;,  , o, n,  , o, u, r,  , b, e, n, c, h, m, a, r, k, s,  , i, t, 
-, i, m, p, r, o, v, e, s,  , t, e, s, t,  , a, c, c, u, r, a, c, y,  , b, y,  , u, p,  , t, o,  , a,  , f, e, w,  , p, o, i, n, t, s,  , (, e, ., g, ., ,,  , a, b, o, u, t,  , +, 0, ., 9,  , o, n,  , C, I, F, A, R, -, 1, 0,  , a, n, d, 
-, a, b, o, u, t,  , +, 2, ., 7,  , o, n,  , C, I, F, A, R, -, 1, 0, 0,  , o, n,  , a, v, e, r, a, g, e,  , o, v, e, r,  , t, h, e,  , t, o, p, -, 2,  , b, a, s, e, l, i, n, e, ),  , a, n, d,  , y, i, e, l, d, s,  , a, b, o, u, t, 
-, 4, ., 5, x,  , f, a, s, t, e, r,  , t, a, r, g, e, t, -, a, c, c, u, r, a, c, y,  , c, o, n, v, e, r, g, e, n, c, e,  , o, n,  , a, v, e, r, a, g, e, .,  , T, h, e,  , m, e, t, h, o, d,  , a, d, d, s,  , o, n, l, y,  , O, (, d, ), 
-, c, l, i, e, n, t,  , m, e, m, o, r, y,  , a, n, d,  , a,  , c, o, n, s, t, a, n, t, -, t, i, m, e,  , g, a, t, e, ,,  , a, n, d,  , d, e, g, r, a, d, e, s,  , g, r, a, c, e, f, u, l, l, y,  , t, o,  , a,  , m, i, l, d, 
-, r, e, g, u, l, a, r, i, z, e, r,  , u, n, d, e, r,  , n, e, a, r, -, I, I, D,  , o, r,  , u, n, i, f, o, r, m,  , s, a, m, p, l, i, n, g, .,  , F, e, d, S, S, G,  , s, h, o, w, s,  , t, h, a, t,  , s, a, m, p, l, i, n, g, 
-, s, t, a, t, i, s, t, i, c, s,  , c, a, n,  , b, e,  , t, u, r, n, e, d,  , i, n, t, o,  , a,  , p, r, i, n, c, i, p, l, e, d, ,,  , h, i, s, t, o, r, y, -, a, w, a, r, e,  , p, h, a, s, e,  , c, o, n, t, r, o, l,  , t, o, 
-, s, t, a, b, i, l, i, z, e,  , a, n, d,  , s, p, e, e, d,  , u, p,  , f, e, d, e, r, a, t, e, d,  , t, r, a, i, n, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13773v1'>MIRA: Empowering One-Touch AI Services on Smartphones with MLLM-based Instruction Recommendation</a></td><td>T, h, e,  , r, a, p, i, d,  , a, d, v, a, n, c, e, m, e, n, t,  , o, f,  , g, e, n, e, r, a, t, i, v, e,  , A, I,  , t, e, c, h, n, o, l, o, g, i, e, s,  , i, s,  , d, r, i, v, i, n, g,  , t, h, e, 
-, i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , d, i, v, e, r, s, e,  , A, I, -, p, o, w, e, r, e, d,  , s, e, r, v, i, c, e, s,  , i, n, t, o,  , s, m, a, r, t, p, h, o, n, e, s, ,,  , t, r, a, n, s, f, o, r, m, i, n, g,  , h, o, w, 
-, u, s, e, r, s,  , i, n, t, e, r, a, c, t,  , w, i, t, h,  , t, h, e, i, r,  , d, e, v, i, c, e, s, .,  , T, o,  , s, i, m, p, l, i, f, y,  , a, c, c, e, s, s,  , t, o,  , p, r, e, d, e, f, i, n, e, d,  , A, I, 
-, s, e, r, v, i, c, e, s, ,,  , t, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , M, I, R, A, ,,  , a,  , p, i, o, n, e, e, r, i, n, g,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , t, a, s, k, 
-, i, n, s, t, r, u, c, t, i, o, n,  , r, e, c, o, m, m, e, n, d, a, t, i, o, n,  , t, h, a, t,  , e, n, a, b, l, e, s,  , i, n, t, u, i, t, i, v, e,  , o, n, e, -, t, o, u, c, h,  , A, I,  , t, a, s, k, i, n, g,  , o, n, 
-, s, m, a, r, t, p, h, o, n, e, s, .,  , W, i, t, h,  , M, I, R, A, ,,  , u, s, e, r, s,  , c, a, n,  , l, o, n, g, -, p, r, e, s, s,  , o, n,  , i, m, a, g, e, s,  , o, r,  , t, e, x, t,  , o, b, j, e, c, t, s,  , t, o, 
-, r, e, c, e, i, v, e,  , c, o, n, t, e, x, t, u, a, l, l, y,  , r, e, l, e, v, a, n, t,  , i, n, s, t, r, u, c, t, i, o, n,  , r, e, c, o, m, m, e, n, d, a, t, i, o, n, s,  , f, o, r,  , e, x, e, c, u, t, i, n, g,  , A, I, 
-, t, a, s, k, s, .,  , O, u, r,  , w, o, r, k,  , i, n, t, r, o, d, u, c, e, s,  , t, h, r, e, e,  , k, e, y,  , i, n, n, o, v, a, t, i, o, n, s, :,  , 1, ),  , A,  , m, u, l, t, i, m, o, d, a, l,  , l, a, r, g, e, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l,  , (, M, L, L, M, ), -, b, a, s, e, d,  , r, e, c, o, m, m, e, n, d, a, t, i, o, n,  , p, i, p, e, l, i, n, e,  , w, i, t, h,  , s, t, r, u, c, t, u, r, e, d,  , r, e, a, s, o, n, i, n, g, 
-, t, o,  , e, x, t, r, a, c, t,  , k, e, y,  , e, n, t, i, t, i, e, s, ,,  , i, n, f, e, r,  , u, s, e, r,  , i, n, t, e, n, t, ,,  , a, n, d,  , g, e, n, e, r, a, t, e,  , p, r, e, c, i, s, e,  , i, n, s, t, r, u, c, t, i, o, n, s, ;, 
-, 2, ),  , A,  , t, e, m, p, l, a, t, e, -, a, u, g, m, e, n, t, e, d,  , r, e, a, s, o, n, i, n, g,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t,  , i, n, t, e, g, r, a, t, e, s,  , h, i, g, h, -, l, e, v, e, l, 
-, r, e, a, s, o, n, i, n, g,  , t, e, m, p, l, a, t, e, s, ,,  , e, n, h, a, n, c, i, n, g,  , t, a, s, k,  , i, n, f, e, r, e, n, c, e,  , a, c, c, u, r, a, c, y, ;,  , 3, ),  , A,  , p, r, e, f, i, x, -, t, r, e, e, -, b, a, s, e, d, 
-, c, o, n, s, t, r, a, i, n, e, d,  , d, e, c, o, d, i, n, g,  , s, t, r, a, t, e, g, y,  , t, h, a, t,  , r, e, s, t, r, i, c, t, s,  , o, u, t, p, u, t, s,  , t, o,  , p, r, e, d, e, f, i, n, e, d,  , i, n, s, t, r, u, c, t, i, o, n, 
-, c, a, n, d, i, d, a, t, e, s, ,,  , e, n, s, u, r, i, n, g,  , c, o, h, e, r, e, n, t,  , a, n, d,  , i, n, t, e, n, t, -, a, l, i, g, n, e, d,  , s, u, g, g, e, s, t, i, o, n, s, .,  , T, h, r, o, u, g, h, 
-, e, v, a, l, u, a, t, i, o, n,  , u, s, i, n, g,  , a,  , r, e, a, l, -, w, o, r, l, d,  , a, n, n, o, t, a, t, e, d,  , d, a, t, a, s, e, t, s,  , a, n, d,  , a,  , u, s, e, r,  , s, t, u, d, y, ,,  , M, I, R, A,  , h, a, s, 
-, d, e, m, o, n, s, t, r, a, t, e, d,  , s, u, b, s, t, a, n, t, i, a, l,  , i, m, p, r, o, v, e, m, e, n, t, s,  , i, n,  , t, h, e,  , a, c, c, u, r, a, c, y,  , o, f,  , i, n, s, t, r, u, c, t, i, o, n, 
-, r, e, c, o, m, m, e, n, d, a, t, i, o, n, .,  , T, h, e,  , e, n, c, o, u, r, a, g, i, n, g,  , r, e, s, u, l, t, s,  , h, i, g, h, l, i, g, h, t,  , M, I, R, A, ', s,  , p, o, t, e, n, t, i, a, l,  , t, o, 
-, r, e, v, o, l, u, t, i, o, n, i, z, e,  , t, h, e,  , w, a, y,  , u, s, e, r, s,  , e, n, g, a, g, e,  , w, i, t, h,  , A, I,  , s, e, r, v, i, c, e, s,  , o, n,  , t, h, e, i, r,  , s, m, a, r, t, p, h, o, n, e, s, ,, 
-, o, f, f, e, r, i, n, g,  , a,  , m, o, r, e,  , s, e, a, m, l, e, s, s,  , a, n, d,  , e, f, f, i, c, i, e, n, t,  , e, x, p, e, r, i, e, n, c, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13761v1'>THOR: Tool-Integrated Hierarchical Optimization via RL for Mathematical Reasoning</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , h, a, v, e,  , m, a, d, e,  , r, e, m, a, r, k, a, b, l, e,  , p, r, o, g, r, e, s, s,  , i, n,  , m, a, t, h, e, m, a, t, i, c, a, l, 
-, r, e, a, s, o, n, i, n, g, ,,  , b, u, t,  , s, t, i, l, l,  , c, o, n, t, i, n, u, e,  , t, o,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , h, i, g, h, -, p, r, e, c, i, s, i, o, n,  , t, a, s, k, s,  , l, i, k, e, 
-, n, u, m, e, r, i, c, a, l,  , c, o, m, p, u, t, a, t, i, o, n,  , a, n, d,  , f, o, r, m, a, l,  , s, y, m, b, o, l, i, c,  , m, a, n, i, p, u, l, a, t, i, o, n, .,  , I, n, t, e, g, r, a, t, i, n, g,  , e, x, t, e, r, n, a, l, 
-, t, o, o, l, s,  , h, a, s,  , e, m, e, r, g, e, d,  , a, s,  , a,  , p, r, o, m, i, s, i, n, g,  , a, p, p, r, o, a, c, h,  , t, o,  , b, r, i, d, g, e,  , t, h, i, s,  , g, a, p, .,  , D, e, s, p, i, t, e,  , r, e, c, e, n, t, 
-, a, d, v, a, n, c, e, s, ,,  , e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , t, h, r, e, e,  , k, e, y,  , c, h, a, l, l, e, n, g, e, s, :,  , c, o, n, s, t, r, u, c, t, i, n, g, 
-, t, o, o, l, -, i, n, t, e, g, r, a, t, e, d,  , r, e, a, s, o, n, i, n, g,  , d, a, t, a, ,,  , p, e, r, f, o, r, m, i, n, g,  , f, i, n, e, -, g, r, a, i, n, e, d,  , o, p, t, i, m, i, z, a, t, i, o, n, ,,  , a, n, d, 
-, e, n, h, a, n, c, i, n, g,  , i, n, f, e, r, e, n, c, e, .,  , T, o,  , o, v, e, r, c, o, m, e,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , T, H, O, R, 
-, (, T, o, o, l, -, I, n, t, e, g, r, a, t, e, d,  , H, i, e, r, a, r, c, h, i, c, a, l,  , O, p, t, i, m, i, z, a, t, i, o, n,  , v, i, a,  , R, L, ), .,  , F, i, r, s, t, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , T, I, R, G, e, n, ,, 
-, a,  , m, u, l, t, i, -, a, g, e, n, t,  , a, c, t, o, r, -, c, r, i, t, i, c, -, b, a, s, e, d,  , p, i, p, e, l, i, n, e,  , f, o, r,  , c, o, n, s, t, r, u, c, t, i, n, g,  , h, i, g, h, -, q, u, a, l, i, t, y, 
-, d, a, t, a, s, e, t, s,  , o, f,  , t, o, o, l, -, i, n, t, e, g, r, a, t, e, d,  , r, e, a, s, o, n, i, n, g,  , p, a, t, h, s, ,,  , a, l, i, g, n, i, n, g,  , w, i, t, h,  , t, h, e,  , p, o, l, i, c, y,  , a, n, d, 
-, g, e, n, e, r, a, l, i, z, i, n, g,  , w, e, l, l,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , m, o, d, e, l, s, .,  , S, e, c, o, n, d, ,,  , t, o,  , p, e, r, f, o, r, m,  , f, i, n, e, -, g, r, a, i, n, e, d, 
-, h, i, e, r, a, r, c, h, i, c, a, l,  , o, p, t, i, m, i, z, a, t, i, o, n, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a, n,  , R, L,  , s, t, r, a, t, e, g, y,  , t, h, a, t,  , j, o, i, n, t, l, y,  , o, p, t, i, m, i, z, e, s, 
-, f, o, r,  , b, o, t, h,  , t, r, a, j, e, c, t, o, r, y, -, l, e, v, e, l,  , p, r, o, b, l, e, m,  , s, o, l, v, i, n, g,  , a, n, d,  , s, t, e, p, -, l, e, v, e, l,  , c, o, d, e,  , g, e, n, e, r, a, t, i, o, n, .,  , T, h, i, s, 
-, i, s,  , m, o, t, i, v, a, t, e, d,  , b, y,  , o, u, r,  , k, e, y,  , i, n, s, i, g, h, t,  , t, h, a, t,  , t, h, e,  , s, u, c, c, e, s, s,  , o, f,  , a, n,  , i, n, t, e, r, m, e, d, i, a, t, e,  , t, o, o, l,  , c, a, l, l, 
-, i, s,  , a,  , s, t, r, o, n, g,  , p, r, e, d, i, c, t, o, r,  , o, f,  , t, h, e,  , f, i, n, a, l,  , a, n, s, w, e, r, ', s,  , c, o, r, r, e, c, t, n, e, s, s, .,  , F, i, n, a, l, l, y, ,,  , T, H, O, R, 
-, i, n, c, o, r, p, o, r, a, t, e, s,  , a,  , s, e, l, f, -, c, o, r, r, e, c, t, i, o, n,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , i, m, m, e, d, i, a, t, e,  , t, o, o, l,  , f, e, e, d, b, a, c, k, 
-, t, o,  , d, y, n, a, m, i, c, a, l, l, y,  , r, e, v, i, s, e,  , e, r, r, o, n, e, o, u, s,  , r, e, a, s, o, n, i, n, g,  , p, a, t, h, s,  , d, u, r, i, n, g,  , i, n, f, e, r, e, n, c, e, .,  , O, u, r,  , a, p, p, r, o, a, c, h, 
-, d, e, m, o, n, s, t, r, a, t, e, s,  , s, t, r, o, n, g,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , m, o, d, e, l, s, ,,  , p, e, r, f, o, r, m, i, n, g, 
-, e, f, f, e, c, t, i, v, e, l, y,  , i, n,  , b, o, t, h,  , r, e, a, s, o, n, i, n, g,  , a, n, d,  , n, o, n, -, r, e, a, s, o, n, i, n, g,  , m, o, d, e, l, s, .,  , I, t,  , f, u, r, t, h, e, r,  , a, c, h, i, e, v, e, s, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , p, e, r, f, o, r, m, a, n, c, e,  , f, o, r,  , m, o, d, e, l, s,  , o, f,  , a,  , s, i, m, i, l, a, r,  , s, c, a, l, e,  , o, n,  , m, u, l, t, i, p, l, e, 
-, m, a, t, h, e, m, a, t, i, c, a, l,  , b, e, n, c, h, m, a, r, k, s, ,,  , w, h, i, l, e,  , a, l, s, o,  , d, e, l, i, v, e, r, i, n, g,  , c, o, n, s, i, s, t, e, n, t,  , i, m, p, r, o, v, e, m, e, n, t, s,  , o, n,  , c, o, d, e, 
-, b, e, n, c, h, m, a, r, k, s, .,  , O, u, r,  , c, o, d, e,  , w, i, l, l,  , b, e,  , p, u, b, l, i, c, l, y,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, J, i, n, g, M, o, g, /, T, H, O, R, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13722v1'>Mitigating Query Selection Bias in Referring Video Object Segmentation</a></td><td>R, e, c, e, n, t, l, y, ,,  , q, u, e, r, y, -, b, a, s, e, d,  , m, e, t, h, o, d, s,  , h, a, v, e,  , a, c, h, i, e, v, e, d,  , r, e, m, a, r, k, a, b, l, e,  , p, e, r, f, o, r, m, a, n, c, e,  , i, n, 
-, R, e, f, e, r, r, i, n, g,  , V, i, d, e, o,  , O, b, j, e, c, t,  , S, e, g, m, e, n, t, a, t, i, o, n,  , (, R, V, O, S, ),  , b, y,  , u, s, i, n, g,  , t, e, x, t, u, a, l,  , s, t, a, t, i, c,  , o, b, j, e, c, t, 
-, q, u, e, r, i, e, s,  , t, o,  , d, r, i, v, e,  , c, r, o, s, s, -, m, o, d, a, l,  , a, l, i, g, n, m, e, n, t, .,  , H, o, w, e, v, e, r, ,,  , t, h, e, s, e,  , s, t, a, t, i, c,  , q, u, e, r, i, e, s,  , a, r, e, 
-, e, a, s, i, l, y,  , m, i, s, l, e, d,  , b, y,  , d, i, s, t, r, a, c, t, o, r, s,  , w, i, t, h,  , s, i, m, i, l, a, r,  , a, p, p, e, a, r, a, n, c, e,  , o, r,  , m, o, t, i, o, n, ,,  , r, e, s, u, l, t, i, n, g,  , i, n, 
-, \, e, m, p, h, {, q, u, e, r, y,  , s, e, l, e, c, t, i, o, n,  , b, i, a, s, }, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s,  , i, s, s, u, e, ,,  , w, e,  , p, r, o, p, o, s, e,  , T, r, i, p, l, e,  , Q, u, e, r, y, 
-, F, o, r, m, e, r,  , (, T, Q, F, ), ,,  , w, h, i, c, h,  , f, a, c, t, o, r, i, z, e, s,  , t, h, e,  , r, e, f, e, r, r, i, n, g,  , q, u, e, r, y,  , i, n, t, o,  , t, h, r, e, e,  , s, p, e, c, i, a, l, i, z, e, d, 
-, c, o, m, p, o, n, e, n, t, s, :,  , a, n,  , a, p, p, e, a, r, a, n, c, e,  , q, u, e, r, y,  , f, o, r,  , s, t, a, t, i, c,  , a, t, t, r, i, b, u, t, e, s, ,,  , a, n,  , i, n, t, r, a, -, f, r, a, m, e, 
-, i, n, t, e, r, a, c, t, i, o, n,  , q, u, e, r, y,  , f, o, r,  , s, p, a, t, i, a, l,  , r, e, l, a, t, i, o, n, s, ,,  , a, n, d,  , a, n,  , i, n, t, e, r, -, f, r, a, m, e,  , m, o, t, i, o, n,  , q, u, e, r, y,  , f, o, r, 
-, t, e, m, p, o, r, a, l,  , a, s, s, o, c, i, a, t, i, o, n, .,  , I, n, s, t, e, a, d,  , o, f,  , r, e, l, y, i, n, g,  , s, o, l, e, l, y,  , o, n,  , t, e, x, t, u, a, l,  , e, m, b, e, d, d, i, n, g, s, ,,  , o, u, r, 
-, q, u, e, r, i, e, s,  , a, r, e,  , d, y, n, a, m, i, c, a, l, l, y,  , c, o, n, s, t, r, u, c, t, e, d,  , b, y,  , i, n, t, e, g, r, a, t, i, n, g,  , b, o, t, h,  , l, i, n, g, u, i, s, t, i, c,  , c, u, e, s,  , a, n, d, 
-, v, i, s, u, a, l,  , g, u, i, d, a, n, c, e, .,  , F, u, r, t, h, e, r, m, o, r, e, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , t, w, o,  , m, o, t, i, o, n, -, a, w, a, r, e,  , a, g, g, r, e, g, a, t, i, o, n,  , m, o, d, u, l, e, s, 
-, t, h, a, t,  , e, n, h, a, n, c, e,  , o, b, j, e, c, t,  , t, o, k, e, n,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, :,  , I, n, t, r, a, -, f, r, a, m, e,  , I, n, t, e, r, a, c, t, i, o, n,  , A, g, g, r, e, g, a, t, i, o, n, 
-, i, n, c, o, r, p, o, r, a, t, e, s,  , p, o, s, i, t, i, o, n, -, a, w, a, r, e,  , i, n, t, e, r, a, c, t, i, o, n, s,  , a, m, o, n, g,  , o, b, j, e, c, t, s,  , w, i, t, h, i, n,  , a,  , s, i, n, g, l, e,  , f, r, a, m, e, ,, 
-, w, h, i, l, e,  , I, n, t, e, r, -, f, r, a, m, e,  , M, o, t, i, o, n,  , A, g, g, r, e, g, a, t, i, o, n,  , l, e, v, e, r, a, g, e, s,  , t, r, a, j, e, c, t, o, r, y, -, g, u, i, d, e, d,  , a, l, i, g, n, m, e, n, t, 
-, a, c, r, o, s, s,  , f, r, a, m, e, s,  , t, o,  , e, n, s, u, r, e,  , t, e, m, p, o, r, a, l,  , c, o, h, e, r, e, n, c, e, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , m, u, l, t, i, p, l, e, 
-, R, V, O, S,  , b, e, n, c, h, m, a, r, k, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, e,  , a, d, v, a, n, t, a, g, e, s,  , o, f,  , T, Q, F,  , a, n, d,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , o, u, r, 
-, s, t, r, u, c, t, u, r, e, d,  , q, u, e, r, y,  , d, e, s, i, g, n,  , a, n, d,  , m, o, t, i, o, n, -, a, w, a, r, e,  , a, g, g, r, e, g, a, t, i, o, n,  , m, o, d, u, l, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13702v1'>DSCC-HS: A Dynamic Self-Reinforcing Framework for Hallucination Suppression in Large Language Models</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, L, L, M, ),  , h, a, l, l, u, c, i, n, a, t, i, o, n,  , i, s,  , a,  , s, i, g, n, i, f, i, c, a, n, t,  , b, a, r, r, i, e, r,  , t, o,  , t, h, e, i, r, 
-, r, e, l, i, a, b, l, e,  , d, e, p, l, o, y, m, e, n, t, .,  , C, u, r, r, e, n, t,  , m, e, t, h, o, d, s,  , l, i, k, e,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ), 
-, a, r, e,  , o, f, t, e, n,  , r, e, a, c, t, i, v, e, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , *, *, D, y, n, a, m, i, c,  , S, e, l, f, -, r, e, i, n, f, o, r, c, i, n, g,  , C, a, l, i, b, r, a, t, i, o, n,  , f, o, r, 
-, H, a, l, l, u, c, i, n, a, t, i, o, n,  , S, u, p, p, r, e, s, s, i, o, n,  , (, D, S, C, C, -, H, S, ), *, *, ,,  , a,  , n, o, v, e, l, ,,  , p, r, o, a, c, t, i, v, e,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t, 
-, i, n, t, e, r, v, e, n, e, s,  , d, u, r, i, n, g,  , a, u, t, o, r, e, g, r, e, s, s, i, v, e,  , d, e, c, o, d, i, n, g, .,  , I, n, s, p, i, r, e, d,  , b, y,  , d, u, a, l, -, p, r, o, c, e, s, s,  , c, o, g, n, i, t, i, v, e, 
-, t, h, e, o, r, y, ,,  , D, S, C, C, -, H, S,  , u, s, e, s,  , a,  , c, o, m, p, a, c, t,  , p, r, o, x, y,  , m, o, d, e, l, ,,  , t, r, a, i, n, e, d,  , i, n,  , a, d, v, e, r, s, a, r, i, a, l,  , r, o, l, e, s,  , a, s,  , a, 
-, F, a, c, t, u, a, l,  , A, l, i, g, n, m, e, n, t,  , P, r, o, x, y,  , (, F, A, P, ),  , a, n, d,  , a,  , H, a, l, l, u, c, i, n, a, t, i, o, n,  , D, e, t, e, c, t, i, o, n,  , P, r, o, x, y,  , (, H, D, P, ), .,  , D, u, r, i, n, g, 
-, i, n, f, e, r, e, n, c, e, ,,  , t, h, e, s, e,  , p, r, o, x, i, e, s,  , d, y, n, a, m, i, c, a, l, l, y,  , s, t, e, e, r,  , a,  , l, a, r, g, e,  , t, a, r, g, e, t,  , m, o, d, e, l,  , b, y,  , i, n, j, e, c, t, i, n, g,  , a, 
-, r, e, a, l, -, t, i, m, e,  , s, t, e, e, r, i, n, g,  , v, e, c, t, o, r, ,,  , w, h, i, c, h,  , i, s,  , t, h, e,  , d, i, f, f, e, r, e, n, c, e,  , b, e, t, w, e, e, n,  , F, A, P,  , a, n, d,  , H, D, P,  , l, o, g, i, t, s, ,, 
-, a, t,  , e, a, c, h,  , d, e, c, o, d, i, n, g,  , s, t, e, p, .,  , T, h, i, s,  , p, l, u, g, -, a, n, d, -, p, l, a, y,  , a, p, p, r, o, a, c, h,  , r, e, q, u, i, r, e, s,  , n, o,  , m, o, d, i, f, i, c, a, t, i, o, n,  , t, o, 
-, t, h, e,  , t, a, r, g, e, t,  , m, o, d, e, l, .,  , O, u, r,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , T, r, u, t, h, f, u, l, Q, A,  , a, n, d,  , B, i, o, G, E, N,  , s, h, o, w,  , D, S, C, C, -, H, S, 
-, a, c, h, i, e, v, e, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , p, e, r, f, o, r, m, a, n, c, e, .,  , O, n,  , T, r, u, t, h, f, u, l, Q, A, ,,  , i, t,  , r, e, a, c, h, e, d,  , a,  , 9, 9, ., 2, %, 
-, F, a, c, t, u, a, l,  , C, o, n, s, i, s, t, e, n, c, y,  , R, a, t, e,  , (, F, C, R, ), .,  , O, n,  , t, h, e,  , l, o, n, g, -, f, o, r, m,  , B, i, o, G, E, N,  , b, e, n, c, h, m, a, r, k, ,,  , i, t,  , a, t, t, a, i, n, e, d, 
-, t, h, e,  , h, i, g, h, e, s, t,  , F, A, c, t, S, c, o, r, e,  , o, f,  , 4, 6, ., 5, 0, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , v, a, l, i, d, a, t, e,  , D, S, C, C, -, H, S,  , a, s,  , a,  , p, r, i, n, c, i, p, l, e, d, 
-, a, n, d,  , e, f, f, i, c, i, e, n, t,  , s, o, l, u, t, i, o, n,  , f, o, r,  , e, n, h, a, n, c, i, n, g,  , L, L, M,  , f, a, c, t, u, a, l, i, t, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13688v1'>CraftMesh: High-Fidelity Generative Mesh Manipulation via Poisson Seamless Fusion</a></td><td>C, o, n, t, r, o, l, l, a, b, l, e, ,,  , h, i, g, h, -, f, i, d, e, l, i, t, y,  , m, e, s, h,  , e, d, i, t, i, n, g,  , r, e, m, a, i, n, s,  , a,  , s, i, g, n, i, f, i, c, a, n, t,  , c, h, a, l, l, e, n, g, e,  , i, n, 
-, 3, D,  , c, o, n, t, e, n, t,  , c, r, e, a, t, i, o, n, .,  , E, x, i, s, t, i, n, g,  , g, e, n, e, r, a, t, i, v, e,  , m, e, t, h, o, d, s,  , o, f, t, e, n,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , c, o, m, p, l, e, x, 
-, g, e, o, m, e, t, r, i, e, s,  , a, n, d,  , f, a, i, l,  , t, o,  , p, r, o, d, u, c, e,  , d, e, t, a, i, l, e, d,  , r, e, s, u, l, t, s, .,  , W, e,  , p, r, o, p, o, s, e,  , C, r, a, f, t, M, e, s, h, ,,  , a,  , n, o, v, e, l, 
-, f, r, a, m, e, w, o, r, k,  , f, o, r,  , h, i, g, h, -, f, i, d, e, l, i, t, y,  , g, e, n, e, r, a, t, i, v, e,  , m, e, s, h,  , m, a, n, i, p, u, l, a, t, i, o, n,  , v, i, a,  , P, o, i, s, s, o, n,  , S, e, a, m, l, e, s, s, 
-, F, u, s, i, o, n, .,  , O, u, r,  , k, e, y,  , i, n, s, i, g, h, t,  , i, s,  , t, o,  , d, e, c, o, m, p, o, s, e,  , m, e, s, h,  , e, d, i, t, i, n, g,  , i, n, t, o,  , a,  , p, i, p, e, l, i, n, e,  , t, h, a, t, 
-, l, e, v, e, r, a, g, e, s,  , t, h, e,  , s, t, r, e, n, g, t, h, s,  , o, f,  , 2, D,  , a, n, d,  , 3, D,  , g, e, n, e, r, a, t, i, v, e,  , m, o, d, e, l, s, :,  , w, e,  , e, d, i, t,  , a,  , 2, D,  , r, e, f, e, r, e, n, c, e, 
-, i, m, a, g, e, ,,  , t, h, e, n,  , g, e, n, e, r, a, t, e,  , a,  , r, e, g, i, o, n, -, s, p, e, c, i, f, i, c,  , 3, D,  , m, e, s, h, ,,  , a, n, d,  , s, e, a, m, l, e, s, s, l, y,  , f, u, s, e,  , i, t,  , i, n, t, o,  , t, h, e, 
-, o, r, i, g, i, n, a, l,  , m, o, d, e, l, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , t, w, o,  , c, o, r, e,  , t, e, c, h, n, i, q, u, e, s, :,  , P, o, i, s, s, o, n,  , G, e, o, m, e, t, r, i, c,  , F, u, s, i, o, n, ,, 
-, w, h, i, c, h,  , u, t, i, l, i, z, e, s,  , a,  , h, y, b, r, i, d,  , S, D, F, /, M, e, s, h,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , w, i, t, h,  , n, o, r, m, a, l,  , b, l, e, n, d, i, n, g,  , t, o,  , a, c, h, i, e, v, e, 
-, h, a, r, m, o, n, i, o, u, s,  , g, e, o, m, e, t, r, i, c,  , i, n, t, e, g, r, a, t, i, o, n, ,,  , a, n, d,  , P, o, i, s, s, o, n,  , T, e, x, t, u, r, e,  , H, a, r, m, o, n, i, z, a, t, i, o, n,  , f, o, r, 
-, v, i, s, u, a, l, l, y,  , c, o, n, s, i, s, t, e, n, t,  , t, e, x, t, u, r, e,  , b, l, e, n, d, i, n, g, .,  , E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t, 
-, C, r, a, f, t, M, e, s, h,  , o, u, t, p, e, r, f, o, r, m, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , m, e, t, h, o, d, s, ,,  , d, e, l, i, v, e, r, i, n, g,  , s, u, p, e, r, i, o, r,  , g, l, o, b, a, l, 
-, c, o, n, s, i, s, t, e, n, c, y,  , a, n, d,  , l, o, c, a, l,  , d, e, t, a, i, l,  , i, n,  , c, o, m, p, l, e, x,  , e, d, i, t, i, n, g,  , t, a, s, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13676v1'>Re-purposing SAM into Efficient Visual Projectors for MLLM-Based Referring Image Segmentation</a></td><td>R, e, c, e, n, t, l, y, ,,  , R, e, f, e, r, r, i, n, g,  , I, m, a, g, e,  , S, e, g, m, e, n, t, a, t, i, o, n,  , (, R, I, S, ),  , f, r, a, m, e, w, o, r, k, s,  , t, h, a, t,  , p, a, i, r,  , t, h, e, 
-, M, u, l, t, i, m, o, d, a, l,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, M, L, L, M, ),  , w, i, t, h,  , t, h, e,  , S, e, g, m, e, n, t,  , A, n, y, t, h, i, n, g,  , M, o, d, e, l,  , (, S, A, M, ), 
-, h, a, v, e,  , a, c, h, i, e, v, e, d,  , i, m, p, r, e, s, s, i, v, e,  , r, e, s, u, l, t, s, .,  , H, o, w, e, v, e, r, ,,  , a, d, a, p, t, i, n, g,  , M, L, L, M,  , t, o,  , s, e, g, m, e, n, t, a, t, i, o, n,  , i, s, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , i, n, t, e, n, s, i, v, e, ,,  , p, r, i, m, a, r, i, l, y,  , d, u, e,  , t, o,  , v, i, s, u, a, l,  , t, o, k, e, n,  , r, e, d, u, n, d, a, n, c, y, .,  , W, e,  , o, b, s, e, r, v, e, 
-, t, h, a, t,  , t, r, a, d, i, t, i, o, n, a, l,  , p, a, t, c, h, -, w, i, s, e,  , v, i, s, u, a, l,  , p, r, o, j, e, c, t, o, r, s,  , s, t, r, u, g, g, l, e,  , t, o,  , s, t, r, i, k, e,  , a,  , b, a, l, a, n, c, e, 
-, b, e, t, w, e, e, n,  , r, e, d, u, c, i, n, g,  , t, h, e,  , n, u, m, b, e, r,  , o, f,  , v, i, s, u, a, l,  , t, o, k, e, n, s,  , a, n, d,  , p, r, e, s, e, r, v, i, n, g,  , s, e, m, a, n, t, i, c,  , c, l, a, r, i, t, y, ,, 
-, o, f, t, e, n,  , r, e, t, a, i, n, i, n, g,  , o, v, e, r, l, y,  , l, o, n, g,  , t, o, k, e, n,  , s, e, q, u, e, n, c, e, s,  , t, o,  , a, v, o, i, d,  , p, e, r, f, o, r, m, a, n, c, e,  , d, r, o, p, s, ., 
-, I, n, s, p, i, r, e, d,  , b, y,  , t, e, x, t,  , t, o, k, e, n, i, z, e, r, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , s, e, m, a, n, t, i, c,  , v, i, s, u, a, l,  , p, r, o, j, e, c, t, o, r,  , t, h, a, t, 
-, l, e, v, e, r, a, g, e, s,  , s, e, m, a, n, t, i, c,  , s, u, p, e, r, p, i, x, e, l, s,  , g, e, n, e, r, a, t, e, d,  , b, y,  , S, A, M,  , t, o,  , i, d, e, n, t, i, f, y,  , ", v, i, s, u, a, l,  , w, o, r, d, s, ",  , i, n, 
-, a, n,  , i, m, a, g, e, .,  , B, y,  , c, o, m, p, r, e, s, s, i, n, g,  , a, n, d,  , p, r, o, j, e, c, t, i, n, g,  , s, e, m, a, n, t, i, c,  , s, u, p, e, r, p, i, x, e, l, s,  , a, s,  , v, i, s, u, a, l,  , t, o, k, e, n, s, ,, 
-, o, u, r,  , a, p, p, r, o, a, c, h,  , a, d, a, p, t, i, v, e, l, y,  , s, h, o, r, t, e, n, s,  , t, h, e,  , t, o, k, e, n,  , s, e, q, u, e, n, c, e,  , a, c, c, o, r, d, i, n, g,  , t, o,  , s, c, e, n, e, 
-, c, o, m, p, l, e, x, i, t, y,  , w, h, i, l, e,  , m, i, n, i, m, i, z, i, n, g,  , s, e, m, a, n, t, i, c,  , l, o, s, s,  , i, n,  , c, o, m, p, r, e, s, s, i, o, n, .,  , T, o,  , m, i, t, i, g, a, t, e,  , l, o, s, s,  , o, f, 
-, i, n, f, o, r, m, a, t, i, o, n, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , s, e, m, a, n, t, i, c,  , s, u, p, e, r, p, i, x, e, l,  , p, o, s, i, t, i, o, n, a, l,  , e, m, b, e, d, d, i, n, g,  , t, o, 
-, s, t, r, e, n, g, t, h, e, n,  , M, L, L, M, ', s,  , a, w, a, r, e, n, e, s, s,  , o, f,  , s, u, p, e, r, p, i, x, e, l,  , g, e, o, m, e, t, r, y,  , a, n, d,  , p, o, s, i, t, i, o, n, ,,  , a, l, o, n, g, s, i, d, e,  , a, 
-, s, e, m, a, n, t, i, c,  , s, u, p, e, r, p, i, x, e, l,  , a, g, g, r, e, g, a, t, o, r,  , t, o,  , p, r, e, s, e, r, v, e,  , b, o, t, h,  , f, i, n, e, -, g, r, a, i, n, e, d,  , d, e, t, a, i, l, s,  , i, n, s, i, d, e, 
-, s, u, p, e, r, p, i, x, e, l, s,  , a, n, d,  , g, l, o, b, a, l,  , c, o, n, t, e, x, t,  , o, u, t, s, i, d, e, .,  , E, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , o, u, r,  , m, e, t, h, o, d,  , c, u, t, s, 
-, v, i, s, u, a, l,  , t, o, k, e, n, s,  , b, y,  , 9, 3, %,  , w, i, t, h, o, u, t,  , c, o, m, p, r, o, m, i, s, i, n, g,  , p, e, r, f, o, r, m, a, n, c, e, ,,  , n, o, t, a, b, l, y,  , s, p, e, e, d, i, n, g,  , u, p,  , M, L, L, M, 
-, t, r, a, i, n, i, n, g,  , a, n, d,  , i, n, f, e, r, e, n, c, e, ,,  , a, n, d,  , o, u, t, p, e, r, f, o, r, m, i, n, g,  , e, x, i, s, t, i, n, g,  , c, o, m, p, r, e, s, s, i, v, e,  , v, i, s, u, a, l, 
-, p, r, o, j, e, c, t, o, r, s,  , o, n,  , R, I, S, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13666v1'>DREAM: Domain-aware Reasoning for Efficient Autonomous Underwater Monitoring</a></td><td>T, h, e,  , o, c, e, a, n,  , i, s,  , w, a, r, m, i, n, g,  , a, n, d,  , a, c, i, d, i, f, y, i, n, g, ,,  , i, n, c, r, e, a, s, i, n, g,  , t, h, e,  , r, i, s, k,  , o, f,  , m, a, s, s,  , m, o, r, t, a, l, i, t, y, 
-, e, v, e, n, t, s,  , f, o, r,  , t, e, m, p, e, r, a, t, u, r, e, -, s, e, n, s, i, t, i, v, e,  , s, h, e, l, l, f, i, s, h,  , s, u, c, h,  , a, s,  , o, y, s, t, e, r, s, .,  , T, h, i, s,  , m, o, t, i, v, a, t, e, s,  , t, h, e, 
-, d, e, v, e, l, o, p, m, e, n, t,  , o, f,  , l, o, n, g, -, t, e, r, m,  , m, o, n, i, t, o, r, i, n, g,  , s, y, s, t, e, m, s, .,  , H, o, w, e, v, e, r, ,,  , h, u, m, a, n,  , l, a, b, o, r,  , i, s,  , c, o, s, t, l, y,  , a, n, d, 
-, l, o, n, g, -, d, u, r, a, t, i, o, n,  , u, n, d, e, r, w, a, t, e, r,  , w, o, r, k,  , i, s,  , h, i, g, h, l, y,  , h, a, z, a, r, d, o, u, s, ,,  , t, h, u, s,  , f, a, v, o, r, i, n, g,  , r, o, b, o, t, i, c, 
-, s, o, l, u, t, i, o, n, s,  , a, s,  , a,  , s, a, f, e, r,  , a, n, d,  , m, o, r, e,  , e, f, f, i, c, i, e, n, t,  , o, p, t, i, o, n, .,  , T, o,  , e, n, a, b, l, e,  , u, n, d, e, r, w, a, t, e, r,  , r, o, b, o, t, s,  , t, o, 
-, m, a, k, e,  , r, e, a, l, -, t, i, m, e, ,,  , e, n, v, i, r, o, n, m, e, n, t, -, a, w, a, r, e,  , d, e, c, i, s, i, o, n, s,  , w, i, t, h, o, u, t,  , h, u, m, a, n,  , i, n, t, e, r, v, e, n, t, i, o, n, ,,  , w, e,  , m, u, s, t, 
-, e, q, u, i, p,  , t, h, e, m,  , w, i, t, h,  , a, n,  , i, n, t, e, l, l, i, g, e, n, t,  , ", b, r, a, i, n, ., ",  , T, h, i, s,  , h, i, g, h, l, i, g, h, t, s,  , t, h, e,  , n, e, e, d,  , f, o, r, 
-, p, e, r, s, i, s, t, e, n, t, ,, w, i, d, e, -, a, r, e, a, ,,  , a, n, d,  , l, o, w, -, c, o, s, t,  , b, e, n, t, h, i, c,  , m, o, n, i, t, o, r, i, n, g, .,  , T, o,  , t, h, i, s,  , e, n, d, ,,  , w, e,  , p, r, e, s, e, n, t, 
-, D, R, E, A, M, ,,  , a,  , V, i, s, i, o, n,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, V, L, M, ), -, g, u, i, d, e, d,  , a, u, t, o, n, o, m, y,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , l, o, n, g, -, t, e, r, m, 
-, u, n, d, e, r, w, a, t, e, r,  , e, x, p, l, o, r, a, t, i, o, n,  , a, n, d,  , h, a, b, i, t, a, t,  , m, o, n, i, t, o, r, i, n, g, .,  , T, h, e,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , o, u, r, 
-, f, r, a, m, e, w, o, r, k,  , i, s,  , h, i, g, h, l, y,  , e, f, f, i, c, i, e, n, t,  , i, n,  , f, i, n, d, i, n, g,  , a, n, d,  , e, x, p, l, o, r, i, n, g,  , t, a, r, g, e, t,  , o, b, j, e, c, t, s,  , (, e, ., g, ., ,, 
-, o, y, s, t, e, r, s, ,,  , s, h, i, p, w, r, e, c, k, s, ),  , w, i, t, h, o, u, t,  , p, r, i, o, r,  , l, o, c, a, t, i, o, n,  , i, n, f, o, r, m, a, t, i, o, n, .,  , I, n,  , t, h, e, 
-, o, y, s, t, e, r, -, m, o, n, i, t, o, r, i, n, g,  , t, a, s, k, ,,  , o, u, r,  , f, r, a, m, e, w, o, r, k,  , t, a, k, e, s,  , 3, 1, ., 5, %,  , l, e, s, s,  , t, i, m, e,  , t, h, a, n,  , t, h, e,  , p, r, e, v, i, o, u, s, 
-, b, a, s, e, l, i, n, e,  , w, i, t, h,  , t, h, e,  , s, a, m, e,  , a, m, o, u, n, t,  , o, f,  , o, y, s, t, e, r, s, .,  , C, o, m, p, a, r, e, d,  , t, o,  , t, h, e,  , v, a, n, i, l, l, a,  , V, L, M, ,,  , i, t,  , u, s, e, s, 
-, 2, 3, %,  , f, e, w, e, r,  , s, t, e, p, s,  , w, h, i, l, e,  , c, o, v, e, r, i, n, g,  , 8, ., 8, 8, %,  , m, o, r, e,  , o, y, s, t, e, r, s, .,  , I, n,  , s, h, i, p, w, r, e, c, k,  , s, c, e, n, e, s, ,,  , o, u, r, 
-, f, r, a, m, e, w, o, r, k,  , s, u, c, c, e, s, s, f, u, l, l, y,  , e, x, p, l, o, r, e, s,  , a, n, d,  , m, a, p, s,  , t, h, e,  , w, r, e, c, k,  , w, i, t, h, o, u, t,  , c, o, l, l, i, s, i, o, n, s, ,, 
-, r, e, q, u, i, r, i, n, g,  , 2, 7, ., 5, %,  , f, e, w, e, r,  , s, t, e, p, s,  , t, h, a, n,  , t, h, e,  , v, a, n, i, l, l, a,  , m, o, d, e, l,  , a, n, d,  , a, c, h, i, e, v, i, n, g,  , 1, 0, 0, %,  , c, o, v, e, r, a, g, e, ,, 
-, w, h, i, l, e,  , t, h, e,  , v, a, n, i, l, l, a,  , m, o, d, e, l,  , a, c, h, i, e, v, e, s,  , 6, 0, ., 2, 3, %,  , a, v, e, r, a, g, e,  , c, o, v, e, r, a, g, e,  , i, n,  , o, u, r,  , s, h, i, p, w, r, e, c, k, 
-, e, n, v, i, r, o, n, m, e, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13633v1'>DeepLogit: A sequentially constrained explainable deep learning modeling approach for transport policy analysis</a></td><td>D, e, s, p, i, t, e,  , t, h, e,  , s, i, g, n, i, f, i, c, a, n, t,  , p, r, o, g, r, e, s, s,  , o, f,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, o, d, e, l, s,  , i, n,  , m, u, l, t, i, t, u, d, e,  , o, f, 
-, a, p, p, l, i, c, a, t, i, o, n, s, ,,  , t, h, e, i, r,  , a, d, a, p, t, i, o, n,  , i, n,  , p, l, a, n, n, i, n, g,  , a, n, d,  , p, o, l, i, c, y,  , r, e, l, a, t, e, d,  , a, r, e, a, s,  , r, e, m, a, i, n, s, 
-, c, h, a, l, l, e, n, g, i, n, g,  , d, u, e,  , t, o,  , t, h, e,  , b, l, a, c, k, -, b, o, x,  , n, a, t, u, r, e,  , o, f,  , t, h, e, s, e,  , m, o, d, e, l, s, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e, 
-, d, e, v, e, l, o, p,  , a,  , s, e, t,  , o, f,  , D, e, e, p, L, o, g, i, t,  , m, o, d, e, l, s,  , t, h, a, t,  , f, o, l, l, o, w,  , a,  , n, o, v, e, l,  , s, e, q, u, e, n, t, i, a, l, l, y,  , c, o, n, s, t, r, a, i, n, e, d, 
-, a, p, p, r, o, a, c, h,  , i, n,  , e, s, t, i, m, a, t, i, n, g,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, o, d, e, l, s,  , f, o, r,  , t, r, a, n, s, p, o, r, t,  , p, o, l, i, c, y,  , a, n, a, l, y, s, i, s, .,  , I, n, 
-, t, h, e,  , f, i, r, s, t,  , s, t, e, p,  , o, f,  , t, h, e,  , p, r, o, p, o, s, e, d,  , a, p, p, r, o, a, c, h, ,,  , w, e,  , e, s, t, i, m, a, t, e,  , a,  , c, o, n, v, o, l, u, t, i, o, n, a, l,  , n, e, u, r, a, l, 
-, n, e, t, w, o, r, k,  , (, C, N, N, ),  , m, o, d, e, l,  , w, i, t, h,  , o, n, l, y,  , l, i, n, e, a, r,  , t, e, r, m, s, ,,  , w, h, i, c, h,  , i, s,  , e, q, u, i, v, a, l, e, n, t,  , o, f,  , a, 
-, l, i, n, e, a, r, -, i, n, -, p, a, r, a, m, e, t, e, r,  , m, u, l, t, i, n, o, m, i, a, l,  , l, o, g, i, t,  , m, o, d, e, l, .,  , W, e,  , t, h, e, n,  , e, s, t, i, m, a, t, e,  , o, t, h, e, r,  , d, e, e, p, 
-, l, e, a, r, n, i, n, g,  , m, o, d, e, l, s,  , b, y,  , c, o, n, s, t, r, a, i, n, i, n, g,  , t, h, e,  , p, a, r, a, m, e, t, e, r, s,  , t, h, a, t,  , n, e, e, d,  , i, n, t, e, r, p, r, e, t, a, b, i, l, i, t, y,  , a, t, 
-, t, h, e,  , v, a, l, u, e, s,  , o, b, t, a, i, n, e, d,  , i, n,  , t, h, e,  , l, i, n, e, a, r, -, i, n, -, p, a, r, a, m, e, t, e, r,  , C, N, N,  , m, o, d, e, l,  , a, n, d,  , i, n, c, l, u, d, i, n, g,  , h, i, g, h, e, r, 
-, o, r, d, e, r,  , t, e, r, m, s,  , o, r,  , b, y,  , i, n, t, r, o, d, u, c, i, n, g,  , a, d, v, a, n, c, e, d,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , l, i, k, e, 
-, T, r, a, n, s, f, o, r, m, e, r, s, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , c, a, n,  , r, e, t, a, i, n,  , t, h, e,  , i, n, t, e, r, p, r, e, t, a, b, i, l, i, t, y,  , o, f,  , t, h, e,  , s, e, l, e, c, t, e, d, 
-, p, a, r, a, m, e, t, e, r, s, ,,  , y, e, t,  , p, r, o, v, i, d, e, s,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , i, m, p, r, o, v, e, d,  , m, o, d, e, l,  , a, c, c, u, r, a, c, y,  , t, h, a, n,  , t, h, e, 
-, d, i, s, c, r, e, t, e,  , c, h, o, i, c, e,  , m, o, d, e, l, .,  , W, e,  , d, e, m, o, n, s, t, r, a, t, e,  , o, u, r,  , a, p, p, r, o, a, c, h,  , o, n,  , a,  , t, r, a, n, s, i, t,  , r, o, u, t, e,  , c, h, o, i, c, e, 
-, e, x, a, m, p, l, e,  , u, s, i, n, g,  , r, e, a, l, -, w, o, r, l, d,  , t, r, a, n, s, i, t,  , s, m, a, r, t,  , c, a, r, d,  , d, a, t, a,  , f, r, o, m,  , S, i, n, g, a, p, o, r, e, .,  , T, h, i, s,  , s, t, u, d, y, 
-, s, h, o, w, s,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , f, o, r,  , a,  , u, n, i, f, y, i, n, g,  , a, p, p, r, o, a, c, h, ,,  , w, h, e, r, e,  , t, h, e, o, r, y, -, b, a, s, e, d,  , d, i, s, c, r, e, t, e,  , c, h, o, i, c, e, 
-, m, o, d, e, l,  , (, D, C, M, ),  , a, n, d,  , d, a, t, a, -, d, r, i, v, e, n,  , A, I,  , m, o, d, e, l, s,  , c, a, n,  , l, e, v, e, r, a, g, e,  , e, a, c, h,  , o, t, h, e, r, ', s,  , s, t, r, e, n, g, t, h, s,  , i, n, 
-, i, n, t, e, r, p, r, e, t, a, b, i, l, i, t, y,  , a, n, d,  , p, r, e, d, i, c, t, i, v, e,  , p, o, w, e, r, .,  , W, i, t, h,  , t, h, e,  , a, v, a, i, l, a, b, i, l, i, t, y,  , o, f,  , l, a, r, g, e, r,  , d, a, t, a, s, e, t, s, 
-, a, n, d,  , m, o, r, e,  , c, o, m, p, l, e, x,  , c, o, n, s, t, r, u, c, t, i, o, n, s, ,,  , s, u, c, h,  , a, p, p, r, o, a, c, h,  , c, a, n,  , l, e, a, d,  , t, o,  , m, o, r, e,  , a, c, c, u, r, a, t, e,  , m, o, d, e, l, s, 
-, u, s, i, n, g,  , d, i, s, c, r, e, t, e,  , c, h, o, i, c, e,  , m, o, d, e, l, s,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , i, t, s,  , a, p, p, l, i, c, a, b, i, l, i, t, y,  , i, n,  , p, l, a, n, n, i, n, g, 
-, a, n, d,  , p, o, l, i, c, y, -, r, e, l, a, t, e, d,  , a, r, e, a, s, .,  , O, u, r,  , c, o, d, e,  , i, s,  , a, v, a, i, l, a, b, l, e,  , o, n, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, j, e, r, e, m, y, o, o, n, /, r, o, u, t, e, -, c, h, o, i, c, e, /,  , .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13626v1'>Mind the Gap: Aligning Knowledge Bases with User Needs to Enhance Mental Health Retrieval</a></td><td>A, c, c, e, s, s,  , t, o,  , r, e, l, i, a, b, l, e,  , m, e, n, t, a, l,  , h, e, a, l, t, h,  , i, n, f, o, r, m, a, t, i, o, n,  , i, s,  , v, i, t, a, l,  , f, o, r,  , e, a, r, l, y,  , h, e, l, p, -, s, e, e, k, i, n, g, ,, 
-, y, e, t,  , e, x, p, a, n, d, i, n, g,  , k, n, o, w, l, e, d, g, e,  , b, a, s, e, s,  , i, s,  , r, e, s, o, u, r, c, e, -, i, n, t, e, n, s, i, v, e,  , a, n, d,  , o, f, t, e, n,  , m, i, s, a, l, i, g, n, e, d,  , w, i, t, h, 
-, u, s, e, r,  , n, e, e, d, s, .,  , T, h, i, s,  , r, e, s, u, l, t, s,  , i, n,  , p, o, o, r,  , p, e, r, f, o, r, m, a, n, c, e,  , o, f,  , r, e, t, r, i, e, v, a, l,  , s, y, s, t, e, m, s,  , w, h, e, n, 
-, p, r, e, s, e, n, t, e, d,  , c, o, n, c, e, r, n, s,  , a, r, e,  , n, o, t,  , c, o, v, e, r, e, d,  , o, r,  , e, x, p, r, e, s, s, e, d,  , i, n,  , i, n, f, o, r, m, a, l,  , o, r,  , c, o, n, t, e, x, t, u, a, l, i, z, e, d, 
-, l, a, n, g, u, a, g, e, .,  , W, e,  , p, r, e, s, e, n, t,  , a, n,  , A, I, -, b, a, s, e, d,  , g, a, p, -, i, n, f, o, r, m, e, d,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , c, o, r, p, u, s,  , a, u, g, m, e, n, t, a, t, i, o, n, 
-, t, h, a, t,  , a, u, t, h, e, n, t, i, c, a, l, l, y,  , i, d, e, n, t, i, f, i, e, s,  , u, n, d, e, r, r, e, p, r, e, s, e, n, t, e, d,  , t, o, p, i, c, s,  , (, g, a, p, s, ),  , b, y,  , o, v, e, r, l, a, y, i, n, g, 
-, n, a, t, u, r, a, l, i, s, t, i, c,  , u, s, e, r,  , d, a, t, a,  , s, u, c, h,  , a, s,  , f, o, r, u, m,  , p, o, s, t, s,  , i, n,  , o, r, d, e, r,  , t, o,  , p, r, i, o, r, i, t, i, z, e,  , e, x, p, a, n, s, i, o, n, s, 
-, b, a, s, e, d,  , o, n,  , c, o, v, e, r, a, g, e,  , a, n, d,  , u, s, e, f, u, l, n, e, s, s, .,  , I, n,  , a,  , c, a, s, e,  , s, t, u, d, y, ,,  , w, e,  , c, o, m, p, a, r, e,  , D, i, r, e, c, t, e, d, 
-, (, g, a, p, -, i, n, f, o, r, m, e, d,  , a, u, g, m, e, n, t, a, t, i, o, n, s, ),  , w, i, t, h,  , N, o, n, -, D, i, r, e, c, t, e, d,  , a, u, g, m, e, n, t, a, t, i, o, n,  , (, r, a, n, d, o, m,  , a, d, d, i, t, i, o, n, s, ), ,, 
-, e, v, a, l, u, a, t, i, n, g,  , t, h, e,  , r, e, l, e, v, a, n, c, e,  , a, n, d,  , u, s, e, f, u, l, n, e, s, s,  , o, f,  , r, e, t, r, i, e, v, e, d,  , i, n, f, o, r, m, a, t, i, o, n,  , a, c, r, o, s, s,  , f, o, u, r, 
-, r, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , p, i, p, e, l, i, n, e, s, .,  , D, i, r, e, c, t, e, d,  , a, u, g, m, e, n, t, a, t, i, o, n,  , a, c, h, i, e, v, e, d, 
-, n, e, a, r, -, o, p, t, i, m, a, l,  , p, e, r, f, o, r, m, a, n, c, e,  , w, i, t, h,  , m, o, d, e, s, t,  , e, x, p, a, n, s, i, o, n, s, -, -, r, e, q, u, i, r, i, n, g,  , o, n, l, y,  , a,  , 4, 2, %,  , i, n, c, r, e, a, s, e, 
-, f, o, r,  , Q, u, e, r, y,  , T, r, a, n, s, f, o, r, m, a, t, i, o, n, ,,  , 7, 4, %,  , f, o, r,  , R, e, r, a, n, k, i, n, g,  , a, n, d,  , H, i, e, r, a, r, c, h, i, c, a, l, ,,  , a, n, d,  , 3, 1, 8, %,  , f, o, r, 
-, B, a, s, e, l, i, n, e, -, -, t, o,  , r, e, a, c, h,  , ~, 9, 5, %,  , o, f,  , t, h, e,  , p, e, r, f, o, r, m, a, n, c, e,  , o, f,  , a, n,  , e, x, h, a, u, s, t, i, v, e,  , r, e, f, e, r, e, n, c, e,  , c, o, r, p, u, s, ., 
-, I, n,  , c, o, n, t, r, a, s, t, ,,  , N, o, n, -, D, i, r, e, c, t, e, d,  , a, u, g, m, e, n, t, a, t, i, o, n,  , r, e, q, u, i, r, e, d,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , l, a, r, g, e, r,  , a, n, d,  , t, h, u, s, 
-, p, r, a, c, t, i, c, a, l, l, y,  , i, n, f, e, a, s, i, b, l, e,  , e, x, p, a, n, s, i, o, n, s,  , t, o,  , a, c, h, i, e, v, e,  , c, o, m, p, a, r, a, b, l, e,  , p, e, r, f, o, r, m, a, n, c, e,  , (, 2, 3, 2, %, ,, 
-, 3, 1, 8, %, ,,  , 4, 0, 3, %, ,,  , a, n, d,  , 7, 6, 3, %, ,,  , r, e, s, p, e, c, t, i, v, e, l, y, ), .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , s, t, r, a, t, e, g, i, c, a, l, l, y, 
-, t, a, r, g, e, t, e, d,  , c, o, r, p, u, s,  , g, r, o, w, t, h,  , c, a, n,  , r, e, d, u, c, e,  , c, o, n, t, e, n, t,  , c, r, e, a, t, i, o, n,  , d, e, m, a, n, d, s,  , w, h, i, l, e,  , s, u, s, t, a, i, n, i, n, g, 
-, h, i, g, h,  , r, e, t, r, i, e, v, a, l,  , a, n, d,  , p, r, o, v, i, s, i, o, n,  , q, u, a, l, i, t, y, ,,  , o, f, f, e, r, i, n, g,  , a,  , s, c, a, l, a, b, l, e,  , a, p, p, r, o, a, c, h,  , f, o, r,  , b, u, i, l, d, i, n, g, 
-, t, r, u, s, t, e, d,  , h, e, a, l, t, h,  , i, n, f, o, r, m, a, t, i, o, n,  , r, e, p, o, s, i, t, o, r, i, e, s,  , a, n, d,  , s, u, p, p, o, r, t, i, n, g,  , g, e, n, e, r, a, t, i, v, e,  , A, I, 
-, a, p, p, l, i, c, a, t, i, o, n, s,  , i, n,  , h, i, g, h, -, s, t, a, k, e, s,  , d, o, m, a, i, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13620v1'>A reduced-order derivative-informed neural operator for subsurface fluid-flow</a></td><td>N, e, u, r, a, l,  , o, p, e, r, a, t, o, r, s,  , h, a, v, e,  , e, m, e, r, g, e, d,  , a, s,  , c, o, s, t, -, e, f, f, e, c, t, i, v, e,  , s, u, r, r, o, g, a, t, e, s,  , f, o, r,  , e, x, p, e, n, s, i, v, e, 
-, f, l, u, i, d, -, f, l, o, w,  , s, i, m, u, l, a, t, o, r, s, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , i, n,  , c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , i, n, t, e, n, s, i, v, e,  , t, a, s, k, s,  , s, u, c, h,  , a, s, 
-, p, e, r, m, e, a, b, i, l, i, t, y,  , i, n, v, e, r, s, i, o, n,  , f, r, o, m,  , t, i, m, e, -, l, a, p, s, e,  , s, e, i, s, m, i, c,  , d, a, t, a, ,,  , a, n, d,  , u, n, c, e, r, t, a, i, n, t, y, 
-, q, u, a, n, t, i, f, i, c, a, t, i, o, n, .,  , I, n,  , t, h, e, s, e,  , a, p, p, l, i, c, a, t, i, o, n, s, ,,  , t, h, e,  , f, i, d, e, l, i, t, y,  , o, f,  , t, h, e,  , s, u, r, r, o, g, a, t, e, ', s, 
-, g, r, a, d, i, e, n, t, s,  , w, i, t, h,  , r, e, s, p, e, c, t,  , t, o,  , s, y, s, t, e, m,  , p, a, r, a, m, e, t, e, r, s,  , i, s,  , c, r, u, c, i, a, l, ,,  , a, s,  , t, h, e,  , a, c, c, u, r, a, c, y,  , o, f, 
-, d, o, w, n, s, t, r, e, a, m,  , t, a, s, k, s, ,,  , s, u, c, h,  , a, s,  , o, p, t, i, m, i, z, a, t, i, o, n,  , a, n, d,  , B, a, y, e, s, i, a, n,  , i, n, f, e, r, e, n, c, e, ,,  , r, e, l, i, e, s,  , d, i, r, e, c, t, l, y, 
-, o, n,  , t, h, e,  , q, u, a, l, i, t, y,  , o, f,  , t, h, e,  , d, e, r, i, v, a, t, i, v, e,  , i, n, f, o, r, m, a, t, i, o, n, .,  , R, e, c, e, n, t,  , a, d, v, a, n, c, e, s,  , i, n, 
-, p, h, y, s, i, c, s, -, i, n, f, o, r, m, e, d,  , m, e, t, h, o, d, s,  , h, a, v, e,  , l, e, v, e, r, a, g, e, d,  , d, e, r, i, v, a, t, i, v, e,  , i, n, f, o, r, m, a, t, i, o, n,  , t, o,  , i, m, p, r, o, v, e, 
-, s, u, r, r, o, g, a, t, e,  , a, c, c, u, r, a, c, y, .,  , H, o, w, e, v, e, r, ,,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , e, x, p, l, i, c, i, t,  , J, a, c, o, b, i, a, n, s,  , c, a, n,  , b, e, c, o, m, e, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , p, r, o, h, i, b, i, t, i, v, e, ,,  , a, s,  , t, h, e,  , c, o, m, p, l, e, x, i, t, y,  , t, y, p, i, c, a, l, l, y,  , s, c, a, l, e, s,  , q, u, a, d, r, a, t, i, c, a, l, l, y, 
-, w, i, t, h,  , t, h, e,  , n, u, m, b, e, r,  , o, f,  , i, n, p, u, t,  , p, a, r, a, m, e, t, e, r, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s,  , l, i, m, i, t, a, t, i, o, n, ,,  , w, e,  , p, r, o, p, o, s, e, 
-, D, e, F, I, N, O,  , (, D, e, r, i, v, a, t, i, v, e, -, b, a, s, e, d,  , F, i, s, h, e, r, -, s, c, o, r, e,  , I, n, f, o, r, m, e, d,  , N, e, u, r, a, l,  , O, p, e, r, a, t, o, r, ), ,,  , a, 
-, r, e, d, u, c, e, d, -, o, r, d, e, r, ,,  , d, e, r, i, v, a, t, i, v, e, -, i, n, f, o, r, m, e, d,  , t, r, a, i, n, i, n, g,  , f, r, a, m, e, w, o, r, k, .,  , D, e, F, I, N, O,  , i, n, t, e, g, r, a, t, e, s, 
-, F, o, u, r, i, e, r,  , n, e, u, r, a, l,  , o, p, e, r, a, t, o, r, s,  , (, F, N, O, s, ),  , w, i, t, h,  , a,  , n, o, v, e, l,  , d, e, r, i, v, a, t, i, v, e, -, b, a, s, e, d,  , t, r, a, i, n, i, n, g,  , s, t, r, a, t, e, g, y, 
-, g, u, i, d, e, d,  , b, y,  , t, h, e,  , F, i, s, h, e, r,  , I, n, f, o, r, m, a, t, i, o, n,  , M, a, t, r, i, x,  , (, F, I, M, ), .,  , B, y,  , p, r, o, j, e, c, t, i, n, g,  , J, a, c, o, b, i, a, n, s,  , o, n, t, o, 
-, d, o, m, i, n, a, n, t,  , e, i, g, e, n, -, d, i, r, e, c, t, i, o, n, s,  , i, d, e, n, t, i, f, i, e, d,  , b, y,  , t, h, e,  , F, I, M, ,,  , D, e, F, I, N, O,  , c, a, p, t, u, r, e, s,  , c, r, i, t, i, c, a, l, 
-, s, e, n, s, i, t, i, v, i, t, y,  , i, n, f, o, r, m, a, t, i, o, n,  , d, i, r, e, c, t, l, y,  , i, n, f, o, r, m, e, d,  , b, y,  , o, b, s, e, r, v, a, t, i, o, n, a, l,  , d, a, t, a, ,,  , s, i, g, n, i, f, i, c, a, n, t, l, y, 
-, r, e, d, u, c, i, n, g,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , e, x, p, e, n, s, e, .,  , W, e,  , v, a, l, i, d, a, t, e,  , D, e, F, I, N, O,  , t, h, r, o, u, g, h,  , s, y, n, t, h, e, t, i, c, 
-, e, x, p, e, r, i, m, e, n, t, s,  , i, n,  , t, h, e,  , c, o, n, t, e, x, t,  , o, f,  , s, u, b, s, u, r, f, a, c, e,  , m, u, l, t, i, -, p, h, a, s, e,  , f, l, u, i, d, -, f, l, o, w, ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g, 
-, i, m, p, r, o, v, e, m, e, n, t, s,  , i, n,  , g, r, a, d, i, e, n, t,  , a, c, c, u, r, a, c, y,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , r, o, b, u, s, t,  , f, o, r, w, a, r, d,  , p, r, e, d, i, c, t, i, o, n, s, 
-, o, f,  , u, n, d, e, r, l, y, i, n, g,  , f, l, u, i, d,  , d, y, n, a, m, i, c, s, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , h, i, g, h, l, i, g, h, t,  , D, e, F, I, N, O, ', s,  , p, o, t, e, n, t, i, a, l,  , t, o, 
-, o, f, f, e, r,  , p, r, a, c, t, i, c, a, l, ,,  , s, c, a, l, a, b, l, e,  , s, o, l, u, t, i, o, n, s,  , f, o, r,  , i, n, v, e, r, s, i, o, n,  , p, r, o, b, l, e, m, s,  , i, n,  , c, o, m, p, l, e, x, 
-, r, e, a, l, -, w, o, r, l, d,  , s, c, e, n, a, r, i, o, s, ,,  , a, l, l,  , a, t,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , r, e, d, u, c, e, d,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13603v1'>Modernizing Facebook Scoped Search: Keyword and Embedding Hybrid Retrieval with LLM Evaluation</a></td><td>B, e, y, o, n, d,  , g, e, n, e, r, a, l,  , w, e, b, -, s, c, a, l, e,  , s, e, a, r, c, h, ,,  , s, o, c, i, a, l,  , n, e, t, w, o, r, k,  , s, e, a, r, c, h,  , u, n, i, q, u, e, l, y,  , e, n, a, b, l, e, s,  , u, s, e, r, s, 
-, t, o,  , r, e, t, r, i, e, v, e,  , i, n, f, o, r, m, a, t, i, o, n,  , a, n, d,  , d, i, s, c, o, v, e, r,  , p, o, t, e, n, t, i, a, l,  , c, o, n, n, e, c, t, i, o, n, s,  , w, i, t, h, i, n,  , t, h, e, i, r,  , s, o, c, i, a, l, 
-, c, o, n, t, e, x, t, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , a,  , f, r, a, m, e, w, o, r, k,  , o, f,  , m, o, d, e, r, n, i, z, e, d,  , F, a, c, e, b, o, o, k,  , G, r, o, u, p,  , S, c, o, p, e, d,  , S, e, a, r, c, h,  , b, y, 
-, b, l, e, n, d, i, n, g,  , t, r, a, d, i, t, i, o, n, a, l,  , k, e, y, w, o, r, d, -, b, a, s, e, d,  , r, e, t, r, i, e, v, a, l,  , w, i, t, h,  , e, m, b, e, d, d, i, n, g, -, b, a, s, e, d,  , r, e, t, r, i, e, v, a, l, 
-, (, E, B, R, ),  , t, o,  , i, m, p, r, o, v, e,  , t, h, e,  , s, e, a, r, c, h,  , r, e, l, e, v, a, n, c, e,  , a, n, d,  , d, i, v, e, r, s, i, t, y,  , o, f,  , s, e, a, r, c, h,  , r, e, s, u, l, t, s, .,  , O, u, r, 
-, s, y, s, t, e, m,  , i, n, t, e, g, r, a, t, e, s,  , s, e, m, a, n, t, i, c,  , r, e, t, r, i, e, v, a, l,  , i, n, t, o,  , t, h, e,  , e, x, i, s, t, i, n, g,  , k, e, y, w, o, r, d,  , s, e, a, r, c, h,  , p, i, p, e, l, i, n, e, ,, 
-, e, n, a, b, l, i, n, g,  , u, s, e, r, s,  , t, o,  , d, i, s, c, o, v, e, r,  , m, o, r, e,  , c, o, n, t, e, x, t, u, a, l, l, y,  , r, e, l, e, v, a, n, t,  , g, r, o, u, p,  , p, o, s, t, s, .,  , T, o, 
-, r, i, g, o, r, o, u, s, l, y,  , a, s, s, e, s, s,  , t, h, e,  , i, m, p, a, c, t,  , o, f,  , t, h, i, s,  , b, l, e, n, d, e, d,  , a, p, p, r, o, a, c, h, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a,  , n, o, v, e, l, 
-, e, v, a, l, u, a, t, i, o, n,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , t, o,  , p, e, r, f, o, r, m, 
-, o, f, f, l, i, n, e,  , r, e, l, e, v, a, n, c, e,  , a, s, s, e, s, s, m, e, n, t, s, ,,  , p, r, o, v, i, d, i, n, g,  , s, c, a, l, a, b, l, e,  , a, n, d,  , c, o, n, s, i, s, t, e, n, t,  , q, u, a, l, i, t, y, 
-, b, e, n, c, h, m, a, r, k, s, .,  , O, u, r,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , t, h, e,  , b, l, e, n, d, e, d,  , r, e, t, r, i, e, v, a, l,  , s, y, s, t, e, m, 
-, s, i, g, n, i, f, i, c, a, n, t, l, y,  , e, n, h, a, n, c, e, s,  , u, s, e, r,  , e, n, g, a, g, e, m, e, n, t,  , a, n, d,  , s, e, a, r, c, h,  , q, u, a, l, i, t, y, ,,  , a, s,  , v, a, l, i, d, a, t, e, d,  , b, y,  , b, o, t, h, 
-, o, n, l, i, n, e,  , m, e, t, r, i, c, s,  , a, n, d,  , L, L, M, -, b, a, s, e, d,  , e, v, a, l, u, a, t, i, o, n, .,  , T, h, i, s,  , w, o, r, k,  , o, f, f, e, r, s,  , p, r, a, c, t, i, c, a, l,  , i, n, s, i, g, h, t, s, 
-, f, o, r,  , d, e, p, l, o, y, i, n, g,  , a, n, d,  , e, v, a, l, u, a, t, i, n, g,  , a, d, v, a, n, c, e, d,  , r, e, t, r, i, e, v, a, l,  , s, y, s, t, e, m, s,  , i, n,  , l, a, r, g, e, -, s, c, a, l, e, ,, 
-, r, e, a, l, -, w, o, r, l, d,  , s, o, c, i, a, l,  , p, l, a, t, f, o, r, m, s, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.14233v1'>Apertus: Democratizing Open and Compliant LLMs for Global Language Environments</a></td><td>We present Apertus, a fully open suite of large language models (LLMs)
+designed to address two systemic shortcomings in today's open model ecosystem:
+data compliance and multilingual representation. Unlike many prior models that
+release weights without reproducible data pipelines or regard for content-owner
+rights, Apertus models are pretrained exclusively on openly available data,
+retroactively respecting robots.txt exclusions and filtering for
+non-permissive, toxic, and personally identifiable content. To mitigate risks
+of memorization, we adopt the Goldfish objective during pretraining, strongly
+suppressing verbatim recall of data while retaining downstream task
+performance. The Apertus models also expand multilingual coverage, training on
+15T tokens from over 1800 languages, with ~40% of pretraining data allocated to
+non-English content. Released at 8B and 70B scales, Apertus approaches
+state-of-the-art results among fully open models on multilingual benchmarks,
+rivalling or surpassing open-weight counterparts. Beyond model weights, we
+release all scientific artifacts from our development cycle with a permissive
+license, including data preparation scripts, checkpoints, evaluation suites,
+and training code, enabling transparent audit and extension.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14223v1'>Language models' activations linearly encode training-order recency</a></td><td>We show that language models' activations linearly encode when information
+was learned during training. Our setup involves creating a model with a known
+training order by sequentially fine-tuning Llama-3.2-1B on six disjoint but
+otherwise similar datasets about named entities. We find that the average
+activations of test samples for the six training datasets encode the training
+order: when projected into a 2D subspace, these centroids are arranged exactly
+in the order of training and lie on a straight line. Further, we show that
+linear probes can accurately (~90%) distinguish "early" vs. "late" entities,
+generalizing to entities unseen during the probes' own training. The model can
+also be fine-tuned to explicitly report an unseen entity's training stage (~80%
+accuracy). Interestingly, this temporal signal does not seem attributable to
+simple differences in activation magnitudes, losses, or model confidence. Our
+paper demonstrates that models are capable of differentiating information by
+its acquisition time, and carries significant implications for how they might
+manage conflicting data and respond to knowledge modifications.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14093v1'>Reasoning Efficiently Through Adaptive Chain-of-Thought Compression: A Self-Optimizing Framework</a></td><td>Chain-of-Thought (CoT) reasoning enhances Large Language Models (LLMs) by
+prompting intermediate steps, improving accuracy and robustness in arithmetic,
+logic, and commonsense tasks. However, this benefit comes with high
+computational costs: longer outputs increase latency, memory usage, and
+KV-cache demands. These issues are especially critical in software engineering
+tasks where concise and deterministic outputs are required. To investigate
+these trade-offs, we conduct an empirical study based on code generation
+benchmarks. The results reveal that longer CoT does not always help. Excessive
+reasoning often causes truncation, accuracy drops, and latency up to five times
+higher, with failed outputs consistently longer than successful ones. These
+findings challenge the assumption that longer reasoning is inherently better
+and highlight the need for adaptive CoT control. Motivated by this, we propose
+SEER (Self-Enhancing Efficient Reasoning), an adaptive framework that
+compresses CoT while preserving accuracy. SEER combines Best-of-N sampling with
+task-aware adaptive filtering, dynamically adjusting thresholds based on
+pre-inference outputs to reduce verbosity and computational overhead. We then
+evaluate SEER on three software engineering tasks and one math task. On
+average, SEER shortens CoT by 42.1%, improves accuracy by reducing truncation,
+and eliminates most infinite loops. These results demonstrate SEER as a
+practical method to make CoT-enhanced LLMs more efficient and robust, even
+under resource constraints.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14036v1'>SSL-SSAW: Self-Supervised Learning with Sigmoid Self-Attention Weighting for Question-Based Sign Language Translation</a></td><td>Sign Language Translation (SLT) bridges the communication gap between deaf
+people and hearing people, where dialogue provides crucial contextual cues to
+aid in translation. Building on this foundational concept, this paper proposes
+Question-based Sign Language Translation (QB-SLT), a novel task that explores
+the efficient integration of dialogue. Unlike gloss (sign language
+transcription) annotations, dialogue naturally occurs in communication and is
+easier to annotate. The key challenge lies in aligning multimodality features
+while leveraging the context of the question to improve translation. To address
+this issue, we propose a cross-modality Self-supervised Learning with Sigmoid
+Self-attention Weighting (SSL-SSAW) fusion method for sign language
+translation. Specifically, we employ contrastive learning to align
+multimodality features in QB-SLT, then introduce a Sigmoid Self-attention
+Weighting (SSAW) module for adaptive feature extraction from question and sign
+language sequences. Additionally, we leverage available question text through
+self-supervised learning to enhance representation and translation
+capabilities. We evaluated our approach on newly constructed CSL-Daily-QA and
+PHOENIX-2014T-QA datasets, where SSL-SSAW achieved SOTA performance. Notably,
+easily accessible question assistance can achieve or even surpass the
+performance of gloss assistance. Furthermore, visualization results demonstrate
+the effectiveness of incorporating dialogue in improving translation quality.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14031v1'>You Are What You Train: Effects of Data Composition on Training Context-aware Machine Translation Models</a></td><td>Achieving human-level translations requires leveraging context to ensure
+coherence and handle complex phenomena like pronoun disambiguation. Sparsity of
+contextually rich examples in the standard training data has been hypothesized
+as the reason for the difficulty of context utilization. In this work, we
+systematically validate this claim in both single- and multilingual settings by
+constructing training datasets with a controlled proportions of contextually
+relevant examples. We demonstrate a strong association between training data
+sparsity and model performance confirming sparsity as a key bottleneck.
+Importantly, we reveal that improvements in one contextual phenomenon do no
+generalize to others. While we observe some cross-lingual transfer, it is not
+significantly higher between languages within the same sub-family. Finally, we
+propose and empirically evaluate two training strategies designed to leverage
+the available data. These strategies improve context utilization, resulting in
+accuracy gains of up to 6 and 8 percentage points on the ctxPro evaluation in
+single- and multilingual settings respectively.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14030v1'>CrowdAgent: Multi-Agent Managed Multi-Source Annotation System</a></td><td>High-quality annotated data is a cornerstone of modern Natural Language
+Processing (NLP). While recent methods begin to leverage diverse annotation
+sources-including Large Language Models (LLMs), Small Language Models (SLMs),
+and human experts-they often focus narrowly on the labeling step itself. A
+critical gap remains in the holistic process control required to manage these
+sources dynamically, addressing complex scheduling and quality-cost trade-offs
+in a unified manner. Inspired by real-world crowdsourcing companies, we
+introduce CrowdAgent, a multi-agent system that provides end-to-end process
+control by integrating task assignment, data annotation, and quality/cost
+management. It implements a novel methodology that rationally assigns tasks,
+enabling LLMs, SLMs, and human experts to advance synergistically in a
+collaborative annotation workflow. We demonstrate the effectiveness of
+CrowdAgent through extensive experiments on six diverse multimodal
+classification tasks. The source code and video demo are available at
+https://github.com/QMMMS/CrowdAgent.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14001v1'>MOCHA: Multi-modal Objects-aware Cross-arcHitecture Alignment</a></td><td>We introduce MOCHA (Multi-modal Objects-aware Cross-arcHitecture Alignment),
+a knowledge distillation approach that transfers region-level multimodal
+semantics from a large vision-language teacher (e.g., LLaVa) into a lightweight
+vision-only object detector student (e.g., YOLO). A translation module maps
+student features into a joint space, where the training of the student and
+translator is guided by a dual-objective loss that enforces both local
+alignment and global relational consistency. Unlike prior approaches focused on
+dense or global alignment, MOCHA operates at the object level, enabling
+efficient transfer of semantics without modifying the teacher or requiring
+textual input at inference. We validate our method across four personalized
+detection benchmarks under few-shot regimes. Results show consistent gains over
+baselines, with a +10.1 average score improvement. Despite its compact
+architecture, MOCHA reaches performance on par with larger multimodal models,
+proving its suitability for real-world deployment.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13978v1'>LLM Agents for Interactive Workflow Provenance: Reference Architecture and Evaluation Methodology</a></td><td>Modern scientific discovery increasingly relies on workflows that process
+data across the Edge, Cloud, and High Performance Computing (HPC) continuum.
+Comprehensive and in-depth analyses of these data are critical for hypothesis
+validation, anomaly detection, reproducibility, and impactful findings.
+Although workflow provenance techniques support such analyses, at large scale,
+the provenance data become complex and difficult to analyze. Existing systems
+depend on custom scripts, structured queries, or static dashboards, limiting
+data interaction. In this work, we introduce an evaluation methodology,
+reference architecture, and open-source implementation that leverages
+interactive Large Language Model (LLM) agents for runtime data analysis. Our
+approach uses a lightweight, metadata-driven design that translates natural
+language into structured provenance queries. Evaluations across LLaMA, GPT,
+Gemini, and Claude, covering diverse query classes and a real-world chemistry
+workflow, show that modular design, prompt tuning, and Retrieval-Augmented
+Generation (RAG) enable accurate and insightful LLM agent responses beyond
+recorded provenance.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13926v1'>MAP: End-to-End Autonomous Driving with Map-Assisted Planning</a></td><td>In recent years, end-to-end autonomous driving has attracted increasing
+attention for its ability to jointly model perception, prediction, and planning
+within a unified framework. However, most existing approaches underutilize the
+online mapping module, leaving its potential to enhance trajectory planning
+largely untapped. This paper proposes MAP (Map-Assisted Planning), a novel
+map-assisted end-to-end trajectory planning framework. MAP explicitly
+integrates segmentation-based map features and the current ego status through a
+Plan-enhancing Online Mapping module, an Ego-status-guided Planning module, and
+a Weight Adapter based on current ego status. Experiments conducted on the
+DAIR-V2X-seq-SPD dataset demonstrate that the proposed method achieves a 16.6%
+reduction in L2 displacement error, a 56.2% reduction in off-road rate, and a
+44.5% improvement in overall score compared to the UniV2X baseline, even
+without post-processing. Furthermore, it achieves top ranking in Track 2 of the
+End-to-End Autonomous Driving through V2X Cooperation Challenge of MEIS
+Workshop @CVPR2025, outperforming the second-best model by 39.5% in terms of
+overall score. These results highlight the effectiveness of explicitly
+leveraging semantic map features in planning and suggest new directions for
+improving structure design in end-to-end autonomous driving systems. Our code
+is available at https://gitee.com/kymkym/map.git</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13914v1'>Ensemble of Pre-Trained Models for Long-Tailed Trajectory Prediction</a></td><td>This work explores the application of ensemble modeling to the
+multidimensional regression problem of trajectory prediction for vehicles in
+urban environments. As newer and bigger state-of-the-art prediction models for
+autonomous driving continue to emerge, an important open challenge is the
+problem of how to combine the strengths of these big models without the need
+for costly re-training. We show how, perhaps surprisingly, combining
+state-of-the-art deep learning models out-of-the-box (without retraining or
+fine-tuning) with a simple confidence-weighted average method can enhance the
+overall prediction. Indeed, while combining trajectory prediction models is not
+straightforward, this simple approach enhances performance by 10% over the best
+prediction model, especially in the long-tailed metrics. We show that this
+performance improvement holds on both the NuScenes and Argoverse datasets, and
+that these improvements are made across the dataset distribution. The code for
+our work is open source.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13895v1'>FedSSG: Expectation-Gated and History-Aware Drift Alignment for Federated Learning</a></td><td>Non-IID data and partial participation induce client drift and inconsistent
+local optima in federated learning, causing unstable convergence and accuracy
+loss. We present FedSSG, a stochastic sampling-guided, history-aware drift
+alignment method. FedSSG maintains a per-client drift memory that accumulates
+local model differences as a lightweight sketch of historical gradients;
+crucially, it gates both the memory update and the local alignment term by a
+smooth function of the observed/expected participation ratio (a
+phase-by-expectation signal derived from the server sampler). This
+statistically grounded gate stays weak and smooth when sampling noise dominates
+early, then strengthens once participation statistics stabilize, contracting
+the local-global gap without extra communication. Across CIFAR-10/100 with
+100/500 clients and 2-15 percent participation, FedSSG consistently outperforms
+strong drift-aware baselines and accelerates convergence; on our benchmarks it
+improves test accuracy by up to a few points (e.g., about +0.9 on CIFAR-10 and
+about +2.7 on CIFAR-100 on average over the top-2 baseline) and yields about
+4.5x faster target-accuracy convergence on average. The method adds only O(d)
+client memory and a constant-time gate, and degrades gracefully to a mild
+regularizer under near-IID or uniform sampling. FedSSG shows that sampling
+statistics can be turned into a principled, history-aware phase control to
+stabilize and speed up federated training.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13773v1'>MIRA: Empowering One-Touch AI Services on Smartphones with MLLM-based Instruction Recommendation</a></td><td>The rapid advancement of generative AI technologies is driving the
+integration of diverse AI-powered services into smartphones, transforming how
+users interact with their devices. To simplify access to predefined AI
+services, this paper introduces MIRA, a pioneering framework for task
+instruction recommendation that enables intuitive one-touch AI tasking on
+smartphones. With MIRA, users can long-press on images or text objects to
+receive contextually relevant instruction recommendations for executing AI
+tasks. Our work introduces three key innovations: 1) A multimodal large
+language model (MLLM)-based recommendation pipeline with structured reasoning
+to extract key entities, infer user intent, and generate precise instructions;
+2) A template-augmented reasoning mechanism that integrates high-level
+reasoning templates, enhancing task inference accuracy; 3) A prefix-tree-based
+constrained decoding strategy that restricts outputs to predefined instruction
+candidates, ensuring coherent and intent-aligned suggestions. Through
+evaluation using a real-world annotated datasets and a user study, MIRA has
+demonstrated substantial improvements in the accuracy of instruction
+recommendation. The encouraging results highlight MIRA's potential to
+revolutionize the way users engage with AI services on their smartphones,
+offering a more seamless and efficient experience.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13761v1'>THOR: Tool-Integrated Hierarchical Optimization via RL for Mathematical Reasoning</a></td><td>Large Language Models (LLMs) have made remarkable progress in mathematical
+reasoning, but still continue to struggle with high-precision tasks like
+numerical computation and formal symbolic manipulation. Integrating external
+tools has emerged as a promising approach to bridge this gap. Despite recent
+advances, existing methods struggle with three key challenges: constructing
+tool-integrated reasoning data, performing fine-grained optimization, and
+enhancing inference. To overcome these limitations, we propose THOR
+(Tool-Integrated Hierarchical Optimization via RL). First, we introduce TIRGen,
+a multi-agent actor-critic-based pipeline for constructing high-quality
+datasets of tool-integrated reasoning paths, aligning with the policy and
+generalizing well across diverse models. Second, to perform fine-grained
+hierarchical optimization, we introduce an RL strategy that jointly optimizes
+for both trajectory-level problem solving and step-level code generation. This
+is motivated by our key insight that the success of an intermediate tool call
+is a strong predictor of the final answer's correctness. Finally, THOR
+incorporates a self-correction mechanism that leverages immediate tool feedback
+to dynamically revise erroneous reasoning paths during inference. Our approach
+demonstrates strong generalization across diverse models, performing
+effectively in both reasoning and non-reasoning models. It further achieves
+state-of-the-art performance for models of a similar scale on multiple
+mathematical benchmarks, while also delivering consistent improvements on code
+benchmarks. Our code will be publicly available at
+https://github.com/JingMog/THOR.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13722v1'>Mitigating Query Selection Bias in Referring Video Object Segmentation</a></td><td>Recently, query-based methods have achieved remarkable performance in
+Referring Video Object Segmentation (RVOS) by using textual static object
+queries to drive cross-modal alignment. However, these static queries are
+easily misled by distractors with similar appearance or motion, resulting in
+\emph{query selection bias}. To address this issue, we propose Triple Query
+Former (TQF), which factorizes the referring query into three specialized
+components: an appearance query for static attributes, an intra-frame
+interaction query for spatial relations, and an inter-frame motion query for
+temporal association. Instead of relying solely on textual embeddings, our
+queries are dynamically constructed by integrating both linguistic cues and
+visual guidance. Furthermore, we introduce two motion-aware aggregation modules
+that enhance object token representations: Intra-frame Interaction Aggregation
+incorporates position-aware interactions among objects within a single frame,
+while Inter-frame Motion Aggregation leverages trajectory-guided alignment
+across frames to ensure temporal coherence. Extensive experiments on multiple
+RVOS benchmarks demonstrate the advantages of TQF and the effectiveness of our
+structured query design and motion-aware aggregation modules.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13702v1'>DSCC-HS: A Dynamic Self-Reinforcing Framework for Hallucination Suppression in Large Language Models</a></td><td>Large Language Model (LLM) hallucination is a significant barrier to their
+reliable deployment. Current methods like Retrieval-Augmented Generation (RAG)
+are often reactive. We introduce **Dynamic Self-reinforcing Calibration for
+Hallucination Suppression (DSCC-HS)**, a novel, proactive framework that
+intervenes during autoregressive decoding. Inspired by dual-process cognitive
+theory, DSCC-HS uses a compact proxy model, trained in adversarial roles as a
+Factual Alignment Proxy (FAP) and a Hallucination Detection Proxy (HDP). During
+inference, these proxies dynamically steer a large target model by injecting a
+real-time steering vector, which is the difference between FAP and HDP logits,
+at each decoding step. This plug-and-play approach requires no modification to
+the target model. Our experiments on TruthfulQA and BioGEN show DSCC-HS
+achieves state-of-the-art performance. On TruthfulQA, it reached a 99.2%
+Factual Consistency Rate (FCR). On the long-form BioGEN benchmark, it attained
+the highest FActScore of 46.50. These results validate DSCC-HS as a principled
+and efficient solution for enhancing LLM factuality.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13688v1'>CraftMesh: High-Fidelity Generative Mesh Manipulation via Poisson Seamless Fusion</a></td><td>Controllable, high-fidelity mesh editing remains a significant challenge in
+3D content creation. Existing generative methods often struggle with complex
+geometries and fail to produce detailed results. We propose CraftMesh, a novel
+framework for high-fidelity generative mesh manipulation via Poisson Seamless
+Fusion. Our key insight is to decompose mesh editing into a pipeline that
+leverages the strengths of 2D and 3D generative models: we edit a 2D reference
+image, then generate a region-specific 3D mesh, and seamlessly fuse it into the
+original model. We introduce two core techniques: Poisson Geometric Fusion,
+which utilizes a hybrid SDF/Mesh representation with normal blending to achieve
+harmonious geometric integration, and Poisson Texture Harmonization for
+visually consistent texture blending. Experimental results demonstrate that
+CraftMesh outperforms state-of-the-art methods, delivering superior global
+consistency and local detail in complex editing tasks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13676v1'>Re-purposing SAM into Efficient Visual Projectors for MLLM-Based Referring Image Segmentation</a></td><td>Recently, Referring Image Segmentation (RIS) frameworks that pair the
+Multimodal Large Language Model (MLLM) with the Segment Anything Model (SAM)
+have achieved impressive results. However, adapting MLLM to segmentation is
+computationally intensive, primarily due to visual token redundancy. We observe
+that traditional patch-wise visual projectors struggle to strike a balance
+between reducing the number of visual tokens and preserving semantic clarity,
+often retaining overly long token sequences to avoid performance drops.
+Inspired by text tokenizers, we propose a novel semantic visual projector that
+leverages semantic superpixels generated by SAM to identify "visual words" in
+an image. By compressing and projecting semantic superpixels as visual tokens,
+our approach adaptively shortens the token sequence according to scene
+complexity while minimizing semantic loss in compression. To mitigate loss of
+information, we propose a semantic superpixel positional embedding to
+strengthen MLLM's awareness of superpixel geometry and position, alongside a
+semantic superpixel aggregator to preserve both fine-grained details inside
+superpixels and global context outside. Experiments show that our method cuts
+visual tokens by 93% without compromising performance, notably speeding up MLLM
+training and inference, and outperforming existing compressive visual
+projectors on RIS.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13666v1'>DREAM: Domain-aware Reasoning for Efficient Autonomous Underwater Monitoring</a></td><td>The ocean is warming and acidifying, increasing the risk of mass mortality
+events for temperature-sensitive shellfish such as oysters. This motivates the
+development of long-term monitoring systems. However, human labor is costly and
+long-duration underwater work is highly hazardous, thus favoring robotic
+solutions as a safer and more efficient option. To enable underwater robots to
+make real-time, environment-aware decisions without human intervention, we must
+equip them with an intelligent "brain." This highlights the need for
+persistent,wide-area, and low-cost benthic monitoring. To this end, we present
+DREAM, a Vision Language Model (VLM)-guided autonomy framework for long-term
+underwater exploration and habitat monitoring. The results show that our
+framework is highly efficient in finding and exploring target objects (e.g.,
+oysters, shipwrecks) without prior location information. In the
+oyster-monitoring task, our framework takes 31.5% less time than the previous
+baseline with the same amount of oysters. Compared to the vanilla VLM, it uses
+23% fewer steps while covering 8.88% more oysters. In shipwreck scenes, our
+framework successfully explores and maps the wreck without collisions,
+requiring 27.5% fewer steps than the vanilla model and achieving 100% coverage,
+while the vanilla model achieves 60.23% average coverage in our shipwreck
+environments.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13633v1'>DeepLogit: A sequentially constrained explainable deep learning modeling approach for transport policy analysis</a></td><td>Despite the significant progress of deep learning models in multitude of
+applications, their adaption in planning and policy related areas remains
+challenging due to the black-box nature of these models. In this work, we
+develop a set of DeepLogit models that follow a novel sequentially constrained
+approach in estimating deep learning models for transport policy analysis. In
+the first step of the proposed approach, we estimate a convolutional neural
+network (CNN) model with only linear terms, which is equivalent of a
+linear-in-parameter multinomial logit model. We then estimate other deep
+learning models by constraining the parameters that need interpretability at
+the values obtained in the linear-in-parameter CNN model and including higher
+order terms or by introducing advanced deep learning architectures like
+Transformers. Our approach can retain the interpretability of the selected
+parameters, yet provides significantly improved model accuracy than the
+discrete choice model. We demonstrate our approach on a transit route choice
+example using real-world transit smart card data from Singapore. This study
+shows the potential for a unifying approach, where theory-based discrete choice
+model (DCM) and data-driven AI models can leverage each other's strengths in
+interpretability and predictive power. With the availability of larger datasets
+and more complex constructions, such approach can lead to more accurate models
+using discrete choice models while maintaining its applicability in planning
+and policy-related areas. Our code is available on
+https://github.com/jeremyoon/route-choice/ .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13626v1'>Mind the Gap: Aligning Knowledge Bases with User Needs to Enhance Mental Health Retrieval</a></td><td>Access to reliable mental health information is vital for early help-seeking,
+yet expanding knowledge bases is resource-intensive and often misaligned with
+user needs. This results in poor performance of retrieval systems when
+presented concerns are not covered or expressed in informal or contextualized
+language. We present an AI-based gap-informed framework for corpus augmentation
+that authentically identifies underrepresented topics (gaps) by overlaying
+naturalistic user data such as forum posts in order to prioritize expansions
+based on coverage and usefulness. In a case study, we compare Directed
+(gap-informed augmentations) with Non-Directed augmentation (random additions),
+evaluating the relevance and usefulness of retrieved information across four
+retrieval-augmented generation (RAG) pipelines. Directed augmentation achieved
+near-optimal performance with modest expansions--requiring only a 42% increase
+for Query Transformation, 74% for Reranking and Hierarchical, and 318% for
+Baseline--to reach ~95% of the performance of an exhaustive reference corpus.
+In contrast, Non-Directed augmentation required substantially larger and thus
+practically infeasible expansions to achieve comparable performance (232%,
+318%, 403%, and 763%, respectively). These results show that strategically
+targeted corpus growth can reduce content creation demands while sustaining
+high retrieval and provision quality, offering a scalable approach for building
+trusted health information repositories and supporting generative AI
+applications in high-stakes domains.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13620v1'>A reduced-order derivative-informed neural operator for subsurface fluid-flow</a></td><td>Neural operators have emerged as cost-effective surrogates for expensive
+fluid-flow simulators, particularly in computationally intensive tasks such as
+permeability inversion from time-lapse seismic data, and uncertainty
+quantification. In these applications, the fidelity of the surrogate's
+gradients with respect to system parameters is crucial, as the accuracy of
+downstream tasks, such as optimization and Bayesian inference, relies directly
+on the quality of the derivative information. Recent advances in
+physics-informed methods have leveraged derivative information to improve
+surrogate accuracy. However, incorporating explicit Jacobians can become
+computationally prohibitive, as the complexity typically scales quadratically
+with the number of input parameters. To address this limitation, we propose
+DeFINO (Derivative-based Fisher-score Informed Neural Operator), a
+reduced-order, derivative-informed training framework. DeFINO integrates
+Fourier neural operators (FNOs) with a novel derivative-based training strategy
+guided by the Fisher Information Matrix (FIM). By projecting Jacobians onto
+dominant eigen-directions identified by the FIM, DeFINO captures critical
+sensitivity information directly informed by observational data, significantly
+reducing computational expense. We validate DeFINO through synthetic
+experiments in the context of subsurface multi-phase fluid-flow, demonstrating
+improvements in gradient accuracy while maintaining robust forward predictions
+of underlying fluid dynamics. These results highlight DeFINO's potential to
+offer practical, scalable solutions for inversion problems in complex
+real-world scenarios, all at substantially reduced computational cost.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13603v1'>Modernizing Facebook Scoped Search: Keyword and Embedding Hybrid Retrieval with LLM Evaluation</a></td><td>Beyond general web-scale search, social network search uniquely enables users
+to retrieve information and discover potential connections within their social
+context. We introduce a framework of modernized Facebook Group Scoped Search by
+blending traditional keyword-based retrieval with embedding-based retrieval
+(EBR) to improve the search relevance and diversity of search results. Our
+system integrates semantic retrieval into the existing keyword search pipeline,
+enabling users to discover more contextually relevant group posts. To
+rigorously assess the impact of this blended approach, we introduce a novel
+evaluation framework that leverages large language models (LLMs) to perform
+offline relevance assessments, providing scalable and consistent quality
+benchmarks. Our results demonstrate that the blended retrieval system
+significantly enhances user engagement and search quality, as validated by both
+online metrics and LLM-based evaluation. This work offers practical insights
+for deploying and evaluating advanced retrieval systems in large-scale,
+real-world social platforms.</td></tr></tbody></table>
 
 ### 📅 2025-09-16
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.13255v1'>ResidualViT for Efficient Temporally Dense Video Encoding</a></td><td>S, e, v, e, r, a, l,  , v, i, d, e, o,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , t, a, s, k, s, ,,  , s, u, c, h,  , a, s,  , n, a, t, u, r, a, l,  , l, a, n, g, u, a, g, e,  , t, e, m, p, o, r, a, l,  , v, i, d, e, o, 
-, g, r, o, u, n, d, i, n, g, ,,  , t, e, m, p, o, r, a, l,  , a, c, t, i, v, i, t, y,  , l, o, c, a, l, i, z, a, t, i, o, n, ,,  , a, n, d,  , a, u, d, i, o,  , d, e, s, c, r, i, p, t, i, o, n,  , g, e, n, e, r, a, t, i, o, n, ,, 
-, r, e, q, u, i, r, e,  , ", t, e, m, p, o, r, a, l, l, y,  , d, e, n, s, e, ",  , r, e, a, s, o, n, i, n, g,  , o, v, e, r,  , f, r, a, m, e, s,  , s, a, m, p, l, e, d,  , a, t,  , h, i, g, h,  , t, e, m, p, o, r, a, l, 
-, r, e, s, o, l, u, t, i, o, n, .,  , H, o, w, e, v, e, r, ,,  , c, o, m, p, u, t, i, n, g,  , f, r, a, m, e, -, l, e, v, e, l,  , f, e, a, t, u, r, e, s,  , f, o, r,  , t, h, e, s, e,  , t, a, s, k, s,  , i, s, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , e, x, p, e, n, s, i, v, e,  , g, i, v, e, n,  , t, h, e,  , t, e, m, p, o, r, a, l,  , r, e, s, o, l, u, t, i, o, n,  , r, e, q, u, i, r, e, m, e, n, t, s, .,  , I, n,  , t, h, i, s, 
-, p, a, p, e, r, ,,  , w, e,  , m, a, k, e,  , t, h, r, e, e,  , c, o, n, t, r, i, b, u, t, i, o, n, s,  , t, o,  , r, e, d, u, c, e,  , t, h, e,  , c, o, s, t,  , o, f,  , c, o, m, p, u, t, i, n, g,  , f, e, a, t, u, r, e, s,  , f, o, r, 
-, t, e, m, p, o, r, a, l, l, y,  , d, e, n, s, e,  , t, a, s, k, s, .,  , F, i, r, s, t, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a,  , v, i, s, i, o, n,  , t, r, a, n, s, f, o, r, m, e, r,  , (, V, i, T, ), 
-, a, r, c, h, i, t, e, c, t, u, r, e, ,,  , d, u, b, b, e, d,  , R, e, s, i, d, u, a, l, V, i, T, ,,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , t, h, e,  , l, a, r, g, e,  , t, e, m, p, o, r, a, l,  , r, e, d, u, n, d, a, n, c, y, 
-, i, n,  , v, i, d, e, o, s,  , t, o,  , e, f, f, i, c, i, e, n, t, l, y,  , c, o, m, p, u, t, e,  , t, e, m, p, o, r, a, l, l, y,  , d, e, n, s, e,  , f, r, a, m, e, -, l, e, v, e, l,  , f, e, a, t, u, r, e, s, .,  , O, u, r, 
-, a, r, c, h, i, t, e, c, t, u, r, e,  , i, n, c, o, r, p, o, r, a, t, e, s,  , (, i, ),  , l, e, a, r, n, a, b, l, e,  , r, e, s, i, d, u, a, l,  , c, o, n, n, e, c, t, i, o, n, s,  , t, h, a, t,  , e, n, s, u, r, e, 
-, t, e, m, p, o, r, a, l,  , c, o, n, s, i, s, t, e, n, c, y,  , a, c, r, o, s, s,  , c, o, n, s, e, c, u, t, i, v, e,  , f, r, a, m, e, s,  , a, n, d,  , (, i, i, ),  , a,  , t, o, k, e, n,  , r, e, d, u, c, t, i, o, n, 
-, m, o, d, u, l, e,  , t, h, a, t,  , e, n, h, a, n, c, e, s,  , p, r, o, c, e, s, s, i, n, g,  , s, p, e, e, d,  , b, y,  , s, e, l, e, c, t, i, v, e, l, y,  , d, i, s, c, a, r, d, i, n, g,  , t, e, m, p, o, r, a, l, l, y, 
-, r, e, d, u, n, d, a, n, t,  , i, n, f, o, r, m, a, t, i, o, n,  , w, h, i, l, e,  , r, e, u, s, i, n, g,  , w, e, i, g, h, t, s,  , o, f,  , a,  , p, r, e, t, r, a, i, n, e, d,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, ., 
-, S, e, c, o, n, d, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , l, i, g, h, t, w, e, i, g, h, t,  , d, i, s, t, i, l, l, a, t, i, o, n,  , s, t, r, a, t, e, g, y,  , t, o,  , a, p, p, r, o, x, i, m, a, t, e,  , t, h, e, 
-, f, r, a, m, e, -, l, e, v, e, l,  , f, e, a, t, u, r, e, s,  , o, f,  , t, h, e,  , o, r, i, g, i, n, a, l,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, .,  , F, i, n, a, l, l, y, ,,  , w, e,  , e, v, a, l, u, a, t, e,  , o, u, r, 
-, a, p, p, r, o, a, c, h,  , a, c, r, o, s, s,  , f, o, u, r,  , t, a, s, k, s,  , a, n, d,  , f, i, v, e,  , d, a, t, a, s, e, t, s, ,,  , i, n,  , b, o, t, h,  , z, e, r, o, -, s, h, o, t,  , a, n, d,  , f, u, l, l, y, 
-, s, u, p, e, r, v, i, s, e, d,  , s, e, t, t, i, n, g, s, ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , s, i, g, n, i, f, i, c, a, n, t,  , r, e, d, u, c, t, i, o, n, s,  , i, n,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, 
-, (, u, p,  , t, o,  , 6, 0, %, ),  , a, n, d,  , i, m, p, r, o, v, e, m, e, n, t, s,  , i, n,  , i, n, f, e, r, e, n, c, e,  , s, p, e, e, d,  , (, u, p,  , t, o,  , 2, ., 5, x,  , f, a, s, t, e, r, ), ,,  , a, l, l,  , w, h, i, l, e, 
-, c, l, o, s, e, l, y,  , a, p, p, r, o, x, i, m, a, t, i, n, g,  , t, h, e,  , a, c, c, u, r, a, c, y,  , o, f,  , t, h, e,  , o, r, i, g, i, n, a, l,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13237v1'>Metacognitive Reuse: Turning Recurring LLM Reasoning Into Concise Behaviors</a></td><td>L, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , n, o, w,  , s, o, l, v, e,  , m, u, l, t, i, -, s, t, e, p,  , p, r, o, b, l, e, m, s,  , b, y,  , e, m, i, t, t, i, n, g, 
-, e, x, t, e, n, d, e, d,  , c, h, a, i, n, s,  , o, f,  , t, h, o, u, g, h, t, .,  , D, u, r, i, n, g,  , t, h, e,  , p, r, o, c, e, s, s, ,,  , t, h, e, y,  , o, f, t, e, n,  , r, e, -, d, e, r, i, v, e,  , t, h, e,  , s, a, m, e, 
-, i, n, t, e, r, m, e, d, i, a, t, e,  , s, t, e, p, s,  , a, c, r, o, s, s,  , p, r, o, b, l, e, m, s, ,,  , i, n, f, l, a, t, i, n, g,  , t, o, k, e, n,  , u, s, a, g, e,  , a, n, d,  , l, a, t, e, n, c, y, .,  , T, h, i, s, 
-, s, a, t, u, r, a, t, i, o, n,  , o, f,  , t, h, e,  , c, o, n, t, e, x, t,  , w, i, n, d, o, w,  , l, e, a, v, e, s,  , l, e, s, s,  , c, a, p, a, c, i, t, y,  , f, o, r,  , e, x, p, l, o, r, a, t, i, o, n, .,  , W, e,  , s, t, u, d, y, 
-, a,  , s, i, m, p, l, e,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t,  , c, o, n, v, e, r, t, s,  , r, e, c, u, r, r, i, n, g,  , r, e, a, s, o, n, i, n, g,  , f, r, a, g, m, e, n, t, s,  , i, n, t, o,  , c, o, n, c, i, s, e, ,, 
-, r, e, u, s, a, b, l, e,  , ", b, e, h, a, v, i, o, r, s, ",  , (, n, a, m, e,  , +,  , i, n, s, t, r, u, c, t, i, o, n, ),  , v, i, a,  , t, h, e,  , m, o, d, e, l, ', s,  , o, w, n,  , m, e, t, a, c, o, g, n, i, t, i, v, e, 
-, a, n, a, l, y, s, i, s,  , o, f,  , p, r, i, o, r,  , t, r, a, c, e, s, .,  , T, h, e, s, e,  , b, e, h, a, v, i, o, r, s,  , a, r, e,  , s, t, o, r, e, d,  , i, n,  , a,  , ", b, e, h, a, v, i, o, r,  , h, a, n, d, b, o, o, k, ", 
-, w, h, i, c, h,  , s, u, p, p, l, i, e, s,  , t, h, e, m,  , t, o,  , t, h, e,  , m, o, d, e, l,  , i, n, -, c, o, n, t, e, x, t,  , a, t,  , i, n, f, e, r, e, n, c, e,  , o, r,  , d, i, s, t, i, l, l, s,  , t, h, e, m,  , i, n, t, o, 
-, p, a, r, a, m, e, t, e, r, s,  , v, i, a,  , s, u, p, e, r, v, i, s, e, d,  , f, i, n, e, -, t, u, n, i, n, g, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h,  , a, c, h, i, e, v, e, s,  , i, m, p, r, o, v, e, d, 
-, t, e, s, t, -, t, i, m, e,  , r, e, a, s, o, n, i, n, g,  , a, c, r, o, s, s,  , t, h, r, e, e,  , d, i, f, f, e, r, e, n, t,  , s, e, t, t, i, n, g, s,  , -,  , 1, ),  , B, e, h, a, v, i, o, r, -, c, o, n, d, i, t, i, o, n, e, d, 
-, i, n, f, e, r, e, n, c, e, :,  , P, r, o, v, i, d, i, n, g,  , t, h, e,  , L, L, M,  , r, e, l, e, v, a, n, t,  , b, e, h, a, v, i, o, r, s,  , i, n, -, c, o, n, t, e, x, t,  , d, u, r, i, n, g,  , r, e, a, s, o, n, i, n, g, 
-, r, e, d, u, c, e, s,  , n, u, m, b, e, r,  , o, f,  , r, e, a, s, o, n, i, n, g,  , t, o, k, e, n, s,  , b, y,  , u, p,  , t, o,  , 4, 6, %,  , w, h, i, l, e,  , m, a, t, c, h, i, n, g,  , o, r,  , i, m, p, r, o, v, i, n, g, 
-, b, a, s, e, l, i, n, e,  , a, c, c, u, r, a, c, y, ;,  , 2, ),  , B, e, h, a, v, i, o, r, -, g, u, i, d, e, d,  , s, e, l, f, -, i, m, p, r, o, v, e, m, e, n, t, :,  , W, i, t, h, o, u, t,  , a, n, y,  , p, a, r, a, m, e, t, e, r, 
-, u, p, d, a, t, e, s, ,,  , t, h, e,  , m, o, d, e, l,  , i, m, p, r, o, v, e, s,  , i, t, s,  , o, w, n,  , f, u, t, u, r, e,  , r, e, a, s, o, n, i, n, g,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , b, e, h, a, v, i, o, r, s, 
-, f, r, o, m,  , i, t, s,  , o, w, n,  , p, a, s, t,  , p, r, o, b, l, e, m,  , s, o, l, v, i, n, g,  , a, t, t, e, m, p, t, s, .,  , T, h, i, s,  , y, i, e, l, d, s,  , u, p,  , t, o,  , 1, 0, %,  , h, i, g, h, e, r, 
-, a, c, c, u, r, a, c, y,  , t, h, a, n,  , a,  , n, a, i, v, e,  , c, r, i, t, i, q, u, e, -, a, n, d, -, r, e, v, i, s, e,  , b, a, s, e, l, i, n, e, ;,  , a, n, d,  , 3, ),  , B, e, h, a, v, i, o, r, -, c, o, n, d, i, t, i, o, n, e, d, 
-, S, F, T, :,  , S, F, T,  , o, n,  , b, e, h, a, v, i, o, r, -, c, o, n, d, i, t, i, o, n, e, d,  , r, e, a, s, o, n, i, n, g,  , t, r, a, c, e, s,  , i, s,  , m, o, r, e,  , e, f, f, e, c, t, i, v, e,  , a, t, 
-, c, o, n, v, e, r, t, i, n, g,  , n, o, n, -, r, e, a, s, o, n, i, n, g,  , m, o, d, e, l, s,  , i, n, t, o,  , r, e, a, s, o, n, i, n, g,  , m, o, d, e, l, s,  , a, s,  , c, o, m, p, a, r, e, d,  , t, o,  , v, a, n, i, l, l, a, 
-, S, F, T, .,  , T, o, g, e, t, h, e, r, ,,  , t, h, e, s, e,  , r, e, s, u, l, t, s,  , i, n, d, i, c, a, t, e,  , t, h, a, t,  , t, u, r, n, i, n, g,  , s, l, o, w,  , d, e, r, i, v, a, t, i, o, n, s,  , i, n, t, o,  , f, a, s, t, 
-, p, r, o, c, e, d, u, r, a, l,  , h, i, n, t, s,  , e, n, a, b, l, e, s,  , L, L, M, s,  , t, o,  , r, e, m, e, m, b, e, r,  , h, o, w,  , t, o,  , r, e, a, s, o, n, ,,  , n, o, t,  , j, u, s, t,  , w, h, a, t,  , t, o, 
-, c, o, n, c, l, u, d, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13235v1'>A Scenario-Driven Cognitive Approach to Next-Generation AI Memory</a></td><td>A, s,  , a, r, t, i, f, i, c, i, a, l,  , i, n, t, e, l, l, i, g, e, n, c, e,  , a, d, v, a, n, c, e, s,  , t, o, w, a, r, d,  , a, r, t, i, f, i, c, i, a, l,  , g, e, n, e, r, a, l,  , i, n, t, e, l, l, i, g, e, n, c, e, 
-, (, A, G, I, ), ,,  , t, h, e,  , n, e, e, d,  , f, o, r,  , r, o, b, u, s, t,  , a, n, d,  , h, u, m, a, n, -, l, i, k, e,  , m, e, m, o, r, y,  , s, y, s, t, e, m, s,  , h, a, s,  , b, e, c, o, m, e, 
-, i, n, c, r, e, a, s, i, n, g, l, y,  , e, v, i, d, e, n, t, .,  , C, u, r, r, e, n, t,  , m, e, m, o, r, y,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , o, f, t, e, n,  , s, u, f, f, e, r,  , f, r, o, m,  , l, i, m, i, t, e, d, 
-, a, d, a, p, t, a, b, i, l, i, t, y, ,,  , i, n, s, u, f, f, i, c, i, e, n, t,  , m, u, l, t, i, m, o, d, a, l,  , i, n, t, e, g, r, a, t, i, o, n, ,,  , a, n, d,  , a, n,  , i, n, a, b, i, l, i, t, y,  , t, o,  , s, u, p, p, o, r, t, 
-, c, o, n, t, i, n, u, o, u, s,  , l, e, a, r, n, i, n, g, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , s, c, e, n, a, r, i, o, -, d, r, i, v, e, n, 
-, m, e, t, h, o, d, o, l, o, g, y,  , t, h, a, t,  , e, x, t, r, a, c, t, s,  , e, s, s, e, n, t, i, a, l,  , f, u, n, c, t, i, o, n, a, l,  , r, e, q, u, i, r, e, m, e, n, t, s,  , f, r, o, m,  , r, e, p, r, e, s, e, n, t, a, t, i, v, e, 
-, c, o, g, n, i, t, i, v, e,  , s, c, e, n, a, r, i, o, s, ,,  , l, e, a, d, i, n, g,  , t, o,  , a,  , u, n, i, f, i, e, d,  , s, e, t,  , o, f,  , d, e, s, i, g, n,  , p, r, i, n, c, i, p, l, e, s,  , f, o, r, 
-, n, e, x, t, -, g, e, n, e, r, a, t, i, o, n,  , A, I,  , m, e, m, o, r, y,  , s, y, s, t, e, m, s, .,  , B, a, s, e, d,  , o, n,  , t, h, i, s,  , a, p, p, r, o, a, c, h, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , t, h, e, 
-, \, t, e, x, t, b, f, {, C, O, g, n, i, t, i, v, e,  , L, a, y, e, r, e, d,  , M, e, m, o, r, y,  , A, r, c, h, i, t, e, c, t, u, r, e,  , (, C, O, L, M, A, ), }, ,,  , a,  , n, o, v, e, l,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t, 
-, i, n, t, e, g, r, a, t, e, s,  , c, o, g, n, i, t, i, v, e,  , s, c, e, n, a, r, i, o, s, ,,  , m, e, m, o, r, y,  , p, r, o, c, e, s, s, e, s, ,,  , a, n, d,  , s, t, o, r, a, g, e,  , m, e, c, h, a, n, i, s, m, s,  , i, n, t, o,  , a, 
-, c, o, h, e, s, i, v, e,  , d, e, s, i, g, n, .,  , C, O, L, M, A,  , p, r, o, v, i, d, e, s,  , a,  , s, t, r, u, c, t, u, r, e, d,  , f, o, u, n, d, a, t, i, o, n,  , f, o, r,  , d, e, v, e, l, o, p, i, n, g,  , A, I, 
-, s, y, s, t, e, m, s,  , c, a, p, a, b, l, e,  , o, f,  , l, i, f, e, l, o, n, g,  , l, e, a, r, n, i, n, g,  , a, n, d,  , h, u, m, a, n, -, l, i, k, e,  , r, e, a, s, o, n, i, n, g, ,,  , t, h, e, r, e, b, y, 
-, c, o, n, t, r, i, b, u, t, i, n, g,  , t, o,  , t, h, e,  , p, r, a, g, m, a, t, i, c,  , d, e, v, e, l, o, p, m, e, n, t,  , o, f,  , A, G, I, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13232v1'>Single-stream Policy Optimization</a></td><td>W, e,  , r, e, v, i, s, i, t,  , p, o, l, i, c, y, -, g, r, a, d, i, e, n, t,  , o, p, t, i, m, i, z, a, t, i, o, n,  , f, o, r,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , f, r, o, m, 
-, a,  , s, i, n, g, l, e, -, s, t, r, e, a, m,  , p, e, r, s, p, e, c, t, i, v, e, .,  , P, r, e, v, a, i, l, i, n, g,  , g, r, o, u, p, -, b, a, s, e, d,  , m, e, t, h, o, d, s,  , l, i, k, e,  , G, R, P, O,  , r, e, d, u, c, e, 
-, v, a, r, i, a, n, c, e,  , w, i, t, h,  , o, n, -, t, h, e, -, f, l, y,  , b, a, s, e, l, i, n, e, s,  , b, u, t,  , s, u, f, f, e, r,  , f, r, o, m,  , c, r, i, t, i, c, a, l,  , f, l, a, w, s, :,  , f, r, e, q, u, e, n, t, 
-, d, e, g, e, n, e, r, a, t, e,  , g, r, o, u, p, s,  , e, r, a, s, e,  , l, e, a, r, n, i, n, g,  , s, i, g, n, a, l, s, ,,  , a, n, d,  , s, y, n, c, h, r, o, n, i, z, a, t, i, o, n,  , b, a, r, r, i, e, r, s,  , h, i, n, d, e, r, 
-, s, c, a, l, a, b, i, l, i, t, y, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , S, i, n, g, l, e, -, s, t, r, e, a, m,  , P, o, l, i, c, y,  , O, p, t, i, m, i, z, a, t, i, o, n,  , (, S, P, O, ), ,,  , w, h, i, c, h, 
-, e, l, i, m, i, n, a, t, e, s,  , t, h, e, s, e,  , i, s, s, u, e, s,  , b, y,  , d, e, s, i, g, n, .,  , S, P, O,  , r, e, p, l, a, c, e, s,  , p, e, r, -, g, r, o, u, p,  , b, a, s, e, l, i, n, e, s,  , w, i, t, h,  , a, 
-, p, e, r, s, i, s, t, e, n, t, ,,  , K, L, -, a, d, a, p, t, i, v, e,  , v, a, l, u, e,  , t, r, a, c, k, e, r,  , a, n, d,  , n, o, r, m, a, l, i, z, e, s,  , a, d, v, a, n, t, a, g, e, s,  , g, l, o, b, a, l, l, y,  , a, c, r, o, s, s, 
-, t, h, e,  , b, a, t, c, h, ,,  , p, r, o, v, i, d, i, n, g,  , a,  , s, t, a, b, l, e, ,,  , l, o, w, -, v, a, r, i, a, n, c, e,  , l, e, a, r, n, i, n, g,  , s, i, g, n, a, l,  , f, o, r,  , e, v, e, r, y,  , s, a, m, p, l, e, ., 
-, B, e, i, n, g,  , g, r, o, u, p, -, f, r, e, e, ,,  , S, P, O,  , e, n, a, b, l, e, s,  , h, i, g, h, e, r,  , t, h, r, o, u, g, h, p, u, t,  , a, n, d,  , s, c, a, l, e, s,  , e, f, f, e, c, t, i, v, e, l, y,  , i, n, 
-, l, o, n, g, -, h, o, r, i, z, o, n,  , o, r,  , t, o, o, l, -, i, n, t, e, g, r, a, t, e, d,  , s, e, t, t, i, n, g, s,  , w, h, e, r, e,  , g, e, n, e, r, a, t, i, o, n,  , t, i, m, e, s,  , v, a, r, y, ., 
-, F, u, r, t, h, e, r, m, o, r, e, ,,  , t, h, e,  , p, e, r, s, i, s, t, e, n, t,  , v, a, l, u, e,  , t, r, a, c, k, e, r,  , n, a, t, u, r, a, l, l, y,  , e, n, a, b, l, e, s,  , a, n,  , a, d, a, p, t, i, v, e, 
-, c, u, r, r, i, c, u, l, u, m,  , v, i, a,  , p, r, i, o, r, i, t, i, z, e, d,  , s, a, m, p, l, i, n, g, .,  , E, x, p, e, r, i, m, e, n, t, s,  , u, s, i, n, g,  , Q, w, e, n, 3, -, 8, B,  , s, h, o, w,  , t, h, a, t,  , S, P, O, 
-, c, o, n, v, e, r, g, e, s,  , m, o, r, e,  , s, m, o, o, t, h, l, y,  , a, n, d,  , a, t, t, a, i, n, s,  , h, i, g, h, e, r,  , a, c, c, u, r, a, c, y,  , t, h, a, n,  , G, R, P, O, ,,  , w, h, i, l, e, 
-, e, l, i, m, i, n, a, t, i, n, g,  , c, o, m, p, u, t, a, t, i, o, n,  , w, a, s, t, e, d,  , o, n,  , d, e, g, e, n, e, r, a, t, e,  , g, r, o, u, p, s, .,  , A, b, l, a, t, i, o, n,  , s, t, u, d, i, e, s,  , c, o, n, f, i, r, m, 
-, t, h, a, t,  , S, P, O, ', s,  , g, a, i, n, s,  , s, t, e, m,  , f, r, o, m,  , i, t, s,  , p, r, i, n, c, i, p, l, e, d,  , a, p, p, r, o, a, c, h,  , t, o,  , b, a, s, e, l, i, n, e,  , e, s, t, i, m, a, t, i, o, n,  , a, n, d, 
-, a, d, v, a, n, t, a, g, e,  , n, o, r, m, a, l, i, z, a, t, i, o, n, ,,  , o, f, f, e, r, i, n, g,  , a,  , m, o, r, e,  , r, o, b, u, s, t,  , a, n, d,  , e, f, f, i, c, i, e, n, t,  , p, a, t, h,  , f, o, r,  , L, L, M, 
-, r, e, a, s, o, n, i, n, g, .,  , A, c, r, o, s, s,  , f, i, v, e,  , h, a, r, d,  , m, a, t, h,  , b, e, n, c, h, m, a, r, k, s,  , w, i, t, h,  , Q, w, e, n, 3,  , 8, B, ,,  , S, P, O,  , i, m, p, r, o, v, e, s,  , t, h, e, 
-, a, v, e, r, a, g, e,  , m, a, j, @, 3, 2,  , b, y,  , +, 3, ., 4,  , p, e, r, c, e, n, t, a, g, e,  , p, o, i, n, t, s,  , (, p, p, ),  , o, v, e, r,  , G, R, P, O, ,,  , d, r, i, v, e, n,  , b, y,  , s, u, b, s, t, a, n, t, i, a, l, 
-, a, b, s, o, l, u, t, e,  , p, o, i, n, t,  , g, a, i, n, s,  , o, n,  , c, h, a, l, l, e, n, g, i, n, g,  , d, a, t, a, s, e, t, s, ,,  , i, n, c, l, u, d, i, n, g,  , +, 7, ., 3,  , p, p,  , o, n,  , B, R, U, M, O,  , 2, 5, ,, 
-, +, 4, ., 4,  , p, p,  , o, n,  , A, I, M, E,  , 2, 5, ,,  , +, 3, ., 3,  , p, p,  , o, n,  , H, M, M, T,  , 2, 5, ,,  , a, n, d,  , a, c, h, i, e, v, e, s,  , c, o, n, s, i, s, t, e, n, t,  , r, e, l, a, t, i, v, e,  , g, a, i, n, 
-, i, n,  , p, a, s, s, @, $, k, $,  , a, c, r, o, s, s,  , t, h, e,  , e, v, a, l, u, a, t, e, d,  , $, k, $,  , v, a, l, u, e, s, .,  , S, P, O, ', s,  , s, u, c, c, e, s, s,  , c, h, a, l, l, e, n, g, e, s,  , t, h, e, 
-, p, r, e, v, a, i, l, i, n, g,  , t, r, e, n, d,  , o, f,  , a, d, d, i, n, g,  , i, n, c, i, d, e, n, t, a, l,  , c, o, m, p, l, e, x, i, t, y,  , t, o,  , R, L,  , a, l, g, o, r, i, t, h, m, s, ,,  , h, i, g, h, l, i, g, h, t, i, n, g, 
-, a,  , p, a, t, h,  , w, h, e, r, e,  , f, u, n, d, a, m, e, n, t, a, l,  , p, r, i, n, c, i, p, l, e, s, ,,  , n, o, t,  , a, r, c, h, i, t, e, c, t, u, r, a, l,  , w, o, r, k, a, r, o, u, n, d, s, ,,  , d, r, i, v, e,  , t, h, e, 
-, n, e, x, t,  , w, a, v, e,  , o, f,  , p, r, o, g, r, e, s, s,  , i, n,  , L, L, M,  , r, e, a, s, o, n, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13107v1'>Hierarchical Deep Fusion Framework for Multi-dimensional Facial Forgery Detection - The 2024 Global Deepfake Image Detection Challenge</a></td><td>T, h, e,  , p, r, o, l, i, f, e, r, a, t, i, o, n,  , o, f,  , s, o, p, h, i, s, t, i, c, a, t, e, d,  , d, e, e, p, f, a, k, e,  , t, e, c, h, n, o, l, o, g, y,  , p, o, s, e, s,  , s, i, g, n, i, f, i, c, a, n, t, 
-, c, h, a, l, l, e, n, g, e, s,  , t, o,  , d, i, g, i, t, a, l,  , s, e, c, u, r, i, t, y,  , a, n, d,  , a, u, t, h, e, n, t, i, c, i, t, y, .,  , D, e, t, e, c, t, i, n, g,  , t, h, e, s, e,  , f, o, r, g, e, r, i, e, s, ,, 
-, e, s, p, e, c, i, a, l, l, y,  , a, c, r, o, s, s,  , a,  , w, i, d, e,  , s, p, e, c, t, r, u, m,  , o, f,  , m, a, n, i, p, u, l, a, t, i, o, n,  , t, e, c, h, n, i, q, u, e, s, ,,  , r, e, q, u, i, r, e, s,  , r, o, b, u, s, t, 
-, a, n, d,  , g, e, n, e, r, a, l, i, z, e, d,  , m, o, d, e, l, s, .,  , T, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , t, h, e,  , H, i, e, r, a, r, c, h, i, c, a, l,  , D, e, e, p,  , F, u, s, i, o, n, 
-, F, r, a, m, e, w, o, r, k,  , (, H, D, F, F, ), ,,  , a, n,  , e, n, s, e, m, b, l, e, -, b, a, s, e, d,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , a, r, c, h, i, t, e, c, t, u, r, e,  , d, e, s, i, g, n, e, d,  , f, o, r, 
-, h, i, g, h, -, p, e, r, f, o, r, m, a, n, c, e,  , f, a, c, i, a, l,  , f, o, r, g, e, r, y,  , d, e, t, e, c, t, i, o, n, .,  , O, u, r,  , f, r, a, m, e, w, o, r, k,  , i, n, t, e, g, r, a, t, e, s,  , f, o, u, r, 
-, d, i, v, e, r, s, e,  , p, r, e, -, t, r, a, i, n, e, d,  , s, u, b, -, m, o, d, e, l, s, ,,  , S, w, i, n, -, M, L, P, ,,  , C, o, A, t, N, e, t, ,,  , E, f, f, i, c, i, e, n, t, N, e, t, V, 2, ,,  , a, n, d,  , D, a, V, i, T, ,, 
-, w, h, i, c, h,  , a, r, e,  , m, e, t, i, c, u, l, o, u, s, l, y,  , f, i, n, e, -, t, u, n, e, d,  , t, h, r, o, u, g, h,  , a,  , m, u, l, t, i, -, s, t, a, g, e,  , p, r, o, c, e, s, s,  , o, n,  , t, h, e, 
-, M, u, l, t, i, F, F, D, I,  , d, a, t, a, s, e, t, .,  , B, y,  , c, o, n, c, a, t, e, n, a, t, i, n, g,  , t, h, e,  , f, e, a, t, u, r, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , f, r, o, m,  , t, h, e, s, e, 
-, s, p, e, c, i, a, l, i, z, e, d,  , m, o, d, e, l, s,  , a, n, d,  , t, r, a, i, n, i, n, g,  , a,  , f, i, n, a, l,  , c, l, a, s, s, i, f, i, e, r,  , l, a, y, e, r, ,,  , H, D, F, F,  , e, f, f, e, c, t, i, v, e, l, y, 
-, l, e, v, e, r, a, g, e, s,  , t, h, e, i, r,  , c, o, l, l, e, c, t, i, v, e,  , s, t, r, e, n, g, t, h, s, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h,  , a, c, h, i, e, v, e, d,  , a,  , f, i, n, a, l,  , s, c, o, r, e,  , o, f, 
-, 0, ., 9, 6, 8, 5, 2,  , o, n,  , t, h, e,  , c, o, m, p, e, t, i, t, i, o, n, ', s,  , p, r, i, v, a, t, e,  , l, e, a, d, e, r, b, o, a, r, d, ,,  , s, e, c, u, r, i, n, g,  , t, h, e,  , 2, 0, t, h,  , p, o, s, i, t, i, o, n, 
-, o, u, t,  , o, f,  , 1, 8, 4,  , t, e, a, m, s, ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , t, h, e,  , e, f, f, i, c, a, c, y,  , o, f,  , h, i, e, r, a, r, c, h, i, c, a, l,  , f, u, s, i, o, n,  , f, o, r,  , c, o, m, p, l, e, x, 
-, i, m, a, g, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , t, a, s, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13021v1'>xOffense: An AI-driven autonomous penetration testing framework with offensive knowledge-enhanced LLMs and multi agent systems</a></td><td>T, h, i, s,  , w, o, r, k,  , i, n, t, r, o, d, u, c, e, s,  , x, O, f, f, e, n, s, e, ,,  , a, n,  , A, I, -, d, r, i, v, e, n, ,,  , m, u, l, t, i, -, a, g, e, n, t,  , p, e, n, e, t, r, a, t, i, o, n,  , t, e, s, t, i, n, g, 
-, f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , s, h, i, f, t, s,  , t, h, e,  , p, r, o, c, e, s, s,  , f, r, o, m,  , l, a, b, o, r, -, i, n, t, e, n, s, i, v, e, ,,  , e, x, p, e, r, t, -, d, r, i, v, e, n,  , m, a, n, u, a, l, 
-, e, f, f, o, r, t, s,  , t, o,  , f, u, l, l, y,  , a, u, t, o, m, a, t, e, d, ,,  , m, a, c, h, i, n, e, -, e, x, e, c, u, t, a, b, l, e,  , w, o, r, k, f, l, o, w, s,  , c, a, p, a, b, l, e,  , o, f,  , s, c, a, l, i, n, g, 
-, s, e, a, m, l, e, s, s, l, y,  , w, i, t, h,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , i, n, f, r, a, s, t, r, u, c, t, u, r, e, .,  , A, t,  , i, t, s,  , c, o, r, e, ,,  , x, O, f, f, e, n, s, e,  , l, e, v, e, r, a, g, e, s,  , a, 
-, f, i, n, e, -, t, u, n, e, d, ,,  , m, i, d, -, s, c, a, l, e,  , o, p, e, n, -, s, o, u, r, c, e,  , L, L, M,  , (, Q, w, e, n, 3, -, 3, 2, B, ),  , t, o,  , d, r, i, v, e,  , r, e, a, s, o, n, i, n, g,  , a, n, d, 
-, d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , i, n,  , p, e, n, e, t, r, a, t, i, o, n,  , t, e, s, t, i, n, g, .,  , T, h, e,  , f, r, a, m, e, w, o, r, k,  , a, s, s, i, g, n, s,  , s, p, e, c, i, a, l, i, z, e, d, 
-, a, g, e, n, t, s,  , t, o,  , r, e, c, o, n, n, a, i, s, s, a, n, c, e, ,,  , v, u, l, n, e, r, a, b, i, l, i, t, y,  , s, c, a, n, n, i, n, g, ,,  , a, n, d,  , e, x, p, l, o, i, t, a, t, i, o, n, ,,  , w, i, t, h,  , a, n, 
-, o, r, c, h, e, s, t, r, a, t, i, o, n,  , l, a, y, e, r,  , e, n, s, u, r, i, n, g,  , s, e, a, m, l, e, s, s,  , c, o, o, r, d, i, n, a, t, i, o, n,  , a, c, r, o, s, s,  , p, h, a, s, e, s, .,  , F, i, n, e, -, t, u, n, i, n, g, 
-, o, n,  , C, h, a, i, n, -, o, f, -, T, h, o, u, g, h, t,  , p, e, n, e, t, r, a, t, i, o, n,  , t, e, s, t, i, n, g,  , d, a, t, a,  , f, u, r, t, h, e, r,  , e, n, a, b, l, e, s,  , t, h, e,  , m, o, d, e, l,  , t, o, 
-, g, e, n, e, r, a, t, e,  , p, r, e, c, i, s, e,  , t, o, o, l,  , c, o, m, m, a, n, d, s,  , a, n, d,  , p, e, r, f, o, r, m,  , c, o, n, s, i, s, t, e, n, t,  , m, u, l, t, i, -, s, t, e, p,  , r, e, a, s, o, n, i, n, g, .,  , W, e, 
-, e, v, a, l, u, a, t, e,  , x, O, f, f, e, n, s, e,  , o, n,  , t, w, o,  , r, i, g, o, r, o, u, s,  , b, e, n, c, h, m, a, r, k, s, :,  , A, u, t, o, P, e, n, B, e, n, c, h,  , a, n, d, 
-, A, I, -, P, e, n, t, e, s, t, -, B, e, n, c, h, m, a, r, k, .,  , T, h, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , x, O, f, f, e, n, s, e,  , c, o, n, s, i, s, t, e, n, t, l, y, 
-, o, u, t, p, e, r, f, o, r, m, s,  , c, o, n, t, e, m, p, o, r, a, r, y,  , m, e, t, h, o, d, s, ,,  , a, c, h, i, e, v, i, n, g,  , a,  , s, u, b, -, t, a, s, k,  , c, o, m, p, l, e, t, i, o, n,  , r, a, t, e,  , o, f, 
-, 7, 9, ., 1, 7, %, ,,  , d, e, c, i, s, i, v, e, l, y,  , s, u, r, p, a, s, s, i, n, g,  , l, e, a, d, i, n, g,  , s, y, s, t, e, m, s,  , s, u, c, h,  , a, s,  , V, u, l, n, B, o, t,  , a, n, d,  , P, e, n, t, e, s, t, G, P, T, ., 
-, T, h, e, s, e,  , f, i, n, d, i, n, g, s,  , h, i, g, h, l, i, g, h, t,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , o, f,  , d, o, m, a, i, n, -, a, d, a, p, t, e, d,  , m, i, d, -, s, c, a, l, e,  , L, L, M, s, ,,  , w, h, e, n, 
-, e, m, b, e, d, d, e, d,  , w, i, t, h, i, n,  , s, t, r, u, c, t, u, r, e, d,  , m, u, l, t, i, -, a, g, e, n, t,  , o, r, c, h, e, s, t, r, a, t, i, o, n, ,,  , t, o,  , d, e, l, i, v, e, r,  , s, u, p, e, r, i, o, r, ,, 
-, c, o, s, t, -, e, f, f, i, c, i, e, n, t, ,,  , a, n, d,  , r, e, p, r, o, d, u, c, i, b, l, e,  , s, o, l, u, t, i, o, n, s,  , f, o, r,  , a, u, t, o, n, o, m, o, u, s,  , p, e, n, e, t, r, a, t, i, o, n,  , t, e, s, t, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12987v1'>Toward PDDL Planning Copilot</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , a, r, e,  , i, n, c, r, e, a, s, i, n, g, l, y,  , b, e, i, n, g,  , u, s, e, d,  , a, s,  , a, u, t, o, n, o, m, o, u, s,  , a, g, e, n, t, s, 
-, c, a, p, a, b, l, e,  , o, f,  , p, e, r, f, o, r, m, i, n, g,  , c, o, m, p, l, i, c, a, t, e, d,  , t, a, s, k, s, .,  , H, o, w, e, v, e, r, ,,  , t, h, e, y,  , l, a, c, k,  , t, h, e,  , a, b, i, l, i, t, y,  , t, o, 
-, p, e, r, f, o, r, m,  , r, e, l, i, a, b, l, e,  , l, o, n, g, -, h, o, r, i, z, o, n,  , p, l, a, n, n, i, n, g,  , o, n,  , t, h, e, i, r,  , o, w, n, .,  , T, h, i, s,  , p, a, p, e, r,  , b, r, i, d, g, e, s,  , t, h, i, s, 
-, g, a, p,  , b, y,  , i, n, t, r, o, d, u, c, i, n, g,  , t, h, e,  , P, l, a, n, n, i, n, g,  , C, o, p, i, l, o, t, ,,  , a,  , c, h, a, t, b, o, t,  , t, h, a, t,  , i, n, t, e, g, r, a, t, e, s,  , m, u, l, t, i, p, l, e, 
-, p, l, a, n, n, i, n, g,  , t, o, o, l, s,  , a, n, d,  , a, l, l, o, w, s,  , u, s, e, r, s,  , t, o,  , i, n, v, o, k, e,  , t, h, e, m,  , t, h, r, o, u, g, h,  , i, n, s, t, r, u, c, t, i, o, n, s,  , i, n,  , n, a, t, u, r, a, l, 
-, l, a, n, g, u, a, g, e, .,  , T, h, e,  , P, l, a, n, n, i, n, g,  , C, o, p, i, l, o, t,  , l, e, v, e, r, a, g, e, s,  , t, h, e,  , M, o, d, e, l,  , C, o, n, t, e, x, t,  , P, r, o, t, o, c, o, l,  , (, M, C, P, ), ,,  , a, 
-, r, e, c, e, n, t, l, y,  , d, e, v, e, l, o, p, e, d,  , s, t, a, n, d, a, r, d,  , f, o, r,  , c, o, n, n, e, c, t, i, n, g,  , L, L, M, s,  , w, i, t, h,  , e, x, t, e, r, n, a, l,  , t, o, o, l, s,  , a, n, d, 
-, s, y, s, t, e, m, s, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h,  , a, l, l, o, w, s,  , u, s, i, n, g,  , a, n, y,  , L, L, M,  , t, h, a, t,  , s, u, p, p, o, r, t, s,  , M, C, P,  , w, i, t, h, o, u, t, 
-, d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , f, i, n, e, -, t, u, n, i, n, g, .,  , O, u, r,  , P, l, a, n, n, i, n, g,  , C, o, p, i, l, o, t,  , s, u, p, p, o, r, t, s,  , c, o, m, m, o, n,  , p, l, a, n, n, i, n, g, 
-, t, a, s, k, s,  , s, u, c, h,  , a, s,  , c, h, e, c, k, i, n, g,  , t, h, e,  , s, y, n, t, a, x,  , o, f,  , p, l, a, n, n, i, n, g,  , p, r, o, b, l, e, m, s, ,,  , s, e, l, e, c, t, i, n, g,  , a, n, 
-, a, p, p, r, o, p, r, i, a, t, e,  , p, l, a, n, n, e, r, ,,  , c, a, l, l, i, n, g,  , i, t, ,,  , v, a, l, i, d, a, t, i, n, g,  , t, h, e,  , p, l, a, n,  , i, t,  , g, e, n, e, r, a, t, e, s, ,,  , a, n, d, 
-, s, i, m, u, l, a, t, i, n, g,  , t, h, e, i, r,  , e, x, e, c, u, t, i, o, n, .,  , W, e,  , e, m, p, i, r, i, c, a, l, l, y,  , e, v, a, l, u, a, t, e,  , t, h, e,  , a, b, i, l, i, t, y,  , o, f,  , o, u, r,  , P, l, a, n, n, i, n, g, 
-, C, o, p, i, l, o, t,  , t, o,  , p, e, r, f, o, r, m,  , t, h, e, s, e,  , t, a, s, k, s,  , u, s, i, n, g,  , t, h, r, e, e,  , o, p, e, n, -, s, o, u, r, c, e,  , L, L, M, s, .,  , T, h, e,  , r, e, s, u, l, t, s,  , s, h, o, w, 
-, t, h, a, t,  , t, h, e,  , P, l, a, n, n, i, n, g,  , C, o, p, i, l, o, t,  , h, i, g, h, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , u, s, i, n, g,  , t, h, e,  , s, a, m, e,  , L, L, M, s,  , w, i, t, h, o, u, t,  , t, h, e, 
-, p, l, a, n, n, i, n, g,  , t, o, o, l, s, .,  , W, e,  , a, l, s, o,  , c, o, n, d, u, c, t, e, d,  , a,  , l, i, m, i, t, e, d,  , q, u, a, l, i, t, a, t, i, v, e,  , c, o, m, p, a, r, i, s, o, n,  , o, f,  , o, u, r,  , t, o, o, l, 
-, a, g, a, i, n, s, t,  , C, h, a, t,  , G, P, T, -, 5, ,,  , a,  , v, e, r, y,  , r, e, c, e, n, t,  , c, o, m, m, e, r, c, i, a, l,  , L, L, M, .,  , O, u, r,  , r, e, s, u, l, t, s,  , s, h, o, w, s,  , t, h, a, t,  , o, u, r, 
-, P, l, a, n, n, i, n, g,  , C, o, p, i, l, o, t,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , G, P, T, -, 5,  , d, e, s, p, i, t, e,  , r, e, l, y, i, n, g,  , o, n,  , a,  , m, u, c, h, 
-, s, m, a, l, l, e, r,  , L, L, M, .,  , T, h, i, s,  , s, u, g, g, e, s, t, s,  , d, e, d, i, c, a, t, e, d,  , p, l, a, n, n, i, n, g,  , t, o, o, l, s,  , m, a, y,  , b, e,  , a, n,  , e, f, f, e, c, t, i, v, e,  , w, a, y,  , t, o, 
-, e, n, a, b, l, e,  , L, L, M, s,  , t, o,  , p, e, r, f, o, r, m,  , p, l, a, n, n, i, n, g,  , t, a, s, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12958v1'>Forget What's Sensitive, Remember What Matters: Token-Level Differential Privacy in Memory Sculpting for Continual Learning</a></td><td>C, o, n, t, i, n, u, a, l,  , L, e, a, r, n, i, n, g,  , (, C, L, ),  , m, o, d, e, l, s, ,,  , w, h, i, l, e,  , a, d, e, p, t,  , a, t,  , s, e, q, u, e, n, t, i, a, l,  , k, n, o, w, l, e, d, g, e, 
-, a, c, q, u, i, s, i, t, i, o, n, ,,  , f, a, c, e,  , s, i, g, n, i, f, i, c, a, n, t,  , a, n, d,  , o, f, t, e, n,  , o, v, e, r, l, o, o, k, e, d,  , p, r, i, v, a, c, y,  , c, h, a, l, l, e, n, g, e, s,  , d, u, e,  , t, o, 
-, a, c, c, u, m, u, l, a, t, i, n, g,  , d, i, v, e, r, s, e,  , i, n, f, o, r, m, a, t, i, o, n, .,  , T, r, a, d, i, t, i, o, n, a, l,  , p, r, i, v, a, c, y,  , m, e, t, h, o, d, s, ,,  , l, i, k, e,  , a,  , u, n, i, f, o, r, m, 
-, D, i, f, f, e, r, e, n, t, i, a, l,  , P, r, i, v, a, c, y,  , (, D, P, ),  , b, u, d, g, e, t, ,,  , i, n, d, i, s, c, r, i, m, i, n, a, t, e, l, y,  , p, r, o, t, e, c, t,  , a, l, l,  , d, a, t, a, ,,  , l, e, a, d, i, n, g,  , t, o, 
-, s, u, b, s, t, a, n, t, i, a, l,  , m, o, d, e, l,  , u, t, i, l, i, t, y,  , d, e, g, r, a, d, a, t, i, o, n,  , a, n, d,  , h, i, n, d, e, r, i, n, g,  , C, L,  , d, e, p, l, o, y, m, e, n, t,  , i, n, 
-, p, r, i, v, a, c, y, -, s, e, n, s, i, t, i, v, e,  , a, r, e, a, s, .,  , T, o,  , o, v, e, r, c, o, m, e,  , t, h, i, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , p, r, i, v, a, c, y, -, e, n, h, a, n, c, e, d, 
-, c, o, n, t, i, n, u, a, l,  , l, e, a, r, n, i, n, g,  , (, P, e, C, L, ),  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , f, o, r, g, e, t, s,  , w, h, a, t, ', s,  , s, e, n, s, i, t, i, v, e,  , a, n, d,  , r, e, m, e, m, b, e, r, s, 
-, w, h, a, t,  , m, a, t, t, e, r, s, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , f, i, r, s, t,  , i, n, t, r, o, d, u, c, e, s,  , a,  , t, o, k, e, n, -, l, e, v, e, l,  , d, y, n, a, m, i, c,  , D, i, f, f, e, r, e, n, t, i, a, l, 
-, P, r, i, v, a, c, y,  , s, t, r, a, t, e, g, y,  , t, h, a, t,  , a, d, a, p, t, i, v, e, l, y,  , a, l, l, o, c, a, t, e, s,  , p, r, i, v, a, c, y,  , b, u, d, g, e, t, s,  , b, a, s, e, d,  , o, n,  , t, h, e, 
-, s, e, m, a, n, t, i, c,  , s, e, n, s, i, t, i, v, i, t, y,  , o, f,  , i, n, d, i, v, i, d, u, a, l,  , t, o, k, e, n, s, .,  , T, h, i, s,  , e, n, s, u, r, e, s,  , r, o, b, u, s, t,  , p, r, o, t, e, c, t, i, o, n,  , f, o, r, 
-, p, r, i, v, a, t, e,  , e, n, t, i, t, i, e, s,  , w, h, i, l, e,  , m, i, n, i, m, i, z, i, n, g,  , n, o, i, s, e,  , i, n, j, e, c, t, i, o, n,  , f, o, r,  , n, o, n, -, s, e, n, s, i, t, i, v, e, ,,  , g, e, n, e, r, a, l, 
-, k, n, o, w, l, e, d, g, e, .,  , S, e, c, o, n, d, ,,  , w, e,  , i, n, t, e, g, r, a, t, e,  , a,  , p, r, i, v, a, c, y, -, g, u, i, d, e, d,  , m, e, m, o, r, y,  , s, c, u, l, p, t, i, n, g,  , m, o, d, u, l, e, .,  , T, h, i, s, 
-, m, o, d, u, l, e,  , l, e, v, e, r, a, g, e, s,  , t, h, e,  , s, e, n, s, i, t, i, v, i, t, y,  , a, n, a, l, y, s, i, s,  , f, r, o, m,  , o, u, r,  , d, y, n, a, m, i, c,  , D, P,  , m, e, c, h, a, n, i, s, m,  , t, o, 
-, i, n, t, e, l, l, i, g, e, n, t, l, y,  , f, o, r, g, e, t,  , s, e, n, s, i, t, i, v, e,  , i, n, f, o, r, m, a, t, i, o, n,  , f, r, o, m,  , t, h, e,  , m, o, d, e, l, ', s,  , m, e, m, o, r, y,  , a, n, d, 
-, p, a, r, a, m, e, t, e, r, s, ,,  , w, h, i, l, e,  , e, x, p, l, i, c, i, t, l, y,  , p, r, e, s, e, r, v, i, n, g,  , t, h, e,  , t, a, s, k, -, i, n, v, a, r, i, a, n, t,  , h, i, s, t, o, r, i, c, a, l,  , k, n, o, w, l, e, d, g, e, 
-, c, r, u, c, i, a, l,  , f, o, r,  , m, i, t, i, g, a, t, i, n, g,  , c, a, t, a, s, t, r, o, p, h, i, c,  , f, o, r, g, e, t, t, i, n, g, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t, 
-, P, e, C, L,  , a, c, h, i, e, v, e, s,  , a,  , s, u, p, e, r, i, o, r,  , b, a, l, a, n, c, e,  , b, e, t, w, e, e, n,  , p, r, i, v, a, c, y,  , p, r, e, s, e, r, v, i, n, g,  , a, n, d,  , m, o, d, e, l,  , u, t, i, l, i, t, y, ,, 
-, o, u, t, p, e, r, f, o, r, m, i, n, g,  , b, a, s, e, l, i, n, e,  , m, o, d, e, l, s,  , b, y,  , m, a, i, n, t, a, i, n, i, n, g,  , h, i, g, h,  , a, c, c, u, r, a, c, y,  , o, n,  , p, r, e, v, i, o, u, s,  , t, a, s, k, s, 
-, w, h, i, l, e,  , e, n, s, u, r, i, n, g,  , r, o, b, u, s, t,  , p, r, i, v, a, c, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12939v1'>Sy-FAR: Symmetry-based Fair Adversarial Robustness</a></td><td>S, e, c, u, r, i, t, y, -, c, r, i, t, i, c, a, l,  , m, a, c, h, i, n, e, -, l, e, a, r, n, i, n, g,  , (, M, L, ),  , s, y, s, t, e, m, s, ,,  , s, u, c, h,  , a, s,  , f, a, c, e, -, r, e, c, o, g, n, i, t, i, o, n, 
-, s, y, s, t, e, m, s, ,,  , a, r, e,  , s, u, s, c, e, p, t, i, b, l, e,  , t, o,  , a, d, v, e, r, s, a, r, i, a, l,  , e, x, a, m, p, l, e, s, ,,  , i, n, c, l, u, d, i, n, g,  , r, e, a, l, -, w, o, r, l, d, 
-, p, h, y, s, i, c, a, l, l, y,  , r, e, a, l, i, z, a, b, l, e,  , a, t, t, a, c, k, s, .,  , V, a, r, i, o, u, s,  , m, e, a, n, s,  , t, o,  , b, o, o, s, t,  , M, L, ', s,  , a, d, v, e, r, s, a, r, i, a, l, 
-, r, o, b, u, s, t, n, e, s, s,  , h, a, v, e,  , b, e, e, n,  , p, r, o, p, o, s, e, d, ;,  , h, o, w, e, v, e, r, ,,  , t, h, e, y,  , t, y, p, i, c, a, l, l, y,  , i, n, d, u, c, e,  , u, n, f, a, i, r, 
-, r, o, b, u, s, t, n, e, s, s, :,  , I, t,  , i, s,  , o, f, t, e, n,  , e, a, s, i, e, r,  , t, o,  , a, t, t, a, c, k,  , f, r, o, m,  , c, e, r, t, a, i, n,  , c, l, a, s, s, e, s,  , o, r,  , g, r, o, u, p, s,  , t, h, a, n, 
-, f, r, o, m,  , o, t, h, e, r, s, .,  , S, e, v, e, r, a, l,  , t, e, c, h, n, i, q, u, e, s,  , h, a, v, e,  , b, e, e, n,  , d, e, v, e, l, o, p, e, d,  , t, o,  , i, m, p, r, o, v, e,  , a, d, v, e, r, s, a, r, i, a, l, 
-, r, o, b, u, s, t, n, e, s, s,  , w, h, i, l, e,  , s, e, e, k, i, n, g,  , p, e, r, f, e, c, t,  , f, a, i, r, n, e, s, s,  , b, e, t, w, e, e, n,  , c, l, a, s, s, e, s, .,  , Y, e, t, ,,  , p, r, i, o, r,  , w, o, r, k,  , h, a, s, 
-, f, o, c, u, s, e, d,  , o, n,  , s, e, t, t, i, n, g, s,  , w, h, e, r, e,  , s, e, c, u, r, i, t, y,  , a, n, d,  , f, a, i, r, n, e, s, s,  , a, r, e,  , l, e, s, s,  , c, r, i, t, i, c, a, l, .,  , O, u, r,  , i, n, s, i, g, h, t, 
-, i, s,  , t, h, a, t,  , a, c, h, i, e, v, i, n, g,  , p, e, r, f, e, c, t,  , p, a, r, i, t, y,  , i, n,  , r, e, a, l, i, s, t, i, c,  , f, a, i, r, n, e, s, s, -, c, r, i, t, i, c, a, l,  , t, a, s, k, s, ,,  , s, u, c, h,  , a, s, 
-, f, a, c, e,  , r, e, c, o, g, n, i, t, i, o, n, ,,  , i, s,  , o, f, t, e, n,  , i, n, f, e, a, s, i, b, l, e,  , -, -,  , s, o, m, e,  , c, l, a, s, s, e, s,  , m, a, y,  , b, e,  , h, i, g, h, l, y,  , s, i, m, i, l, a, r, ,, 
-, l, e, a, d, i, n, g,  , t, o,  , m, o, r, e,  , m, i, s, c, l, a, s, s, i, f, i, c, a, t, i, o, n, s,  , b, e, t, w, e, e, n,  , t, h, e, m, .,  , I, n, s, t, e, a, d, ,,  , w, e,  , s, u, g, g, e, s, t,  , t, h, a, t, 
-, s, e, e, k, i, n, g,  , s, y, m, m, e, t, r, y,  , -, -,  , i, ., e, ., ,,  , a, t, t, a, c, k, s,  , f, r, o, m,  , c, l, a, s, s,  , $, i, $,  , t, o,  , $, j, $,  , w, o, u, l, d,  , b, e,  , a, s,  , s, u, c, c, e, s, s, f, u, l, 
-, a, s,  , f, r, o, m,  , $, j, $,  , t, o,  , $, i, $,  , -, -,  , i, s,  , m, o, r, e,  , t, r, a, c, t, a, b, l, e, .,  , I, n, t, u, i, t, i, v, e, l, y, ,,  , s, y, m, m, e, t, r, y,  , i, s,  , a,  , d, e, s, i, r, a, b, l, e, 
-, b, e, c, a, u, s, e,  , c, l, a, s, s,  , r, e, s, e, m, b, l, a, n, c, e,  , i, s,  , a,  , s, y, m, m, e, t, r, i, c,  , r, e, l, a, t, i, o, n,  , i, n,  , m, o, s, t,  , d, o, m, a, i, n, s, ., 
-, A, d, d, i, t, i, o, n, a, l, l, y, ,,  , a, s,  , w, e,  , p, r, o, v, e,  , t, h, e, o, r, e, t, i, c, a, l, l, y, ,,  , s, y, m, m, e, t, r, y,  , b, e, t, w, e, e, n,  , i, n, d, i, v, i, d, u, a, l, s,  , i, n, d, u, c, e, s, 
-, s, y, m, m, e, t, r, y,  , b, e, t, w, e, e, n,  , a, n, y,  , s, e, t,  , o, f,  , s, u, b, -, g, r, o, u, p, s, ,,  , i, n,  , c, o, n, t, r, a, s, t,  , t, o,  , o, t, h, e, r,  , f, a, i, r, n, e, s, s,  , n, o, t, i, o, n, s, 
-, w, h, e, r, e,  , g, r, o, u, p, -, f, a, i, r, n, e, s, s,  , i, s,  , o, f, t, e, n,  , e, l, u, s, i, v, e, .,  , W, e,  , d, e, v, e, l, o, p,  , S, y, -, F, A, R, ,,  , a,  , t, e, c, h, n, i, q, u, e,  , t, o, 
-, e, n, c, o, u, r, a, g, e,  , s, y, m, m, e, t, r, y,  , w, h, i, l, e,  , a, l, s, o,  , o, p, t, i, m, i, z, i, n, g,  , a, d, v, e, r, s, a, r, i, a, l,  , r, o, b, u, s, t, n, e, s, s,  , a, n, d,  , e, x, t, e, n, s, i, v, e, l, y, 
-, e, v, a, l, u, a, t, e,  , i, t,  , u, s, i, n, g,  , f, i, v, e,  , d, a, t, a, s, e, t, s, ,,  , w, i, t, h,  , t, h, r, e, e,  , m, o, d, e, l,  , a, r, c, h, i, t, e, c, t, u, r, e, s, ,,  , i, n, c, l, u, d, i, n, g, 
-, a, g, a, i, n, s, t,  , t, a, r, g, e, t, e, d,  , a, n, d,  , u, n, t, a, r, g, e, t, e, d,  , r, e, a, l, i, s, t, i, c,  , a, t, t, a, c, k, s, .,  , T, h, e,  , r, e, s, u, l, t, s,  , s, h, o, w,  , S, y, -, F, A, R, 
-, s, i, g, n, i, f, i, c, a, n, t, l, y,  , i, m, p, r, o, v, e, s,  , f, a, i, r,  , a, d, v, e, r, s, a, r, i, a, l,  , r, o, b, u, s, t, n, e, s, s,  , c, o, m, p, a, r, e, d,  , t, o,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t, 
-, m, e, t, h, o, d, s, .,  , M, o, r, e, o, v, e, r, ,,  , w, e,  , f, i, n, d,  , t, h, a, t,  , S, y, -, F, A, R,  , i, s,  , f, a, s, t, e, r,  , a, n, d,  , m, o, r, e,  , c, o, n, s, i, s, t, e, n, t,  , a, c, r, o, s, s, 
-, r, u, n, s, .,  , N, o, t, a, b, l, y, ,,  , S, y, -, F, A, R,  , a, l, s, o,  , a, m, e, l, i, o, r, a, t, e, s,  , a, n, o, t, h, e, r,  , t, y, p, e,  , o, f,  , u, n, f, a, i, r, n, e, s, s,  , w, e,  , d, i, s, c, o, v, e, r, 
-, i, n,  , t, h, i, s,  , w, o, r, k,  , -, -,  , t, a, r, g, e, t,  , c, l, a, s, s, e, s,  , t, h, a, t,  , a, d, v, e, r, s, a, r, i, a, l,  , e, x, a, m, p, l, e, s,  , a, r, e,  , l, i, k, e, l, y,  , t, o,  , b, e, 
-, c, l, a, s, s, i, f, i, e, d,  , i, n, t, o,  , b, e, c, o, m, e,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , l, e, s, s,  , v, u, l, n, e, r, a, b, l, e,  , a, f, t, e, r,  , i, n, d, u, c, i, n, g,  , s, y, m, m, e, t, r, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12886v1'>The LLM Already Knows: Estimating LLM-Perceived Question Difficulty via Hidden Representations</a></td><td>E, s, t, i, m, a, t, i, n, g,  , t, h, e,  , d, i, f, f, i, c, u, l, t, y,  , o, f,  , i, n, p, u, t,  , q, u, e, s, t, i, o, n, s,  , a, s,  , p, e, r, c, e, i, v, e, d,  , b, y,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e, 
-, m, o, d, e, l, s,  , (, L, L, M, s, ),  , i, s,  , e, s, s, e, n, t, i, a, l,  , f, o, r,  , a, c, c, u, r, a, t, e,  , p, e, r, f, o, r, m, a, n, c, e,  , e, v, a, l, u, a, t, i, o, n,  , a, n, d,  , a, d, a, p, t, i, v, e, 
-, i, n, f, e, r, e, n, c, e, .,  , E, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , t, y, p, i, c, a, l, l, y,  , r, e, l, y,  , o, n,  , r, e, p, e, a, t, e, d,  , r, e, s, p, o, n, s, e,  , s, a, m, p, l, i, n, g, ,, 
-, a, u, x, i, l, i, a, r, y,  , m, o, d, e, l, s, ,,  , o, r,  , f, i, n, e, -, t, u, n, i, n, g,  , t, h, e,  , t, a, r, g, e, t,  , m, o, d, e, l,  , i, t, s, e, l, f, ,,  , w, h, i, c, h,  , m, a, y,  , i, n, c, u, r, 
-, s, u, b, s, t, a, n, t, i, a, l,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, s,  , o, r,  , c, o, m, p, r, o, m, i, s, e,  , g, e, n, e, r, a, l, i, t, y, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e, 
-, p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , a, p, p, r, o, a, c, h,  , f, o, r,  , d, i, f, f, i, c, u, l, t, y,  , e, s, t, i, m, a, t, i, o, n,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , o, n, l, y,  , t, h, e, 
-, h, i, d, d, e, n,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , p, r, o, d, u, c, e, d,  , b, y,  , t, h, e,  , t, a, r, g, e, t,  , L, L, M, .,  , W, e,  , m, o, d, e, l,  , t, h, e,  , t, o, k, e, n, -, l, e, v, e, l, 
-, g, e, n, e, r, a, t, i, o, n,  , p, r, o, c, e, s, s,  , a, s,  , a,  , M, a, r, k, o, v,  , c, h, a, i, n,  , a, n, d,  , d, e, f, i, n, e,  , a,  , v, a, l, u, e,  , f, u, n, c, t, i, o, n,  , t, o,  , e, s, t, i, m, a, t, e, 
-, t, h, e,  , e, x, p, e, c, t, e, d,  , o, u, t, p, u, t,  , q, u, a, l, i, t, y,  , g, i, v, e, n,  , a, n, y,  , h, i, d, d, e, n,  , s, t, a, t, e, .,  , T, h, i, s,  , a, l, l, o, w, s,  , f, o, r,  , e, f, f, i, c, i, e, n, t, 
-, a, n, d,  , a, c, c, u, r, a, t, e,  , d, i, f, f, i, c, u, l, t, y,  , e, s, t, i, m, a, t, i, o, n,  , b, a, s, e, d,  , s, o, l, e, l, y,  , o, n,  , t, h, e,  , i, n, i, t, i, a, l,  , h, i, d, d, e, n,  , s, t, a, t, e, ,, 
-, w, i, t, h, o, u, t,  , g, e, n, e, r, a, t, i, n, g,  , a, n, y,  , o, u, t, p, u, t,  , t, o, k, e, n, s, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , a, c, r, o, s, s,  , b, o, t, h,  , t, e, x, t, u, a, l, 
-, a, n, d,  , m, u, l, t, i, m, o, d, a, l,  , t, a, s, k, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , o, u, r,  , m, e, t, h, o, d,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s, 
-, e, x, i, s, t, i, n, g,  , b, a, s, e, l, i, n, e, s,  , i, n,  , d, i, f, f, i, c, u, l, t, y,  , e, s, t, i, m, a, t, i, o, n, .,  , M, o, r, e, o, v, e, r, ,,  , w, e,  , a, p, p, l, y,  , o, u, r,  , d, i, f, f, i, c, u, l, t, y, 
-, e, s, t, i, m, a, t, e, s,  , t, o,  , g, u, i, d, e,  , a, d, a, p, t, i, v, e,  , r, e, a, s, o, n, i, n, g,  , s, t, r, a, t, e, g, i, e, s, ,,  , i, n, c, l, u, d, i, n, g,  , S, e, l, f, -, C, o, n, s, i, s, t, e, n, c, y, ,, 
-, B, e, s, t, -, o, f, -, N, ,,  , a, n, d,  , S, e, l, f, -, R, e, f, i, n, e, ,,  , a, c, h, i, e, v, i, n, g,  , h, i, g, h, e, r,  , i, n, f, e, r, e, n, c, e,  , e, f, f, i, c, i, e, n, c, y,  , w, i, t, h,  , f, e, w, e, r, 
-, g, e, n, e, r, a, t, e, d,  , t, o, k, e, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12849v1'>AI Factories: It's time to rethink the Cloud-HPC divide</a></td><td>T, h, e,  , s, t, r, a, t, e, g, i, c,  , i, m, p, o, r, t, a, n, c, e,  , o, f,  , a, r, t, i, f, i, c, i, a, l,  , i, n, t, e, l, l, i, g, e, n, c, e,  , i, s,  , d, r, i, v, i, n, g,  , a,  , g, l, o, b, a, l,  , p, u, s, h, 
-, t, o, w, a, r, d,  , S, o, v, e, r, e, i, g, n,  , A, I,  , i, n, i, t, i, a, t, i, v, e, s, .,  , N, a, t, i, o, n, w, i, d, e,  , g, o, v, e, r, n, m, e, n, t, s,  , a, r, e,  , i, n, c, r, e, a, s, i, n, g, l, y, 
-, d, e, v, e, l, o, p, i, n, g,  , d, e, d, i, c, a, t, e, d,  , i, n, f, r, a, s, t, r, u, c, t, u, r, e, s, ,,  , c, a, l, l, e, d,  , A, I,  , F, a, c, t, o, r, i, e, s,  , (, A, I, F, ), ,,  , t, o,  , a, c, h, i, e, v, e, 
-, t, e, c, h, n, o, l, o, g, i, c, a, l,  , a, u, t, o, n, o, m, y,  , a, n, d,  , s, e, c, u, r, e,  , t, h, e,  , r, e, s, o, u, r, c, e, s,  , n, e, c, e, s, s, a, r, y,  , t, o,  , s, u, s, t, a, i, n,  , r, o, b, u, s, t, 
-, l, o, c, a, l,  , d, i, g, i, t, a, l,  , e, c, o, s, y, s, t, e, m, s, ., 
-,  ,  , I, n,  , E, u, r, o, p, e, ,,  , t, h, e,  , E, u, r, o, H, P, C,  , J, o, i, n, t,  , U, n, d, e, r, t, a, k, i, n, g,  , i, s,  , i, n, v, e, s, t, i, n, g,  , h, u, n, d, r, e, d, s,  , o, f,  , m, i, l, l, i, o, n, s,  , o, f, 
-, e, u, r, o, s,  , i, n, t, o,  , s, e, v, e, r, a, l,  , A, I,  , F, a, c, t, o, r, i, e, s, ,,  , b, u, i, l, t,  , a, t, o, p,  , e, x, i, s, t, i, n, g,  , h, i, g, h, -, p, e, r, f, o, r, m, a, n, c, e,  , c, o, m, p, u, t, i, n, g, 
-, (, H, P, C, ),  , s, u, p, e, r, c, o, m, p, u, t, e, r, s, .,  , H, o, w, e, v, e, r, ,,  , w, h, i, l, e,  , H, P, C,  , s, y, s, t, e, m, s,  , e, x, c, e, l,  , i, n,  , r, a, w,  , p, e, r, f, o, r, m, a, n, c, e, ,,  , t, h, e, y, 
-, a, r, e,  , n, o, t,  , i, n, h, e, r, e, n, t, l, y,  , d, e, s, i, g, n, e, d,  , f, o, r,  , u, s, a, b, i, l, i, t, y, ,,  , a, c, c, e, s, s, i, b, i, l, i, t, y, ,,  , o, r,  , s, e, r, v, i, n, g,  , a, s, 
-, p, u, b, l, i, c, -, f, a, c, i, n, g,  , p, l, a, t, f, o, r, m, s,  , f, o, r,  , A, I,  , s, e, r, v, i, c, e, s,  , s, u, c, h,  , a, s,  , i, n, f, e, r, e, n, c, e,  , o, r,  , a, g, e, n, t, i, c, 
-, a, p, p, l, i, c, a, t, i, o, n, s, .,  , I, n,  , c, o, n, t, r, a, s, t, ,,  , A, I,  , p, r, a, c, t, i, t, i, o, n, e, r, s,  , a, r, e,  , a, c, c, u, s, t, o, m, e, d,  , t, o,  , c, l, o, u, d, -, n, a, t, i, v, e, 
-, t, e, c, h, n, o, l, o, g, i, e, s,  , l, i, k, e,  , K, u, b, e, r, n, e, t, e, s,  , a, n, d,  , o, b, j, e, c, t,  , s, t, o, r, a, g, e, ,,  , t, o, o, l, s,  , t, h, a, t,  , a, r, e,  , o, f, t, e, n,  , d, i, f, f, i, c, u, l, t, 
-, t, o,  , i, n, t, e, g, r, a, t, e,  , w, i, t, h, i, n,  , t, r, a, d, i, t, i, o, n, a, l,  , H, P, C,  , e, n, v, i, r, o, n, m, e, n, t, s, ., 
-,  ,  , T, h, i, s,  , a, r, t, i, c, l, e,  , a, d, v, o, c, a, t, e, s,  , f, o, r,  , a,  , d, u, a, l, -, s, t, a, c, k,  , a, p, p, r, o, a, c, h,  , w, i, t, h, i, n,  , s, u, p, e, r, c, o, m, p, u, t, e, r, s, :, 
-, i, n, t, e, g, r, a, t, i, n, g,  , b, o, t, h,  , H, P, C,  , a, n, d,  , c, l, o, u, d, -, n, a, t, i, v, e,  , t, e, c, h, n, o, l, o, g, i, e, s, .,  , O, u, r,  , g, o, a, l,  , i, s,  , t, o,  , b, r, i, d, g, e,  , t, h, e, 
-, d, i, v, i, d, e,  , b, e, t, w, e, e, n,  , H, P, C,  , a, n, d,  , c, l, o, u, d,  , c, o, m, p, u, t, i, n, g,  , b, y,  , c, o, m, b, i, n, i, n, g,  , h, i, g, h,  , p, e, r, f, o, r, m, a, n, c, e,  , a, n, d, 
-, h, a, r, d, w, a, r, e,  , a, c, c, e, l, e, r, a, t, i, o, n,  , w, i, t, h,  , e, a, s, e,  , o, f,  , u, s, e,  , a, n, d,  , s, e, r, v, i, c, e, -, o, r, i, e, n, t, e, d,  , f, r, o, n, t, -, e, n, d, s, .,  , T, h, i, s, 
-, c, o, n, v, e, r, g, e, n, c, e,  , a, l, l, o, w, s,  , e, a, c, h,  , p, a, r, a, d, i, g, m,  , t, o,  , a, m, p, l, i, f, y,  , t, h, e,  , o, t, h, e, r, .,  , T, o,  , t, h, i, s,  , e, n, d, ,,  , w, e,  , w, i, l, l, 
-, s, t, u, d, y,  , t, h, e,  , c, l, o, u, d,  , c, h, a, l, l, e, n, g, e, s,  , o, f,  , H, P, C,  , (, S, e, r, v, e, r, l, e, s, s,  , H, P, C, ),  , a, n, d,  , t, h, e,  , H, P, C,  , c, h, a, l, l, e, n, g, e, s,  , o, f, 
-, c, l, o, u, d,  , t, e, c, h, n, o, l, o, g, i, e, s,  , (, H, i, g, h, -, p, e, r, f, o, r, m, a, n, c, e,  , C, l, o, u, d, ), .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12838v1'>Multi-Robot Task Planning for Multi-Object Retrieval Tasks with Distributed On-Site Knowledge via Large Language Models</a></td><td>I, t,  , i, s,  , c, r, u, c, i, a, l,  , t, o,  , e, f, f, i, c, i, e, n, t, l, y,  , e, x, e, c, u, t, e,  , i, n, s, t, r, u, c, t, i, o, n, s,  , s, u, c, h,  , a, s,  , ", F, i, n, d,  , a, n,  , a, p, p, l, e,  , a, n, d, 
-, a,  , b, a, n, a, n, a, ",  , o, r,  , ", G, e, t,  , r, e, a, d, y,  , f, o, r,  , a,  , f, i, e, l, d,  , t, r, i, p, ,, ",  , w, h, i, c, h,  , r, e, q, u, i, r, e,  , s, e, a, r, c, h, i, n, g,  , f, o, r,  , m, u, l, t, i, p, l, e, 
-, o, b, j, e, c, t, s,  , o, r,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , c, o, n, t, e, x, t, -, d, e, p, e, n, d, e, n, t,  , c, o, m, m, a, n, d, s, .,  , T, h, i, s,  , s, t, u, d, y,  , a, d, d, r, e, s, s, e, s,  , t, h, e, 
-, c, h, a, l, l, e, n, g, i, n, g,  , p, r, o, b, l, e, m,  , o, f,  , d, e, t, e, r, m, i, n, i, n, g,  , w, h, i, c, h,  , r, o, b, o, t,  , s, h, o, u, l, d,  , b, e,  , a, s, s, i, g, n, e, d,  , t, o,  , w, h, i, c, h,  , p, a, r, t, 
-, o, f,  , a,  , t, a, s, k,  , w, h, e, n,  , e, a, c, h,  , r, o, b, o, t,  , p, o, s, s, e, s, s, e, s,  , d, i, f, f, e, r, e, n, t,  , s, i, t, u, a, t, i, o, n, a, l,  , o, n, -, s, i, t, e, 
-, k, n, o, w, l, e, d, g, e, -, s, p, e, c, i, f, i, c, a, l, l, y, ,,  , s, p, a, t, i, a, l,  , c, o, n, c, e, p, t, s,  , l, e, a, r, n, e, d,  , f, r, o, m,  , t, h, e,  , a, r, e, a,  , d, e, s, i, g, n, a, t, e, d,  , t, o,  , i, t, 
-, b, y,  , t, h, e,  , u, s, e, r, .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , t, a, s, k,  , p, l, a, n, n, i, n, g,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e, 
-, m, o, d, e, l, s,  , (, L, L, M, s, ),  , a, n, d,  , s, p, a, t, i, a, l,  , c, o, n, c, e, p, t, s,  , t, o,  , d, e, c, o, m, p, o, s, e,  , n, a, t, u, r, a, l,  , l, a, n, g, u, a, g, e,  , i, n, s, t, r, u, c, t, i, o, n, s, 
-, i, n, t, o,  , s, u, b, t, a, s, k, s,  , a, n, d,  , a, l, l, o, c, a, t, e,  , t, h, e, m,  , t, o,  , m, u, l, t, i, p, l, e,  , r, o, b, o, t, s, .,  , W, e,  , d, e, s, i, g, n, e, d,  , a,  , n, o, v, e, l, 
-, f, e, w, -, s, h, o, t,  , p, r, o, m, p, t, i, n, g,  , s, t, r, a, t, e, g, y,  , t, h, a, t,  , e, n, a, b, l, e, s,  , L, L, M, s,  , t, o,  , i, n, f, e, r,  , r, e, q, u, i, r, e, d,  , o, b, j, e, c, t, s,  , f, r, o, m, 
-, a, m, b, i, g, u, o, u, s,  , c, o, m, m, a, n, d, s,  , a, n, d,  , d, e, c, o, m, p, o, s, e,  , t, h, e, m,  , i, n, t, o,  , a, p, p, r, o, p, r, i, a, t, e,  , s, u, b, t, a, s, k, s, .,  , I, n,  , o, u, r, 
-, e, x, p, e, r, i, m, e, n, t, s, ,,  , t, h, e,  , p, r, o, p, o, s, e, d,  , m, e, t, h, o, d,  , a, c, h, i, e, v, e, d,  , 4, 7, /, 5, 0,  , s, u, c, c, e, s, s, f, u, l,  , a, s, s, i, g, n, m, e, n, t, s, ,, 
-, o, u, t, p, e, r, f, o, r, m, i, n, g,  , r, a, n, d, o, m,  , (, 2, 8, /, 5, 0, ),  , a, n, d,  , c, o, m, m, o, n, s, e, n, s, e, -, b, a, s, e, d,  , a, s, s, i, g, n, m, e, n, t,  , (, 2, 6, /, 5, 0, ), ., 
-, F, u, r, t, h, e, r, m, o, r, e, ,,  , w, e,  , c, o, n, d, u, c, t, e, d,  , q, u, a, l, i, t, a, t, i, v, e,  , e, v, a, l, u, a, t, i, o, n, s,  , u, s, i, n, g,  , t, w, o,  , a, c, t, u, a, l,  , m, o, b, i, l, e, 
-, m, a, n, i, p, u, l, a, t, o, r, s, .,  , T, h, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e, d,  , t, h, a, t,  , o, u, r,  , f, r, a, m, e, w, o, r, k,  , c, o, u, l, d,  , h, a, n, d, l, e, 
-, i, n, s, t, r, u, c, t, i, o, n, s, ,,  , i, n, c, l, u, d, i, n, g,  , t, h, o, s, e,  , i, n, v, o, l, v, i, n, g,  , a, d,  , h, o, c,  , c, a, t, e, g, o, r, i, e, s,  , s, u, c, h,  , a, s,  , ", G, e, t,  , r, e, a, d, y, 
-, f, o, r,  , a,  , f, i, e, l, d,  , t, r, i, p, ,, ",  , b, y,  , s, u, c, c, e, s, s, f, u, l, l, y,  , p, e, r, f, o, r, m, i, n, g,  , t, a, s, k,  , d, e, c, o, m, p, o, s, i, t, i, o, n, ,,  , a, s, s, i, g, n, m, e, n, t, ,, 
-, s, e, q, u, e, n, t, i, a, l,  , p, l, a, n, n, i, n, g, ,,  , a, n, d,  , e, x, e, c, u, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12822v1'>A Pressure-Based Diffusion Model for Influence Maximization on Social Networks</a></td><td>I, n,  , m, a, n, y,  , r, e, a, l, -, w, o, r, l, d,  , s, c, e, n, a, r, i, o, s, ,,  , a, n,  , i, n, d, i, v, i, d, u, a, l, ', s,  , l, o, c, a, l,  , s, o, c, i, a, l,  , n, e, t, w, o, r, k,  , c, a, r, r, i, e, s, 
-, s, i, g, n, i, f, i, c, a, n, t,  , i, n, f, l, u, e, n, c, e,  , o, v, e, r,  , t, h, e,  , o, p, i, n, i, o, n, s,  , t, h, e, y,  , f, o, r, m,  , a, n, d,  , s, u, b, s, e, q, u, e, n, t, l, y,  , p, r, o, p, a, g, a, t, e,  , t, o, 
-, o, t, h, e, r, s, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , d, i, f, f, u, s, i, o, n,  , m, o, d, e, l,  , -, -,  , t, h, e,  , P, r, e, s, s, u, r, e, 
-, T, h, r, e, s, h, o, l, d,  , m, o, d, e, l,  , (, P, T, ),  , -, -,  , f, o, r,  , d, y, n, a, m, i, c, a, l, l, y,  , s, i, m, u, l, a, t, i, n, g,  , t, h, e,  , s, p, r, e, a, d,  , o, f,  , i, n, f, l, u, e, n, c, e, 
-, t, h, r, o, u, g, h,  , a,  , s, o, c, i, a, l,  , n, e, t, w, o, r, k, .,  , T, h, i, s,  , n, e, w,  , m, o, d, e, l,  , e, x, t, e, n, d, s,  , t, h, e,  , p, o, p, u, l, a, r,  , L, i, n, e, a, r,  , T, h, r, e, s, h, o, l, d, 
-, M, o, d, e, l,  , (, L, T, ),  , b, y,  , a, d, j, u, s, t, i, n, g,  , a,  , n, o, d, e, ', s,  , o, u, t, g, o, i, n, g,  , i, n, f, l, u, e, n, c, e,  , p, r, o, p, o, r, t, i, o, n, a, l,  , t, o,  , t, h, e, 
-, i, n, f, l, u, e, n, c, e,  , i, t,  , r, e, c, e, i, v, e, s,  , f, r, o, m,  , i, t, s,  , a, c, t, i, v, a, t, e, d,  , n, e, i, g, h, b, o, r, s, .,  , W, e,  , a, d, d, r, e, s, s,  , t, h, e,  , I, n, f, l, u, e, n, c, e, 
-, M, a, x, i, m, i, z, a, t, i, o, n,  , (, I, M, ),  , p, r, o, b, l, e, m, ,,  , w, h, i, c, h,  , i, n, v, o, l, v, e, s,  , s, e, l, e, c, t, i, n, g,  , t, h, e,  , m, o, s, t,  , e, f, f, e, c, t, i, v, e,  , s, e, e, d, 
-, n, o, d, e, s,  , t, o,  , a, c, h, i, e, v, e,  , m, a, x, i, m, a, l,  , g, r, a, p, h,  , c, o, v, e, r, a, g, e,  , a, f, t, e, r,  , a,  , d, i, f, f, u, s, i, o, n,  , p, r, o, c, e, s, s, ,,  , a, n, d,  , h, o, w,  , t, h, e, 
-, p, r, o, b, l, e, m,  , m, a, n, i, f, e, s, t, s,  , w, i, t, h,  , t, h, e,  , P, T,  , M, o, d, e, l, .,  , E, x, p, e, r, i, m, e, n, t, s,  , c, o, n, d, u, c, t, e, d,  , o, n,  , r, e, a, l, -, w, o, r, l, d, 
-, n, e, t, w, o, r, k, s, ,,  , f, a, c, i, l, i, t, a, t, e, d,  , b, y,  , e, n, h, a, n, c, e, m, e, n, t, s,  , t, o,  , t, h, e,  , o, p, e, n, -, s, o, u, r, c, e,  , n, e, t, w, o, r, k, -, d, i, f, f, u, s, i, o, n, 
-, P, y, t, h, o, n,  , l, i, b, r, a, r, y, ,,  , C, y, N, e, t, D, i, f, f, ,,  , d, e, m, o, n, s, t, r, a, t, e,  , u, n, i, q, u, e,  , s, e, e, d,  , n, o, d, e,  , s, e, l, e, c, t, i, o, n,  , f, o, r,  , t, h, e,  , P, T, 
-, M, o, d, e, l,  , w, h, e, n,  , c, o, m, p, a, r, e, d,  , t, o,  , t, h, e,  , L, T,  , M, o, d, e, l, .,  , M, o, r, e, o, v, e, r, ,,  , a, n, a, l, y, s, e, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t, 
-, d, e, n, s, e, l, y,  , c, o, n, n, e, c, t, e, d,  , n, e, t, w, o, r, k, s,  , a, m, p, l, i, f, y,  , p, r, e, s, s, u, r, e,  , e, f, f, e, c, t, s,  , m, o, r, e,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , t, h, a, n, 
-, s, p, a, r, s, e,  , n, e, t, w, o, r, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12816v1'>Gesture Evaluation in Virtual Reality</a></td><td>G, e, s, t, u, r, e, s,  , a, r, e,  , c, e, n, t, r, a, l,  , t, o,  , h, u, m, a, n,  , c, o, m, m, u, n, i, c, a, t, i, o, n, ,,  , e, n, r, i, c, h, i, n, g,  , i, n, t, e, r, a, c, t, i, o, n, s,  , t, h, r, o, u, g, h, 
-, n, o, n, -, v, e, r, b, a, l,  , e, x, p, r, e, s, s, i, o, n, .,  , V, i, r, t, u, a, l,  , a, v, a, t, a, r, s,  , i, n, c, r, e, a, s, i, n, g, l, y,  , u, s, e,  , A, I, -, g, e, n, e, r, a, t, e, d,  , g, e, s, t, u, r, e, s, 
-, t, o,  , e, n, h, a, n, c, e,  , l, i, f, e, -, l, i, k, e, n, e, s, s, ,,  , y, e, t,  , e, v, a, l, u, a, t, i, o, n, s,  , h, a, v, e,  , l, a, r, g, e, l, y,  , b, e, e, n,  , c, o, n, f, i, n, e, d,  , t, o,  , 2, D, ., 
-, V, i, r, t, u, a, l,  , R, e, a, l, i, t, y,  , (, V, R, ),  , p, r, o, v, i, d, e, s,  , a, n,  , i, m, m, e, r, s, i, v, e,  , a, l, t, e, r, n, a, t, i, v, e,  , t, h, a, t,  , m, a, y,  , a, f, f, e, c, t,  , h, o, w, 
-, g, e, s, t, u, r, e, s,  , a, r, e,  , p, e, r, c, e, i, v, e, d, .,  , T, h, i, s,  , p, a, p, e, r,  , p, r, e, s, e, n, t, s,  , a,  , c, o, m, p, a, r, a, t, i, v, e,  , e, v, a, l, u, a, t, i, o, n,  , o, f, 
-, c, o, m, p, u, t, e, r, -, g, e, n, e, r, a, t, e, d,  , g, e, s, t, u, r, e, s,  , i, n,  , V, R,  , a, n, d,  , 2, D, ,,  , e, x, a, m, i, n, i, n, g,  , t, h, r, e, e,  , m, o, d, e, l, s,  , f, r, o, m,  , t, h, e,  , 2, 0, 2, 3, 
-, G, E, N, E, A,  , C, h, a, l, l, e, n, g, e, .,  , R, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , g, e, s, t, u, r, e, s,  , v, i, e, w, e, d,  , i, n,  , V, R,  , w, e, r, e,  , r, a, t, e, d,  , s, l, i, g, h, t, l, y, 
-, h, i, g, h, e, r,  , o, n,  , a, v, e, r, a, g, e, ,,  , w, i, t, h,  , t, h, e,  , s, t, r, o, n, g, e, s, t,  , e, f, f, e, c, t,  , o, b, s, e, r, v, e, d,  , f, o, r,  , m, o, t, i, o, n, -, c, a, p, t, u, r, e,  , ", t, r, u, e, 
-, m, o, v, e, m, e, n, t, ., ",  , W, h, i, l, e,  , m, o, d, e, l,  , r, a, n, k, i, n, g, s,  , r, e, m, a, i, n, e, d,  , c, o, n, s, i, s, t, e, n, t,  , a, c, r, o, s, s,  , s, e, t, t, i, n, g, s, ,,  , V, R, 
-, i, n, f, l, u, e, n, c, e, d,  , p, a, r, t, i, c, i, p, a, n, t, s, ',  , o, v, e, r, a, l, l,  , p, e, r, c, e, p, t, i, o, n,  , a, n, d,  , o, f, f, e, r, e, d,  , u, n, i, q, u, e,  , b, e, n, e, f, i, t, s,  , o, v, e, r, 
-, t, r, a, d, i, t, i, o, n, a, l,  , 2, D,  , e, v, a, l, u, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12777v1'>CECT-Mamba: a Hierarchical Contrast-enhanced-aware Model for Pancreatic Tumor Subtyping from Multi-phase CECT</a></td><td>C, o, n, t, r, a, s, t, -, e, n, h, a, n, c, e, d,  , c, o, m, p, u, t, e, d,  , t, o, m, o, g, r, a, p, h, y,  , (, C, E, C, T, ),  , i, s,  , t, h, e,  , p, r, i, m, a, r, y,  , i, m, a, g, i, n, g,  , t, e, c, h, n, i, q, u, e, 
-, t, h, a, t,  , p, r, o, v, i, d, e, s,  , v, a, l, u, a, b, l, e,  , s, p, a, t, i, a, l, -, t, e, m, p, o, r, a, l,  , i, n, f, o, r, m, a, t, i, o, n,  , a, b, o, u, t,  , l, e, s, i, o, n, s, ,,  , e, n, a, b, l, i, n, g,  , t, h, e, 
-, a, c, c, u, r, a, t, e,  , d, i, a, g, n, o, s, i, s,  , a, n, d,  , s, u, b, c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , o, f,  , p, a, n, c, r, e, a, t, i, c,  , t, u, m, o, r, s, .,  , H, o, w, e, v, e, r, ,,  , t, h, e, 
-, h, i, g, h,  , h, e, t, e, r, o, g, e, n, e, i, t, y,  , a, n, d,  , v, a, r, i, a, b, i, l, i, t, y,  , o, f,  , p, a, n, c, r, e, a, t, i, c,  , t, u, m, o, r, s,  , s, t, i, l, l,  , p, o, s, e,  , s, u, b, s, t, a, n, t, i, a, l, 
-, c, h, a, l, l, e, n, g, e, s,  , f, o, r,  , p, r, e, c, i, s, e,  , s, u, b, t, y, p, i, n, g,  , d, i, a, g, n, o, s, i, s, .,  , P, r, e, v, i, o, u, s,  , m, e, t, h, o, d, s,  , f, a, i, l,  , t, o, 
-, e, f, f, e, c, t, i, v, e, l, y,  , e, x, p, l, o, r, e,  , t, h, e,  , c, o, n, t, e, x, t, u, a, l,  , i, n, f, o, r, m, a, t, i, o, n,  , a, c, r, o, s, s,  , m, u, l, t, i, p, l, e,  , C, E, C, T,  , p, h, a, s, e, s, 
-, c, o, m, m, o, n, l, y,  , u, s, e, d,  , i, n,  , r, a, d, i, o, l, o, g, i, s, t, s, ',  , d, i, a, g, n, o, s, t, i, c,  , w, o, r, k, f, l, o, w, s, ,,  , t, h, e, r, e, b, y,  , l, i, m, i, t, i, n, g,  , t, h, e, i, r, 
-, p, e, r, f, o, r, m, a, n, c, e, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , i, n, t, r, o, d, u, c, e, ,,  , f, o, r,  , t, h, e,  , f, i, r, s, t,  , t, i, m, e, ,,  , a, n,  , a, u, t, o, m, a, t, i, c,  , w, a, y, 
-, t, o,  , c, o, m, b, i, n, e,  , t, h, e,  , m, u, l, t, i, -, p, h, a, s, e,  , C, E, C, T,  , d, a, t, a,  , t, o,  , d, i, s, c, r, i, m, i, n, a, t, e,  , b, e, t, w, e, e, n,  , p, a, n, c, r, e, a, t, i, c,  , t, u, m, o, r, 
-, s, u, b, t, y, p, e, s, ,,  , a, m, o, n, g,  , w, h, i, c, h,  , t, h, e,  , k, e, y,  , i, s,  , u, s, i, n, g,  , M, a, m, b, a,  , w, i, t, h,  , p, r, o, m, i, s, i, n, g,  , l, e, a, r, n, a, b, i, l, i, t, y,  , a, n, d, 
-, s, i, m, p, l, i, c, i, t, y,  , t, o,  , e, n, c, o, u, r, a, g, e,  , b, o, t, h,  , t, e, m, p, o, r, a, l,  , a, n, d,  , s, p, a, t, i, a, l,  , m, o, d, e, l, i, n, g,  , f, r, o, m,  , m, u, l, t, i, -, p, h, a, s, e, 
-, C, E, C, T, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , d, u, a, l,  , h, i, e, r, a, r, c, h, i, c, a, l,  , c, o, n, t, r, a, s, t, -, e, n, h, a, n, c, e, d, -, a, w, a, r, e, 
-, M, a, m, b, a,  , m, o, d, u, l, e,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , t, w, o,  , n, o, v, e, l,  , s, p, a, t, i, a, l,  , a, n, d,  , t, e, m, p, o, r, a, l,  , s, a, m, p, l, i, n, g,  , s, e, q, u, e, n, c, e, s,  , t, o, 
-, e, x, p, l, o, r, e,  , i, n, t, r, a,  , a, n, d,  , i, n, t, e, r, -, p, h, a, s, e,  , c, o, n, t, r, a, s, t,  , v, a, r, i, a, t, i, o, n, s,  , o, f,  , l, e, s, i, o, n, s, .,  , A, 
-, s, i, m, i, l, a, r, i, t, y, -, g, u, i, d, e, d,  , r, e, f, i, n, e, m, e, n, t,  , m, o, d, u, l, e,  , i, s,  , a, l, s, o,  , i, m, p, o, s, e, d,  , i, n, t, o,  , t, h, e,  , t, e, m, p, o, r, a, l,  , s, c, a, n, n, i, n, g, 
-, m, o, d, e, l, i, n, g,  , t, o,  , e, m, p, h, a, s, i, z, e,  , t, h, e,  , l, e, a, r, n, i, n, g,  , o, n,  , l, o, c, a, l,  , t, u, m, o, r,  , r, e, g, i, o, n, s,  , w, i, t, h,  , m, o, r, e,  , o, b, v, i, o, u, s, 
-, t, e, m, p, o, r, a, l,  , v, a, r, i, a, t, i, o, n, s, .,  , M, o, r, e, o, v, e, r, ,,  , w, e,  , d, e, s, i, g, n,  , t, h, e,  , s, p, a, c, e,  , c, o, m, p, l, e, m, e, n, t, a, r, y,  , i, n, t, e, g, r, a, t, o, r,  , a, n, d, 
-, m, u, l, t, i, -, g, r, a, n, u, l, a, r, i, t, y,  , f, u, s, i, o, n,  , m, o, d, u, l, e,  , t, o,  , e, n, c, o, d, e,  , a, n, d,  , a, g, g, r, e, g, a, t, e,  , t, h, e,  , s, e, m, a, n, t, i, c, s,  , a, c, r, o, s, s, 
-, d, i, f, f, e, r, e, n, t,  , s, c, a, l, e, s, ,,  , a, c, h, i, e, v, i, n, g,  , m, o, r, e,  , e, f, f, i, c, i, e, n, t,  , l, e, a, r, n, i, n, g,  , f, o, r,  , s, u, b, t, y, p, i, n, g,  , p, a, n, c, r, e, a, t, i, c, 
-, t, u, m, o, r, s, .,  , T, h, e,  , e, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , o, n,  , a, n,  , i, n, -, h, o, u, s, e,  , d, a, t, a, s, e, t,  , o, f,  , 2, 7, 0,  , c, l, i, n, i, c, a, l,  , c, a, s, e, s, 
-, a, c, h, i, e, v, e,  , a, n,  , a, c, c, u, r, a, c, y,  , o, f,  , 9, 7, ., 4, %,  , a, n, d,  , a, n,  , A, U, C,  , o, f,  , 9, 8, ., 6, %,  , i, n,  , d, i, s, t, i, n, g, u, i, s, h, i, n, g,  , b, e, t, w, e, e, n, 
-, p, a, n, c, r, e, a, t, i, c,  , d, u, c, t, a, l,  , a, d, e, n, o, c, a, r, c, i, n, o, m, a,  , (, P, D, A, C, ),  , a, n, d,  , p, a, n, c, r, e, a, t, i, c,  , n, e, u, r, o, e, n, d, o, c, r, i, n, e,  , t, u, m, o, r, s, 
-, (, P, N, E, T, s, ), ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , i, t, s,  , p, o, t, e, n, t, i, a, l,  , a, s,  , a,  , m, o, r, e,  , a, c, c, u, r, a, t, e,  , a, n, d,  , e, f, f, i, c, i, e, n, t,  , t, o, o, l, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12765v1'>InfoGain-RAG: Boosting Retrieval-Augmented Generation via Document Information Gain-based Reranking and Filtering</a></td><td>R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , h, a, s,  , e, m, e, r, g, e, d,  , a, s,  , a,  , p, r, o, m, i, s, i, n, g,  , a, p, p, r, o, a, c, h,  , t, o, 
-, a, d, d, r, e, s, s,  , k, e, y,  , l, i, m, i, t, a, t, i, o, n, s,  , o, f,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ), ,,  , s, u, c, h,  , a, s,  , h, a, l, l, u, c, i, n, a, t, i, o, n, ,, 
-, o, u, t, d, a, t, e, d,  , k, n, o, w, l, e, d, g, e, ,,  , a, n, d,  , l, a, c, k, i, n, g,  , r, e, f, e, r, e, n, c, e, .,  , H, o, w, e, v, e, r, ,,  , c, u, r, r, e, n, t,  , R, A, G,  , f, r, a, m, e, w, o, r, k, s, 
-, o, f, t, e, n,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , i, d, e, n, t, i, f, y, i, n, g,  , w, h, e, t, h, e, r,  , r, e, t, r, i, e, v, e, d,  , d, o, c, u, m, e, n, t, s,  , m, e, a, n, i, n, g, f, u, l, l, y, 
-, c, o, n, t, r, i, b, u, t, e,  , t, o,  , a, n, s, w, e, r,  , g, e, n, e, r, a, t, i, o, n, .,  , T, h, i, s,  , s, h, o, r, t, c, o, m, i, n, g,  , m, a, k, e, s,  , i, t,  , d, i, f, f, i, c, u, l, t,  , t, o,  , f, i, l, t, e, r, 
-, o, u, t,  , i, r, r, e, l, e, v, a, n, t,  , o, r,  , e, v, e, n,  , m, i, s, l, e, a, d, i, n, g,  , c, o, n, t, e, n, t, ,,  , w, h, i, c, h,  , n, o, t, a, b, l, y,  , i, m, p, a, c, t, s,  , t, h, e,  , f, i, n, a, l, 
-, p, e, r, f, o, r, m, a, n, c, e, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , D, o, c, u, m, e, n, t,  , I, n, f, o, r, m, a, t, i, o, n,  , G, a, i, n,  , (, D, I, G, ), ,,  , a,  , n, o, v, e, l, 
-, m, e, t, r, i, c,  , d, e, s, i, g, n, e, d,  , t, o,  , q, u, a, n, t, i, f, y,  , t, h, e,  , c, o, n, t, r, i, b, u, t, i, o, n,  , o, f,  , r, e, t, r, i, e, v, e, d,  , d, o, c, u, m, e, n, t, s,  , t, o,  , c, o, r, r, e, c, t, 
-, a, n, s, w, e, r,  , g, e, n, e, r, a, t, i, o, n, .,  , D, I, G,  , m, e, a, s, u, r, e, s,  , a,  , d, o, c, u, m, e, n, t, ', s,  , v, a, l, u, e,  , b, y,  , c, o, m, p, u, t, i, n, g,  , t, h, e,  , d, i, f, f, e, r, e, n, c, e, 
-, o, f,  , L, L, M, ', s,  , g, e, n, e, r, a, t, i, o, n,  , c, o, n, f, i, d, e, n, c, e,  , w, i, t, h,  , a, n, d,  , w, i, t, h, o, u, t,  , t, h, e,  , d, o, c, u, m, e, n, t,  , a, u, g, m, e, n, t, e, d, ., 
-, F, u, r, t, h, e, r, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , I, n, f, o, G, a, i, n, -, R, A, G, ,,  , a,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , D, I, G,  , s, c, o, r, e, s,  , t, o, 
-, t, r, a, i, n,  , a,  , s, p, e, c, i, a, l, i, z, e, d,  , r, e, r, a, n, k, e, r, ,,  , w, h, i, c, h,  , p, r, i, o, r, i, t, i, z, e, s,  , e, a, c, h,  , r, e, t, r, i, e, v, e, d,  , d, o, c, u, m, e, n, t,  , f, r, o, m, 
-, e, x, a, c, t,  , d, i, s, t, i, n, g, u, i, s, h, i, n, g,  , a, n, d,  , a, c, c, u, r, a, t, e,  , s, o, r, t, i, n, g,  , p, e, r, s, p, e, c, t, i, v, e, s, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h,  , c, a, n, 
-, e, f, f, e, c, t, i, v, e, l, y,  , f, i, l, t, e, r,  , o, u, t,  , i, r, r, e, l, e, v, a, n, t,  , d, o, c, u, m, e, n, t, s,  , a, n, d,  , s, e, l, e, c, t,  , t, h, e,  , m, o, s, t,  , v, a, l, u, a, b, l, e,  , o, n, e, s, 
-, f, o, r,  , b, e, t, t, e, r,  , a, n, s, w, e, r,  , g, e, n, e, r, a, t, i, o, n, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s,  , m, o, d, e, l, s,  , a, n, d, 
-, b, e, n, c, h, m, a, r, k, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , I, n, f, o, G, a, i, n, -, R, A, G,  , c, a, n,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m,  , e, x, i, s, t, i, n, g, 
-, a, p, p, r, o, a, c, h, e, s, ,,  , o, n,  , b, o, t, h,  , s, i, n, g, l, e,  , a, n, d,  , m, u, l, t, i, p, l, e,  , r, e, t, r, i, e, v, e, r, s,  , p, a, r, a, d, i, g, m, .,  , S, p, e, c, i, f, i, c, a, l, l, y,  , o, n, 
-, N, a, t, u, r, a, l, Q, A, ,,  , i, t,  , a, c, h, i, e, v, e, s,  , t, h, e,  , i, m, p, r, o, v, e, m, e, n, t, s,  , o, f,  , 1, 7, ., 9, %, ,,  , 4, ., 5, %, ,,  , 1, 2, ., 5, %,  , i, n,  , e, x, a, c, t,  , m, a, t, c, h, 
-, a, c, c, u, r, a, c, y,  , a, g, a, i, n, s, t,  , n, a, i, v, e,  , R, A, G, ,,  , s, e, l, f, -, r, e, f, l, e, c, t, i, v, e,  , R, A, G,  , a, n, d,  , m, o, d, e, r, n,  , r, a, n, k, i, n, g, -, b, a, s, e, d,  , R, A, G, 
-, r, e, s, p, e, c, t, i, v, e, l, y, ,,  , a, n, d,  , e, v, e, n,  , a, n,  , a, v, e, r, a, g, e,  , o, f,  , 1, 5, ., 3, %,  , i, n, c, r, e, m, e, n, t,  , o, n,  , a, d, v, a, n, c, e, d,  , p, r, o, p, r, i, e, t, a, r, y, 
-, m, o, d, e, l,  , G, P, T, -, 4, o,  , a, c, r, o, s, s,  , a, l, l,  , d, a, t, a, s, e, t, s, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, e,  , f, e, a, s, i, b, i, l, i, t, y,  , o, f, 
-, I, n, f, o, G, a, i, n, -, R, A, G,  , a, s,  , i, t,  , c, a, n,  , o, f, f, e, r,  , a,  , r, e, l, i, a, b, l, e,  , s, o, l, u, t, i, o, n,  , f, o, r,  , R, A, G,  , i, n,  , m, u, l, t, i, p, l, e, 
-, a, p, p, l, i, c, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12754v1'>Toward Ownership Understanding of Objects: Active Question Generation with Large Language Model and Probabilistic Generative Model</a></td><td>R, o, b, o, t, s,  , o, p, e, r, a, t, i, n, g,  , i, n,  , d, o, m, e, s, t, i, c,  , a, n, d,  , o, f, f, i, c, e,  , e, n, v, i, r, o, n, m, e, n, t, s,  , m, u, s, t,  , u, n, d, e, r, s, t, a, n, d,  , o, b, j, e, c, t, 
-, o, w, n, e, r, s, h, i, p,  , t, o,  , c, o, r, r, e, c, t, l, y,  , e, x, e, c, u, t, e,  , i, n, s, t, r, u, c, t, i, o, n, s,  , s, u, c, h,  , a, s,  , `, `, B, r, i, n, g,  , m, e,  , m, y,  , c, u, p, ., ', ', 
-, H, o, w, e, v, e, r, ,,  , o, w, n, e, r, s, h, i, p,  , c, a, n, n, o, t,  , b, e,  , r, e, l, i, a, b, l, y,  , i, n, f, e, r, r, e, d,  , f, r, o, m,  , v, i, s, u, a, l,  , f, e, a, t, u, r, e, s,  , a, l, o, n, e, .,  , T, o, 
-, a, d, d, r, e, s, s,  , t, h, i, s,  , g, a, p, ,,  , w, e,  , p, r, o, p, o, s, e,  , A, c, t, i, v, e,  , O, w, n, e, r, s, h, i, p,  , L, e, a, r, n, i, n, g,  , (, A, c, t, O, w, L, ), ,,  , a,  , f, r, a, m, e, w, o, r, k, 
-, t, h, a, t,  , e, n, a, b, l, e, s,  , r, o, b, o, t, s,  , t, o,  , a, c, t, i, v, e, l, y,  , g, e, n, e, r, a, t, e,  , a, n, d,  , a, s, k,  , o, w, n, e, r, s, h, i, p, -, r, e, l, a, t, e, d,  , q, u, e, s, t, i, o, n, s,  , t, o, 
-, u, s, e, r, s, .,  , A, c, t, O, w, L,  , e, m, p, l, o, y, s,  , a,  , p, r, o, b, a, b, i, l, i, s, t, i, c,  , g, e, n, e, r, a, t, i, v, e,  , m, o, d, e, l,  , t, o,  , s, e, l, e, c, t,  , q, u, e, s, t, i, o, n, s,  , t, h, a, t, 
-, m, a, x, i, m, i, z, e,  , i, n, f, o, r, m, a, t, i, o, n,  , g, a, i, n, ,,  , t, h, e, r, e, b, y,  , a, c, q, u, i, r, i, n, g,  , o, w, n, e, r, s, h, i, p,  , k, n, o, w, l, e, d, g, e,  , e, f, f, i, c, i, e, n, t, l, y,  , t, o, 
-, i, m, p, r, o, v, e,  , l, e, a, r, n, i, n, g,  , e, f, f, i, c, i, e, n, c, y, .,  , A, d, d, i, t, i, o, n, a, l, l, y, ,,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , c, o, m, m, o, n, s, e, n, s, e,  , k, n, o, w, l, e, d, g, e, 
-, f, r, o, m,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, ), ,,  , o, b, j, e, c, t, s,  , a, r, e,  , p, r, e, -, c, l, a, s, s, i, f, i, e, d,  , a, s,  , e, i, t, h, e, r,  , s, h, a, r, e, d, 
-, o, r,  , o, w, n, e, d, ,,  , a, n, d,  , o, n, l, y,  , o, w, n, e, d,  , o, b, j, e, c, t, s,  , a, r, e,  , t, a, r, g, e, t, e, d,  , f, o, r,  , q, u, e, s, t, i, o, n, i, n, g, .,  , T, h, r, o, u, g, h, 
-, e, x, p, e, r, i, m, e, n, t, s,  , i, n,  , a,  , s, i, m, u, l, a, t, e, d,  , h, o, m, e,  , e, n, v, i, r, o, n, m, e, n, t,  , a, n, d,  , a,  , r, e, a, l, -, w, o, r, l, d,  , l, a, b, o, r, a, t, o, r, y, 
-, s, e, t, t, i, n, g, ,,  , A, c, t, O, w, L,  , a, c, h, i, e, v, e, d,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , h, i, g, h, e, r,  , o, w, n, e, r, s, h, i, p,  , c, l, u, s, t, e, r, i, n, g,  , a, c, c, u, r, a, c, y, 
-, w, i, t, h,  , f, e, w, e, r,  , q, u, e, s, t, i, o, n, s,  , t, h, a, n,  , b, a, s, e, l, i, n, e,  , m, e, t, h, o, d, s, .,  , T, h, e, s, e,  , f, i, n, d, i, n, g, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, e, 
-, e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , c, o, m, b, i, n, i, n, g,  , a, c, t, i, v, e,  , i, n, f, e, r, e, n, c, e,  , w, i, t, h,  , L, L, M, -, g, u, i, d, e, d,  , c, o, m, m, o, n, s, e, n, s, e, 
-, r, e, a, s, o, n, i, n, g, ,,  , a, d, v, a, n, c, i, n, g,  , t, h, e,  , c, a, p, a, b, i, l, i, t, y,  , o, f,  , r, o, b, o, t, s,  , t, o,  , a, c, q, u, i, r, e,  , o, w, n, e, r, s, h, i, p,  , k, n, o, w, l, e, d, g, e, 
-, f, o, r,  , p, r, a, c, t, i, c, a, l,  , a, n, d,  , s, o, c, i, a, l, l, y,  , a, p, p, r, o, p, r, i, a, t, e,  , t, a, s, k,  , e, x, e, c, u, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12743v1'>Zero-shot Graph Reasoning via Retrieval Augmented Framework with LLMs</a></td><td>W, e,  , p, r, o, p, o, s, e,  , a,  , n, e, w, ,,  , t, r, a, i, n, i, n, g, -, f, r, e, e,  , m, e, t, h, o, d, ,,  , G, r, a, p, h,  , R, e, a, s, o, n, i, n, g,  , v, i, a,  , R, e, t, r, i, e, v, a, l, 
-, A, u, g, m, e, n, t, e, d,  , F, r, a, m, e, w, o, r, k,  , (, G, R, R, A, F, ), ,,  , t, h, a, t,  , h, a, r, n, e, s, s, e, s,  , r, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n, 
-, (, R, A, G, ),  , a, l, o, n, g, s, i, d, e,  , t, h, e,  , c, o, d, e, -, g, e, n, e, r, a, t, i, o, n,  , c, a, p, a, b, i, l, i, t, i, e, s,  , o, f,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, 
-, (, L, L, M, s, ),  , t, o,  , a, d, d, r, e, s, s,  , a,  , w, i, d, e,  , r, a, n, g, e,  , o, f,  , g, r, a, p, h,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s, .,  , I, n,  , G, R, R, A, F, ,,  , t, h, e,  , t, a, r, g, e, t, 
-, g, r, a, p, h,  , i, s,  , s, t, o, r, e, d,  , i, n,  , a,  , g, r, a, p, h,  , d, a, t, a, b, a, s, e, ,,  , a, n, d,  , t, h, e,  , L, L, M,  , i, s,  , p, r, o, m, p, t, e, d,  , t, o,  , g, e, n, e, r, a, t, e, 
-, e, x, e, c, u, t, a, b, l, e,  , c, o, d, e,  , q, u, e, r, i, e, s,  , t, h, a, t,  , r, e, t, r, i, e, v, e,  , t, h, e,  , n, e, c, e, s, s, a, r, y,  , i, n, f, o, r, m, a, t, i, o, n, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h, 
-, c, i, r, c, u, m, v, e, n, t, s,  , t, h, e,  , l, i, m, i, t, a, t, i, o, n, s,  , o, f,  , e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , t, h, a, t,  , r, e, q, u, i, r, e,  , e, x, t, e, n, s, i, v, e, 
-, f, i, n, e, t, u, n, i, n, g,  , o, r,  , d, e, p, e, n, d,  , o, n,  , p, r, e, d, e, f, i, n, e, d,  , a, l, g, o, r, i, t, h, m, s, ,,  , a, n, d,  , i, t,  , i, n, c, o, r, p, o, r, a, t, e, s,  , a, n,  , e, r, r, o, r, 
-, f, e, e, d, b, a, c, k,  , l, o, o, p,  , w, i, t, h,  , a,  , t, i, m, e, -, o, u, t,  , m, e, c, h, a, n, i, s, m,  , t, o,  , e, n, s, u, r, e,  , b, o, t, h,  , c, o, r, r, e, c, t, n, e, s, s,  , a, n, d, 
-, e, f, f, i, c, i, e, n, c, y, .,  , E, x, p, e, r, i, m, e, n, t, a, l,  , e, v, a, l, u, a, t, i, o, n, s,  , o, n,  , t, h, e,  , G, r, a, p, h, I, n, s, t, r, u, c, t,  , d, a, t, a, s, e, t,  , r, e, v, e, a, l,  , t, h, a, t, 
-, G, R, R, A, F,  , a, c, h, i, e, v, e, s,  , 1, 0, 0, %,  , a, c, c, u, r, a, c, y,  , o, n,  , m, o, s, t,  , g, r, a, p, h,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s, ,,  , i, n, c, l, u, d, i, n, g,  , c, y, c, l, e, 
-, d, e, t, e, c, t, i, o, n, ,,  , b, i, p, a, r, t, i, t, e,  , g, r, a, p, h,  , c, h, e, c, k, s, ,,  , s, h, o, r, t, e, s, t,  , p, a, t, h,  , c, o, m, p, u, t, a, t, i, o, n, ,,  , a, n, d,  , m, a, x, i, m, u, m,  , f, l, o, w, ,, 
-, w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , c, o, n, s, i, s, t, e, n, t,  , t, o, k, e, n,  , c, o, s, t, s,  , r, e, g, a, r, d, l, e, s, s,  , o, f,  , g, r, a, p, h,  , s, i, z, e, s, .,  , I, m, p, e, r, f, e, c, t, 
-, b, u, t,  , s, t, i, l, l,  , v, e, r, y,  , h, i, g, h,  , p, e, r, f, o, r, m, a, n, c, e,  , i, s,  , o, b, s, e, r, v, e, d,  , o, n,  , s, u, b, g, r, a, p, h,  , m, a, t, c, h, i, n, g, .,  , N, o, t, a, b, l, y, ,, 
-, G, R, R, A, F,  , s, c, a, l, e, s,  , e, f, f, e, c, t, i, v, e, l, y,  , t, o,  , l, a, r, g, e,  , g, r, a, p, h, s,  , w, i, t, h,  , u, p,  , t, o,  , 1, 0, ,, 0, 0, 0,  , n, o, d, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12740v1'>Deep Generative and Discriminative Digital Twin endowed with Variational Autoencoder for Unsupervised Predictive Thermal Condition Monitoring of Physical Robots in Industry 6.0 and Society 6.0</a></td><td>R, o, b, o, t, s,  , a, r, e,  , u, n, r, e, l, e, n, t, i, n, g, l, y,  , u, s, e, d,  , t, o,  , a, c, h, i, e, v, e,  , o, p, e, r, a, t, i, o, n, a, l,  , e, f, f, i, c, i, e, n, c, y,  , i, n,  , I, n, d, u, s, t, r, y, 
-, 4, ., 0,  , a, l, o, n, g,  , w, i, t, h,  , s, y, m, b, i, o, t, i, c,  , a, n, d,  , s, u, s, t, a, i, n, a, b, l, e,  , a, s, s, i, s, t, a, n, c, e,  , f, o, r,  , t, h, e,  , w, o, r, k, -, f, o, r, c, e,  , i, n, 
-, I, n, d, u, s, t, r, y,  , 5, ., 0, .,  , A, s,  , r, e, s, i, l, i, e, n, c, e, ,,  , r, o, b, u, s, t, n, e, s, s, ,,  , a, n, d,  , w, e, l, l, -, b, e, i, n, g,  , a, r, e,  , r, e, q, u, i, r, e, d,  , i, n, 
-, a, n, t, i, -, f, r, a, g, i, l, e,  , m, a, n, u, f, a, c, t, u, r, i, n, g,  , a, n, d,  , h, u, m, a, n, -, c, e, n, t, r, i, c,  , s, o, c, i, e, t, a, l,  , t, a, s, k, s, ,,  , a, n,  , a, u, t, o, n, o, m, o, u, s, 
-, a, n, t, i, c, i, p, a, t, i, o, n,  , a, n, d,  , a, d, a, p, t, i, o, n,  , t, o,  , t, h, e, r, m, a, l,  , s, a, t, u, r, a, t, i, o, n,  , a, n, d,  , b, u, r, n, s,  , d, u, e,  , t, o,  , m, o, t, o, r, s, 
-, o, v, e, r, h, e, a, t, i, n, g,  , b, e, c, o, m, e,  , i, n, s, t, r, u, m, e, n, t, a, l,  , f, o, r,  , h, u, m, a, n,  , s, a, f, e, t, y,  , a, n, d,  , r, o, b, o, t,  , a, v, a, i, l, a, b, i, l, i, t, y, .,  , R, o, b, o, t, s, 
-, a, r, e,  , t, h, e, r, e, b, y,  , e, x, p, e, c, t, e, d,  , t, o,  , s, e, l, f, -, s, u, s, t, a, i, n,  , t, h, e, i, r,  , p, e, r, f, o, r, m, a, n, c, e,  , a, n, d,  , d, e, l, i, v, e, r,  , u, s, e, r, 
-, e, x, p, e, r, i, e, n, c, e, ,,  , i, n,  , a, d, d, i, t, i, o, n,  , t, o,  , c, o, m, m, u, n, i, c, a, t, i, n, g,  , t, h, e, i, r,  , c, a, p, a, b, i, l, i, t, y,  , t, o,  , o, t, h, e, r,  , a, g, e, n, t, s,  , i, n, 
-, a, d, v, a, n, c, e,  , t, o,  , e, n, s, u, r, e,  , f, u, l, l, y,  , a, u, t, o, m, a, t, e, d,  , t, h, e, r, m, a, l, l, y,  , f, e, a, s, i, b, l, e,  , t, a, s, k, s, ,,  , a, n, d,  , p, r, o, l, o, n, g,  , t, h, e, i, r, 
-, l, i, f, e, t, i, m, e,  , w, i, t, h, o, u, t,  , h, u, m, a, n,  , i, n, t, e, r, v, e, n, t, i, o, n, .,  , H, o, w, e, v, e, r, ,,  , t, h, e,  , t, r, a, d, i, t, i, o, n, a, l,  , r, o, b, o, t,  , s, h, u, t, d, o, w, n, ,, 
-, w, h, e, n,  , f, a, c, i, n, g,  , a, n,  , i, m, m, i, n, e, n, t,  , t, h, e, r, m, a, l,  , s, a, t, u, r, a, t, i, o, n, ,,  , i, n, h, i, b, i, t, s,  , p, r, o, d, u, c, t, i, v, i, t, y,  , i, n,  , f, a, c, t, o, r, i, e, s, 
-, a, n, d,  , c, o, m, f, o, r, t,  , i, n,  , t, h, e,  , s, o, c, i, e, t, y, ,,  , w, h, i, l, e,  , c, o, o, l, i, n, g,  , s, t, r, a, t, e, g, i, e, s,  , a, r, e,  , h, a, r, d,  , t, o,  , i, m, p, l, e, m, e, n, t, 
-, a, f, t, e, r,  , t, h, e,  , r, o, b, o, t,  , a, c, q, u, i, s, i, t, i, o, n, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , s, m, a, r, t,  , d, i, g, i, t, a, l,  , t, w, i, n, s,  , e, n, d, o, w, e, d,  , w, i, t, h, 
-, g, e, n, e, r, a, t, i, v, e,  , A, I, ,,  , i, ., e, ., ,,  , v, a, r, i, a, t, i, o, n, a, l,  , a, u, t, o, e, n, c, o, d, e, r, s, ,,  , a, r, e,  , l, e, v, e, r, a, g, e, d,  , t, o,  , m, a, n, a, g, e, 
-, t, h, e, r, m, a, l, l, y,  , a, n, o, m, a, l, o, u, s,  , a, n, d,  , g, e, n, e, r, a, t, e,  , u, n, c, r, i, t, i, c, a, l,  , r, o, b, o, t,  , s, t, a, t, e, s, .,  , T, h, e,  , n, o, t, i, o, n,  , o, f,  , t, h, e, r, m, a, l, 
-, d, i, f, f, i, c, u, l, t, y,  , i, s,  , d, e, r, i, v, e, d,  , f, r, o, m,  , t, h, e,  , r, e, c, o, n, s, t, r, u, c, t, i, o, n,  , e, r, r, o, r,  , o, f,  , v, a, r, i, a, t, i, o, n, a, l, 
-, a, u, t, o, e, n, c, o, d, e, r, s, .,  , A,  , r, o, b, o, t,  , c, a, n,  , u, s, e,  , t, h, i, s,  , s, c, o, r, e,  , t, o,  , p, r, e, d, i, c, t, ,,  , a, n, t, i, c, i, p, a, t, e, ,,  , a, n, d,  , s, h, a, r, e,  , t, h, e, 
-, t, h, e, r, m, a, l,  , f, e, a, s, i, b, i, l, i, t, y,  , o, f,  , d, e, s, i, r, e, d,  , m, o, t, i, o, n,  , p, r, o, f, i, l, e, s,  , t, o,  , m, e, e, t,  , r, e, q, u, i, r, e, m, e, n, t, s,  , f, r, o, m, 
-, e, m, e, r, g, i, n, g,  , a, p, p, l, i, c, a, t, i, o, n, s,  , i, n,  , I, n, d, u, s, t, r, y,  , 6, ., 0,  , a, n, d,  , S, o, c, i, e, t, y,  , 6, ., 0, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12724v1'>Defense-to-Attack: Bypassing Weak Defenses Enables Stronger Jailbreaks in Vision-Language Models</a></td><td>D, e, s, p, i, t, e,  , t, h, e, i, r,  , s, u, p, e, r, b,  , c, a, p, a, b, i, l, i, t, i, e, s, ,,  , V, i, s, i, o, n, -, L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, V, L, M, s, ),  , h, a, v, e,  , b, e, e, n, 
-, s, h, o, w, n,  , t, o,  , b, e,  , v, u, l, n, e, r, a, b, l, e,  , t, o,  , j, a, i, l, b, r, e, a, k,  , a, t, t, a, c, k, s, .,  , W, h, i, l, e,  , r, e, c, e, n, t,  , j, a, i, l, b, r, e, a, k, s,  , h, a, v, e, 
-, a, c, h, i, e, v, e, d,  , n, o, t, a, b, l, e,  , p, r, o, g, r, e, s, s, ,,  , t, h, e, i, r,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , a, n, d,  , e, f, f, i, c, i, e, n, c, y,  , c, a, n,  , s, t, i, l, l,  , b, e, 
-, i, m, p, r, o, v, e, d, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e,  , r, e, v, e, a, l,  , a, n,  , i, n, t, e, r, e, s, t, i, n, g,  , p, h, e, n, o, m, e, n, o, n, :,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , w, e, a, k, 
-, d, e, f, e, n, s, e,  , i, n, t, o,  , t, h, e,  , a, t, t, a, c, k,  , p, i, p, e, l, i, n, e,  , c, a, n,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , e, n, h, a, n, c, e,  , b, o, t, h,  , t, h, e, 
-, e, f, f, e, c, t, i, v, e, n, e, s, s,  , a, n, d,  , t, h, e,  , e, f, f, i, c, i, e, n, c, y,  , o, f,  , j, a, i, l, b, r, e, a, k, s,  , o, n,  , V, L, M, s, .,  , B, u, i, l, d, i, n, g,  , o, n,  , t, h, i, s, 
-, i, n, s, i, g, h, t, ,,  , w, e,  , p, r, o, p, o, s, e,  , D, e, f, e, n, s, e, 2, A, t, t, a, c, k, ,,  , a,  , n, o, v, e, l,  , j, a, i, l, b, r, e, a, k,  , m, e, t, h, o, d,  , t, h, a, t,  , b, y, p, a, s, s, e, s,  , t, h, e, 
-, s, a, f, e, t, y,  , g, u, a, r, d, r, a, i, l, s,  , o, f,  , V, L, M, s,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , d, e, f, e, n, s, i, v, e,  , p, a, t, t, e, r, n, s,  , t, o,  , g, u, i, d, e,  , j, a, i, l, b, r, e, a, k, 
-, p, r, o, m, p, t,  , d, e, s, i, g, n, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , D, e, f, e, n, s, e, 2, A, t, t, a, c, k,  , c, o, n, s, i, s, t, s,  , o, f,  , t, h, r, e, e,  , k, e, y,  , c, o, m, p, o, n, e, n, t, s, :, 
-, (, 1, ),  , a,  , v, i, s, u, a, l,  , o, p, t, i, m, i, z, e, r,  , t, h, a, t,  , e, m, b, e, d, s,  , u, n, i, v, e, r, s, a, l,  , a, d, v, e, r, s, a, r, i, a, l,  , p, e, r, t, u, r, b, a, t, i, o, n, s,  , w, i, t, h, 
-, a, f, f, i, r, m, a, t, i, v, e,  , a, n, d,  , e, n, c, o, u, r, a, g, i, n, g,  , s, e, m, a, n, t, i, c, s, ;,  , (, 2, ),  , a,  , t, e, x, t, u, a, l,  , o, p, t, i, m, i, z, e, r,  , t, h, a, t,  , r, e, f, i, n, e, s,  , t, h, e, 
-, i, n, p, u, t,  , u, s, i, n, g,  , a,  , d, e, f, e, n, s, e, -, s, t, y, l, e, d,  , p, r, o, m, p, t, ;,  , a, n, d,  , (, 3, ),  , a,  , r, e, d, -, t, e, a, m,  , s, u, f, f, i, x,  , g, e, n, e, r, a, t, o, r,  , t, h, a, t, 
-, e, n, h, a, n, c, e, s,  , t, h, e,  , j, a, i, l, b, r, e, a, k,  , t, h, r, o, u, g, h,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , f, i, n, e, -, t, u, n, i, n, g, .,  , W, e,  , e, m, p, i, r, i, c, a, l, l, y, 
-, e, v, a, l, u, a, t, e,  , o, u, r,  , m, e, t, h, o, d,  , o, n,  , f, o, u, r,  , V, L, M, s,  , a, n, d,  , f, o, u, r,  , s, a, f, e, t, y,  , b, e, n, c, h, m, a, r, k, s, .,  , T, h, e,  , r, e, s, u, l, t, s, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , D, e, f, e, n, s, e, 2, A, t, t, a, c, k,  , a, c, h, i, e, v, e, s,  , s, u, p, e, r, i, o, r,  , j, a, i, l, b, r, e, a, k,  , p, e, r, f, o, r, m, a, n, c, e,  , i, n,  , a, 
-, s, i, n, g, l, e,  , a, t, t, e, m, p, t, ,,  , o, u, t, p, e, r, f, o, r, m, i, n, g,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , a, t, t, a, c, k,  , m, e, t, h, o, d, s,  , t, h, a, t,  , o, f, t, e, n, 
-, r, e, q, u, i, r, e,  , m, u, l, t, i, p, l, e,  , t, r, i, e, s, .,  , O, u, r,  , w, o, r, k,  , o, f, f, e, r, s,  , a,  , n, e, w,  , p, e, r, s, p, e, c, t, i, v, e,  , o, n,  , j, a, i, l, b, r, e, a, k, i, n, g,  , V, L, M, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12716v1'>Joint AoI and Handover Optimization in Space-Air-Ground Integrated Network</a></td><td>D, e, s, p, i, t, e,  , t, h, e,  , w, i, d, e, s, p, r, e, a, d,  , d, e, p, l, o, y, m, e, n, t,  , o, f,  , t, e, r, r, e, s, t, r, i, a, l,  , n, e, t, w, o, r, k, s, ,,  , p, r, o, v, i, d, i, n, g,  , r, e, l, i, a, b, l, e, 
-, c, o, m, m, u, n, i, c, a, t, i, o, n,  , s, e, r, v, i, c, e, s,  , t, o,  , r, e, m, o, t, e,  , a, r, e, a, s,  , a, n, d,  , m, a, i, n, t, a, i, n, i, n, g,  , c, o, n, n, e, c, t, i, v, i, t, y,  , d, u, r, i, n, g, 
-, e, m, e, r, g, e, n, c, i, e, s,  , r, e, m, a, i, n, s,  , c, h, a, l, l, e, n, g, i, n, g, .,  , L, o, w,  , E, a, r, t, h,  , o, r, b, i, t,  , (, L, E, O, ),  , s, a, t, e, l, l, i, t, e,  , c, o, n, s, t, e, l, l, a, t, i, o, n, s, 
-, o, f, f, e, r,  , p, r, o, m, i, s, i, n, g,  , s, o, l, u, t, i, o, n, s,  , w, i, t, h,  , t, h, e, i, r,  , g, l, o, b, a, l,  , c, o, v, e, r, a, g, e,  , c, a, p, a, b, i, l, i, t, i, e, s,  , a, n, d,  , r, e, d, u, c, e, d, 
-, l, a, t, e, n, c, y, ,,  , y, e, t,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , i, n, t, e, r, m, i, t, t, e, n, t,  , c, o, v, e, r, a, g, e,  , a, n, d,  , l, i, m, i, t, e, d,  , c, o, m, m, u, n, i, c, a, t, i, o, n, 
-, w, i, n, d, o, w, s,  , d, u, e,  , t, o,  , o, r, b, i, t, a, l,  , d, y, n, a, m, i, c, s, .,  , T, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , a, n,  , a, g, e,  , o, f,  , i, n, f, o, r, m, a, t, i, o, n, 
-, (, A, o, I, ), -, a, w, a, r, e,  , s, p, a, c, e, -, a, i, r, -, g, r, o, u, n, d,  , i, n, t, e, g, r, a, t, e, d,  , n, e, t, w, o, r, k,  , (, S, A, G, I, N, ),  , a, r, c, h, i, t, e, c, t, u, r, e,  , t, h, a, t, 
-, l, e, v, e, r, a, g, e, s,  , a,  , h, i, g, h, -, a, l, t, i, t, u, d, e,  , p, l, a, t, f, o, r, m,  , (, H, A, P, ),  , a, s,  , i, n, t, e, l, l, i, g, e, n, t,  , r, e, l, a, y,  , b, e, t, w, e, e, n,  , t, h, e,  , L, E, O, 
-, s, a, t, e, l, l, i, t, e, s,  , a, n, d,  , g, r, o, u, n, d,  , t, e, r, m, i, n, a, l, s, .,  , O, u, r,  , t, h, r, e, e, -, l, a, y, e, r,  , d, e, s, i, g, n,  , e, m, p, l, o, y, s,  , h, y, b, r, i, d, 
-, f, r, e, e, -, s, p, a, c, e,  , o, p, t, i, c, a, l,  , (, F, S, O, ),  , l, i, n, k, s,  , f, o, r,  , h, i, g, h, -, c, a, p, a, c, i, t, y,  , s, a, t, e, l, l, i, t, e, -, t, o, -, H, A, P,  , c, o, m, m, u, n, i, c, a, t, i, o, n, 
-, a, n, d,  , r, e, l, i, a, b, l, e,  , r, a, d, i, o,  , f, r, e, q, u, e, n, c, y,  , (, R, F, ),  , l, i, n, k, s,  , f, o, r,  , H, A, P, -, t, o, -, g, r, o, u, n, d,  , t, r, a, n, s, m, i, s, s, i, o, n, ,,  , a, n, d, 
-, t, h, u, s,  , a, d, d, r, e, s, s, i, n, g,  , t, h, e,  , t, e, m, p, o, r, a, l,  , d, i, s, c, o, n, t, i, n, u, i, t, y,  , i, n,  , L, E, O,  , s, a, t, e, l, l, i, t, e,  , c, o, v, e, r, a, g, e,  , w, h, i, l, e, 
-, s, e, r, v, i, n, g,  , d, i, v, e, r, s, e,  , u, s, e, r,  , p, r, i, o, r, i, t, i, e, s, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , f, o, r, m, u, l, a, t, e,  , a,  , j, o, i, n, t, 
-, o, p, t, i, m, i, z, a, t, i, o, n,  , p, r, o, b, l, e, m,  , t, o,  , s, i, m, u, l, t, a, n, e, o, u, s, l, y,  , m, i, n, i, m, i, z, e,  , t, h, e,  , A, o, I,  , a, n, d,  , s, a, t, e, l, l, i, t, e,  , h, a, n, d, o, v, e, r, 
-, f, r, e, q, u, e, n, c, y,  , t, h, r, o, u, g, h,  , o, p, t, i, m, a, l,  , t, r, a, n, s, m, i, t,  , p, o, w, e, r,  , d, i, s, t, r, i, b, u, t, i, o, n,  , a, n, d,  , s, a, t, e, l, l, i, t, e,  , s, e, l, e, c, t, i, o, n, 
-, d, e, c, i, s, i, o, n, s, .,  , T, h, i, s,  , h, i, g, h, l, y,  , d, y, n, a, m, i, c, ,,  , n, o, n, -, c, o, n, v, e, x,  , p, r, o, b, l, e, m,  , w, i, t, h,  , t, i, m, e, -, c, o, u, p, l, e, d, 
-, c, o, n, s, t, r, a, i, n, t, s,  , p, r, e, s, e, n, t, s,  , s, i, g, n, i, f, i, c, a, n, t,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, h, a, l, l, e, n, g, e, s,  , f, o, r,  , t, r, a, d, i, t, i, o, n, a, l, 
-, a, p, p, r, o, a, c, h, e, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , d, i, f, f, i, c, u, l, t, i, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , d, i, f, f, u, s, i, o, n,  , m, o, d, e, l, 
-, (, D, M, ), -, e, n, h, a, n, c, e, d,  , d, u, e, l, i, n, g,  , d, o, u, b, l, e,  , d, e, e, p,  , Q, -, n, e, t, w, o, r, k,  , w, i, t, h,  , a, c, t, i, o, n,  , d, e, c, o, m, p, o, s, i, t, i, o, n,  , a, n, d,  , s, t, a, t, e, 
-, t, r, a, n, s, f, o, r, m, e, r,  , e, n, c, o, d, e, r,  , (, D, D, 3, Q, N, -, A, S, ),  , a, l, g, o, r, i, t, h, m,  , t, h, a, t,  , i, n, c, o, r, p, o, r, a, t, e, s,  , t, r, a, n, s, f, o, r, m, e, r, -, b, a, s, e, d, 
-, t, e, m, p, o, r, a, l,  , f, e, a, t, u, r, e,  , e, x, t, r, a, c, t, i, o, n,  , a, n, d,  , e, m, p, l, o, y, s,  , a,  , D, M, -, b, a, s, e, d,  , l, a, t, e, n, t,  , p, r, o, m, p, t,  , g, e, n, e, r, a, t, i, v, e, 
-, m, o, d, u, l, e,  , t, o,  , r, e, f, i, n, e,  , s, t, a, t, e, -, a, c, t, i, o, n,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , t, h, r, o, u, g, h,  , c, o, n, d, i, t, i, o, n, a, l,  , d, e, n, o, i, s, i, n, g, ., 
-, S, i, m, u, l, a, t, i, o, n,  , r, e, s, u, l, t, s,  , h, i, g, h, l, i, g, h, t,  , t, h, e,  , s, u, p, e, r, i, o, r,  , p, e, r, f, o, r, m, a, n, c, e,  , o, f,  , t, h, e,  , p, r, o, p, o, s, e, d,  , a, p, p, r, o, a, c, h, 
-, c, o, m, p, a, r, e, d,  , w, i, t, h,  , p, o, l, i, c, y, -, b, a, s, e, d,  , m, e, t, h, o, d, s,  , a, n, d,  , s, o, m, e,  , o, t, h, e, r,  , d, e, e, p,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g, 
-, (, D, R, L, ),  , b, e, n, c, h, m, a, r, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12678v1'>Instance-level Randomization: Toward More Stable LLM Evaluations</a></td><td>E, v, a, l, u, a, t, i, o, n, s,  , o, f,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , s, u, f, f, e, r,  , f, r, o, m,  , i, n, s, t, a, b, i, l, i, t, y, ,,  , w, h, e, r, e, 
-, s, m, a, l, l,  , c, h, a, n, g, e, s,  , o, f,  , r, a, n, d, o, m,  , f, a, c, t, o, r, s,  , s, u, c, h,  , a, s,  , f, e, w, -, s, h, o, t,  , e, x, a, m, p, l, e, s,  , c, a, n,  , l, e, a, d,  , t, o,  , d, r, a, s, t, i, c, 
-, f, l, u, c, t, u, a, t, i, o, n, s,  , o, f,  , s, c, o, r, e, s,  , a, n, d,  , e, v, e, n,  , m, o, d, e, l,  , r, a, n, k, i, n, g, s, .,  , M, o, r, e, o, v, e, r, ,,  , d, i, f, f, e, r, e, n, t,  , L, L, M, s,  , c, a, n, 
-, h, a, v, e,  , d, i, f, f, e, r, e, n, t,  , p, r, e, f, e, r, e, n, c, e, s,  , f, o, r,  , a,  , c, e, r, t, a, i, n,  , s, e, t, t, i, n, g,  , o, f,  , r, a, n, d, o, m,  , f, a, c, t, o, r, s, .,  , A, s,  , a, 
-, r, e, s, u, l, t, ,,  , u, s, i, n, g,  , a,  , f, i, x, e, d,  , s, e, t, t, i, n, g,  , o, f,  , r, a, n, d, o, m,  , f, a, c, t, o, r, s, ,,  , w, h, i, c, h,  , i, s,  , o, f, t, e, n,  , a, d, o, p, t, e, d,  , a, s,  , t, h, e, 
-, p, a, r, a, d, i, g, m,  , o, f,  , c, u, r, r, e, n, t,  , e, v, a, l, u, a, t, i, o, n, s, ,,  , c, a, n,  , l, e, a, d,  , t, o,  , p, o, t, e, n, t, i, a, l,  , u, n, f, a, i, r,  , c, o, m, p, a, r, i, s, o, n, s, 
-, b, e, t, w, e, e, n,  , L, L, M, s, .,  , T, o,  , m, i, t, i, g, a, t, e,  , t, h, e,  , v, o, l, a, t, i, l, i, t, y,  , o, f,  , e, v, a, l, u, a, t, i, o, n, s, ,,  , w, e,  , f, i, r, s, t,  , t, h, e, o, r, e, t, i, c, a, l, l, y, 
-, a, n, a, l, y, z, e,  , t, h, e,  , s, o, u, r, c, e, s,  , o, f,  , v, a, r, i, a, n, c, e,  , i, n, d, u, c, e, d,  , b, y,  , c, h, a, n, g, e, s,  , i, n,  , r, a, n, d, o, m,  , f, a, c, t, o, r, s, .,  , T, a, r, g, e, t, i, n, g, 
-, t, h, e, s, e,  , s, p, e, c, i, f, i, c,  , s, o, u, r, c, e, s, ,,  , w, e,  , t, h, e, n,  , p, r, o, p, o, s, e,  , t, h, e,  , i, n, s, t, a, n, c, e, -, l, e, v, e, l,  , r, a, n, d, o, m, i, z, a, t, i, o, n,  , (, I, L, R, ), 
-, m, e, t, h, o, d,  , t, o,  , r, e, d, u, c, e,  , v, a, r, i, a, n, c, e,  , a, n, d,  , e, n, h, a, n, c, e,  , f, a, i, r, n, e, s, s,  , i, n,  , m, o, d, e, l,  , c, o, m, p, a, r, i, s, o, n, s, .,  , I, n, s, t, e, a, d,  , o, f, 
-, u, s, i, n, g,  , a,  , f, i, x, e, d,  , s, e, t, t, i, n, g,  , a, c, r, o, s, s,  , t, h, e,  , w, h, o, l, e,  , b, e, n, c, h, m, a, r, k,  , i, n,  , a,  , s, i, n, g, l, e,  , e, x, p, e, r, i, m, e, n, t, ,,  , w, e, 
-, r, a, n, d, o, m, i, z, e,  , a, l, l,  , f, a, c, t, o, r, s,  , t, h, a, t,  , a, f, f, e, c, t,  , e, v, a, l, u, a, t, i, o, n,  , s, c, o, r, e, s,  , f, o, r,  , e, v, e, r, y,  , s, i, n, g, l, e,  , i, n, s, t, a, n, c, e, ,, 
-, r, u, n,  , m, u, l, t, i, p, l, e,  , e, x, p, e, r, i, m, e, n, t, s,  , a, n, d,  , r, e, p, o, r, t,  , t, h, e,  , a, v, e, r, a, g, e, d,  , s, c, o, r, e, .,  , T, h, e, o, r, e, t, i, c, a, l,  , a, n, a, l, y, s, e, s, 
-, a, n, d,  , e, m, p, i, r, i, c, a, l,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , I, L, R,  , c, a, n,  , r, e, d, u, c, e,  , t, h, e,  , v, a, r, i, a, n, c, e,  , a, n, d,  , u, n, f, a, i, r, 
-, c, o, m, p, a, r, i, s, o, n, s,  , c, a, u, s, e, d,  , b, y,  , r, a, n, d, o, m,  , f, a, c, t, o, r, s, ,,  , a, s,  , w, e, l, l,  , a, s,  , a, c, h, i, e, v, e,  , s, i, m, i, l, a, r,  , r, o, b, u, s, t, n, e, s, s, 
-, l, e, v, e, l,  , w, i, t, h,  , l, e, s, s,  , t, h, a, n,  , h, a, l, f,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t,  , c, o, m, p, a, r, e, d,  , w, i, t, h,  , p, r, e, v, i, o, u, s,  , m, e, t, h, o, d, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12650v1'>Leveraging Intermediate Representations of Time Series Foundation Models for Anomaly Detection</a></td><td>D, e, t, e, c, t, i, n, g,  , a, n, o, m, a, l, i, e, s,  , i, n,  , t, i, m, e,  , s, e, r, i, e, s,  , d, a, t, a,  , i, s,  , e, s, s, e, n, t, i, a, l,  , f, o, r,  , t, h, e,  , r, e, l, i, a, b, l, e, 
-, o, p, e, r, a, t, i, o, n,  , o, f,  , m, a, n, y,  , r, e, a, l, -, w, o, r, l, d,  , s, y, s, t, e, m, s, .,  , R, e, c, e, n, t, l, y, ,,  , t, i, m, e,  , s, e, r, i, e, s,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, s, 
-, (, T, S, F, M, s, ),  , h, a, v, e,  , e, m, e, r, g, e, d,  , a, s,  , a,  , p, o, w, e, r, f, u, l,  , t, o, o, l,  , f, o, r,  , a, n, o, m, a, l, y,  , d, e, t, e, c, t, i, o, n, .,  , H, o, w, e, v, e, r, ,, 
-, e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , t, y, p, i, c, a, l, l, y,  , r, e, l, y,  , o, n,  , t, h, e,  , f, i, n, a, l,  , l, a, y, e, r, ', s,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , o, f,  , T, S, F, M, s, ,, 
-, c, o, m, p, u, t, i, n, g,  , t, h, e,  , a, n, o, m, a, l, y,  , s, c, o, r, e,  , a, s,  , a,  , r, e, c, o, n, s, t, r, u, c, t, i, o, n,  , o, r,  , f, o, r, e, c, a, s, t, i, n, g,  , e, r, r, o, r,  , v, i, a,  , a, 
-, t, a, s, k, -, s, p, e, c, i, f, i, c,  , h, e, a, d, .,  , I, n, s, t, e, a, d, ,,  , w, e,  , p, r, o, p, o, s, e,  , T, i, m, e, R, e, p, ,,  , a,  , n, o, v, e, l,  , a, n, o, m, a, l, y,  , d, e, t, e, c, t, i, o, n, 
-, a, p, p, r, o, a, c, h,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , t, h, e,  , i, n, t, e, r, m, e, d, i, a, t, e,  , l, a, y, e, r, ', s,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , o, f,  , T, S, F, M, s, ,, 
-, c, o, m, p, u, t, i, n, g,  , t, h, e,  , a, n, o, m, a, l, y,  , s, c, o, r, e,  , a, s,  , t, h, e,  , d, i, s, t, a, n, c, e,  , b, e, t, w, e, e, n,  , t, h, e, s, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, ., 
-, G, i, v, e, n,  , a,  , p, r, e, -, t, r, a, i, n, e, d,  , T, S, F, M, ,,  , T, i, m, e, R, e, p,  , s, e, l, e, c, t, s,  , t, h, e,  , i, n, t, e, r, m, e, d, i, a, t, e,  , l, a, y, e, r,  , a, n, d, 
-, p, a, t, c, h, -, t, o, k, e, n,  , p, o, s, i, t, i, o, n,  , t, h, a, t,  , y, i, e, l, d,  , t, h, e,  , m, o, s, t,  , i, n, f, o, r, m, a, t, i, v, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, .,  , T, i, m, e, R, e, p, 
-, f, o, r, m, s,  , a,  , r, e, f, e, r, e, n, c, e,  , c, o, l, l, e, c, t, i, o, n,  , o, f,  , i, n, t, e, r, m, e, d, i, a, t, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , f, r, o, m,  , t, h, e,  , t, r, a, i, n, i, n, g, 
-, d, a, t, a,  , a, n, d,  , a, p, p, l, i, e, s,  , a,  , c, o, r, e, -, s, e, t,  , s, t, r, a, t, e, g, y,  , t, o,  , r, e, d, u, c, e,  , i, t, s,  , s, i, z, e,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g, 
-, d, i, s, t, r, i, b, u, t, i, o, n, a, l,  , c, o, v, e, r, a, g, e, .,  , D, u, r, i, n, g,  , i, n, f, e, r, e, n, c, e, ,,  , T, i, m, e, R, e, p,  , c, o, m, p, u, t, e, s,  , t, h, e,  , a, n, o, m, a, l, y,  , s, c, o, r, e, 
-, f, o, r,  , i, n, c, o, m, i, n, g,  , d, a, t, a,  , b, y,  , m, e, a, s, u, r, i, n, g,  , t, h, e,  , d, i, s, t, a, n, c, e,  , b, e, t, w, e, e, n,  , i, t, s,  , i, n, t, e, r, m, e, d, i, a, t, e, 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , a, n, d,  , t, h, o, s, e,  , o, f,  , t, h, e,  , c, o, l, l, e, c, t, i, o, n, .,  , T, o,  , a, d, d, r, e, s, s,  , c, o, n, c, e, p, t,  , d, r, i, f, t, ,,  , T, i, m, e, R, e, p, 
-, i, n, t, e, g, r, a, t, e, s,  , a, n,  , a, d, a, p, t, a, t, i, o, n,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t, ,,  , a, t,  , i, n, f, e, r, e, n, c, e,  , t, i, m, e, ,,  , a, u, g, m, e, n, t, s,  , t, h, e, 
-, c, o, l, l, e, c, t, i, o, n,  , e, x, c, l, u, s, i, v, e, l, y,  , w, i, t, h,  , n, o, n, -, r, e, d, u, n, d, a, n, t,  , i, n, t, e, r, m, e, d, i, a, t, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , f, r, o, m, 
-, i, n, c, o, m, i, n, g,  , d, a, t, a, .,  , W, e,  , c, o, n, d, u, c, t, e, d,  , e, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, h, e,  , U, C, R,  , A, n, o, m, a, l, y,  , A, r, c, h, i, v, e, ,, 
-, w, h, i, c, h,  , c, o, n, t, a, i, n, s,  , 2, 5, 0,  , u, n, i, v, a, r, i, a, t, e,  , t, i, m, e,  , s, e, r, i, e, s, .,  , T, i, m, e, R, e, p,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , a, 
-, b, r, o, a, d,  , s, p, e, c, t, r, u, m,  , o, f,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , b, a, s, e, l, i, n, e, s, ,,  , i, n, c, l, u, d, i, n, g,  , n, o, n, -, D, L, ,,  , D, L, ,,  , a, n, d, 
-, f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, -, b, a, s, e, d,  , m, e, t, h, o, d, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12643v1'>Learn to Relax with Large Language Models: Solving Nonlinear Combinatorial Optimization Problems via Bidirectional Coevolution</a></td><td>N, o, n, l, i, n, e, a, r,  , C, o, m, b, i, n, a, t, o, r, i, a, l,  , O, p, t, i, m, i, z, a, t, i, o, n,  , P, r, o, b, l, e, m, s,  , (, N, C, O, P, s, ),  , p, r, e, s, e, n, t,  , a,  , f, o, r, m, i, d, a, b, l, e, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , h, u, r, d, l, e,  , i, n,  , p, r, a, c, t, i, c, e, ,,  , a, s,  , t, h, e, i, r,  , n, o, n, c, o, n, v, e, x,  , n, a, t, u, r, e,  , g, i, v, e, s,  , r, i, s, e,  , t, o, 
-, m, u, l, t, i, -, m, o, d, a, l,  , s, o, l, u, t, i, o, n,  , s, p, a, c, e, s,  , t, h, a, t,  , d, e, f, y,  , e, f, f, i, c, i, e, n, t,  , o, p, t, i, m, i, z, a, t, i, o, n, .,  , T, r, a, d, i, t, i, o, n, a, l, 
-, c, o, n, s, t, r, a, i, n, t,  , r, e, l, a, x, a, t, i, o, n,  , a, p, p, r, o, a, c, h, e, s,  , r, e, l, y,  , h, e, a, v, i, l, y,  , o, n,  , e, x, p, e, r, t, -, d, r, i, v, e, n, ,,  , i, t, e, r, a, t, i, v, e, 
-, d, e, s, i, g, n,  , p, r, o, c, e, s, s, e, s,  , t, h, a, t,  , l, a, c, k,  , s, y, s, t, e, m, a, t, i, c,  , a, u, t, o, m, a, t, i, o, n,  , a, n, d,  , s, c, a, l, a, b, l, e,  , a, d, a, p, t, a, b, i, l, i, t, y, ., 
-, W, h, i, l, e,  , r, e, c, e, n, t,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, L, L, M, ), -, b, a, s, e, d,  , o, p, t, i, m, i, z, a, t, i, o, n,  , m, e, t, h, o, d, s,  , s, h, o, w,  , p, r, o, m, i, s, e, 
-, f, o, r,  , a, u, t, o, n, o, m, o, u, s,  , p, r, o, b, l, e, m, -, s, o, l, v, i, n, g, ,,  , t, h, e, y,  , p, r, e, d, o, m, i, n, a, n, t, l, y,  , f, u, n, c, t, i, o, n,  , a, s,  , p, a, s, s, i, v, e, 
-, c, o, n, s, t, r, a, i, n, t,  , v, a, l, i, d, a, t, o, r, s,  , r, a, t, h, e, r,  , t, h, a, n,  , p, r, o, a, c, t, i, v, e,  , s, t, r, a, t, e, g, y,  , a, r, c, h, i, t, e, c, t, s, ,,  , f, a, i, l, i, n, g,  , t, o, 
-, h, a, n, d, l, e,  , t, h, e,  , s, o, p, h, i, s, t, i, c, a, t, e, d,  , c, o, n, s, t, r, a, i, n, t,  , i, n, t, e, r, a, c, t, i, o, n, s,  , i, n, h, e, r, e, n, t,  , t, o,  , N, C, O, P, s, ., T, o,  , a, d, d, r, e, s, s, 
-, t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , t, h, e,  , f, i, r, s, t,  , e, n, d, -, t, o, -, e, n, d,  , \, t, e, x, t, b, f, {, A, u, t, o, }, m, a, t, e, d, 
-, \, t, e, x, t, b, f, {, C, }, o, n, s, t, r, a, i, n, t,  , \, t, e, x, t, b, f, {, O, }, p, t, i, m, i, z, a, t, i, o, n,  , (, A, u, t, o, C, O, ),  , m, e, t, h, o, d, ,,  , w, h, i, c, h,  , r, e, v, o, l, u, t, i, o, n, i, z, e, s, 
-, N, C, O, P, s,  , r, e, s, o, l, u, t, i, o, n,  , t, h, r, o, u, g, h,  , l, e, a, r, n, i, n, g,  , t, o,  , r, e, l, a, x,  , w, i, t, h,  , L, L, M, s, ., S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , l, e, v, e, r, a, g, e, 
-, s, t, r, u, c, t, u, r, e, d,  , L, L, M,  , r, e, a, s, o, n, i, n, g,  , t, o,  , g, e, n, e, r, a, t, e,  , c, o, n, s, t, r, a, i, n, t,  , r, e, l, a, x, a, t, i, o, n,  , s, t, r, a, t, e, g, i, e, s, ,,  , w, h, i, c, h, 
-, a, r, e,  , d, y, n, a, m, i, c, a, l, l, y,  , e, v, o, l, v, i, n, g,  , w, i, t, h,  , a, l, g, o, r, i, t, h, m, i, c,  , p, r, i, n, c, i, p, l, e, s,  , a, n, d,  , e, x, e, c, u, t, a, b, l, e,  , c, o, d, e, 
-, t, h, r, o, u, g, h,  , a,  , u, n, i, f, i, e, d,  , t, r, i, p, l, e, -, r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , s, c, h, e, m, e, .,  , W, e,  , f, u, r, t, h, e, r,  , e, s, t, a, b, l, i, s, h,  , a,  , n, o, v, e, l, 
-, b, i, d, i, r, e, c, t, i, o, n, a, l,  , (, g, l, o, b, a, l, -, l, o, c, a, l, ),  , c, o, e, v, o, l, u, t, i, o, n,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t,  , s, y, n, e, r, g, i, s, t, i, c, a, l, l, y, 
-, i, n, t, e, g, r, a, t, e, s,  , E, v, o, l, u, t, i, o, n, a, r, y,  , A, l, g, o, r, i, t, h, m, s,  , f, o, r,  , i, n, t, e, n, s, i, v, e,  , l, o, c, a, l,  , r, e, f, i, n, e, m, e, n, t,  , w, i, t, h,  , M, o, n, t, e, 
-, C, a, r, l, o,  , T, r, e, e,  , S, e, a, r, c, h,  , f, o, r,  , s, y, s, t, e, m, a, t, i, c,  , g, l, o, b, a, l,  , s, t, r, a, t, e, g, y,  , s, p, a, c, e,  , e, x, p, l, o, r, a, t, i, o, n, ,,  , e, n, s, u, r, i, n, g, 
-, o, p, t, i, m, a, l,  , b, a, l, a, n, c, e,  , b, e, t, w, e, e, n,  , i, n, t, e, n, s, i, f, i, c, a, t, i, o, n,  , a, n, d,  , d, i, v, e, r, s, i, f, i, c, a, t, i, o, n,  , i, n,  , f, r, a, g, m, e, n, t, e, d, 
-, s, o, l, u, t, i, o, n,  , s, p, a, c, e, s, .,  , F, i, n, a, l, l, y, ,,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, h, r, e, e,  , c, h, a, l, l, e, n, g, i, n, g,  , N, C, O, P, 
-, b, e, n, c, h, m, a, r, k, s,  , v, a, l, i, d, a, t, e,  , A, u, t, o, C, O, ', s,  , c, o, n, s, i, s, t, e, n, t,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , a, n, d,  , s, u, p, e, r, i, o, r,  , p, e, r, f, o, r, m, a, n, c, e, 
-, o, v, e, r,  , t, h, e,  , b, a, s, e, l, i, n, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12633v1'>CIARD: Cyclic Iterative Adversarial Robustness Distillation</a></td><td>A, d, v, e, r, s, a, r, i, a, l,  , r, o, b, u, s, t, n, e, s, s,  , d, i, s, t, i, l, l, a, t, i, o, n,  , (, A, R, D, ),  , a, i, m, s,  , t, o,  , t, r, a, n, s, f, e, r,  , b, o, t, h,  , p, e, r, f, o, r, m, a, n, c, e, 
-, a, n, d,  , r, o, b, u, s, t, n, e, s, s,  , f, r, o, m,  , t, e, a, c, h, e, r,  , m, o, d, e, l,  , t, o,  , l, i, g, h, t, w, e, i, g, h, t,  , s, t, u, d, e, n, t,  , m, o, d, e, l, ,,  , e, n, a, b, l, i, n, g, 
-, r, e, s, i, l, i, e, n, t,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n,  , r, e, s, o, u, r, c, e, -, c, o, n, s, t, r, a, i, n, e, d,  , s, c, e, n, a, r, i, o, s, .,  , T, h, o, u, g, h,  , e, x, i, s, t, i, n, g,  , A, R, D, 
-, a, p, p, r, o, a, c, h, e, s,  , e, n, h, a, n, c, e,  , s, t, u, d, e, n, t,  , m, o, d, e, l, ', s,  , r, o, b, u, s, t, n, e, s, s, ,,  , t, h, e,  , i, n, e, v, i, t, a, b, l, e,  , b, y, -, p, r, o, d, u, c, t,  , l, e, a, d, s, 
-, t, o,  , t, h, e,  , d, e, g, r, a, d, e, d,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n,  , c, l, e, a, n,  , e, x, a, m, p, l, e, s, .,  , W, e,  , s, u, m, m, a, r, i, z, e,  , t, h, e,  , c, a, u, s, e, s,  , o, f,  , t, h, i, s, 
-, p, r, o, b, l, e, m,  , i, n, h, e, r, e, n, t,  , i, n,  , e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , w, i, t, h,  , d, u, a, l, -, t, e, a, c, h, e, r,  , f, r, a, m, e, w, o, r, k,  , a, s, :,  , 1, .,  , T, h, e, 
-, d, i, v, e, r, g, e, n, t,  , o, p, t, i, m, i, z, a, t, i, o, n,  , o, b, j, e, c, t, i, v, e, s,  , o, f,  , d, u, a, l, -, t, e, a, c, h, e, r,  , m, o, d, e, l, s, ,,  , i, ., e, ., ,,  , t, h, e,  , c, l, e, a, n,  , a, n, d, 
-, r, o, b, u, s, t,  , t, e, a, c, h, e, r, s, ,,  , i, m, p, e, d, e,  , e, f, f, e, c, t, i, v, e,  , k, n, o, w, l, e, d, g, e,  , t, r, a, n, s, f, e, r,  , t, o,  , t, h, e,  , s, t, u, d, e, n, t,  , m, o, d, e, l, ,,  , a, n, d, 
-, 2, .,  , T, h, e,  , i, t, e, r, a, t, i, v, e, l, y,  , g, e, n, e, r, a, t, e, d,  , a, d, v, e, r, s, a, r, i, a, l,  , e, x, a, m, p, l, e, s,  , d, u, r, i, n, g,  , t, r, a, i, n, i, n, g,  , l, e, a, d,  , t, o, 
-, p, e, r, f, o, r, m, a, n, c, e,  , d, e, t, e, r, i, o, r, a, t, i, o, n,  , o, f,  , t, h, e,  , r, o, b, u, s, t,  , t, e, a, c, h, e, r,  , m, o, d, e, l, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e, 
-, c, h, a, l, l, e, n, g, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , C, y, c, l, i, c,  , I, t, e, r, a, t, i, v, e,  , A, R, D,  , (, C, I, A, R, D, ),  , m, e, t, h, o, d,  , w, i, t, h,  , t, w, o,  , k, e, y, 
-, i, n, n, o, v, a, t, i, o, n, s, :,  , a, .,  , A,  , m, u, l, t, i, -, t, e, a, c, h, e, r,  , f, r, a, m, e, w, o, r, k,  , w, i, t, h,  , c, o, n, t, r, a, s, t, i, v, e,  , p, u, s, h, -, l, o, s, s,  , a, l, i, g, n, m, e, n, t, 
-, t, o,  , r, e, s, o, l, v, e,  , c, o, n, f, l, i, c, t, s,  , i, n,  , d, u, a, l, -, t, e, a, c, h, e, r,  , o, p, t, i, m, i, z, a, t, i, o, n,  , o, b, j, e, c, t, i, v, e, s, ,,  , a, n, d,  , b, .,  , C, o, n, t, i, n, u, o, u, s, 
-, a, d, v, e, r, s, a, r, i, a, l,  , r, e, t, r, a, i, n, i, n, g,  , t, o,  , m, a, i, n, t, a, i, n,  , d, y, n, a, m, i, c,  , t, e, a, c, h, e, r,  , r, o, b, u, s, t, n, e, s, s,  , a, g, a, i, n, s, t, 
-, p, e, r, f, o, r, m, a, n, c, e,  , d, e, g, r, a, d, a, t, i, o, n,  , f, r, o, m,  , t, h, e,  , v, a, r, y, i, n, g,  , a, d, v, e, r, s, a, r, i, a, l,  , e, x, a, m, p, l, e, s, .,  , E, x, t, e, n, s, i, v, e, 
-, e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , C, I, F, A, R, -, 1, 0, ,,  , C, I, F, A, R, -, 1, 0, 0, ,,  , a, n, d,  , T, i, n, y, -, I, m, a, g, e, N, e, t,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , C, I, A, R, D, 
-, a, c, h, i, e, v, e, s,  , r, e, m, a, r, k, a, b, l, e,  , p, e, r, f, o, r, m, a, n, c, e,  , w, i, t, h,  , a, n,  , a, v, e, r, a, g, e,  , 3, ., 5, 3,  , i, m, p, r, o, v, e, m, e, n, t,  , i, n,  , a, d, v, e, r, s, a, r, i, a, l, 
-, d, e, f, e, n, s, e,  , r, a, t, e, s,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s,  , a, t, t, a, c, k,  , s, c, e, n, a, r, i, o, s,  , a, n, d,  , a,  , 5, ., 8, 7,  , i, n, c, r, e, a, s, e,  , i, n,  , c, l, e, a, n, 
-, s, a, m, p, l, e,  , a, c, c, u, r, a, c, y, ,,  , e, s, t, a, b, l, i, s, h, i, n, g,  , a,  , n, e, w,  , b, e, n, c, h, m, a, r, k,  , f, o, r,  , b, a, l, a, n, c, i, n, g,  , m, o, d, e, l,  , r, o, b, u, s, t, n, e, s, s, 
-, a, n, d,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n, .,  , O, u, r,  , c, o, d, e,  , i, s,  , a, v, a, i, l, a, b, l, e,  , a, t,  , h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, e, m, i, n, e, n, t, g, u, /, C, I, A, R, D</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12611v1'>Analogy-Driven Financial Chain-of-Thought (AD-FCoT): A Prompting Approach for Financial Sentiment Analysis</a></td><td>F, i, n, a, n, c, i, a, l,  , n, e, w, s,  , s, e, n, t, i, m, e, n, t,  , a, n, a, l, y, s, i, s,  , i, s,  , c, r, u, c, i, a, l,  , f, o, r,  , a, n, t, i, c, i, p, a, t, i, n, g,  , m, a, r, k, e, t, 
-, m, o, v, e, m, e, n, t, s, .,  , W, i, t, h,  , t, h, e,  , r, i, s, e,  , o, f,  , A, I,  , t, e, c, h, n, i, q, u, e, s,  , s, u, c, h,  , a, s,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ), ,, 
-, w, h, i, c, h,  , d, e, m, o, n, s, t, r, a, t, e,  , s, t, r, o, n, g,  , t, e, x, t,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s, ,,  , t, h, e, r, e,  , h, a, s,  , b, e, e, n, 
-, r, e, n, e, w, e, d,  , i, n, t, e, r, e, s, t,  , i, n,  , e, n, h, a, n, c, i, n, g,  , t, h, e, s, e,  , s, y, s, t, e, m, s, .,  , E, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s, ,,  , h, o, w, e, v, e, r, ,,  , o, f, t, e, n, 
-, s, t, r, u, g, g, l, e,  , t, o,  , c, a, p, t, u, r, e,  , t, h, e,  , c, o, m, p, l, e, x,  , e, c, o, n, o, m, i, c,  , c, o, n, t, e, x, t,  , o, f,  , n, e, w, s,  , a, n, d,  , l, a, c, k,  , t, r, a, n, s, p, a, r, e, n, t, 
-, r, e, a, s, o, n, i, n, g, ,,  , w, h, i, c, h,  , u, n, d, e, r, m, i, n, e, s,  , t, h, e, i, r,  , r, e, l, i, a, b, i, l, i, t, y, .,  , W, e,  , p, r, o, p, o, s, e,  , A, n, a, l, o, g, y, -, D, r, i, v, e, n, 
-, F, i, n, a, n, c, i, a, l,  , C, h, a, i, n, -, o, f, -, T, h, o, u, g, h, t,  , (, A, D, -, F, C, o, T, ), ,,  , a,  , p, r, o, m, p, t, i, n, g,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , i, n, t, e, g, r, a, t, e, s, 
-, a, n, a, l, o, g, i, c, a, l,  , r, e, a, s, o, n, i, n, g,  , w, i, t, h,  , c, h, a, i, n, -, o, f, -, t, h, o, u, g, h, t,  , (, C, o, T, ),  , p, r, o, m, p, t, i, n, g,  , f, o, r,  , s, e, n, t, i, m, e, n, t, 
-, p, r, e, d, i, c, t, i, o, n,  , o, n,  , h, i, s, t, o, r, i, c, a, l,  , f, i, n, a, n, c, i, a, l,  , n, e, w, s, .,  , A, D, -, F, C, o, T,  , g, u, i, d, e, s,  , L, L, M, s,  , t, o,  , d, r, a, w,  , p, a, r, a, l, l, e, l, s, 
-, b, e, t, w, e, e, n,  , n, e, w,  , e, v, e, n, t, s,  , a, n, d,  , r, e, l, e, v, a, n, t,  , h, i, s, t, o, r, i, c, a, l,  , s, c, e, n, a, r, i, o, s,  , w, i, t, h,  , k, n, o, w, n,  , o, u, t, c, o, m, e, s, ,, 
-, e, m, b, e, d, d, i, n, g,  , t, h, e, s, e,  , a, n, a, l, o, g, i, e, s,  , i, n, t, o,  , a,  , s, t, r, u, c, t, u, r, e, d, ,,  , s, t, e, p, -, b, y, -, s, t, e, p,  , r, e, a, s, o, n, i, n, g,  , c, h, a, i, n, .,  , T, o, 
-, o, u, r,  , k, n, o, w, l, e, d, g, e, ,,  , t, h, i, s,  , i, s,  , a, m, o, n, g,  , t, h, e,  , f, i, r, s, t,  , a, p, p, r, o, a, c, h, e, s,  , t, o,  , e, x, p, l, i, c, i, t, l, y,  , c, o, m, b, i, n, e, 
-, a, n, a, l, o, g, i, c, a, l,  , e, x, a, m, p, l, e, s,  , w, i, t, h,  , C, o, T,  , r, e, a, s, o, n, i, n, g,  , i, n,  , f, i, n, a, n, c, e, .,  , O, p, e, r, a, t, i, n, g,  , p, u, r, e, l, y,  , t, h, r, o, u, g, h, 
-, p, r, o, m, p, t, i, n, g, ,,  , A, D, -, F, C, o, T,  , r, e, q, u, i, r, e, s,  , n, o,  , a, d, d, i, t, i, o, n, a, l,  , t, r, a, i, n, i, n, g,  , d, a, t, a,  , o, r,  , f, i, n, e, -, t, u, n, i, n, g,  , a, n, d, 
-, l, e, v, e, r, a, g, e, s,  , t, h, e,  , m, o, d, e, l, ', s,  , i, n, t, e, r, n, a, l,  , f, i, n, a, n, c, i, a, l,  , k, n, o, w, l, e, d, g, e,  , t, o,  , g, e, n, e, r, a, t, e,  , r, a, t, i, o, n, a, l, e, s,  , t, h, a, t, 
-, m, i, r, r, o, r,  , h, u, m, a, n,  , a, n, a, l, y, t, i, c, a, l,  , r, e, a, s, o, n, i, n, g, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, h, o, u, s, a, n, d, s,  , o, f,  , n, e, w, s,  , a, r, t, i, c, l, e, s, 
-, s, h, o, w,  , t, h, a, t,  , A, D, -, F, C, o, T,  , o, u, t, p, e, r, f, o, r, m, s,  , s, t, r, o, n, g,  , b, a, s, e, l, i, n, e, s,  , i, n,  , s, e, n, t, i, m, e, n, t,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, 
-, a, c, c, u, r, a, c, y,  , a, n, d,  , a, c, h, i, e, v, e, s,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , h, i, g, h, e, r,  , c, o, r, r, e, l, a, t, i, o, n,  , w, i, t, h,  , m, a, r, k, e, t,  , r, e, t, u, r, n, s, .,  , I, t, s, 
-, g, e, n, e, r, a, t, e, d,  , e, x, p, l, a, n, a, t, i, o, n, s,  , a, l, s, o,  , a, l, i, g, n,  , w, i, t, h,  , d, o, m, a, i, n,  , e, x, p, e, r, t, i, s, e, ,,  , p, r, o, v, i, d, i, n, g, 
-, i, n, t, e, r, p, r, e, t, a, b, l, e,  , i, n, s, i, g, h, t, s,  , s, u, i, t, a, b, l, e,  , f, o, r,  , r, e, a, l, -, w, o, r, l, d,  , f, i, n, a, n, c, i, a, l,  , a, n, a, l, y, s, i, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12610v1'>ScaleDoc: Scaling LLM-based Predicates over Large Document Collections</a></td><td>P, r, e, d, i, c, a, t, e, s,  , a, r, e,  , f, o, u, n, d, a, t, i, o, n, a, l,  , c, o, m, p, o, n, e, n, t, s,  , i, n,  , d, a, t, a,  , a, n, a, l, y, s, i, s,  , s, y, s, t, e, m, s, .,  , H, o, w, e, v, e, r, ,, 
-, m, o, d, e, r, n,  , w, o, r, k, l, o, a, d, s,  , i, n, c, r, e, a, s, i, n, g, l, y,  , i, n, v, o, l, v, e,  , u, n, s, t, r, u, c, t, u, r, e, d,  , d, o, c, u, m, e, n, t, s, ,,  , w, h, i, c, h,  , d, e, m, a, n, d, s, 
-, s, e, m, a, n, t, i, c,  , u, n, d, e, r, s, t, a, n, d, i, n, g, ,,  , b, e, y, o, n, d,  , t, r, a, d, i, t, i, o, n, a, l,  , v, a, l, u, e, -, b, a, s, e, d,  , p, r, e, d, i, c, a, t, e, s, .,  , G, i, v, e, n, 
-, e, n, o, r, m, o, u, s,  , d, o, c, u, m, e, n, t, s,  , a, n, d,  , a, d, -, h, o, c,  , q, u, e, r, i, e, s, ,,  , w, h, i, l, e,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ), 
-, d, e, m, o, n, s, t, r, a, t, e,  , p, o, w, e, r, f, u, l,  , z, e, r, o, -, s, h, o, t,  , c, a, p, a, b, i, l, i, t, i, e, s, ,,  , t, h, e, i, r,  , h, i, g, h,  , i, n, f, e, r, e, n, c, e,  , c, o, s, t,  , l, e, a, d, s,  , t, o, 
-, u, n, a, c, c, e, p, t, a, b, l, e,  , o, v, e, r, h, e, a, d, .,  , T, h, e, r, e, f, o, r, e, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , \, t, e, x, t, s, c, {, S, c, a, l, e, D, o, c, }, ,,  , a,  , n, o, v, e, l, 
-, s, y, s, t, e, m,  , t, h, a, t,  , a, d, d, r, e, s, s, e, s,  , t, h, i, s,  , b, y,  , d, e, c, o, u, p, l, i, n, g,  , p, r, e, d, i, c, a, t, e,  , e, x, e, c, u, t, i, o, n,  , i, n, t, o,  , a, n,  , o, f, f, l, i, n, e, 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , p, h, a, s, e,  , a, n, d,  , a, n,  , o, p, t, i, m, i, z, e, d,  , o, n, l, i, n, e,  , f, i, l, t, e, r, i, n, g,  , p, h, a, s, e, .,  , I, n,  , t, h, e,  , o, f, f, l, i, n, e, 
-, p, h, a, s, e, ,,  , \, t, e, x, t, s, c, {, S, c, a, l, e, D, o, c, },  , l, e, v, e, r, a, g, e, s,  , a,  , L, L, M,  , t, o,  , g, e, n, e, r, a, t, e,  , s, e, m, a, n, t, i, c,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, 
-, f, o, r,  , e, a, c, h,  , d, o, c, u, m, e, n, t, .,  , O, n, l, i, n, e, ,,  , f, o, r,  , e, a, c, h,  , q, u, e, r, y, ,,  , i, t,  , t, r, a, i, n, s,  , a,  , l, i, g, h, t, w, e, i, g, h, t,  , p, r, o, x, y,  , m, o, d, e, l, 
-, o, n,  , t, h, e, s, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , t, o,  , f, i, l, t, e, r,  , t, h, e,  , m, a, j, o, r, i, t, y,  , o, f,  , d, o, c, u, m, e, n, t, s, ,,  , f, o, r, w, a, r, d, i, n, g,  , o, n, l, y, 
-, t, h, e,  , a, m, b, i, g, u, o, u, s,  , c, a, s, e, s,  , t, o,  , t, h, e,  , L, L, M,  , f, o, r,  , f, i, n, a, l,  , d, e, c, i, s, i, o, n, .,  , F, u, r, t, h, e, r, m, o, r, e, ,, 
-, \, t, e, x, t, s, c, {, S, c, a, l, e, D, o, c, },  , p, r, o, p, o, s, e, s,  , t, w, o,  , c, o, r, e,  , i, n, n, o, v, a, t, i, o, n, s,  , t, o,  , a, c, h, i, e, v, e,  , s, i, g, n, i, f, i, c, a, n, t, 
-, e, f, f, i, c, i, e, n, c, y, :,  , (, 1, ),  , a,  , c, o, n, t, r, a, s, t, i, v, e, -, l, e, a, r, n, i, n, g, -, b, a, s, e, d,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , t, r, a, i, n, s,  , t, h, e,  , p, r, o, x, y, 
-, m, o, d, e, l,  , t, o,  , g, e, n, e, r, a, t, e,  , r, e, l, i, a, b, l, e,  , p, r, e, d, i, c, a, t, i, n, g,  , d, e, c, i, s, i, o, n,  , s, c, o, r, e, s, ;,  , (, 2, ),  , a, n,  , a, d, a, p, t, i, v, e,  , c, a, s, c, a, d, e, 
-, m, e, c, h, a, n, i, s, m,  , t, h, a, t,  , d, e, t, e, r, m, i, n, e, s,  , t, h, e,  , e, f, f, e, c, t, i, v, e,  , f, i, l, t, e, r, i, n, g,  , p, o, l, i, c, y,  , w, h, i, l, e,  , m, e, e, t, i, n, g,  , s, p, e, c, i, f, i, c, 
-, a, c, c, u, r, a, c, y,  , t, a, r, g, e, t, s, .,  , O, u, r,  , e, v, a, l, u, a, t, i, o, n, s,  , a, c, r, o, s, s,  , t, h, r, e, e,  , d, a, t, a, s, e, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t, 
-, \, t, e, x, t, s, c, {, S, c, a, l, e, D, o, c, },  , a, c, h, i, e, v, e, s,  , o, v, e, r,  , a,  , 2, $, \, t, i, m, e, s, $,  , e, n, d, -, t, o, -, e, n, d,  , s, p, e, e, d, u, p,  , a, n, d,  , r, e, d, u, c, e, s, 
-, e, x, p, e, n, s, i, v, e,  , L, L, M,  , i, n, v, o, c, a, t, i, o, n, s,  , b, y,  , u, p,  , t, o,  , 8, 5, \, %, ,,  , m, a, k, i, n, g,  , l, a, r, g, e, -, s, c, a, l, e,  , s, e, m, a, n, t, i, c,  , a, n, a, l, y, s, i, s, 
-, p, r, a, c, t, i, c, a, l,  , a, n, d,  , e, f, f, i, c, i, e, n, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12600v1'>A Multimodal Foundation Model to Enhance Generalizability and Data Efficiency for Pan-cancer Prognosis Prediction</a></td><td>M, u, l, t, i, m, o, d, a, l,  , d, a, t, a,  , p, r, o, v, i, d, e, s,  , h, e, t, e, r, o, g, e, n, e, o, u, s,  , i, n, f, o, r, m, a, t, i, o, n,  , f, o, r,  , a,  , h, o, l, i, s, t, i, c, 
-, u, n, d, e, r, s, t, a, n, d, i, n, g,  , o, f,  , t, h, e,  , t, u, m, o, r,  , m, i, c, r, o, e, n, v, i, r, o, n, m, e, n, t, .,  , H, o, w, e, v, e, r, ,,  , e, x, i, s, t, i, n, g,  , A, I,  , m, o, d, e, l, s,  , o, f, t, e, n, 
-, s, t, r, u, g, g, l, e,  , t, o,  , h, a, r, n, e, s, s,  , t, h, e,  , r, i, c, h,  , i, n, f, o, r, m, a, t, i, o, n,  , w, i, t, h, i, n,  , m, u, l, t, i, m, o, d, a, l,  , d, a, t, a,  , a, n, d,  , e, x, t, r, a, c, t, 
-, p, o, o, r, l, y,  , g, e, n, e, r, a, l, i, z, a, b, l, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, .,  , H, e, r, e,  , w, e,  , p, r, e, s, e, n, t,  , M, I, C, E,  , (, M, u, l, t, i, m, o, d, a, l,  , d, a, t, a, 
-, I, n, t, e, g, r, a, t, i, o, n,  , v, i, a,  , C, o, l, l, a, b, o, r, a, t, i, v, e,  , E, x, p, e, r, t, s, ), ,,  , a,  , m, u, l, t, i, m, o, d, a, l,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l,  , t, h, a, t, 
-, e, f, f, e, c, t, i, v, e, l, y,  , i, n, t, e, g, r, a, t, e, s,  , p, a, t, h, o, l, o, g, y,  , i, m, a, g, e, s, ,,  , c, l, i, n, i, c, a, l,  , r, e, p, o, r, t, s, ,,  , a, n, d,  , g, e, n, o, m, i, c, s,  , d, a, t, a, 
-, f, o, r,  , p, r, e, c, i, s, e,  , p, a, n, -, c, a, n, c, e, r,  , p, r, o, g, n, o, s, i, s,  , p, r, e, d, i, c, t, i, o, n, .,  , I, n, s, t, e, a, d,  , o, f,  , c, o, n, v, e, n, t, i, o, n, a, l, 
-, m, u, l, t, i, -, e, x, p, e, r, t,  , m, o, d, u, l, e, s, ,,  , M, I, C, E,  , e, m, p, l, o, y, s,  , m, u, l, t, i, p, l, e,  , f, u, n, c, t, i, o, n, a, l, l, y,  , d, i, v, e, r, s, e,  , e, x, p, e, r, t, s,  , t, o, 
-, c, o, m, p, r, e, h, e, n, s, i, v, e, l, y,  , c, a, p, t, u, r, e,  , b, o, t, h,  , c, r, o, s, s, -, c, a, n, c, e, r,  , a, n, d,  , c, a, n, c, e, r, -, s, p, e, c, i, f, i, c,  , i, n, s, i, g, h, t, s, ., 
-, L, e, v, e, r, a, g, i, n, g,  , d, a, t, a,  , f, r, o, m,  , 1, 1, ,, 7, 9, 9,  , p, a, t, i, e, n, t, s,  , a, c, r, o, s, s,  , 3, 0,  , c, a, n, c, e, r,  , t, y, p, e, s, ,,  , w, e,  , e, n, h, a, n, c, e, d,  , M, I, C, E, ', s, 
-, g, e, n, e, r, a, l, i, z, a, b, i, l, i, t, y,  , b, y,  , c, o, u, p, l, i, n, g,  , c, o, n, t, r, a, s, t, i, v, e,  , a, n, d,  , s, u, p, e, r, v, i, s, e, d,  , l, e, a, r, n, i, n, g, .,  , M, I, C, E, 
-, o, u, t, p, e, r, f, o, r, m, e, d,  , b, o, t, h,  , u, n, i, m, o, d, a, l,  , a, n, d,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , m, u, l, t, i, -, e, x, p, e, r, t, -, b, a, s, e, d,  , m, u, l, t, i, m, o, d, a, l, 
-, m, o, d, e, l, s, ,,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , s, u, b, s, t, a, n, t, i, a, l,  , i, m, p, r, o, v, e, m, e, n, t, s,  , i, n,  , C, -, i, n, d, e, x,  , r, a, n, g, i, n, g,  , f, r, o, m,  , 3, ., 8, %,  , t, o, 
-, 1, 1, ., 2, %,  , o, n,  , i, n, t, e, r, n, a, l,  , c, o, h, o, r, t, s,  , a, n, d,  , 5, ., 8, %,  , t, o,  , 8, ., 8, %,  , o, n,  , i, n, d, e, p, e, n, d, e, n, t,  , c, o, h, o, r, t, s, ,, 
-, r, e, s, p, e, c, t, i, v, e, l, y, .,  , M, o, r, e, o, v, e, r, ,,  , i, t,  , e, x, h, i, b, i, t, e, d,  , r, e, m, a, r, k, a, b, l, e,  , d, a, t, a,  , e, f, f, i, c, i, e, n, c, y,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e, 
-, c, l, i, n, i, c, a, l,  , s, c, e, n, a, r, i, o, s, .,  , W, i, t, h,  , i, t, s,  , e, n, h, a, n, c, e, d,  , g, e, n, e, r, a, l, i, z, a, b, i, l, i, t, y,  , a, n, d,  , d, a, t, a,  , e, f, f, i, c, i, e, n, c, y, ,, 
-, M, I, C, E,  , e, s, t, a, b, l, i, s, h, e, s,  , a, n,  , e, f, f, e, c, t, i, v, e,  , a, n, d,  , s, c, a, l, a, b, l, e,  , f, o, u, n, d, a, t, i, o, n,  , f, o, r,  , p, a, n, -, c, a, n, c, e, r,  , p, r, o, g, n, o, s, i, s, 
-, p, r, e, d, i, c, t, i, o, n, ,,  , h, o, l, d, i, n, g,  , s, t, r, o, n, g,  , p, o, t, e, n, t, i, a, l,  , t, o,  , p, e, r, s, o, n, a, l, i, z, e,  , t, a, i, l, o, r, e, d,  , t, h, e, r, a, p, i, e, s,  , a, n, d, 
-, i, m, p, r, o, v, e,  , t, r, e, a, t, m, e, n, t,  , o, u, t, c, o, m, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12592v1'>Match Chat: Real Time Generative AI and Generative Computing for Tennis</a></td><td>W, e,  , p, r, e, s, e, n, t,  , M, a, t, c, h,  , C, h, a, t, ,,  , a,  , r, e, a, l, -, t, i, m, e, ,,  , a, g, e, n, t, -, d, r, i, v, e, n,  , a, s, s, i, s, t, a, n, t,  , d, e, s, i, g, n, e, d,  , t, o, 
-, e, n, h, a, n, c, e,  , t, h, e,  , t, e, n, n, i, s,  , f, a, n,  , e, x, p, e, r, i, e, n, c, e,  , b, y,  , d, e, l, i, v, e, r, i, n, g,  , i, n, s, t, a, n, t, ,,  , a, c, c, u, r, a, t, e,  , r, e, s, p, o, n, s, e, s,  , t, o, 
-, m, a, t, c, h, -, r, e, l, a, t, e, d,  , q, u, e, r, i, e, s, .,  , M, a, t, c, h,  , C, h, a, t,  , i, n, t, e, g, r, a, t, e, s,  , G, e, n, e, r, a, t, i, v, e,  , A, r, t, i, f, i, c, i, a, l,  , I, n, t, e, l, l, i, g, e, n, c, e, 
-, (, G, e, n, A, I, ),  , w, i, t, h,  , G, e, n, e, r, a, t, i, v, e,  , C, o, m, p, u, t, i, n, g,  , (, G, e, n, C, o, m, p, ),  , t, e, c, h, n, i, q, u, e, s,  , t, o,  , s, y, n, t, h, e, s, i, z, e,  , k, e, y, 
-, i, n, s, i, g, h, t, s,  , d, u, r, i, n, g,  , l, i, v, e,  , t, e, n, n, i, s,  , s, i, n, g, l, e, s,  , m, a, t, c, h, e, s, .,  , T, h, e,  , s, y, s, t, e, m,  , d, e, b, u, t, e, d,  , a, t,  , t, h, e,  , 2, 0, 2, 5, 
-, W, i, m, b, l, e, d, o, n,  , C, h, a, m, p, i, o, n, s, h, i, p, s,  , a, n, d,  , t, h, e,  , 2, 0, 2, 5,  , U, S,  , O, p, e, n, ,,  , w, h, e, r, e,  , i, t,  , p, r, o, v, i, d, e, d,  , a, b, o, u, t,  , 1,  , m, i, l, l, i, o, n, 
-, u, s, e, r, s,  , w, i, t, h,  , s, e, a, m, l, e, s, s,  , a, c, c, e, s, s,  , t, o,  , s, t, r, e, a, m, i, n, g,  , a, n, d,  , s, t, a, t, i, c,  , d, a, t, a,  , t, h, r, o, u, g, h,  , n, a, t, u, r, a, l, 
-, l, a, n, g, u, a, g, e,  , q, u, e, r, i, e, s, .,  , T, h, e,  , a, r, c, h, i, t, e, c, t, u, r, e,  , i, s,  , g, r, o, u, n, d, e, d,  , i, n,  , a, n,  , A, g, e, n, t, -, O, r, i, e, n, t, e, d, 
-, A, r, c, h, i, t, e, c, t, u, r, e,  , (, A, O, A, ),  , c, o, m, b, i, n, i, n, g,  , r, u, l, e,  , e, n, g, i, n, e, s, ,,  , p, r, e, d, i, c, t, i, v, e,  , m, o, d, e, l, s, ,,  , a, n, d,  , a, g, e, n, t, s,  , t, o, 
-, p, r, e, -, p, r, o, c, e, s, s,  , a, n, d,  , o, p, t, i, m, i, z, e,  , u, s, e, r,  , q, u, e, r, i, e, s,  , b, e, f, o, r, e,  , p, a, s, s, i, n, g,  , t, h, e, m,  , t, o,  , G, e, n, A, I,  , c, o, m, p, o, n, e, n, t, s, ., 
-, T, h, e,  , M, a, t, c, h,  , C, h, a, t,  , s, y, s, t, e, m,  , h, a, d,  , a, n,  , a, n, s, w, e, r,  , a, c, c, u, r, a, c, y,  , o, f,  , 9, 2, ., 8, 3, %,  , w, i, t, h,  , a, n,  , a, v, e, r, a, g, e,  , r, e, s, p, o, n, s, e, 
-, t, i, m, e,  , o, f,  , 6, ., 2, 5,  , s, e, c, o, n, d, s,  , u, n, d, e, r,  , l, o, a, d, s,  , o, f,  , u, p,  , t, o,  , 1, 2, 0,  , r, e, q, u, e, s, t, s,  , p, e, r,  , s, e, c, o, n, d,  , (, R, P, S, ), .,  , O, v, e, r, 
-, 9, 6, ., 0, 8, %,  , o, f,  , a, l, l,  , q, u, e, r, i, e, s,  , w, e, r, e,  , g, u, i, d, e, d,  , u, s, i, n, g,  , i, n, t, e, r, a, c, t, i, v, e,  , p, r, o, m, p, t,  , d, e, s, i, g, n, ,,  , c, o, n, t, r, i, b, u, t, i, n, g, 
-, t, o,  , a,  , u, s, e, r,  , e, x, p, e, r, i, e, n, c, e,  , t, h, a, t,  , p, r, i, o, r, i, t, i, z, e, d,  , c, l, a, r, i, t, y, ,,  , r, e, s, p, o, n, s, i, v, e, n, e, s, s, ,,  , a, n, d,  , m, i, n, i, m, a, l, 
-, e, f, f, o, r, t, .,  , T, h, e,  , s, y, s, t, e, m,  , w, a, s,  , d, e, s, i, g, n, e, d,  , t, o,  , m, a, s, k,  , a, r, c, h, i, t, e, c, t, u, r, a, l,  , c, o, m, p, l, e, x, i, t, y, ,,  , o, f, f, e, r, i, n, g,  , a, 
-, f, r, i, c, t, i, o, n, l, e, s, s,  , a, n, d,  , i, n, t, u, i, t, i, v, e,  , i, n, t, e, r, f, a, c, e,  , t, h, a, t,  , r, e, q, u, i, r, e, d,  , n, o,  , o, n, b, o, a, r, d, i, n, g,  , o, r,  , t, e, c, h, n, i, c, a, l, 
-, f, a, m, i, l, i, a, r, i, t, y, .,  , A, c, r, o, s, s,  , b, o, t, h,  , G, r, a, n, d,  , S, l, a, m,  , d, e, p, l, o, y, m, e, n, t, s, ,,  , M, a, t, c, h,  , C, h, a, t,  , m, a, i, n, t, a, i, n, e, d,  , 1, 0, 0, %, 
-, u, p, t, i, m, e,  , a, n, d,  , s, u, p, p, o, r, t, e, d,  , n, e, a, r, l, y,  , 1,  , m, i, l, l, i, o, n,  , u, n, i, q, u, e,  , u, s, e, r, s, ,,  , u, n, d, e, r, s, c, o, r, i, n, g,  , t, h, e, 
-, s, c, a, l, a, b, i, l, i, t, y,  , a, n, d,  , r, e, l, i, a, b, i, l, i, t, y,  , o, f,  , t, h, e,  , p, l, a, t, f, o, r, m, .,  , T, h, i, s,  , w, o, r, k,  , i, n, t, r, o, d, u, c, e, s,  , k, e, y,  , d, e, s, i, g, n, 
-, p, a, t, t, e, r, n, s,  , f, o, r,  , r, e, a, l, -, t, i, m, e, ,,  , c, o, n, s, u, m, e, r, -, f, a, c, i, n, g,  , A, I,  , s, y, s, t, e, m, s,  , t, h, a, t,  , e, m, p, h, a, s, i, z, e,  , s, p, e, e, d, ,, 
-, p, r, e, c, i, s, i, o, n, ,,  , a, n, d,  , u, s, a, b, i, l, i, t, y,  , t, h, a, t,  , h, i, g, h, l, i, g, h, t, s,  , a,  , p, r, a, c, t, i, c, a, l,  , p, a, t, h,  , f, o, r,  , d, e, p, l, o, y, i, n, g, 
-, p, e, r, f, o, r, m, a, n, t,  , a, g, e, n, t, i, c,  , s, y, s, t, e, m, s,  , i, n,  , d, y, n, a, m, i, c,  , e, n, v, i, r, o, n, m, e, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12589v1'>Redefining CX with Agentic AI: Minerva CQ Case Study</a></td><td>D, e, s, p, i, t, e,  , a, d, v, a, n, c, e, s,  , i, n,  , A, I,  , f, o, r,  , c, o, n, t, a, c, t,  , c, e, n, t, e, r, s, ,,  , c, u, s, t, o, m, e, r,  , e, x, p, e, r, i, e, n, c, e,  , (, C, X, ), 
-, c, o, n, t, i, n, u, e, s,  , t, o,  , s, u, f, f, e, r,  , f, r, o, m,  , h, i, g, h,  , a, v, e, r, a, g, e,  , h, a, n, d, l, i, n, g,  , t, i, m, e,  , (, A, H, T, ), ,,  , l, o, w,  , f, i, r, s, t, -, c, a, l, l, 
-, r, e, s, o, l, u, t, i, o, n, ,,  , a, n, d,  , p, o, o, r,  , c, u, s, t, o, m, e, r,  , s, a, t, i, s, f, a, c, t, i, o, n,  , (, C, S, A, T, ), .,  , A,  , k, e, y,  , d, r, i, v, e, r,  , i, s,  , t, h, e, 
-, c, o, g, n, i, t, i, v, e,  , l, o, a, d,  , o, n,  , a, g, e, n, t, s, ,,  , w, h, o,  , m, u, s, t,  , n, a, v, i, g, a, t, e,  , f, r, a, g, m, e, n, t, e, d,  , s, y, s, t, e, m, s, ,,  , t, r, o, u, b, l, e, s, h, o, o, t, 
-, m, a, n, u, a, l, l, y, ,,  , a, n, d,  , f, r, e, q, u, e, n, t, l, y,  , p, l, a, c, e,  , c, u, s, t, o, m, e, r, s,  , o, n,  , h, o, l, d, .,  , E, x, i, s, t, i, n, g,  , A, I, -, p, o, w, e, r, e, d, 
-, a, g, e, n, t, -, a, s, s, i, s, t,  , t, o, o, l, s,  , a, r, e,  , o, f, t, e, n,  , r, e, a, c, t, i, v, e,  , d, r, i, v, e, n,  , b, y,  , s, t, a, t, i, c,  , r, u, l, e, s, ,,  , s, i, m, p, l, e,  , p, r, o, m, p, t, i, n, g, ,, 
-, o, r,  , r, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , w, i, t, h, o, u, t,  , d, e, e, p, e, r,  , c, o, n, t, e, x, t, u, a, l,  , r, e, a, s, o, n, i, n, g, .,  , W, e, 
-, i, n, t, r, o, d, u, c, e,  , A, g, e, n, t, i, c,  , A, I,  , g, o, a, l, -, d, r, i, v, e, n, ,,  , a, u, t, o, n, o, m, o, u, s, ,,  , t, o, o, l, -, u, s, i, n, g,  , s, y, s, t, e, m, s,  , t, h, a, t, 
-, p, r, o, a, c, t, i, v, e, l, y,  , s, u, p, p, o, r, t,  , a, g, e, n, t, s,  , i, n,  , r, e, a, l,  , t, i, m, e, .,  , U, n, l, i, k, e,  , c, o, n, v, e, n, t, i, o, n, a, l,  , a, p, p, r, o, a, c, h, e, s, ,, 
-, A, g, e, n, t, i, c,  , A, I,  , i, d, e, n, t, i, f, i, e, s,  , c, u, s, t, o, m, e, r,  , i, n, t, e, n, t, ,,  , t, r, i, g, g, e, r, s,  , m, o, d, u, l, a, r,  , w, o, r, k, f, l, o, w, s, ,,  , m, a, i, n, t, a, i, n, s, 
-, e, v, o, l, v, i, n, g,  , c, o, n, t, e, x, t, ,,  , a, n, d,  , a, d, a, p, t, s,  , d, y, n, a, m, i, c, a, l, l, y,  , t, o,  , c, o, n, v, e, r, s, a, t, i, o, n,  , s, t, a, t, e, .,  , T, h, i, s,  , p, a, p, e, r, 
-, p, r, e, s, e, n, t, s,  , a,  , c, a, s, e,  , s, t, u, d, y,  , o, f,  , M, i, n, e, r, v, a,  , C, Q, ,,  , a,  , r, e, a, l, -, t, i, m, e,  , A, g, e, n, t,  , A, s, s, i, s, t,  , p, r, o, d, u, c, t,  , d, e, p, l, o, y, e, d, 
-, i, n,  , v, o, i, c, e, -, b, a, s, e, d,  , c, u, s, t, o, m, e, r,  , s, u, p, p, o, r, t, .,  , M, i, n, e, r, v, a,  , C, Q,  , i, n, t, e, g, r, a, t, e, s,  , r, e, a, l, -, t, i, m, e,  , t, r, a, n, s, c, r, i, p, t, i, o, n, ,, 
-, i, n, t, e, n, t,  , a, n, d,  , s, e, n, t, i, m, e, n, t,  , d, e, t, e, c, t, i, o, n, ,,  , e, n, t, i, t, y,  , r, e, c, o, g, n, i, t, i, o, n, ,,  , c, o, n, t, e, x, t, u, a, l,  , r, e, t, r, i, e, v, a, l, ,, 
-, d, y, n, a, m, i, c,  , c, u, s, t, o, m, e, r,  , p, r, o, f, i, l, i, n, g, ,,  , a, n, d,  , p, a, r, t, i, a, l,  , c, o, n, v, e, r, s, a, t, i, o, n, a, l,  , s, u, m, m, a, r, i, e, s,  , e, n, a, b, l, i, n, g, 
-, p, r, o, a, c, t, i, v, e,  , w, o, r, k, f, l, o, w, s,  , a, n, d,  , c, o, n, t, i, n, u, o, u, s,  , c, o, n, t, e, x, t, -, b, u, i, l, d, i, n, g, .,  , D, e, p, l, o, y, e, d,  , i, n,  , l, i, v, e, 
-, p, r, o, d, u, c, t, i, o, n, ,,  , M, i, n, e, r, v, a,  , C, Q,  , a, c, t, s,  , a, s,  , a, n,  , A, I,  , c, o, -, p, i, l, o, t, ,,  , d, e, l, i, v, e, r, i, n, g,  , m, e, a, s, u, r, a, b, l, e, 
-, i, m, p, r, o, v, e, m, e, n, t, s,  , i, n,  , a, g, e, n, t,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d,  , c, u, s, t, o, m, e, r,  , e, x, p, e, r, i, e, n, c, e,  , a, c, r, o, s, s,  , m, u, l, t, i, p, l, e, 
-, d, e, p, l, o, y, m, e, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12531v1'>Pre-trained Visual Representations Generalize Where it Matters in Model-Based Reinforcement Learning</a></td><td>I, n,  , v, i, s, u, o, m, o, t, o, r,  , p, o, l, i, c, y,  , l, e, a, r, n, i, n, g, ,,  , t, h, e,  , c, o, n, t, r, o, l,  , p, o, l, i, c, y,  , f, o, r,  , t, h, e,  , r, o, b, o, t, i, c,  , a, g, e, n, t,  , i, s, 
-, d, e, r, i, v, e, d,  , d, i, r, e, c, t, l, y,  , f, r, o, m,  , v, i, s, u, a, l,  , i, n, p, u, t, s, .,  , T, h, e,  , t, y, p, i, c, a, l,  , a, p, p, r, o, a, c, h, ,,  , w, h, e, r, e,  , a,  , p, o, l, i, c, y,  , a, n, d, 
-, v, i, s, i, o, n,  , e, n, c, o, d, e, r,  , a, r, e,  , t, r, a, i, n, e, d,  , j, o, i, n, t, l, y,  , f, r, o, m,  , s, c, r, a, t, c, h, ,,  , g, e, n, e, r, a, l, i, z, e, s,  , p, o, o, r, l, y,  , t, o,  , n, o, v, e, l, 
-, v, i, s, u, a, l,  , s, c, e, n, e,  , c, h, a, n, g, e, s, .,  , U, s, i, n, g,  , p, r, e, -, t, r, a, i, n, e, d,  , v, i, s, i, o, n,  , m, o, d, e, l, s,  , (, P, V, M, s, ),  , t, o,  , i, n, f, o, r, m,  , a,  , p, o, l, i, c, y, 
-, n, e, t, w, o, r, k,  , i, m, p, r, o, v, e, s,  , r, o, b, u, s, t, n, e, s, s,  , i, n,  , m, o, d, e, l, -, f, r, e, e,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g,  , (, M, F, R, L, ), .,  , R, e, c, e, n, t, 
-, d, e, v, e, l, o, p, m, e, n, t, s,  , i, n,  , M, o, d, e, l, -, b, a, s, e, d,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g,  , (, M, B, R, L, ),  , s, u, g, g, e, s, t,  , t, h, a, t,  , M, B, R, L,  , i, s, 
-, m, o, r, e,  , s, a, m, p, l, e, -, e, f, f, i, c, i, e, n, t,  , t, h, a, n,  , M, F, R, L, .,  , H, o, w, e, v, e, r, ,,  , c, o, u, n, t, e, r, i, n, t, u, i, t, i, v, e, l, y, ,,  , e, x, i, s, t, i, n, g,  , w, o, r, k,  , h, a, s, 
-, f, o, u, n, d,  , P, V, M, s,  , t, o,  , b, e,  , i, n, e, f, f, e, c, t, i, v, e,  , i, n,  , M, B, R, L, .,  , H, e, r, e, ,,  , w, e,  , i, n, v, e, s, t, i, g, a, t, e,  , P, V, M, ', s,  , e, f, f, e, c, t, i, v, e, n, e, s, s, 
-, i, n,  , M, B, R, L, ,,  , s, p, e, c, i, f, i, c, a, l, l, y,  , o, n,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , u, n, d, e, r,  , v, i, s, u, a, l,  , d, o, m, a, i, n,  , s, h, i, f, t, s, .,  , W, e,  , s, h, o, w, 
-, t, h, a, t, ,,  , i, n,  , s, c, e, n, a, r, i, o, s,  , w, i, t, h,  , s, e, v, e, r, e,  , s, h, i, f, t, s, ,,  , P, V, M, s,  , p, e, r, f, o, r, m,  , m, u, c, h,  , b, e, t, t, e, r,  , t, h, a, n,  , a,  , b, a, s, e, l, i, n, e, 
-, m, o, d, e, l,  , t, r, a, i, n, e, d,  , f, r, o, m,  , s, c, r, a, t, c, h, .,  , W, e,  , f, u, r, t, h, e, r,  , i, n, v, e, s, t, i, g, a, t, e,  , t, h, e,  , e, f, f, e, c, t, s,  , o, f,  , v, a, r, y, i, n, g, 
-, l, e, v, e, l, s,  , o, f,  , f, i, n, e, -, t, u, n, i, n, g,  , o, f,  , P, V, M, s, .,  , O, u, r,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , p, a, r, t, i, a, l,  , f, i, n, e, -, t, u, n, i, n, g,  , c, a, n, 
-, m, a, i, n, t, a, i, n,  , t, h, e,  , h, i, g, h, e, s, t,  , a, v, e, r, a, g, e,  , t, a, s, k,  , p, e, r, f, o, r, m, a, n, c, e,  , u, n, d, e, r,  , t, h, e,  , m, o, s, t,  , e, x, t, r, e, m, e, 
-, d, i, s, t, r, i, b, u, t, i, o, n,  , s, h, i, f, t, s, .,  , O, u, r,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , P, V, M, s,  , a, r, e,  , h, i, g, h, l, y,  , s, u, c, c, e, s, s, f, u, l,  , i, n, 
-, p, r, o, m, o, t, i, n, g,  , r, o, b, u, s, t, n, e, s, s,  , i, n,  , v, i, s, u, a, l,  , p, o, l, i, c, y,  , l, e, a, r, n, i, n, g, ,,  , p, r, o, v, i, d, i, n, g,  , c, o, m, p, e, l, l, i, n, g,  , e, v, i, d, e, n, c, e, 
-, f, o, r,  , t, h, e, i, r,  , w, i, d, e, r,  , a, d, o, p, t, i, o, n,  , i, n,  , m, o, d, e, l, -, b, a, s, e, d,  , r, o, b, o, t, i, c,  , l, e, a, r, n, i, n, g,  , a, p, p, l, i, c, a, t, i, o, n, s, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.13255v1'>ResidualViT for Efficient Temporally Dense Video Encoding</a></td><td>Several video understanding tasks, such as natural language temporal video
+grounding, temporal activity localization, and audio description generation,
+require "temporally dense" reasoning over frames sampled at high temporal
+resolution. However, computing frame-level features for these tasks is
+computationally expensive given the temporal resolution requirements. In this
+paper, we make three contributions to reduce the cost of computing features for
+temporally dense tasks. First, we introduce a vision transformer (ViT)
+architecture, dubbed ResidualViT, that leverages the large temporal redundancy
+in videos to efficiently compute temporally dense frame-level features. Our
+architecture incorporates (i) learnable residual connections that ensure
+temporal consistency across consecutive frames and (ii) a token reduction
+module that enhances processing speed by selectively discarding temporally
+redundant information while reusing weights of a pretrained foundation model.
+Second, we propose a lightweight distillation strategy to approximate the
+frame-level features of the original foundation model. Finally, we evaluate our
+approach across four tasks and five datasets, in both zero-shot and fully
+supervised settings, demonstrating significant reductions in computational cost
+(up to 60%) and improvements in inference speed (up to 2.5x faster), all while
+closely approximating the accuracy of the original foundation model.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13237v1'>Metacognitive Reuse: Turning Recurring LLM Reasoning Into Concise Behaviors</a></td><td>Large language models (LLMs) now solve multi-step problems by emitting
+extended chains of thought. During the process, they often re-derive the same
+intermediate steps across problems, inflating token usage and latency. This
+saturation of the context window leaves less capacity for exploration. We study
+a simple mechanism that converts recurring reasoning fragments into concise,
+reusable "behaviors" (name + instruction) via the model's own metacognitive
+analysis of prior traces. These behaviors are stored in a "behavior handbook"
+which supplies them to the model in-context at inference or distills them into
+parameters via supervised fine-tuning. This approach achieves improved
+test-time reasoning across three different settings - 1) Behavior-conditioned
+inference: Providing the LLM relevant behaviors in-context during reasoning
+reduces number of reasoning tokens by up to 46% while matching or improving
+baseline accuracy; 2) Behavior-guided self-improvement: Without any parameter
+updates, the model improves its own future reasoning by leveraging behaviors
+from its own past problem solving attempts. This yields up to 10% higher
+accuracy than a naive critique-and-revise baseline; and 3) Behavior-conditioned
+SFT: SFT on behavior-conditioned reasoning traces is more effective at
+converting non-reasoning models into reasoning models as compared to vanilla
+SFT. Together, these results indicate that turning slow derivations into fast
+procedural hints enables LLMs to remember how to reason, not just what to
+conclude.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13235v1'>A Scenario-Driven Cognitive Approach to Next-Generation AI Memory</a></td><td>As artificial intelligence advances toward artificial general intelligence
+(AGI), the need for robust and human-like memory systems has become
+increasingly evident. Current memory architectures often suffer from limited
+adaptability, insufficient multimodal integration, and an inability to support
+continuous learning. To address these limitations, we propose a scenario-driven
+methodology that extracts essential functional requirements from representative
+cognitive scenarios, leading to a unified set of design principles for
+next-generation AI memory systems. Based on this approach, we introduce the
+\textbf{COgnitive Layered Memory Architecture (COLMA)}, a novel framework that
+integrates cognitive scenarios, memory processes, and storage mechanisms into a
+cohesive design. COLMA provides a structured foundation for developing AI
+systems capable of lifelong learning and human-like reasoning, thereby
+contributing to the pragmatic development of AGI.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13232v1'>Single-stream Policy Optimization</a></td><td>We revisit policy-gradient optimization for Large Language Models (LLMs) from
+a single-stream perspective. Prevailing group-based methods like GRPO reduce
+variance with on-the-fly baselines but suffer from critical flaws: frequent
+degenerate groups erase learning signals, and synchronization barriers hinder
+scalability. We introduce Single-stream Policy Optimization (SPO), which
+eliminates these issues by design. SPO replaces per-group baselines with a
+persistent, KL-adaptive value tracker and normalizes advantages globally across
+the batch, providing a stable, low-variance learning signal for every sample.
+Being group-free, SPO enables higher throughput and scales effectively in
+long-horizon or tool-integrated settings where generation times vary.
+Furthermore, the persistent value tracker naturally enables an adaptive
+curriculum via prioritized sampling. Experiments using Qwen3-8B show that SPO
+converges more smoothly and attains higher accuracy than GRPO, while
+eliminating computation wasted on degenerate groups. Ablation studies confirm
+that SPO's gains stem from its principled approach to baseline estimation and
+advantage normalization, offering a more robust and efficient path for LLM
+reasoning. Across five hard math benchmarks with Qwen3 8B, SPO improves the
+average maj@32 by +3.4 percentage points (pp) over GRPO, driven by substantial
+absolute point gains on challenging datasets, including +7.3 pp on BRUMO 25,
++4.4 pp on AIME 25, +3.3 pp on HMMT 25, and achieves consistent relative gain
+in pass@$k$ across the evaluated $k$ values. SPO's success challenges the
+prevailing trend of adding incidental complexity to RL algorithms, highlighting
+a path where fundamental principles, not architectural workarounds, drive the
+next wave of progress in LLM reasoning.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13107v1'>Hierarchical Deep Fusion Framework for Multi-dimensional Facial Forgery Detection - The 2024 Global Deepfake Image Detection Challenge</a></td><td>The proliferation of sophisticated deepfake technology poses significant
+challenges to digital security and authenticity. Detecting these forgeries,
+especially across a wide spectrum of manipulation techniques, requires robust
+and generalized models. This paper introduces the Hierarchical Deep Fusion
+Framework (HDFF), an ensemble-based deep learning architecture designed for
+high-performance facial forgery detection. Our framework integrates four
+diverse pre-trained sub-models, Swin-MLP, CoAtNet, EfficientNetV2, and DaViT,
+which are meticulously fine-tuned through a multi-stage process on the
+MultiFFDI dataset. By concatenating the feature representations from these
+specialized models and training a final classifier layer, HDFF effectively
+leverages their collective strengths. This approach achieved a final score of
+0.96852 on the competition's private leaderboard, securing the 20th position
+out of 184 teams, demonstrating the efficacy of hierarchical fusion for complex
+image classification tasks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13021v1'>xOffense: An AI-driven autonomous penetration testing framework with offensive knowledge-enhanced LLMs and multi agent systems</a></td><td>This work introduces xOffense, an AI-driven, multi-agent penetration testing
+framework that shifts the process from labor-intensive, expert-driven manual
+efforts to fully automated, machine-executable workflows capable of scaling
+seamlessly with computational infrastructure. At its core, xOffense leverages a
+fine-tuned, mid-scale open-source LLM (Qwen3-32B) to drive reasoning and
+decision-making in penetration testing. The framework assigns specialized
+agents to reconnaissance, vulnerability scanning, and exploitation, with an
+orchestration layer ensuring seamless coordination across phases. Fine-tuning
+on Chain-of-Thought penetration testing data further enables the model to
+generate precise tool commands and perform consistent multi-step reasoning. We
+evaluate xOffense on two rigorous benchmarks: AutoPenBench and
+AI-Pentest-Benchmark. The results demonstrate that xOffense consistently
+outperforms contemporary methods, achieving a sub-task completion rate of
+79.17%, decisively surpassing leading systems such as VulnBot and PentestGPT.
+These findings highlight the potential of domain-adapted mid-scale LLMs, when
+embedded within structured multi-agent orchestration, to deliver superior,
+cost-efficient, and reproducible solutions for autonomous penetration testing.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12987v1'>Toward PDDL Planning Copilot</a></td><td>Large Language Models (LLMs) are increasingly being used as autonomous agents
+capable of performing complicated tasks. However, they lack the ability to
+perform reliable long-horizon planning on their own. This paper bridges this
+gap by introducing the Planning Copilot, a chatbot that integrates multiple
+planning tools and allows users to invoke them through instructions in natural
+language. The Planning Copilot leverages the Model Context Protocol (MCP), a
+recently developed standard for connecting LLMs with external tools and
+systems. This approach allows using any LLM that supports MCP without
+domain-specific fine-tuning. Our Planning Copilot supports common planning
+tasks such as checking the syntax of planning problems, selecting an
+appropriate planner, calling it, validating the plan it generates, and
+simulating their execution. We empirically evaluate the ability of our Planning
+Copilot to perform these tasks using three open-source LLMs. The results show
+that the Planning Copilot highly outperforms using the same LLMs without the
+planning tools. We also conducted a limited qualitative comparison of our tool
+against Chat GPT-5, a very recent commercial LLM. Our results shows that our
+Planning Copilot significantly outperforms GPT-5 despite relying on a much
+smaller LLM. This suggests dedicated planning tools may be an effective way to
+enable LLMs to perform planning tasks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12958v1'>Forget What's Sensitive, Remember What Matters: Token-Level Differential Privacy in Memory Sculpting for Continual Learning</a></td><td>Continual Learning (CL) models, while adept at sequential knowledge
+acquisition, face significant and often overlooked privacy challenges due to
+accumulating diverse information. Traditional privacy methods, like a uniform
+Differential Privacy (DP) budget, indiscriminately protect all data, leading to
+substantial model utility degradation and hindering CL deployment in
+privacy-sensitive areas. To overcome this, we propose a privacy-enhanced
+continual learning (PeCL) framework that forgets what's sensitive and remembers
+what matters. Our approach first introduces a token-level dynamic Differential
+Privacy strategy that adaptively allocates privacy budgets based on the
+semantic sensitivity of individual tokens. This ensures robust protection for
+private entities while minimizing noise injection for non-sensitive, general
+knowledge. Second, we integrate a privacy-guided memory sculpting module. This
+module leverages the sensitivity analysis from our dynamic DP mechanism to
+intelligently forget sensitive information from the model's memory and
+parameters, while explicitly preserving the task-invariant historical knowledge
+crucial for mitigating catastrophic forgetting. Extensive experiments show that
+PeCL achieves a superior balance between privacy preserving and model utility,
+outperforming baseline models by maintaining high accuracy on previous tasks
+while ensuring robust privacy.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12939v1'>Sy-FAR: Symmetry-based Fair Adversarial Robustness</a></td><td>Security-critical machine-learning (ML) systems, such as face-recognition
+systems, are susceptible to adversarial examples, including real-world
+physically realizable attacks. Various means to boost ML's adversarial
+robustness have been proposed; however, they typically induce unfair
+robustness: It is often easier to attack from certain classes or groups than
+from others. Several techniques have been developed to improve adversarial
+robustness while seeking perfect fairness between classes. Yet, prior work has
+focused on settings where security and fairness are less critical. Our insight
+is that achieving perfect parity in realistic fairness-critical tasks, such as
+face recognition, is often infeasible -- some classes may be highly similar,
+leading to more misclassifications between them. Instead, we suggest that
+seeking symmetry -- i.e., attacks from class $i$ to $j$ would be as successful
+as from $j$ to $i$ -- is more tractable. Intuitively, symmetry is a desirable
+because class resemblance is a symmetric relation in most domains.
+Additionally, as we prove theoretically, symmetry between individuals induces
+symmetry between any set of sub-groups, in contrast to other fairness notions
+where group-fairness is often elusive. We develop Sy-FAR, a technique to
+encourage symmetry while also optimizing adversarial robustness and extensively
+evaluate it using five datasets, with three model architectures, including
+against targeted and untargeted realistic attacks. The results show Sy-FAR
+significantly improves fair adversarial robustness compared to state-of-the-art
+methods. Moreover, we find that Sy-FAR is faster and more consistent across
+runs. Notably, Sy-FAR also ameliorates another type of unfairness we discover
+in this work -- target classes that adversarial examples are likely to be
+classified into become significantly less vulnerable after inducing symmetry.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12886v1'>The LLM Already Knows: Estimating LLM-Perceived Question Difficulty via Hidden Representations</a></td><td>Estimating the difficulty of input questions as perceived by large language
+models (LLMs) is essential for accurate performance evaluation and adaptive
+inference. Existing methods typically rely on repeated response sampling,
+auxiliary models, or fine-tuning the target model itself, which may incur
+substantial computational costs or compromise generality. In this paper, we
+propose a novel approach for difficulty estimation that leverages only the
+hidden representations produced by the target LLM. We model the token-level
+generation process as a Markov chain and define a value function to estimate
+the expected output quality given any hidden state. This allows for efficient
+and accurate difficulty estimation based solely on the initial hidden state,
+without generating any output tokens. Extensive experiments across both textual
+and multimodal tasks demonstrate that our method consistently outperforms
+existing baselines in difficulty estimation. Moreover, we apply our difficulty
+estimates to guide adaptive reasoning strategies, including Self-Consistency,
+Best-of-N, and Self-Refine, achieving higher inference efficiency with fewer
+generated tokens.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12849v1'>AI Factories: It's time to rethink the Cloud-HPC divide</a></td><td>The strategic importance of artificial intelligence is driving a global push
+toward Sovereign AI initiatives. Nationwide governments are increasingly
+developing dedicated infrastructures, called AI Factories (AIF), to achieve
+technological autonomy and secure the resources necessary to sustain robust
+local digital ecosystems.
+  In Europe, the EuroHPC Joint Undertaking is investing hundreds of millions of
+euros into several AI Factories, built atop existing high-performance computing
+(HPC) supercomputers. However, while HPC systems excel in raw performance, they
+are not inherently designed for usability, accessibility, or serving as
+public-facing platforms for AI services such as inference or agentic
+applications. In contrast, AI practitioners are accustomed to cloud-native
+technologies like Kubernetes and object storage, tools that are often difficult
+to integrate within traditional HPC environments.
+  This article advocates for a dual-stack approach within supercomputers:
+integrating both HPC and cloud-native technologies. Our goal is to bridge the
+divide between HPC and cloud computing by combining high performance and
+hardware acceleration with ease of use and service-oriented front-ends. This
+convergence allows each paradigm to amplify the other. To this end, we will
+study the cloud challenges of HPC (Serverless HPC) and the HPC challenges of
+cloud technologies (High-performance Cloud).</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12838v1'>Multi-Robot Task Planning for Multi-Object Retrieval Tasks with Distributed On-Site Knowledge via Large Language Models</a></td><td>It is crucial to efficiently execute instructions such as "Find an apple and
+a banana" or "Get ready for a field trip," which require searching for multiple
+objects or understanding context-dependent commands. This study addresses the
+challenging problem of determining which robot should be assigned to which part
+of a task when each robot possesses different situational on-site
+knowledge-specifically, spatial concepts learned from the area designated to it
+by the user. We propose a task planning framework that leverages large language
+models (LLMs) and spatial concepts to decompose natural language instructions
+into subtasks and allocate them to multiple robots. We designed a novel
+few-shot prompting strategy that enables LLMs to infer required objects from
+ambiguous commands and decompose them into appropriate subtasks. In our
+experiments, the proposed method achieved 47/50 successful assignments,
+outperforming random (28/50) and commonsense-based assignment (26/50).
+Furthermore, we conducted qualitative evaluations using two actual mobile
+manipulators. The results demonstrated that our framework could handle
+instructions, including those involving ad hoc categories such as "Get ready
+for a field trip," by successfully performing task decomposition, assignment,
+sequential planning, and execution.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12822v1'>A Pressure-Based Diffusion Model for Influence Maximization on Social Networks</a></td><td>In many real-world scenarios, an individual's local social network carries
+significant influence over the opinions they form and subsequently propagate to
+others. In this paper, we propose a novel diffusion model -- the Pressure
+Threshold model (PT) -- for dynamically simulating the spread of influence
+through a social network. This new model extends the popular Linear Threshold
+Model (LT) by adjusting a node's outgoing influence proportional to the
+influence it receives from its activated neighbors. We address the Influence
+Maximization (IM) problem, which involves selecting the most effective seed
+nodes to achieve maximal graph coverage after a diffusion process, and how the
+problem manifests with the PT Model. Experiments conducted on real-world
+networks, facilitated by enhancements to the open-source network-diffusion
+Python library, CyNetDiff, demonstrate unique seed node selection for the PT
+Model when compared to the LT Model. Moreover, analyses demonstrate that
+densely connected networks amplify pressure effects more significantly than
+sparse networks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12816v1'>Gesture Evaluation in Virtual Reality</a></td><td>Gestures are central to human communication, enriching interactions through
+non-verbal expression. Virtual avatars increasingly use AI-generated gestures
+to enhance life-likeness, yet evaluations have largely been confined to 2D.
+Virtual Reality (VR) provides an immersive alternative that may affect how
+gestures are perceived. This paper presents a comparative evaluation of
+computer-generated gestures in VR and 2D, examining three models from the 2023
+GENEA Challenge. Results show that gestures viewed in VR were rated slightly
+higher on average, with the strongest effect observed for motion-capture "true
+movement." While model rankings remained consistent across settings, VR
+influenced participants' overall perception and offered unique benefits over
+traditional 2D evaluation.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12777v1'>CECT-Mamba: a Hierarchical Contrast-enhanced-aware Model for Pancreatic Tumor Subtyping from Multi-phase CECT</a></td><td>Contrast-enhanced computed tomography (CECT) is the primary imaging technique
+that provides valuable spatial-temporal information about lesions, enabling the
+accurate diagnosis and subclassification of pancreatic tumors. However, the
+high heterogeneity and variability of pancreatic tumors still pose substantial
+challenges for precise subtyping diagnosis. Previous methods fail to
+effectively explore the contextual information across multiple CECT phases
+commonly used in radiologists' diagnostic workflows, thereby limiting their
+performance. In this paper, we introduce, for the first time, an automatic way
+to combine the multi-phase CECT data to discriminate between pancreatic tumor
+subtypes, among which the key is using Mamba with promising learnability and
+simplicity to encourage both temporal and spatial modeling from multi-phase
+CECT. Specifically, we propose a dual hierarchical contrast-enhanced-aware
+Mamba module incorporating two novel spatial and temporal sampling sequences to
+explore intra and inter-phase contrast variations of lesions. A
+similarity-guided refinement module is also imposed into the temporal scanning
+modeling to emphasize the learning on local tumor regions with more obvious
+temporal variations. Moreover, we design the space complementary integrator and
+multi-granularity fusion module to encode and aggregate the semantics across
+different scales, achieving more efficient learning for subtyping pancreatic
+tumors. The experimental results on an in-house dataset of 270 clinical cases
+achieve an accuracy of 97.4% and an AUC of 98.6% in distinguishing between
+pancreatic ductal adenocarcinoma (PDAC) and pancreatic neuroendocrine tumors
+(PNETs), demonstrating its potential as a more accurate and efficient tool.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12765v1'>InfoGain-RAG: Boosting Retrieval-Augmented Generation via Document Information Gain-based Reranking and Filtering</a></td><td>Retrieval-Augmented Generation (RAG) has emerged as a promising approach to
+address key limitations of Large Language Models (LLMs), such as hallucination,
+outdated knowledge, and lacking reference. However, current RAG frameworks
+often struggle with identifying whether retrieved documents meaningfully
+contribute to answer generation. This shortcoming makes it difficult to filter
+out irrelevant or even misleading content, which notably impacts the final
+performance. In this paper, we propose Document Information Gain (DIG), a novel
+metric designed to quantify the contribution of retrieved documents to correct
+answer generation. DIG measures a document's value by computing the difference
+of LLM's generation confidence with and without the document augmented.
+Further, we introduce InfoGain-RAG, a framework that leverages DIG scores to
+train a specialized reranker, which prioritizes each retrieved document from
+exact distinguishing and accurate sorting perspectives. This approach can
+effectively filter out irrelevant documents and select the most valuable ones
+for better answer generation. Extensive experiments across various models and
+benchmarks demonstrate that InfoGain-RAG can significantly outperform existing
+approaches, on both single and multiple retrievers paradigm. Specifically on
+NaturalQA, it achieves the improvements of 17.9%, 4.5%, 12.5% in exact match
+accuracy against naive RAG, self-reflective RAG and modern ranking-based RAG
+respectively, and even an average of 15.3% increment on advanced proprietary
+model GPT-4o across all datasets. These results demonstrate the feasibility of
+InfoGain-RAG as it can offer a reliable solution for RAG in multiple
+applications.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12754v1'>Toward Ownership Understanding of Objects: Active Question Generation with Large Language Model and Probabilistic Generative Model</a></td><td>Robots operating in domestic and office environments must understand object
+ownership to correctly execute instructions such as ``Bring me my cup.''
+However, ownership cannot be reliably inferred from visual features alone. To
+address this gap, we propose Active Ownership Learning (ActOwL), a framework
+that enables robots to actively generate and ask ownership-related questions to
+users. ActOwL employs a probabilistic generative model to select questions that
+maximize information gain, thereby acquiring ownership knowledge efficiently to
+improve learning efficiency. Additionally, by leveraging commonsense knowledge
+from Large Language Models (LLM), objects are pre-classified as either shared
+or owned, and only owned objects are targeted for questioning. Through
+experiments in a simulated home environment and a real-world laboratory
+setting, ActOwL achieved significantly higher ownership clustering accuracy
+with fewer questions than baseline methods. These findings demonstrate the
+effectiveness of combining active inference with LLM-guided commonsense
+reasoning, advancing the capability of robots to acquire ownership knowledge
+for practical and socially appropriate task execution.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12743v1'>Zero-shot Graph Reasoning via Retrieval Augmented Framework with LLMs</a></td><td>We propose a new, training-free method, Graph Reasoning via Retrieval
+Augmented Framework (GRRAF), that harnesses retrieval-augmented generation
+(RAG) alongside the code-generation capabilities of large language models
+(LLMs) to address a wide range of graph reasoning tasks. In GRRAF, the target
+graph is stored in a graph database, and the LLM is prompted to generate
+executable code queries that retrieve the necessary information. This approach
+circumvents the limitations of existing methods that require extensive
+finetuning or depend on predefined algorithms, and it incorporates an error
+feedback loop with a time-out mechanism to ensure both correctness and
+efficiency. Experimental evaluations on the GraphInstruct dataset reveal that
+GRRAF achieves 100% accuracy on most graph reasoning tasks, including cycle
+detection, bipartite graph checks, shortest path computation, and maximum flow,
+while maintaining consistent token costs regardless of graph sizes. Imperfect
+but still very high performance is observed on subgraph matching. Notably,
+GRRAF scales effectively to large graphs with up to 10,000 nodes.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12740v1'>Deep Generative and Discriminative Digital Twin endowed with Variational Autoencoder for Unsupervised Predictive Thermal Condition Monitoring of Physical Robots in Industry 6.0 and Society 6.0</a></td><td>Robots are unrelentingly used to achieve operational efficiency in Industry
+4.0 along with symbiotic and sustainable assistance for the work-force in
+Industry 5.0. As resilience, robustness, and well-being are required in
+anti-fragile manufacturing and human-centric societal tasks, an autonomous
+anticipation and adaption to thermal saturation and burns due to motors
+overheating become instrumental for human safety and robot availability. Robots
+are thereby expected to self-sustain their performance and deliver user
+experience, in addition to communicating their capability to other agents in
+advance to ensure fully automated thermally feasible tasks, and prolong their
+lifetime without human intervention. However, the traditional robot shutdown,
+when facing an imminent thermal saturation, inhibits productivity in factories
+and comfort in the society, while cooling strategies are hard to implement
+after the robot acquisition. In this work, smart digital twins endowed with
+generative AI, i.e., variational autoencoders, are leveraged to manage
+thermally anomalous and generate uncritical robot states. The notion of thermal
+difficulty is derived from the reconstruction error of variational
+autoencoders. A robot can use this score to predict, anticipate, and share the
+thermal feasibility of desired motion profiles to meet requirements from
+emerging applications in Industry 6.0 and Society 6.0.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12724v1'>Defense-to-Attack: Bypassing Weak Defenses Enables Stronger Jailbreaks in Vision-Language Models</a></td><td>Despite their superb capabilities, Vision-Language Models (VLMs) have been
+shown to be vulnerable to jailbreak attacks. While recent jailbreaks have
+achieved notable progress, their effectiveness and efficiency can still be
+improved. In this work, we reveal an interesting phenomenon: incorporating weak
+defense into the attack pipeline can significantly enhance both the
+effectiveness and the efficiency of jailbreaks on VLMs. Building on this
+insight, we propose Defense2Attack, a novel jailbreak method that bypasses the
+safety guardrails of VLMs by leveraging defensive patterns to guide jailbreak
+prompt design. Specifically, Defense2Attack consists of three key components:
+(1) a visual optimizer that embeds universal adversarial perturbations with
+affirmative and encouraging semantics; (2) a textual optimizer that refines the
+input using a defense-styled prompt; and (3) a red-team suffix generator that
+enhances the jailbreak through reinforcement fine-tuning. We empirically
+evaluate our method on four VLMs and four safety benchmarks. The results
+demonstrate that Defense2Attack achieves superior jailbreak performance in a
+single attempt, outperforming state-of-the-art attack methods that often
+require multiple tries. Our work offers a new perspective on jailbreaking VLMs.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12716v1'>Joint AoI and Handover Optimization in Space-Air-Ground Integrated Network</a></td><td>Despite the widespread deployment of terrestrial networks, providing reliable
+communication services to remote areas and maintaining connectivity during
+emergencies remains challenging. Low Earth orbit (LEO) satellite constellations
+offer promising solutions with their global coverage capabilities and reduced
+latency, yet struggle with intermittent coverage and limited communication
+windows due to orbital dynamics. This paper introduces an age of information
+(AoI)-aware space-air-ground integrated network (SAGIN) architecture that
+leverages a high-altitude platform (HAP) as intelligent relay between the LEO
+satellites and ground terminals. Our three-layer design employs hybrid
+free-space optical (FSO) links for high-capacity satellite-to-HAP communication
+and reliable radio frequency (RF) links for HAP-to-ground transmission, and
+thus addressing the temporal discontinuity in LEO satellite coverage while
+serving diverse user priorities. Specifically, we formulate a joint
+optimization problem to simultaneously minimize the AoI and satellite handover
+frequency through optimal transmit power distribution and satellite selection
+decisions. This highly dynamic, non-convex problem with time-coupled
+constraints presents significant computational challenges for traditional
+approaches. To address these difficulties, we propose a novel diffusion model
+(DM)-enhanced dueling double deep Q-network with action decomposition and state
+transformer encoder (DD3QN-AS) algorithm that incorporates transformer-based
+temporal feature extraction and employs a DM-based latent prompt generative
+module to refine state-action representations through conditional denoising.
+Simulation results highlight the superior performance of the proposed approach
+compared with policy-based methods and some other deep reinforcement learning
+(DRL) benchmarks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12678v1'>Instance-level Randomization: Toward More Stable LLM Evaluations</a></td><td>Evaluations of large language models (LLMs) suffer from instability, where
+small changes of random factors such as few-shot examples can lead to drastic
+fluctuations of scores and even model rankings. Moreover, different LLMs can
+have different preferences for a certain setting of random factors. As a
+result, using a fixed setting of random factors, which is often adopted as the
+paradigm of current evaluations, can lead to potential unfair comparisons
+between LLMs. To mitigate the volatility of evaluations, we first theoretically
+analyze the sources of variance induced by changes in random factors. Targeting
+these specific sources, we then propose the instance-level randomization (ILR)
+method to reduce variance and enhance fairness in model comparisons. Instead of
+using a fixed setting across the whole benchmark in a single experiment, we
+randomize all factors that affect evaluation scores for every single instance,
+run multiple experiments and report the averaged score. Theoretical analyses
+and empirical results demonstrate that ILR can reduce the variance and unfair
+comparisons caused by random factors, as well as achieve similar robustness
+level with less than half computational cost compared with previous methods.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12650v1'>Leveraging Intermediate Representations of Time Series Foundation Models for Anomaly Detection</a></td><td>Detecting anomalies in time series data is essential for the reliable
+operation of many real-world systems. Recently, time series foundation models
+(TSFMs) have emerged as a powerful tool for anomaly detection. However,
+existing methods typically rely on the final layer's representations of TSFMs,
+computing the anomaly score as a reconstruction or forecasting error via a
+task-specific head. Instead, we propose TimeRep, a novel anomaly detection
+approach that leverages the intermediate layer's representations of TSFMs,
+computing the anomaly score as the distance between these representations.
+Given a pre-trained TSFM, TimeRep selects the intermediate layer and
+patch-token position that yield the most informative representation. TimeRep
+forms a reference collection of intermediate representations from the training
+data and applies a core-set strategy to reduce its size while maintaining
+distributional coverage. During inference, TimeRep computes the anomaly score
+for incoming data by measuring the distance between its intermediate
+representations and those of the collection. To address concept drift, TimeRep
+integrates an adaptation mechanism that, at inference time, augments the
+collection exclusively with non-redundant intermediate representations from
+incoming data. We conducted extensive experiments on the UCR Anomaly Archive,
+which contains 250 univariate time series. TimeRep consistently outperforms a
+broad spectrum of state-of-the-art baselines, including non-DL, DL, and
+foundation model-based methods.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12643v1'>Learn to Relax with Large Language Models: Solving Nonlinear Combinatorial Optimization Problems via Bidirectional Coevolution</a></td><td>Nonlinear Combinatorial Optimization Problems (NCOPs) present a formidable
+computational hurdle in practice, as their nonconvex nature gives rise to
+multi-modal solution spaces that defy efficient optimization. Traditional
+constraint relaxation approaches rely heavily on expert-driven, iterative
+design processes that lack systematic automation and scalable adaptability.
+While recent Large Language Model (LLM)-based optimization methods show promise
+for autonomous problem-solving, they predominantly function as passive
+constraint validators rather than proactive strategy architects, failing to
+handle the sophisticated constraint interactions inherent to NCOPs.To address
+these limitations, we introduce the first end-to-end \textbf{Auto}mated
+\textbf{C}onstraint \textbf{O}ptimization (AutoCO) method, which revolutionizes
+NCOPs resolution through learning to relax with LLMs.Specifically, we leverage
+structured LLM reasoning to generate constraint relaxation strategies, which
+are dynamically evolving with algorithmic principles and executable code
+through a unified triple-representation scheme. We further establish a novel
+bidirectional (global-local) coevolution mechanism that synergistically
+integrates Evolutionary Algorithms for intensive local refinement with Monte
+Carlo Tree Search for systematic global strategy space exploration, ensuring
+optimal balance between intensification and diversification in fragmented
+solution spaces. Finally, comprehensive experiments on three challenging NCOP
+benchmarks validate AutoCO's consistent effectiveness and superior performance
+over the baselines.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12633v1'>CIARD: Cyclic Iterative Adversarial Robustness Distillation</a></td><td>Adversarial robustness distillation (ARD) aims to transfer both performance
+and robustness from teacher model to lightweight student model, enabling
+resilient performance on resource-constrained scenarios. Though existing ARD
+approaches enhance student model's robustness, the inevitable by-product leads
+to the degraded performance on clean examples. We summarize the causes of this
+problem inherent in existing methods with dual-teacher framework as: 1. The
+divergent optimization objectives of dual-teacher models, i.e., the clean and
+robust teachers, impede effective knowledge transfer to the student model, and
+2. The iteratively generated adversarial examples during training lead to
+performance deterioration of the robust teacher model. To address these
+challenges, we propose a novel Cyclic Iterative ARD (CIARD) method with two key
+innovations: a. A multi-teacher framework with contrastive push-loss alignment
+to resolve conflicts in dual-teacher optimization objectives, and b. Continuous
+adversarial retraining to maintain dynamic teacher robustness against
+performance degradation from the varying adversarial examples. Extensive
+experiments on CIFAR-10, CIFAR-100, and Tiny-ImageNet demonstrate that CIARD
+achieves remarkable performance with an average 3.53 improvement in adversarial
+defense rates across various attack scenarios and a 5.87 increase in clean
+sample accuracy, establishing a new benchmark for balancing model robustness
+and generalization. Our code is available at https://github.com/eminentgu/CIARD</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12611v1'>Analogy-Driven Financial Chain-of-Thought (AD-FCoT): A Prompting Approach for Financial Sentiment Analysis</a></td><td>Financial news sentiment analysis is crucial for anticipating market
+movements. With the rise of AI techniques such as Large Language Models (LLMs),
+which demonstrate strong text understanding capabilities, there has been
+renewed interest in enhancing these systems. Existing methods, however, often
+struggle to capture the complex economic context of news and lack transparent
+reasoning, which undermines their reliability. We propose Analogy-Driven
+Financial Chain-of-Thought (AD-FCoT), a prompting framework that integrates
+analogical reasoning with chain-of-thought (CoT) prompting for sentiment
+prediction on historical financial news. AD-FCoT guides LLMs to draw parallels
+between new events and relevant historical scenarios with known outcomes,
+embedding these analogies into a structured, step-by-step reasoning chain. To
+our knowledge, this is among the first approaches to explicitly combine
+analogical examples with CoT reasoning in finance. Operating purely through
+prompting, AD-FCoT requires no additional training data or fine-tuning and
+leverages the model's internal financial knowledge to generate rationales that
+mirror human analytical reasoning. Experiments on thousands of news articles
+show that AD-FCoT outperforms strong baselines in sentiment classification
+accuracy and achieves substantially higher correlation with market returns. Its
+generated explanations also align with domain expertise, providing
+interpretable insights suitable for real-world financial analysis.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12610v1'>ScaleDoc: Scaling LLM-based Predicates over Large Document Collections</a></td><td>Predicates are foundational components in data analysis systems. However,
+modern workloads increasingly involve unstructured documents, which demands
+semantic understanding, beyond traditional value-based predicates. Given
+enormous documents and ad-hoc queries, while Large Language Models (LLMs)
+demonstrate powerful zero-shot capabilities, their high inference cost leads to
+unacceptable overhead. Therefore, we introduce \textsc{ScaleDoc}, a novel
+system that addresses this by decoupling predicate execution into an offline
+representation phase and an optimized online filtering phase. In the offline
+phase, \textsc{ScaleDoc} leverages a LLM to generate semantic representations
+for each document. Online, for each query, it trains a lightweight proxy model
+on these representations to filter the majority of documents, forwarding only
+the ambiguous cases to the LLM for final decision. Furthermore,
+\textsc{ScaleDoc} proposes two core innovations to achieve significant
+efficiency: (1) a contrastive-learning-based framework that trains the proxy
+model to generate reliable predicating decision scores; (2) an adaptive cascade
+mechanism that determines the effective filtering policy while meeting specific
+accuracy targets. Our evaluations across three datasets demonstrate that
+\textsc{ScaleDoc} achieves over a 2$\times$ end-to-end speedup and reduces
+expensive LLM invocations by up to 85\%, making large-scale semantic analysis
+practical and efficient.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12600v1'>A Multimodal Foundation Model to Enhance Generalizability and Data Efficiency for Pan-cancer Prognosis Prediction</a></td><td>Multimodal data provides heterogeneous information for a holistic
+understanding of the tumor microenvironment. However, existing AI models often
+struggle to harness the rich information within multimodal data and extract
+poorly generalizable representations. Here we present MICE (Multimodal data
+Integration via Collaborative Experts), a multimodal foundation model that
+effectively integrates pathology images, clinical reports, and genomics data
+for precise pan-cancer prognosis prediction. Instead of conventional
+multi-expert modules, MICE employs multiple functionally diverse experts to
+comprehensively capture both cross-cancer and cancer-specific insights.
+Leveraging data from 11,799 patients across 30 cancer types, we enhanced MICE's
+generalizability by coupling contrastive and supervised learning. MICE
+outperformed both unimodal and state-of-the-art multi-expert-based multimodal
+models, demonstrating substantial improvements in C-index ranging from 3.8% to
+11.2% on internal cohorts and 5.8% to 8.8% on independent cohorts,
+respectively. Moreover, it exhibited remarkable data efficiency across diverse
+clinical scenarios. With its enhanced generalizability and data efficiency,
+MICE establishes an effective and scalable foundation for pan-cancer prognosis
+prediction, holding strong potential to personalize tailored therapies and
+improve treatment outcomes.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12592v1'>Match Chat: Real Time Generative AI and Generative Computing for Tennis</a></td><td>We present Match Chat, a real-time, agent-driven assistant designed to
+enhance the tennis fan experience by delivering instant, accurate responses to
+match-related queries. Match Chat integrates Generative Artificial Intelligence
+(GenAI) with Generative Computing (GenComp) techniques to synthesize key
+insights during live tennis singles matches. The system debuted at the 2025
+Wimbledon Championships and the 2025 US Open, where it provided about 1 million
+users with seamless access to streaming and static data through natural
+language queries. The architecture is grounded in an Agent-Oriented
+Architecture (AOA) combining rule engines, predictive models, and agents to
+pre-process and optimize user queries before passing them to GenAI components.
+The Match Chat system had an answer accuracy of 92.83% with an average response
+time of 6.25 seconds under loads of up to 120 requests per second (RPS). Over
+96.08% of all queries were guided using interactive prompt design, contributing
+to a user experience that prioritized clarity, responsiveness, and minimal
+effort. The system was designed to mask architectural complexity, offering a
+frictionless and intuitive interface that required no onboarding or technical
+familiarity. Across both Grand Slam deployments, Match Chat maintained 100%
+uptime and supported nearly 1 million unique users, underscoring the
+scalability and reliability of the platform. This work introduces key design
+patterns for real-time, consumer-facing AI systems that emphasize speed,
+precision, and usability that highlights a practical path for deploying
+performant agentic systems in dynamic environments.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12589v1'>Redefining CX with Agentic AI: Minerva CQ Case Study</a></td><td>Despite advances in AI for contact centers, customer experience (CX)
+continues to suffer from high average handling time (AHT), low first-call
+resolution, and poor customer satisfaction (CSAT). A key driver is the
+cognitive load on agents, who must navigate fragmented systems, troubleshoot
+manually, and frequently place customers on hold. Existing AI-powered
+agent-assist tools are often reactive driven by static rules, simple prompting,
+or retrieval-augmented generation (RAG) without deeper contextual reasoning. We
+introduce Agentic AI goal-driven, autonomous, tool-using systems that
+proactively support agents in real time. Unlike conventional approaches,
+Agentic AI identifies customer intent, triggers modular workflows, maintains
+evolving context, and adapts dynamically to conversation state. This paper
+presents a case study of Minerva CQ, a real-time Agent Assist product deployed
+in voice-based customer support. Minerva CQ integrates real-time transcription,
+intent and sentiment detection, entity recognition, contextual retrieval,
+dynamic customer profiling, and partial conversational summaries enabling
+proactive workflows and continuous context-building. Deployed in live
+production, Minerva CQ acts as an AI co-pilot, delivering measurable
+improvements in agent efficiency and customer experience across multiple
+deployments.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12531v1'>Pre-trained Visual Representations Generalize Where it Matters in Model-Based Reinforcement Learning</a></td><td>In visuomotor policy learning, the control policy for the robotic agent is
+derived directly from visual inputs. The typical approach, where a policy and
+vision encoder are trained jointly from scratch, generalizes poorly to novel
+visual scene changes. Using pre-trained vision models (PVMs) to inform a policy
+network improves robustness in model-free reinforcement learning (MFRL). Recent
+developments in Model-based reinforcement learning (MBRL) suggest that MBRL is
+more sample-efficient than MFRL. However, counterintuitively, existing work has
+found PVMs to be ineffective in MBRL. Here, we investigate PVM's effectiveness
+in MBRL, specifically on generalization under visual domain shifts. We show
+that, in scenarios with severe shifts, PVMs perform much better than a baseline
+model trained from scratch. We further investigate the effects of varying
+levels of fine-tuning of PVMs. Our results show that partial fine-tuning can
+maintain the highest average task performance under the most extreme
+distribution shifts. Our results demonstrate that PVMs are highly successful in
+promoting robustness in visual policy learning, providing compelling evidence
+for their wider adoption in model-based robotic learning applications.</td></tr></tbody></table>
 
 ### 📅 2025-09-15
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.12187v1'>HoloGarment: 360° Novel View Synthesis of In-the-Wild Garments</a></td><td>N, o, v, e, l,  , v, i, e, w,  , s, y, n, t, h, e, s, i, s,  , (, N, V, S, ),  , o, f,  , i, n, -, t, h, e, -, w, i, l, d,  , g, a, r, m, e, n, t, s,  , i, s,  , a,  , c, h, a, l, l, e, n, g, i, n, g,  , t, a, s, k,  , d, u, e, 
-, s, i, g, n, i, f, i, c, a, n, t,  , o, c, c, l, u, s, i, o, n, s, ,,  , c, o, m, p, l, e, x,  , h, u, m, a, n,  , p, o, s, e, s, ,,  , a, n, d,  , c, l, o, t, h,  , d, e, f, o, r, m, a, t, i, o, n, s, .,  , P, r, i, o, r, 
-, m, e, t, h, o, d, s,  , r, e, l, y,  , o, n,  , s, y, n, t, h, e, t, i, c,  , 3, D,  , t, r, a, i, n, i, n, g,  , d, a, t, a,  , c, o, n, s, i, s, t, i, n, g,  , o, f,  , m, o, s, t, l, y,  , u, n, o, c, c, l, u, d, e, d,  , a, n, d, 
-, s, t, a, t, i, c,  , o, b, j, e, c, t, s, ,,  , l, e, a, d, i, n, g,  , t, o,  , p, o, o, r,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , o, n,  , r, e, a, l, -, w, o, r, l, d,  , c, l, o, t, h, i, n, g, .,  , I, n,  , t, h, i, s, 
-, p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , H, o, l, o, G, a, r, m, e, n, t,  , (, H, o, l, o, g, r, a, m, -, G, a, r, m, e, n, t, ), ,,  , a,  , m, e, t, h, o, d,  , t, h, a, t,  , t, a, k, e, s,  , 1, -, 3, 
-, i, m, a, g, e, s,  , o, r,  , a,  , c, o, n, t, i, n, u, o, u, s,  , v, i, d, e, o,  , o, f,  , a,  , p, e, r, s, o, n,  , w, e, a, r, i, n, g,  , a,  , g, a, r, m, e, n, t,  , a, n, d,  , g, e, n, e, r, a, t, e, s, 
-, 3, 6, 0, {, \, d, e, g, },  , n, o, v, e, l,  , v, i, e, w, s,  , o, f,  , t, h, e,  , g, a, r, m, e, n, t,  , i, n,  , a,  , c, a, n, o, n, i, c, a, l,  , p, o, s, e, .,  , O, u, r,  , k, e, y,  , i, n, s, i, g, h, t,  , i, s,  , t, o, 
-, b, r, i, d, g, e,  , t, h, e,  , d, o, m, a, i, n,  , g, a, p,  , b, e, t, w, e, e, n,  , r, e, a, l,  , a, n, d,  , s, y, n, t, h, e, t, i, c,  , d, a, t, a,  , w, i, t, h,  , a,  , n, o, v, e, l,  , i, m, p, l, i, c, i, t, 
-, t, r, a, i, n, i, n, g,  , p, a, r, a, d, i, g, m,  , l, e, v, e, r, a, g, i, n, g,  , a,  , c, o, m, b, i, n, a, t, i, o, n,  , o, f,  , l, a, r, g, e, -, s, c, a, l, e,  , r, e, a, l,  , v, i, d, e, o,  , d, a, t, a,  , a, n, d, 
-, s, m, a, l, l, -, s, c, a, l, e,  , s, y, n, t, h, e, t, i, c,  , 3, D,  , d, a, t, a,  , t, o,  , o, p, t, i, m, i, z, e,  , a,  , s, h, a, r, e, d,  , g, a, r, m, e, n, t,  , e, m, b, e, d, d, i, n, g,  , s, p, a, c, e, ., 
-, D, u, r, i, n, g,  , i, n, f, e, r, e, n, c, e, ,,  , t, h, e,  , s, h, a, r, e, d,  , e, m, b, e, d, d, i, n, g,  , s, p, a, c, e,  , f, u, r, t, h, e, r,  , e, n, a, b, l, e, s,  , d, y, n, a, m, i, c, 
-, v, i, d, e, o, -, t, o, -, 3, 6, 0, {, \, d, e, g, },  , N, V, S,  , t, h, r, o, u, g, h,  , t, h, e,  , c, o, n, s, t, r, u, c, t, i, o, n,  , o, f,  , a,  , g, a, r, m, e, n, t,  , ", a, t, l, a, s, ", 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , b, y,  , f, i, n, e, t, u, n, i, n, g,  , a,  , g, a, r, m, e, n, t,  , e, m, b, e, d, d, i, n, g,  , o, n,  , a,  , s, p, e, c, i, f, i, c,  , r, e, a, l, -, w, o, r, l, d, 
-, v, i, d, e, o, .,  , T, h, e,  , a, t, l, a, s,  , c, a, p, t, u, r, e, s,  , g, a, r, m, e, n, t, -, s, p, e, c, i, f, i, c,  , g, e, o, m, e, t, r, y,  , a, n, d,  , t, e, x, t, u, r, e,  , a, c, r, o, s, s,  , a, l, l, 
-, v, i, e, w, p, o, i, n, t, s, ,,  , i, n, d, e, p, e, n, d, e, n, t,  , o, f,  , b, o, d, y,  , p, o, s, e,  , o, r,  , m, o, t, i, o, n, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t, 
-, H, o, l, o, G, a, r, m, e, n, t,  , a, c, h, i, e, v, e, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n,  , N, V, S,  , o, f,  , i, n, -, t, h, e, -, w, i, l, d, 
-, g, a, r, m, e, n, t, s,  , f, r, o, m,  , i, m, a, g, e, s,  , a, n, d,  , v, i, d, e, o, s, .,  , N, o, t, a, b, l, y, ,,  , o, u, r,  , m, e, t, h, o, d,  , r, o, b, u, s, t, l, y,  , h, a, n, d, l, e, s, 
-, c, h, a, l, l, e, n, g, i, n, g,  , r, e, a, l, -, w, o, r, l, d,  , a, r, t, i, f, a, c, t, s,  , -, -,  , s, u, c, h,  , a, s,  , w, r, i, n, k, l, i, n, g, ,,  , p, o, s, e,  , v, a, r, i, a, t, i, o, n, ,,  , a, n, d, 
-, o, c, c, l, u, s, i, o, n,  , -, -,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , p, h, o, t, o, r, e, a, l, i, s, m, ,,  , v, i, e, w,  , c, o, n, s, i, s, t, e, n, c, y, ,,  , f, i, n, e,  , t, e, x, t, u, r, e, 
-, d, e, t, a, i, l, s, ,,  , a, n, d,  , a, c, c, u, r, a, t, e,  , g, e, o, m, e, t, r, y, .,  , V, i, s, i, t,  , o, u, r,  , p, r, o, j, e, c, t,  , p, a, g, e,  , f, o, r,  , a, d, d, i, t, i, o, n, a, l,  , r, e, s, u, l, t, s, :, 
-, h, t, t, p, s, :, /, /, j, o, h, a, n, n, a, k, a, r, r, a, s, ., g, i, t, h, u, b, ., i, o, /, H, o, l, o, G, a, r, m, e, n, t</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12168v1'>RAGs to Riches: RAG-like Few-shot Learning for Large Language Model Role-playing</a></td><td>R, o, l, e, -, p, l, a, y, i, n, g,  , L, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , a, r, e,  , i, n, c, r, e, a, s, i, n, g, l, y,  , d, e, p, l, o, y, e, d,  , i, n, 
-, h, i, g, h, -, s, t, a, k, e, s,  , d, o, m, a, i, n, s,  , s, u, c, h,  , a, s,  , h, e, a, l, t, h, c, a, r, e, ,,  , e, d, u, c, a, t, i, o, n, ,,  , a, n, d,  , g, o, v, e, r, n, a, n, c, e, ,,  , w, h, e, r, e, 
-, f, a, i, l, u, r, e, s,  , c, a, n,  , d, i, r, e, c, t, l, y,  , i, m, p, a, c, t,  , u, s, e, r,  , t, r, u, s, t,  , a, n, d,  , w, e, l, l, -, b, e, i, n, g, .,  , A,  , c, o, s, t,  , e, f, f, e, c, t, i, v, e, 
-, p, a, r, a, d, i, g, m,  , f, o, r,  , L, L, M,  , r, o, l, e, -, p, l, a, y, i, n, g,  , i, s,  , f, e, w, -, s, h, o, t,  , l, e, a, r, n, i, n, g, ,,  , b, u, t,  , e, x, i, s, t, i, n, g,  , a, p, p, r, o, a, c, h, e, s, 
-, o, f, t, e, n,  , c, a, u, s, e,  , m, o, d, e, l, s,  , t, o,  , b, r, e, a, k,  , c, h, a, r, a, c, t, e, r,  , i, n,  , u, n, e, x, p, e, c, t, e, d,  , a, n, d,  , p, o, t, e, n, t, i, a, l, l, y,  , h, a, r, m, f, u, l, 
-, w, a, y, s, ,,  , e, s, p, e, c, i, a, l, l, y,  , w, h, e, n,  , i, n, t, e, r, a, c, t, i, n, g,  , w, i, t, h,  , h, o, s, t, i, l, e,  , u, s, e, r, s, .,  , I, n, s, p, i, r, e, d,  , b, y, 
-, R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ), ,,  , w, e,  , r, e, f, o, r, m, u, l, a, t, e,  , L, L, M,  , r, o, l, e, -, p, l, a, y, i, n, g,  , i, n, t, o,  , a, 
-, t, e, x, t,  , r, e, t, r, i, e, v, a, l,  , p, r, o, b, l, e, m,  , a, n, d,  , p, r, o, p, o, s, e,  , a,  , n, e, w,  , p, r, o, m, p, t, i, n, g,  , f, r, a, m, e, w, o, r, k,  , c, a, l, l, e, d, 
-, R, A, G, s, -, t, o, -, R, i, c, h, e, s, ,,  , w, h, i, c, h,  , l, e, v, e, r, a, g, e, s,  , c, u, r, a, t, e, d,  , r, e, f, e, r, e, n, c, e,  , d, e, m, o, n, s, t, r, a, t, i, o, n, s,  , t, o,  , c, o, n, d, i, t, i, o, n, 
-, L, L, M,  , r, e, s, p, o, n, s, e, s, .,  , W, e,  , e, v, a, l, u, a, t, e,  , o, u, r,  , f, r, a, m, e, w, o, r, k,  , w, i, t, h,  , L, L, M, -, a, s, -, a, -, j, u, d, g, e,  , p, r, e, f, e, r, e, n, c, e,  , v, o, t, i, n, g, 
-, a, n, d,  , i, n, t, r, o, d, u, c, e,  , t, w, o,  , n, o, v, e, l,  , t, o, k, e, n, -, l, e, v, e, l,  , R, O, U, G, E,  , m, e, t, r, i, c, s, :,  , I, n, t, e, r, s, e, c, t, i, o, n,  , o, v, e, r,  , O, u, t, p, u, t, 
-, (, I, O, O, ),  , t, o,  , q, u, a, n, t, i, t, y,  , h, o, w,  , m, u, c, h,  , a, n,  , L, L, M,  , i, m, p, r, o, v, i, s, e, s,  , a, n, d,  , I, n, t, e, r, s, e, c, t, i, o, n,  , o, v, e, r,  , R, e, f, e, r, e, n, c, e, s, 
-, (, I, O, R, ),  , t, o,  , m, e, a, s, u, r, e,  , f, e, w, -, s, h, o, t,  , d, e, m, o, n, s, t, r, a, t, i, o, n, s,  , u, t, i, l, i, z, a, t, i, o, n,  , r, a, t, e,  , d, u, r, i, n, g,  , t, h, e,  , e, v, a, l, u, a, t, i, o, n, 
-, t, a, s, k, s, .,  , W, h, e, n,  , s, i, m, u, l, a, t, i, n, g,  , i, n, t, e, r, a, c, t, i, o, n, s,  , w, i, t, h,  , a,  , h, o, s, t, i, l, e,  , u, s, e, r, ,,  , o, u, r,  , p, r, o, m, p, t, i, n, g,  , s, t, r, a, t, e, g, y, 
-, i, n, c, o, r, p, o, r, a, t, e, s,  , i, n,  , i, t, s,  , r, e, s, p, o, n, s, e, s,  , d, u, r, i, n, g,  , i, n, f, e, r, e, n, c, e,  , a, n,  , a, v, e, r, a, g, e,  , o, f,  , 3, 5, %,  , m, o, r, e,  , t, o, k, e, n, s, 
-, f, r, o, m,  , t, h, e,  , r, e, f, e, r, e, n, c, e,  , d, e, m, o, n, s, t, r, a, t, i, o, n, s, .,  , A, s,  , a,  , r, e, s, u, l, t, ,,  , a, c, r, o, s, s,  , 4, 5, 3,  , r, o, l, e, -, p, l, a, y, i, n, g, 
-, i, n, t, e, r, a, c, t, i, o, n, s, ,,  , o, u, r,  , m, o, d, e, l, s,  , a, r, e,  , c, o, n, s, i, s, t, e, n, t, l, y,  , j, u, d, g, e, d,  , a, s,  , b, e, i, n, g,  , m, o, r, e,  , a, u, t, h, e, n, t, i, c, ,,  , a, n, d, 
-, r, e, m, a, i, n,  , i, n, -, c, h, a, r, a, c, t, e, r,  , m, o, r, e,  , o, f, t, e, n,  , t, h, a, n,  , z, e, r, o, -, s, h, o, t,  , a, n, d,  , i, n, -, c, o, n, t, e, x, t,  , L, e, a, r, n, i, n, g,  , (, I, C, L, ), 
-, m, e, t, h, o, d, s, .,  , O, u, r,  , m, e, t, h, o, d,  , p, r, e, s, e, n, t, s,  , a,  , s, c, a, l, a, b, l, e,  , s, t, r, a, t, e, g, y,  , f, o, r,  , b, u, i, l, d, i, n, g,  , r, o, b, u, s, t, ,, 
-, h, u, m, a, n, -, a, l, i, g, n, e, d,  , L, L, M,  , r, o, l, e, -, p, l, a, y, i, n, g,  , f, r, a, m, e, w, o, r, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12159v1'>EfficientUICoder: Efficient MLLM-based UI Code Generation via Input and Output Token Compression</a></td><td>M, u, l, t, i, m, o, d, a, l,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , h, a, v, e,  , d, e, m, o, n, s, t, r, a, t, e, d,  , e, x, c, e, p, t, i, o, n, a, l,  , p, e, r, f, o, r, m, a, n, c, e,  , i, n, 
-, U, I, 2, C, o, d, e,  , t, a, s, k, s, ,,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , e, n, h, a, n, c, i, n, g,  , w, e, b, s, i, t, e,  , d, e, v, e, l, o, p, m, e, n, t,  , e, f, f, i, c, i, e, n, c, y, .,  , H, o, w, e, v, e, r, ,, 
-, t, h, e, s, e,  , t, a, s, k, s,  , i, n, c, u, r,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , h, i, g, h, e, r,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , o, v, e, r, h, e, a, d,  , t, h, a, n,  , t, r, a, d, i, t, i, o, n, a, l, 
-, c, o, d, e,  , g, e, n, e, r, a, t, i, o, n,  , d, u, e,  , t, o,  , t, h, e,  , l, a, r, g, e,  , n, u, m, b, e, r,  , o, f,  , i, n, p, u, t,  , i, m, a, g, e,  , t, o, k, e, n, s,  , a, n, d,  , e, x, t, e, n, s, i, v, e, 
-, o, u, t, p, u, t,  , c, o, d, e,  , t, o, k, e, n, s,  , r, e, q, u, i, r, e, d, .,  , O, u, r,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , s, t, u, d, y,  , i, d, e, n, t, i, f, i, e, s,  , s, i, g, n, i, f, i, c, a, n, t, 
-, r, e, d, u, n, d, a, n, c, i, e, s,  , i, n,  , b, o, t, h,  , i, m, a, g, e,  , a, n, d,  , c, o, d, e,  , t, o, k, e, n, s,  , t, h, a, t,  , e, x, a, c, e, r, b, a, t, e,  , c, o, m, p, u, t, a, t, i, o, n, a, l, 
-, c, o, m, p, l, e, x, i, t, y,  , a, n, d,  , h, i, n, d, e, r,  , f, o, c, u, s,  , o, n,  , k, e, y,  , U, I,  , e, l, e, m, e, n, t, s, ,,  , r, e, s, u, l, t, i, n, g,  , i, n,  , e, x, c, e, s, s, i, v, e, l, y, 
-, l, e, n, g, t, h, y,  , a, n, d,  , o, f, t, e, n,  , i, n, v, a, l, i, d,  , H, T, M, L,  , f, i, l, e, s, .,  , W, e,  , p, r, o, p, o, s, e,  , E, f, f, i, c, i, e, n, t, U, I, C, o, d, e, r, ,,  , a, 
-, c, o, m, p, r, e, s, s, i, o, n,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , e, f, f, i, c, i, e, n, t,  , U, I,  , c, o, d, e,  , g, e, n, e, r, a, t, i, o, n,  , w, i, t, h,  , t, h, r, e, e,  , k, e, y, 
-, c, o, m, p, o, n, e, n, t, s, .,  , F, i, r, s, t, ,,  , E, l, e, m, e, n, t,  , a, n, d,  , L, a, y, o, u, t, -, a, w, a, r, e,  , T, o, k, e, n,  , C, o, m, p, r, e, s, s, i, o, n,  , p, r, e, s, e, r, v, e, s, 
-, e, s, s, e, n, t, i, a, l,  , U, I,  , i, n, f, o, r, m, a, t, i, o, n,  , b, y,  , d, e, t, e, c, t, i, n, g,  , e, l, e, m, e, n, t,  , r, e, g, i, o, n, s,  , a, n, d,  , c, o, n, s, t, r, u, c, t, i, n, g,  , U, I, 
-, e, l, e, m, e, n, t,  , t, r, e, e, s, .,  , S, e, c, o, n, d, ,,  , R, e, g, i, o, n, -, a, w, a, r, e,  , T, o, k, e, n,  , R, e, f, i, n, e, m, e, n, t,  , l, e, v, e, r, a, g, e, s,  , a, t, t, e, n, t, i, o, n,  , s, c, o, r, e, s, 
-, t, o,  , d, i, s, c, a, r, d,  , l, o, w, -, a, t, t, e, n, t, i, o, n,  , t, o, k, e, n, s,  , f, r, o, m,  , s, e, l, e, c, t, e, d,  , r, e, g, i, o, n, s,  , w, h, i, l, e,  , i, n, t, e, g, r, a, t, i, n, g, 
-, h, i, g, h, -, a, t, t, e, n, t, i, o, n,  , t, o, k, e, n, s,  , f, r, o, m,  , u, n, s, e, l, e, c, t, e, d,  , r, e, g, i, o, n, s, .,  , T, h, i, r, d, ,,  , A, d, a, p, t, i, v, e,  , D, u, p, l, i, c, a, t, e,  , T, o, k, e, n, 
-, S, u, p, p, r, e, s, s, i, o, n,  , d, y, n, a, m, i, c, a, l, l, y,  , r, e, d, u, c, e, s,  , r, e, p, e, t, i, t, i, v, e,  , g, e, n, e, r, a, t, i, o, n,  , b, y,  , t, r, a, c, k, i, n, g,  , H, T, M, L, /, C, S, S, 
-, s, t, r, u, c, t, u, r, e,  , f, r, e, q, u, e, n, c, i, e, s,  , a, n, d,  , a, p, p, l, y, i, n, g,  , e, x, p, o, n, e, n, t, i, a, l,  , p, e, n, a, l, t, i, e, s, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s, 
-, s, h, o, w,  , E, f, f, i, c, i, e, n, t, U, I, C, o, d, e, r, a, c, h, i, e, v, e, s,  , a,  , 5, 5, %, -, 6, 0, %,  , c, o, m, p, r, e, s, s, i, o, n,  , r, a, t, i, o,  , w, i, t, h, o, u, t,  , c, o, m, p, r, o, m, i, s, i, n, g, 
-, w, e, b, p, a, g, e,  , q, u, a, l, i, t, y,  , a, n, d,  , d, e, l, i, v, e, r, s,  , s, u, p, e, r, i, o, r,  , e, f, f, i, c, i, e, n, c, y,  , i, m, p, r, o, v, e, m, e, n, t, s, :,  , r, e, d, u, c, i, n, g, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t,  , b, y,  , 4, 4, ., 9, %, ,,  , g, e, n, e, r, a, t, e, d,  , t, o, k, e, n, s,  , b, y,  , 4, 1, ., 4, %, ,,  , p, r, e, f, i, l, l,  , t, i, m, e,  , b, y,  , 4, 6, ., 6, %, ,, 
-, a, n, d,  , i, n, f, e, r, e, n, c, e,  , t, i, m, e,  , b, y,  , 4, 8, ., 8, %,  , o, n,  , 3, 4, B, -, l, e, v, e, l,  , M, L, L, M, s, .,  , C, o, d, e,  , i, s,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, W, e, b, P, A, I, /, E, f, f, i, c, i, e, n, t, U, I, C, o, d, e, r, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12098v1'>Is 'Hope' a person or an idea? A pilot benchmark for NER: comparing traditional NLP tools and large language models on ambiguous entities</a></td><td>T, h, i, s,  , p, i, l, o, t,  , s, t, u, d, y,  , p, r, e, s, e, n, t, s,  , a,  , s, m, a, l, l, -, s, c, a, l, e,  , b, u, t,  , c, a, r, e, f, u, l, l, y,  , a, n, n, o, t, a, t, e, d,  , b, e, n, c, h, m, a, r, k,  , o, f, 
-, N, a, m, e, d,  , E, n, t, i, t, y,  , R, e, c, o, g, n, i, t, i, o, n,  , (, N, E, R, ),  , p, e, r, f, o, r, m, a, n, c, e,  , a, c, r, o, s, s,  , s, i, x,  , s, y, s, t, e, m, s, :,  , t, h, r, e, e,  , n, o, n, -, L, L, M, 
-, N, L, P,  , t, o, o, l, s,  , (, N, L, T, K, ,,  , s, p, a, C, y, ,,  , S, t, a, n, z, a, ),  , a, n, d,  , t, h, r, e, e,  , g, e, n, e, r, a, l, -, p, u, r, p, o, s, e,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, 
-, (, L, L, M, s, :,  , G, e, m, i, n, i, -, 1, ., 5, -, f, l, a, s, h, ,,  , D, e, e, p, S, e, e, k, -, V, 3, ,,  , Q, w, e, n, -, 3, -, 4, B, ), .,  , T, h, e,  , d, a, t, a, s, e, t,  , c, o, n, t, a, i, n, s,  , 1, 1, 9, 
-, t, o, k, e, n, s,  , c, o, v, e, r, i, n, g,  , f, i, v, e,  , e, n, t, i, t, y,  , t, y, p, e, s,  , (, P, E, R, S, O, N, ,,  , L, O, C, A, T, I, O, N, ,,  , O, R, G, A, N, I, Z, A, T, I, O, N, ,,  , D, A, T, E, ,,  , T, I, M, E, ), ., 
-, W, e,  , e, v, a, l, u, a, t, e, d,  , e, a, c, h,  , s, y, s, t, e, m, ', s,  , o, u, t, p, u, t,  , a, g, a, i, n, s, t,  , t, h, e,  , m, a, n, u, a, l, l, y,  , a, n, n, o, t, a, t, e, d,  , g, o, l, d,  , s, t, a, n, d, a, r, d, 
-, d, a, t, a, s, e, t,  , u, s, i, n, g,  , F, 1, -, s, c, o, r, e, .,  , T, h, e,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , L, L, M, s,  , g, e, n, e, r, a, l, l, y,  , o, u, t, p, e, r, f, o, r, m, 
-, c, o, n, v, e, n, t, i, o, n, a, l,  , t, o, o, l, s,  , i, n,  , r, e, c, o, g, n, i, z, i, n, g,  , c, o, n, t, e, x, t, -, s, e, n, s, i, t, i, v, e,  , e, n, t, i, t, i, e, s,  , l, i, k, e,  , p, e, r, s, o, n,  , n, a, m, e, s, ,, 
-, w, i, t, h,  , G, e, m, i, n, i,  , a, c, h, i, e, v, i, n, g,  , t, h, e,  , h, i, g, h, e, s, t,  , a, v, e, r, a, g, e,  , F, 1, -, s, c, o, r, e, .,  , H, o, w, e, v, e, r, ,,  , t, r, a, d, i, t, i, o, n, a, l, 
-, s, y, s, t, e, m, s,  , l, i, k, e,  , S, t, a, n, z, a,  , d, e, m, o, n, s, t, r, a, t, e,  , g, r, e, a, t, e, r,  , c, o, n, s, i, s, t, e, n, c, y,  , i, n,  , s, t, r, u, c, t, u, r, e, d,  , t, a, g, s,  , s, u, c, h,  , a, s, 
-, L, O, C, A, T, I, O, N,  , a, n, d,  , D, A, T, E, .,  , W, e,  , a, l, s, o,  , o, b, s, e, r, v, e, d,  , v, a, r, i, a, b, i, l, i, t, y,  , a, m, o, n, g,  , L, L, M, s, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , i, n, 
-, h, a, n, d, l, i, n, g,  , t, e, m, p, o, r, a, l,  , e, x, p, r, e, s, s, i, o, n, s,  , a, n, d,  , m, u, l, t, i, -, w, o, r, d,  , o, r, g, a, n, i, z, a, t, i, o, n, s, .,  , O, u, r,  , f, i, n, d, i, n, g, s, 
-, h, i, g, h, l, i, g, h, t,  , t, h, a, t,  , w, h, i, l, e,  , L, L, M, s,  , o, f, f, e, r,  , i, m, p, r, o, v, e, d,  , c, o, n, t, e, x, t, u, a, l,  , u, n, d, e, r, s, t, a, n, d, i, n, g, ,,  , t, r, a, d, i, t, i, o, n, a, l, 
-, t, o, o, l, s,  , r, e, m, a, i, n,  , c, o, m, p, e, t, i, t, i, v, e,  , i, n,  , s, p, e, c, i, f, i, c,  , t, a, s, k, s, ,,  , i, n, f, o, r, m, i, n, g,  , m, o, d, e, l,  , s, e, l, e, c, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12080v1'>A Time-Series Foundation Model by Universal Delay Embedding</a></td><td>T, h, i, s,  , s, t, u, d, y,  , i, n, t, r, o, d, u, c, e, s,  , U, n, i, v, e, r, s, a, l,  , D, e, l, a, y,  , E, m, b, e, d, d, i, n, g,  , (, U, D, E, ), ,,  , a,  , p, r, e, t, r, a, i, n, e, d, 
-, f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l,  , d, e, s, i, g, n, e, d,  , t, o,  , r, e, v, o, l, u, t, i, o, n, i, z, e,  , t, i, m, e, -, s, e, r, i, e, s,  , f, o, r, e, c, a, s, t, i, n, g,  , t, h, r, o, u, g, h, 
-, p, r, i, n, c, i, p, l, e, d,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , d, e, l, a, y,  , e, m, b, e, d, d, i, n, g,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , a, n, d,  , K, o, o, p, m, a, n,  , o, p, e, r, a, t, o, r, 
-, p, r, e, d, i, c, t, i, o, n, .,  , L, e, v, e, r, a, g, i, n, g,  , T, a, k, e, n, s, ',  , e, m, b, e, d, d, i, n, g,  , t, h, e, o, r, e, m, ,,  , U, D, E,  , a, s,  , a,  , d, y, n, a, m, i, c, a, l, 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , o, f,  , o, b, s, e, r, v, e, d,  , d, a, t, a,  , c, o, n, s, t, r, u, c, t, s,  , t, w, o, -, d, i, m, e, n, s, i, o, n, a, l,  , s, u, b, s, p, a, c, e,  , p, a, t, c, h, e, s, 
-, f, r, o, m,  , H, a, n, k, e, l,  , m, a, t, r, i, c, e, s, ,,  , t, h, e, o, r, e, t, i, c, a, l, l, y,  , p, r, e, s, e, r, v, i, n, g,  , d, y, n, a, m, i, c, a, l,  , a, n, d,  , t, o, p, o, l, o, g, i, c, a, l, 
-, p, r, o, p, e, r, t, i, e, s,  , o, f,  , u, n, d, e, r, l, y, i, n, g,  , d, y, n, a, m, i, c, a, l,  , s, y, s, t, e, m, s, .,  , S, u, c, h,  , p, a, t, c, h, e, s,  , a, r, e,  , v, i, e, w, e, d,  , a, s,  , i, m, a, g, e, s, ,, 
-, w, h, i, c, h,  , c, a, n,  , b, e,  , e, f, f, i, c, i, e, n, t, l, y,  , p, r, o, c, e, s, s, e, d,  , b, y,  , e, x, p, l, o, i, t, i, n, g,  , a, d, v, a, n, c, e, d,  , d, e, e, p,  , l, e, a, r, n, i, n, g, 
-, t, e, c, h, n, o, l, o, g, i, e, s, .,  , C, o, m, p, u, t, a, t, i, o, n, a, l, l, y, ,,  , t, h, e, s, e,  , p, a, t, c, h, e, s,  , f, u, r, t, h, e, r,  , s, e, r, v, e,  , a, s,  , t, o, k, e, n, s,  , f, o, r, 
-, l, e, a, r, n, i, n, g,  , a,  , s, e, l, f, -, a, t, t, e, n, t, i, o, n,  , e, n, c, o, d, e, r, ,,  , t, h, u, s,  , e, n, a, b, l, i, n, g,  , a, c, c, u, r, a, t, e,  , p, r, e, d, i, c, t, i, o, n,  , o, f, 
-, n, o, n, l, i, n, e, a, r,  , t, i, m, e, -, s, e, r, i, e, s,  , b, y,  , a,  , f, i, n, i, t, e, -, d, i, m, e, n, s, i, o, n, a, l,  , K, o, o, p, m, a, n,  , o, p, e, r, a, t, o, r,  , i, n,  , a,  , l, i, n, e, a, r, 
-, m, a, n, n, e, r,  , i, n,  , a,  , l, a, t, e, n, t,  , s, p, a, c, e, .,  , E, x, t, e, n, s, i, v, e,  , e, v, a, l, u, a, t, i, o, n, s,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s,  , b, e, n, c, h, m, a, r, k, s,  , a, n, d, 
-, r, e, a, l, -, w, o, r, l, d,  , c, l, i, m, a, t, e,  , d, a, t, a, s, e, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , o, v, e, r,  , 2, 0, %,  , a, v, e, r, a, g, e,  , r, e, d, u, c, t, i, o, n,  , i, n,  , m, e, a, n, 
-, s, q, u, a, r, e, d,  , e, r, r, o, r,  , v, e, r, s, u, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, s, ,,  , a, l, o, n, g, s, i, d, e,  , s, u, p, e, r, i, o, r, 
-, g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , i, n,  , f, i, n, e, -, t, u, n, i, n, g,  , s, c, e, n, a, r, i, o, s, .,  , I, n,  , p, a, r, t, i, c, u, l, a, r, ,,  , t, h, e,  , l, e, a, r, n, e, d,  , d, y, n, a, m, i, c, a, l, 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , a, n, d,  , K, o, o, p, m, a, n,  , o, p, e, r, a, t, o, r,  , p, r, e, d, i, c, t, i, o, n,  , f, o, r, m, s,  , f, r, o, m,  , t, h, e,  , p, a, t, c, h, e, s,  , e, x, h, i, b, i, t, 
-, e, x, c, e, p, t, i, o, n, a, l,  , i, n, t, e, r, p, r, e, t, a, b, i, l, i, t, y, ,,  , w, i, t, h,  , c, o, n, s, i, s, t, e, n, t,  , i, d, e, n, t, i, f, i, c, a, t, i, o, n,  , o, f,  , t, o, p, o, l, o, g, i, c, a, l, l, y, 
-, i, n, f, o, r, m, a, t, i, v, e,  , s, u, b, s, p, a, c, e, s,  , a, n, d,  , r, o, b, u, s, t,  , e, n, c, o, d, i, n, g,  , o, f,  , d, o, m, a, i, n, -, i, n, v, a, r, i, a, n, t,  , d, y, n, a, m, i, c, s, ,, 
-, e, s, t, a, b, l, i, s, h, i, n, g,  , U, D, E,  , a, s,  , a,  , s, c, a, l, a, b, l, e, ,,  , i, n, t, e, r, p, r, e, t, a, b, l, e,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , u, n, i, v, e, r, s, a, l, 
-, t, i, m, e, -, s, e, r, i, e, s,  , m, o, d, e, l, i, n, g,  , a, n, d,  , f, o, r, e, c, a, s, t, i, n, g,  , w, i, t, h,  , b, r, o, a, d,  , s, c, i, e, n, t, i, f, i, c,  , a, n, d,  , i, n, d, u, s, t, r, i, a, l, 
-, a, p, p, l, i, c, a, b, i, l, i, t, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12069v1'>U-Mamba2: Scaling State Space Models for Dental Anatomy Segmentation in CBCT</a></td><td>C, o, n, e, -, B, e, a, m,  , C, o, m, p, u, t, e, d,  , T, o, m, o, g, r, a, p, h, y,  , (, C, B, C, T, ),  , i, s,  , a,  , w, i, d, e, l, y,  , u, s, e, d,  , 3, D,  , i, m, a, g, i, n, g,  , t, e, c, h, n, i, q, u, e,  , i, n, 
-, d, e, n, t, i, s, t, r, y, ,,  , p, r, o, v, i, d, i, n, g,  , v, o, l, u, m, e, t, r, i, c,  , i, n, f, o, r, m, a, t, i, o, n,  , a, b, o, u, t,  , t, h, e,  , a, n, a, t, o, m, i, c, a, l,  , s, t, r, u, c, t, u, r, e, s,  , o, f, 
-, j, a, w, s,  , a, n, d,  , t, e, e, t, h, .,  , A, c, c, u, r, a, t, e,  , s, e, g, m, e, n, t, a, t, i, o, n,  , o, f,  , t, h, e, s, e,  , a, n, a, t, o, m, i, e, s,  , i, s,  , c, r, i, t, i, c, a, l,  , f, o, r, 
-, c, l, i, n, i, c, a, l,  , a, p, p, l, i, c, a, t, i, o, n, s,  , s, u, c, h,  , a, s,  , d, i, a, g, n, o, s, i, s,  , a, n, d,  , s, u, r, g, i, c, a, l,  , p, l, a, n, n, i, n, g, ,,  , b, u, t,  , r, e, m, a, i, n, s, 
-, t, i, m, e, -, c, o, n, s, u, m, i, n, g,  , a, n, d,  , c, h, a, l, l, e, n, g, i, n, g, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, e, s, e, n, t,  , U, -, M, a, m, b, a, 2, ,,  , a,  , n, e, w, 
-, n, e, u, r, a, l,  , n, e, t, w, o, r, k,  , a, r, c, h, i, t, e, c, t, u, r, e,  , d, e, s, i, g, n, e, d,  , f, o, r,  , m, u, l, t, i, -, a, n, a, t, o, m, y,  , C, B, C, T,  , s, e, g, m, e, n, t, a, t, i, o, n,  , i, n,  , t, h, e, 
-, c, o, n, t, e, x, t,  , o, f,  , t, h, e,  , T, o, o, t, h, F, a, i, r, y, 3,  , c, h, a, l, l, e, n, g, e, .,  , U, -, M, a, m, b, a, 2,  , i, n, t, e, g, r, a, t, e, s,  , t, h, e,  , M, a, m, b, a, 2,  , s, t, a, t, e, 
-, s, p, a, c, e,  , m, o, d, e, l, s,  , i, n, t, o,  , t, h, e,  , U, -, N, e, t,  , a, r, c, h, i, t, e, c, t, u, r, e, ,,  , e, n, f, o, r, c, i, n, g,  , s, t, r, o, n, g, e, r,  , s, t, r, u, c, t, u, r, a, l, 
-, c, o, n, s, t, r, a, i, n, t, s,  , f, o, r,  , h, i, g, h, e, r,  , e, f, f, i, c, i, e, n, c, y,  , w, i, t, h, o, u, t,  , c, o, m, p, r, o, m, i, s, i, n, g,  , p, e, r, f, o, r, m, a, n, c, e, .,  , I, n, 
-, a, d, d, i, t, i, o, n, ,,  , w, e,  , i, n, t, e, g, r, a, t, e,  , i, n, t, e, r, a, c, t, i, v, e,  , c, l, i, c, k,  , p, r, o, m, p, t, s,  , w, i, t, h,  , c, r, o, s, s, -, a, t, t, e, n, t, i, o, n,  , b, l, o, c, k, s, ,, 
-, p, r, e, -, t, r, a, i, n,  , U, -, M, a, m, b, a, 2,  , u, s, i, n, g,  , s, e, l, f, -, s, u, p, e, r, v, i, s, e, d,  , l, e, a, r, n, i, n, g, ,,  , a, n, d,  , i, n, c, o, r, p, o, r, a, t, e,  , d, e, n, t, a, l, 
-, d, o, m, a, i, n,  , k, n, o, w, l, e, d, g, e,  , i, n, t, o,  , t, h, e,  , m, o, d, e, l,  , d, e, s, i, g, n,  , t, o,  , a, d, d, r, e, s, s,  , k, e, y,  , c, h, a, l, l, e, n, g, e, s,  , o, f,  , d, e, n, t, a, l, 
-, a, n, a, t, o, m, y,  , s, e, g, m, e, n, t, a, t, i, o, n,  , i, n,  , C, B, C, T, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s, ,,  , i, n, c, l, u, d, i, n, g,  , i, n, d, e, p, e, n, d, e, n, t, 
-, t, e, s, t, s, ,,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , U, -, M, a, m, b, a, 2,  , i, s,  , b, o, t, h,  , e, f, f, e, c, t, i, v, e,  , a, n, d,  , e, f, f, i, c, i, e, n, t, ,,  , s, e, c, u, r, i, n, g,  , t, o, p, 
-, 3,  , p, l, a, c, e, s,  , i, n,  , b, o, t, h,  , t, a, s, k, s,  , o, f,  , t, h, e,  , T, o, o, t, h, f, a, i, r, y, 3,  , c, h, a, l, l, e, n, g, e, .,  , I, n,  , T, a, s, k,  , 1, ,,  , U, -, M, a, m, b, a, 2, 
-, a, c, h, i, e, v, e, d,  , a,  , m, e, a, n,  , D, i, c, e,  , o, f,  , 0, ., 7, 9, 2, ,,  , H, D, 9, 5,  , o, f,  , 9, 3, ., 1, 9,  , w, i, t, h,  , t, h, e,  , h, e, l, d, -, o, u, t,  , t, e, s, t,  , d, a, t, a, ,,  , w, i, t, h, 
-, a, n,  , a, v, e, r, a, g, e,  , i, n, f, e, r, e, n, c, e,  , t, i, m, e,  , o, f,  , X, X,  , (, T, B, C,  , d, u, r, i, n, g,  , t, h, e,  , O, D, I, N,  , w, o, r, k, s, h, o, p, ), .,  , I, n,  , T, a, s, k,  , 2, ,, 
-, U, -, M, a, m, b, a, 2,  , a, c, h, i, e, v, e, d,  , t, h, e,  , m, e, a, n,  , D, i, c, e,  , o, f,  , 0, ., 8, 5, 2,  , a, n, d,  , H, D, 9, 5,  , o, f,  , 7, ., 3, 9,  , w, i, t, h,  , t, h, e,  , h, e, l, d, -, o, u, t, 
-, t, e, s, t,  , d, a, t, a, .,  , T, h, e,  , c, o, d, e,  , i, s,  , p, u, b, l, i, c, l, y,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, z, h, i, q, i, n, 1, 9, 9, 8, /, U, M, a, m, b, a, 2, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12053v1'>LEGO: Spatial Accelerator Generation and Optimization for Tensor Applications</a></td><td>M, o, d, e, r, n,  , t, e, n, s, o, r,  , a, p, p, l, i, c, a, t, i, o, n, s, ,,  , e, s, p, e, c, i, a, l, l, y,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, s,  , a, n, d,  , g, e, n, e, r, a, t, i, v, e,  , A, I, 
-, a, p, p, l, i, c, a, t, i, o, n, s,  , r, e, q, u, i, r, e,  , m, u, l, t, i, p, l, e,  , i, n, p, u, t,  , m, o, d, a, l, i, t, i, e, s,  , (, b, o, t, h,  , v, i, s, i, o, n,  , a, n, d,  , l, a, n, g, u, a, g, e, ), ,, 
-, w, h, i, c, h,  , i, n, c, r, e, a, s, e, s,  , t, h, e,  , d, e, m, a, n, d,  , f, o, r,  , f, l, e, x, i, b, l, e,  , a, c, c, e, l, e, r, a, t, o, r,  , a, r, c, h, i, t, e, c, t, u, r, e, .,  , E, x, i, s, t, i, n, g, 
-, f, r, a, m, e, w, o, r, k, s,  , s, u, f, f, e, r,  , f, r, o, m,  , t, h, e,  , t, r, a, d, e, -, o, f, f,  , b, e, t, w, e, e, n,  , d, e, s, i, g, n,  , f, l, e, x, i, b, i, l, i, t, y,  , a, n, d, 
-, p, r, o, d, u, c, t, i, v, i, t, y,  , o, f,  , R, T, L,  , g, e, n, e, r, a, t, i, o, n, :,  , e, i, t, h, e, r,  , l, i, m, i, t, e, d,  , t, o,  , v, e, r, y,  , f, e, w,  , h, a, n, d, -, w, r, i, t, t, e, n, 
-, t, e, m, p, l, a, t, e, s,  , o, r,  , c, a, n, n, o, t,  , a, u, t, o, m, a, t, i, c, a, l, l, y,  , g, e, n, e, r, a, t, e,  , t, h, e,  , R, T, L, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s,  , c, h, a, l, l, e, n, g, e, ,, 
-, w, e,  , p, r, o, p, o, s, e,  , t, h, e,  , L, E, G, O,  , f, r, a, m, e, w, o, r, k, ,,  , w, h, i, c, h,  , t, a, r, g, e, t, s,  , t, e, n, s, o, r,  , a, p, p, l, i, c, a, t, i, o, n, s,  , a, n, d, 
-, a, u, t, o, m, a, t, i, c, a, l, l, y,  , g, e, n, e, r, a, t, e, s,  , s, p, a, t, i, a, l,  , a, r, c, h, i, t, e, c, t, u, r, e,  , d, e, s, i, g, n,  , a, n, d,  , o, u, t, p, u, t, s,  , s, y, n, t, h, e, s, i, z, a, b, l, e, 
-, R, T, L,  , c, o, d, e,  , w, i, t, h, o, u, t,  , h, a, n, d, w, r, i, t, t, e, n,  , R, T, L,  , d, e, s, i, g, n,  , t, e, m, p, l, a, t, e, s, .,  , L, e, v, e, r, a, g, i, n, g,  , t, h, e, 
-, a, f, f, i, n, e, -, t, r, a, n, s, f, o, r, m, a, t, i, o, n, -, b, a, s, e, d,  , a, r, c, h, i, t, e, c, t, u, r, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, ,,  , L, E, G, O,  , f, r, o, n, t,  , e, n, d,  , f, i, n, d, s, 
-, i, n, t, e, r, c, o, n, n, e, c, t, i, o, n, s,  , b, e, t, w, e, e, n,  , f, u, n, c, t, i, o, n,  , u, n, i, t, s, ,,  , s, y, n, t, h, e, s, i, z, e, s,  , t, h, e,  , m, e, m, o, r, y,  , s, y, s, t, e, m, ,,  , a, n, d, 
-, f, u, s, e, s,  , d, i, f, f, e, r, e, n, t,  , s, p, a, t, i, a, l,  , d, a, t, a, f, l, o, w,  , d, e, s, i, g, n, s,  , b, a, s, e, d,  , o, n,  , d, a, t, a,  , r, e, u, s, e,  , a, n, a, l, y, s, i, s, .,  , L, E, G, O, 
-, b, a, c, k,  , e, n, d,  , t, h, e, n,  , t, r, a, n, s, l, a, t, e, s,  , t, h, e,  , h, a, r, d, w, a, r, e,  , i, n,  , a,  , p, r, i, m, i, t, i, v, e, -, l, e, v, e, l,  , g, r, a, p, h,  , t, o,  , p, e, r, f, o, r, m, 
-, l, o, w, e, r, -, l, e, v, e, l,  , o, p, t, i, m, i, z, a, t, i, o, n, s, ,,  , a, n, d,  , a, p, p, l, i, e, s,  , a,  , s, e, t,  , o, f,  , l, i, n, e, a, r, -, p, r, o, g, r, a, m, m, i, n, g,  , a, l, g, o, r, i, t, h, m, s, 
-, t, o,  , o, p, t, i, m, a, l, l, y,  , i, n, s, e, r, t,  , p, i, p, e, l, i, n, e,  , r, e, g, i, s, t, e, r, s,  , a, n, d,  , r, e, d, u, c, e,  , t, h, e,  , o, v, e, r, h, e, a, d,  , o, f,  , u, n, u, s, e, d,  , l, o, g, i, c, 
-, w, h, e, n,  , s, w, i, t, c, h, i, n, g,  , s, p, a, t, i, a, l,  , d, a, t, a, f, l, o, w, s, .,  , O, u, r,  , e, v, a, l, u, a, t, i, o, n,  , d, e, m, o, n, s, t, r, a, t, e, s,  , t, h, a, t,  , L, E, G, O,  , c, a, n, 
-, a, c, h, i, e, v, e,  , 3, ., 2, x,  , s, p, e, e, d, u, p,  , a, n, d,  , 2, ., 4, x,  , e, n, e, r, g, y,  , e, f, f, i, c, i, e, n, c, y,  , c, o, m, p, a, r, e, d,  , t, o,  , p, r, e, v, i, o, u, s,  , w, o, r, k, 
-, G, e, m, m, i, n, i, ,,  , a, n, d,  , c, a, n,  , g, e, n, e, r, a, t, e,  , o, n, e,  , a, r, c, h, i, t, e, c, t, u, r, e,  , f, o, r,  , d, i, v, e, r, s, e,  , m, o, d, e, r, n,  , f, o, u, n, d, a, t, i, o, n,  , m, o, d, e, l, s, 
-, i, n,  , g, e, n, e, r, a, t, i, v, e,  , A, I,  , a, p, p, l, i, c, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12047v1'>A Computer Vision Pipeline for Individual-Level Behavior Analysis: Benchmarking on the Edinburgh Pig Dataset</a></td><td>A, n, i, m, a, l,  , b, e, h, a, v, i, o, r,  , a, n, a, l, y, s, i, s,  , p, l, a, y, s,  , a,  , c, r, u, c, i, a, l,  , r, o, l, e,  , i, n,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , a, n, i, m, a, l, 
-, w, e, l, f, a, r, e, ,,  , h, e, a, l, t, h,  , s, t, a, t, u, s, ,,  , a, n, d,  , p, r, o, d, u, c, t, i, v, i, t, y,  , i, n,  , a, g, r, i, c, u, l, t, u, r, a, l,  , s, e, t, t, i, n, g, s, .,  , H, o, w, e, v, e, r, ,, 
-, t, r, a, d, i, t, i, o, n, a, l,  , m, a, n, u, a, l,  , o, b, s, e, r, v, a, t, i, o, n,  , m, e, t, h, o, d, s,  , a, r, e,  , t, i, m, e, -, c, o, n, s, u, m, i, n, g, ,,  , s, u, b, j, e, c, t, i, v, e, ,,  , a, n, d, 
-, l, i, m, i, t, e, d,  , i, n,  , s, c, a, l, a, b, i, l, i, t, y, .,  , W, e,  , p, r, e, s, e, n, t,  , a,  , m, o, d, u, l, a, r,  , p, i, p, e, l, i, n, e,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s, 
-, o, p, e, n, -, s, o, u, r, c, e, d,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , c, o, m, p, u, t, e, r,  , v, i, s, i, o, n,  , t, e, c, h, n, i, q, u, e, s,  , t, o,  , a, u, t, o, m, a, t, e,  , a, n, i, m, a, l, 
-, b, e, h, a, v, i, o, r,  , a, n, a, l, y, s, i, s,  , i, n,  , a,  , g, r, o, u, p,  , h, o, u, s, i, n, g,  , e, n, v, i, r, o, n, m, e, n, t, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , c, o, m, b, i, n, e, s, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , m, o, d, e, l, s,  , f, o, r,  , z, e, r, o, -, s, h, o, t,  , o, b, j, e, c, t,  , d, e, t, e, c, t, i, o, n, ,,  , m, o, t, i, o, n, -, a, w, a, r, e,  , t, r, a, c, k, i, n, g, 
-, a, n, d,  , s, e, g, m, e, n, t, a, t, i, o, n, ,,  , a, n, d,  , a, d, v, a, n, c, e, d,  , f, e, a, t, u, r, e,  , e, x, t, r, a, c, t, i, o, n,  , u, s, i, n, g,  , v, i, s, i, o, n,  , t, r, a, n, s, f, o, r, m, e, r, s,  , f, o, r, 
-, r, o, b, u, s, t,  , b, e, h, a, v, i, o, r,  , r, e, c, o, g, n, i, t, i, o, n, .,  , T, h, e,  , p, i, p, e, l, i, n, e,  , a, d, d, r, e, s, s, e, s,  , c, h, a, l, l, e, n, g, e, s,  , i, n, c, l, u, d, i, n, g,  , a, n, i, m, a, l, 
-, o, c, c, l, u, s, i, o, n, s,  , a, n, d,  , g, r, o, u, p,  , h, o, u, s, i, n, g,  , s, c, e, n, a, r, i, o, s,  , a, s,  , d, e, m, o, n, s, t, r, a, t, e, d,  , i, n,  , i, n, d, o, o, r,  , p, i, g, 
-, m, o, n, i, t, o, r, i, n, g, .,  , W, e,  , v, a, l, i, d, a, t, e, d,  , o, u, r,  , s, y, s, t, e, m,  , o, n,  , t, h, e,  , E, d, i, n, b, u, r, g, h,  , P, i, g,  , B, e, h, a, v, i, o, r,  , V, i, d, e, o,  , D, a, t, a, s, e, t, 
-, f, o, r,  , m, u, l, t, i, p, l, e,  , b, e, h, a, v, i, o, r, a, l,  , t, a, s, k, s, .,  , O, u, r,  , t, e, m, p, o, r, a, l,  , m, o, d, e, l,  , a, c, h, i, e, v, e, d,  , 9, 4, ., 2, %,  , o, v, e, r, a, l, l, 
-, a, c, c, u, r, a, c, y, ,,  , r, e, p, r, e, s, e, n, t, i, n, g,  , a,  , 2, 1, ., 2,  , p, e, r, c, e, n, t, a, g, e,  , p, o, i, n, t,  , i, m, p, r, o, v, e, m, e, n, t,  , o, v, e, r,  , e, x, i, s, t, i, n, g, 
-, m, e, t, h, o, d, s, .,  , T, h, e,  , p, i, p, e, l, i, n, e,  , d, e, m, o, n, s, t, r, a, t, e, d,  , r, o, b, u, s, t,  , t, r, a, c, k, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s,  , w, i, t, h,  , 9, 3, ., 3, %, 
-, i, d, e, n, t, i, t, y,  , p, r, e, s, e, r, v, a, t, i, o, n,  , s, c, o, r, e,  , a, n, d,  , 8, 9, ., 3, %,  , o, b, j, e, c, t,  , d, e, t, e, c, t, i, o, n,  , p, r, e, c, i, s, i, o, n, .,  , T, h, e,  , m, o, d, u, l, a, r, 
-, d, e, s, i, g, n,  , s, u, g, g, e, s, t, s,  , p, o, t, e, n, t, i, a, l,  , f, o, r,  , a, d, a, p, t, a, t, i, o, n,  , t, o,  , o, t, h, e, r,  , c, o, n, t, e, x, t, s, ,,  , t, h, o, u, g, h,  , f, u, r, t, h, e, r, 
-, v, a, l, i, d, a, t, i, o, n,  , a, c, r, o, s, s,  , s, p, e, c, i, e, s,  , w, o, u, l, d,  , b, e,  , r, e, q, u, i, r, e, d, .,  , T, h, e,  , o, p, e, n, -, s, o, u, r, c, e,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n, 
-, p, r, o, v, i, d, e, s,  , a,  , s, c, a, l, a, b, l, e,  , s, o, l, u, t, i, o, n,  , f, o, r,  , b, e, h, a, v, i, o, r,  , m, o, n, i, t, o, r, i, n, g, ,,  , c, o, n, t, r, i, b, u, t, i, n, g,  , t, o,  , p, r, e, c, i, s, i, o, n, 
-, p, i, g,  , f, a, r, m, i, n, g,  , a, n, d,  , w, e, l, f, a, r, e,  , a, s, s, e, s, s, m, e, n, t,  , t, h, r, o, u, g, h,  , a, u, t, o, m, a, t, e, d, ,,  , o, b, j, e, c, t, i, v, e, ,,  , a, n, d,  , c, o, n, t, i, n, u, o, u, s, 
-, a, n, a, l, y, s, i, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12026v1'>Imitation Learning as Return Distribution Matching</a></td><td>W, e,  , s, t, u, d, y,  , t, h, e,  , p, r, o, b, l, e, m,  , o, f,  , t, r, a, i, n, i, n, g,  , a,  , r, i, s, k, -, s, e, n, s, i, t, i, v, e,  , r, e, i, n, f, o, r, c, e, m, e, n, t,  , l, e, a, r, n, i, n, g,  , (, R, L, ), 
-, a, g, e, n, t,  , t, h, r, o, u, g, h,  , i, m, i, t, a, t, i, o, n,  , l, e, a, r, n, i, n, g,  , (, I, L, ), .,  , U, n, l, i, k, e,  , s, t, a, n, d, a, r, d,  , I, L, ,,  , o, u, r,  , g, o, a, l,  , i, s,  , n, o, t,  , o, n, l, y, 
-, t, o,  , t, r, a, i, n,  , a, n,  , a, g, e, n, t,  , t, h, a, t,  , m, a, t, c, h, e, s,  , t, h, e,  , e, x, p, e, r, t, ', s,  , e, x, p, e, c, t, e, d,  , r, e, t, u, r, n,  , (, i, ., e, ., ,,  , i, t, s,  , a, v, e, r, a, g, e, 
-, p, e, r, f, o, r, m, a, n, c, e, ),  , b, u, t,  , a, l, s, o,  , i, t, s,  , r, i, s, k,  , a, t, t, i, t, u, d, e,  , (, i, ., e, ., ,,  , o, t, h, e, r,  , f, e, a, t, u, r, e, s,  , o, f,  , t, h, e,  , r, e, t, u, r, n, 
-, d, i, s, t, r, i, b, u, t, i, o, n, ,,  , s, u, c, h,  , a, s,  , v, a, r, i, a, n, c, e, ), .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , g, e, n, e, r, a, l,  , f, o, r, m, u, l, a, t, i, o, n,  , o, f,  , t, h, e, 
-, r, i, s, k, -, s, e, n, s, i, t, i, v, e,  , I, L,  , p, r, o, b, l, e, m,  , i, n,  , w, h, i, c, h,  , t, h, e,  , o, b, j, e, c, t, i, v, e,  , i, s,  , t, o,  , m, a, t, c, h,  , t, h, e,  , e, x, p, e, r, t, ', s, 
-, r, e, t, u, r, n,  , d, i, s, t, r, i, b, u, t, i, o, n,  , i, n,  , W, a, s, s, e, r, s, t, e, i, n,  , d, i, s, t, a, n, c, e, .,  , W, e,  , f, o, c, u, s,  , o, n,  , t, h, e,  , t, a, b, u, l, a, r,  , s, e, t, t, i, n, g, 
-, a, n, d,  , a, s, s, u, m, e,  , t, h, e,  , e, x, p, e, r, t, ', s,  , r, e, w, a, r, d,  , i, s,  , k, n, o, w, n, .,  , A, f, t, e, r,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , t, h, e,  , l, i, m, i, t, e, d, 
-, e, x, p, r, e, s, s, i, v, i, t, y,  , o, f,  , M, a, r, k, o, v, i, a, n,  , p, o, l, i, c, i, e, s,  , f, o, r,  , t, h, i, s,  , t, a, s, k, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a, n,  , e, f, f, i, c, i, e, n, t,  , a, n, d, 
-, s, u, f, f, i, c, i, e, n, t, l, y,  , e, x, p, r, e, s, s, i, v, e,  , s, u, b, c, l, a, s, s,  , o, f,  , n, o, n, -, M, a, r, k, o, v, i, a, n,  , p, o, l, i, c, i, e, s,  , t, a, i, l, o, r, e, d,  , t, o,  , i, t, ., 
-, B, u, i, l, d, i, n, g,  , o, n,  , t, h, i, s,  , s, u, b, c, l, a, s, s, ,,  , w, e,  , d, e, v, e, l, o, p,  , t, w, o,  , p, r, o, v, a, b, l, y,  , e, f, f, i, c, i, e, n, t,  , a, l, g, o, r, i, t, h, m, s, ,,  , R, S, -, B, C, 
-, a, n, d,  , R, S, -, K, T, ,,  , f, o, r,  , s, o, l, v, i, n, g,  , t, h, e,  , p, r, o, b, l, e, m,  , w, h, e, n,  , t, h, e,  , t, r, a, n, s, i, t, i, o, n,  , m, o, d, e, l,  , i, s,  , u, n, k, n, o, w, n,  , a, n, d, 
-, k, n, o, w, n, ,,  , r, e, s, p, e, c, t, i, v, e, l, y, .,  , W, e,  , s, h, o, w,  , t, h, a, t,  , R, S, -, K, T,  , a, c, h, i, e, v, e, s,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , l, o, w, e, r,  , s, a, m, p, l, e, 
-, c, o, m, p, l, e, x, i, t, y,  , t, h, a, n,  , R, S, -, B, C,  , b, y,  , e, x, p, l, o, i, t, i, n, g,  , d, y, n, a, m, i, c, s,  , i, n, f, o, r, m, a, t, i, o, n, .,  , W, e,  , f, u, r, t, h, e, r, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, e,  , s, a, m, p, l, e,  , e, f, f, i, c, i, e, n, c, y,  , o, f,  , r, e, t, u, r, n,  , d, i, s, t, r, i, b, u, t, i, o, n,  , m, a, t, c, h, i, n, g,  , i, n,  , t, h, e, 
-, s, e, t, t, i, n, g,  , w, h, e, r, e,  , t, h, e,  , e, x, p, e, r, t, ', s,  , r, e, w, a, r, d,  , i, s,  , u, n, k, n, o, w, n,  , b, y,  , d, e, s, i, g, n, i, n, g,  , a, n,  , o, r, a, c, l, e, -, b, a, s, e, d, 
-, v, a, r, i, a, n, t,  , o, f,  , R, S, -, K, T, .,  , F, i, n, a, l, l, y, ,,  , w, e,  , c, o, m, p, l, e, m, e, n, t,  , o, u, r,  , t, h, e, o, r, e, t, i, c, a, l,  , a, n, a, l, y, s, i, s,  , o, f,  , R, S, -, K, T,  , a, n, d, 
-, R, S, -, B, C,  , w, i, t, h,  , n, u, m, e, r, i, c, a, l,  , s, i, m, u, l, a, t, i, o, n, s, ,,  , h, i, g, h, l, i, g, h, t, i, n, g,  , b, o, t, h,  , t, h, e, i, r,  , s, a, m, p, l, e,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d, 
-, t, h, e,  , a, d, v, a, n, t, a, g, e, s,  , o, f,  , n, o, n, -, M, a, r, k, o, v, i, a, n,  , p, o, l, i, c, i, e, s,  , o, v, e, r,  , s, t, a, n, d, a, r, d,  , s, a, m, p, l, e, -, e, f, f, i, c, i, e, n, t,  , I, L, 
-, a, l, g, o, r, i, t, h, m, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12010v1'>Generalizing Behavior via Inverse Reinforcement Learning with Closed-Form Reward Centroids</a></td><td>W, e,  , s, t, u, d, y,  , t, h, e,  , p, r, o, b, l, e, m,  , o, f,  , g, e, n, e, r, a, l, i, z, i, n, g,  , a, n,  , e, x, p, e, r, t,  , a, g, e, n, t, ', s,  , b, e, h, a, v, i, o, r, ,,  , p, r, o, v, i, d, e, d, 
-, t, h, r, o, u, g, h,  , d, e, m, o, n, s, t, r, a, t, i, o, n, s, ,,  , t, o,  , n, e, w,  , e, n, v, i, r, o, n, m, e, n, t, s,  , a, n, d, /, o, r,  , a, d, d, i, t, i, o, n, a, l,  , c, o, n, s, t, r, a, i, n, t, s, ., 
-, I, n, v, e, r, s, e,  , R, e, i, n, f, o, r, c, e, m, e, n, t,  , L, e, a, r, n, i, n, g,  , (, I, R, L, ),  , o, f, f, e, r, s,  , a,  , p, r, o, m, i, s, i, n, g,  , s, o, l, u, t, i, o, n,  , b, y,  , s, e, e, k, i, n, g,  , t, o, 
-, r, e, c, o, v, e, r,  , t, h, e,  , e, x, p, e, r, t, ', s,  , u, n, d, e, r, l, y, i, n, g,  , r, e, w, a, r, d,  , f, u, n, c, t, i, o, n, ,,  , w, h, i, c, h, ,,  , i, f,  , u, s, e, d,  , f, o, r,  , p, l, a, n, n, i, n, g,  , i, n, 
-, t, h, e,  , n, e, w,  , s, e, t, t, i, n, g, s, ,,  , w, o, u, l, d,  , r, e, p, r, o, d, u, c, e,  , t, h, e,  , d, e, s, i, r, e, d,  , b, e, h, a, v, i, o, r, .,  , H, o, w, e, v, e, r, ,,  , I, R, L,  , i, s, 
-, i, n, h, e, r, e, n, t, l, y,  , i, l, l, -, p, o, s, e, d, :,  , m, u, l, t, i, p, l, e,  , r, e, w, a, r, d,  , f, u, n, c, t, i, o, n, s, ,,  , f, o, r, m, i, n, g,  , t, h, e,  , s, o, -, c, a, l, l, e, d,  , f, e, a, s, i, b, l, e, 
-, s, e, t, ,,  , c, a, n,  , e, x, p, l, a, i, n,  , t, h, e,  , s, a, m, e,  , o, b, s, e, r, v, e, d,  , b, e, h, a, v, i, o, r, .,  , S, i, n, c, e,  , t, h, e, s, e,  , r, e, w, a, r, d, s,  , m, a, y,  , i, n, d, u, c, e, 
-, d, i, f, f, e, r, e, n, t,  , p, o, l, i, c, i, e, s,  , i, n,  , t, h, e,  , n, e, w,  , s, e, t, t, i, n, g, ,,  , i, n,  , t, h, e,  , a, b, s, e, n, c, e,  , o, f,  , a, d, d, i, t, i, o, n, a, l, 
-, i, n, f, o, r, m, a, t, i, o, n, ,,  , a,  , d, e, c, i, s, i, o, n,  , c, r, i, t, e, r, i, o, n,  , i, s,  , n, e, e, d, e, d,  , t, o,  , s, e, l, e, c, t,  , w, h, i, c, h,  , p, o, l, i, c, y,  , t, o,  , d, e, p, l, o, y, ., 
-, I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l, ,,  , p, r, i, n, c, i, p, l, e, d,  , c, r, i, t, e, r, i, o, n,  , t, h, a, t,  , s, e, l, e, c, t, s,  , t, h, e, 
-, ", a, v, e, r, a, g, e, ",  , p, o, l, i, c, y,  , a, m, o, n, g,  , t, h, o, s, e,  , i, n, d, u, c, e, d,  , b, y,  , t, h, e,  , r, e, w, a, r, d, s,  , i, n,  , a,  , c, e, r, t, a, i, n,  , b, o, u, n, d, e, d,  , s, u, b, s, e, t, 
-, o, f,  , t, h, e,  , f, e, a, s, i, b, l, e,  , s, e, t, .,  , R, e, m, a, r, k, a, b, l, y, ,,  , w, e,  , s, h, o, w,  , t, h, a, t,  , t, h, i, s,  , p, o, l, i, c, y,  , c, a, n,  , b, e,  , o, b, t, a, i, n, e, d,  , b, y, 
-, p, l, a, n, n, i, n, g,  , w, i, t, h,  , t, h, e,  , r, e, w, a, r, d,  , c, e, n, t, r, o, i, d,  , o, f,  , t, h, a, t,  , s, u, b, s, e, t, ,,  , f, o, r,  , w, h, i, c, h,  , w, e,  , d, e, r, i, v, e,  , a, 
-, c, l, o, s, e, d, -, f, o, r, m,  , e, x, p, r, e, s, s, i, o, n, .,  , W, e,  , t, h, e, n,  , p, r, e, s, e, n, t,  , a,  , p, r, o, v, a, b, l, y,  , e, f, f, i, c, i, e, n, t,  , a, l, g, o, r, i, t, h, m,  , f, o, r, 
-, e, s, t, i, m, a, t, i, n, g,  , t, h, i, s,  , c, e, n, t, r, o, i, d,  , u, s, i, n, g,  , a, n,  , o, f, f, l, i, n, e,  , d, a, t, a, s, e, t,  , o, f,  , e, x, p, e, r, t,  , d, e, m, o, n, s, t, r, a, t, i, o, n, s, 
-, o, n, l, y, .,  , F, i, n, a, l, l, y, ,,  , w, e,  , c, o, n, d, u, c, t,  , n, u, m, e, r, i, c, a, l,  , s, i, m, u, l, a, t, i, o, n, s,  , t, h, a, t,  , i, l, l, u, s, t, r, a, t, e,  , t, h, e, 
-, r, e, l, a, t, i, o, n, s, h, i, p,  , b, e, t, w, e, e, n,  , t, h, e,  , e, x, p, e, r, t, ', s,  , b, e, h, a, v, i, o, r,  , a, n, d,  , t, h, e,  , b, e, h, a, v, i, o, r,  , p, r, o, d, u, c, e, d,  , b, y,  , o, u, r, 
-, m, e, t, h, o, d, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11991v1'>Text Adaptation to Plain Language and Easy Read via Automatic Post-Editing Cycles</a></td><td>W, e,  , d, e, s, c, r, i, b, e,  , V, i, c, o, m, t, e, c, h, ', s,  , p, a, r, t, i, c, i, p, a, t, i, o, n,  , i, n,  , t, h, e,  , C, L, E, A, R, S,  , c, h, a, l, l, e, n, g, e,  , o, n,  , t, e, x, t, 
-, a, d, a, p, t, a, t, i, o, n,  , t, o,  , P, l, a, i, n,  , L, a, n, g, u, a, g, e,  , a, n, d,  , E, a, s, y,  , R, e, a, d,  , i, n,  , S, p, a, n, i, s, h, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , f, e, a, t, u, r, e, s, 
-, a, u, t, o, m, a, t, i, c,  , p, o, s, t, -, e, d, i, t, i, n, g,  , o, f,  , d, i, f, f, e, r, e, n, t,  , t, y, p, e, s,  , o, f,  , i, n, i, t, i, a, l,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, 
-, a, d, a, p, t, a, t, i, o, n, s, ,,  , w, h, e, r, e,  , s, u, c, c, e, s, s, i, v, e,  , a, d, a, p, t, a, t, i, o, n, s,  , a, r, e,  , g, e, n, e, r, a, t, e, d,  , i, t, e, r, a, t, i, v, e, l, y,  , u, n, t, i, l, 
-, r, e, a, d, a, b, i, l, i, t, y,  , a, n, d,  , s, i, m, i, l, a, r, i, t, y,  , m, e, t, r, i, c, s,  , i, n, d, i, c, a, t, e,  , t, h, a, t,  , n, o,  , f, u, r, t, h, e, r,  , a, d, a, p, t, a, t, i, o, n, 
-, r, e, f, i, n, e, m, e, n, t,  , c, a, n,  , b, e,  , s, u, c, c, e, s, s, f, u, l, l, y,  , p, e, r, f, o, r, m, e, d, .,  , T, a, k, i, n, g,  , t, h, e,  , a, v, e, r, a, g, e,  , o, f,  , a, l, l,  , o, f, f, i, c, i, a, l, 
-, m, e, t, r, i, c, s, ,,  , o, u, r,  , s, u, b, m, i, s, s, i, o, n, s,  , a, c, h, i, e, v, e, d,  , f, i, r, s, t,  , a, n, d,  , s, e, c, o, n, d,  , p, l, a, c, e,  , i, n,  , P, l, a, i, n,  , l, a, n, g, u, a, g, e,  , a, n, d, 
-, E, a, s, y,  , R, e, a, d,  , a, d, a, p, t, a, t, i, o, n, ,,  , r, e, s, p, e, c, t, i, v, e, l, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11947v1'>A GPU-Accelerated RAG-Based Telegram Assistant for Supporting Parallel Processing Students</a></td><td>T, h, i, s,  , p, r, o, j, e, c, t,  , a, d, d, r, e, s, s, e, s,  , a,  , c, r, i, t, i, c, a, l,  , p, e, d, a, g, o, g, i, c, a, l,  , n, e, e, d, :,  , o, f, f, e, r, i, n, g,  , s, t, u, d, e, n, t, s, 
-, c, o, n, t, i, n, u, o, u, s, ,,  , o, n, -, d, e, m, a, n, d,  , a, c, a, d, e, m, i, c,  , a, s, s, i, s, t, a, n, c, e,  , b, e, y, o, n, d,  , c, o, n, v, e, n, t, i, o, n, a, l,  , r, e, c, e, p, t, i, o, n,  , h, o, u, r, s, ., 
-, I,  , p, r, e, s, e, n, t,  , a,  , d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , s, y, s, t, e, m,  , p, o, w, e, r, e, d, 
-, b, y,  , a,  , q, u, a, n, t, i, z, e, d,  , M, i, s, t, r, a, l, -, 7, B,  , I, n, s, t, r, u, c, t,  , m, o, d, e, l,  , a, n, d,  , d, e, p, l, o, y, e, d,  , a, s,  , a,  , T, e, l, e, g, r, a, m,  , b, o, t, .,  , T, h, e, 
-, a, s, s, i, s, t, a, n, t,  , e, n, h, a, n, c, e, s,  , l, e, a, r, n, i, n, g,  , b, y,  , d, e, l, i, v, e, r, i, n, g,  , r, e, a, l, -, t, i, m, e, ,,  , p, e, r, s, o, n, a, l, i, z, e, d,  , r, e, s, p, o, n, s, e, s, 
-, a, l, i, g, n, e, d,  , w, i, t, h,  , t, h, e,  , ", I, n, t, r, o, d, u, c, t, i, o, n,  , t, o,  , P, a, r, a, l, l, e, l,  , P, r, o, c, e, s, s, i, n, g, ",  , c, o, u, r, s, e,  , m, a, t, e, r, i, a, l, s, .,  , G, P, U, 
-, a, c, c, e, l, e, r, a, t, i, o, n,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , i, m, p, r, o, v, e, s,  , i, n, f, e, r, e, n, c, e,  , l, a, t, e, n, c, y, ,,  , e, n, a, b, l, i, n, g,  , p, r, a, c, t, i, c, a, l, 
-, d, e, p, l, o, y, m, e, n, t,  , o, n,  , c, o, n, s, u, m, e, r,  , h, a, r, d, w, a, r, e, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h,  , d, e, m, o, n, s, t, r, a, t, e, s,  , h, o, w,  , c, o, n, s, u, m, e, r,  , G, P, U, s, 
-, c, a, n,  , e, n, a, b, l, e,  , a, f, f, o, r, d, a, b, l, e, ,,  , p, r, i, v, a, t, e, ,,  , a, n, d,  , e, f, f, e, c, t, i, v, e,  , A, I,  , t, u, t, o, r, i, n, g,  , f, o, r,  , H, P, C,  , e, d, u, c, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11937v1'>MMORE: Massive Multimodal Open RAG & Extraction</a></td><td>W, e,  , i, n, t, r, o, d, u, c, e,  , M, M, O, R, E, ,,  , a, n,  , o, p, e, n, -, s, o, u, r, c, e,  , p, i, p, e, l, i, n, e,  , f, o, r,  , M, a, s, s, i, v, e,  , M, u, l, t, i, m, o, d, a, l,  , O, p, e, n, 
-, R, e, t, r, i, e, v, a, l, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , a, n, d,  , E, x, t, r, a, c, t, i, o, n, ,,  , d, e, s, i, g, n, e, d,  , t, o,  , i, n, g, e, s, t, ,,  , t, r, a, n, s, f, o, r, m, ,, 
-, a, n, d,  , r, e, t, r, i, e, v, e,  , k, n, o, w, l, e, d, g, e,  , f, r, o, m,  , h, e, t, e, r, o, g, e, n, e, o, u, s,  , d, o, c, u, m, e, n, t,  , f, o, r, m, a, t, s,  , a, t,  , s, c, a, l, e, .,  , M, M, O, R, E, 
-, s, u, p, p, o, r, t, s,  , m, o, r, e,  , t, h, a, n,  , f, i, f, t, e, e, n,  , f, i, l, e,  , t, y, p, e, s, ,,  , i, n, c, l, u, d, i, n, g,  , t, e, x, t, ,,  , t, a, b, l, e, s, ,,  , i, m, a, g, e, s, ,,  , e, m, a, i, l, s, ,, 
-, a, u, d, i, o, ,,  , a, n, d,  , v, i, d, e, o, ,,  , a, n, d,  , p, r, o, c, e, s, s, e, s,  , t, h, e, m,  , i, n, t, o,  , a,  , u, n, i, f, i, e, d,  , f, o, r, m, a, t,  , t, o,  , e, n, a, b, l, e,  , d, o, w, n, s, t, r, e, a, m, 
-, a, p, p, l, i, c, a, t, i, o, n, s,  , f, o, r,  , L, L, M, s, .,  , T, h, e,  , a, r, c, h, i, t, e, c, t, u, r, e,  , o, f, f, e, r, s,  , m, o, d, u, l, a, r, ,,  , d, i, s, t, r, i, b, u, t, e, d,  , p, r, o, c, e, s, s, i, n, g, ,, 
-, e, n, a, b, l, i, n, g,  , s, c, a, l, a, b, l, e,  , p, a, r, a, l, l, e, l, i, z, a, t, i, o, n,  , a, c, r, o, s, s,  , C, P, U, s,  , a, n, d,  , G, P, U, s, .,  , O, n,  , p, r, o, c, e, s, s, i, n, g, 
-, b, e, n, c, h, m, a, r, k, s, ,,  , M, M, O, R, E,  , d, e, m, o, n, s, t, r, a, t, e, s,  , a,  , 3, ., 8, -, f, o, l, d,  , s, p, e, e, d, u, p,  , o, v, e, r,  , s, i, n, g, l, e, -, n, o, d, e,  , b, a, s, e, l, i, n, e, s, 
-, a, n, d,  , 4, 0, %,  , h, i, g, h, e, r,  , a, c, c, u, r, a, c, y,  , t, h, a, n,  , D, o, c, l, i, n, g,  , o, n,  , s, c, a, n, n, e, d,  , P, D, F, s, .,  , T, h, e,  , p, i, p, e, l, i, n, e,  , i, n, t, e, g, r, a, t, e, s, 
-, h, y, b, r, i, d,  , d, e, n, s, e, -, s, p, a, r, s, e,  , r, e, t, r, i, e, v, a, l,  , a, n, d,  , s, u, p, p, o, r, t, s,  , b, o, t, h,  , i, n, t, e, r, a, c, t, i, v, e,  , A, P, I, s,  , a, n, d,  , b, a, t, c, h,  , R, A, G, 
-, e, n, d, p, o, i, n, t, s, .,  , E, v, a, l, u, a, t, e, d,  , o, n,  , P, u, b, M, e, d, Q, A, ,,  , M, M, O, R, E, -, a, u, g, m, e, n, t, e, d,  , m, e, d, i, c, a, l,  , L, L, M, s,  , i, m, p, r, o, v, e, 
-, b, i, o, m, e, d, i, c, a, l,  , Q, A,  , a, c, c, u, r, a, c, y,  , w, i, t, h,  , i, n, c, r, e, a, s, i, n, g,  , r, e, t, r, i, e, v, a, l,  , d, e, p, t, h, .,  , M, M, O, R, E,  , p, r, o, v, i, d, e, s,  , a, 
-, r, o, b, u, s, t, ,,  , e, x, t, e, n, s, i, b, l, e,  , f, o, u, n, d, a, t, i, o, n,  , f, o, r,  , d, e, p, l, o, y, i, n, g,  , t, a, s, k, -, a, g, n, o, s, t, i, c,  , R, A, G,  , s, y, s, t, e, m, s,  , o, n, 
-, d, i, v, e, r, s, e, ,,  , r, e, a, l, -, w, o, r, l, d,  , m, u, l, t, i, m, o, d, a, l,  , d, a, t, a, .,  , T, h, e,  , c, o, d, e, b, a, s, e,  , i, s,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, s, w, i, s, s, -, a, i, /, m, m, o, r, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11865v1'>Tenma: Robust Cross-Embodiment Robot Manipulation with Diffusion Transformer</a></td><td>S, c, a, l, i, n, g,  , T, r, a, n, s, f, o, r, m, e, r,  , p, o, l, i, c, i, e, s,  , a, n, d,  , d, i, f, f, u, s, i, o, n,  , m, o, d, e, l, s,  , h, a, s,  , a, d, v, a, n, c, e, d,  , r, o, b, o, t, i, c, 
-, m, a, n, i, p, u, l, a, t, i, o, n, ,,  , y, e, t,  , c, o, m, b, i, n, i, n, g,  , t, h, e, s, e,  , t, e, c, h, n, i, q, u, e, s,  , i, n,  , l, i, g, h, t, w, e, i, g, h, t, ,,  , c, r, o, s, s, -, e, m, b, o, d, i, m, e, n, t, 
-, l, e, a, r, n, i, n, g,  , s, e, t, t, i, n, g, s,  , r, e, m, a, i, n, s,  , c, h, a, l, l, e, n, g, i, n, g, .,  , W, e,  , s, t, u, d, y,  , d, e, s, i, g, n,  , c, h, o, i, c, e, s,  , t, h, a, t,  , m, o, s, t,  , a, f, f, e, c, t, 
-, s, t, a, b, i, l, i, t, y,  , a, n, d,  , p, e, r, f, o, r, m, a, n, c, e,  , f, o, r,  , d, i, f, f, u, s, i, o, n, -, t, r, a, n, s, f, o, r, m, e, r,  , p, o, l, i, c, i, e, s,  , t, r, a, i, n, e, d,  , o, n, 
-, h, e, t, e, r, o, g, e, n, e, o, u, s, ,,  , m, u, l, t, i, m, o, d, a, l,  , r, o, b, o, t,  , d, a, t, a, ,,  , a, n, d,  , i, n, t, r, o, d, u, c, e,  , T, e, n, m, a, ,,  , a,  , l, i, g, h, t, w, e, i, g, h, t, 
-, d, i, f, f, u, s, i, o, n, -, t, r, a, n, s, f, o, r, m, e, r,  , f, o, r,  , b, i, -, m, a, n, u, a, l,  , a, r, m,  , c, o, n, t, r, o, l, .,  , T, e, n, m, a,  , i, n, t, e, g, r, a, t, e, s,  , m, u, l, t, i, v, i, e, w, 
-, R, G, B, ,,  , p, r, o, p, r, i, o, c, e, p, t, i, o, n, ,,  , a, n, d,  , l, a, n, g, u, a, g, e,  , v, i, a,  , a,  , c, r, o, s, s, -, e, m, b, o, d, i, m, e, n, t,  , n, o, r, m, a, l, i, z, e, r,  , t, h, a, t,  , m, a, p, s, 
-, d, i, s, p, a, r, a, t, e,  , s, t, a, t, e, /, a, c, t, i, o, n,  , s, p, a, c, e, s,  , i, n, t, o,  , a,  , s, h, a, r, e, d,  , l, a, t, e, n, t,  , s, p, a, c, e, ;,  , a,  , J, o, i, n, t,  , S, t, a, t, e, -, T, i, m, e, 
-, e, n, c, o, d, e, r,  , f, o, r,  , t, e, m, p, o, r, a, l, l, y,  , a, l, i, g, n, e, d,  , o, b, s, e, r, v, a, t, i, o, n,  , l, e, a, r, n, i, n, g,  , w, i, t, h,  , i, n, f, e, r, e, n, c, e,  , s, p, e, e, d, 
-, b, o, o, s, t, s, ;,  , a, n, d,  , a,  , d, i, f, f, u, s, i, o, n,  , a, c, t, i, o, n,  , d, e, c, o, d, e, r,  , o, p, t, i, m, i, z, e, d,  , f, o, r,  , t, r, a, i, n, i, n, g,  , s, t, a, b, i, l, i, t, y,  , a, n, d, 
-, l, e, a, r, n, i, n, g,  , c, a, p, a, c, i, t, y, .,  , A, c, r, o, s, s,  , b, e, n, c, h, m, a, r, k, s,  , a, n, d,  , u, n, d, e, r,  , m, a, t, c, h, e, d,  , c, o, m, p, u, t, e, ,,  , T, e, n, m, a,  , a, c, h, i, e, v, e, s, 
-, a, n,  , a, v, e, r, a, g, e,  , s, u, c, c, e, s, s,  , r, a, t, e,  , o, f,  , 8, 8, ., 9, 5, %,  , i, n, -, d, i, s, t, r, i, b, u, t, i, o, n,  , a, n, d,  , m, a, i, n, t, a, i, n, s,  , s, t, r, o, n, g, 
-, p, e, r, f, o, r, m, a, n, c, e,  , u, n, d, e, r,  , o, b, j, e, c, t,  , a, n, d,  , s, c, e, n, e,  , s, h, i, f, t, s, ,,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , e, x, c, e, e, d, i, n, g,  , b, a, s, e, l, i, n, e, 
-, p, o, l, i, c, i, e, s,  , w, h, o, s, e,  , b, e, s, t,  , i, n, -, d, i, s, t, r, i, b, u, t, i, o, n,  , a, v, e, r, a, g, e,  , i, s,  , 1, 8, ., 1, 2, %, .,  , D, e, s, p, i, t, e,  , u, s, i, n, g,  , m, o, d, e, r, a, t, e, 
-, d, a, t, a,  , s, c, a, l, e, ,,  , T, e, n, m, a,  , d, e, l, i, v, e, r, s,  , r, o, b, u, s, t,  , m, a, n, i, p, u, l, a, t, i, o, n,  , a, n, d,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n, ,,  , i, n, d, i, c, a, t, i, n, g, 
-, t, h, e,  , g, r, e, a, t,  , p, o, t, e, n, t, i, a, l,  , f, o, r,  , m, u, l, t, i, m, o, d, a, l,  , a, n, d,  , c, r, o, s, s, -, e, m, b, o, d, i, m, e, n, t,  , l, e, a, r, n, i, n, g,  , s, t, r, a, t, e, g, i, e, s,  , f, o, r, 
-, f, u, r, t, h, e, r,  , a, u, g, m, e, n, t, i, n, g,  , t, h, e,  , c, a, p, a, c, i, t, y,  , o, f,  , t, r, a, n, s, f, o, r, m, e, r, -, b, a, s, e, d,  , i, m, i, t, a, t, i, o, n,  , l, e, a, r, n, i, n, g, 
-, p, o, l, i, c, i, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11815v1'>SpecVLM: Fast Speculative Decoding in Vision-Language Models</a></td><td>S, p, e, c, u, l, a, t, i, v, e,  , d, e, c, o, d, i, n, g,  , i, s,  , a,  , p, o, w, e, r, f, u, l,  , w, a, y,  , t, o,  , a, c, c, e, l, e, r, a, t, e,  , a, u, t, o, r, e, g, r, e, s, s, i, v, e,  , l, a, r, g, e, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ), ,,  , b, u, t,  , d, i, r, e, c, t, l, y,  , p, o, r, t, i, n, g,  , i, t,  , t, o,  , v, i, s, i, o, n, -, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, 
-, (, V, L, M, s, ),  , f, a, c, e, s,  , u, n, i, q, u, e,  , s, y, s, t, e, m, s,  , c, o, n, s, t, r, a, i, n, t, s, :,  , t, h, e,  , p, r, e, f, i, l, l,  , s, t, a, g, e,  , i, s,  , d, o, m, i, n, a, t, e, d,  , b, y, 
-, v, i, s, u, a, l,  , t, o, k, e, n, s,  , w, h, o, s, e,  , c, o, u, n, t,  , s, c, a, l, e, s,  , w, i, t, h,  , i, m, a, g, e,  , r, e, s, o, l, u, t, i, o, n,  , a, n, d,  , v, i, d, e, o,  , l, e, n, g, t, h, ,, 
-, i, n, f, l, a, t, i, n, g,  , b, o, t, h,  , c, o, m, p, u, t, e,  , a, n, d,  , m, e, m, o, r, y, ,,  , e, s, p, e, c, i, a, l, l, y,  , t, h, e,  , k, e, y, -, v, a, l, u, e,  , (, K, V, ),  , c, a, c, h, e, .,  , W, e, 
-, s, t, u, d, y,  , s, p, e, c, u, l, a, t, i, v, e,  , d, e, c, o, d, i, n, g,  , f, o, r,  , V, L, M, s,  , a, n, d,  , i, n, t, r, o, d, u, c, e,  , S, p, e, c, V, L, M, ,,  , a,  , p, r, a, c, t, i, c, a, l,  , s, y, s, t, e, m, 
-, t, h, a, t,  , (, 1, ),  , e, s, t, a, b, l, i, s, h, e, s,  , a,  , s, t, r, o, n, g,  , E, A, G, L, E, -, 2, -, s, t, y, l, e,  , b, a, s, e, l, i, n, e, ,,  , E, a, g, l, e, V, L, M, ,,  , d, e, l, i, v, e, r, i, n, g, 
-, 1, ., 5, -, -, 2, ., 3, x,  , e, n, d, -, t, o, -, e, n, d,  , s, p, e, e, d, u, p, s,  , o, v, e, r,  , f, u, l, l,  , a, u, t, o, r, e, g, r, e, s, s, i, v, e,  , i, n, f, e, r, e, n, c, e, ,,  , a, n, d,  , (, 2, ), 
-, f, u, r, t, h, e, r,  , a, c, c, e, l, e, r, a, t, e, s,  , V, L, M,  , i, n, f, e, r, e, n, c, e,  , w, i, t, h,  , a, n,  , e, l, a, s, t, i, c,  , v, i, s, u, a, l,  , c, o, m, p, r, e, s, s, o, r,  , t, h, a, t, 
-, a, d, a, p, t, i, v, e, l, y,  , s, e, l, e, c, t, s,  , a, m, o, n, g,  , p, r, u, n, i, n, g, ,,  , p, o, o, l, i, n, g, ,,  , c, o, n, v, o, l, u, t, i, o, n, ,,  , a, n, d,  , r, e, s, a, m, p, l, e, r, 
-, p, r, i, m, i, t, i, v, e, s,  , t, o,  , b, a, l, a, n, c, e,  , F, L, O, P, s, /, p, a, r, a, m, e, t, e, r, s,  , a, n, d,  , a, c, c, u, r, a, c, y,  , p, e, r,  , i, n, p, u, t, .,  , T, o,  , a, v, o, i, d,  , c, o, s, t, l, y, 
-, o, f, f, l, i, n, e,  , d, i, s, t, i, l, l, a, t, i, o, n,  , c, o, r, p, o, r, a, ,,  , w, e,  , p, r, o, p, o, s, e,  , a, n,  , o, n, l, i, n, e, -, l, o, g, i, t,  , d, i, s, t, i, l, l, a, t, i, o, n,  , p, r, o, t, o, c, o, l, 
-, t, h, a, t,  , t, r, a, i, n, s,  , t, h, e,  , d, r, a, f, t,  , m, o, d, e, l,  , w, i, t, h,  , o, n, -, t, h, e, -, f, l, y,  , t, e, a, c, h, e, r,  , l, o, g, i, t, s,  , a, n, d,  , p, e, n, u, l, t, i, m, a, t, e, 
-, f, e, a, t, u, r, e, s,  , u, s, i, n, g,  , a,  , c, o, m, b, i, n, e, d,  , c, r, o, s, s, -, e, n, t, r, o, p, y,  , a, n, d,  , S, m, o, o, t, h,  , L, 1,  , o, b, j, e, c, t, i, v, e, ,,  , e, l, i, m, i, n, a, t, i, n, g, 
-, s, t, o, r, a, g, e,  , a, n, d,  , p, r, e, p, r, o, c, e, s, s, i, n, g,  , w, h, i, l, e,  , r, e, m, a, i, n, i, n, g,  , c, o, m, p, u, t, e, -, e, f, f, i, c, i, e, n, t, .,  , T, h, i, s,  , p, r, o, t, o, c, o, l, 
-, r, e, v, e, a, l, s,  , a,  , t, r, a, i, n, i, n, g, -, t, i, m, e,  , s, c, a, l, i, n, g,  , e, f, f, e, c, t, :,  , l, o, n, g, e, r,  , o, n, l, i, n, e,  , t, r, a, i, n, i, n, g,  , m, o, n, o, t, o, n, i, c, a, l, l, y, 
-, i, n, c, r, e, a, s, e, s,  , t, h, e,  , d, r, a, f, t,  , m, o, d, e, l, ', s,  , a, v, e, r, a, g, e,  , a, c, c, e, p, t, e, d,  , l, e, n, g, t, h, ,,  , i, m, p, r, o, v, i, n, g,  , s, p, e, c, u, l, a, t, i, v, e, 
-, e, f, f, i, c, i, e, n, c, y, .,  , E, m, p, i, r, i, c, a, l, l, y, ,,  , S, p, e, c, V, L, M,  , a, c, h, i, e, v, e, s,  , a, d, d, i, t, i, o, n, a, l,  , a, c, c, e, l, e, r, a, t, i, o, n, ,,  , c, u, l, m, i, n, a, t, i, n, g, 
-, i, n,  , 2, ., 5, -, -, 2, ., 9, x,  , e, n, d, -, t, o, -, e, n, d,  , s, p, e, e, d, u, p, s,  , w, i, t, h, i, n,  , 5,  , e, p, o, c, h, s,  , a, c, r, o, s, s,  , L, L, a, V, A,  , a, n, d,  , M, M, M, U, ,, 
-, c, o, n, s, i, s, t, e, n, t, l, y,  , o, v, e, r,  , r, e, s, o, l, u, t, i, o, n, s,  , a, n, d,  , t, a, s, k,  , d, i, f, f, i, c, u, l, t, i, e, s, ,,  , w, h, i, l, e,  , p, r, e, s, e, r, v, i, n, g,  , t, h, e, 
-, t, a, r, g, e, t,  , m, o, d, e, l, ', s,  , o, u, t, p, u, t,  , d, i, s, t, r, i, b, u, t, i, o, n,  , (, l, o, s, s, l, e, s, s,  , d, e, c, o, d, i, n, g, ), .,  , O, u, r,  , c, o, d, e,  , i, s,  , a, v, a, i, l, a, b, l, e, 
-, a, t,  , h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, h, a, i, d, u, o, /, S, p, e, c, V, L, M, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11731v1'>Bridging the Gap Between Sparsity and Redundancy: A Dual-Decoding Framework with Global Context for Map Inference</a></td><td>T, r, a, j, e, c, t, o, r, y,  , d, a, t, a,  , h, a, s,  , b, e, c, o, m, e,  , a,  , k, e, y,  , r, e, s, o, u, r, c, e,  , f, o, r,  , a, u, t, o, m, a, t, e, d,  , m, a, p,  , i, n, -, f, e, r, e, n, c, e,  , d, u, e,  , t, o, 
-, i, t, s,  , l, o, w,  , c, o, s, t, ,,  , b, r, o, a, d,  , c, o, v, e, r, a, g, e, ,,  , a, n, d,  , c, o, n, t, i, n, u, o, u, s,  , a, v, a, i, l, a, b, i, l, i, t, y, .,  , H, o, w, e, v, e, r, ,,  , u, n, e, v, e, n, 
-, t, r, a, j, e, c, t, o, r, y,  , d, e, n, s, i, t, y,  , o, f, t, e, n,  , l, e, a, d, s,  , t, o,  , f, r, a, g, -, m, e, n, t, e, d,  , r, o, a, d, s,  , i, n,  , s, p, a, r, s, e,  , a, r, e, a, s,  , a, n, d, 
-, r, e, d, u, n, d, a, n, t,  , s, e, g, m, e, n, t, s,  , i, n,  , d, e, n, s, e,  , r, e, g, i, o, n, s, ,,  , p, o, s, i, n, g,  , s, i, g, n, i, f, i, c, a, n, t,  , c, h, a, l, l, e, n, g, e, s,  , f, o, r,  , e, x, i, s, t, i, n, g, 
-, m, e, t, h, o, d, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , i, s, s, u, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , D, G, M, a, p, ,,  , a,  , d, u, a, l, -, d, e, c, o, d, i, n, g,  , f, r, a, m, e, w, o, r, k, 
-, w, i, t, h,  , g, l, o, b, a, l,  , c, o, n, t, e, x, t,  , a, w, a, r, e, n, e, s, s, ,,  , f, e, a, t, u, r, i, n, g,  , M, u, l, t, i, -, s, c, a, l, e,  , G, r, i, d,  , E, n, c, o, d, i, n, g, ,, 
-, M, a, s, k, -, e, n, h, a, n, c, e, d,  , K, e, y, p, o, i, n, t,  , E, x, t, r, a, c, t, i, o, n, ,,  , a, n, d,  , G, l, o, b, a, l,  , C, o, n, t, e, x, t, -, a, w, a, r, e,  , R, e, l, a, t, i, o, n, 
-, P, r, e, d, i, c, t, i, o, n, .,  , B, y,  , i, n, t, e, g, r, a, t, i, n, g,  , g, l, o, b, a, l,  , s, e, m, a, n, t, i, c,  , c, o, n, t, e, x, t,  , w, i, t, h,  , l, o, c, a, l,  , g, e, o, m, e, t, r, i, c, 
-, f, e, a, t, u, r, e, s, ,,  , D, G, M, a, p,  , i, m, p, r, o, v, e, s,  , k, e, y, p, o, i, n, t,  , d, e, t, e, c, t, i, o, n,  , a, c, c, u, r, a, c, y,  , t, o,  , r, e, d, u, c, e,  , r, o, a, d, 
-, f, r, a, g, m, e, n, t, a, t, i, o, n,  , i, n,  , s, p, a, r, s, e, -, t, r, a, j, e, c, t, o, r, y,  , a, r, e, a, s, .,  , A, d, d, i, t, i, o, n, a, l, l, y, ,,  , t, h, e,  , G, l, o, b, a, l, 
-, C, o, n, t, e, x, t, -, a, w, a, r, e,  , R, e, l, a, t, i, o, n,  , P, r, e, d, i, c, t, i, o, n,  , m, o, d, u, l, e,  , s, u, p, p, r, e, s, s, e, s,  , f, a, l, s, e,  , c, o, n, n, e, c, t, i, o, n, s,  , i, n, 
-, d, e, n, s, e, -, t, r, a, j, e, c, t, o, r, y,  , r, e, g, i, o, n, s,  , b, y,  , m, o, d, e, l, i, n, g,  , l, o, n, g, -, r, a, n, g, e,  , t, r, a, j, e, c, t, o, r, y,  , p, a, t, t, e, r, n, s, ., 
-, E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , o, n,  , t, h, r, e, e,  , r, e, a, l, -, w, o, r, l, d,  , d, a, t, a, s, e, t, s,  , s, h, o, w,  , t, h, a, t,  , D, G, M, a, p,  , o, u, t, p, e, r, f, o, r, m, s, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , m, e, t, h, o, d, s,  , b, y,  , 5, %,  , i, n,  , A, P, L, S, ,,  , w, i, t, h,  , n, o, t, a, b, l, e,  , p, e, r, f, o, r, m, a, n, c, e,  , g, a, i, n, s,  , o, n, 
-, t, r, a, j, e, c, t, o, r, y,  , d, a, t, a,  , f, r, o, m,  , t, h, e,  , D, i, d, i,  , C, h, u, x, i, n, g,  , p, l, a, t, f, o, r, m</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11698v1'>CoachMe: Decoding Sport Elements with a Reference-Based Coaching Instruction Generation Model</a></td><td>M, o, t, i, o, n,  , i, n, s, t, r, u, c, t, i, o, n,  , i, s,  , a,  , c, r, u, c, i, a, l,  , t, a, s, k,  , t, h, a, t,  , h, e, l, p, s,  , a, t, h, l, e, t, e, s,  , r, e, f, i, n, e,  , t, h, e, i, r, 
-, t, e, c, h, n, i, q, u, e,  , b, y,  , a, n, a, l, y, z, i, n, g,  , m, o, v, e, m, e, n, t, s,  , a, n, d,  , p, r, o, v, i, d, i, n, g,  , c, o, r, r, e, c, t, i, v, e,  , g, u, i, d, a, n, c, e, .,  , A, l, t, h, o, u, g, h, 
-, r, e, c, e, n, t,  , a, d, v, a, n, c, e, s,  , i, n,  , m, u, l, t, i, m, o, d, a, l,  , m, o, d, e, l, s,  , h, a, v, e,  , i, m, p, r, o, v, e, d,  , m, o, t, i, o, n,  , u, n, d, e, r, s, t, a, n, d, i, n, g, ,, 
-, g, e, n, e, r, a, t, i, n, g,  , p, r, e, c, i, s, e,  , a, n, d,  , s, p, o, r, t, -, s, p, e, c, i, f, i, c,  , i, n, s, t, r, u, c, t, i, o, n,  , r, e, m, a, i, n, s,  , c, h, a, l, l, e, n, g, i, n, g,  , d, u, e,  , t, o, 
-, t, h, e,  , h, i, g, h, l, y,  , d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , n, a, t, u, r, e,  , o, f,  , s, p, o, r, t, s,  , a, n, d,  , t, h, e,  , n, e, e, d,  , f, o, r,  , i, n, f, o, r, m, a, t, i, v, e, 
-, g, u, i, d, a, n, c, e, .,  , W, e,  , p, r, o, p, o, s, e,  , C, o, a, c, h, M, e, ,,  , a,  , r, e, f, e, r, e, n, c, e, -, b, a, s, e, d,  , m, o, d, e, l,  , t, h, a, t,  , a, n, a, l, y, z, e, s,  , t, h, e, 
-, d, i, f, f, e, r, e, n, c, e, s,  , b, e, t, w, e, e, n,  , a,  , l, e, a, r, n, e, r, ', s,  , m, o, t, i, o, n,  , a, n, d,  , a,  , r, e, f, e, r, e, n, c, e,  , u, n, d, e, r,  , t, e, m, p, o, r, a, l,  , a, n, d, 
-, p, h, y, s, i, c, a, l,  , a, s, p, e, c, t, s, .,  , T, h, i, s,  , a, p, p, r, o, a, c, h,  , e, n, a, b, l, e, s,  , b, o, t, h,  , d, o, m, a, i, n, -, k, n, o, w, l, e, d, g, e,  , l, e, a, r, n, i, n, g,  , a, n, d,  , t, h, e, 
-, a, c, q, u, i, s, i, t, i, o, n,  , o, f,  , a,  , c, o, a, c, h, -, l, i, k, e,  , t, h, i, n, k, i, n, g,  , p, r, o, c, e, s, s,  , t, h, a, t,  , i, d, e, n, t, i, f, i, e, s,  , m, o, v, e, m, e, n, t,  , e, r, r, o, r, s, 
-, e, f, f, e, c, t, i, v, e, l, y,  , a, n, d,  , p, r, o, v, i, d, e, s,  , f, e, e, d, b, a, c, k,  , t, o,  , e, x, p, l, a, i, n,  , h, o, w,  , t, o,  , i, m, p, r, o, v, e, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e, 
-, i, l, l, u, s, t, r, a, t, e,  , h, o, w,  , C, o, a, c, h, M, e,  , a, d, a, p, t, s,  , w, e, l, l,  , t, o,  , s, p, e, c, i, f, i, c,  , s, p, o, r, t, s,  , s, u, c, h,  , a, s,  , s, k, a, t, i, n, g,  , a, n, d, 
-, b, o, x, i, n, g,  , b, y,  , l, e, a, r, n, i, n, g,  , f, r, o, m,  , g, e, n, e, r, a, l,  , m, o, v, e, m, e, n, t, s,  , a, n, d,  , t, h, e, n,  , l, e, v, e, r, a, g, i, n, g,  , l, i, m, i, t, e, d,  , d, a, t, a, ., 
-, E, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , C, o, a, c, h, M, e,  , p, r, o, v, i, d, e, s,  , h, i, g, h, -, q, u, a, l, i, t, y,  , i, n, s, t, r, u, c, t, i, o, n, s,  , i, n, s, t, e, a, d,  , o, f, 
-, d, i, r, e, c, t, i, o, n, s,  , m, e, r, e, l, y,  , i, n,  , t, h, e,  , t, o, n, e,  , o, f,  , a,  , c, o, a, c, h,  , b, u, t,  , w, i, t, h, o, u, t,  , c, r, i, t, i, c, a, l,  , i, n, f, o, r, m, a, t, i, o, n, ., 
-, C, o, a, c, h, M, e,  , o, u, t, p, e, r, f, o, r, m, s,  , G, P, T, -, 4, o,  , b, y,  , 3, 1, ., 6, %,  , i, n,  , G, -, E, v, a, l,  , o, n,  , f, i, g, u, r, e,  , s, k, a, t, i, n, g,  , a, n, d,  , b, y,  , 5, 8, ., 3, %,  , o, n, 
-, b, o, x, i, n, g, .,  , A, n, a, l, y, s, i, s,  , f, u, r, t, h, e, r,  , c, o, n, f, i, r, m, s,  , t, h, a, t,  , i, t,  , e, l, a, b, o, r, a, t, e, s,  , o, n,  , e, r, r, o, r, s,  , a, n, d,  , t, h, e, i, r, 
-, c, o, r, r, e, s, p, o, n, d, i, n, g,  , i, m, p, r, o, v, e, m, e, n, t,  , m, e, t, h, o, d, s,  , i, n,  , t, h, e,  , g, e, n, e, r, a, t, e, d,  , i, n, s, t, r, u, c, t, i, o, n, s, .,  , Y, o, u,  , c, a, n,  , f, i, n, d, 
-, C, o, a, c, h, M, e,  , h, e, r, e, :,  , h, t, t, p, s, :, /, /, m, o, t, i, o, n, x, p, e, r, t, s, ., g, i, t, h, u, b, ., i, o, /</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11686v1'>Do Code Semantics Help? A Comprehensive Study on Execution Trace-Based Information for Code Large Language Models</a></td><td>C, o, d, e,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, C, o, d, e,  , L, L, M, s, ),  , h, a, v, e,  , o, p, e, n, e, d,  , a,  , n, e, w,  , e, r, a,  , i, n,  , p, r, o, g, r, a, m, m, i, n, g, 
-, w, i, t, h,  , t, h, e, i, r,  , i, m, p, r, e, s, s, i, v, e,  , c, a, p, a, b, i, l, i, t, i, e, s, .,  , H, o, w, e, v, e, r, ,,  , r, e, c, e, n, t,  , r, e, s, e, a, r, c, h,  , h, a, s,  , r, e, v, e, a, l, e, d, 
-, c, r, i, t, i, c, a, l,  , l, i, m, i, t, a, t, i, o, n, s,  , i, n,  , t, h, e, i, r,  , a, b, i, l, i, t, y,  , t, o,  , r, e, a, s, o, n,  , a, b, o, u, t,  , r, u, n, t, i, m, e,  , b, e, h, a, v, i, o, r,  , a, n, d, 
-, u, n, d, e, r, s, t, a, n, d,  , t, h, e,  , a, c, t, u, a, l,  , f, u, n, c, t, i, o, n, a, l, i, t, y,  , o, f,  , p, r, o, g, r, a, m, s, ,,  , w, h, i, c, h,  , p, o, s, e, s,  , s, i, g, n, i, f, i, c, a, n, t, 
-, c, h, a, l, l, e, n, g, e, s,  , f, o, r,  , t, h, e, i, r,  , p, o, s, t, -, t, r, a, i, n, i, n, g,  , a, n, d,  , p, r, a, c, t, i, c, a, l,  , d, e, p, l, o, y, m, e, n, t, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , C, o, d, e, 
-, L, L, M, s,  , e, n, c, o, u, n, t, e, r,  , t, w, o,  , p, r, i, n, c, i, p, a, l,  , i, s, s, u, e, s, :,  , (, 1, ),  , a,  , l, a, c, k,  , o, f,  , p, r, o, f, i, c, i, e, n, c, y,  , i, n,  , r, e, a, s, o, n, i, n, g, 
-, a, b, o, u, t,  , p, r, o, g, r, a, m,  , e, x, e, c, u, t, i, o, n,  , b, e, h, a, v, i, o, r, ,,  , a, s,  , t, h, e, y,  , s, t, r, u, g, g, l, e,  , t, o,  , i, n, t, e, r, p, r, e, t,  , w, h, a, t,  , p, r, o, g, r, a, m, s, 
-, a, c, t, u, a, l, l, y,  , d, o,  , d, u, r, i, n, g,  , r, u, n, t, i, m, e, ,,  , a, n, d,  , (, 2, ),  , t, h, e,  , i, n, c, o, n, s, i, s, t, e, n, t,  , a, n, d,  , f, r, a, g, m, e, n, t, e, d, 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n,  , o, f,  , s, e, m, a, n, t, i, c,  , i, n, f, o, r, m, a, t, i, o, n, ,,  , s, u, c, h,  , a, s,  , e, x, e, c, u, t, i, o, n,  , t, r, a, c, e, s, ,,  , a, c, r, o, s, s, 
-, e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s, ,,  , w, h, i, c, h,  , h, i, n, d, e, r, s,  , t, h, e, i, r,  , a, b, i, l, i, t, y,  , t, o,  , g, e, n, e, r, a, l, i, z, e,  , a, n, d,  , r, e, a, s, o, n, 
-, e, f, f, e, c, t, i, v, e, l, y, .,  , T, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s,  , u, n, d, e, r, s, c, o, r, e,  , t, h, e,  , n, e, c, e, s, s, i, t, y,  , f, o, r,  , m, o, r, e,  , s, y, s, t, e, m, a, t, i, c, 
-, a, p, p, r, o, a, c, h, e, s,  , t, o,  , e, n, h, a, n, c, e,  , t, h, e,  , r, e, a, s, o, n, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s,  , o, f,  , C, o, d, e,  , L, L, M, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e, 
-, i, s, s, u, e, s, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , a,  , g, e, n, e, r, i, c,  , f, r, a, m, e, w, o, r, k,  , t, o,  , s, u, p, p, o, r, t,  , i, n, t, e, g, r, a, t, i, n, g,  , s, e, m, a, n, t, i, c, 
-, i, n, f, o, r, m, a, t, i, o, n, ~, (, e, ., g, ., ,,  , e, x, e, c, u, t, i, o, n,  , t, r, a, c, e, ),  , t, o,  , c, o, d, e,  , t, a, s, k, -, r, e, l, e, v, a, n, t,  , p, r, o, m, p, t, s, ,,  , a, n, d,  , c, o, n, d, u, c, t, 
-, a,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , s, t, u, d, y,  , t, o,  , e, x, p, l, o, r, e,  , t, h, e,  , r, o, l, e,  , o, f,  , s, e, m, a, n, t, i, c,  , i, n, f, o, r, m, a, t, i, o, n,  , i, n,  , e, n, h, a, n, c, i, n, g, 
-, t, h, e,  , r, e, a, s, o, n, i, n, g,  , a, b, i, l, i, t, y,  , o, f,  , C, o, d, e,  , L, L, M, s,  , a, c, c, o, r, d, i, n, g, l, y, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , f, o, c, u, s,  , o, n, 
-, i, n, v, e, s, t, i, g, a, t, i, n, g,  , t, h, e,  , u, s, e, f, u, l, n, e, s, s,  , o, f,  , t, r, a, c, e, -, b, a, s, e, d,  , s, e, m, a, n, t, i, c,  , i, n, f, o, r, m, a, t, i, o, n,  , i, n,  , b, o, o, s, t, i, n, g, 
-, s, u, p, e, r, v, i, s, e, d,  , f, i, n, e, -, t, u, n, i, n, g, ~, (, S, F, T, ),  , a, n, d,  , p, o, s, t, -, p, h, a, s, e,  , i, n, f, e, r, e, n, c, e,  , o, f,  , C, o, d, e,  , L, L, M, s, .,  , T, h, e, 
-, e, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , s, u, r, p, r, i, s, i, n, g, l, y,  , d, i, s, a, g, r, e, e,  , w, i, t, h,  , p, r, e, v, i, o, u, s,  , w, o, r, k, s,  , a, n, d,  , d, e, m, o, n, s, t, r, a, t, e, 
-, t, h, a, t,  , s, e, m, a, n, t, i, c,  , i, n, f, o, r, m, a, t, i, o, n,  , h, a, s,  , l, i, m, i, t, e, d,  , u, s, e, f, u, l, n, e, s, s,  , f, o, r,  , S, F, T,  , a, n, d,  , t, e, s, t,  , t, i, m, e,  , s, c, a, l, i, n, g, 
-, o, f,  , C, o, d, e,  , L, L, M, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11663v1'>ParaEQsA: Parallel and Asynchronous Embodied Questions Scheduling and Answering</a></td><td>T, h, i, s,  , p, a, p, e, r,  , f, o, r, m, u, l, a, t, e, s,  , t, h, e,  , E, m, b, o, d, i, e, d,  , Q, u, e, s, t, i, o, n, s,  , A, n, s, w, e, r, i, n, g,  , (, E, Q, s, A, ),  , p, r, o, b, l, e, m, ,, 
-, i, n, t, r, o, d, u, c, e, s,  , a,  , c, o, r, r, e, s, p, o, n, d, i, n, g,  , b, e, n, c, h, m, a, r, k, ,,  , a, n, d,  , p, r, o, p, o, s, e, s,  , a,  , s, y, s, t, e, m,  , t, o,  , t, a, c, k, l, e,  , t, h, e, 
-, p, r, o, b, l, e, m, .,  , C, l, a, s, s, i, c, a, l,  , E, m, b, o, d, i, e, d,  , Q, u, e, s, t, i, o, n,  , A, n, s, w, e, r, i, n, g,  , (, E, Q, A, ),  , i, s,  , t, y, p, i, c, a, l, l, y,  , f, o, r, m, u, l, a, t, e, d,  , a, s, 
-, a, n, s, w, e, r, i, n, g,  , o, n, e,  , s, i, n, g, l, e,  , q, u, e, s, t, i, o, n,  , b, y,  , a, c, t, i, v, e, l, y,  , e, x, p, l, o, r, i, n, g,  , a,  , 3, D,  , e, n, v, i, r, o, n, m, e, n, t, .,  , R, e, a, l, 
-, d, e, p, l, o, y, m, e, n, t, s, ,,  , h, o, w, e, v, e, r, ,,  , o, f, t, e, n,  , d, e, m, a, n, d,  , h, a, n, d, l, i, n, g,  , m, u, l, t, i, p, l, e,  , q, u, e, s, t, i, o, n, s,  , t, h, a, t,  , m, a, y,  , a, r, r, i, v, e, 
-, a, s, y, n, c, h, r, o, n, o, u, s, l, y,  , a, n, d,  , c, a, r, r, y,  , d, i, f, f, e, r, e, n, t,  , u, r, g, e, n, c, i, e, s, .,  , W, e,  , f, o, r, m, a, l, i, z, e,  , t, h, i, s,  , s, e, t, t, i, n, g,  , a, s, 
-, E, m, b, o, d, i, e, d,  , Q, u, e, s, t, i, o, n, s,  , A, n, s, w, e, r, i, n, g,  , (, E, Q, s, A, ),  , a, n, d,  , p, r, e, s, e, n, t,  , P, a, r, a, E, Q, s, A, ,,  , a,  , f, r, a, m, e, w, o, r, k,  , f, o, r, 
-, p, a, r, a, l, l, e, l, ,,  , u, r, g, e, n, c, y, -, a, w, a, r, e,  , s, c, h, e, d, u, l, i, n, g,  , a, n, d,  , a, n, s, w, e, r, i, n, g, .,  , P, a, r, a, E, Q, s, A,  , l, e, v, e, r, a, g, e, s,  , a,  , g, r, o, u, p, 
-, m, e, m, o, r, y,  , m, o, d, u, l, e,  , s, h, a, r, e, d,  , a, m, o, n, g,  , q, u, e, s, t, i, o, n, s,  , t, o,  , r, e, d, u, c, e,  , r, e, d, u, n, d, a, n, t,  , e, x, p, l, o, r, a, t, i, o, n, ,,  , a, n, d,  , a, 
-, p, r, i, o, r, i, t, y, -, p, l, a, n, n, i, n, g,  , m, o, d, u, l, e,  , t, o,  , d, y, n, a, m, i, c, a, l, l, y,  , s, c, h, e, d, u, l, e,  , q, u, e, s, t, i, o, n, s, .,  , T, o,  , e, v, a, l, u, a, t, e,  , t, h, i, s, 
-, s, e, t, t, i, n, g, ,,  , w, e,  , c, o, n, t, r, i, b, u, t, e,  , t, h, e,  , P, a, r, a, l, l, e, l,  , A, s, y, n, c, h, r, o, n, o, u, s,  , E, m, b, o, d, i, e, d,  , Q, u, e, s, t, i, o, n, s,  , (, P, A, E, Q, s, ), 
-, b, e, n, c, h, m, a, r, k,  , c, o, n, t, a, i, n, i, n, g,  , 4, 0,  , i, n, d, o, o, r,  , s, c, e, n, e, s,  , a, n, d,  , f, i, v, e,  , q, u, e, s, t, i, o, n, s,  , p, e, r,  , s, c, e, n, e,  , (, 2, 0, 0,  , i, n, 
-, t, o, t, a, l, ), ,,  , f, e, a, t, u, r, i, n, g,  , a, s, y, n, c, h, r, o, n, o, u, s,  , f, o, l, l, o, w, -, u, p,  , q, u, e, s, t, i, o, n, s,  , a, n, d,  , u, r, g, e, n, c, y,  , l, a, b, e, l, s, .,  , W, e, 
-, f, u, r, t, h, e, r,  , p, r, o, p, o, s, e,  , m, e, t, r, i, c, s,  , f, o, r,  , E, Q, s, A,  , p, e, r, f, o, r, m, a, n, c, e, :,  , D, i, r, e, c, t,  , A, n, s, w, e, r,  , R, a, t, e,  , (, D, A, R, ), ,,  , a, n, d, 
-, N, o, r, m, a, l, i, z, e, d,  , U, r, g, e, n, c, y, -, W, e, i, g, h, t, e, d,  , L, a, t, e, n, c, y,  , (, N, U, W, L, ), ,,  , w, h, i, c, h,  , j, o, i, n, t, l, y,  , m, e, a, s, u, r, e,  , e, f, f, i, c, i, e, n, c, y, 
-, a, n, d,  , r, e, s, p, o, n, s, i, v, e, n, e, s, s,  , o, f,  , t, h, i, s,  , s, y, s, t, e, m, .,  , P, a, r, a, E, Q, s, A,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , s, t, r, o, n, g, 
-, s, e, q, u, e, n, t, i, a, l,  , b, a, s, e, l, i, n, e, s,  , a, d, a, p, t, e, d,  , f, r, o, m,  , r, e, c, e, n, t,  , E, Q, A,  , s, y, s, t, e, m, s, ,,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g, 
-, e, x, p, l, o, r, a, t, i, o, n,  , a, n, d,  , d, e, l, a, y, .,  , E, m, p, i, r, i, c, a, l,  , e, v, a, l, u, a, t, i, o, n, s,  , i, n, v, e, s, t, i, g, a, t, e,  , t, h, e,  , r, e, l, a, t, i, v, e, 
-, c, o, n, t, r, i, b, u, t, i, o, n, s,  , o, f,  , p, r, i, o, r, i, t, y, ,,  , u, r, g, e, n, c, y,  , m, o, d, e, l, i, n, g, ,,  , s, p, a, t, i, a, l,  , s, c, o, p, e, ,,  , r, e, w, a, r, d,  , e, s, t, i, m, a, t, i, o, n, ,, 
-, a, n, d,  , d, e, p, e, n, d, e, n, c, y,  , r, e, a, s, o, n, i, n, g,  , w, i, t, h, i, n,  , o, u, r,  , f, r, a, m, e, w, o, r, k, .,  , T, o, g, e, t, h, e, r, ,,  , t, h, e, s, e,  , r, e, s, u, l, t, s, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , u, r, g, e, n, c, y, -, a, w, a, r, e, ,,  , p, a, r, a, l, l, e, l,  , s, c, h, e, d, u, l, i, n, g,  , i, s,  , k, e, y,  , t, o,  , m, a, k, i, n, g,  , e, m, b, o, d, i, e, d, 
-, a, g, e, n, t, s,  , r, e, s, p, o, n, s, i, v, e,  , a, n, d,  , e, f, f, i, c, i, e, n, t,  , u, n, d, e, r,  , r, e, a, l, i, s, t, i, c, ,,  , m, u, l, t, i, -, q, u, e, s, t, i, o, n,  , w, o, r, k, l, o, a, d, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11662v1'>MindVL: Towards Efficient and Effective Training of Multimodal Large Language Models on Ascend NPUs</a></td><td>W, e,  , p, r, o, p, o, s, e,  , M, i, n, d, V, L, ,,  , a,  , m, u, l, t, i, m, o, d, a, l,  , l, a, r, g, e,  , l, a, n, g, a, u, g, e,  , m, o, d, e, l,  , t, r, a, i, n, e, d,  , o, n,  , A, s, c, e, n, d,  , N, P, U, s, ., 
-, S, i, m, i, l, a, r,  , t, o,  , Q, w, e, n, 2, ., 5, -, V, L, ,,  , M, i, n, d, V, L,  , a, d, o, p, t, s,  , n, a, t, i, v, e, -, r, e, s, o, l, u, t, i, o, n,  , V, i, s, i, o, n,  , T, r, a, n, s, f, o, r, m, e, r, s, ,, 
-, w, h, i, c, h,  , e, n, a, b, l, e, s,  , i, t,  , t, o,  , p, r, o, c, e, s, s,  , i, m, a, g, e, s,  , a, t,  , t, h, e, i, r,  , o, r, i, g, i, n, a, l,  , v, a, r, i, a, b, l, e,  , r, e, s, o, l, u, t, i, o, n, s, .,  , T, h, i, s, 
-, d, e, s, i, g, n,  , a, v, o, i, d, s,  , t, h, e,  , d, e, g, r, a, d, a, t, i, o, n,  , c, a, u, s, e, d,  , b, y,  , f, i, x, e, d, -, r, e, s, o, l, u, t, i, o, n,  , t, i, l, i, n, g,  , w, h, i, l, e, 
-, p, r, e, s, e, r, v, i, n, g,  , f, i, n, e, -, g, r, a, i, n, e, d,  , d, e, t, a, i, l, s,  , a, n, d,  , g, l, o, b, a, l,  , l, a, y, o, u, t, s, ,,  , w, h, i, c, h,  , i, s,  , c, r, u, c, i, a, l,  , f, o, r, 
-, v, i, s, u, a, l, l, y,  , d, e, n, s, e,  , c, o, n, t, e, n, t,  , s, u, c, h,  , a, s,  , c, o, m, p, l, e, x,  , c, h, a, r, t, s,  , a, n, d,  , d, i, a, g, r, a, m, s, .,  , T, o,  , e, n, s, u, r, e,  , t, h, e, 
-, s, m, o, o, t, h,  , t, r, a, i, n, i, n, g,  , o, f,  , M, i, n, d, V, L,  , o, n,  , A, s, c, e, n, d,  , N, P, U, s, ,,  , w, e,  , d, e, v, e, l, o, p,  , M, i, n, d, s, p, e, e, d, -, M, L, L, M, ,,  , a, 
-, d, i, s, t, r, i, b, u, t, e, d,  , m, u, l, t, i, m, o, d, a, l,  , t, r, a, i, n, i, n, g,  , f, r, a, m, e, w, o, r, k,  , t, a, i, l, o, r, e, d,  , f, o, r,  , A, s, c, e, n, d,  , N, P, U, s, .,  , T, o,  , m, a, i, n, t, a, i, n, 
-, t, r, a, i, n, i, n, g,  , a, c, c, u, r, a, c, y, ,,  , w, e,  , i, m, p, l, e, m, e, n, t,  , e, q, u, i, v, a, l, e, n, t,  , r, e, p, l, a, c, e, m, e, n, t, s,  , f, o, r,  , c, e, r, t, a, i, n,  , o, p, e, r, a, t, o, r, s, ., 
-, M, i, n, d, V, L,  , u, n, d, e, r, g, o, e, s,  , a,  , t, h, r, e, e, -, p, h, a, s, e,  , t, r, a, i, n, i, n, g,  , p, r, o, c, e, s, s, ,,  , n, a, m, e, l, y,  , t, h, e,  , w, a, r, m, -, u, p,  , p, h, a, s, e, ,, 
-, m, u, l, t, i, t, a, s, k,  , t, r, a, i, n, i, n, g,  , p, h, a, s, e, ,,  , a, n, d,  , s, u, p, e, r, v, i, s, e, d,  , i, n, s, t, r, u, c, t, i, o, n,  , t, u, n, i, n, g,  , p, h, a, s, e, ,,  , t, o,  , g, r, a, d, u, a, l, l, y, 
-, e, n, h, a, n, c, e,  , i, t, s,  , c, a, p, a, b, i, l, i, t, i, e, s, .,  , T, h, i, s,  , p, r, o, c, e, s, s,  , s, t, a, r, t, s,  , w, i, t, h,  , b, a, s, i, c,  , v, i, s, u, a, l,  , a, n, d,  , m, u, l, t, i, m, o, d, a, l, 
-, p, r, e, -, t, r, a, i, n, i, n, g, ,,  , f, o, l, l, o, w, e, d,  , b, y,  , l, a, r, g, e, -, s, c, a, l, e,  , m, u, l, t, i, a, s, k,  , t, r, a, i, n, g, i, n, g,  , a, n, d,  , i, n, s, t, r, u, c, t, i, o, n, 
-, t, u, n, i, n, g, .,  , W, e,  , a, l, s, o,  , a, d, o, p, t,  , m, u, l, t, i, m, o, d, a, l,  , d, a, t, a,  , p, a, c, k, a, g, i, n, g,  , a, n, d,  , h, y, b, r, i, d,  , p, a, r, a, l, l, e, l, i, s, m, 
-, t, e, c, h, n, i, q, u, e, s, ,,  , w, h, i, c, h,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , i, m, p, r, o, v, e,  , e, n, d, -, t, o, -, e, n, d,  , t, r, a, i, n, i, n, g,  , s, p, e, e, d, .,  , T, o,  , f, u, r, t, h, e, r, 
-, b, o, o, s, t,  , m, o, d, e, l,  , p, e, r, f, o, r, m, a, n, c, e, ,,  , w, e,  , s, p, e, c, i, f, i, c, a, l, l, y,  , i, n, t, r, o, d, u, c, e,  , t, e, s, t, -, t, i, m, e,  , r, e, s, o, l, u, t, i, o, n,  , s, e, a, r, c, h, 
-, a, n, d,  , m, o, d, e, l,  , w, e, i, g, h, t,  , a, v, e, r, a, g, i, n, g, .,  , N, o, t, a, b, l, y, ,,  , d, e, s, p, i, t, e,  , u, s, i, n, g,  , a, b, o, u, t,  , 1, /, 1, 0,  , o, f,  , t, h, e,  , t, r, a, i, n, i, n, g, 
-, d, a, t, a,  , r, e, q, u, i, r, e, d,  , b, y,  , Q, w, e, n, 2, ., 5, -, V, L, ,,  , M, i, n, d, V, L,  , a, c, h, i, e, v, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n,  , p, a, r,  , w, i, t, h,  , Q, w, e, n, 2, ., 5, -, V, L, 
-, i, n,  , e, v, a, l, u, a, t, i, o, n, s,  , o, f,  , g, e, n, e, r, a, l,  , m, u, l, t, i, m, o, d, a, l,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , a, n, d,  , d, o, c, u, m, e, n, t, /, t, a, b, l, e, 
-, c, o, m, p, r, e, h, e, n, s, i, o, n, .,  , B, e, y, o, n, d,  , o, v, e, r, a, l, l,  , s, c, o, r, e, s, ,,  , M, i, n, d, V, L,  , a, l, s, o,  , d, e, l, i, v, e, r, s,  , l, e, a, d, i, n, g,  , p, e, r, f, o, r, m, a, n, c, e, 
-, i, n,  , O, C, R,  , a, s, s, e, s, s, m, e, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11656v1'>MALLM: Multi-Agent Large Language Models Framework</a></td><td>M, u, l, t, i, -, a, g, e, n, t,  , d, e, b, a, t, e,  , (, M, A, D, ),  , h, a, s,  , d, e, m, o, n, s, t, r, a, t, e, d,  , t, h, e,  , a, b, i, l, i, t, y,  , t, o,  , a, u, g, m, e, n, t,  , c, o, l, l, e, c, t, i, v, e, 
-, i, n, t, e, l, l, i, g, e, n, c, e,  , b, y,  , s, c, a, l, i, n, g,  , t, e, s, t, -, t, i, m, e,  , c, o, m, p, u, t, e,  , a, n, d,  , l, e, v, e, r, a, g, i, n, g,  , e, x, p, e, r, t, i, s, e, .,  , C, u, r, r, e, n, t, 
-, f, r, a, m, e, w, o, r, k, s,  , f, o, r,  , m, u, l, t, i, -, a, g, e, n, t,  , d, e, b, a, t, e,  , a, r, e,  , o, f, t, e, n,  , d, e, s, i, g, n, e, d,  , t, o, w, a, r, d, s,  , t, o, o, l,  , u, s, e, ,,  , l, a, c, k, 
-, i, n, t, e, g, r, a, t, e, d,  , e, v, a, l, u, a, t, i, o, n, ,,  , o, r,  , p, r, o, v, i, d, e,  , l, i, m, i, t, e, d,  , c, o, n, f, i, g, u, r, a, b, i, l, i, t, y,  , o, f,  , a, g, e, n, t,  , p, e, r, s, o, n, a, s, ,, 
-, r, e, s, p, o, n, s, e,  , g, e, n, e, r, a, t, o, r, s, ,,  , d, i, s, c, u, s, s, i, o, n,  , p, a, r, a, d, i, g, m, s, ,,  , a, n, d,  , d, e, c, i, s, i, o, n,  , p, r, o, t, o, c, o, l, s, .,  , W, e,  , i, n, t, r, o, d, u, c, e, 
-, M, A, L, L, M,  , (, M, u, l, t, i, -, A, g, e, n, t,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s, ), ,,  , a, n,  , o, p, e, n, -, s, o, u, r, c, e,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t, 
-, e, n, a, b, l, e, s,  , s, y, s, t, e, m, a, t, i, c,  , a, n, a, l, y, s, i, s,  , o, f,  , M, A, D,  , c, o, m, p, o, n, e, n, t, s, .,  , M, A, L, L, M,  , o, f, f, e, r, s,  , m, o, r, e,  , t, h, a, n,  , 1, 4, 4, 
-, u, n, i, q, u, e,  , c, o, n, f, i, g, u, r, a, t, i, o, n, s,  , o, f,  , M, A, D, ,,  , i, n, c, l, u, d, i, n, g,  , (, 1, ),  , a, g, e, n, t,  , p, e, r, s, o, n, a, s,  , (, e, ., g, ., ,,  , E, x, p, e, r, t, ,, 
-, P, e, r, s, o, n, a, l, i, t, y, ), ,,  , (, 2, ),  , r, e, s, p, o, n, s, e,  , g, e, n, e, r, a, t, o, r, s,  , (, e, ., g, ., ,,  , C, r, i, t, i, c, a, l, ,,  , R, e, a, s, o, n, i, n, g, ), ,,  , (, 3, ), 
-, d, i, s, c, u, s, s, i, o, n,  , p, a, r, a, d, i, g, m, s,  , (, e, ., g, ., ,,  , M, e, m, o, r, y, ,,  , R, e, l, a, y, ), ,,  , a, n, d,  , (, 4, ),  , d, e, c, i, s, i, o, n,  , p, r, o, t, o, c, o, l, s,  , (, e, ., g, ., ,, 
-, V, o, t, i, n, g, ,,  , C, o, n, s, e, n, s, u, s, ), .,  , M, A, L, L, M,  , u, s, e, s,  , s, i, m, p, l, e,  , c, o, n, f, i, g, u, r, a, t, i, o, n,  , f, i, l, e, s,  , t, o,  , d, e, f, i, n, e,  , a,  , d, e, b, a, t, e, ., 
-, F, u, r, t, h, e, r, m, o, r, e, ,,  , M, A, L, L, M,  , c, a, n,  , l, o, a, d,  , a, n, y,  , t, e, x, t, u, a, l,  , H, u, g, g, i, n, g, f, a, c, e,  , d, a, t, a, s, e, t,  , (, e, ., g, ., ,,  , M, M, L, U, -, P, r, o, ,, 
-, W, i, n, o, G, r, a, n, d, e, ),  , a, n, d,  , p, r, o, v, i, d, e, s,  , a, n,  , e, v, a, l, u, a, t, i, o, n,  , p, i, p, e, l, i, n, e,  , f, o, r,  , e, a, s, y,  , c, o, m, p, a, r, i, s, o, n,  , o, f,  , M, A, D, 
-, c, o, n, f, i, g, u, r, a, t, i, o, n, s, .,  , M, A, L, L, M,  , i, s,  , t, a, i, l, o, r, e, d,  , t, o, w, a, r, d, s,  , r, e, s, e, a, r, c, h, e, r, s,  , a, n, d,  , p, r, o, v, i, d, e, s,  , a,  , w, i, n, d, o, w, 
-, i, n, t, o,  , t, h, e,  , h, e, a, r, t,  , o, f,  , m, u, l, t, i, -, a, g, e, n, t,  , d, e, b, a, t, e, ,,  , f, a, c, i, l, i, t, a, t, i, n, g,  , t, h, e,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , o, f,  , i, t, s, 
-, c, o, m, p, o, n, e, n, t, s,  , a, n, d,  , t, h, e, i, r,  , i, n, t, e, r, p, l, a, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11645v1'>Adapting and Evaluating Multimodal Large Language Models for Adolescent Idiopathic Scoliosis Self-Management: A Divide and Conquer Framework</a></td><td>T, h, i, s,  , s, t, u, d, y,  , p, r, e, s, e, n, t, s,  , t, h, e,  , f, i, r, s, t,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , e, v, a, l, u, a, t, i, o, n,  , o, f,  , M, u, l, t, i, m, o, d, a, l,  , L, a, r, g, e, 
-, L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, M, L, L, M, s, ),  , f, o, r,  , A, d, o, l, e, s, c, e, n, t,  , I, d, i, o, p, a, t, h, i, c,  , S, c, o, l, i, o, s, i, s,  , (, A, I, S, ), 
-, s, e, l, f, -, m, a, n, a, g, e, m, e, n, t, .,  , W, e,  , c, o, n, s, t, r, u, c, t, e, d,  , a,  , d, a, t, a, b, a, s, e,  , o, f,  , a, p, p, r, o, x, i, m, a, t, e, l, y,  , 3, ,, 0, 0, 0, 
-, a, n, t, e, r, o, p, o, s, t, e, r, i, o, r,  , X, -, r, a, y, s,  , w, i, t, h,  , d, i, a, g, n, o, s, t, i, c,  , t, e, x, t, s,  , a, n, d,  , e, v, a, l, u, a, t, e, d,  , f, i, v, e,  , M, L, L, M, s,  , t, h, r, o, u, g, h,  , a, 
-, `, D, i, v, i, d, e,  , a, n, d,  , C, o, n, q, u, e, r, ',  , f, r, a, m, e, w, o, r, k,  , c, o, n, s, i, s, t, i, n, g,  , o, f,  , a,  , v, i, s, u, a, l,  , q, u, e, s, t, i, o, n, -, a, n, s, w, e, r, i, n, g,  , t, a, s, k, ,, 
-, a,  , d, o, m, a, i, n,  , k, n, o, w, l, e, d, g, e,  , a, s, s, e, s, s, m, e, n, t,  , t, a, s, k, ,,  , a, n, d,  , a,  , p, a, t, i, e, n, t,  , e, d, u, c, a, t, i, o, n,  , c, o, u, n, s, e, l, i, n, g, 
-, a, s, s, e, s, s, m, e, n, t,  , t, a, s, k, .,  , O, u, r,  , i, n, v, e, s, t, i, g, a, t, i, o, n,  , r, e, v, e, a, l, e, d,  , l, i, m, i, t, a, t, i, o, n, s,  , o, f,  , M, L, L, M, s, ',  , a, b, i, l, i, t, y,  , i, n, 
-, i, n, t, e, r, p, r, e, t, i, n, g,  , c, o, m, p, l, e, x,  , s, p, i, n, a, l,  , r, a, d, i, o, g, r, a, p, h, s,  , a, n, d,  , c, o, m, p, r, e, h, e, n, d, i, n, g,  , A, I, S,  , c, a, r, e,  , k, n, o, w, l, e, d, g, e, ., 
-, T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e, ,,  , w, e,  , p, i, o, n, e, e, r, e, d,  , e, n, h, a, n, c, i, n, g,  , M, L, L, M, s,  , w, i, t, h,  , s, p, i, n, a, l,  , k, e, y, p, o, i, n, t,  , p, r, o, m, p, t, i, n, g, 
-, a, n, d,  , c, o, m, p, i, l, e, d,  , a, n,  , A, I, S,  , k, n, o, w, l, e, d, g, e,  , b, a, s, e,  , f, o, r,  , r, e, t, r, i, e, v, a, l,  , a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ), ,, 
-, r, e, s, p, e, c, t, i, v, e, l, y, .,  , R, e, s, u, l, t, s,  , s, h, o, w, e, d,  , v, a, r, y, i, n, g,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , v, i, s, u, a, l,  , p, r, o, m, p, t, i, n, g,  , a, c, r, o, s, s, 
-, d, i, f, f, e, r, e, n, t,  , a, r, c, h, i, t, e, c, t, u, r, e, s, ,,  , w, h, i, l, e,  , R, A, G,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , i, m, p, r, o, v, e, d,  , m, o, d, e, l, s, ',  , p, e, r, f, o, r, m, a, n, c, e, s, 
-, o, n,  , t, h, e,  , k, n, o, w, l, e, d, g, e,  , a, s, s, e, s, s, m, e, n, t,  , t, a, s, k, .,  , O, u, r,  , f, i, n, d, i, n, g, s,  , i, n, d, i, c, a, t, e,  , c, u, r, r, e, n, t,  , M, L, L, M, s,  , a, r, e,  , f, a, r, 
-, f, r, o, m,  , c, a, p, a, b, l, e,  , i, n,  , r, e, a, l, i, z, i, n, g,  , p, e, r, s, o, n, a, l, i, z, e, d,  , a, s, s, i, s, t, a, n, t,  , i, n,  , A, I, S,  , c, a, r, e, .,  , T, h, e,  , g, r, e, a, t, e, s, t, 
-, c, h, a, l, l, e, n, g, e,  , l, i, e, s,  , i, n,  , t, h, e, i, r,  , a, b, i, l, i, t, i, e, s,  , t, o,  , o, b, t, a, i, n,  , a, c, c, u, r, a, t, e,  , d, e, t, e, c, t, i, o, n, s,  , o, f,  , s, p, i, n, a, l, 
-, d, e, f, o, r, m, i, t, y,  , l, o, c, a, t, i, o, n, s,  , (, b, e, s, t,  , a, c, c, u, r, a, c, y, :,  , 0, ., 5, 5, ),  , a, n, d,  , d, i, r, e, c, t, i, o, n, s,  , (, b, e, s, t,  , a, c, c, u, r, a, c, y, :,  , 0, ., 1, 3, ), .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11636v1'>Task-Agnostic Learnable Weighted-Knowledge Base Scheme for Robust Semantic Communications</a></td><td>W, i, t, h,  , t, h, e,  , e, m, e, r, g, e, n, c, e,  , o, f,  , d, i, v, e, r, s, e,  , a, n, d,  , m, a, s, s, i, v, e,  , d, a, t, a,  , i, n,  , t, h, e,  , u, p, c, o, m, i, n, g, 
-, s, i, x, t, h, -, g, e, n, e, r, a, t, i, o, n,  , (, 6, G, ),  , n, e, t, w, o, r, k, s, ,,  , t, h, e,  , t, a, s, k, -, a, g, n, o, s, t, i, c,  , s, e, m, a, n, t, i, c,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , s, y, s, t, e, m, 
-, i, s,  , r, e, g, a, r, d, e, d,  , t, o,  , p, r, o, v, i, d, e,  , r, o, b, u, s, t,  , i, n, t, e, l, l, i, g, e, n, t,  , s, e, r, v, i, c, e, s, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , a, 
-, t, a, s, k, -, a, g, n, o, s, t, i, c,  , l, e, a, r, n, a, b, l, e,  , w, e, i, g, h, t, e, d, -, k, n, o, w, l, e, d, g, e,  , b, a, s, e,  , s, e, m, a, n, t, i, c,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , (, T, A, L, S, C, ), 
-, f, r, a, m, e, w, o, r, k,  , f, o, r,  , r, o, b, u, s, t,  , i, m, a, g, e,  , t, r, a, n, s, m, i, s, s, i, o, n,  , t, o,  , a, d, d, r, e, s, s,  , t, h, e,  , r, e, a, l, -, w, o, r, l, d,  , h, e, t, e, r, o, g, e, n, e, o, u, s, 
-, d, a, t, a,  , b, i, a, s,  , i, n,  , K, B, ,,  , i, n, c, l, u, d, i, n, g,  , l, a, b, e, l,  , f, l, i, p, p, i, n, g,  , n, o, i, s, e,  , a, n, d,  , c, l, a, s, s,  , i, m, b, a, l, a, n, c, e, .,  , T, h, e,  , T, A, L, S, C, 
-, f, r, a, m, e, w, o, r, k,  , i, n, c, o, r, p, o, r, a, t, e, s,  , a,  , s, a, m, p, l, e,  , c, o, n, f, i, d, e, n, c, e,  , m, o, d, u, l, e,  , (, S, C, M, ),  , a, s,  , m, e, t, a, -, l, e, a, r, n, e, r,  , a, n, d,  , t, h, e, 
-, s, e, m, a, n, t, i, c,  , c, o, d, i, n, g,  , n, e, t, w, o, r, k, s,  , a, s,  , l, e, a, r, n, e, r, s, .,  , T, h, e,  , l, e, a, r, n, e, r, s,  , a, r, e,  , u, p, d, a, t, e, d,  , b, a, s, e, d,  , o, n,  , t, h, e, 
-, e, m, p, i, r, i, c, a, l,  , k, n, o, w, l, e, d, g, e,  , p, r, o, v, i, d, e, d,  , b, y,  , t, h, e,  , l, e, a, r, n, a, b, l, e,  , w, e, i, g, h, t, e, d, -, K, B,  , (, L, W, -, K, B, ), .,  , M, e, a, n, w, h, i, l, e, ,, 
-, t, h, e,  , m, e, t, a, -, l, e, a, r, n, e, r,  , e, v, a, l, u, a, t, e, s,  , t, h, e,  , s, i, g, n, i, f, i, c, a, n, c, e,  , o, f,  , s, a, m, p, l, e, s,  , a, c, c, o, r, d, i, n, g,  , t, o,  , t, h, e,  , t, a, s, k, 
-, l, o, s, s,  , f, e, e, d, b, a, c, k, ,,  , a, n, d,  , a, d, j, u, s, t, s,  , t, h, e,  , u, p, d, a, t, e,  , s, t, r, a, t, e, g, y,  , o, f,  , l, e, a, r, n, e, r, s,  , t, o,  , e, n, h, a, n, c, e,  , t, h, e, 
-, r, o, b, u, s, t, n, e, s, s,  , i, n,  , s, e, m, a, n, t, i, c,  , r, e, c, o, v, e, r, y,  , f, o, r,  , u, n, k, n, o, w, n,  , t, a, s, k, s, .,  , T, o,  , s, t, r, i, k, e,  , a,  , b, a, l, a, n, c, e,  , b, e, t, w, e, e, n, 
-, S, C, M,  , p, a, r, a, m, e, t, e, r, s,  , a, n, d,  , p, r, e, c, i, s, i, o, n,  , o, f,  , s, i, g, n, i, f, i, c, a, n, c, e,  , e, v, a, l, u, a, t, i, o, n, ,,  , w, e,  , d, e, s, i, g, n,  , a, n,  , S, C, M, -, g, r, i, d, 
-, e, x, t, e, n, s, i, o, n,  , (, S, C, M, -, G, E, ),  , a, p, p, r, o, a, c, h,  , b, y,  , e, m, b, e, d, d, i, n, g,  , t, h, e,  , K, o, l, m, o, g, o, r, o, v, -, A, r, n, o, l, d,  , n, e, t, w, o, r, k, s,  , (, K, A, N, ), 
-, w, i, t, h, i, n,  , S, C, M, ,,  , w, h, i, c, h,  , l, e, v, e, r, a, g, e, s,  , t, h, e,  , c, o, n, c, e, p, t,  , o, f,  , s, p, l, i, n, e,  , r, e, f, i, n, e, m, e, n, t,  , i, n,  , K, A, N,  , a, n, d,  , e, n, a, b, l, e, s, 
-, s, c, a, l, a, b, l, e,  , S, C, M,  , w, i, t, h,  , c, u, s, t, o, m, i, z, a, b, l, e,  , g, r, a, n, u, l, a, r, i, t, y,  , w, i, t, h, o, u, t,  , r, e, t, r, a, i, n, i, n, g, .,  , S, i, m, u, l, a, t, i, o, n, s, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , t, h, e,  , T, A, L, S, C,  , f, r, a, m, e, w, o, r, k,  , e, f, f, e, c, t, i, v, e, l, y,  , m, i, t, i, g, a, t, e, s,  , t, h, e,  , e, f, f, e, c, t, s,  , o, f, 
-, f, l, i, p, p, i, n, g,  , n, o, i, s, e,  , a, n, d,  , c, l, a, s, s,  , i, m, b, a, l, a, n, c, e,  , i, n,  , t, a, s, k, -, a, g, n, o, s, t, i, c,  , i, m, a, g, e,  , s, e, m, a, n, t, i, c, 
-, c, o, m, m, u, n, i, c, a, t, i, o, n, ,,  , a, c, h, i, e, v, i, n, g,  , a, t,  , l, e, a, s, t,  , 1, 2, %,  , h, i, g, h, e, r,  , s, e, m, a, n, t, i, c,  , r, e, c, o, v, e, r, y,  , a, c, c, u, r, a, c, y,  , (, S, R, A, ), 
-, a, n, d,  , m, u, l, t, i, -, s, c, a, l, e,  , s, t, r, u, c, t, u, r, a, l,  , s, i, m, i, l, a, r, i, t, y,  , (, M, S, -, S, S, I, M, ),  , c, o, m, p, a, r, e, d,  , t, o,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t, 
-, m, e, t, h, o, d, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11595v1'>AMLNet: A Knowledge-Based Multi-Agent Framework to Generate and Detect Realistic Money Laundering Transactions</a></td><td>A, n, t, i, -, m, o, n, e, y,  , l, a, u, n, d, e, r, i, n, g,  , (, A, M, L, ),  , r, e, s, e, a, r, c, h,  , i, s,  , c, o, n, s, t, r, a, i, n, e, d,  , b, y,  , t, h, e,  , l, a, c, k,  , o, f,  , p, u, b, l, i, c, l, y, 
-, s, h, a, r, e, a, b, l, e, ,,  , r, e, g, u, l, a, t, i, o, n, -, a, l, i, g, n, e, d,  , t, r, a, n, s, a, c, t, i, o, n,  , d, a, t, a, s, e, t, s, .,  , W, e,  , p, r, e, s, e, n, t,  , A, M, L, N, e, t, ,,  , a, 
-, k, n, o, w, l, e, d, g, e, -, b, a, s, e, d,  , m, u, l, t, i, -, a, g, e, n, t,  , f, r, a, m, e, w, o, r, k,  , w, i, t, h,  , t, w, o,  , c, o, o, r, d, i, n, a, t, e, d,  , u, n, i, t, s, :,  , a, 
-, r, e, g, u, l, a, t, i, o, n, -, a, w, a, r, e,  , t, r, a, n, s, a, c, t, i, o, n,  , g, e, n, e, r, a, t, o, r,  , a, n, d,  , a, n,  , e, n, s, e, m, b, l, e,  , d, e, t, e, c, t, i, o, n,  , p, i, p, e, l, i, n, e, .,  , T, h, e, 
-, g, e, n, e, r, a, t, o, r,  , p, r, o, d, u, c, e, s,  , 1, ,, 0, 9, 0, ,, 1, 7, 3,  , s, y, n, t, h, e, t, i, c,  , t, r, a, n, s, a, c, t, i, o, n, s,  , (, a, p, p, r, o, x, i, m, a, t, e, l, y,  , 0, ., 1, 6, \, %, 
-, l, a, u, n, d, e, r, i, n, g, -, p, o, s, i, t, i, v, e, ),  , s, p, a, n, n, i, n, g,  , c, o, r, e,  , l, a, u, n, d, e, r, i, n, g,  , p, h, a, s, e, s,  , (, p, l, a, c, e, m, e, n, t, ,,  , l, a, y, e, r, i, n, g, ,, 
-, i, n, t, e, g, r, a, t, i, o, n, ),  , a, n, d,  , a, d, v, a, n, c, e, d,  , t, y, p, o, l, o, g, i, e, s,  , (, e, ., g, ., ,,  , s, t, r, u, c, t, u, r, i, n, g, ,,  , a, d, a, p, t, i, v, e,  , t, h, r, e, s, h, o, l, d, 
-, b, e, h, a, v, i, o, r, ), .,  , R, e, g, u, l, a, t, o, r, y,  , a, l, i, g, n, m, e, n, t,  , r, e, a, c, h, e, s,  , 7, 5, \, %,  , b, a, s, e, d,  , o, n,  , A, U, S, T, R, A, C,  , r, u, l, e,  , c, o, v, e, r, a, g, e, 
-, (, S, e, c, t, i, o, n,  , 4, ., 2, ), ,,  , w, h, i, l, e,  , a,  , c, o, m, p, o, s, i, t, e,  , t, e, c, h, n, i, c, a, l,  , f, i, d, e, l, i, t, y,  , s, c, o, r, e,  , o, f,  , 0, ., 7, 5,  , s, u, m, m, a, r, i, z, e, s, 
-, t, e, m, p, o, r, a, l, ,,  , s, t, r, u, c, t, u, r, a, l, ,,  , a, n, d,  , b, e, h, a, v, i, o, r, a, l,  , r, e, a, l, i, s, m,  , c, o, m, p, o, n, e, n, t, s,  , (, S, e, c, t, i, o, n,  , 4, ., 4, ), .,  , T, h, e, 
-, d, e, t, e, c, t, i, o, n,  , e, n, s, e, m, b, l, e,  , a, c, h, i, e, v, e, s,  , F, 1,  , 0, ., 9, 0,  , (, p, r, e, c, i, s, i, o, n,  , 0, ., 8, 4, ,,  , r, e, c, a, l, l,  , 0, ., 9, 7, ),  , o, n,  , t, h, e, 
-, i, n, t, e, r, n, a, l,  , t, e, s, t,  , p, a, r, t, i, t, i, o, n, s,  , o, f,  , A, M, L, N, e, t,  , a, n, d,  , a, d, a, p, t, s,  , t, o,  , t, h, e,  , e, x, t, e, r, n, a, l,  , S, y, n, t, h, A, M, L,  , d, a, t, a, s, e, t, ,, 
-, i, n, d, i, c, a, t, i, n, g,  , a, r, c, h, i, t, e, c, t, u, r, a, l,  , g, e, n, e, r, a, l, i, z, a, b, i, l, i, t, y,  , a, c, r, o, s, s,  , d, i, f, f, e, r, e, n, t,  , s, y, n, t, h, e, t, i, c,  , g, e, n, e, r, a, t, i, o, n, 
-, p, a, r, a, d, i, g, m, s, .,  , W, e,  , p, r, o, v, i, d, e,  , m, u, l, t, i, -, d, i, m, e, n, s, i, o, n, a, l,  , e, v, a, l, u, a, t, i, o, n,  , (, r, e, g, u, l, a, t, o, r, y, ,,  , t, e, m, p, o, r, a, l, ,, 
-, n, e, t, w, o, r, k, ,,  , b, e, h, a, v, i, o, r, a, l, ),  , a, n, d,  , r, e, l, e, a, s, e,  , t, h, e,  , d, a, t, a, s, e, t,  , (, V, e, r, s, i, o, n,  , 1, ., 0, ,, 
-, h, t, t, p, s, :, /, /, d, o, i, ., o, r, g, /, 1, 0, ., 5, 2, 8, 1, /, z, e, n, o, d, o, ., 1, 6, 7, 3, 6, 5, 1, 5, ), ,,  , t, o,  , a, d, v, a, n, c, e,  , r, e, p, r, o, d, u, c, i, b, l, e,  , a, n, d, 
-, r, e, g, u, l, a, t, i, o, n, -, c, o, n, s, c, i, o, u, s,  , A, M, L,  , e, x, p, e, r, i, m, e, n, t, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11594v1'>GBPP: Grasp-Aware Base Placement Prediction for Robots via Two-Stage Learning</a></td><td>G, B, P, P,  , i, s,  , a,  , f, a, s, t,  , l, e, a, r, n, i, n, g,  , b, a, s, e, d,  , s, c, o, r, e, r,  , t, h, a, t,  , s, e, l, e, c, t, s,  , a,  , r, o, b, o, t,  , b, a, s, e,  , p, o, s, e,  , f, o, r, 
-, g, r, a, s, p, i, n, g,  , f, r, o, m,  , a,  , s, i, n, g, l, e,  , R, G, B, -, D,  , s, n, a, p, s, h, o, t, .,  , T, h, e,  , m, e, t, h, o, d,  , u, s, e, s,  , a,  , t, w, o,  , s, t, a, g, e,  , c, u, r, r, i, c, u, l, u, m, :, 
-, (, 1, ),  , a,  , s, i, m, p, l, e,  , d, i, s, t, a, n, c, e, -, v, i, s, i, b, i, l, i, t, y,  , r, u, l, e,  , a, u, t, o, -, l, a, b, e, l, s,  , a,  , l, a, r, g, e,  , d, a, t, a, s, e, t,  , a, t,  , l, o, w,  , c, o, s, t, ;, 
-, a, n, d,  , (, 2, ),  , a,  , s, m, a, l, l, e, r,  , s, e, t,  , o, f,  , h, i, g, h,  , f, i, d, e, l, i, t, y,  , s, i, m, u, l, a, t, i, o, n,  , t, r, i, a, l, s,  , r, e, f, i, n, e, s,  , t, h, e,  , m, o, d, e, l,  , t, o, 
-, m, a, t, c, h,  , t, r, u, e,  , g, r, a, s, p,  , o, u, t, c, o, m, e, s, .,  , A,  , P, o, i, n, t, N, e, t, +, +,  , s, t, y, l, e,  , p, o, i, n, t,  , c, l, o, u, d,  , e, n, c, o, d, e, r,  , w, i, t, h,  , a, n,  , M, L, P, 
-, s, c, o, r, e, s,  , d, e, n, s, e,  , g, r, i, d, s,  , o, f,  , c, a, n, d, i, d, a, t, e,  , p, o, s, e, s, ,,  , e, n, a, b, l, i, n, g,  , r, a, p, i, d,  , o, n, l, i, n, e,  , s, e, l, e, c, t, i, o, n,  , w, i, t, h, o, u, t, 
-, f, u, l, l,  , t, a, s, k, -, a, n, d, -, m, o, t, i, o, n,  , o, p, t, i, m, i, z, a, t, i, o, n, .,  , I, n,  , s, i, m, u, l, a, t, i, o, n,  , a, n, d,  , o, n,  , a,  , r, e, a, l,  , m, o, b, i, l, e, 
-, m, a, n, i, p, u, l, a, t, o, r, ,,  , G, B, P, P,  , o, u, t, p, e, r, f, o, r, m, s,  , p, r, o, x, i, m, i, t, y,  , a, n, d,  , g, e, o, m, e, t, r, y,  , o, n, l, y,  , b, a, s, e, l, i, n, e, s, ,,  , c, h, o, o, s, i, n, g, 
-, s, a, f, e, r,  , a, n, d,  , m, o, r, e,  , r, e, a, c, h, a, b, l, e,  , s, t, a, n, c, e, s,  , a, n, d,  , d, e, g, r, a, d, i, n, g,  , g, r, a, c, e, f, u, l, l, y,  , w, h, e, n,  , w, r, o, n, g, .,  , T, h, e, 
-, r, e, s, u, l, t, s,  , o, f, f, e, r,  , a,  , p, r, a, c, t, i, c, a, l,  , r, e, c, i, p, e,  , f, o, r,  , d, a, t, a,  , e, f, f, i, c, i, e, n, t, ,,  , g, e, o, m, e, t, r, y,  , a, w, a, r, e,  , b, a, s, e, 
-, p, l, a, c, e, m, e, n, t, :,  , u, s, e,  , i, n, e, x, p, e, n, s, i, v, e,  , h, e, u, r, i, s, t, i, c, s,  , f, o, r,  , c, o, v, e, r, a, g, e, ,,  , t, h, e, n,  , c, a, l, i, b, r, a, t, e,  , w, i, t, h, 
-, t, a, r, g, e, t, e, d,  , s, i, m, u, l, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11555v1'>Dstack: A Zero Trust Framework for Confidential Containers</a></td><td>W, e, b, 3,  , a, p, p, l, i, c, a, t, i, o, n, s,  , r, e, q, u, i, r, e,  , e, x, e, c, u, t, i, o, n,  , p, l, a, t, f, o, r, m, s,  , t, h, a, t,  , m, a, i, n, t, a, i, n,  , c, o, n, f, i, d, e, n, t, i, a, l, i, t, y, 
-, a, n, d,  , i, n, t, e, g, r, i, t, y,  , w, i, t, h, o, u, t,  , r, e, l, y, i, n, g,  , o, n,  , c, e, n, t, r, a, l, i, z, e, d,  , t, r, u, s, t,  , a, u, t, h, o, r, i, t, i, e, s, .,  , W, h, i, l, e,  , T, r, u, s, t, e, d, 
-, E, x, e, c, u, t, i, o, n,  , E, n, v, i, r, o, n, m, e, n, t, s,  , (, T, E, E, s, ),  , o, f, f, e, r,  , p, r, o, m, i, s, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s,  , f, o, r,  , c, o, n, f, i, d, e, n, t, i, a, l, 
-, c, o, m, p, u, t, i, n, g, ,,  , c, u, r, r, e, n, t,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n, s,  , f, a, c, e,  , s, i, g, n, i, f, i, c, a, n, t,  , l, i, m, i, t, a, t, i, o, n, s,  , w, h, e, n,  , a, p, p, l, i, e, d,  , t, o, 
-, W, e, b, 3,  , c, o, n, t, e, x, t, s, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , i, n,  , s, e, c, u, r, i, t, y,  , r, e, l, i, a, b, i, l, i, t, y, ,,  , c, e, n, s, o, r, s, h, i, p,  , r, e, s, i, s, t, a, n, c, e, ,,  , a, n, d, 
-, v, e, n, d, o, r,  , i, n, d, e, p, e, n, d, e, n, c, e, ., 
-,  ,  , T, h, i, s,  , p, a, p, e, r,  , p, r, e, s, e, n, t, s,  , d, s, t, a, c, k, ,,  , a,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , t, r, a, n, s, f, o, r, m, s,  , r, a, w,  , T, E, E, 
-, t, e, c, h, n, o, l, o, g, y,  , i, n, t, o,  , a,  , t, r, u, e,  , Z, e, r, o,  , T, r, u, s, t,  , p, l, a, t, f, o, r, m, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , t, h, r, e, e,  , k, e, y,  , i, n, n, o, v, a, t, i, o, n, s, :, 
-, (, 1, ),  , P, o, r, t, a, b, l, e,  , C, o, n, f, i, d, e, n, t, i, a, l,  , C, o, n, t, a, i, n, e, r, s,  , t, h, a, t,  , e, n, a, b, l, e,  , s, e, a, m, l, e, s, s,  , w, o, r, k, l, o, a, d,  , m, i, g, r, a, t, i, o, n, 
-, a, c, r, o, s, s,  , h, e, t, e, r, o, g, e, n, e, o, u, s,  , T, E, E,  , e, n, v, i, r, o, n, m, e, n, t, s,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , s, e, c, u, r, i, t, y,  , g, u, a, r, a, n, t, e, e, s, ,, 
-, (, 2, ),  , D, e, c, e, n, t, r, a, l, i, z, e, d,  , C, o, d, e,  , M, a, n, a, g, e, m, e, n, t,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , s, m, a, r, t,  , c, o, n, t, r, a, c, t, s,  , f, o, r, 
-, t, r, a, n, s, p, a, r, e, n, t,  , g, o, v, e, r, n, a, n, c, e,  , o, f,  , T, E, E,  , a, p, p, l, i, c, a, t, i, o, n, s, ,,  , a, n, d,  , (, 3, ),  , V, e, r, i, f, i, a, b, l, e,  , D, o, m, a, i, n, 
-, M, a, n, a, g, e, m, e, n, t,  , t, h, a, t,  , e, n, s, u, r, e, s,  , s, e, c, u, r, e,  , a, n, d,  , v, e, r, i, f, i, a, b, l, e,  , a, p, p, l, i, c, a, t, i, o, n,  , i, d, e, n, t, i, t, y,  , w, i, t, h, o, u, t, 
-, c, e, n, t, r, a, l, i, z, e, d,  , a, u, t, h, o, r, i, t, i, e, s, ., 
-,  ,  , T, h, e, s, e,  , i, n, n, o, v, a, t, i, o, n, s,  , a, r, e,  , i, m, p, l, e, m, e, n, t, e, d,  , t, h, r, o, u, g, h,  , t, h, r, e, e,  , c, o, r, e,  , c, o, m, p, o, n, e, n, t, s, :,  , d, s, t, a, c, k, -, O, S, ,, 
-, d, s, t, a, c, k, -, K, M, S, ,,  , a, n, d,  , d, s, t, a, c, k, -, G, a, t, e, w, a, y, .,  , T, o, g, e, t, h, e, r, ,,  , t, h, e, y,  , d, e, m, o, n, s, t, r, a, t, e,  , h, o, w,  , t, o,  , a, c, h, i, e, v, e,  , b, o, t, h, 
-, t, h, e,  , p, e, r, f, o, r, m, a, n, c, e,  , a, d, v, a, n, t, a, g, e, s,  , o, f,  , V, M, -, l, e, v, e, l,  , T, E, E,  , s, o, l, u, t, i, o, n, s,  , a, n, d,  , t, h, e,  , t, r, u, s, t, l, e, s, s, 
-, g, u, a, r, a, n, t, e, e, s,  , r, e, q, u, i, r, e, d,  , b, y,  , W, e, b, 3,  , a, p, p, l, i, c, a, t, i, o, n, s, .,  , O, u, r,  , e, v, a, l, u, a, t, i, o, n,  , s, h, o, w, s,  , t, h, a, t,  , d, s, t, a, c, k, 
-, p, r, o, v, i, d, e, s,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , s, e, c, u, r, i, t, y,  , g, u, a, r, a, n, t, e, e, s,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , p, r, a, c, t, i, c, a, l, 
-, u, s, a, b, i, l, i, t, y,  , f, o, r,  , r, e, a, l, -, w, o, r, l, d,  , a, p, p, l, i, c, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11552v1'>HiChunk: Evaluating and Enhancing Retrieval-Augmented Generation with Hierarchical Chunking</a></td><td>R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , e, n, h, a, n, c, e, s,  , t, h, e,  , r, e, s, p, o, n, s, e,  , c, a, p, a, b, i, l, i, t, i, e, s,  , o, f, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , b, y,  , i, n, t, e, g, r, a, t, i, n, g,  , e, x, t, e, r, n, a, l,  , k, n, o, w, l, e, d, g, e,  , s, o, u, r, c, e, s, .,  , H, o, w, e, v, e, r, ,,  , d, o, c, u, m, e, n, t, 
-, c, h, u, n, k, i, n, g,  , a, s,  , a, n,  , i, m, p, o, r, t, a, n, t,  , p, a, r, t,  , o, f,  , R, A, G,  , s, y, s, t, e, m,  , o, f, t, e, n,  , l, a, c, k, s,  , e, f, f, e, c, t, i, v, e,  , e, v, a, l, u, a, t, i, o, n, 
-, t, o, o, l, s, .,  , T, h, i, s,  , p, a, p, e, r,  , f, i, r, s, t,  , a, n, a, l, y, z, e, s,  , w, h, y,  , e, x, i, s, t, i, n, g,  , R, A, G,  , e, v, a, l, u, a, t, i, o, n,  , b, e, n, c, h, m, a, r, k, s,  , a, r, e, 
-, i, n, a, d, e, q, u, a, t, e,  , f, o, r,  , a, s, s, e, s, s, i, n, g,  , d, o, c, u, m, e, n, t,  , c, h, u, n, k, i, n, g,  , q, u, a, l, i, t, y, ,,  , s, p, e, c, i, f, i, c, a, l, l, y,  , d, u, e,  , t, o, 
-, e, v, i, d, e, n, c, e,  , s, p, a, r, s, i, t, y, .,  , B, a, s, e, d,  , o, n,  , t, h, i, s,  , c, o, n, c, l, u, s, i, o, n, ,,  , w, e,  , p, r, o, p, o, s, e,  , H, i, C, B, e, n, c, h, ,,  , w, h, i, c, h, 
-, i, n, c, l, u, d, e, s,  , m, a, n, u, a, l, l, y,  , a, n, n, o, t, a, t, e, d,  , m, u, l, t, i, -, l, e, v, e, l,  , d, o, c, u, m, e, n, t,  , c, h, u, n, k, i, n, g,  , p, o, i, n, t, s, ,,  , s, y, n, t, h, e, s, i, z, e, d, 
-, e, v, i, d, e, n, c, e, -, d, e, n, s, e,  , q, u, e, t, i, o, n,  , a, n, s, w, e, r, (, Q, A, ),  , p, a, i, r, s, ,,  , a, n, d,  , t, h, e, i, r,  , c, o, r, r, e, s, p, o, n, d, i, n, g,  , e, v, i, d, e, n, c, e, 
-, s, o, u, r, c, e, s, .,  , A, d, d, i, t, i, o, n, a, l, l, y, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , t, h, e,  , H, i, C, h, u, n, k,  , f, r, a, m, e, w, o, r, k, ,,  , a,  , m, u, l, t, i, -, l, e, v, e, l, 
-, d, o, c, u, m, e, n, t,  , s, t, r, u, c, t, u, r, i, n, g,  , f, r, a, m, e, w, o, r, k,  , b, a, s, e, d,  , o, n,  , f, i, n, e, -, t, u, n, e, d,  , L, L, M, s, ,,  , c, o, m, b, i, n, e, d,  , w, i, t, h,  , t, h, e, 
-, A, u, t, o, -, M, e, r, g, e,  , r, e, t, r, i, e, v, a, l,  , a, l, g, o, r, i, t, h, m,  , t, o,  , i, m, p, r, o, v, e,  , r, e, t, r, i, e, v, a, l,  , q, u, a, l, i, t, y, .,  , E, x, p, e, r, i, m, e, n, t, s, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , H, i, C, B, e, n, c, h,  , e, f, f, e, c, t, i, v, e, l, y,  , e, v, a, l, u, a, t, e, s,  , t, h, e,  , i, m, p, a, c, t,  , o, f,  , d, i, f, f, e, r, e, n, t, 
-, c, h, u, n, k, i, n, g,  , m, e, t, h, o, d, s,  , a, c, r, o, s, s,  , t, h, e,  , e, n, t, i, r, e,  , R, A, G,  , p, i, p, e, l, i, n, e, .,  , M, o, r, e, o, v, e, r, ,,  , H, i, C, h, u, n, k,  , a, c, h, i, e, v, e, s, 
-, b, e, t, t, e, r,  , c, h, u, n, k, i, n, g,  , q, u, a, l, i, t, y,  , w, i, t, h, i, n,  , r, e, a, s, o, n, a, b, l, e,  , t, i, m, e,  , c, o, n, s, u, m, p, t, i, o, n, ,,  , t, h, e, r, e, b, y,  , e, n, h, a, n, c, i, n, g, 
-, t, h, e,  , o, v, e, r, a, l, l,  , p, e, r, f, o, r, m, a, n, c, e,  , o, f,  , R, A, G,  , s, y, s, t, e, m, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11513v1'>Unsupervised Candidate Ranking for Lexical Substitution via Holistic Sentence Semantics</a></td><td>A,  , k, e, y,  , s, u, b, t, a, s, k,  , i, n,  , l, e, x, i, c, a, l,  , s, u, b, s, t, i, t, u, t, i, o, n,  , i, s,  , r, a, n, k, i, n, g,  , t, h, e,  , g, i, v, e, n,  , c, a, n, d, i, d, a, t, e,  , w, o, r, d, s, .,  , A, 
-, c, o, m, m, o, n,  , a, p, p, r, o, a, c, h,  , i, s,  , t, o,  , r, e, p, l, a, c, e,  , t, h, e,  , t, a, r, g, e, t,  , w, o, r, d,  , w, i, t, h,  , a,  , c, a, n, d, i, d, a, t, e,  , i, n,  , t, h, e,  , o, r, i, g, i, n, a, l, 
-, s, e, n, t, e, n, c, e,  , a, n, d,  , f, e, e, d,  , t, h, e,  , m, o, d, i, f, i, e, d,  , s, e, n, t, e, n, c, e,  , i, n, t, o,  , a,  , m, o, d, e, l,  , t, o,  , c, a, p, t, u, r, e,  , s, e, m, a, n, t, i, c, 
-, d, i, f, f, e, r, e, n, c, e, s,  , b, e, f, o, r, e,  , a, n, d,  , a, f, t, e, r,  , s, u, b, s, t, i, t, u, t, i, o, n, .,  , H, o, w, e, v, e, r, ,,  , e, f, f, e, c, t, i, v, e, l, y,  , m, o, d, e, l, i, n, g,  , t, h, e, 
-, b, i, d, i, r, e, c, t, i, o, n, a, l,  , i, n, f, l, u, e, n, c, e,  , o, f,  , c, a, n, d, i, d, a, t, e,  , s, u, b, s, t, i, t, u, t, i, o, n,  , o, n,  , b, o, t, h,  , t, h, e,  , t, a, r, g, e, t,  , w, o, r, d,  , a, n, d, 
-, i, t, s,  , c, o, n, t, e, x, t,  , r, e, m, a, i, n, s,  , c, h, a, l, l, e, n, g, i, n, g, .,  , E, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , o, f, t, e, n,  , f, o, c, u, s,  , s, o, l, e, l, y,  , o, n, 
-, s, e, m, a, n, t, i, c,  , c, h, a, n, g, e, s,  , a, t,  , t, h, e,  , t, a, r, g, e, t,  , p, o, s, i, t, i, o, n,  , o, r,  , r, e, l, y,  , o, n,  , p, a, r, a, m, e, t, e, r,  , t, u, n, i, n, g,  , o, v, e, r, 
-, m, u, l, t, i, p, l, e,  , e, v, a, l, u, a, t, i, o, n,  , m, e, t, r, i, c, s, ,,  , m, a, k, i, n, g,  , i, t,  , d, i, f, f, i, c, u, l, t,  , t, o,  , a, c, c, u, r, a, t, e, l, y,  , c, h, a, r, a, c, t, e, r, i, z, e, 
-, s, e, m, a, n, t, i, c,  , v, a, r, i, a, t, i, o, n, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s, ,,  , w, e,  , i, n, v, e, s, t, i, g, a, t, e,  , t, w, o,  , a, p, p, r, o, a, c, h, e, s, :,  , o, n, e,  , b, a, s, e, d, 
-, o, n,  , a, t, t, e, n, t, i, o, n,  , w, e, i, g, h, t, s,  , a, n, d,  , a, n, o, t, h, e, r,  , l, e, v, e, r, a, g, i, n, g,  , t, h, e,  , m, o, r, e,  , i, n, t, e, r, p, r, e, t, a, b, l, e,  , i, n, t, e, g, r, a, t, e, d, 
-, g, r, a, d, i, e, n, t, s,  , m, e, t, h, o, d, ,,  , b, o, t, h,  , d, e, s, i, g, n, e, d,  , t, o,  , m, e, a, s, u, r, e,  , t, h, e,  , i, n, f, l, u, e, n, c, e,  , o, f,  , c, o, n, t, e, x, t,  , t, o, k, e, n, s,  , o, n, 
-, t, h, e,  , t, a, r, g, e, t,  , t, o, k, e, n,  , a, n, d,  , t, o,  , r, a, n, k,  , c, a, n, d, i, d, a, t, e, s,  , b, y,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , s, e, m, a, n, t, i, c,  , s, i, m, i, l, a, r, i, t, y, 
-, b, e, t, w, e, e, n,  , t, h, e,  , o, r, i, g, i, n, a, l,  , a, n, d,  , s, u, b, s, t, i, t, u, t, e, d,  , s, e, n, t, e, n, c, e, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, h, e,  , L, S, 0, 7,  , a, n, d, 
-, S, W, O, R, D, S,  , d, a, t, a, s, e, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , b, o, t, h,  , a, p, p, r, o, a, c, h, e, s,  , i, m, p, r, o, v, e,  , r, a, n, k, i, n, g,  , p, e, r, f, o, r, m, a, n, c, e, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.12187v1'>HoloGarment: 360° Novel View Synthesis of In-the-Wild Garments</a></td><td>Novel view synthesis (NVS) of in-the-wild garments is a challenging task due
+significant occlusions, complex human poses, and cloth deformations. Prior
+methods rely on synthetic 3D training data consisting of mostly unoccluded and
+static objects, leading to poor generalization on real-world clothing. In this
+paper, we propose HoloGarment (Hologram-Garment), a method that takes 1-3
+images or a continuous video of a person wearing a garment and generates
+360{\deg} novel views of the garment in a canonical pose. Our key insight is to
+bridge the domain gap between real and synthetic data with a novel implicit
+training paradigm leveraging a combination of large-scale real video data and
+small-scale synthetic 3D data to optimize a shared garment embedding space.
+During inference, the shared embedding space further enables dynamic
+video-to-360{\deg} NVS through the construction of a garment "atlas"
+representation by finetuning a garment embedding on a specific real-world
+video. The atlas captures garment-specific geometry and texture across all
+viewpoints, independent of body pose or motion. Extensive experiments show that
+HoloGarment achieves state-of-the-art performance on NVS of in-the-wild
+garments from images and videos. Notably, our method robustly handles
+challenging real-world artifacts -- such as wrinkling, pose variation, and
+occlusion -- while maintaining photorealism, view consistency, fine texture
+details, and accurate geometry. Visit our project page for additional results:
+https://johannakarras.github.io/HoloGarment</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12168v1'>RAGs to Riches: RAG-like Few-shot Learning for Large Language Model Role-playing</a></td><td>Role-playing Large language models (LLMs) are increasingly deployed in
+high-stakes domains such as healthcare, education, and governance, where
+failures can directly impact user trust and well-being. A cost effective
+paradigm for LLM role-playing is few-shot learning, but existing approaches
+often cause models to break character in unexpected and potentially harmful
+ways, especially when interacting with hostile users. Inspired by
+Retrieval-Augmented Generation (RAG), we reformulate LLM role-playing into a
+text retrieval problem and propose a new prompting framework called
+RAGs-to-Riches, which leverages curated reference demonstrations to condition
+LLM responses. We evaluate our framework with LLM-as-a-judge preference voting
+and introduce two novel token-level ROUGE metrics: Intersection over Output
+(IOO) to quantity how much an LLM improvises and Intersection over References
+(IOR) to measure few-shot demonstrations utilization rate during the evaluation
+tasks. When simulating interactions with a hostile user, our prompting strategy
+incorporates in its responses during inference an average of 35% more tokens
+from the reference demonstrations. As a result, across 453 role-playing
+interactions, our models are consistently judged as being more authentic, and
+remain in-character more often than zero-shot and in-context Learning (ICL)
+methods. Our method presents a scalable strategy for building robust,
+human-aligned LLM role-playing frameworks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12159v1'>EfficientUICoder: Efficient MLLM-based UI Code Generation via Input and Output Token Compression</a></td><td>Multimodal Large Language Models have demonstrated exceptional performance in
+UI2Code tasks, significantly enhancing website development efficiency. However,
+these tasks incur substantially higher computational overhead than traditional
+code generation due to the large number of input image tokens and extensive
+output code tokens required. Our comprehensive study identifies significant
+redundancies in both image and code tokens that exacerbate computational
+complexity and hinder focus on key UI elements, resulting in excessively
+lengthy and often invalid HTML files. We propose EfficientUICoder, a
+compression framework for efficient UI code generation with three key
+components. First, Element and Layout-aware Token Compression preserves
+essential UI information by detecting element regions and constructing UI
+element trees. Second, Region-aware Token Refinement leverages attention scores
+to discard low-attention tokens from selected regions while integrating
+high-attention tokens from unselected regions. Third, Adaptive Duplicate Token
+Suppression dynamically reduces repetitive generation by tracking HTML/CSS
+structure frequencies and applying exponential penalties. Extensive experiments
+show EfficientUICoderachieves a 55%-60% compression ratio without compromising
+webpage quality and delivers superior efficiency improvements: reducing
+computational cost by 44.9%, generated tokens by 41.4%, prefill time by 46.6%,
+and inference time by 48.8% on 34B-level MLLMs. Code is available at
+https://github.com/WebPAI/EfficientUICoder.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12098v1'>Is 'Hope' a person or an idea? A pilot benchmark for NER: comparing traditional NLP tools and large language models on ambiguous entities</a></td><td>This pilot study presents a small-scale but carefully annotated benchmark of
+Named Entity Recognition (NER) performance across six systems: three non-LLM
+NLP tools (NLTK, spaCy, Stanza) and three general-purpose large language models
+(LLMs: Gemini-1.5-flash, DeepSeek-V3, Qwen-3-4B). The dataset contains 119
+tokens covering five entity types (PERSON, LOCATION, ORGANIZATION, DATE, TIME).
+We evaluated each system's output against the manually annotated gold standard
+dataset using F1-score. The results show that LLMs generally outperform
+conventional tools in recognizing context-sensitive entities like person names,
+with Gemini achieving the highest average F1-score. However, traditional
+systems like Stanza demonstrate greater consistency in structured tags such as
+LOCATION and DATE. We also observed variability among LLMs, particularly in
+handling temporal expressions and multi-word organizations. Our findings
+highlight that while LLMs offer improved contextual understanding, traditional
+tools remain competitive in specific tasks, informing model selection.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12080v1'>A Time-Series Foundation Model by Universal Delay Embedding</a></td><td>This study introduces Universal Delay Embedding (UDE), a pretrained
+foundation model designed to revolutionize time-series forecasting through
+principled integration of delay embedding representation and Koopman operator
+prediction. Leveraging Takens' embedding theorem, UDE as a dynamical
+representation of observed data constructs two-dimensional subspace patches
+from Hankel matrices, theoretically preserving dynamical and topological
+properties of underlying dynamical systems. Such patches are viewed as images,
+which can be efficiently processed by exploiting advanced deep learning
+technologies. Computationally, these patches further serve as tokens for
+learning a self-attention encoder, thus enabling accurate prediction of
+nonlinear time-series by a finite-dimensional Koopman operator in a linear
+manner in a latent space. Extensive evaluations across various benchmarks and
+real-world climate datasets demonstrate over 20% average reduction in mean
+squared error versus state-of-the-art foundation models, alongside superior
+generalization in fine-tuning scenarios. In particular, the learned dynamical
+representations and Koopman operator prediction forms from the patches exhibit
+exceptional interpretability, with consistent identification of topologically
+informative subspaces and robust encoding of domain-invariant dynamics,
+establishing UDE as a scalable, interpretable framework for universal
+time-series modeling and forecasting with broad scientific and industrial
+applicability.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12069v1'>U-Mamba2: Scaling State Space Models for Dental Anatomy Segmentation in CBCT</a></td><td>Cone-Beam Computed Tomography (CBCT) is a widely used 3D imaging technique in
+dentistry, providing volumetric information about the anatomical structures of
+jaws and teeth. Accurate segmentation of these anatomies is critical for
+clinical applications such as diagnosis and surgical planning, but remains
+time-consuming and challenging. In this paper, we present U-Mamba2, a new
+neural network architecture designed for multi-anatomy CBCT segmentation in the
+context of the ToothFairy3 challenge. U-Mamba2 integrates the Mamba2 state
+space models into the U-Net architecture, enforcing stronger structural
+constraints for higher efficiency without compromising performance. In
+addition, we integrate interactive click prompts with cross-attention blocks,
+pre-train U-Mamba2 using self-supervised learning, and incorporate dental
+domain knowledge into the model design to address key challenges of dental
+anatomy segmentation in CBCT. Extensive experiments, including independent
+tests, demonstrate that U-Mamba2 is both effective and efficient, securing top
+3 places in both tasks of the Toothfairy3 challenge. In Task 1, U-Mamba2
+achieved a mean Dice of 0.792, HD95 of 93.19 with the held-out test data, with
+an average inference time of XX (TBC during the ODIN workshop). In Task 2,
+U-Mamba2 achieved the mean Dice of 0.852 and HD95 of 7.39 with the held-out
+test data. The code is publicly available at
+https://github.com/zhiqin1998/UMamba2.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12053v1'>LEGO: Spatial Accelerator Generation and Optimization for Tensor Applications</a></td><td>Modern tensor applications, especially foundation models and generative AI
+applications require multiple input modalities (both vision and language),
+which increases the demand for flexible accelerator architecture. Existing
+frameworks suffer from the trade-off between design flexibility and
+productivity of RTL generation: either limited to very few hand-written
+templates or cannot automatically generate the RTL. To address this challenge,
+we propose the LEGO framework, which targets tensor applications and
+automatically generates spatial architecture design and outputs synthesizable
+RTL code without handwritten RTL design templates. Leveraging the
+affine-transformation-based architecture representation, LEGO front end finds
+interconnections between function units, synthesizes the memory system, and
+fuses different spatial dataflow designs based on data reuse analysis. LEGO
+back end then translates the hardware in a primitive-level graph to perform
+lower-level optimizations, and applies a set of linear-programming algorithms
+to optimally insert pipeline registers and reduce the overhead of unused logic
+when switching spatial dataflows. Our evaluation demonstrates that LEGO can
+achieve 3.2x speedup and 2.4x energy efficiency compared to previous work
+Gemmini, and can generate one architecture for diverse modern foundation models
+in generative AI applications.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12047v1'>A Computer Vision Pipeline for Individual-Level Behavior Analysis: Benchmarking on the Edinburgh Pig Dataset</a></td><td>Animal behavior analysis plays a crucial role in understanding animal
+welfare, health status, and productivity in agricultural settings. However,
+traditional manual observation methods are time-consuming, subjective, and
+limited in scalability. We present a modular pipeline that leverages
+open-sourced state-of-the-art computer vision techniques to automate animal
+behavior analysis in a group housing environment. Our approach combines
+state-of-the-art models for zero-shot object detection, motion-aware tracking
+and segmentation, and advanced feature extraction using vision transformers for
+robust behavior recognition. The pipeline addresses challenges including animal
+occlusions and group housing scenarios as demonstrated in indoor pig
+monitoring. We validated our system on the Edinburgh Pig Behavior Video Dataset
+for multiple behavioral tasks. Our temporal model achieved 94.2% overall
+accuracy, representing a 21.2 percentage point improvement over existing
+methods. The pipeline demonstrated robust tracking capabilities with 93.3%
+identity preservation score and 89.3% object detection precision. The modular
+design suggests potential for adaptation to other contexts, though further
+validation across species would be required. The open-source implementation
+provides a scalable solution for behavior monitoring, contributing to precision
+pig farming and welfare assessment through automated, objective, and continuous
+analysis.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12026v1'>Imitation Learning as Return Distribution Matching</a></td><td>We study the problem of training a risk-sensitive reinforcement learning (RL)
+agent through imitation learning (IL). Unlike standard IL, our goal is not only
+to train an agent that matches the expert's expected return (i.e., its average
+performance) but also its risk attitude (i.e., other features of the return
+distribution, such as variance). We propose a general formulation of the
+risk-sensitive IL problem in which the objective is to match the expert's
+return distribution in Wasserstein distance. We focus on the tabular setting
+and assume the expert's reward is known. After demonstrating the limited
+expressivity of Markovian policies for this task, we introduce an efficient and
+sufficiently expressive subclass of non-Markovian policies tailored to it.
+Building on this subclass, we develop two provably efficient algorithms, RS-BC
+and RS-KT, for solving the problem when the transition model is unknown and
+known, respectively. We show that RS-KT achieves substantially lower sample
+complexity than RS-BC by exploiting dynamics information. We further
+demonstrate the sample efficiency of return distribution matching in the
+setting where the expert's reward is unknown by designing an oracle-based
+variant of RS-KT. Finally, we complement our theoretical analysis of RS-KT and
+RS-BC with numerical simulations, highlighting both their sample efficiency and
+the advantages of non-Markovian policies over standard sample-efficient IL
+algorithms.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12010v1'>Generalizing Behavior via Inverse Reinforcement Learning with Closed-Form Reward Centroids</a></td><td>We study the problem of generalizing an expert agent's behavior, provided
+through demonstrations, to new environments and/or additional constraints.
+Inverse Reinforcement Learning (IRL) offers a promising solution by seeking to
+recover the expert's underlying reward function, which, if used for planning in
+the new settings, would reproduce the desired behavior. However, IRL is
+inherently ill-posed: multiple reward functions, forming the so-called feasible
+set, can explain the same observed behavior. Since these rewards may induce
+different policies in the new setting, in the absence of additional
+information, a decision criterion is needed to select which policy to deploy.
+In this paper, we propose a novel, principled criterion that selects the
+"average" policy among those induced by the rewards in a certain bounded subset
+of the feasible set. Remarkably, we show that this policy can be obtained by
+planning with the reward centroid of that subset, for which we derive a
+closed-form expression. We then present a provably efficient algorithm for
+estimating this centroid using an offline dataset of expert demonstrations
+only. Finally, we conduct numerical simulations that illustrate the
+relationship between the expert's behavior and the behavior produced by our
+method.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11991v1'>Text Adaptation to Plain Language and Easy Read via Automatic Post-Editing Cycles</a></td><td>We describe Vicomtech's participation in the CLEARS challenge on text
+adaptation to Plain Language and Easy Read in Spanish. Our approach features
+automatic post-editing of different types of initial Large Language Model
+adaptations, where successive adaptations are generated iteratively until
+readability and similarity metrics indicate that no further adaptation
+refinement can be successfully performed. Taking the average of all official
+metrics, our submissions achieved first and second place in Plain language and
+Easy Read adaptation, respectively.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11947v1'>A GPU-Accelerated RAG-Based Telegram Assistant for Supporting Parallel Processing Students</a></td><td>This project addresses a critical pedagogical need: offering students
+continuous, on-demand academic assistance beyond conventional reception hours.
+I present a domain-specific Retrieval-Augmented Generation (RAG) system powered
+by a quantized Mistral-7B Instruct model and deployed as a Telegram bot. The
+assistant enhances learning by delivering real-time, personalized responses
+aligned with the "Introduction to Parallel Processing" course materials. GPU
+acceleration significantly improves inference latency, enabling practical
+deployment on consumer hardware. This approach demonstrates how consumer GPUs
+can enable affordable, private, and effective AI tutoring for HPC education.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11937v1'>MMORE: Massive Multimodal Open RAG & Extraction</a></td><td>We introduce MMORE, an open-source pipeline for Massive Multimodal Open
+RetrievalAugmented Generation and Extraction, designed to ingest, transform,
+and retrieve knowledge from heterogeneous document formats at scale. MMORE
+supports more than fifteen file types, including text, tables, images, emails,
+audio, and video, and processes them into a unified format to enable downstream
+applications for LLMs. The architecture offers modular, distributed processing,
+enabling scalable parallelization across CPUs and GPUs. On processing
+benchmarks, MMORE demonstrates a 3.8-fold speedup over single-node baselines
+and 40% higher accuracy than Docling on scanned PDFs. The pipeline integrates
+hybrid dense-sparse retrieval and supports both interactive APIs and batch RAG
+endpoints. Evaluated on PubMedQA, MMORE-augmented medical LLMs improve
+biomedical QA accuracy with increasing retrieval depth. MMORE provides a
+robust, extensible foundation for deploying task-agnostic RAG systems on
+diverse, real-world multimodal data. The codebase is available at
+https://github.com/swiss-ai/mmore.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11865v1'>Tenma: Robust Cross-Embodiment Robot Manipulation with Diffusion Transformer</a></td><td>Scaling Transformer policies and diffusion models has advanced robotic
+manipulation, yet combining these techniques in lightweight, cross-embodiment
+learning settings remains challenging. We study design choices that most affect
+stability and performance for diffusion-transformer policies trained on
+heterogeneous, multimodal robot data, and introduce Tenma, a lightweight
+diffusion-transformer for bi-manual arm control. Tenma integrates multiview
+RGB, proprioception, and language via a cross-embodiment normalizer that maps
+disparate state/action spaces into a shared latent space; a Joint State-Time
+encoder for temporally aligned observation learning with inference speed
+boosts; and a diffusion action decoder optimized for training stability and
+learning capacity. Across benchmarks and under matched compute, Tenma achieves
+an average success rate of 88.95% in-distribution and maintains strong
+performance under object and scene shifts, substantially exceeding baseline
+policies whose best in-distribution average is 18.12%. Despite using moderate
+data scale, Tenma delivers robust manipulation and generalization, indicating
+the great potential for multimodal and cross-embodiment learning strategies for
+further augmenting the capacity of transformer-based imitation learning
+policies.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11815v1'>SpecVLM: Fast Speculative Decoding in Vision-Language Models</a></td><td>Speculative decoding is a powerful way to accelerate autoregressive large
+language models (LLMs), but directly porting it to vision-language models
+(VLMs) faces unique systems constraints: the prefill stage is dominated by
+visual tokens whose count scales with image resolution and video length,
+inflating both compute and memory, especially the key-value (KV) cache. We
+study speculative decoding for VLMs and introduce SpecVLM, a practical system
+that (1) establishes a strong EAGLE-2-style baseline, EagleVLM, delivering
+1.5--2.3x end-to-end speedups over full autoregressive inference, and (2)
+further accelerates VLM inference with an elastic visual compressor that
+adaptively selects among pruning, pooling, convolution, and resampler
+primitives to balance FLOPs/parameters and accuracy per input. To avoid costly
+offline distillation corpora, we propose an online-logit distillation protocol
+that trains the draft model with on-the-fly teacher logits and penultimate
+features using a combined cross-entropy and Smooth L1 objective, eliminating
+storage and preprocessing while remaining compute-efficient. This protocol
+reveals a training-time scaling effect: longer online training monotonically
+increases the draft model's average accepted length, improving speculative
+efficiency. Empirically, SpecVLM achieves additional acceleration, culminating
+in 2.5--2.9x end-to-end speedups within 5 epochs across LLaVA and MMMU,
+consistently over resolutions and task difficulties, while preserving the
+target model's output distribution (lossless decoding). Our code is available
+at https://github.com/haiduo/SpecVLM.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11731v1'>Bridging the Gap Between Sparsity and Redundancy: A Dual-Decoding Framework with Global Context for Map Inference</a></td><td>Trajectory data has become a key resource for automated map in-ference due to
+its low cost, broad coverage, and continuous availability. However, uneven
+trajectory density often leads to frag-mented roads in sparse areas and
+redundant segments in dense regions, posing significant challenges for existing
+methods. To address these issues, we propose DGMap, a dual-decoding framework
+with global context awareness, featuring Multi-scale Grid Encoding,
+Mask-enhanced Keypoint Extraction, and Global Context-aware Relation
+Prediction. By integrating global semantic context with local geometric
+features, DGMap improves keypoint detection accuracy to reduce road
+fragmentation in sparse-trajectory areas. Additionally, the Global
+Context-aware Relation Prediction module suppresses false connections in
+dense-trajectory regions by modeling long-range trajectory patterns.
+Experimental results on three real-world datasets show that DGMap outperforms
+state-of-the-art methods by 5% in APLS, with notable performance gains on
+trajectory data from the Didi Chuxing platform</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11698v1'>CoachMe: Decoding Sport Elements with a Reference-Based Coaching Instruction Generation Model</a></td><td>Motion instruction is a crucial task that helps athletes refine their
+technique by analyzing movements and providing corrective guidance. Although
+recent advances in multimodal models have improved motion understanding,
+generating precise and sport-specific instruction remains challenging due to
+the highly domain-specific nature of sports and the need for informative
+guidance. We propose CoachMe, a reference-based model that analyzes the
+differences between a learner's motion and a reference under temporal and
+physical aspects. This approach enables both domain-knowledge learning and the
+acquisition of a coach-like thinking process that identifies movement errors
+effectively and provides feedback to explain how to improve. In this paper, we
+illustrate how CoachMe adapts well to specific sports such as skating and
+boxing by learning from general movements and then leveraging limited data.
+Experiments show that CoachMe provides high-quality instructions instead of
+directions merely in the tone of a coach but without critical information.
+CoachMe outperforms GPT-4o by 31.6% in G-Eval on figure skating and by 58.3% on
+boxing. Analysis further confirms that it elaborates on errors and their
+corresponding improvement methods in the generated instructions. You can find
+CoachMe here: https://motionxperts.github.io/</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11686v1'>Do Code Semantics Help? A Comprehensive Study on Execution Trace-Based Information for Code Large Language Models</a></td><td>Code Large Language Models (Code LLMs) have opened a new era in programming
+with their impressive capabilities. However, recent research has revealed
+critical limitations in their ability to reason about runtime behavior and
+understand the actual functionality of programs, which poses significant
+challenges for their post-training and practical deployment. Specifically, Code
+LLMs encounter two principal issues: (1) a lack of proficiency in reasoning
+about program execution behavior, as they struggle to interpret what programs
+actually do during runtime, and (2) the inconsistent and fragmented
+representation of semantic information, such as execution traces, across
+existing methods, which hinders their ability to generalize and reason
+effectively. These challenges underscore the necessity for more systematic
+approaches to enhance the reasoning capabilities of Code LLMs. To address these
+issues, we introduce a generic framework to support integrating semantic
+information~(e.g., execution trace) to code task-relevant prompts, and conduct
+a comprehensive study to explore the role of semantic information in enhancing
+the reasoning ability of Code LLMs accordingly. Specifically, we focus on
+investigating the usefulness of trace-based semantic information in boosting
+supervised fine-tuning~(SFT) and post-phase inference of Code LLMs. The
+experimental results surprisingly disagree with previous works and demonstrate
+that semantic information has limited usefulness for SFT and test time scaling
+of Code LLM.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11663v1'>ParaEQsA: Parallel and Asynchronous Embodied Questions Scheduling and Answering</a></td><td>This paper formulates the Embodied Questions Answering (EQsA) problem,
+introduces a corresponding benchmark, and proposes a system to tackle the
+problem. Classical Embodied Question Answering (EQA) is typically formulated as
+answering one single question by actively exploring a 3D environment. Real
+deployments, however, often demand handling multiple questions that may arrive
+asynchronously and carry different urgencies. We formalize this setting as
+Embodied Questions Answering (EQsA) and present ParaEQsA, a framework for
+parallel, urgency-aware scheduling and answering. ParaEQsA leverages a group
+memory module shared among questions to reduce redundant exploration, and a
+priority-planning module to dynamically schedule questions. To evaluate this
+setting, we contribute the Parallel Asynchronous Embodied Questions (PAEQs)
+benchmark containing 40 indoor scenes and five questions per scene (200 in
+total), featuring asynchronous follow-up questions and urgency labels. We
+further propose metrics for EQsA performance: Direct Answer Rate (DAR), and
+Normalized Urgency-Weighted Latency (NUWL), which jointly measure efficiency
+and responsiveness of this system. ParaEQsA consistently outperforms strong
+sequential baselines adapted from recent EQA systems, while reducing
+exploration and delay. Empirical evaluations investigate the relative
+contributions of priority, urgency modeling, spatial scope, reward estimation,
+and dependency reasoning within our framework. Together, these results
+demonstrate that urgency-aware, parallel scheduling is key to making embodied
+agents responsive and efficient under realistic, multi-question workloads.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11662v1'>MindVL: Towards Efficient and Effective Training of Multimodal Large Language Models on Ascend NPUs</a></td><td>We propose MindVL, a multimodal large langauge model trained on Ascend NPUs.
+Similar to Qwen2.5-VL, MindVL adopts native-resolution Vision Transformers,
+which enables it to process images at their original variable resolutions. This
+design avoids the degradation caused by fixed-resolution tiling while
+preserving fine-grained details and global layouts, which is crucial for
+visually dense content such as complex charts and diagrams. To ensure the
+smooth training of MindVL on Ascend NPUs, we develop Mindspeed-MLLM, a
+distributed multimodal training framework tailored for Ascend NPUs. To maintain
+training accuracy, we implement equivalent replacements for certain operators.
+MindVL undergoes a three-phase training process, namely the warm-up phase,
+multitask training phase, and supervised instruction tuning phase, to gradually
+enhance its capabilities. This process starts with basic visual and multimodal
+pre-training, followed by large-scale multiask trainging and instruction
+tuning. We also adopt multimodal data packaging and hybrid parallelism
+techniques, which significantly improve end-to-end training speed. To further
+boost model performance, we specifically introduce test-time resolution search
+and model weight averaging. Notably, despite using about 1/10 of the training
+data required by Qwen2.5-VL, MindVL achieves performance on par with Qwen2.5-VL
+in evaluations of general multimodal understanding and document/table
+comprehension. Beyond overall scores, MindVL also delivers leading performance
+in OCR assessments.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11656v1'>MALLM: Multi-Agent Large Language Models Framework</a></td><td>Multi-agent debate (MAD) has demonstrated the ability to augment collective
+intelligence by scaling test-time compute and leveraging expertise. Current
+frameworks for multi-agent debate are often designed towards tool use, lack
+integrated evaluation, or provide limited configurability of agent personas,
+response generators, discussion paradigms, and decision protocols. We introduce
+MALLM (Multi-Agent Large Language Models), an open-source framework that
+enables systematic analysis of MAD components. MALLM offers more than 144
+unique configurations of MAD, including (1) agent personas (e.g., Expert,
+Personality), (2) response generators (e.g., Critical, Reasoning), (3)
+discussion paradigms (e.g., Memory, Relay), and (4) decision protocols (e.g.,
+Voting, Consensus). MALLM uses simple configuration files to define a debate.
+Furthermore, MALLM can load any textual Huggingface dataset (e.g., MMLU-Pro,
+WinoGrande) and provides an evaluation pipeline for easy comparison of MAD
+configurations. MALLM is tailored towards researchers and provides a window
+into the heart of multi-agent debate, facilitating the understanding of its
+components and their interplay.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11645v1'>Adapting and Evaluating Multimodal Large Language Models for Adolescent Idiopathic Scoliosis Self-Management: A Divide and Conquer Framework</a></td><td>This study presents the first comprehensive evaluation of Multimodal Large
+Language Models (MLLMs) for Adolescent Idiopathic Scoliosis (AIS)
+self-management. We constructed a database of approximately 3,000
+anteroposterior X-rays with diagnostic texts and evaluated five MLLMs through a
+`Divide and Conquer' framework consisting of a visual question-answering task,
+a domain knowledge assessment task, and a patient education counseling
+assessment task. Our investigation revealed limitations of MLLMs' ability in
+interpreting complex spinal radiographs and comprehending AIS care knowledge.
+To address these, we pioneered enhancing MLLMs with spinal keypoint prompting
+and compiled an AIS knowledge base for retrieval augmented generation (RAG),
+respectively. Results showed varying effectiveness of visual prompting across
+different architectures, while RAG substantially improved models' performances
+on the knowledge assessment task. Our findings indicate current MLLMs are far
+from capable in realizing personalized assistant in AIS care. The greatest
+challenge lies in their abilities to obtain accurate detections of spinal
+deformity locations (best accuracy: 0.55) and directions (best accuracy: 0.13).</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11636v1'>Task-Agnostic Learnable Weighted-Knowledge Base Scheme for Robust Semantic Communications</a></td><td>With the emergence of diverse and massive data in the upcoming
+sixth-generation (6G) networks, the task-agnostic semantic communication system
+is regarded to provide robust intelligent services. In this paper, we propose a
+task-agnostic learnable weighted-knowledge base semantic communication (TALSC)
+framework for robust image transmission to address the real-world heterogeneous
+data bias in KB, including label flipping noise and class imbalance. The TALSC
+framework incorporates a sample confidence module (SCM) as meta-learner and the
+semantic coding networks as learners. The learners are updated based on the
+empirical knowledge provided by the learnable weighted-KB (LW-KB). Meanwhile,
+the meta-learner evaluates the significance of samples according to the task
+loss feedback, and adjusts the update strategy of learners to enhance the
+robustness in semantic recovery for unknown tasks. To strike a balance between
+SCM parameters and precision of significance evaluation, we design an SCM-grid
+extension (SCM-GE) approach by embedding the Kolmogorov-Arnold networks (KAN)
+within SCM, which leverages the concept of spline refinement in KAN and enables
+scalable SCM with customizable granularity without retraining. Simulations
+demonstrate that the TALSC framework effectively mitigates the effects of
+flipping noise and class imbalance in task-agnostic image semantic
+communication, achieving at least 12% higher semantic recovery accuracy (SRA)
+and multi-scale structural similarity (MS-SSIM) compared to state-of-the-art
+methods.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11595v1'>AMLNet: A Knowledge-Based Multi-Agent Framework to Generate and Detect Realistic Money Laundering Transactions</a></td><td>Anti-money laundering (AML) research is constrained by the lack of publicly
+shareable, regulation-aligned transaction datasets. We present AMLNet, a
+knowledge-based multi-agent framework with two coordinated units: a
+regulation-aware transaction generator and an ensemble detection pipeline. The
+generator produces 1,090,173 synthetic transactions (approximately 0.16\%
+laundering-positive) spanning core laundering phases (placement, layering,
+integration) and advanced typologies (e.g., structuring, adaptive threshold
+behavior). Regulatory alignment reaches 75\% based on AUSTRAC rule coverage
+(Section 4.2), while a composite technical fidelity score of 0.75 summarizes
+temporal, structural, and behavioral realism components (Section 4.4). The
+detection ensemble achieves F1 0.90 (precision 0.84, recall 0.97) on the
+internal test partitions of AMLNet and adapts to the external SynthAML dataset,
+indicating architectural generalizability across different synthetic generation
+paradigms. We provide multi-dimensional evaluation (regulatory, temporal,
+network, behavioral) and release the dataset (Version 1.0,
+https://doi.org/10.5281/zenodo.16736515), to advance reproducible and
+regulation-conscious AML experimentation.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11594v1'>GBPP: Grasp-Aware Base Placement Prediction for Robots via Two-Stage Learning</a></td><td>GBPP is a fast learning based scorer that selects a robot base pose for
+grasping from a single RGB-D snapshot. The method uses a two stage curriculum:
+(1) a simple distance-visibility rule auto-labels a large dataset at low cost;
+and (2) a smaller set of high fidelity simulation trials refines the model to
+match true grasp outcomes. A PointNet++ style point cloud encoder with an MLP
+scores dense grids of candidate poses, enabling rapid online selection without
+full task-and-motion optimization. In simulation and on a real mobile
+manipulator, GBPP outperforms proximity and geometry only baselines, choosing
+safer and more reachable stances and degrading gracefully when wrong. The
+results offer a practical recipe for data efficient, geometry aware base
+placement: use inexpensive heuristics for coverage, then calibrate with
+targeted simulation.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11555v1'>Dstack: A Zero Trust Framework for Confidential Containers</a></td><td>Web3 applications require execution platforms that maintain confidentiality
+and integrity without relying on centralized trust authorities. While Trusted
+Execution Environments (TEEs) offer promising capabilities for confidential
+computing, current implementations face significant limitations when applied to
+Web3 contexts, particularly in security reliability, censorship resistance, and
+vendor independence.
+  This paper presents dstack, a comprehensive framework that transforms raw TEE
+technology into a true Zero Trust platform. We introduce three key innovations:
+(1) Portable Confidential Containers that enable seamless workload migration
+across heterogeneous TEE environments while maintaining security guarantees,
+(2) Decentralized Code Management that leverages smart contracts for
+transparent governance of TEE applications, and (3) Verifiable Domain
+Management that ensures secure and verifiable application identity without
+centralized authorities.
+  These innovations are implemented through three core components: dstack-OS,
+dstack-KMS, and dstack-Gateway. Together, they demonstrate how to achieve both
+the performance advantages of VM-level TEE solutions and the trustless
+guarantees required by Web3 applications. Our evaluation shows that dstack
+provides comprehensive security guarantees while maintaining practical
+usability for real-world applications.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11552v1'>HiChunk: Evaluating and Enhancing Retrieval-Augmented Generation with Hierarchical Chunking</a></td><td>Retrieval-Augmented Generation (RAG) enhances the response capabilities of
+language models by integrating external knowledge sources. However, document
+chunking as an important part of RAG system often lacks effective evaluation
+tools. This paper first analyzes why existing RAG evaluation benchmarks are
+inadequate for assessing document chunking quality, specifically due to
+evidence sparsity. Based on this conclusion, we propose HiCBench, which
+includes manually annotated multi-level document chunking points, synthesized
+evidence-dense quetion answer(QA) pairs, and their corresponding evidence
+sources. Additionally, we introduce the HiChunk framework, a multi-level
+document structuring framework based on fine-tuned LLMs, combined with the
+Auto-Merge retrieval algorithm to improve retrieval quality. Experiments
+demonstrate that HiCBench effectively evaluates the impact of different
+chunking methods across the entire RAG pipeline. Moreover, HiChunk achieves
+better chunking quality within reasonable time consumption, thereby enhancing
+the overall performance of RAG systems.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11513v1'>Unsupervised Candidate Ranking for Lexical Substitution via Holistic Sentence Semantics</a></td><td>A key subtask in lexical substitution is ranking the given candidate words. A
+common approach is to replace the target word with a candidate in the original
+sentence and feed the modified sentence into a model to capture semantic
+differences before and after substitution. However, effectively modeling the
+bidirectional influence of candidate substitution on both the target word and
+its context remains challenging. Existing methods often focus solely on
+semantic changes at the target position or rely on parameter tuning over
+multiple evaluation metrics, making it difficult to accurately characterize
+semantic variation. To address this, we investigate two approaches: one based
+on attention weights and another leveraging the more interpretable integrated
+gradients method, both designed to measure the influence of context tokens on
+the target token and to rank candidates by incorporating semantic similarity
+between the original and substituted sentences. Experiments on the LS07 and
+SWORDS datasets demonstrate that both approaches improve ranking performance.</td></tr></tbody></table>
 
 ### 📅 2025-09-14
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11478v1'>Designing and Evaluating a Conversational Agent for Early Detection of Alzheimer's Disease and Related Dementias</a></td><td>E, a, r, l, y,  , d, e, t, e, c, t, i, o, n,  , o, f,  , A, l, z, h, e, i, m, e, r, ', s,  , d, i, s, e, a, s, e,  , a, n, d,  , r, e, l, a, t, e, d,  , d, e, m, e, n, t, i, a, s,  , (, A, D, R, D, ),  , i, s, 
-, c, r, i, t, i, c, a, l,  , f, o, r,  , t, i, m, e, l, y,  , i, n, t, e, r, v, e, n, t, i, o, n, ,,  , y, e, t,  , m, o, s, t,  , d, i, a, g, n, o, s, e, s,  , a, r, e,  , d, e, l, a, y, e, d,  , u, n, t, i, l,  , a, d, v, a, n, c, e, d, 
-, s, t, a, g, e, s, .,  , W, h, i, l, e,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , p, a, t, i, e, n, t,  , n, a, r, r, a, t, i, v, e, s,  , a, r, e,  , e, s, s, e, n, t, i, a, l,  , f, o, r,  , a, c, c, u, r, a, t, e, 
-, d, i, a, g, n, o, s, i, s, ,,  , p, r, i, o, r,  , w, o, r, k,  , h, a, s,  , l, a, r, g, e, l, y,  , f, o, c, u, s, e, d,  , o, n,  , s, c, r, e, e, n, i, n, g,  , s, t, u, d, i, e, s,  , t, h, a, t,  , c, l, a, s, s, i, f, y, 
-, c, o, g, n, i, t, i, v, e,  , s, t, a, t, u, s,  , f, r, o, m,  , i, n, t, e, r, a, c, t, i, o, n, s,  , r, a, t, h, e, r,  , t, h, a, n,  , s, u, p, p, o, r, t, i, n, g,  , t, h, e,  , d, i, a, g, n, o, s, t, i, c, 
-, p, r, o, c, e, s, s, .,  , W, e,  , d, e, s, i, g, n, e, d,  , v, o, i, c, e, -, i, n, t, e, r, a, c, t, i, v, e,  , c, o, n, v, e, r, s, a, t, i, o, n, a, l,  , a, g, e, n, t, s, ,,  , l, e, v, e, r, a, g, i, n, g,  , l, a, r, g, e, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ), ,,  , t, o,  , e, l, i, c, i, t,  , n, a, r, r, a, t, i, v, e, s,  , r, e, l, e, v, a, n, t,  , t, o,  , A, D, R, D,  , f, r, o, m,  , p, a, t, i, e, n, t, s,  , a, n, d, 
-, i, n, f, o, r, m, a, n, t, s, .,  , W, e,  , e, v, a, l, u, a, t, e, d,  , t, h, e,  , a, g, e, n, t,  , w, i, t, h,  , 3, 0,  , a, d, u, l, t, s,  , w, i, t, h,  , s, u, s, p, e, c, t, e, d,  , A, D, R, D,  , t, h, r, o, u, g, h, 
-, c, o, n, v, e, r, s, a, t, i, o, n,  , a, n, a, l, y, s, i, s,  , (, n, =, 3, 0, ), ,,  , u, s, e, r,  , s, u, r, v, e, y, s,  , (, n, =, 1, 9, ), ,,  , a, n, d,  , c, l, i, n, i, c, a, l,  , v, a, l, i, d, a, t, i, o, n, 
-, a, g, a, i, n, s, t,  , b, l, i, n, d, e, d,  , s, p, e, c, i, a, l, i, s, t,  , i, n, t, e, r, v, i, e, w, s,  , (, n, =, 2, 4, ), .,  , S, y, m, p, t, o, m, s,  , d, e, t, e, c, t, e, d,  , b, y,  , t, h, e,  , a, g, e, n, t, 
-, a, l, i, g, n, e, d,  , w, e, l, l,  , w, i, t, h,  , t, h, o, s, e,  , i, d, e, n, t, i, f, i, e, d,  , b, y,  , s, p, e, c, i, a, l, i, s, t, s,  , a, c, r, o, s, s,  , s, y, m, p, t, o, m, s, .,  , U, s, e, r, s, 
-, a, p, p, r, e, c, i, a, t, e, d,  , t, h, e,  , a, g, e, n, t, ', s,  , p, a, t, i, e, n, c, e,  , a, n, d,  , s, y, s, t, e, m, a, t, i, c,  , q, u, e, s, t, i, o, n, i, n, g, ,,  , w, h, i, c, h,  , s, u, p, p, o, r, t, e, d, 
-, e, n, g, a, g, e, m, e, n, t,  , a, n, d,  , e, x, p, r, e, s, s, i, o, n,  , o, f,  , c, o, m, p, l, e, x, ,,  , h, a, r, d, -, t, o, -, d, e, s, c, r, i, b, e,  , e, x, p, e, r, i, e, n, c, e, s, .,  , T, h, i, s, 
-, p, r, e, l, i, m, i, n, a, r, y,  , w, o, r, k,  , s, u, g, g, e, s, t, s,  , c, o, n, v, e, r, s, a, t, i, o, n, a, l,  , a, g, e, n, t, s,  , m, a, y,  , s, e, r, v, e,  , a, s,  , s, t, r, u, c, t, u, r, e, d, 
-, f, r, o, n, t, -, e, n, d,  , t, o, o, l, s,  , f, o, r,  , d, e, m, e, n, t, i, a,  , a, s, s, e, s, s, m, e, n, t, ,,  , h, i, g, h, l, i, g, h, t, i, n, g,  , i, n, t, e, r, a, c, t, i, o, n,  , d, e, s, i, g, n, 
-, c, o, n, s, i, d, e, r, a, t, i, o, n, s,  , i, n,  , s, e, n, s, i, t, i, v, e,  , h, e, a, l, t, h, c, a, r, e,  , c, o, n, t, e, x, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11431v1'>Securing AI Agents: Implementing Role-Based Access Control for Industrial Applications</a></td><td>T, h, e,  , e, m, e, r, g, e, n, c, e,  , o, f,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , h, a, s,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , a, d, v, a, n, c, e, d, 
-, s, o, l, u, t, i, o, n, s,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s,  , d, o, m, a, i, n, s, ,,  , f, r, o, m,  , p, o, l, i, t, i, c, a, l,  , s, c, i, e, n, c, e,  , t, o,  , s, o, f, t, w, a, r, e, 
-, d, e, v, e, l, o, p, m, e, n, t, .,  , H, o, w, e, v, e, r, ,,  , t, h, e, s, e,  , m, o, d, e, l, s,  , a, r, e,  , c, o, n, s, t, r, a, i, n, e, d,  , b, y,  , t, h, e, i, r,  , t, r, a, i, n, i, n, g,  , d, a, t, a, ,, 
-, w, h, i, c, h,  , i, s,  , s, t, a, t, i, c,  , a, n, d,  , l, i, m, i, t, e, d,  , t, o,  , i, n, f, o, r, m, a, t, i, o, n,  , a, v, a, i, l, a, b, l, e,  , u, p,  , t, o,  , a,  , s, p, e, c, i, f, i, c,  , d, a, t, e, ., 
-, A, d, d, i, t, i, o, n, a, l, l, y, ,,  , t, h, e, i, r,  , g, e, n, e, r, a, l, i, z, e, d,  , n, a, t, u, r, e,  , o, f, t, e, n,  , n, e, c, e, s, s, i, t, a, t, e, s,  , f, i, n, e, -, t, u, n, i, n, g,  , -, -, 
-, w, h, e, t, h, e, r,  , f, o, r,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , o, r,  , i, n, s, t, r, u, c, t, i, o, n, a, l,  , p, u, r, p, o, s, e, s,  , -, -,  , t, o,  , e, f, f, e, c, t, i, v, e, l, y,  , p, e, r, f, o, r, m, 
-, s, p, e, c, i, f, i, c,  , d, o, w, n, s, t, r, e, a, m,  , t, a, s, k, s, .,  , A, I,  , a, g, e, n, t, s, ,,  , l, e, v, e, r, a, g, i, n, g,  , L, L, M, s,  , a, s,  , t, h, e, i, r,  , c, o, r, e, ,,  , m, i, t, i, g, a, t, e, 
-, s, o, m, e,  , o, f,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s,  , b, y,  , a, c, c, e, s, s, i, n, g,  , e, x, t, e, r, n, a, l,  , t, o, o, l, s,  , a, n, d,  , r, e, a, l, -, t, i, m, e,  , d, a, t, a, ,, 
-, e, n, a, b, l, i, n, g,  , a, p, p, l, i, c, a, t, i, o, n, s,  , s, u, c, h,  , a, s,  , l, i, v, e,  , w, e, a, t, h, e, r,  , r, e, p, o, r, t, i, n, g,  , a, n, d,  , d, a, t, a,  , a, n, a, l, y, s, i, s, .,  , I, n, 
-, i, n, d, u, s, t, r, i, a, l,  , s, e, t, t, i, n, g, s, ,,  , A, I,  , a, g, e, n, t, s,  , a, r, e,  , t, r, a, n, s, f, o, r, m, i, n, g,  , o, p, e, r, a, t, i, o, n, s,  , b, y,  , e, n, h, a, n, c, i, n, g, 
-, d, e, c, i, s, i, o, n, -, m, a, k, i, n, g, ,,  , p, r, e, d, i, c, t, i, v, e,  , m, a, i, n, t, e, n, a, n, c, e, ,,  , a, n, d,  , p, r, o, c, e, s, s,  , o, p, t, i, m, i, z, a, t, i, o, n, .,  , F, o, r,  , e, x, a, m, p, l, e, ,, 
-, i, n,  , m, a, n, u, f, a, c, t, u, r, i, n, g, ,,  , A, I,  , a, g, e, n, t, s,  , e, n, a, b, l, e,  , n, e, a, r, -, a, u, t, o, n, o, m, o, u, s,  , s, y, s, t, e, m, s,  , t, h, a, t,  , b, o, o, s, t, 
-, p, r, o, d, u, c, t, i, v, i, t, y,  , a, n, d,  , s, u, p, p, o, r, t,  , r, e, a, l, -, t, i, m, e,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g, .,  , D, e, s, p, i, t, e,  , t, h, e, s, e,  , a, d, v, a, n, c, e, m, e, n, t, s, ,, 
-, A, I,  , a, g, e, n, t, s,  , r, e, m, a, i, n,  , v, u, l, n, e, r, a, b, l, e,  , t, o,  , s, e, c, u, r, i, t, y,  , t, h, r, e, a, t, s, ,,  , i, n, c, l, u, d, i, n, g,  , p, r, o, m, p, t,  , i, n, j, e, c, t, i, o, n, 
-, a, t, t, a, c, k, s, ,,  , w, h, i, c, h,  , p, o, s, e,  , s, i, g, n, i, f, i, c, a, n, t,  , r, i, s, k, s,  , t, o,  , t, h, e, i, r,  , i, n, t, e, g, r, i, t, y,  , a, n, d,  , r, e, l, i, a, b, i, l, i, t, y, .,  , T, o, 
-, a, d, d, r, e, s, s,  , t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, ,,  , t, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , a,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , i, n, t, e, g, r, a, t, i, n, g, 
-, R, o, l, e, -, B, a, s, e, d,  , A, c, c, e, s, s,  , C, o, n, t, r, o, l,  , (, R, B, A, C, ),  , i, n, t, o,  , A, I,  , a, g, e, n, t, s, ,,  , p, r, o, v, i, d, i, n, g,  , a,  , r, o, b, u, s, t,  , s, e, c, u, r, i, t, y, 
-, g, u, a, r, d, r, a, i, l, .,  , T, h, i, s,  , f, r, a, m, e, w, o, r, k,  , a, i, m, s,  , t, o,  , s, u, p, p, o, r, t,  , t, h, e,  , e, f, f, e, c, t, i, v, e,  , a, n, d,  , s, c, a, l, a, b, l, e,  , d, e, p, l, o, y, m, e, n, t, 
-, o, f,  , A, I,  , a, g, e, n, t, s, ,,  , w, i, t, h,  , a,  , f, o, c, u, s,  , o, n,  , o, n, -, p, r, e, m, i, s, e, s,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11417v2'>Enhancing Generalization in Vision-Language-Action Models by Preserving Pretrained Representations</a></td><td>V, i, s, i, o, n, -, l, a, n, g, u, a, g, e, -, a, c, t, i, o, n,  , (, V, L, A, ),  , m, o, d, e, l, s,  , f, i, n, e, t, u, n, e, d,  , f, r, o, m,  , v, i, s, i, o, n, -, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, 
-, (, V, L, M, s, ),  , h, o, l, d,  , t, h, e,  , p, r, o, m, i, s, e,  , o, f,  , l, e, v, e, r, a, g, i, n, g,  , r, i, c, h,  , p, r, e, t, r, a, i, n, e, d,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , t, o,  , b, u, i, l, d, 
-, g, e, n, e, r, a, l, i, s, t,  , r, o, b, o, t, s,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , t, a, s, k, s,  , a, n, d,  , e, n, v, i, r, o, n, m, e, n, t, s, .,  , H, o, w, e, v, e, r, ,,  , d, i, r, e, c, t, 
-, f, i, n, e, -, t, u, n, i, n, g,  , o, n,  , r, o, b, o, t,  , d, a, t, a,  , o, f, t, e, n,  , d, i, s, r, u, p, t, s,  , t, h, e, s, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , a, n, d,  , l, i, m, i, t, s, 
-, g, e, n, e, r, a, l, i, z, a, t, i, o, n, .,  , W, e,  , p, r, e, s, e, n, t,  , a,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , b, e, t, t, e, r,  , p, r, e, s, e, r, v, e, s,  , p, r, e, t, r, a, i, n, e, d, 
-, f, e, a, t, u, r, e, s,  , w, h, i, l, e,  , a, d, a, p, t, i, n, g,  , t, h, e, m,  , f, o, r,  , r, o, b, o, t,  , m, a, n, i, p, u, l, a, t, i, o, n, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , i, n, t, r, o, d, u, c, e, s, 
-, t, h, r, e, e,  , c, o, m, p, o, n, e, n, t, s, :,  , (, i, ),  , a,  , d, u, a, l, -, e, n, c, o, d, e, r,  , d, e, s, i, g, n,  , w, i, t, h,  , o, n, e,  , f, r, o, z, e, n,  , v, i, s, i, o, n,  , e, n, c, o, d, e, r,  , t, o, 
-, r, e, t, a, i, n,  , p, r, e, t, r, a, i, n, e, d,  , f, e, a, t, u, r, e, s,  , a, n, d,  , a, n, o, t, h, e, r,  , t, r, a, i, n, a, b, l, e,  , f, o, r,  , t, a, s, k,  , a, d, a, p, t, a, t, i, o, n, ,,  , (, i, i, ),  , a, 
-, s, t, r, i, n, g, -, b, a, s, e, d,  , a, c, t, i, o, n,  , t, o, k, e, n, i, z, e, r,  , t, h, a, t,  , c, a, s, t, s,  , c, o, n, t, i, n, u, o, u, s,  , a, c, t, i, o, n, s,  , i, n, t, o,  , c, h, a, r, a, c, t, e, r, 
-, s, e, q, u, e, n, c, e, s,  , a, l, i, g, n, e, d,  , w, i, t, h,  , t, h, e,  , m, o, d, e, l, ', s,  , p, r, e, t, r, a, i, n, i, n, g,  , d, o, m, a, i, n, ,,  , a, n, d,  , (, i, i, i, ),  , a,  , c, o, -, t, r, a, i, n, i, n, g, 
-, s, t, r, a, t, e, g, y,  , t, h, a, t,  , c, o, m, b, i, n, e, s,  , r, o, b, o, t,  , d, e, m, o, n, s, t, r, a, t, i, o, n, s,  , w, i, t, h,  , v, i, s, i, o, n, -, l, a, n, g, u, a, g, e,  , d, a, t, a, s, e, t, s, 
-, e, m, p, h, a, s, i, z, i, n, g,  , s, p, a, t, i, a, l,  , r, e, a, s, o, n, i, n, g,  , a, n, d,  , a, f, f, o, r, d, a, n, c, e, s, .,  , E, v, a, l, u, a, t, i, o, n, s,  , i, n,  , s, i, m, u, l, a, t, i, o, n,  , a, n, d,  , o, n, 
-, r, e, a, l,  , r, o, b, o, t, s,  , s, h, o, w,  , t, h, a, t,  , o, u, r,  , m, e, t, h, o, d,  , i, m, p, r, o, v, e, s,  , r, o, b, u, s, t, n, e, s, s,  , t, o,  , v, i, s, u, a, l,  , p, e, r, t, u, r, b, a, t, i, o, n, s, ,, 
-, g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , t, o,  , n, o, v, e, l,  , i, n, s, t, r, u, c, t, i, o, n, s,  , a, n, d,  , e, n, v, i, r, o, n, m, e, n, t, s, ,,  , a, n, d,  , o, v, e, r, a, l, l,  , t, a, s, k,  , s, u, c, c, e, s, s, 
-, c, o, m, p, a, r, e, d,  , t, o,  , b, a, s, e, l, i, n, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11413v1'>Framing AI System Benchmarking as a Learning Task: FlexBench and the Open MLPerf Dataset</a></td><td>E, x, i, s, t, i, n, g,  , A, I,  , s, y, s, t, e, m,  , b, e, n, c, h, m, a, r, k, s,  , s, u, c, h,  , a, s,  , M, L, P, e, r, f,  , o, f, t, e, n,  , s, t, r, u, g, g, l, e,  , t, o,  , k, e, e, p,  , p, a, c, e,  , w, i, t, h, 
-, t, h, e,  , r, a, p, i, d, l, y,  , e, v, o, l, v, i, n, g,  , A, I,  , l, a, n, d, s, c, a, p, e, ,,  , m, a, k, i, n, g,  , i, t,  , d, i, f, f, i, c, u, l, t,  , t, o,  , s, u, p, p, o, r, t,  , i, n, f, o, r, m, e, d, 
-, d, e, p, l, o, y, m, e, n, t, ,,  , o, p, t, i, m, i, z, a, t, i, o, n, ,,  , a, n, d,  , c, o, -, d, e, s, i, g, n,  , d, e, c, i, s, i, o, n, s,  , f, o, r,  , A, I,  , s, y, s, t, e, m, s, .,  , W, e,  , s, u, g, g, e, s, t, 
-, t, h, a, t,  , b, e, n, c, h, m, a, r, k, i, n, g,  , i, t, s, e, l, f,  , c, a, n,  , b, e,  , f, r, a, m, e, d,  , a, s,  , a, n,  , A, I,  , t, a, s, k,  , -,  , o, n, e,  , i, n,  , w, h, i, c, h,  , m, o, d, e, l, s,  , a, r, e, 
-, c, o, n, t, i, n, u, o, u, s, l, y,  , e, v, a, l, u, a, t, e, d,  , a, n, d,  , o, p, t, i, m, i, z, e, d,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , d, a, t, a, s, e, t, s, ,,  , s, o, f, t, w, a, r, e, ,,  , a, n, d, 
-, h, a, r, d, w, a, r, e, ,,  , u, s, i, n, g,  , k, e, y,  , m, e, t, r, i, c, s,  , s, u, c, h,  , a, s,  , a, c, c, u, r, a, c, y, ,,  , l, a, t, e, n, c, y, ,,  , t, h, r, o, u, g, h, p, u, t, ,,  , e, n, e, r, g, y, 
-, c, o, n, s, u, m, p, t, i, o, n, ,,  , a, n, d,  , c, o, s, t, .,  , T, o,  , s, u, p, p, o, r, t,  , t, h, i, s,  , p, e, r, s, p, e, c, t, i, v, e, ,,  , w, e,  , p, r, e, s, e, n, t,  , F, l, e, x, B, e, n, c, h, :,  , a, 
-, m, o, d, u, l, a, r,  , e, x, t, e, n, s, i, o, n,  , o, f,  , t, h, e,  , M, L, P, e, r, f,  , L, L, M,  , i, n, f, e, r, e, n, c, e,  , b, e, n, c, h, m, a, r, k, ,,  , i, n, t, e, g, r, a, t, e, d,  , w, i, t, h, 
-, H, u, g, g, i, n, g, F, a, c, e,  , a, n, d,  , d, e, s, i, g, n, e, d,  , t, o,  , p, r, o, v, i, d, e,  , r, e, l, e, v, a, n, t,  , a, n, d,  , a, c, t, i, o, n, a, b, l, e,  , i, n, s, i, g, h, t, s, ., 
-, B, e, n, c, h, m, a, r, k, i, n, g,  , r, e, s, u, l, t, s,  , a, n, d,  , m, e, t, a, d, a, t, a,  , a, r, e,  , c, o, l, l, e, c, t, e, d,  , i, n, t, o,  , a, n,  , O, p, e, n,  , M, L, P, e, r, f,  , D, a, t, a, s, e, t, ,, 
-, w, h, i, c, h,  , c, a, n,  , b, e,  , c, o, l, l, a, b, o, r, a, t, i, v, e, l, y,  , c, u, r, a, t, e, d, ,,  , e, x, t, e, n, d, e, d, ,,  , a, n, d,  , l, e, v, e, r, a, g, e, d,  , f, o, r,  , p, r, e, d, i, c, t, i, v, e, 
-, m, o, d, e, l, i, n, g,  , a, n, d,  , f, e, a, t, u, r, e,  , e, n, g, i, n, e, e, r, i, n, g, .,  , W, e,  , s, u, c, c, e, s, s, f, u, l, l, y,  , v, a, l, i, d, a, t, e, d,  , t, h, e,  , F, l, e, x, B, e, n, c, h, 
-, c, o, n, c, e, p, t,  , t, h, r, o, u, g, h,  , M, L, P, e, r, f,  , I, n, f, e, r, e, n, c, e,  , s, u, b, m, i, s, s, i, o, n, s, ,,  , i, n, c, l, u, d, i, n, g,  , e, v, a, l, u, a, t, i, o, n, s,  , o, f,  , D, e, e, p, S, e, e, k, 
-, R, 1,  , a, n, d,  , L, L, a, M, A,  , 3, ., 3,  , o, n,  , c, o, m, m, o, d, i, t, y,  , s, e, r, v, e, r, s, .,  , T, h, e,  , b, r, o, a, d, e, r,  , o, b, j, e, c, t, i, v, e,  , i, s,  , t, o,  , e, n, a, b, l, e, 
-, p, r, a, c, t, i, t, i, o, n, e, r, s,  , t, o,  , m, a, k, e,  , c, o, s, t, -, e, f, f, e, c, t, i, v, e,  , A, I,  , d, e, p, l, o, y, m, e, n, t,  , d, e, c, i, s, i, o, n, s,  , t, h, a, t,  , r, e, f, l, e, c, t,  , t, h, e, i, r, 
-, a, v, a, i, l, a, b, l, e,  , r, e, s, o, u, r, c, e, s, ,,  , r, e, q, u, i, r, e, m, e, n, t, s, ,,  , a, n, d,  , c, o, n, s, t, r, a, i, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11398v1'>From Firewalls to Frontiers: AI Red-Teaming is a Domain-Specific Evolution of Cyber Red-Teaming</a></td><td>A,  , r, e, d,  , t, e, a, m,  , s, i, m, u, l, a, t, e, s,  , a, d, v, e, r, s, a, r, y,  , a, t, t, a, c, k, s,  , t, o,  , h, e, l, p,  , d, e, f, e, n, d, e, r, s,  , f, i, n, d,  , e, f, f, e, c, t, i, v, e, 
-, s, t, r, a, t, e, g, i, e, s,  , t, o,  , d, e, f, e, n, d,  , t, h, e, i, r,  , s, y, s, t, e, m, s,  , i, n,  , a,  , r, e, a, l, -, w, o, r, l, d,  , o, p, e, r, a, t, i, o, n, a, l,  , s, e, t, t, i, n, g, .,  , A, s,  , m, o, r, e, 
-, e, n, t, e, r, p, r, i, s, e,  , s, y, s, t, e, m, s,  , a, d, o, p, t,  , A, I, ,,  , r, e, d, -, t, e, a, m, i, n, g,  , w, i, l, l,  , n, e, e, d,  , t, o,  , e, v, o, l, v, e,  , t, o,  , a, d, d, r, e, s, s,  , t, h, e, 
-, u, n, i, q, u, e,  , v, u, l, n, e, r, a, b, i, l, i, t, i, e, s,  , a, n, d,  , r, i, s, k, s,  , p, o, s, e, d,  , b, y,  , A, I,  , s, y, s, t, e, m, s, .,  , W, e,  , t, a, k, e,  , t, h, e,  , p, o, s, i, t, i, o, n,  , t, h, a, t, 
-, A, I,  , s, y, s, t, e, m, s,  , c, a, n,  , b, e,  , m, o, r, e,  , e, f, f, e, c, t, i, v, e, l, y,  , r, e, d, -, t, e, a, m, e, d,  , i, f,  , A, I,  , r, e, d, -, t, e, a, m, i, n, g,  , i, s,  , r, e, c, o, g, n, i, z, e, d, 
-, a, s,  , a,  , d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , e, v, o, l, u, t, i, o, n,  , o, f,  , c, y, b, e, r,  , r, e, d, -, t, e, a, m, i, n, g, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , a, r, g, u, e, 
-, t, h, a, t,  , e, x, i, s, t, i, n, g,  , C, y, b, e, r,  , R, e, d,  , T, e, a, m, s,  , w, h, o,  , a, d, o, p, t,  , t, h, i, s,  , f, r, a, m, i, n, g,  , w, i, l, l,  , b, e,  , a, b, l, e,  , t, o,  , b, e, t, t, e, r, 
-, e, v, a, l, u, a, t, e,  , s, y, s, t, e, m, s,  , w, i, t, h,  , A, I,  , c, o, m, p, o, n, e, n, t, s,  , b, y,  , r, e, c, o, g, n, i, z, i, n, g,  , t, h, a, t,  , A, I,  , p, o, s, e, s,  , n, e, w,  , r, i, s, k, s, ,,  , h, a, s, 
-, n, e, w,  , f, a, i, l, u, r, e,  , m, o, d, e, s,  , t, o,  , e, x, p, l, o, i, t, ,,  , a, n, d,  , o, f, t, e, n,  , c, o, n, t, a, i, n, s,  , u, n, p, a, t, c, h, a, b, l, e,  , b, u, g, s,  , t, h, a, t, 
-, r, e, -, p, r, i, o, r, i, t, i, z, e,  , d, i, s, c, l, o, s, u, r, e,  , a, n, d,  , m, i, t, i, g, a, t, i, o, n,  , s, t, r, a, t, e, g, i, e, s, .,  , S, i, m, i, l, a, r, l, y, ,,  , a, d, o, p, t, i, n, g,  , a, 
-, c, y, b, e, r, s, e, c, u, r, i, t, y,  , f, r, a, m, i, n, g,  , w, i, l, l,  , a, l, l, o, w,  , e, x, i, s, t, i, n, g,  , A, I,  , R, e, d,  , T, e, a, m, s,  , t, o,  , l, e, v, e, r, a, g, e,  , a, 
-, w, e, l, l, -, t, e, s, t, e, d,  , s, t, r, u, c, t, u, r, e,  , t, o,  , e, m, u, l, a, t, e,  , r, e, a, l, i, s, t, i, c,  , a, d, v, e, r, s, a, r, i, e, s, ,,  , p, r, o, m, o, t, e,  , m, u, t, u, a, l, 
-, a, c, c, o, u, n, t, a, b, i, l, i, t, y,  , w, i, t, h,  , f, o, r, m, a, l,  , r, u, l, e, s,  , o, f,  , e, n, g, a, g, e, m, e, n, t, ,,  , a, n, d,  , p, r, o, v, i, d, e,  , a,  , p, a, t, t, e, r, n,  , t, o,  , m, a, t, u, r, e, 
-, t, h, e,  , t, o, o, l, i, n, g,  , n, e, c, e, s, s, a, r, y,  , f, o, r,  , r, e, p, e, a, t, a, b, l, e, ,,  , s, c, a, l, a, b, l, e,  , e, n, g, a, g, e, m, e, n, t, s, .,  , I, n,  , t, h, e, s, e,  , w, a, y, s, ,,  , t, h, e, 
-, m, e, r, g, i, n, g,  , o, f,  , A, I,  , a, n, d,  , C, y, b, e, r,  , R, e, d,  , T, e, a, m, s,  , w, i, l, l,  , c, r, e, a, t, e,  , a,  , r, o, b, u, s, t,  , s, e, c, u, r, i, t, y,  , e, c, o, s, y, s, t, e, m,  , a, n, d, 
-, b, e, s, t,  , p, o, s, i, t, i, o, n,  , t, h, e,  , c, o, m, m, u, n, i, t, y,  , t, o,  , a, d, a, p, t,  , t, o,  , t, h, e,  , r, a, p, i, d, l, y,  , c, h, a, n, g, i, n, g,  , t, h, r, e, a, t,  , l, a, n, d, s, c, a, p, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11376v1'>Intelligent Reservoir Decision Support: An Integrated Framework Combining Large Language Models, Advanced Prompt Engineering, and Multimodal Data Fusion for Real-Time Petroleum Operations</a></td><td>T, h, e,  , p, e, t, r, o, l, e, u, m,  , i, n, d, u, s, t, r, y,  , f, a, c, e, s,  , u, n, p, r, e, c, e, d, e, n, t, e, d,  , c, h, a, l, l, e, n, g, e, s,  , i, n,  , r, e, s, e, r, v, o, i, r, 
-, m, a, n, a, g, e, m, e, n, t, ,,  , r, e, q, u, i, r, i, n, g,  , r, a, p, i, d,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , c, o, m, p, l, e, x,  , m, u, l, t, i, m, o, d, a, l,  , d, a, t, a, s, e, t, s,  , f, o, r, 
-, r, e, a, l, -, t, i, m, e,  , d, e, c, i, s, i, o, n,  , s, u, p, p, o, r, t, .,  , T, h, i, s,  , s, t, u, d, y,  , p, r, e, s, e, n, t, s,  , a,  , n, o, v, e, l,  , i, n, t, e, g, r, a, t, e, d,  , f, r, a, m, e, w, o, r, k, 
-, c, o, m, b, i, n, i, n, g,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, G, P, T, -, 4, o, ,,  , C, l, a, u, d, e,  , 4,  , S, o, n, n, e, t, ,, 
-, G, e, m, i, n, i,  , 2, ., 5,  , P, r, o, ),  , w, i, t, h,  , a, d, v, a, n, c, e, d,  , p, r, o, m, p, t,  , e, n, g, i, n, e, e, r, i, n, g,  , t, e, c, h, n, i, q, u, e, s,  , a, n, d,  , m, u, l, t, i, m, o, d, a, l,  , d, a, t, a, 
-, f, u, s, i, o, n,  , f, o, r,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , r, e, s, e, r, v, o, i, r,  , a, n, a, l, y, s, i, s, .,  , T, h, e,  , f, r, a, m, e, w, o, r, k,  , i, m, p, l, e, m, e, n, t, s, 
-, d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , r, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , w, i, t, h,  , o, v, e, r,  , 5, 0, ,, 0, 0, 0,  , p, e, t, r, o, l, e, u, m, 
-, e, n, g, i, n, e, e, r, i, n, g,  , d, o, c, u, m, e, n, t, s, ,,  , c, h, a, i, n, -, o, f, -, t, h, o, u, g, h, t,  , r, e, a, s, o, n, i, n, g, ,,  , a, n, d,  , f, e, w, -, s, h, o, t,  , l, e, a, r, n, i, n, g,  , f, o, r, 
-, r, a, p, i, d,  , f, i, e, l, d,  , a, d, a, p, t, a, t, i, o, n, .,  , M, u, l, t, i, m, o, d, a, l,  , i, n, t, e, g, r, a, t, i, o, n,  , p, r, o, c, e, s, s, e, s,  , s, e, i, s, m, i, c, 
-, i, n, t, e, r, p, r, e, t, a, t, i, o, n, s, ,,  , w, e, l, l,  , l, o, g, s, ,,  , a, n, d,  , p, r, o, d, u, c, t, i, o, n,  , d, a, t, a,  , t, h, r, o, u, g, h,  , s, p, e, c, i, a, l, i, z, e, d,  , A, I,  , m, o, d, e, l, s, 
-, w, i, t, h,  , v, i, s, i, o, n,  , t, r, a, n, s, f, o, r, m, e, r, s, .,  , F, i, e, l, d,  , v, a, l, i, d, a, t, i, o, n,  , a, c, r, o, s, s,  , 1, 5,  , d, i, v, e, r, s, e,  , r, e, s, e, r, v, o, i, r, 
-, e, n, v, i, r, o, n, m, e, n, t, s,  , d, e, m, o, n, s, t, r, a, t, e, s,  , e, x, c, e, p, t, i, o, n, a, l,  , p, e, r, f, o, r, m, a, n, c, e, :,  , 9, 4, ., 2, %,  , r, e, s, e, r, v, o, i, r, 
-, c, h, a, r, a, c, t, e, r, i, z, a, t, i, o, n,  , a, c, c, u, r, a, c, y, ,,  , 8, 7, ., 6, %,  , p, r, o, d, u, c, t, i, o, n,  , f, o, r, e, c, a, s, t, i, n, g,  , p, r, e, c, i, s, i, o, n, ,,  , a, n, d,  , 9, 1, ., 4, %, 
-, w, e, l, l,  , p, l, a, c, e, m, e, n, t,  , o, p, t, i, m, i, z, a, t, i, o, n,  , s, u, c, c, e, s, s,  , r, a, t, e, .,  , T, h, e,  , s, y, s, t, e, m,  , a, c, h, i, e, v, e, s,  , s, u, b, -, s, e, c, o, n, d, 
-, r, e, s, p, o, n, s, e,  , t, i, m, e, s,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , 9, 6, ., 2, %,  , s, a, f, e, t, y,  , r, e, l, i, a, b, i, l, i, t, y,  , w, i, t, h,  , n, o,  , h, i, g, h, -, r, i, s, k, 
-, i, n, c, i, d, e, n, t, s,  , d, u, r, i, n, g,  , e, v, a, l, u, a, t, i, o, n, .,  , E, c, o, n, o, m, i, c,  , a, n, a, l, y, s, i, s,  , r, e, v, e, a, l, s,  , 6, 2, -, 7, 8, %,  , c, o, s, t,  , r, e, d, u, c, t, i, o, n, s, 
-, (, m, e, a, n,  , 7, 2, %, ),  , r, e, l, a, t, i, v, e,  , t, o,  , t, r, a, d, i, t, i, o, n, a, l,  , m, e, t, h, o, d, s,  , w, i, t, h,  , 8, -, m, o, n, t, h,  , p, a, y, b, a, c, k,  , p, e, r, i, o, d, ., 
-, F, e, w, -, s, h, o, t,  , l, e, a, r, n, i, n, g,  , r, e, d, u, c, e, s,  , f, i, e, l, d,  , a, d, a, p, t, a, t, i, o, n,  , t, i, m, e,  , b, y,  , 7, 2, %, ,,  , w, h, i, l, e,  , a, u, t, o, m, a, t, e, d,  , p, r, o, m, p, t, 
-, o, p, t, i, m, i, z, a, t, i, o, n,  , a, c, h, i, e, v, e, s,  , 8, 9, %,  , i, m, p, r, o, v, e, m, e, n, t,  , i, n,  , r, e, a, s, o, n, i, n, g,  , q, u, a, l, i, t, y, .,  , T, h, e,  , f, r, a, m, e, w, o, r, k, 
-, p, r, o, c, e, s, s, e, d,  , r, e, a, l, -, t, i, m, e,  , d, a, t, a,  , s, t, r, e, a, m, s,  , w, i, t, h,  , 9, 6, ., 2, %,  , a, n, o, m, a, l, y,  , d, e, t, e, c, t, i, o, n,  , a, c, c, u, r, a, c, y,  , a, n, d, 
-, r, e, d, u, c, e, d,  , e, n, v, i, r, o, n, m, e, n, t, a, l,  , i, n, c, i, d, e, n, t, s,  , b, y,  , 4, 5, %, .,  , W, e,  , p, r, o, v, i, d, e,  , d, e, t, a, i, l, e, d,  , e, x, p, e, r, i, m, e, n, t, a, l, 
-, p, r, o, t, o, c, o, l, s, ,,  , b, a, s, e, l, i, n, e,  , c, o, m, p, a, r, i, s, o, n, s, ,,  , a, b, l, a, t, i, o, n,  , s, t, u, d, i, e, s, ,,  , a, n, d,  , s, t, a, t, i, s, t, i, c, a, l,  , s, i, g, n, i, f, i, c, a, n, c, e, 
-, t, e, s, t, i, n, g,  , t, o,  , e, n, s, u, r, e,  , r, e, p, r, o, d, u, c, i, b, i, l, i, t, y, .,  , T, h, i, s,  , r, e, s, e, a, r, c, h,  , d, e, m, o, n, s, t, r, a, t, e, s,  , p, r, a, c, t, i, c, a, l, 
-, i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , c, u, t, t, i, n, g, -, e, d, g, e,  , A, I,  , t, e, c, h, n, o, l, o, g, i, e, s,  , w, i, t, h,  , p, e, t, r, o, l, e, u, m,  , d, o, m, a, i, n,  , e, x, p, e, r, t, i, s, e,  , f, o, r, 
-, e, n, h, a, n, c, e, d,  , o, p, e, r, a, t, i, o, n, a, l,  , e, f, f, i, c, i, e, n, c, y, ,,  , s, a, f, e, t, y, ,,  , a, n, d,  , e, c, o, n, o, m, i, c,  , p, e, r, f, o, r, m, a, n, c, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11361v1'>MAPGD: Multi-Agent Prompt Gradient Descent for Collaborative Prompt Optimization</a></td><td>P, r, o, m, p, t,  , e, n, g, i, n, e, e, r, i, n, g,  , i, s,  , c, r, u, c, i, a, l,  , f, o, r,  , l, e, v, e, r, a, g, i, n, g,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ), ,, 
-, b, u, t,  , e, x, i, s, t, i, n, g,  , m, e, t, h, o, d, s,  , o, f, t, e, n,  , r, e, l, y,  , o, n,  , a,  , s, i, n, g, l, e,  , o, p, t, i, m, i, z, a, t, i, o, n,  , t, r, a, j, e, c, t, o, r, y, ,,  , l, i, m, i, t, i, n, g, 
-, a, d, a, p, t, a, b, i, l, i, t, y,  , a, n, d,  , e, f, f, i, c, i, e, n, c, y,  , w, h, i, l, e,  , s, u, f, f, e, r, i, n, g,  , f, r, o, m,  , n, a, r, r, o, w,  , p, e, r, s, p, e, c, t, i, v, e, s, ,,  , g, r, a, d, i, e, n, t, 
-, c, o, n, f, l, i, c, t, s, ,,  , a, n, d,  , h, i, g, h,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, .,  , W, e,  , p, r, o, p, o, s, e,  , M, A, P, G, D,  , (, M, u, l, t, i, -, A, g, e, n, t,  , P, r, o, m, p, t, 
-, G, r, a, d, i, e, n, t,  , D, e, s, c, e, n, t, ), ,,  , a,  , f, r, a, m, e, w, o, r, k,  , i, n, t, e, g, r, a, t, i, n, g,  , m, u, l, t, i, -, a, g, e, n, t,  , c, o, l, l, a, b, o, r, a, t, i, o, n,  , w, i, t, h, 
-, g, r, a, d, i, e, n, t, -, b, a, s, e, d,  , o, p, t, i, m, i, z, a, t, i, o, n, .,  , M, A, P, G, D,  , f, e, a, t, u, r, e, s,  , s, p, e, c, i, a, l, i, z, e, d,  , a, g, e, n, t, s,  , f, o, r,  , t, a, s, k, 
-, c, l, a, r, i, t, y, ,,  , e, x, a, m, p, l, e,  , s, e, l, e, c, t, i, o, n, ,,  , f, o, r, m, a, t,  , d, e, s, i, g, n, ,,  , a, n, d,  , s, t, y, l, i, s, t, i, c,  , r, e, f, i, n, e, m, e, n, t, ;,  , s, e, m, a, n, t, i, c, 
-, g, r, a, d, i, e, n, t,  , c, o, o, r, d, i, n, a, t, i, o, n,  , t, o,  , r, e, s, o, l, v, e,  , c, o, n, f, l, i, c, t, s, ;,  , b, a, n, d, i, t, -, b, a, s, e, d,  , c, a, n, d, i, d, a, t, e,  , s, e, l, e, c, t, i, o, n, 
-, f, o, r,  , e, f, f, i, c, i, e, n, t,  , e, x, p, l, o, r, a, t, i, o, n, -, e, x, p, l, o, i, t, a, t, i, o, n, ;,  , a, n, d,  , t, h, e, o, r, e, t, i, c, a, l,  , c, o, n, v, e, r, g, e, n, c, e,  , g, u, a, r, a, n, t, e, e, s, ., 
-, E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, ,,  , g, e, n, e, r, a, t, i, o, n, ,,  , a, n, d,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s,  , s, h, o, w,  , M, A, P, G, D, 
-, o, u, t, p, e, r, f, o, r, m, s,  , s, i, n, g, l, e, -, a, g, e, n, t,  , a, n, d,  , r, a, n, d, o, m,  , b, a, s, e, l, i, n, e, s,  , i, n,  , a, c, c, u, r, a, c, y,  , a, n, d,  , e, f, f, i, c, i, e, n, c, y, ., 
-, A, b, l, a, t, i, o, n, s,  , c, o, n, f, i, r, m,  , t, h, e,  , b, e, n, e, f, i, t, s,  , o, f,  , g, r, a, d, i, e, n, t,  , f, u, s, i, o, n, ,,  , a, g, e, n, t,  , s, p, e, c, i, a, l, i, z, a, t, i, o, n, ,,  , a, n, d, 
-, c, o, n, f, l, i, c, t,  , r, e, s, o, l, u, t, i, o, n, ,,  , p, r, o, v, i, d, i, n, g,  , a,  , u, n, i, f, i, e, d, ,,  , g, r, a, d, i, e, n, t, -, i, n, s, p, i, r, e, d,  , m, u, l, t, i, -, a, g, e, n, t, 
-, a, p, p, r, o, a, c, h,  , t, o,  , r, o, b, u, s, t,  , a, n, d,  , i, n, t, e, r, p, r, e, t, a, b, l, e,  , p, r, o, m, p, t,  , o, p, t, i, m, i, z, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11355v1'>Promoting Shape Bias in CNNs: Frequency-Based and Contrastive Regularization for Corruption Robustness</a></td><td>C, o, n, v, o, l, u, t, i, o, n, a, l,  , N, e, u, r, a, l,  , N, e, t, w, o, r, k, s,  , (, C, N, N, s, ),  , e, x, c, e, l,  , a, t,  , i, m, a, g, e,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , b, u, t,  , r, e, m, a, i, n, 
-, v, u, l, n, e, r, a, b, l, e,  , t, o,  , c, o, m, m, o, n,  , c, o, r, r, u, p, t, i, o, n, s,  , t, h, a, t,  , h, u, m, a, n, s,  , h, a, n, d, l, e,  , w, i, t, h,  , e, a, s, e, .,  , A,  , k, e, y,  , r, e, a, s, o, n,  , f, o, r, 
-, t, h, i, s,  , f, r, a, g, i, l, i, t, y,  , i, s,  , t, h, e, i, r,  , r, e, l, i, a, n, c, e,  , o, n,  , l, o, c, a, l,  , t, e, x, t, u, r, e,  , c, u, e, s,  , r, a, t, h, e, r,  , t, h, a, n,  , g, l, o, b, a, l, 
-, o, b, j, e, c, t,  , s, h, a, p, e, s,  , -, -,  , a,  , s, t, a, r, k,  , c, o, n, t, r, a, s, t,  , t, o,  , h, u, m, a, n,  , p, e, r, c, e, p, t, i, o, n, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s, ,,  , w, e, 
-, p, r, o, p, o, s, e,  , t, w, o,  , c, o, m, p, l, e, m, e, n, t, a, r, y,  , r, e, g, u, l, a, r, i, z, a, t, i, o, n,  , s, t, r, a, t, e, g, i, e, s,  , d, e, s, i, g, n, e, d,  , t, o,  , e, n, c, o, u, r, a, g, e, 
-, s, h, a, p, e, -, b, i, a, s, e, d,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , a, n, d,  , e, n, h, a, n, c, e,  , r, o, b, u, s, t, n, e, s, s, .,  , T, h, e,  , f, i, r, s, t,  , i, n, t, r, o, d, u, c, e, s,  , a, n, 
-, a, u, x, i, l, i, a, r, y,  , l, o, s, s,  , t, h, a, t,  , e, n, f, o, r, c, e, s,  , f, e, a, t, u, r, e,  , c, o, n, s, i, s, t, e, n, c, y,  , b, e, t, w, e, e, n,  , o, r, i, g, i, n, a, l,  , a, n, d, 
-, l, o, w, -, f, r, e, q, u, e, n, c, y,  , f, i, l, t, e, r, e, d,  , i, n, p, u, t, s, ,,  , d, i, s, c, o, u, r, a, g, i, n, g,  , d, e, p, e, n, d, e, n, c, e,  , o, n,  , h, i, g, h, -, f, r, e, q, u, e, n, c, y, 
-, t, e, x, t, u, r, e, s, .,  , T, h, e,  , s, e, c, o, n, d,  , i, n, c, o, r, p, o, r, a, t, e, s,  , s, u, p, e, r, v, i, s, e, d,  , c, o, n, t, r, a, s, t, i, v, e,  , l, e, a, r, n, i, n, g,  , t, o,  , s, t, r, u, c, t, u, r, e, 
-, t, h, e,  , f, e, a, t, u, r, e,  , s, p, a, c, e,  , a, r, o, u, n, d,  , c, l, a, s, s, -, c, o, n, s, i, s, t, e, n, t, ,,  , s, h, a, p, e, -, r, e, l, e, v, a, n, t,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, ., 
-, E, v, a, l, u, a, t, e, d,  , o, n,  , t, h, e,  , C, I, F, A, R, -, 1, 0, -, C,  , b, e, n, c, h, m, a, r, k, ,,  , b, o, t, h,  , m, e, t, h, o, d, s,  , i, m, p, r, o, v, e,  , c, o, r, r, u, p, t, i, o, n, 
-, r, o, b, u, s, t, n, e, s, s,  , w, i, t, h, o, u, t,  , d, e, g, r, a, d, i, n, g,  , c, l, e, a, n,  , a, c, c, u, r, a, c, y, .,  , O, u, r,  , r, e, s, u, l, t, s,  , s, u, g, g, e, s, t,  , t, h, a, t, 
-, l, o, s, s, -, l, e, v, e, l,  , r, e, g, u, l, a, r, i, z, a, t, i, o, n,  , c, a, n,  , e, f, f, e, c, t, i, v, e, l, y,  , s, t, e, e, r,  , C, N, N, s,  , t, o, w, a, r, d,  , m, o, r, e,  , s, h, a, p, e, -, a, w, a, r, e, ,, 
-, r, e, s, i, l, i, e, n, t,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11336v1'>The power of dynamic causality in observer-based design for soft sensor applications</a></td><td>T, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , a,  , n, o, v, e, l,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , o, p, t, i, m, i, z, i, n, g,  , o, b, s, e, r, v, e, r, -, b, a, s, e, d,  , s, o, f, t, 
-, s, e, n, s, o, r, s,  , t, h, r, o, u, g, h,  , d, y, n, a, m, i, c,  , c, a, u, s, a, l, i, t, y,  , a, n, a, l, y, s, i, s, .,  , T, r, a, d, i, t, i, o, n, a, l,  , a, p, p, r, o, a, c, h, e, s,  , t, o,  , s, e, n, s, o, r, 
-, s, e, l, e, c, t, i, o, n,  , o, f, t, e, n,  , r, e, l, y,  , o, n,  , l, i, n, e, a, r, i, z, e, d,  , o, b, s, e, r, v, a, b, i, l, i, t, y,  , i, n, d, i, c, e, s,  , o, r,  , s, t, a, t, i, s, t, i, c, a, l, 
-, c, o, r, r, e, l, a, t, i, o, n, s,  , t, h, a, t,  , f, a, i, l,  , t, o,  , c, a, p, t, u, r, e,  , t, h, e,  , t, e, m, p, o, r, a, l,  , e, v, o, l, u, t, i, o, n,  , o, f,  , c, o, m, p, l, e, x,  , s, y, s, t, e, m, s, .,  , W, e, 
-, a, d, d, r, e, s, s,  , t, h, i, s,  , g, a, p,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , l, i, q, u, i, d, -, t, i, m, e,  , c, o, n, s, t, a, n, t,  , (, L, T, C, ),  , n, e, t, w, o, r, k, s, ,, 
-, c, o, n, t, i, n, u, o, u, s, -, t, i, m, e,  , n, e, u, r, a, l,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , w, i, t, h,  , i, n, p, u, t, -, d, e, p, e, n, d, e, n, t,  , t, i, m, e,  , c, o, n, s, t, a, n, t, s, ,,  , t, o, 
-, s, y, s, t, e, m, a, t, i, c, a, l, l, y,  , i, d, e, n, t, i, f, y,  , a, n, d,  , p, r, u, n, e,  , s, e, n, s, o, r,  , i, n, p, u, t, s,  , w, i, t, h,  , m, i, n, i, m, a, l,  , c, a, u, s, a, l,  , i, n, f, l, u, e, n, c, e, 
-, o, n,  , s, t, a, t, e,  , e, s, t, i, m, a, t, i, o, n, .,  , O, u, r,  , m, e, t, h, o, d, o, l, o, g, y,  , i, m, p, l, e, m, e, n, t, s,  , a, n,  , i, t, e, r, a, t, i, v, e,  , w, o, r, k, f, l, o, w, :,  , t, r, a, i, n, i, n, g, 
-, a, n,  , L, T, C,  , o, b, s, e, r, v, e, r,  , o, n,  , c, a, n, d, i, d, a, t, e,  , i, n, p, u, t, s, ,,  , q, u, a, n, t, i, f, y, i, n, g,  , e, a, c, h,  , i, n, p, u, t, ', s,  , c, a, u, s, a, l,  , i, m, p, a, c, t, 
-, t, h, r, o, u, g, h,  , c, o, n, t, r, o, l, l, e, d,  , p, e, r, t, u, r, b, a, t, i, o, n,  , a, n, a, l, y, s, i, s, ,,  , r, e, m, o, v, i, n, g,  , i, n, p, u, t, s,  , w, i, t, h,  , n, e, g, l, i, g, i, b, l, e, 
-, e, f, f, e, c, t, ,,  , a, n, d,  , r, e, t, r, a, i, n, i, n, g,  , u, n, t, i, l,  , p, e, r, f, o, r, m, a, n, c, e,  , d, e, g, r, a, d, a, t, i, o, n,  , o, c, c, u, r, s, .,  , W, e,  , d, e, m, o, n, s, t, r, a, t, e, 
-, t, h, i, s,  , a, p, p, r, o, a, c, h,  , o, n,  , t, h, r, e, e,  , m, e, c, h, a, n, i, s, t, i, c,  , t, e, s, t, b, e, d, s,  , r, e, p, r, e, s, e, n, t, i, n, g,  , d, i, s, t, i, n, c, t,  , p, h, y, s, i, c, a, l, 
-, d, o, m, a, i, n, s, :,  , a,  , h, a, r, m, o, n, i, c, a, l, l, y,  , f, o, r, c, e, d,  , s, p, r, i, n, g, -, m, a, s, s, -, d, a, m, p, e, r,  , s, y, s, t, e, m, ,,  , a,  , n, o, n, l, i, n, e, a, r, 
-, c, o, n, t, i, n, u, o, u, s,  , s, t, i, r, r, e, d, -, t, a, n, k,  , r, e, a, c, t, o, r, ,,  , a, n, d,  , a,  , p, r, e, d, a, t, o, r, -, p, r, e, y,  , m, o, d, e, l,  , f, o, l, l, o, w, i, n, g,  , t, h, e, 
-, s, t, r, u, c, t, u, r, e,  , o, f,  , t, h, e,  , L, o, t, k, a, -, V, o, l, t, e, r, r, a,  , m, o, d, e, l, ,,  , b, u, t,  , w, i, t, h,  , s, e, a, s, o, n, a, l,  , f, o, r, c, i, n, g,  , a, n, d,  , a, d, d, e, d, 
-, c, o, m, p, l, e, x, i, t, y, .,  , R, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , o, u, r,  , c, a, u, s, a, l, i, t, y, -, g, u, i, d, e, d,  , p, r, u, n, i, n, g,  , c, o, n, s, i, s, t, e, n, t, l, y, 
-, i, d, e, n, t, i, f, i, e, s,  , m, i, n, i, m, a, l,  , s, e, n, s, o, r,  , s, e, t, s,  , t, h, a, t,  , a, l, i, g, n,  , w, i, t, h,  , u, n, d, e, r, l, y, i, n, g,  , p, h, y, s, i, c, s,  , w, h, i, l, e, 
-, i, m, p, r, o, v, i, n, g,  , p, r, e, d, i, c, t, i, o, n,  , a, c, c, u, r, a, c, y, .,  , T, h, e,  , f, r, a, m, e, w, o, r, k,  , a, u, t, o, m, a, t, i, c, a, l, l, y,  , d, i, s, t, i, n, g, u, i, s, h, e, s, 
-, e, s, s, e, n, t, i, a, l,  , p, h, y, s, i, c, a, l,  , m, e, a, s, u, r, e, m, e, n, t, s,  , f, r, o, m,  , n, o, i, s, e,  , a, n, d,  , d, e, t, e, r, m, i, n, e, s,  , w, h, e, n,  , d, e, r, i, v, e, d, 
-, i, n, t, e, r, a, c, t, i, o, n,  , t, e, r, m, s,  , p, r, o, v, i, d, e,  , c, o, m, p, l, e, m, e, n, t, a, r, y,  , v, e, r, s, u, s,  , r, e, d, u, n, d, a, n, t,  , i, n, f, o, r, m, a, t, i, o, n, .,  , B, e, y, o, n, d, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , e, f, f, i, c, i, e, n, c, y, ,,  , t, h, i, s,  , a, p, p, r, o, a, c, h,  , e, n, h, a, n, c, e, s,  , i, n, t, e, r, p, r, e, t, a, b, i, l, i, t, y,  , b, y,  , g, r, o, u, n, d, i, n, g, 
-, s, e, n, s, o, r,  , s, e, l, e, c, t, i, o, n,  , d, e, c, i, s, i, o, n, s,  , i, n,  , d, y, n, a, m, i, c,  , c, a, u, s, a, l,  , r, e, l, a, t, i, o, n, s, h, i, p, s,  , r, a, t, h, e, r,  , t, h, a, n,  , s, t, a, t, i, c, 
-, c, o, r, r, e, l, a, t, i, o, n, s, ,,  , o, f, f, e, r, i, n, g,  , s, i, g, n, i, f, i, c, a, n, t,  , b, e, n, e, f, i, t, s,  , f, o, r,  , s, o, f, t,  , s, e, n, s, i, n, g,  , a, p, p, l, i, c, a, t, i, o, n, s, 
-, a, c, r, o, s, s,  , p, r, o, c, e, s, s,  , e, n, g, i, n, e, e, r, i, n, g, ,,  , e, c, o, l, o, g, i, c, a, l,  , m, o, n, i, t, o, r, i, n, g, ,,  , a, n, d,  , a, g, r, i, c, u, l, t, u, r, a, l,  , d, o, m, a, i, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11330v1'>Decoding Plastic Toxicity: An Intelligent Framework for Conflict-Aware Relational Metapath Extraction from Scientific Abstracts</a></td><td>T, h, e,  , w, i, d, e, s, p, r, e, a, d,  , u, s, e,  , o, f,  , p, l, a, s, t, i, c, s,  , a, n, d,  , t, h, e, i, r,  , p, e, r, s, i, s, t, e, n, c, e,  , i, n,  , t, h, e,  , e, n, v, i, r, o, n, m, e, n, t,  , h, a, v, e, 
-, l, e, d,  , t, o,  , t, h, e,  , a, c, c, u, m, u, l, a, t, i, o, n,  , o, f,  , m, i, c, r, o, -,  , a, n, d,  , n, a, n, o, -, p, l, a, s, t, i, c, s,  , a, c, r, o, s, s,  , a, i, r, ,,  , w, a, t, e, r, ,,  , a, n, d, 
-, s, o, i, l, ,,  , p, o, s, i, n, g,  , s, e, r, i, o, u, s,  , h, e, a, l, t, h,  , r, i, s, k, s,  , i, n, c, l, u, d, i, n, g,  , r, e, s, p, i, r, a, t, o, r, y, ,,  , g, a, s, t, r, o, i, n, t, e, s, t, i, n, a, l, ,,  , a, n, d, 
-, n, e, u, r, o, l, o, g, i, c, a, l,  , d, i, s, o, r, d, e, r, s, .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , n, o, v, e, l,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , l, a, r, g, e, 
-, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , t, o,  , e, x, t, r, a, c, t,  , r, e, l, a, t, i, o, n, a, l,  , m, e, t, a, p, a, t, h, s, ,,  , m, u, l, t, i, -, h, o, p,  , s, e, m, a, n, t, i, c,  , c, h, a, i, n, s, 
-, l, i, n, k, i, n, g,  , p, o, l, l, u, t, a, n, t,  , s, o, u, r, c, e, s,  , t, o,  , h, e, a, l, t, h,  , i, m, p, a, c, t, s, ,,  , f, r, o, m,  , s, c, i, e, n, t, i, f, i, c,  , a, b, s, t, r, a, c, t, s, .,  , O, u, r, 
-, s, y, s, t, e, m,  , i, d, e, n, t, i, f, i, e, s,  , a, n, d,  , c, o, n, n, e, c, t, s,  , e, n, t, i, t, i, e, s,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , c, o, n, t, e, x, t, s,  , t, o,  , c, o, n, s, t, r, u, c, t, 
-, s, t, r, u, c, t, u, r, e, d,  , r, e, l, a, t, i, o, n, a, l,  , m, e, t, a, p, a, t, h, s, ,,  , w, h, i, c, h,  , a, r, e,  , a, g, g, r, e, g, a, t, e, d,  , i, n, t, o,  , a,  , T, o, x, i, c, i, t, y, 
-, T, r, a, j, e, c, t, o, r, y,  , G, r, a, p, h,  , t, h, a, t,  , t, r, a, c, e, s,  , p, o, l, l, u, t, a, n, t,  , p, r, o, p, a, g, a, t, i, o, n,  , t, h, r, o, u, g, h,  , e, x, p, o, s, u, r, e,  , r, o, u, t, e, s,  , a, n, d, 
-, b, i, o, l, o, g, i, c, a, l,  , s, y, s, t, e, m, s, .,  , M, o, r, e, o, v, e, r, ,,  , t, o,  , e, n, s, u, r, e,  , c, o, n, s, i, s, t, e, n, c, y,  , a, n, d,  , r, e, l, i, a, b, i, l, i, t, y, ,,  , w, e, 
-, i, n, c, o, r, p, o, r, a, t, e,  , a,  , d, y, n, a, m, i, c,  , e, v, i, d, e, n, c, e,  , r, e, c, o, n, c, i, l, i, a, t, i, o, n,  , m, o, d, u, l, e,  , t, h, a, t,  , r, e, s, o, l, v, e, s,  , s, e, m, a, n, t, i, c, 
-, c, o, n, f, l, i, c, t, s,  , a, r, i, s, i, n, g,  , f, r, o, m,  , e, v, o, l, v, i, n, g,  , o, r,  , c, o, n, t, r, a, d, i, c, t, o, r, y,  , r, e, s, e, a, r, c, h,  , f, i, n, d, i, n, g, s, .,  , O, u, r, 
-, a, p, p, r, o, a, c, h,  , d, e, m, o, n, s, t, r, a, t, e, s,  , s, t, r, o, n, g,  , p, e, r, f, o, r, m, a, n, c, e,  , i, n,  , e, x, t, r, a, c, t, i, n, g,  , r, e, l, i, a, b, l, e, ,,  , h, i, g, h, -, u, t, i, l, i, t, y, 
-, r, e, l, a, t, i, o, n, a, l,  , k, n, o, w, l, e, d, g, e,  , f, r, o, m,  , n, o, i, s, y,  , s, c, i, e, n, t, i, f, i, c,  , t, e, x, t,  , a, n, d,  , o, f, f, e, r, s,  , a,  , s, c, a, l, a, b, l, e,  , s, o, l, u, t, i, o, n, 
-, f, o, r,  , m, i, n, i, n, g,  , c, o, m, p, l, e, x,  , c, a, u, s, e, -, e, f, f, e, c, t,  , s, t, r, u, c, t, u, r, e, s,  , i, n,  , d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , c, o, r, p, o, r, a, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12282v1'>AIssistant: An Agentic Approach for Human--AI Collaborative Scientific Work on Reviews and Perspectives in Machine Learning</a></td><td>A, d, v, a, n, c, e, s,  , i, n,  , A, I, -, a, s, s, i, s, t, e, d,  , r, e, s, e, a, r, c, h,  , h, a, v, e,  , i, n, t, r, o, d, u, c, e, d,  , p, o, w, e, r, f, u, l,  , t, o, o, l, s,  , f, o, r, 
-, l, i, t, e, r, a, t, u, r, e,  , r, e, t, r, i, e, v, a, l, ,,  , h, y, p, o, t, h, e, s, i, s,  , g, e, n, e, r, a, t, i, o, n, ,,  , e, x, p, e, r, i, m, e, n, t, a, t, i, o, n, ,,  , a, n, d,  , m, a, n, u, s, c, r, i, p, t, 
-, p, r, e, p, a, r, a, t, i, o, n, .,  , H, o, w, e, v, e, r, ,,  , s, y, s, t, e, m, s,  , r, e, m, a, i, n,  , f, r, a, g, m, e, n, t, e, d,  , a, n, d,  , l, a, c, k,  , h, u, m, a, n, -, c, e, n, t, r, e, d, 
-, w, o, r, k, f, l, o, w, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , g, a, p, s, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , A, I, s, s, i, s, t, a, n, t, ,,  , a, n,  , a, g, e, n, t, i, c, ,, 
-, o, p, e, n, -, s, o, u, r, c, e,  , H, u, m, a, n, -, A, I,  , c, o, l, l, a, b, o, r, a, t, i, v, e,  , f, r, a, m, e, w, o, r, k,  , d, e, s, i, g, n, e, d,  , t, o,  , s, i, m, p, l, i, f, y,  , t, h, e, 
-, e, n, d, -, t, o, -, e, n, d,  , c, r, e, a, t, i, o, n,  , o, f,  , s, c, i, e, n, t, i, f, i, c,  , w, o, r, k, f, l, o, w, s, .,  , S, i, n, c, e,  , o, u, r,  , d, e, v, e, l, o, p, m, e, n, t,  , i, s,  , s, t, i, l, l,  , i, n, 
-, a, n,  , e, a, r, l, y,  , s, t, a, g, e, ,,  , w, e,  , p, r, e, s, e, n, t,  , h, e, r, e,  , t, h, e,  , f, i, r, s, t,  , e, x, p, e, r, i, m, e, n, t, s,  , w, i, t, h,  , A, I, s, s, i, s, t, a, n, t,  , f, o, r, 
-, p, e, r, s, p, e, c, t, i, v, e,  , a, n, d,  , r, e, v, i, e, w,  , r, e, s, e, a, r, c, h,  , p, a, p, e, r, s,  , i, n,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g, .,  , O, u, r,  , s, y, s, t, e, m, 
-, i, n, t, e, g, r, a, t, e, s,  , m, o, d, u, l, a, r,  , t, o, o, l, s,  , a, n, d,  , a, g, e, n, t, s,  , f, o, r,  , l, i, t, e, r, a, t, u, r, e,  , s, y, n, t, h, e, s, i, s, ,,  , s, e, c, t, i, o, n, -, w, i, s, e, 
-, e, x, p, e, r, i, m, e, n, t, a, t, i, o, n, ,,  , c, i, t, a, t, i, o, n,  , m, a, n, a, g, e, m, e, n, t, ,,  , a, n, d,  , a, u, t, o, m, a, t, i, c,  , L, a, T, e, X,  , p, a, p, e, r,  , t, e, x, t, 
-, g, e, n, e, r, a, t, i, o, n, ,,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , h, u, m, a, n,  , o, v, e, r, s, i, g, h, t,  , a, t,  , e, v, e, r, y,  , s, t, a, g, e,  , t, o,  , e, n, s, u, r, e, 
-, a, c, c, u, r, a, c, y, ,,  , c, o, h, e, r, e, n, c, e, ,,  , a, n, d,  , s, c, h, o, l, a, r, l, y,  , r, i, g, o, u, r, .,  , W, e,  , c, o, n, d, u, c, t, e, d,  , a,  , c, o, m, p, r, e, h, e, n, s, i, v, e, 
-, e, v, a, l, u, a, t, i, o, n,  , a, c, r, o, s, s,  , t, h, r, e, e,  , l, a, y, e, r, s, :,  , (, 1, ),  , I, n, d, e, p, e, n, d, e, n, t,  , H, u, m, a, n,  , R, e, v, i, e, w, ,,  , f, o, l, l, o, w, i, n, g,  , N, e, u, r, I, P, S, 
-, d, o, u, b, l, e, -, b, l, i, n, d,  , s, t, a, n, d, a, r, d, s, ;,  , (, 2, ),  , A, u, t, o, m, a, t, e, d,  , L, L, M,  , R, e, v, i, e, w, ,,  , u, s, i, n, g,  , G, P, T, -, 5,  , a, s,  , a,  , s, c, a, l, a, b, l, e, 
-, h, u, m, a, n,  , r, e, v, i, e, w,  , p, r, o, x, y, ;,  , a, n, d,  , (, 3, ),  , P, r, o, g, r, a, m,  , C, h, a, i, r,  , O, v, e, r, s, i, g, h, t, ,,  , w, h, e, r, e,  , t, h, e,  , c, h, a, i, r,  , m, o, n, i, t, o, r, s, 
-, t, h, e,  , e, n, t, i, r, e,  , r, e, v, i, e, w,  , p, r, o, c, e, s, s,  , a, n, d,  , m, a, k, e, s,  , f, i, n, a, l,  , v, a, l, i, d, a, t, i, o, n,  , a, n, d,  , a, c, c, e, p, t, a, n, c, e,  , d, e, c, i, s, i, o, n, s, ., 
-, T, h, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , A, I, s, s, i, s, t, a, n, t,  , i, m, p, r, o, v, e, s,  , d, r, a, f, t, i, n, g,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d, 
-, t, h, e, m, a, t, i, c,  , c, o, n, s, i, s, t, e, n, c, y, .,  , N, o, n, e, t, h, e, l, e, s, s, ,,  , H, u, m, a, n, -, A, I,  , c, o, l, l, a, b, o, r, a, t, i, o, n,  , r, e, m, a, i, n, s,  , e, s, s, e, n, t, i, a, l,  , f, o, r, 
-, m, a, i, n, t, a, i, n, i, n, g,  , f, a, c, t, u, a, l,  , c, o, r, r, e, c, t, n, e, s, s, ,,  , m, e, t, h, o, d, o, l, o, g, i, c, a, l,  , s, o, u, n, d, n, e, s, s, ,,  , a, n, d,  , e, t, h, i, c, a, l, 
-, c, o, m, p, l, i, a, n, c, e, .,  , D, e, s, p, i, t, e,  , i, t, s,  , e, f, f, e, c, t, i, v, e, n, e, s, s, ,,  , w, e,  , i, d, e, n, t, i, f, y,  , k, e, y,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , i, n, c, l, u, d, i, n, g, 
-, h, a, l, l, u, c, i, n, a, t, e, d,  , c, i, t, a, t, i, o, n, s, ,,  , d, i, f, f, i, c, u, l, t, y,  , a, d, a, p, t, i, n, g,  , t, o,  , d, y, n, a, m, i, c,  , p, a, p, e, r,  , s, t, r, u, c, t, u, r, e, s, ,,  , a, n, d, 
-, i, n, c, o, m, p, l, e, t, e,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , m, u, l, t, i, m, o, d, a, l,  , c, o, n, t, e, n, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11285v1'>Efficient Single-Step Framework for Incremental Class Learning in Neural Networks</a></td><td>I, n, c, r, e, m, e, n, t, a, l,  , l, e, a, r, n, i, n, g,  , r, e, m, a, i, n, s,  , a,  , c, r, i, t, i, c, a, l,  , c, h, a, l, l, e, n, g, e,  , i, n,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g, ,,  , a, s, 
-, m, o, d, e, l, s,  , o, f, t, e, n,  , s, t, r, u, g, g, l, e,  , w, i, t, h,  , c, a, t, a, s, t, r, o, p, h, i, c,  , f, o, r, g, e, t, t, i, n, g,  , -, t, h, e,  , t, e, n, d, e, n, c, y,  , t, o,  , l, o, s, e, 
-, p, r, e, v, i, o, u, s, l, y,  , a, c, q, u, i, r, e, d,  , k, n, o, w, l, e, d, g, e,  , w, h, e, n,  , l, e, a, r, n, i, n, g,  , n, e, w,  , i, n, f, o, r, m, a, t, i, o, n, .,  , T, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, 
-, a, r, e,  , e, v, e, n,  , m, o, r, e,  , p, r, o, n, o, u, n, c, e, d,  , i, n,  , r, e, s, o, u, r, c, e, -, l, i, m, i, t, e, d,  , s, e, t, t, i, n, g, s, .,  , M, a, n, y,  , e, x, i, s, t, i, n, g,  , C, l, a, s, s, 
-, I, n, c, r, e, m, e, n, t, a, l,  , L, e, a, r, n, i, n, g,  , (, C, I, L, ),  , m, e, t, h, o, d, s,  , a, c, h, i, e, v, e,  , h, i, g, h,  , a, c, c, u, r, a, c, y,  , b, y,  , c, o, n, t, i, n, u, a, l, l, y, 
-, a, d, a, p, t, i, n, g,  , t, h, e, i, r,  , f, e, a, t, u, r, e,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s, ;,  , h, o, w, e, v, e, r, ,,  , t, h, e, y,  , o, f, t, e, n,  , r, e, q, u, i, r, e,  , s, u, b, s, t, a, n, t, i, a, l, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , r, e, s, o, u, r, c, e, s,  , a, n, d,  , c, o, m, p, l, e, x, ,,  , i, t, e, r, a, t, i, v, e,  , t, r, a, i, n, i, n, g,  , p, r, o, c, e, d, u, r, e, s, .,  , T, h, i, s,  , w, o, r, k, 
-, i, n, t, r, o, d, u, c, e, s,  , C, I, F, N, e, t,  , (, C, l, a, s, s,  , I, n, c, r, e, m, e, n, t, a, l,  , a, n, d,  , F, r, u, g, a, l,  , N, e, t, w, o, r, k, ), ,,  , a,  , n, o, v, e, l,  , C, I, L,  , a, p, p, r, o, a, c, h, 
-, t, h, a, t,  , a, d, d, r, e, s, s, e, s,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s,  , b, y,  , o, f, f, e, r, i, n, g,  , a,  , h, i, g, h, l, y,  , e, f, f, i, c, i, e, n, t,  , a, n, d,  , s, u, s, t, a, i, n, a, b, l, e, 
-, s, o, l, u, t, i, o, n, .,  , C, I, F, N, e, t, ', s,  , k, e, y,  , i, n, n, o, v, a, t, i, o, n,  , l, i, e, s,  , i, n,  , i, t, s,  , n, o, v, e, l,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , s, e, v, e, r, a, l, 
-, e, x, i, s, t, i, n, g, ,,  , y, e, t,  , s, e, p, a, r, a, t, e, l, y,  , e, x, p, l, o, r, e, d, ,,  , c, o, m, p, o, n, e, n, t, s, :,  , a,  , p, r, e, -, t, r, a, i, n, e, d,  , a, n, d,  , f, r, o, z, e, n,  , f, e, a, t, u, r, e, 
-, e, x, t, r, a, c, t, o, r, ,,  , a,  , c, o, m, p, r, e, s, s, e, d,  , d, a, t, a,  , b, u, f, f, e, r, ,,  , a, n, d,  , a, n,  , e, f, f, i, c, i, e, n, t,  , n, o, n, -, i, t, e, r, a, t, i, v, e,  , o, n, e, -, l, a, y, e, r, 
-, n, e, u, r, a, l,  , n, e, t, w, o, r, k,  , f, o, r,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, .,  , A,  , p, r, e, -, t, r, a, i, n, e, d,  , a, n, d,  , f, r, o, z, e, n,  , f, e, a, t, u, r, e,  , e, x, t, r, a, c, t, o, r, 
-, e, l, i, m, i, n, a, t, e, s,  , c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , e, x, p, e, n, s, i, v, e,  , f, i, n, e, -, t, u, n, i, n, g,  , o, f,  , t, h, e,  , b, a, c, k, b, o, n, e, .,  , T, h, i, s, ,, 
-, c, o, m, b, i, n, e, d,  , w, i, t, h,  , a,  , c, o, m, p, r, e, s, s, e, d,  , b, u, f, f, e, r,  , f, o, r,  , e, f, f, i, c, i, e, n, t,  , m, e, m, o, r, y,  , u, s, e, ,,  , e, n, a, b, l, e, s,  , C, I, F, N, e, t,  , t, o, 
-, p, e, r, f, o, r, m,  , e, f, f, i, c, i, e, n, t,  , c, l, a, s, s, -, i, n, c, r, e, m, e, n, t, a, l,  , l, e, a, r, n, i, n, g,  , t, h, r, o, u, g, h,  , a,  , s, i, n, g, l, e, -, s, t, e, p,  , o, p, t, i, m, i, z, a, t, i, o, n, 
-, p, r, o, c, e, s, s,  , o, n,  , f, i, x, e, d,  , f, e, a, t, u, r, e, s, ,,  , m, i, n, i, m, i, z, i, n, g,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , o, v, e, r, h, e, a, d,  , a, n, d,  , t, r, a, i, n, i, n, g,  , t, i, m, e, 
-, w, i, t, h, o, u, t,  , r, e, q, u, i, r, i, n, g,  , m, u, l, t, i, p, l, e,  , w, e, i, g, h, t,  , u, p, d, a, t, e, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , b, e, n, c, h, m, a, r, k,  , d, a, t, a, s, e, t, s, 
-, c, o, n, f, i, r, m,  , t, h, a, t,  , C, I, F, N, e, t,  , e, f, f, e, c, t, i, v, e, l, y,  , m, i, t, i, g, a, t, e, s,  , c, a, t, a, s, t, r, o, p, h, i, c,  , f, o, r, g, e, t, t, i, n, g,  , a, t,  , t, h, e, 
-, c, l, a, s, s, i, f, i, e, r,  , l, e, v, e, l, ,,  , a, c, h, i, e, v, i, n, g,  , h, i, g, h,  , a, c, c, u, r, a, c, y,  , c, o, m, p, a, r, a, b, l, e,  , t, o,  , t, h, a, t,  , o, f,  , e, x, i, s, t, i, n, g, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , m, e, t, h, o, d, s, ,,  , w, h, i, l, e,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , i, m, p, r, o, v, i, n, g,  , t, r, a, i, n, i, n, g,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d, 
-, s, u, s, t, a, i, n, a, b, i, l, i, t, y, .,  , C, I, F, N, e, t,  , r, e, p, r, e, s, e, n, t, s,  , a,  , s, i, g, n, i, f, i, c, a, n, t,  , a, d, v, a, n, c, e, m, e, n, t,  , i, n,  , m, a, k, i, n, g, 
-, c, l, a, s, s, -, i, n, c, r, e, m, e, n, t, a, l,  , l, e, a, r, n, i, n, g,  , m, o, r, e,  , a, c, c, e, s, s, i, b, l, e,  , a, n, d,  , p, r, a, g, m, a, t, i, c,  , i, n,  , e, n, v, i, r, o, n, m, e, n, t, s,  , w, i, t, h, 
-, l, i, m, i, t, e, d,  , r, e, s, o, u, r, c, e, s, ,,  , e, s, p, e, c, i, a, l, l, y,  , w, h, e, n,  , s, t, r, o, n, g,  , p, r, e, -, t, r, a, i, n, e, d,  , f, e, a, t, u, r, e,  , e, x, t, r, a, c, t, o, r, s,  , a, r, e, 
-, a, v, a, i, l, a, b, l, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11270v1'>Embodied Intelligence in Disassembly: Multimodal Perception Cross-validation and Continual Learning in Neuro-Symbolic TAMP</a></td><td>W, i, t, h,  , t, h, e,  , r, a, p, i, d,  , d, e, v, e, l, o, p, m, e, n, t,  , o, f,  , t, h, e,  , n, e, w,  , e, n, e, r, g, y,  , v, e, h, i, c, l, e,  , i, n, d, u, s, t, r, y, ,,  , t, h, e,  , e, f, f, i, c, i, e, n, t, 
-, d, i, s, a, s, s, e, m, b, l, y,  , a, n, d,  , r, e, c, y, c, l, i, n, g,  , o, f,  , p, o, w, e, r,  , b, a, t, t, e, r, i, e, s,  , h, a, v, e,  , b, e, c, o, m, e,  , a,  , c, r, i, t, i, c, a, l,  , c, h, a, l, l, e, n, g, e, 
-, f, o, r,  , t, h, e,  , c, i, r, c, u, l, a, r,  , e, c, o, n, o, m, y, .,  , I, n,  , c, u, r, r, e, n, t,  , u, n, s, t, r, u, c, t, u, r, e, d,  , d, i, s, a, s, s, e, m, b, l, y,  , s, c, e, n, a, r, i, o, s, ,,  , t, h, e, 
-, d, y, n, a, m, i, c,  , n, a, t, u, r, e,  , o, f,  , t, h, e,  , e, n, v, i, r, o, n, m, e, n, t,  , s, e, v, e, r, e, l, y,  , l, i, m, i, t, s,  , t, h, e,  , r, o, b, u, s, t, n, e, s, s,  , o, f,  , r, o, b, o, t, i, c, 
-, p, e, r, c, e, p, t, i, o, n, ,,  , p, o, s, i, n, g,  , a,  , s, i, g, n, i, f, i, c, a, n, t,  , b, a, r, r, i, e, r,  , t, o,  , a, u, t, o, n, o, m, o, u, s,  , d, i, s, a, s, s, e, m, b, l, y,  , i, n, 
-, i, n, d, u, s, t, r, i, a, l,  , a, p, p, l, i, c, a, t, i, o, n, s, .,  , T, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , a,  , c, o, n, t, i, n, u, a, l,  , l, e, a, r, n, i, n, g,  , f, r, a, m, e, w, o, r, k, 
-, b, a, s, e, d,  , o, n,  , N, e, u, r, o, -, S, y, m, b, o, l, i, c,  , t, a, s, k,  , a, n, d,  , m, o, t, i, o, n,  , p, l, a, n, n, i, n, g,  , (, T, A, M, P, ),  , t, o,  , e, n, h, a, n, c, e,  , t, h, e, 
-, a, d, a, p, t, a, b, i, l, i, t, y,  , o, f,  , e, m, b, o, d, i, e, d,  , i, n, t, e, l, l, i, g, e, n, c, e,  , s, y, s, t, e, m, s,  , i, n,  , d, y, n, a, m, i, c,  , e, n, v, i, r, o, n, m, e, n, t, s, .,  , O, u, r, 
-, a, p, p, r, o, a, c, h,  , i, n, t, e, g, r, a, t, e, s,  , a,  , m, u, l, t, i, m, o, d, a, l,  , p, e, r, c, e, p, t, i, o, n,  , c, r, o, s, s, -, v, a, l, i, d, a, t, i, o, n,  , m, e, c, h, a, n, i, s, m,  , i, n, t, o,  , a, 
-, b, i, d, i, r, e, c, t, i, o, n, a, l,  , r, e, a, s, o, n, i, n, g,  , f, l, o, w, :,  , t, h, e,  , f, o, r, w, a, r, d,  , w, o, r, k, i, n, g,  , f, l, o, w,  , d, y, n, a, m, i, c, a, l, l, y,  , r, e, f, i, n, e, s,  , a, n, d, 
-, o, p, t, i, m, i, z, e, s,  , a, c, t, i, o, n,  , s, t, r, a, t, e, g, i, e, s, ,,  , w, h, i, l, e,  , t, h, e,  , b, a, c, k, w, a, r, d,  , l, e, a, r, n, i, n, g,  , f, l, o, w,  , a, u, t, o, n, o, m, o, u, s, l, y, 
-, c, o, l, l, e, c, t, s,  , e, f, f, e, c, t, i, v, e,  , d, a, t, a,  , f, r, o, m,  , h, i, s, t, o, r, i, c, a, l,  , t, a, s, k,  , e, x, e, c, u, t, i, o, n, s,  , t, o,  , f, a, c, i, l, i, t, a, t, e,  , c, o, n, t, i, n, u, a, l, 
-, s, y, s, t, e, m,  , l, e, a, r, n, i, n, g, ,,  , e, n, a, b, l, i, n, g,  , s, e, l, f, -, o, p, t, i, m, i, z, a, t, i, o, n, .,  , E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , t, h, e, 
-, p, r, o, p, o, s, e, d,  , f, r, a, m, e, w, o, r, k,  , i, m, p, r, o, v, e, s,  , t, h, e,  , t, a, s, k,  , s, u, c, c, e, s, s,  , r, a, t, e,  , i, n,  , d, y, n, a, m, i, c,  , d, i, s, a, s, s, e, m, b, l, y, 
-, s, c, e, n, a, r, i, o, s,  , f, r, o, m,  , 8, 1, ., 6, 8, %,  , t, o,  , 1, 0, 0, %, ,,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g,  , t, h, e,  , a, v, e, r, a, g, e,  , n, u, m, b, e, r,  , o, f,  , p, e, r, c, e, p, t, i, o, n, 
-, m, i, s, j, u, d, g, m, e, n, t, s,  , f, r, o, m,  , 3, ., 3, 8, 9,  , t, o,  , 1, ., 1, 2, 8, .,  , T, h, i, s,  , r, e, s, e, a, r, c, h,  , p, r, o, v, i, d, e, s,  , a,  , n, e, w,  , p, a, r, a, d, i, g, m,  , f, o, r, 
-, e, n, h, a, n, c, i, n, g,  , t, h, e,  , r, o, b, u, s, t, n, e, s, s,  , a, n, d,  , a, d, a, p, t, a, b, i, l, i, t, y,  , o, f,  , e, m, b, o, d, i, e, d,  , i, n, t, e, l, l, i, g, e, n, c, e,  , i, n,  , c, o, m, p, l, e, x, 
-, i, n, d, u, s, t, r, i, a, l,  , e, n, v, i, r, o, n, m, e, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11218v1'>Geometrically Constrained and Token-Based Probabilistic Spatial Transformers</a></td><td>F, i, n, e, -, g, r, a, i, n, e, d,  , v, i, s, u, a, l,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , (, F, G, V, C, ),  , r, e, m, a, i, n, s,  , h, i, g, h, l, y,  , s, e, n, s, i, t, i, v, e,  , t, o, 
-, g, e, o, m, e, t, r, i, c,  , v, a, r, i, a, b, i, l, i, t, y, ,,  , w, h, e, r, e,  , o, b, j, e, c, t, s,  , a, p, p, e, a, r,  , u, n, d, e, r,  , a, r, b, i, t, r, a, r, y,  , o, r, i, e, n, t, a, t, i, o, n, s, ,, 
-, s, c, a, l, e, s, ,,  , a, n, d,  , p, e, r, s, p, e, c, t, i, v, e,  , d, i, s, t, o, r, t, i, o, n, s, .,  , W, h, i, l, e,  , e, q, u, i, v, a, r, i, a, n, t,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , a, d, d, r, e, s, s, 
-, t, h, i, s,  , i, s, s, u, e, ,,  , t, h, e, y,  , t, y, p, i, c, a, l, l, y,  , r, e, q, u, i, r, e,  , s, u, b, s, t, a, n, t, i, a, l,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , r, e, s, o, u, r, c, e, s,  , a, n, d, 
-, r, e, s, t, r, i, c, t,  , t, h, e,  , h, y, p, o, t, h, e, s, i, s,  , s, p, a, c, e, .,  , W, e,  , r, e, v, i, s, i, t,  , S, p, a, t, i, a, l,  , T, r, a, n, s, f, o, r, m, e, r,  , N, e, t, w, o, r, k, s,  , (, S, T, N, s, ), 
-, a, s,  , a,  , c, a, n, o, n, i, c, a, l, i, z, a, t, i, o, n,  , t, o, o, l,  , f, o, r,  , t, r, a, n, s, f, o, r, m, e, r, -, b, a, s, e, d,  , v, i, s, i, o, n,  , p, i, p, e, l, i, n, e, s, ,,  , e, m, p, h, a, s, i, z, i, n, g, 
-, t, h, e, i, r,  , f, l, e, x, i, b, i, l, i, t, y, ,,  , b, a, c, k, b, o, n, e, -, a, g, n, o, s, t, i, c,  , n, a, t, u, r, e, ,,  , a, n, d,  , l, a, c, k,  , o, f,  , a, r, c, h, i, t, e, c, t, u, r, a, l, 
-, c, o, n, s, t, r, a, i, n, t, s, .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , p, r, o, b, a, b, i, l, i, s, t, i, c, ,,  , c, o, m, p, o, n, e, n, t, -, w, i, s, e,  , e, x, t, e, n, s, i, o, n,  , t, h, a, t,  , i, m, p, r, o, v, e, s, 
-, r, o, b, u, s, t, n, e, s, s, .,  , S, p, e, c, i, f, i, c, a, l, l, y, ,,  , w, e,  , d, e, c, o, m, p, o, s, e,  , a, f, f, i, n, e,  , t, r, a, n, s, f, o, r, m, a, t, i, o, n, s,  , i, n, t, o,  , r, o, t, a, t, i, o, n, ,, 
-, s, c, a, l, i, n, g, ,,  , a, n, d,  , s, h, e, a, r, i, n, g, ,,  , a, n, d,  , r, e, g, r, e, s, s,  , e, a, c, h,  , c, o, m, p, o, n, e, n, t,  , u, n, d, e, r,  , g, e, o, m, e, t, r, i, c,  , c, o, n, s, t, r, a, i, n, t, s, 
-, u, s, i, n, g,  , a,  , s, h, a, r, e, d,  , l, o, c, a, l, i, z, a, t, i, o, n,  , e, n, c, o, d, e, r, .,  , T, o,  , c, a, p, t, u, r, e,  , u, n, c, e, r, t, a, i, n, t, y, ,,  , w, e,  , m, o, d, e, l,  , e, a, c, h, 
-, c, o, m, p, o, n, e, n, t,  , w, i, t, h,  , a,  , G, a, u, s, s, i, a, n,  , v, a, r, i, a, t, i, o, n, a, l,  , p, o, s, t, e, r, i, o, r,  , a, n, d,  , p, e, r, f, o, r, m,  , s, a, m, p, l, i, n, g, -, b, a, s, e, d, 
-, c, a, n, o, n, i, c, a, l, i, z, a, t, i, o, n,  , d, u, r, i, n, g,  , i, n, f, e, r, e, n, c, e, ., A,  , n, o, v, e, l,  , c, o, m, p, o, n, e, n, t, -, w, i, s, e,  , a, l, i, g, n, m, e, n, t,  , l, o, s, s, 
-, l, e, v, e, r, a, g, e, s,  , a, u, g, m, e, n, t, a, t, i, o, n,  , p, a, r, a, m, e, t, e, r, s,  , t, o,  , g, u, i, d, e,  , s, p, a, t, i, a, l,  , a, l, i, g, n, m, e, n, t, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n, 
-, c, h, a, l, l, e, n, g, i, n, g,  , m, o, t, h,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , b, e, n, c, h, m, a, r, k, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , o, u, r,  , m, e, t, h, o, d, 
-, c, o, n, s, i, s, t, e, n, t, l, y,  , i, m, p, r, o, v, e, s,  , r, o, b, u, s, t, n, e, s, s,  , c, o, m, p, a, r, e, d,  , t, o,  , o, t, h, e, r,  , S, T, N, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11206v2'>Evalet: Evaluating Large Language Models by Fragmenting Outputs into Functions</a></td><td>P, r, a, c, t, i, t, i, o, n, e, r, s,  , i, n, c, r, e, a, s, i, n, g, l, y,  , r, e, l, y,  , o, n,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , t, o,  , e, v, a, l, u, a, t, e, 
-, g, e, n, e, r, a, t, i, v, e,  , A, I,  , o, u, t, p, u, t, s,  , t, h, r, o, u, g, h,  , ", L, L, M, -, a, s, -, a, -, J, u, d, g, e, ",  , a, p, p, r, o, a, c, h, e, s, .,  , H, o, w, e, v, e, r, ,,  , t, h, e, s, e, 
-, m, e, t, h, o, d, s,  , p, r, o, d, u, c, e,  , h, o, l, i, s, t, i, c,  , s, c, o, r, e, s,  , t, h, a, t,  , o, b, s, c, u, r, e,  , w, h, i, c, h,  , s, p, e, c, i, f, i, c,  , e, l, e, m, e, n, t, s,  , i, n, f, l, u, e, n, c, e, d, 
-, t, h, e,  , a, s, s, e, s, s, m, e, n, t, s, .,  , W, e,  , p, r, o, p, o, s, e,  , f, u, n, c, t, i, o, n, a, l,  , f, r, a, g, m, e, n, t, a, t, i, o, n, ,,  , a,  , m, e, t, h, o, d,  , t, h, a, t,  , d, i, s, s, e, c, t, s, 
-, e, a, c, h,  , o, u, t, p, u, t,  , i, n, t, o,  , k, e, y,  , f, r, a, g, m, e, n, t, s,  , a, n, d,  , i, n, t, e, r, p, r, e, t, s,  , t, h, e,  , r, h, e, t, o, r, i, c,  , f, u, n, c, t, i, o, n, s,  , t, h, a, t,  , e, a, c, h, 
-, f, r, a, g, m, e, n, t,  , s, e, r, v, e, s,  , r, e, l, a, t, i, v, e,  , t, o,  , e, v, a, l, u, a, t, i, o, n,  , c, r, i, t, e, r, i, a,  , -, -,  , s, u, r, f, a, c, i, n, g,  , t, h, e,  , e, l, e, m, e, n, t, s,  , o, f, 
-, i, n, t, e, r, e, s, t,  , a, n, d,  , r, e, v, e, a, l, i, n, g,  , h, o, w,  , t, h, e, y,  , f, u, l, f, i, l, l,  , o, r,  , h, i, n, d, e, r,  , u, s, e, r,  , g, o, a, l, s, .,  , W, e,  , i, n, s, t, a, n, t, i, a, t, e, 
-, t, h, i, s,  , a, p, p, r, o, a, c, h,  , i, n,  , E, v, a, l, e, t, ,,  , a, n,  , i, n, t, e, r, a, c, t, i, v, e,  , s, y, s, t, e, m,  , t, h, a, t,  , v, i, s, u, a, l, i, z, e, s,  , f, r, a, g, m, e, n, t, -, l, e, v, e, l, 
-, f, u, n, c, t, i, o, n, s,  , a, c, r, o, s, s,  , m, a, n, y,  , o, u, t, p, u, t, s,  , t, o,  , s, u, p, p, o, r, t,  , i, n, s, p, e, c, t, i, o, n, ,,  , r, a, t, i, n, g, ,,  , a, n, d,  , c, o, m, p, a, r, i, s, o, n,  , o, f, 
-, e, v, a, l, u, a, t, i, o, n, s, .,  , A,  , u, s, e, r,  , s, t, u, d, y,  , (, N, =, 1, 0, ),  , f, o, u, n, d,  , t, h, a, t, ,,  , w, h, i, l, e,  , p, r, a, c, t, i, t, i, o, n, e, r, s,  , s, t, r, u, g, g, l, e, d,  , t, o, 
-, v, a, l, i, d, a, t, e,  , h, o, l, i, s, t, i, c,  , s, c, o, r, e, s, ,,  , o, u, r,  , a, p, p, r, o, a, c, h,  , h, e, l, p, e, d,  , t, h, e, m,  , i, d, e, n, t, i, f, y,  , 4, 8, %,  , m, o, r, e,  , e, v, a, l, u, a, t, i, o, n, 
-, m, i, s, a, l, i, g, n, m, e, n, t, s, .,  , T, h, i, s,  , h, e, l, p, e, d,  , t, h, e, m,  , c, a, l, i, b, r, a, t, e,  , t, r, u, s, t,  , i, n,  , L, L, M,  , e, v, a, l, u, a, t, i, o, n, s,  , a, n, d,  , r, e, l, y,  , o, n, 
-, t, h, e, m,  , t, o,  , f, i, n, d,  , m, o, r, e,  , a, c, t, i, o, n, a, b, l, e,  , i, s, s, u, e, s,  , i, n,  , m, o, d, e, l,  , o, u, t, p, u, t, s, .,  , O, u, r,  , w, o, r, k,  , s, h, i, f, t, s,  , L, L, M, 
-, e, v, a, l, u, a, t, i, o, n,  , f, r, o, m,  , q, u, a, n, t, i, t, a, t, i, v, e,  , s, c, o, r, e, s,  , t, o, w, a, r, d,  , q, u, a, l, i, t, a, t, i, v, e, ,,  , f, i, n, e, -, g, r, a, i, n, e, d,  , a, n, a, l, y, s, i, s, 
-, o, f,  , m, o, d, e, l,  , b, e, h, a, v, i, o, r, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11198v1'>Quantum Architecture Search for Solving Quantum Machine Learning Tasks</a></td><td>Q, u, a, n, t, u, m,  , c, o, m, p, u, t, i, n, g,  , l, e, v, e, r, a, g, e, s,  , q, u, a, n, t, u, m,  , m, e, c, h, a, n, i, c, s,  , t, o,  , a, d, d, r, e, s, s,  , c, o, m, p, u, t, a, t, i, o, n, a, l, 
-, p, r, o, b, l, e, m, s,  , i, n,  , w, a, y, s,  , t, h, a, t,  , d, i, f, f, e, r,  , f, u, n, d, a, m, e, n, t, a, l, l, y,  , f, r, o, m,  , c, l, a, s, s, i, c, a, l,  , a, p, p, r, o, a, c, h, e, s, .,  , W, h, i, l, e, 
-, c, u, r, r, e, n, t,  , q, u, a, n, t, u, m,  , h, a, r, d, w, a, r, e,  , r, e, m, a, i, n, s,  , e, r, r, o, r, -, p, r, o, n, e,  , a, n, d,  , l, i, m, i, t, e, d,  , i, n,  , s, c, a, l, e, ,,  , V, a, r, i, a, t, i, o, n, a, l, 
-, Q, u, a, n, t, u, m,  , C, i, r, c, u, i, t, s,  , o, f, f, e, r,  , a,  , n, o, i, s, e, -, r, e, s, i, l, i, e, n, t,  , f, r, a, m, e, w, o, r, k,  , s, u, i, t, a, b, l, e,  , f, o, r,  , t, o, d, a, y, ', s, 
-, d, e, v, i, c, e, s, .,  , T, h, e,  , p, e, r, f, o, r, m, a, n, c, e,  , o, f,  , t, h, e, s, e,  , c, i, r, c, u, i, t, s,  , s, t, r, o, n, g, l, y,  , d, e, p, e, n, d, s,  , o, n,  , t, h, e,  , u, n, d, e, r, l, y, i, n, g, 
-, a, r, c, h, i, t, e, c, t, u, r, e,  , o, f,  , t, h, e, i, r,  , p, a, r, a, m, e, t, e, r, i, z, e, d,  , q, u, a, n, t, u, m,  , c, o, m, p, o, n, e, n, t, s, .,  , I, d, e, n, t, i, f, y, i, n, g,  , e, f, f, i, c, i, e, n, t, ,, 
-, h, a, r, d, w, a, r, e, -, c, o, m, p, a, t, i, b, l, e,  , q, u, a, n, t, u, m,  , c, i, r, c, u, i, t,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , -, -,  , k, n, o, w, n,  , a, s,  , Q, u, a, n, t, u, m, 
-, A, r, c, h, i, t, e, c, t, u, r, e,  , S, e, a, r, c, h,  , (, Q, A, S, ),  , -, -,  , i, s,  , t, h, e, r, e, f, o, r, e,  , e, s, s, e, n, t, i, a, l, .,  , M, a, n, u, a, l,  , Q, A, S,  , i, s,  , c, o, m, p, l, e, x,  , a, n, d, 
-, e, r, r, o, r, -, p, r, o, n, e, ,,  , m, o, t, i, v, a, t, i, n, g,  , e, f, f, o, r, t, s,  , t, o,  , a, u, t, o, m, a, t, e,  , i, t, .,  , A, m, o, n, g,  , v, a, r, i, o, u, s,  , a, u, t, o, m, a, t, e, d, 
-, s, t, r, a, t, e, g, i, e, s, ,,  , R, e, i, n, f, o, r, c, e, m, e, n, t,  , L, e, a, r, n, i, n, g,  , (, R, L, ),  , r, e, m, a, i, n, s,  , u, n, d, e, r, e, x, p, l, o, r, e, d, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , i, n, 
-, Q, u, a, n, t, u, m,  , M, a, c, h, i, n, e,  , L, e, a, r, n, i, n, g,  , c, o, n, t, e, x, t, s, .,  , T, h, i, s,  , w, o, r, k,  , i, n, t, r, o, d, u, c, e, s,  , R, L, -, Q, A, S, ,,  , a,  , f, r, a, m, e, w, o, r, k, 
-, t, h, a, t,  , a, p, p, l, i, e, s,  , R, L,  , t, o,  , d, i, s, c, o, v, e, r,  , e, f, f, e, c, t, i, v, e,  , c, i, r, c, u, i, t,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , f, o, r,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, 
-, t, a, s, k, s, .,  , W, e,  , e, v, a, l, u, a, t, e,  , R, L, -, Q, A, S,  , u, s, i, n, g,  , t, h, e,  , I, r, i, s,  , a, n, d,  , b, i, n, a, r, y,  , M, N, I, S, T,  , d, a, t, a, s, e, t, s, .,  , T, h, e,  , a, g, e, n, t, 
-, a, u, t, o, n, o, m, o, u, s, l, y,  , d, i, s, c, o, v, e, r, s,  , l, o, w, -, c, o, m, p, l, e, x, i, t, y,  , c, i, r, c, u, i, t,  , d, e, s, i, g, n, s,  , t, h, a, t,  , a, c, h, i, e, v, e,  , h, i, g, h,  , t, e, s, t, 
-, a, c, c, u, r, a, c, y, .,  , O, u, r,  , r, e, s, u, l, t, s,  , s, h, o, w,  , t, h, a, t,  , R, L,  , i, s,  , a,  , v, i, a, b, l, e,  , a, p, p, r, o, a, c, h,  , f, o, r,  , a, u, t, o, m, a, t, e, d, 
-, a, r, c, h, i, t, e, c, t, u, r, e,  , s, e, a, r, c, h,  , i, n,  , q, u, a, n, t, u, m,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g, .,  , H, o, w, e, v, e, r, ,,  , a, p, p, l, y, i, n, g,  , R, L, -, Q, A, S,  , t, o, 
-, m, o, r, e,  , c, o, m, p, l, e, x,  , t, a, s, k, s,  , w, i, l, l,  , r, e, q, u, i, r, e,  , f, u, r, t, h, e, r,  , r, e, f, i, n, e, m, e, n, t,  , o, f,  , t, h, e,  , s, e, a, r, c, h,  , s, t, r, a, t, e, g, y,  , a, n, d, 
-, p, e, r, f, o, r, m, a, n, c, e,  , e, v, a, l, u, a, t, i, o, n,  , m, e, c, h, a, n, i, s, m, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13353v1'>Hybrid Quantum-Classical Model for Image Classification</a></td><td>T, h, i, s,  , s, t, u, d, y,  , p, r, e, s, e, n, t, s,  , a,  , s, y, s, t, e, m, a, t, i, c,  , c, o, m, p, a, r, i, s, o, n,  , b, e, t, w, e, e, n,  , h, y, b, r, i, d,  , q, u, a, n, t, u, m, -, c, l, a, s, s, i, c, a, l, 
-, n, e, u, r, a, l,  , n, e, t, w, o, r, k, s,  , a, n, d,  , p, u, r, e, l, y,  , c, l, a, s, s, i, c, a, l,  , m, o, d, e, l, s,  , a, c, r, o, s, s,  , t, h, r, e, e,  , b, e, n, c, h, m, a, r, k,  , d, a, t, a, s, e, t, s, 
-, (, M, N, I, S, T, ,,  , C, I, F, A, R, 1, 0, 0, ,,  , a, n, d,  , S, T, L, 1, 0, ),  , t, o,  , e, v, a, l, u, a, t, e,  , t, h, e, i, r,  , p, e, r, f, o, r, m, a, n, c, e, ,,  , e, f, f, i, c, i, e, n, c, y, ,,  , a, n, d, 
-, r, o, b, u, s, t, n, e, s, s, .,  , T, h, e,  , h, y, b, r, i, d,  , m, o, d, e, l, s,  , i, n, t, e, g, r, a, t, e,  , p, a, r, a, m, e, t, e, r, i, z, e, d,  , q, u, a, n, t, u, m,  , c, i, r, c, u, i, t, s,  , w, i, t, h, 
-, c, l, a, s, s, i, c, a, l,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , a, r, c, h, i, t, e, c, t, u, r, e, s, ,,  , w, h, i, l, e,  , t, h, e,  , c, l, a, s, s, i, c, a, l,  , c, o, u, n, t, e, r, p, a, r, t, s,  , u, s, e, 
-, c, o, n, v, e, n, t, i, o, n, a, l,  , c, o, n, v, o, l, u, t, i, o, n, a, l,  , n, e, u, r, a, l,  , n, e, t, w, o, r, k, s,  , (, C, N, N, s, ), .,  , E, x, p, e, r, i, m, e, n, t, s,  , w, e, r, e,  , c, o, n, d, u, c, t, e, d, 
-, o, v, e, r,  , 5, 0,  , t, r, a, i, n, i, n, g,  , e, p, o, c, h, s,  , f, o, r,  , e, a, c, h,  , d, a, t, a, s, e, t, ,,  , w, i, t, h,  , e, v, a, l, u, a, t, i, o, n, s,  , o, n,  , v, a, l, i, d, a, t, i, o, n, 
-, a, c, c, u, r, a, c, y, ,,  , t, e, s, t,  , a, c, c, u, r, a, c, y, ,,  , t, r, a, i, n, i, n, g,  , t, i, m, e, ,,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , r, e, s, o, u, r, c, e,  , u, s, a, g, e, ,,  , a, n, d, 
-, a, d, v, e, r, s, a, r, i, a, l,  , r, o, b, u, s, t, n, e, s, s,  , (, t, e, s, t, e, d,  , w, i, t, h,  , $, \, e, p, s, i, l, o, n, =, 0, ., 1, $,  , p, e, r, t, u, r, b, a, t, i, o, n, s, ), ., K, e, y,  , f, i, n, d, i, n, g, s, 
-, d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , h, y, b, r, i, d,  , m, o, d, e, l, s,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m,  , c, l, a, s, s, i, c, a, l,  , m, o, d, e, l, s,  , i, n, 
-, f, i, n, a, l,  , a, c, c, u, r, a, c, y, ,,  , a, c, h, i, e, v, i, n, g,  , {, 9, 9, ., 3, 8, \, %,  , (, M, N, I, S, T, ), ,,  , 4, 1, ., 6, 9, \, %,  , (, C, I, F, A, R, 1, 0, 0, ), ,,  , a, n, d,  , 7, 4, ., 0, 5, \, %, 
-, (, S, T, L, 1, 0, ),  , v, a, l, i, d, a, t, i, o, n,  , a, c, c, u, r, a, c, y, ,,  , c, o, m, p, a, r, e, d,  , t, o,  , c, l, a, s, s, i, c, a, l,  , b, e, n, c, h, m, a, r, k, s,  , o, f,  , 9, 8, ., 2, 1, \, %, ,, 
-, 3, 2, ., 2, 5, \, %, ,,  , a, n, d,  , 6, 3, ., 7, 6, \, %, ,,  , r, e, s, p, e, c, t, i, v, e, l, y, .,  , N, o, t, a, b, l, y, ,,  , t, h, e,  , h, y, b, r, i, d,  , a, d, v, a, n, t, a, g, e,  , s, c, a, l, e, s,  , w, i, t, h, 
-, d, a, t, a, s, e, t,  , c, o, m, p, l, e, x, i, t, y, ,,  , s, h, o, w, i, n, g,  , t, h, e,  , m, o, s, t,  , s, i, g, n, i, f, i, c, a, n, t,  , g, a, i, n, s,  , o, n,  , C, I, F, A, R, 1, 0, 0,  , (, +, 9, ., 4, 4, \, %, ), 
-, a, n, d,  , S, T, L, 1, 0,  , (, +, 1, 0, ., 2, 9, \, %, ), .,  , H, y, b, r, i, d,  , m, o, d, e, l, s,  , a, l, s, o,  , t, r, a, i, n,  , 5, -, -, 1, 2, $, \, t, i, m, e, s, $,  , f, a, s, t, e, r,  , (, e, ., g, ., ,, 
-, 2, 1, ., 2, 3, s,  , v, s, .,  , 1, 0, 8, ., 4, 4, s,  , p, e, r,  , e, p, o, c, h,  , o, n,  , M, N, I, S, T, ),  , a, n, d,  , u, s, e,  , 6, -, -, 3, 2, \, %,  , f, e, w, e, r,  , p, a, r, a, m, e, t, e, r, s, },  , w, h, i, l, e, 
-, m, a, i, n, t, a, i, n, i, n, g,  , s, u, p, e, r, i, o, r,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , t, o,  , u, n, s, e, e, n,  , t, e, s, t,  , d, a, t, a, ., A, d, v, e, r, s, a, r, i, a, l,  , r, o, b, u, s, t, n, e, s, s, 
-, t, e, s, t, s,  , r, e, v, e, a, l,  , t, h, a, t,  , h, y, b, r, i, d,  , m, o, d, e, l, s,  , a, r, e,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , m, o, r, e,  , r, e, s, i, l, i, e, n, t,  , o, n,  , s, i, m, p, l, e, r, 
-, d, a, t, a, s, e, t, s,  , (, e, ., g, ., ,,  , 4, 5, ., 2, 7, \, %,  , r, o, b, u, s, t,  , a, c, c, u, r, a, c, y,  , o, n,  , M, N, I, S, T,  , v, s, .,  , 1, 0, ., 8, 0, \, %,  , f, o, r,  , c, l, a, s, s, i, c, a, l, ),  , b, u, t, 
-, s, h, o, w,  , c, o, m, p, a, r, a, b, l, e,  , f, r, a, g, i, l, i, t, y,  , o, n,  , c, o, m, p, l, e, x,  , d, a, t, a, s, e, t, s,  , l, i, k, e,  , C, I, F, A, R, 1, 0, 0,  , (, $, \, s, i, m, $, 1, \, %, 
-, r, o, b, u, s, t, n, e, s, s,  , f, o, r,  , b, o, t, h, ), .,  , R, e, s, o, u, r, c, e,  , e, f, f, i, c, i, e, n, c, y,  , a, n, a, l, y, s, e, s,  , i, n, d, i, c, a, t, e,  , t, h, a, t,  , h, y, b, r, i, d,  , m, o, d, e, l, s, 
-, c, o, n, s, u, m, e,  , l, e, s, s,  , m, e, m, o, r, y,  , (, 4, -, -, 5, G, B,  , v, s, .,  , 5, -, -, 6, G, B,  , f, o, r,  , c, l, a, s, s, i, c, a, l, ),  , a, n, d,  , l, o, w, e, r,  , C, P, U,  , u, t, i, l, i, z, a, t, i, o, n, 
-, (, 9, ., 5, \, %,  , v, s, .,  , 2, 3, ., 2, \, %,  , o, n,  , a, v, e, r, a, g, e, ), ., T, h, e, s, e,  , r, e, s, u, l, t, s,  , s, u, g, g, e, s, t,  , t, h, a, t,  , h, y, b, r, i, d, 
-, q, u, a, n, t, u, m, -, c, l, a, s, s, i, c, a, l,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , o, f, f, e, r,  , c, o, m, p, e, l, l, i, n, g,  , a, d, v, a, n, t, a, g, e, s,  , i, n,  , a, c, c, u, r, a, c, y, ,, 
-, t, r, a, i, n, i, n, g,  , e, f, f, i, c, i, e, n, c, y, ,,  , a, n, d,  , p, a, r, a, m, e, t, e, r,  , s, c, a, l, a, b, i, l, i, t, y, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , f, o, r,  , c, o, m, p, l, e, x,  , v, i, s, i, o, n, 
-, t, a, s, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11197v1'>DreamNav: A Trajectory-Based Imaginative Framework for Zero-Shot Vision-and-Language Navigation</a></td><td>V, i, s, i, o, n, -, a, n, d, -, L, a, n, g, u, a, g, e,  , N, a, v, i, g, a, t, i, o, n,  , i, n,  , C, o, n, t, i, n, u, o, u, s,  , E, n, v, i, r, o, n, m, e, n, t, s,  , (, V, L, N, -, C, E, ), ,,  , w, h, i, c, h, 
-, l, i, n, k, s,  , l, a, n, g, u, a, g, e,  , i, n, s, t, r, u, c, t, i, o, n, s,  , t, o,  , p, e, r, c, e, p, t, i, o, n,  , a, n, d,  , c, o, n, t, r, o, l,  , i, n,  , t, h, e,  , r, e, a, l,  , w, o, r, l, d, ,,  , i, s,  , a, 
-, c, o, r, e,  , c, a, p, a, b, i, l, i, t, y,  , o, f,  , e, m, b, o, d, i, e, d,  , r, o, b, o, t, s, .,  , R, e, c, e, n, t, l, y, ,,  , l, a, r, g, e, -, s, c, a, l, e,  , p, r, e, t, r, a, i, n, e, d,  , f, o, u, n, d, a, t, i, o, n, 
-, m, o, d, e, l, s,  , h, a, v, e,  , b, e, e, n,  , l, e, v, e, r, a, g, e, d,  , a, s,  , s, h, a, r, e, d,  , p, r, i, o, r, s,  , f, o, r,  , p, e, r, c, e, p, t, i, o, n, ,,  , r, e, a, s, o, n, i, n, g, ,,  , a, n, d, 
-, a, c, t, i, o, n, ,,  , e, n, a, b, l, i, n, g,  , z, e, r, o, -, s, h, o, t,  , V, L, N,  , w, i, t, h, o, u, t,  , t, a, s, k, -, s, p, e, c, i, f, i, c,  , t, r, a, i, n, i, n, g, .,  , H, o, w, e, v, e, r, ,, 
-, e, x, i, s, t, i, n, g,  , z, e, r, o, -, s, h, o, t,  , V, L, N,  , m, e, t, h, o, d, s,  , d, e, p, e, n, d,  , o, n,  , c, o, s, t, l, y,  , p, e, r, c, e, p, t, i, o, n,  , a, n, d,  , p, a, s, s, i, v, e,  , s, c, e, n, e, 
-, u, n, d, e, r, s, t, a, n, d, i, n, g, ,,  , c, o, l, l, a, p, s, i, n, g,  , c, o, n, t, r, o, l,  , t, o,  , p, o, i, n, t, -, l, e, v, e, l,  , c, h, o, i, c, e, s, .,  , A, s,  , a,  , r, e, s, u, l, t, ,,  , t, h, e, y,  , a, r, e, 
-, e, x, p, e, n, s, i, v, e,  , t, o,  , d, e, p, l, o, y, ,,  , m, i, s, a, l, i, g, n, e, d,  , i, n,  , a, c, t, i, o, n,  , s, e, m, a, n, t, i, c, s, ,,  , a, n, d,  , s, h, o, r, t, -, s, i, g, h, t, e, d,  , i, n, 
-, p, l, a, n, n, i, n, g, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , i, s, s, u, e, s, ,,  , w, e,  , p, r, e, s, e, n, t,  , D, r, e, a, m, N, a, v,  , t, h, a, t,  , f, o, c, u, s, e, s,  , o, n,  , t, h, e, 
-, f, o, l, l, o, w, i, n, g,  , t, h, r, e, e,  , a, s, p, e, c, t, s, :,  , (, 1, ),  , f, o, r,  , r, e, d, u, c, i, n, g,  , s, e, n, s, o, r, y,  , c, o, s, t, ,,  , o, u, r,  , E, g, o, V, i, e, w,  , C, o, r, r, e, c, t, o, r, 
-, a, l, i, g, n, s,  , v, i, e, w, p, o, i, n, t, s,  , a, n, d,  , s, t, a, b, i, l, i, z, e, s,  , e, g, o, c, e, n, t, r, i, c,  , p, e, r, c, e, p, t, i, o, n, ;,  , (, 2, ),  , i, n, s, t, e, a, d,  , o, f, 
-, p, o, i, n, t, -, l, e, v, e, l,  , a, c, t, i, o, n, s, ,,  , o, u, r,  , T, r, a, j, e, c, t, o, r, y,  , P, r, e, d, i, c, t, o, r,  , f, a, v, o, r, s,  , g, l, o, b, a, l,  , t, r, a, j, e, c, t, o, r, y, -, l, e, v, e, l, 
-, p, l, a, n, n, i, n, g,  , t, o,  , b, e, t, t, e, r,  , a, l, i, g, n,  , w, i, t, h,  , i, n, s, t, r, u, c, t, i, o, n,  , s, e, m, a, n, t, i, c, s, ;,  , a, n, d,  , (, 3, ),  , t, o,  , e, n, a, b, l, e, 
-, a, n, t, i, c, i, p, a, t, o, r, y,  , a, n, d,  , l, o, n, g, -, h, o, r, i, z, o, n,  , p, l, a, n, n, i, n, g, ,,  , w, e,  , p, r, o, p, o, s, e,  , a, n,  , I, m, a, g, i, n, a, t, i, o, n,  , P, r, e, d, i, c, t, o, r,  , t, o, 
-, e, n, d, o, w,  , t, h, e,  , a, g, e, n, t,  , w, i, t, h,  , p, r, o, a, c, t, i, v, e,  , t, h, i, n, k, i, n, g,  , c, a, p, a, b, i, l, i, t, y, .,  , O, n,  , V, L, N, -, C, E,  , a, n, d,  , r, e, a, l, -, w, o, r, l, d, 
-, t, e, s, t, s, ,,  , D, r, e, a, m, N, a, v,  , s, e, t, s,  , a,  , n, e, w,  , z, e, r, o, -, s, h, o, t,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , (, S, O, T, A, ), ,,  , o, u, t, p, e, r, f, o, r, m, i, n, g,  , t, h, e, 
-, s, t, r, o, n, g, e, s, t,  , e, g, o, c, e, n, t, r, i, c,  , b, a, s, e, l, i, n, e,  , w, i, t, h,  , e, x, t, r, a,  , i, n, f, o, r, m, a, t, i, o, n,  , b, y,  , u, p,  , t, o,  , 7, ., 4, 9, \, %,  , a, n, d, 
-, 1, 8, ., 1, 5, \, %,  , i, n,  , t, e, r, m, s,  , o, f,  , S, R,  , a, n, d,  , S, P, L,  , m, e, t, r, i, c, s, .,  , T, o,  , o, u, r,  , k, n, o, w, l, e, d, g, e, ,,  , t, h, i, s,  , i, s,  , t, h, e,  , f, i, r, s, t, 
-, z, e, r, o, -, s, h, o, t,  , V, L, N,  , m, e, t, h, o, d,  , t, o,  , u, n, i, f, y,  , t, r, a, j, e, c, t, o, r, y, -, l, e, v, e, l,  , p, l, a, n, n, i, n, g,  , a, n, d,  , a, c, t, i, v, e,  , i, m, a, g, i, n, a, t, i, o, n, 
-, w, h, i, l, e,  , u, s, i, n, g,  , o, n, l, y,  , e, g, o, c, e, n, t, r, i, c,  , i, n, p, u, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11196v1'>Federated Recommender System with Data Valuation for E-commerce Platform</a></td><td>F, e, d, e, r, a, t, e, d,  , L, e, a, r, n, i, n, g,  , (, F, L, ),  , i, s,  , g, a, i, n, i, n, g,  , p, r, o, m, i, n, e, n, c, e,  , i, n,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g,  , a, s,  , p, r, i, v, a, c, y, 
-, c, o, n, c, e, r, n, s,  , g, r, o, w, .,  , T, h, i, s,  , p, a, r, a, d, i, g, m,  , a, l, l, o, w, s,  , e, a, c, h,  , c, l, i, e, n, t,  , (, e, ., g, ., ,,  , a, n,  , i, n, d, i, v, i, d, u, a, l,  , o, n, l, i, n, e, 
-, s, t, o, r, e, ),  , t, o,  , t, r, a, i, n,  , a,  , r, e, c, o, m, m, e, n, d, a, t, i, o, n,  , m, o, d, e, l,  , l, o, c, a, l, l, y,  , w, h, i, l, e,  , s, h, a, r, i, n, g,  , o, n, l, y,  , m, o, d, e, l, 
-, u, p, d, a, t, e, s, ,,  , w, i, t, h, o, u, t,  , e, x, p, o, s, i, n, g,  , t, h, e,  , r, a, w,  , i, n, t, e, r, a, c, t, i, o, n,  , l, o, g, s,  , t, o,  , a,  , c, e, n, t, r, a, l,  , s, e, r, v, e, r, ,,  , t, h, e, r, e, b, y, 
-, p, r, e, s, e, r, v, i, n, g,  , p, r, i, v, a, c, y,  , i, n,  , a,  , d, e, c, e, n, t, r, a, l, i, z, e, d,  , e, n, v, i, r, o, n, m, e, n, t, .,  , N, o, n, e, t, h, e, l, e, s, s, ,,  , m, o, s, t,  , e, x, i, s, t, i, n, g, 
-, F, L, -, b, a, s, e, d,  , r, e, c, o, m, m, e, n, d, e, r,  , s, y, s, t, e, m, s,  , s, t, i, l, l,  , r, e, l, y,  , s, o, l, e, l, y,  , o, n,  , e, a, c, h,  , c, l, i, e, n, t, ', s,  , p, r, i, v, a, t, e,  , d, a, t, a, ,, 
-, d, e, s, p, i, t, e,  , t, h, e,  , a, b, u, n, d, a, n, c, e,  , o, f,  , p, u, b, l, i, c, l, y,  , a, v, a, i, l, a, b, l, e,  , d, a, t, a, s, e, t, s,  , t, h, a, t,  , c, o, u, l, d,  , b, e,  , l, e, v, e, r, a, g, e, d,  , t, o, 
-, e, n, r, i, c, h,  , l, o, c, a, l,  , t, r, a, i, n, i, n, g, ;,  , t, h, i, s,  , p, o, t, e, n, t, i, a, l,  , r, e, m, a, i, n, s,  , l, a, r, g, e, l, y,  , u, n, d, e, r, e, x, p, l, o, r, e, d, .,  , T, o,  , t, h, i, s, 
-, e, n, d, ,,  , w, e,  , c, o, n, s, i, d, e, r,  , a,  , r, e, a, l, i, s, t, i, c,  , s, c, e, n, a, r, i, o,  , w, h, e, r, e, i, n,  , a,  , l, a, r, g, e,  , s, h, o, p, p, i, n, g,  , p, l, a, t, f, o, r, m, 
-, c, o, l, l, a, b, o, r, a, t, e, s,  , w, i, t, h,  , m, u, l, t, i, p, l, e,  , s, m, a, l, l,  , o, n, l, i, n, e,  , s, t, o, r, e, s,  , t, o,  , b, u, i, l, d,  , a,  , g, l, o, b, a, l,  , r, e, c, o, m, m, e, n, d, e, r, 
-, s, y, s, t, e, m, .,  , T, h, e,  , p, l, a, t, f, o, r, m,  , p, o, s, s, e, s, s, e, s,  , g, l, o, b, a, l,  , d, a, t, a, ,,  , s, u, c, h,  , a, s,  , s, h, a, r, e, a, b, l, e,  , u, s, e, r,  , a, n, d,  , i, t, e, m, 
-, l, i, s, t, s, ,,  , w, h, i, l, e,  , e, a, c, h,  , s, t, o, r, e,  , h, o, l, d, s,  , a,  , p, o, r, t, i, o, n,  , o, f,  , i, n, t, e, r, a, c, t, i, o, n,  , d, a, t, a,  , p, r, i, v, a, t, e, l, y,  , (, o, r, 
-, l, o, c, a, l, l, y, ), .,  , A, l, t, h, o, u, g, h,  , i, n, t, e, g, r, a, t, i, n, g,  , g, l, o, b, a, l,  , d, a, t, a,  , c, a, n,  , h, e, l, p,  , m, i, t, i, g, a, t, e,  , t, h, e,  , l, i, m, i, t, a, t, i, o, n, s,  , o, f, 
-, s, p, a, r, s, e,  , a, n, d,  , b, i, a, s, e, d,  , c, l, i, e, n, t, s, ',  , l, o, c, a, l,  , d, a, t, a, ,,  , i, t,  , a, l, s, o,  , i, n, t, r, o, d, u, c, e, s,  , a, d, d, i, t, i, o, n, a, l, 
-, c, h, a, l, l, e, n, g, e, s, :,  , s, i, m, p, l, y,  , c, o, m, b, i, n, i, n, g,  , a, l, l,  , g, l, o, b, a, l,  , i, n, t, e, r, a, c, t, i, o, n, s,  , c, a, n,  , a, m, p, l, i, f, y,  , n, o, i, s, e,  , a, n, d, 
-, i, r, r, e, l, e, v, a, n, t,  , p, a, t, t, e, r, n, s, ,,  , w, o, r, s, e, n, i, n, g,  , p, e, r, s, o, n, a, l, i, z, a, t, i, o, n,  , a, n, d,  , i, n, c, r, e, a, s, i, n, g,  , c, o, m, p, u, t, a, t, i, o, n, a, l, 
-, c, o, s, t, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , F, e, d, G, D, V, E, ,,  , w, h, i, c, h,  , s, e, l, e, c, t, i, v, e, l, y, 
-, a, u, g, m, e, n, t, s,  , e, a, c, h,  , c, l, i, e, n, t, ', s,  , l, o, c, a, l,  , g, r, a, p, h,  , w, i, t, h,  , s, e, m, a, n, t, i, c, a, l, l, y,  , a, l, i, g, n, e, d,  , s, a, m, p, l, e, s,  , f, r, o, m,  , t, h, e, 
-, g, l, o, b, a, l,  , d, a, t, a, s, e, t, .,  , F, e, d, G, D, V, E,  , e, m, p, l, o, y, s, :,  , (, i, ),  , a,  , p, r, e, -, t, r, a, i, n, e, d,  , g, r, a, p, h,  , e, n, c, o, d, e, r,  , t, o,  , e, x, t, r, a, c, t, 
-, g, l, o, b, a, l,  , s, t, r, u, c, t, u, r, a, l,  , f, e, a, t, u, r, e, s, ,,  , (, i, i, ),  , a,  , l, o, c, a, l,  , v, a, l, i, d,  , p, r, e, d, i, c, t, o, r,  , t, o,  , a, s, s, e, s, s, 
-, c, l, i, e, n, t, -, s, p, e, c, i, f, i, c,  , r, e, l, e, v, a, n, c, e, ,,  , (, i, i, i, ),  , a,  , r, e, i, n, f, o, r, c, e, m, e, n, t, -, l, e, a, r, n, i, n, g, -, b, a, s, e, d,  , p, r, o, b, a, b, i, l, i, t, y, 
-, e, s, t, i, m, a, t, o, r,  , t, o,  , f, i, l, t, e, r,  , a, n, d,  , s, a, m, p, l, e,  , o, n, l, y,  , t, h, e,  , m, o, s, t,  , p, e, r, t, i, n, e, n, t,  , g, l, o, b, a, l,  , i, n, t, e, r, a, c, t, i, o, n, s, ., 
-, F, e, d, G, D, V, E,  , i, m, p, r, o, v, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , b, y,  , u, p,  , t, o,  , 3, 4, ., 8, 6, %,  , o, n,  , r, e, c, o, g, n, i, z, e, d,  , b, e, n, c, h, m, a, r, k, s,  , i, n,  , F, L, 
-, e, n, v, i, r, o, n, m, e, n, t, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11167v1'>Harnessing Optimization Dynamics for Curvature-Informed Model Merging</a></td><td>M, o, d, e, l,  , m, e, r, g, i, n, g,  , i, s,  , a, n,  , e, f, f, e, c, t, i, v, e,  , p, o, s, t, -, t, r, a, i, n, i, n, g,  , s, t, r, a, t, e, g, y,  , f, o, r,  , c, o, m, p, o, s, i, n, g, 
-, c, a, p, a, b, i, l, i, t, i, e, s,  , i, n,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , w, i, t, h, o, u, t,  , j, o, i, n, t,  , r, e, t, r, a, i, n, i, n, g, .,  , W, e,  , s, t, u, d, y,  , t, h, i, s, 
-, i, n,  , t, h, e,  , s, u, p, e, r, v, i, s, e, d,  , f, i, n, e, -, t, u, n, i, n, g,  , (, S, F, T, ),  , s, t, a, g, e, ,,  , w, h, e, r, e,  , m, u, l, t, i, p, l, e,  , c, a, p, a, b, i, l, i, t, y, -, b, a, s, e, d,  , S, F, T, 
-, c, h, e, c, k, p, o, i, n, t, s,  , -, -,  , s, p, a, n, n, i, n, g,  , m, a, t, h, ,,  , c, o, d, e, ,,  , p, r, e, c, i, s, e,  , i, n, s, t, r, u, c, t, i, o, n,  , f, o, l, l, o, w, i, n, g, ,,  , g, e, n, e, r, a, l, 
-, i, n, s, t, r, u, c, t, i, o, n,  , f, o, l, l, o, w, i, n, g, ,,  , a, n, d,  , k, n, o, w, l, e, d, g, e,  , r, e, c, a, l, l,  , -, -,  , m, u, s, t,  , b, e,  , c, o, n, s, o, l, i, d, a, t, e, d,  , i, n, t, o,  , a, 
-, s, i, n, g, l, e,  , m, o, d, e, l, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , O, p, t, i, m, i, z, a, t, i, o, n,  , T, r, a, j, e, c, t, o, r, y,  , A, w, a, r, e,  , (, O, T, A, ),  , M, e, r, g, i, n, g, ,,  , a, 
-, c, u, r, v, a, t, u, r, e, -, a, w, a, r, e,  , a, g, g, r, e, g, a, t, i, o, n,  , t, h, a, t,  , l, e, v, e, r, a, g, e, s,  , o, p, t, i, m, i, z, e, r,  , s, e, c, o, n, d, -, m, o, m, e, n, t,  , s, t, a, t, i, s, t, i, c, s, 
-, a, s,  , a,  , d, i, a, g, o, n, a, l,  , c, u, r, v, a, t, u, r, e,  , p, r, o, x, y,  , t, o,  , r, e, w, e, i, g, h, t,  , p, a, r, a, m, e, t, e, r,  , e, d, i, t, s,  , a, n, d,  , m, i, t, i, g, a, t, e, 
-, i, n, t, e, r, f, e, r, e, n, c, e, .,  , C, o, m, p, l, e, m, e, n, t, i, n, g,  , O, T, A, ,,  , w, e,  , p, r, o, p, o, s, e,  , F, a, s, t,  , F, i, s, h, e, r,  , G, r, a, f, t, i, n, g,  , (, F, F, G, ), ,,  , a, 
-, c, u, r, v, a, t, u, r, e, -, d, r, i, v, e, n,  , t, a, s, k, -, l, o, c, a, l, i, z, a, t, i, o, n,  , s, t, e, p,  , t, h, a, t,  , s, p, a, r, s, i, f, i, e, s,  , c, o, n, f, l, i, c, t, i, n, g,  , o, r, 
-, l, o, w, -, i, m, p, o, r, t, a, n, c, e,  , e, d, i, t, s, .,  , F, F, G,  , i, n, d, u, c, e, s,  , e, x, t, r, e, m, e, l, y,  , l, o, w, -, r, a, n, k,  , m, a, s, k, s,  , c, o, n, c, e, n, t, r, a, t, e, d,  , i, n, 
-, e, a, r, l, y,  , a, t, t, e, n, t, i, o, n,  , q, u, e, r, y, /, k, e, y,  , p, r, o, j, e, c, t, i, o, n, s,  , a, n, d,  , t, o, k, e, n,  , e, m, b, e, d, d, i, n, g, s, ,,  , e, x, p, l, o, i, t, i, n, g,  , s, h, a, r, e, d, 
-, c, u, r, v, a, t, u, r, e,  , a, c, r, o, s, s,  , c, a, p, a, b, i, l, i, t, i, e, s, .,  , W, e,  , f, u, r, t, h, e, r,  , d, e, v, e, l, o, p,  , a,  , m, e, m, o, r, y, -, l, i, g, h, t,  , c, o, m, p, r, e, s, s, i, o, n,  , o, f, 
-, t, h, e,  , s, e, c, o, n, d,  , m, o, m, e, n, t, s,  , t, h, a, t,  , p, r, e, s, e, r, v, e, s,  , O, T, A, ', s,  , e, f, f, e, c, t, .,  , A, c, r, o, s, s,  , d, i, v, e, r, s, e,  , c, a, p, a, b, i, l, i, t, y, -, b, a, s, e, d, 
-, S, F, T,  , c, h, e, c, k, p, o, i, n, t, s, ,,  , O, T, A, +, F, F, G,  , i, m, p, r, o, v, e, s,  , m, e, r, g, e, d, -, m, o, d, e, l,  , q, u, a, l, i, t, y,  , o, v, e, r,  , s, t, r, o, n, g,  , w, e, i, g, h, t, -, s, p, a, c, e, 
-, b, a, s, e, l, i, n, e, s, ,,  , r, e, d, u, c, e, s,  , n, e, g, a, t, i, v, e,  , t, r, a, n, s, f, e, r, ,,  , a, n, d,  , r, e, m, a, i, n, s,  , r, o, b, u, s, t,  , a, c, r, o, s, s,  , s, p, a, r, s, i, t, y, 
-, l, e, v, e, l, s, .,  , A, n, a, l, y, s, e, s,  , r, e, v, e, a, l,  , s, u, b, s, t, a, n, t, i, a, l,  , c, u, r, v, a, t, u, r, e,  , o, v, e, r, l, a, p,  , b, e, t, w, e, e, n,  , c, h, e, c, k, p, o, i, n, t, s, ,, 
-, o, f, f, e, r, i, n, g,  , a,  , n, o, v, e, l,  , l, e, n, s,  , o, n,  , w, h, y,  , s, i, m, p, l, e,  , l, i, n, e, a, r,  , m, e, r, g, i, n, g,  , c, a, n,  , b, e,  , e, f, f, e, c, t, i, v, e,  , i, n, 
-, p, r, a, c, t, i, c, e, .,  , A, b, l, a, t, i, o, n, s,  , c, o, n, f, i, r, m,  , t, h, a, t,  , F, F, G,  , i, s,  , c, r, i, t, i, c, a, l,  , f, o, r,  , r, e, d, u, c, i, n, g,  , t, a, s, k,  , i, n, t, e, r, f, e, r, e, n, c, e, 
-, a, n, d,  , t, h, a, t,  , t, h, e,  , c, o, m, p, r, e, s, s, e, d,  , s, e, c, o, n, d,  , m, o, m, e, n, t, s,  , r, e, t, a, i, n,  , t, h, e,  , g, a, i, n, s,  , o, f,  , t, h, e,  , f, u, l, l, 
-, f, o, r, m, u, l, a, t, i, o, n, .,  , T, o,  , f, a, c, i, l, i, t, a, t, e,  , r, e, p, r, o, d, u, c, i, b, i, l, i, t, y, ,,  , w, e,  , o, p, e, n, -, s, o, u, r, c, e,  , a, l, l,  , c, o, d, e, ,,  , t, r, a, i, n, i, n, g, 
-, a, n, d,  , e, v, a, l, u, a, t, i, o, n,  , s, c, r, i, p, t, s, ,,  , v, i, s, u, a, l, i, z, a, t, i, o, n,  , a, r, t, i, f, a, c, t, s, ,,  , a, n, d,  , c, a, p, a, b, i, l, i, t, y, -, s, p, e, c, i, f, i, c,  , S, F, T, 
-, c, h, e, c, k, p, o, i, n, t, s,  , a, t,  , h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, p, m, a, h, d, a, v, i, /, o, t, a, -, m, e, r, g, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13352v1'>Agentic UAVs: LLM-Driven Autonomy with Integrated Tool-Calling and Cognitive Reasoning</a></td><td>U, n, m, a, n, n, e, d,  , A, e, r, i, a, l,  , V, e, h, i, c, l, e, s,  , (, U, A, V, s, ),  , a, r, e,  , i, n, c, r, e, a, s, i, n, g, l, y,  , d, e, p, l, o, y, e, d,  , i, n,  , d, e, f, e, n, s, e, ,, 
-, s, u, r, v, e, i, l, l, a, n, c, e, ,,  , a, n, d,  , d, i, s, a, s, t, e, r,  , r, e, s, p, o, n, s, e, ,,  , y, e, t,  , m, o, s, t,  , s, y, s, t, e, m, s,  , r, e, m, a, i, n,  , c, o, n, f, i, n, e, d,  , t, o,  , S, A, E, 
-, L, e, v, e, l,  , 2, -, -, 3,  , a, u, t, o, n, o, m, y, .,  , T, h, e, i, r,  , r, e, l, i, a, n, c, e,  , o, n,  , r, u, l, e, -, b, a, s, e, d,  , c, o, n, t, r, o, l,  , a, n, d,  , n, a, r, r, o, w,  , A, I, 
-, r, e, s, t, r, i, c, t, s,  , a, d, a, p, t, a, b, i, l, i, t, y,  , i, n,  , d, y, n, a, m, i, c, ,,  , u, n, c, e, r, t, a, i, n,  , m, i, s, s, i, o, n, s, .,  , E, x, i, s, t, i, n, g,  , U, A, V,  , f, r, a, m, e, w, o, r, k, s, 
-, l, a, c, k,  , c, o, n, t, e, x, t, -, a, w, a, r, e,  , r, e, a, s, o, n, i, n, g, ,,  , a, u, t, o, n, o, m, o, u, s,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g, ,,  , a, n, d,  , e, c, o, s, y, s, t, e, m, -, l, e, v, e, l, 
-, i, n, t, e, g, r, a, t, i, o, n, ;,  , c, r, i, t, i, c, a, l, l, y, ,,  , n, o, n, e,  , l, e, v, e, r, a, g, e,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, L, L, M, ),  , a, g, e, n, t, s,  , w, i, t, h, 
-, t, o, o, l, -, c, a, l, l, i, n, g,  , f, o, r,  , r, e, a, l, -, t, i, m, e,  , k, n, o, w, l, e, d, g, e,  , a, c, c, e, s, s, .,  , T, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , t, h, e,  , A, g, e, n, t, i, c, 
-, U, A, V, s,  , f, r, a, m, e, w, o, r, k, ,,  , a,  , f, i, v, e, -, l, a, y, e, r,  , a, r, c, h, i, t, e, c, t, u, r, e,  , (, P, e, r, c, e, p, t, i, o, n, ,,  , R, e, a, s, o, n, i, n, g, ,,  , A, c, t, i, o, n, ,, 
-, I, n, t, e, g, r, a, t, i, o, n, ,,  , L, e, a, r, n, i, n, g, ),  , t, h, a, t,  , a, u, g, m, e, n, t, s,  , U, A, V, s,  , w, i, t, h,  , L, L, M, -, d, r, i, v, e, n,  , r, e, a, s, o, n, i, n, g, ,,  , d, a, t, a, b, a, s, e, 
-, q, u, e, r, y, i, n, g, ,,  , a, n, d,  , t, h, i, r, d, -, p, a, r, t, y,  , s, y, s, t, e, m,  , i, n, t, e, r, a, c, t, i, o, n, .,  , A,  , R, O, S, 2,  , a, n, d,  , G, a, z, e, b, o, -, b, a, s, e, d,  , p, r, o, t, o, t, y, p, e, 
-, i, n, t, e, g, r, a, t, e, s,  , Y, O, L, O, v, 1, 1,  , o, b, j, e, c, t,  , d, e, t, e, c, t, i, o, n,  , w, i, t, h,  , G, P, T, -, 4,  , r, e, a, s, o, n, i, n, g,  , a, n, d,  , l, o, c, a, l,  , G, e, m, m, a, -, 3, 
-, d, e, p, l, o, y, m, e, n, t, .,  , I, n,  , s, i, m, u, l, a, t, e, d,  , s, e, a, r, c, h, -, a, n, d, -, r, e, s, c, u, e,  , s, c, e, n, a, r, i, o, s, ,,  , a, g, e, n, t, i, c,  , U, A, V, s,  , a, c, h, i, e, v, e, d, 
-, h, i, g, h, e, r,  , d, e, t, e, c, t, i, o, n,  , c, o, n, f, i, d, e, n, c, e,  , (, 0, ., 7, 9,  , v, s, .,  , 0, ., 7, 2, ), ,,  , i, m, p, r, o, v, e, d,  , p, e, r, s, o, n,  , d, e, t, e, c, t, i, o, n,  , r, a, t, e, s, 
-, (, 9, 1, %,  , v, s, .,  , 7, 5, %, ), ,,  , a, n, d,  , m, a, r, k, e, d, l, y,  , i, n, c, r, e, a, s, e, d,  , a, c, t, i, o, n,  , r, e, c, o, m, m, e, n, d, a, t, i, o, n,  , (, 9, 2, %,  , v, s, .,  , 4, ., 5, %, ), ., 
-, T, h, e, s, e,  , r, e, s, u, l, t, s,  , c, o, n, f, i, r, m,  , t, h, a, t,  , m, o, d, e, s, t,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , o, v, e, r, h, e, a, d,  , e, n, a, b, l, e, s,  , q, u, a, l, i, t, a, t, i, v, e, l, y, 
-, n, e, w,  , l, e, v, e, l, s,  , o, f,  , a, u, t, o, n, o, m, y,  , a, n, d,  , e, c, o, s, y, s, t, e, m,  , i, n, t, e, g, r, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12279v1'>Domain Adaptive SAR Wake Detection: Leveraging Similarity Filtering and Memory Guidance</a></td><td>S, y, n, t, h, e, t, i, c,  , A, p, e, r, t, u, r, e,  , R, a, d, a, r,  , (, S, A, R, ), ,,  , w, i, t, h,  , i, t, s,  , a, l, l, -, w, e, a, t, h, e, r,  , a, n, d,  , w, i, d, e, -, a, r, e, a, 
-, o, b, s, e, r, v, a, t, i, o, n,  , c, a, p, a, b, i, l, i, t, i, e, s, ,,  , s, e, r, v, e, s,  , a, s,  , a,  , c, r, u, c, i, a, l,  , t, o, o, l,  , f, o, r,  , w, a, k, e,  , d, e, t, e, c, t, i, o, n, .,  , H, o, w, e, v, e, r, ,, 
-, d, u, e,  , t, o,  , i, t, s,  , c, o, m, p, l, e, x,  , i, m, a, g, i, n, g,  , m, e, c, h, a, n, i, s, m, ,,  , w, a, k, e,  , f, e, a, t, u, r, e, s,  , i, n,  , S, A, R,  , i, m, a, g, e, s,  , o, f, t, e, n,  , a, p, p, e, a, r, 
-, a, b, s, t, r, a, c, t,  , a, n, d,  , n, o, i, s, y, ,,  , p, o, s, i, n, g,  , c, h, a, l, l, e, n, g, e, s,  , f, o, r,  , a, c, c, u, r, a, t, e,  , a, n, n, o, t, a, t, i, o, n, .,  , I, n,  , c, o, n, t, r, a, s, t, ,, 
-, o, p, t, i, c, a, l,  , i, m, a, g, e, s,  , p, r, o, v, i, d, e,  , m, o, r, e,  , d, i, s, t, i, n, c, t,  , v, i, s, u, a, l,  , c, u, e, s, ,,  , b, u, t,  , m, o, d, e, l, s,  , t, r, a, i, n, e, d,  , o, n,  , o, p, t, i, c, a, l, 
-, d, a, t, a,  , s, u, f, f, e, r,  , f, r, o, m,  , p, e, r, f, o, r, m, a, n, c, e,  , d, e, g, r, a, d, a, t, i, o, n,  , w, h, e, n,  , a, p, p, l, i, e, d,  , t, o,  , S, A, R,  , i, m, a, g, e, s,  , d, u, e,  , t, o, 
-, d, o, m, a, i, n,  , s, h, i, f, t, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s,  , c, r, o, s, s, -, m, o, d, a, l,  , d, o, m, a, i, n,  , a, d, a, p, t, a, t, i, o, n,  , c, h, a, l, l, e, n, g, e, ,,  , w, e, 
-, p, r, o, p, o, s, e,  , a,  , S, i, m, i, l, a, r, i, t, y, -, G, u, i, d, e, d,  , a, n, d,  , M, e, m, o, r, y, -, G, u, i, d, e, d,  , D, o, m, a, i, n,  , A, d, a, p, t, a, t, i, o, n,  , (, t, e, r, m, e, d, 
-, S, i, m, M, e, m, D, A, ),  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , u, n, s, u, p, e, r, v, i, s, e, d,  , d, o, m, a, i, n,  , a, d, a, p, t, i, v, e,  , s, h, i, p,  , w, a, k, e,  , d, e, t, e, c, t, i, o, n,  , v, i, a, 
-, i, n, s, t, a, n, c, e, -, l, e, v, e, l,  , f, e, a, t, u, r, e,  , s, i, m, i, l, a, r, i, t, y,  , f, i, l, t, e, r, i, n, g,  , a, n, d,  , f, e, a, t, u, r, e,  , m, e, m, o, r, y,  , g, u, i, d, a, n, c, e, ., 
-, S, p, e, c, i, f, i, c, a, l, l, y, ,,  , t, o,  , a, l, l, e, v, i, a, t, e,  , t, h, e,  , v, i, s, u, a, l,  , d, i, s, c, r, e, p, a, n, c, y,  , b, e, t, w, e, e, n,  , o, p, t, i, c, a, l,  , a, n, d,  , S, A, R, 
-, i, m, a, g, e, s, ,,  , w, e,  , f, i, r, s, t,  , u, t, i, l, i, z, e,  , W, a, k, e, G, A, N,  , t, o,  , p, e, r, f, o, r, m,  , s, t, y, l, e,  , t, r, a, n, s, f, e, r,  , o, n,  , o, p, t, i, c, a, l,  , i, m, a, g, e, s, ,, 
-, g, e, n, e, r, a, t, i, n, g,  , p, s, e, u, d, o, -, i, m, a, g, e, s,  , c, l, o, s, e,  , t, o,  , t, h, e,  , S, A, R,  , s, t, y, l, e, .,  , T, h, e, n, ,,  , i, n, s, t, a, n, c, e, -, l, e, v, e, l,  , f, e, a, t, u, r, e, 
-, s, i, m, i, l, a, r, i, t, y,  , f, i, l, t, e, r, i, n, g,  , m, e, c, h, a, n, i, s, m,  , i, s,  , d, e, s, i, g, n, e, d,  , t, o,  , i, d, e, n, t, i, f, y,  , a, n, d,  , p, r, i, o, r, i, t, i, z, e,  , s, o, u, r, c, e, 
-, s, a, m, p, l, e, s,  , w, i, t, h,  , t, a, r, g, e, t, -, l, i, k, e,  , d, i, s, t, r, i, b, u, t, i, o, n, s, ,,  , m, i, n, i, m, i, z, i, n, g,  , n, e, g, a, t, i, v, e,  , t, r, a, n, s, f, e, r, ., 
-, M, e, a, n, w, h, i, l, e, ,,  , a,  , F, e, a, t, u, r, e, -, C, o, n, f, i, d, e, n, c, e,  , M, e, m, o, r, y,  , B, a, n, k,  , c, o, m, b, i, n, e, d,  , w, i, t, h,  , a,  , K, -, n, e, a, r, e, s, t,  , n, e, i, g, h, b, o, r, 
-, c, o, n, f, i, d, e, n, c, e, -, w, e, i, g, h, t, e, d,  , f, u, s, i, o, n,  , s, t, r, a, t, e, g, y,  , i, s,  , i, n, t, r, o, d, u, c, e, d,  , t, o,  , d, y, n, a, m, i, c, a, l, l, y,  , c, a, l, i, b, r, a, t, e, 
-, p, s, e, u, d, o, -, l, a, b, e, l, s,  , i, n,  , t, h, e,  , t, a, r, g, e, t,  , d, o, m, a, i, n, ,,  , i, m, p, r, o, v, i, n, g,  , t, h, e,  , r, e, l, i, a, b, i, l, i, t, y,  , a, n, d,  , s, t, a, b, i, l, i, t, y,  , o, f, 
-, p, s, e, u, d, o, -, l, a, b, e, l, s, .,  , F, i, n, a, l, l, y, ,,  , t, h, e,  , f, r, a, m, e, w, o, r, k,  , f, u, r, t, h, e, r,  , e, n, h, a, n, c, e, s,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , t, h, r, o, u, g, h, 
-, r, e, g, i, o, n, -, m, i, x, e, d,  , t, r, a, i, n, i, n, g, ,,  , s, t, r, a, t, e, g, i, c, a, l, l, y,  , c, o, m, b, i, n, i, n, g,  , s, o, u, r, c, e,  , a, n, n, o, t, a, t, i, o, n, s,  , w, i, t, h, 
-, c, a, l, i, b, r, a, t, e, d,  , t, a, r, g, e, t,  , p, s, e, u, d, o, -, l, a, b, e, l, s, .,  , E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , t, h, e, 
-, p, r, o, p, o, s, e, d,  , S, i, m, M, e, m, D, A,  , m, e, t, h, o, d,  , c, a, n,  , i, m, p, r, o, v, e,  , t, h, e,  , a, c, c, u, r, a, c, y,  , a, n, d,  , r, o, b, u, s, t, n, e, s, s,  , o, f,  , c, r, o, s, s, -, m, o, d, a, l, 
-, s, h, i, p,  , w, a, k, e,  , d, e, t, e, c, t, i, o, n,  , t, a, s, k, s, ,,  , v, a, l, i, d, a, t, i, n, g,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , a, n, d,  , f, e, a, s, i, b, i, l, i, t, y,  , o, f,  , t, h, e, 
-, p, r, o, p, o, s, e, d,  , m, e, t, h, o, d, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11154v1'>Feature Space Topology Control via Hopkins Loss</a></td><td>F, e, a, t, u, r, e,  , s, p, a, c, e,  , t, o, p, o, l, o, g, y,  , r, e, f, e, r, s,  , t, o,  , t, h, e,  , o, r, g, a, n, i, z, a, t, i, o, n,  , o, f,  , s, a, m, p, l, e, s,  , w, i, t, h, i, n,  , t, h, e, 
-, f, e, a, t, u, r, e,  , s, p, a, c, e, .,  , M, o, d, i, f, y, i, n, g,  , t, h, i, s,  , t, o, p, o, l, o, g, y,  , c, a, n,  , b, e,  , b, e, n, e, f, i, c, i, a, l,  , i, n,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g, 
-, a, p, p, l, i, c, a, t, i, o, n, s, ,,  , i, n, c, l, u, d, i, n, g,  , d, i, m, e, n, s, i, o, n, a, l, i, t, y,  , r, e, d, u, c, t, i, o, n, ,,  , g, e, n, e, r, a, t, i, v, e,  , m, o, d, e, l, i, n, g, ,,  , t, r, a, n, s, f, e, r, 
-, l, e, a, r, n, i, n, g, ,,  , a, n, d,  , r, o, b, u, s, t, n, e, s, s,  , t, o,  , a, d, v, e, r, s, a, r, i, a, l,  , a, t, t, a, c, k, s, .,  , T, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , a,  , n, o, v, e, l, 
-, l, o, s, s,  , f, u, n, c, t, i, o, n, ,,  , H, o, p, k, i, n, s,  , l, o, s, s, ,,  , w, h, i, c, h,  , l, e, v, e, r, a, g, e, s,  , t, h, e,  , H, o, p, k, i, n, s,  , s, t, a, t, i, s, t, i, c,  , t, o,  , e, n, f, o, r, c, e,  , a, 
-, d, e, s, i, r, e, d,  , f, e, a, t, u, r, e,  , s, p, a, c, e,  , t, o, p, o, l, o, g, y, ,,  , w, h, i, c, h,  , i, s,  , i, n,  , c, o, n, t, r, a, s, t,  , t, o,  , e, x, i, s, t, i, n, g, 
-, t, o, p, o, l, o, g, y, -, r, e, l, a, t, e, d,  , m, e, t, h, o, d, s,  , t, h, a, t,  , a, i, m,  , t, o,  , p, r, e, s, e, r, v, e,  , i, n, p, u, t,  , f, e, a, t, u, r, e,  , t, o, p, o, l, o, g, y, .,  , W, e, 
-, e, v, a, l, u, a, t, e,  , t, h, e,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , o, f,  , H, o, p, k, i, n, s,  , l, o, s, s,  , o, n,  , s, p, e, e, c, h, ,,  , t, e, x, t, ,,  , a, n, d,  , i, m, a, g, e,  , d, a, t, a,  , i, n, 
-, t, w, o,  , s, c, e, n, a, r, i, o, s, :,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , a, n, d,  , d, i, m, e, n, s, i, o, n, a, l, i, t, y,  , r, e, d, u, c, t, i, o, n,  , u, s, i, n, g,  , n, o, n, l, i, n, e, a, r, 
-, b, o, t, t, l, e, n, e, c, k,  , a, u, t, o, e, n, c, o, d, e, r, s, .,  , O, u, r,  , e, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , i, n, t, e, g, r, a, t, i, n, g,  , H, o, p, k, i, n, s,  , l, o, s, s, 
-, i, n, t, o,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , o, r,  , d, i, m, e, n, s, i, o, n, a, l, i, t, y,  , r, e, d, u, c, t, i, o, n,  , h, a, s,  , o, n, l, y,  , a,  , s, m, a, l, l,  , i, m, p, a, c, t,  , o, n, 
-, c, l, a, s, s, i, f, i, c, a, t, i, o, n,  , p, e, r, f, o, r, m, a, n, c, e,  , w, h, i, l, e,  , p, r, o, v, i, d, i, n, g,  , t, h, e,  , b, e, n, e, f, i, t,  , o, f,  , m, o, d, i, f, y, i, n, g,  , f, e, a, t, u, r, e, 
-, t, o, p, o, l, o, g, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14265v1'>Evolution of Kernels: Automated RISC-V Kernel Optimization with Large Language Models</a></td><td>A, u, t, o, m, a, t, e, d,  , k, e, r, n, e, l,  , d, e, s, i, g, n,  , i, s,  , c, r, i, t, i, c, a, l,  , f, o, r,  , o, v, e, r, c, o, m, i, n, g,  , s, o, f, t, w, a, r, e,  , e, c, o, s, y, s, t, e, m, 
-, b, a, r, r, i, e, r, s,  , i, n,  , e, m, e, r, g, i, n, g,  , h, a, r, d, w, a, r, e,  , p, l, a, t, f, o, r, m, s,  , l, i, k, e,  , R, I, S, C, -, V, .,  , W, h, i, l, e,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e, 
-, m, o, d, e, l, s,  , (, L, L, M, s, ),  , h, a, v, e,  , s, h, o, w, n,  , p, r, o, m, i, s, e,  , f, o, r,  , a, u, t, o, m, a, t, e, d,  , k, e, r, n, e, l,  , o, p, t, i, m, i, z, a, t, i, o, n, ,, 
-, d, e, m, o, n, s, t, r, a, t, i, n, g,  , s, u, c, c, e, s, s,  , i, n,  , C, U, D, A,  , d, o, m, a, i, n, s,  , w, i, t, h,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , t, e, c, h, n, i, c, a, l,  , d, o, c, u, m, e, n, t, s, 
-, a, n, d,  , m, a, t, u, r, e,  , c, o, d, e, b, a, s, e, s, ,,  , t, h, e, i, r,  , e, f, f, e, c, t, i, v, e, n, e, s, s,  , r, e, m, a, i, n, s,  , u, n, p, r, o, v, e, n,  , f, o, r,  , r, e, f, e, r, e, n, c, e, -, s, c, a, r, c, e, 
-, d, o, m, a, i, n, s,  , l, i, k, e,  , R, I, S, C, -, V, .,  , W, e,  , p, r, e, s, e, n, t,  , E, v, o, l, u, t, i, o, n,  , o, f,  , K, e, r, n, e, l, s,  , (, E, o, K, ), ,,  , a,  , n, o, v, e, l,  , L, L, M, -, b, a, s, e, d, 
-, e, v, o, l, u, t, i, o, n, a, r, y,  , p, r, o, g, r, a, m,  , s, e, a, r, c, h,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , a, u, t, o, m, a, t, e, s,  , k, e, r, n, e, l,  , d, e, s, i, g, n,  , f, o, r,  , d, o, m, a, i, n, s, 
-, w, i, t, h,  , l, i, m, i, t, e, d,  , r, e, f, e, r, e, n, c, e,  , m, a, t, e, r, i, a, l, .,  , E, o, K,  , m, i, t, i, g, a, t, e, s,  , r, e, f, e, r, e, n, c, e,  , s, c, a, r, c, i, t, y,  , b, y,  , m, i, n, i, n, g,  , a, n, d, 
-, f, o, r, m, a, l, i, z, i, n, g,  , r, e, u, s, a, b, l, e,  , o, p, t, i, m, i, z, a, t, i, o, n,  , i, d, e, a, s,  , (, g, e, n, e, r, a, l,  , d, e, s, i, g, n,  , p, r, i, n, c, i, p, l, e, s,  , +,  , a, c, t, i, o, n, a, b, l, e, 
-, t, h, o, u, g, h, t, s, ),  , f, r, o, m,  , e, s, t, a, b, l, i, s, h, e, d,  , k, e, r, n, e, l,  , l, i, b, r, a, r, i, e, s, ',  , d, e, v, e, l, o, p, m, e, n, t,  , h, i, s, t, o, r, i, e, s, ;,  , i, t,  , t, h, e, n, 
-, g, u, i, d, e, s,  , p, a, r, a, l, l, e, l,  , L, L, M,  , e, x, p, l, o, r, a, t, i, o, n, s,  , u, s, i, n, g,  , t, h, e, s, e,  , i, d, e, a, s, ,,  , e, n, r, i, c, h, e, d,  , v, i, a, 
-, R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , w, i, t, h,  , R, I, S, C, -, V, -, s, p, e, c, i, f, i, c,  , c, o, n, t, e, x, t, ,,  , p, r, i, o, r, i, t, i, z, i, n, g, 
-, h, i, s, t, o, r, i, c, a, l, l, y,  , e, f, f, e, c, t, i, v, e,  , t, e, c, h, n, i, q, u, e, s, .,  , E, m, p, i, r, i, c, a, l, l, y, ,,  , E, o, K,  , a, c, h, i, e, v, e, s,  , a,  , m, e, d, i, a, n,  , 1, ., 2, 7, x, 
-, s, p, e, e, d, u, p, ,,  , s, u, r, p, a, s, s, i, n, g,  , h, u, m, a, n,  , e, x, p, e, r, t, s,  , o, n,  , a, l, l,  , 8, 0,  , e, v, a, l, u, a, t, e, d,  , k, e, r, n, e, l,  , d, e, s, i, g, n,  , t, a, s, k, s,  , a, n, d, 
-, i, m, p, r, o, v, i, n, g,  , u, p, o, n,  , p, r, i, o, r,  , L, L, M, -, b, a, s, e, d,  , a, u, t, o, m, a, t, e, d,  , k, e, r, n, e, l,  , d, e, s, i, g, n,  , m, e, t, h, o, d, s,  , b, y,  , 2, 0, %, .,  , T, h, e, s, e, 
-, r, e, s, u, l, t, s,  , u, n, d, e, r, s, c, o, r, e,  , t, h, e,  , v, i, a, b, i, l, i, t, y,  , o, f,  , i, n, c, o, r, p, o, r, a, t, i, n, g,  , h, u, m, a, n,  , e, x, p, e, r, i, e, n, c, e,  , i, n, t, o, 
-, e, m, e, r, g, i, n, g,  , d, o, m, a, i, n, s,  , a, n, d,  , h, i, g, h, l, i, g, h, t,  , t, h, e,  , i, m, m, e, n, s, e,  , p, o, t, e, n, t, i, a, l,  , o, f,  , L, L, M, -, b, a, s, e, d,  , a, u, t, o, m, a, t, e, d, 
-, k, e, r, n, e, l,  , o, p, t, i, m, i, z, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12275v3'>Omni-CLST: Error-aware Curriculum Learning with guided Selective chain-of-Thought for audio question answering</a></td><td>W, i, t, h,  , t, h, e,  , r, a, p, i, d,  , p, r, o, g, r, e, s, s,  , o, f,  , l, a, r, g, e,  , a, u, d, i, o, -, l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, A, L, M, s, ), ,,  , a, u, d, i, o, 
-, q, u, e, s, t, i, o, n,  , a, n, s, w, e, r, i, n, g,  , (, A, Q, A, ),  , h, a, s,  , e, m, e, r, g, e, d,  , a, s,  , a,  , c, h, a, l, l, e, n, g, i, n, g,  , t, a, s, k,  , r, e, q, u, i, r, i, n, g,  , b, o, t, h, 
-, f, i, n, e, -, g, r, a, i, n, e, d,  , a, u, d, i, o,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , a, n, d,  , c, o, m, p, l, e, x,  , r, e, a, s, o, n, i, n, g, .,  , W, h, i, l, e,  , c, u, r, r, e, n, t,  , m, e, t, h, o, d, s, 
-, m, a, i, n, l, y,  , r, e, l, y,  , o, n,  , c, o, n, s, t, r, u, c, t, i, n, g,  , n, e, w,  , d, a, t, a, s, e, t, s,  , v, i, a,  , c, a, p, t, i, o, n, i, n, g,  , o, r,  , r, e, a, s, o, n, i, n, g,  , t, r, a, c, e, s, ,, 
-, e, x, i, s, t, i, n, g,  , h, i, g, h, -, q, u, a, l, i, t, y,  , A, Q, A,  , d, a, t, a,  , r, e, m, a, i, n, s,  , u, n, d, e, r, u, t, i, l, i, z, e, d, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, i, s, ,,  , w, e, 
-, p, r, o, p, o, s, e,  , O, m, n, i, -, C, L, S, T, ,,  , a, n,  , e, r, r, o, r, -, a, w, a, r, e,  , C, u, r, r, i, c, u, l, u, m,  , L, e, a, r, n, i, n, g,  , f, r, a, m, e, w, o, r, k,  , w, i, t, h,  , g, u, i, d, e, d, 
-, S, e, l, e, c, t, i, v, e,  , C, h, a, i, n, -, o, f, -, T, h, o, u, g, h, t, .,  , T, h, e,  , f, r, a, m, e, w, o, r, k,  , e, f, f, i, c, i, e, n, t, l, y,  , l, e, v, e, r, a, g, e, s,  , e, x, i, s, t, i, n, g, 
-, h, i, g, h, -, q, u, a, l, i, t, y,  , d, a, t, a, s, e, t,  , t, h, r, o, u, g, h,  , t, w, o,  , k, e, y,  , s, t, r, a, t, e, g, i, e, s, :,  , a, n,  , e, r, r, o, r, -, a, w, a, r, e,  , c, u, r, r, i, c, u, l, u, m,  , t, h, a, t, 
-, o, r, g, a, n, i, z, e, s,  , s, a, m, p, l, e, s,  , b, y,  , d, i, f, f, i, c, u, l, t, y, ,,  , a, n, d,  , a,  , g, u, i, d, e, d,  , t, h, o, u, g, h, t,  , d, r, o, p, o, u, t,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t, 
-, f, o, c, u, s, e, s,  , r, e, a, s, o, n, i, n, g,  , o, n,  , c, h, a, l, l, e, n, g, i, n, g,  , c, a, s, e, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , O, m, n, i, -, C, L, S, T, 
-, a, c, h, i, e, v, e, s,  , 7, 3, ., 8, 0, %,  , o, n,  , M, M, A, U, -, m, i, n, i,  , a, n, d,  , a,  , n, e, w,  , s, t, a, t, e,  , o, f,  , t, h, e,  , a, r, t,  , o, f,  , 6, 4, ., 3, 0, %,  , o, n,  , M, M, A, R, ,, 
-, d, e, m, o, n, s, t, r, a, t, i, n, g,  , r, o, b, u, s, t,  , g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , i, n,  , m, u, l, t, i, m, o, d, a, l,  , a, u, d, i, o, -, l, a, n, g, u, a, g, e,  , u, n, d, e, r, s, t, a, n, d, i, n, g, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11112v1'>Multi-Modal Sensing Aided mmWave Beamforming for V2V Communications with Transformers</a></td><td>B, e, a, m, f, o, r, m, i, n, g,  , t, e, c, h, n, i, q, u, e, s,  , a, r, e,  , u, t, i, l, i, z, e, d,  , i, n,  , m, i, l, l, i, m, e, t, e, r,  , w, a, v, e,  , (, m, m, W, a, v, e, ),  , c, o, m, m, u, n, i, c, a, t, i, o, n, 
-, t, o,  , a, d, d, r, e, s, s,  , t, h, e,  , i, n, h, e, r, e, n, t,  , p, a, t, h,  , l, o, s, s,  , l, i, m, i, t, a, t, i, o, n, ,,  , t, h, e, r, e, b, y,  , e, s, t, a, b, l, i, s, h, i, n, g,  , a, n, d, 
-, m, a, i, n, t, a, i, n, i, n, g,  , r, e, l, i, a, b, l, e,  , c, o, n, n, e, c, t, i, o, n, s, .,  , H, o, w, e, v, e, r, ,,  , a, d, o, p, t, i, n, g,  , s, t, a, n, d, a, r, d,  , d, e, f, i, n, e, d, 
-, b, e, a, m, f, o, r, m, i, n, g,  , a, p, p, r, o, a, c, h,  , i, n,  , h, i, g, h, l, y,  , d, y, n, a, m, i, c,  , v, e, h, i, c, u, l, a, r,  , e, n, v, i, r, o, n, m, e, n, t, s,  , o, f, t, e, n,  , i, n, c, u, r, s,  , h, i, g, h, 
-, b, e, a, m,  , t, r, a, i, n, i, n, g,  , o, v, e, r, h, e, a, d, s,  , a, n, d,  , r, e, d, u, c, e, s,  , t, h, e,  , a, v, a, i, l, a, b, l, e,  , a, i, r, t, i, m, e,  , f, o, r,  , c, o, m, m, u, n, i, c, a, t, i, o, n, s, ,, 
-, w, h, i, c, h,  , i, s,  , m, a, i, n, l, y,  , d, u, e,  , t, o,  , e, x, c, h, a, n, g, i, n, g,  , p, i, l, o, t,  , s, i, g, n, a, l, s,  , a, n, d,  , e, x, h, a, u, s, t, i, v, e,  , b, e, a, m, 
-, m, e, a, s, u, r, e, m, e, n, t, s, .,  , T, o,  , t, h, i, s,  , e, n, d, ,,  , w, e,  , p, r, e, s, e, n, t,  , a,  , m, u, l, t, i, -, m, o, d, a, l,  , s, e, n, s, i, n, g,  , a, n, d,  , f, u, s, i, o, n,  , l, e, a, r, n, i, n, g, 
-, f, r, a, m, e, w, o, r, k,  , a, s,  , a,  , p, o, t, e, n, t, i, a, l,  , a, l, t, e, r, n, a, t, i, v, e,  , s, o, l, u, t, i, o, n,  , t, o,  , r, e, d, u, c, e,  , s, u, c, h,  , o, v, e, r, h, e, a, d, s, .,  , I, n,  , t, h, i, s, 
-, f, r, a, m, e, w, o, r, k, ,,  , w, e,  , f, i, r, s, t,  , e, x, t, r, a, c, t,  , t, h, e,  , f, e, a, t, u, r, e, s,  , i, n, d, i, v, i, d, u, a, l, l, y,  , f, r, o, m,  , t, h, e,  , v, i, s, u, a, l,  , a, n, d,  , G, P, S, 
-, c, o, o, r, d, i, n, a, t, e, s,  , s, e, n, s, i, n, g,  , m, o, d, a, l, i, t, i, e, s,  , b, y,  , m, o, d, a, l, i, t, y,  , s, p, e, c, i, f, i, c,  , e, n, c, o, d, e, r, s, ,,  , a, n, d,  , s, u, b, s, e, q, u, e, n, t, l, y, 
-, f, u, s, e,  , t, h, e,  , m, u, l, t, i, m, o, d, a, l,  , f, e, a, t, u, r, e, s,  , t, o,  , o, b, t, a, i, n,  , p, r, e, d, i, c, t, e, d,  , t, o, p, -, k,  , b, e, a, m, s,  , s, o,  , t, h, a, t,  , t, h, e,  , b, e, s, t, 
-, l, i, n, e, -, o, f, -, s, i, g, h, t,  , l, i, n, k, s,  , c, a, n,  , b, e,  , p, r, o, a, c, t, i, v, e, l, y,  , e, s, t, a, b, l, i, s, h, e, d, .,  , T, o,  , s, h, o, w,  , t, h, e, 
-, g, e, n, e, r, a, l, i, z, a, b, i, l, i, t, y,  , o, f,  , t, h, e,  , p, r, o, p, o, s, e, d,  , f, r, a, m, e, w, o, r, k, ,,  , w, e,  , p, e, r, f, o, r, m,  , a,  , c, o, m, p, r, e, h, e, n, s, i, v, e, 
-, e, x, p, e, r, i, m, e, n, t,  , i, n,  , f, o, u, r,  , d, i, f, f, e, r, e, n, t,  , v, e, h, i, c, l, e, -, t, o, -, v, e, h, i, c, l, e,  , (, V, 2, V, ),  , s, c, e, n, a, r, i, o, s,  , f, r, o, m,  , r, e, a, l, -, w, o, r, l, d, 
-, m, u, l, t, i, -, m, o, d, a, l,  , s, e, n, s, i, n, g,  , a, n, d,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , d, a, t, a, s, e, t, .,  , F, r, o, m,  , t, h, e,  , e, x, p, e, r, i, m, e, n, t, ,,  , w, e,  , o, b, s, e, r, v, e, 
-, t, h, a, t,  , t, h, e,  , p, r, o, p, o, s, e, d,  , f, r, a, m, e, w, o, r, k,  , a, c, h, i, e, v, e, s,  , u, p,  , t, o,  , 7, 7, ., 5, 8, %,  , a, c, c, u, r, a, c, y,  , o, n,  , p, r, e, d, i, c, t, i, n, g,  , t, o, p, -, 1, 5, 
-, b, e, a, m, s,  , c, o, r, r, e, c, t, l, y, ,,  , o, u, t, p, e, r, f, o, r, m, s,  , s, i, n, g, l, e,  , m, o, d, a, l, i, t, i, e, s, ,,  , i, n, c, u, r, s,  , r, o, u, g, h, l, y,  , a, s,  , l, o, w,  , a, s,  , 2, ., 3, 2, 
-, d, B,  , a, v, e, r, a, g, e,  , p, o, w, e, r,  , l, o, s, s, ,,  , a, n, d,  , c, o, n, s, i, d, e, r, a, b, l, y,  , r, e, d, u, c, e, s,  , t, h, e,  , b, e, a, m,  , s, e, a, r, c, h, i, n, g,  , s, p, a, c, e, 
-, o, v, e, r, h, e, a, d, s,  , b, y,  , 7, 6, ., 5, 6, %,  , f, o, r,  , t, o, p, -, 1, 5,  , b, e, a, m, s,  , w, i, t, h,  , r, e, s, p, e, c, t,  , t, o,  , s, t, a, n, d, a, r, d,  , d, e, f, i, n, e, d,  , a, p, p, r, o, a, c, h, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11079v1'>Difficulty-Aware Agent Orchestration in LLM-Powered Workflows</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l,  , (, L, L, M, ), -, b, a, s, e, d,  , a, g, e, n, t, i, c,  , s, y, s, t, e, m, s,  , h, a, v, e,  , s, h, o, w, n,  , s, t, r, o, n, g, 
-, c, a, p, a, b, i, l, i, t, i, e, s,  , a, c, r, o, s, s,  , v, a, r, i, o, u, s,  , t, a, s, k, s, .,  , H, o, w, e, v, e, r, ,,  , e, x, i, s, t, i, n, g,  , m, u, l, t, i, -, a, g, e, n, t,  , f, r, a, m, e, w, o, r, k, s, 
-, o, f, t, e, n,  , r, e, l, y,  , o, n,  , s, t, a, t, i, c,  , o, r,  , t, a, s, k, -, l, e, v, e, l,  , w, o, r, k, f, l, o, w, s, ,,  , w, h, i, c, h,  , e, i, t, h, e, r,  , o, v, e, r, -, p, r, o, c, e, s, s,  , s, i, m, p, l, e, 
-, q, u, e, r, i, e, s,  , o, r,  , u, n, d, e, r, p, e, r, f, o, r, m,  , o, n,  , c, o, m, p, l, e, x,  , o, n, e, s, ,,  , w, h, i, l, e,  , a, l, s, o,  , n, e, g, l, e, c, t, i, n, g,  , t, h, e, 
-, e, f, f, i, c, i, e, n, c, y, -, p, e, r, f, o, r, m, a, n, c, e,  , t, r, a, d, e, -, o, f, f, s,  , a, c, r, o, s, s,  , h, e, t, e, r, o, g, e, n, e, o, u, s,  , L, L, M, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e, 
-, l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , D, i, f, f, i, c, u, l, t, y, -, A, w, a, r, e,  , A, g, e, n, t, i, c,  , O, r, c, h, e, s, t, r, a, t, i, o, n,  , (, D, A, A, O, ), ,,  , a, 
-, d, y, n, a, m, i, c,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , a, d, a, p, t, s,  , w, o, r, k, f, l, o, w,  , d, e, p, t, h, ,,  , o, p, e, r, a, t, o, r,  , s, e, l, e, c, t, i, o, n, ,,  , a, n, d,  , L, L, M, 
-, a, s, s, i, g, n, m, e, n, t,  , b, a, s, e, d,  , o, n,  , t, h, e,  , d, i, f, f, i, c, u, l, t, y,  , o, f,  , e, a, c, h,  , i, n, p, u, t,  , q, u, e, r, y, .,  , D, A, A, O,  , c, o, m, p, r, i, s, e, s,  , t, h, r, e, e, 
-, i, n, t, e, r, d, e, p, e, n, d, e, n, t,  , m, o, d, u, l, e, s, :,  , a,  , v, a, r, i, a, t, i, o, n, a, l,  , a, u, t, o, e, n, c, o, d, e, r,  , (, V, A, E, ),  , f, o, r,  , d, i, f, f, i, c, u, l, t, y, 
-, e, s, t, i, m, a, t, i, o, n, ,,  , a,  , m, o, d, u, l, a, r,  , o, p, e, r, a, t, o, r,  , a, l, l, o, c, a, t, o, r, ,,  , a, n, d,  , a,  , c, o, s, t, -,  , a, n, d,  , p, e, r, f, o, r, m, a, n, c, e, -, a, w, a, r, e,  , L, L, M, 
-, r, o, u, t, e, r, .,  , B, y,  , l, e, v, e, r, a, g, i, n, g,  , h, e, t, e, r, o, g, e, n, e, o, u, s,  , L, L, M, s,  , a, n, d,  , d, y, n, a, m, i, c, a, l, l, y,  , t, a, i, l, o, r, i, n, g,  , w, o, r, k, f, l, o, w, s, ,, 
-, D, A, A, O,  , e, n, a, b, l, e, s,  , f, i, n, e, -, g, r, a, i, n, e, d, ,,  , q, u, e, r, y, -, s, p, e, c, i, f, i, c,  , r, e, a, s, o, n, i, n, g,  , s, t, r, a, t, e, g, i, e, s, .,  , D, A, A, O, 
-, o, u, t, p, e, r, f, o, r, m, s,  , p, r, i, o, r,  , m, u, l, t, i, -, a, g, e, n, t,  , s, y, s, t, e, m, s,  , i, n,  , b, o, t, h,  , a, c, c, u, r, a, c, y,  , a, n, d,  , i, n, f, e, r, e, n, c, e,  , e, f, f, i, c, i, e, n, c, y, 
-, a, c, r, o, s, s,  , s, i, x,  , b, e, n, c, h, m, a, r, k, s, .,  , W, e,  , w, i, l, l,  , r, e, l, e, a, s, e,  , o, u, r,  , c, o, d, e,  , a, n, d,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n,  , d, e, t, a, i, l, s,  , u, p, o, n, 
-, p, u, b, l, i, c, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11044v1'>FragmentGPT: A Unified GPT Model for Fragment Growing, Linking, and Merging in Molecular Design</a></td><td>F, r, a, g, m, e, n, t, -, B, a, s, e, d,  , D, r, u, g,  , D, i, s, c, o, v, e, r, y,  , (, F, B, D, D, ),  , i, s,  , a,  , p, o, p, u, l, a, r,  , a, p, p, r, o, a, c, h,  , i, n,  , e, a, r, l, y,  , d, r, u, g, 
-, d, e, v, e, l, o, p, m, e, n, t, ,,  , b, u, t,  , d, e, s, i, g, n, i, n, g,  , e, f, f, e, c, t, i, v, e,  , l, i, n, k, e, r, s,  , t, o,  , c, o, m, b, i, n, e,  , d, i, s, c, o, n, n, e, c, t, e, d,  , m, o, l, e, c, u, l, a, r, 
-, f, r, a, g, m, e, n, t, s,  , i, n, t, o,  , c, h, e, m, i, c, a, l, l, y,  , a, n, d,  , p, h, a, r, m, a, c, o, l, o, g, i, c, a, l, l, y,  , v, i, a, b, l, e,  , c, a, n, d, i, d, a, t, e, s,  , r, e, m, a, i, n, s, 
-, c, h, a, l, l, e, n, g, i, n, g, .,  , F, u, r, t, h, e, r,  , c, o, m, p, l, e, x, i, t, y,  , a, r, i, s, e, s,  , w, h, e, n,  , f, r, a, g, m, e, n, t, s,  , c, o, n, t, a, i, n,  , s, t, r, u, c, t, u, r, a, l, 
-, r, e, d, u, n, d, a, n, c, i, e, s, ,,  , l, i, k, e,  , d, u, p, l, i, c, a, t, e,  , r, i, n, g, s, ,,  , w, h, i, c, h,  , c, a, n, n, o, t,  , b, e,  , a, d, d, r, e, s, s, e, d,  , b, y,  , s, i, m, p, l, y,  , a, d, d, i, n, g, 
-, o, r,  , r, e, m, o, v, i, n, g,  , a, t, o, m, s,  , o, r,  , b, o, n, d, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s,  , i, n,  , a,  , u, n, i, f, i, e, d,  , f, r, a, m, e, w, o, r, k, ,, 
-, w, e,  , i, n, t, r, o, d, u, c, e,  , F, r, a, g, m, e, n, t, G, P, T, ,,  , w, h, i, c, h,  , i, n, t, e, g, r, a, t, e, s,  , t, w, o,  , c, o, r, e,  , c, o, m, p, o, n, e, n, t, s, :,  , (, 1, ),  , a,  , n, o, v, e, l, 
-, c, h, e, m, i, c, a, l, l, y, -, a, w, a, r, e, ,,  , e, n, e, r, g, y, -, b, a, s, e, d,  , b, o, n, d,  , c, l, e, a, v, a, g, e,  , p, r, e, -, t, r, a, i, n, i, n, g,  , s, t, r, a, t, e, g, y,  , t, h, a, t,  , e, q, u, i, p, s, 
-, t, h, e,  , G, P, T, -, b, a, s, e, d,  , m, o, d, e, l,  , w, i, t, h,  , f, r, a, g, m, e, n, t,  , g, r, o, w, i, n, g, ,,  , l, i, n, k, i, n, g, ,,  , a, n, d,  , m, e, r, g, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s, ,, 
-, a, n, d,  , (, 2, ),  , a,  , n, o, v, e, l,  , R, e, w, a, r, d,  , R, a, n, k, e, d,  , A, l, i, g, n, m, e, n, t,  , w, i, t, h,  , E, x, p, e, r, t,  , E, x, p, l, o, r, a, t, i, o, n,  , (, R, A, E, ),  , a, l, g, o, r, i, t, h, m, 
-, t, h, a, t,  , c, o, m, b, i, n, e, s,  , e, x, p, e, r, t,  , i, m, i, t, a, t, i, o, n,  , l, e, a, r, n, i, n, g,  , f, o, r,  , d, i, v, e, r, s, i, t, y,  , e, n, h, a, n, c, e, m, e, n, t, ,,  , d, a, t, a, 
-, s, e, l, e, c, t, i, o, n,  , a, n, d,  , a, u, g, m, e, n, t, a, t, i, o, n,  , f, o, r,  , P, a, r, e, t, o,  , a, n, d,  , c, o, m, p, o, s, i, t, e,  , s, c, o, r, e,  , o, p, t, i, m, a, l, i, t, y, ,,  , a, n, d, 
-, S, u, p, e, r, v, i, s, e, d,  , F, i, n, e, -, T, u, n, i, n, g,  , (, S, F, T, ),  , t, o,  , a, l, i, g, n,  , t, h, e,  , l, e, a, r, n, e, r,  , p, o, l, i, c, y,  , w, i, t, h,  , m, u, l, t, i, -, o, b, j, e, c, t, i, v, e, 
-, g, o, a, l, s, .,  , C, o, n, d, i, t, i, o, n, e, d,  , o, n,  , f, r, a, g, m, e, n, t,  , p, a, i, r, s, ,,  , F, r, a, g, m, e, n, t, G, P, T,  , g, e, n, e, r, a, t, e, s,  , l, i, n, k, e, r, s,  , t, h, a, t, 
-, c, o, n, n, e, c, t,  , d, i, v, e, r, s, e,  , m, o, l, e, c, u, l, a, r,  , s, u, b, u, n, i, t, s,  , w, h, i, l, e,  , s, i, m, u, l, t, a, n, e, o, u, s, l, y,  , o, p, t, i, m, i, z, i, n, g,  , f, o, r,  , m, u, l, t, i, p, l, e, 
-, p, h, a, r, m, a, c, e, u, t, i, c, a, l,  , g, o, a, l, s, .,  , I, t,  , a, l, s, o,  , l, e, a, r, n, s,  , t, o,  , r, e, s, o, l, v, e,  , s, t, r, u, c, t, u, r, a, l,  , r, e, d, u, n, d, a, n, c, i, e, s, -, s, u, c, h,  , a, s, 
-, d, u, p, l, i, c, a, t, e, d,  , f, r, a, g, m, e, n, t, s, -, t, h, r, o, u, g, h,  , i, n, t, e, l, l, i, g, e, n, t,  , m, e, r, g, i, n, g, ,,  , e, n, a, b, l, i, n, g,  , t, h, e,  , s, y, n, t, h, e, s, i, s,  , o, f, 
-, o, p, t, i, m, i, z, e, d,  , m, o, l, e, c, u, l, e, s, .,  , F, r, a, g, m, e, n, t, G, P, T,  , f, a, c, i, l, i, t, a, t, e, s,  , c, o, n, t, r, o, l, l, e, d, ,,  , g, o, a, l, -, d, r, i, v, e, n,  , m, o, l, e, c, u, l, a, r, 
-, a, s, s, e, m, b, l, y, .,  , E, x, p, e, r, i, m, e, n, t, s,  , a, n, d,  , a, b, l, a, t, i, o, n,  , s, t, u, d, i, e, s,  , o, n,  , r, e, a, l, -, w, o, r, l, d,  , c, a, n, c, e, r,  , d, a, t, a, s, e, t, s, 
-, d, e, m, o, n, s, t, r, a, t, e,  , i, t, s,  , a, b, i, l, i, t, y,  , t, o,  , g, e, n, e, r, a, t, e,  , c, h, e, m, i, c, a, l, l, y,  , v, a, l, i, d, ,,  , h, i, g, h, -, q, u, a, l, i, t, y,  , m, o, l, e, c, u, l, e, s, 
-, t, a, i, l, o, r, e, d,  , f, o, r,  , d, o, w, n, s, t, r, e, a, m,  , d, r, u, g,  , d, i, s, c, o, v, e, r, y,  , t, a, s, k, s, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11478v1'>Designing and Evaluating a Conversational Agent for Early Detection of Alzheimer's Disease and Related Dementias</a></td><td>Early detection of Alzheimer's disease and related dementias (ADRD) is
+critical for timely intervention, yet most diagnoses are delayed until advanced
+stages. While comprehensive patient narratives are essential for accurate
+diagnosis, prior work has largely focused on screening studies that classify
+cognitive status from interactions rather than supporting the diagnostic
+process. We designed voice-interactive conversational agents, leveraging large
+language models (LLMs), to elicit narratives relevant to ADRD from patients and
+informants. We evaluated the agent with 30 adults with suspected ADRD through
+conversation analysis (n=30), user surveys (n=19), and clinical validation
+against blinded specialist interviews (n=24). Symptoms detected by the agent
+aligned well with those identified by specialists across symptoms. Users
+appreciated the agent's patience and systematic questioning, which supported
+engagement and expression of complex, hard-to-describe experiences. This
+preliminary work suggests conversational agents may serve as structured
+front-end tools for dementia assessment, highlighting interaction design
+considerations in sensitive healthcare contexts.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11431v1'>Securing AI Agents: Implementing Role-Based Access Control for Industrial Applications</a></td><td>The emergence of Large Language Models (LLMs) has significantly advanced
+solutions across various domains, from political science to software
+development. However, these models are constrained by their training data,
+which is static and limited to information available up to a specific date.
+Additionally, their generalized nature often necessitates fine-tuning --
+whether for classification or instructional purposes -- to effectively perform
+specific downstream tasks. AI agents, leveraging LLMs as their core, mitigate
+some of these limitations by accessing external tools and real-time data,
+enabling applications such as live weather reporting and data analysis. In
+industrial settings, AI agents are transforming operations by enhancing
+decision-making, predictive maintenance, and process optimization. For example,
+in manufacturing, AI agents enable near-autonomous systems that boost
+productivity and support real-time decision-making. Despite these advancements,
+AI agents remain vulnerable to security threats, including prompt injection
+attacks, which pose significant risks to their integrity and reliability. To
+address these challenges, this paper proposes a framework for integrating
+Role-Based Access Control (RBAC) into AI agents, providing a robust security
+guardrail. This framework aims to support the effective and scalable deployment
+of AI agents, with a focus on on-premises implementations.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11417v2'>Enhancing Generalization in Vision-Language-Action Models by Preserving Pretrained Representations</a></td><td>Vision-language-action (VLA) models finetuned from vision-language models
+(VLMs) hold the promise of leveraging rich pretrained representations to build
+generalist robots across diverse tasks and environments. However, direct
+fine-tuning on robot data often disrupts these representations and limits
+generalization. We present a framework that better preserves pretrained
+features while adapting them for robot manipulation. Our approach introduces
+three components: (i) a dual-encoder design with one frozen vision encoder to
+retain pretrained features and another trainable for task adaptation, (ii) a
+string-based action tokenizer that casts continuous actions into character
+sequences aligned with the model's pretraining domain, and (iii) a co-training
+strategy that combines robot demonstrations with vision-language datasets
+emphasizing spatial reasoning and affordances. Evaluations in simulation and on
+real robots show that our method improves robustness to visual perturbations,
+generalization to novel instructions and environments, and overall task success
+compared to baselines.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11413v1'>Framing AI System Benchmarking as a Learning Task: FlexBench and the Open MLPerf Dataset</a></td><td>Existing AI system benchmarks such as MLPerf often struggle to keep pace with
+the rapidly evolving AI landscape, making it difficult to support informed
+deployment, optimization, and co-design decisions for AI systems. We suggest
+that benchmarking itself can be framed as an AI task - one in which models are
+continuously evaluated and optimized across diverse datasets, software, and
+hardware, using key metrics such as accuracy, latency, throughput, energy
+consumption, and cost. To support this perspective, we present FlexBench: a
+modular extension of the MLPerf LLM inference benchmark, integrated with
+HuggingFace and designed to provide relevant and actionable insights.
+Benchmarking results and metadata are collected into an Open MLPerf Dataset,
+which can be collaboratively curated, extended, and leveraged for predictive
+modeling and feature engineering. We successfully validated the FlexBench
+concept through MLPerf Inference submissions, including evaluations of DeepSeek
+R1 and LLaMA 3.3 on commodity servers. The broader objective is to enable
+practitioners to make cost-effective AI deployment decisions that reflect their
+available resources, requirements, and constraints.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11398v1'>From Firewalls to Frontiers: AI Red-Teaming is a Domain-Specific Evolution of Cyber Red-Teaming</a></td><td>A red team simulates adversary attacks to help defenders find effective
+strategies to defend their systems in a real-world operational setting. As more
+enterprise systems adopt AI, red-teaming will need to evolve to address the
+unique vulnerabilities and risks posed by AI systems. We take the position that
+AI systems can be more effectively red-teamed if AI red-teaming is recognized
+as a domain-specific evolution of cyber red-teaming. Specifically, we argue
+that existing Cyber Red Teams who adopt this framing will be able to better
+evaluate systems with AI components by recognizing that AI poses new risks, has
+new failure modes to exploit, and often contains unpatchable bugs that
+re-prioritize disclosure and mitigation strategies. Similarly, adopting a
+cybersecurity framing will allow existing AI Red Teams to leverage a
+well-tested structure to emulate realistic adversaries, promote mutual
+accountability with formal rules of engagement, and provide a pattern to mature
+the tooling necessary for repeatable, scalable engagements. In these ways, the
+merging of AI and Cyber Red Teams will create a robust security ecosystem and
+best position the community to adapt to the rapidly changing threat landscape.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11376v1'>Intelligent Reservoir Decision Support: An Integrated Framework Combining Large Language Models, Advanced Prompt Engineering, and Multimodal Data Fusion for Real-Time Petroleum Operations</a></td><td>The petroleum industry faces unprecedented challenges in reservoir
+management, requiring rapid integration of complex multimodal datasets for
+real-time decision support. This study presents a novel integrated framework
+combining state-of-the-art large language models (GPT-4o, Claude 4 Sonnet,
+Gemini 2.5 Pro) with advanced prompt engineering techniques and multimodal data
+fusion for comprehensive reservoir analysis. The framework implements
+domain-specific retrieval-augmented generation (RAG) with over 50,000 petroleum
+engineering documents, chain-of-thought reasoning, and few-shot learning for
+rapid field adaptation. Multimodal integration processes seismic
+interpretations, well logs, and production data through specialized AI models
+with vision transformers. Field validation across 15 diverse reservoir
+environments demonstrates exceptional performance: 94.2% reservoir
+characterization accuracy, 87.6% production forecasting precision, and 91.4%
+well placement optimization success rate. The system achieves sub-second
+response times while maintaining 96.2% safety reliability with no high-risk
+incidents during evaluation. Economic analysis reveals 62-78% cost reductions
+(mean 72%) relative to traditional methods with 8-month payback period.
+Few-shot learning reduces field adaptation time by 72%, while automated prompt
+optimization achieves 89% improvement in reasoning quality. The framework
+processed real-time data streams with 96.2% anomaly detection accuracy and
+reduced environmental incidents by 45%. We provide detailed experimental
+protocols, baseline comparisons, ablation studies, and statistical significance
+testing to ensure reproducibility. This research demonstrates practical
+integration of cutting-edge AI technologies with petroleum domain expertise for
+enhanced operational efficiency, safety, and economic performance.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11361v1'>MAPGD: Multi-Agent Prompt Gradient Descent for Collaborative Prompt Optimization</a></td><td>Prompt engineering is crucial for leveraging large language models (LLMs),
+but existing methods often rely on a single optimization trajectory, limiting
+adaptability and efficiency while suffering from narrow perspectives, gradient
+conflicts, and high computational cost. We propose MAPGD (Multi-Agent Prompt
+Gradient Descent), a framework integrating multi-agent collaboration with
+gradient-based optimization. MAPGD features specialized agents for task
+clarity, example selection, format design, and stylistic refinement; semantic
+gradient coordination to resolve conflicts; bandit-based candidate selection
+for efficient exploration-exploitation; and theoretical convergence guarantees.
+Experiments on classification, generation, and reasoning tasks show MAPGD
+outperforms single-agent and random baselines in accuracy and efficiency.
+Ablations confirm the benefits of gradient fusion, agent specialization, and
+conflict resolution, providing a unified, gradient-inspired multi-agent
+approach to robust and interpretable prompt optimization.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11355v1'>Promoting Shape Bias in CNNs: Frequency-Based and Contrastive Regularization for Corruption Robustness</a></td><td>Convolutional Neural Networks (CNNs) excel at image classification but remain
+vulnerable to common corruptions that humans handle with ease. A key reason for
+this fragility is their reliance on local texture cues rather than global
+object shapes -- a stark contrast to human perception. To address this, we
+propose two complementary regularization strategies designed to encourage
+shape-biased representations and enhance robustness. The first introduces an
+auxiliary loss that enforces feature consistency between original and
+low-frequency filtered inputs, discouraging dependence on high-frequency
+textures. The second incorporates supervised contrastive learning to structure
+the feature space around class-consistent, shape-relevant representations.
+Evaluated on the CIFAR-10-C benchmark, both methods improve corruption
+robustness without degrading clean accuracy. Our results suggest that
+loss-level regularization can effectively steer CNNs toward more shape-aware,
+resilient representations.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11336v1'>The power of dynamic causality in observer-based design for soft sensor applications</a></td><td>This paper introduces a novel framework for optimizing observer-based soft
+sensors through dynamic causality analysis. Traditional approaches to sensor
+selection often rely on linearized observability indices or statistical
+correlations that fail to capture the temporal evolution of complex systems. We
+address this gap by leveraging liquid-time constant (LTC) networks,
+continuous-time neural architectures with input-dependent time constants, to
+systematically identify and prune sensor inputs with minimal causal influence
+on state estimation. Our methodology implements an iterative workflow: training
+an LTC observer on candidate inputs, quantifying each input's causal impact
+through controlled perturbation analysis, removing inputs with negligible
+effect, and retraining until performance degradation occurs. We demonstrate
+this approach on three mechanistic testbeds representing distinct physical
+domains: a harmonically forced spring-mass-damper system, a nonlinear
+continuous stirred-tank reactor, and a predator-prey model following the
+structure of the Lotka-Volterra model, but with seasonal forcing and added
+complexity. Results show that our causality-guided pruning consistently
+identifies minimal sensor sets that align with underlying physics while
+improving prediction accuracy. The framework automatically distinguishes
+essential physical measurements from noise and determines when derived
+interaction terms provide complementary versus redundant information. Beyond
+computational efficiency, this approach enhances interpretability by grounding
+sensor selection decisions in dynamic causal relationships rather than static
+correlations, offering significant benefits for soft sensing applications
+across process engineering, ecological monitoring, and agricultural domains.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11330v1'>Decoding Plastic Toxicity: An Intelligent Framework for Conflict-Aware Relational Metapath Extraction from Scientific Abstracts</a></td><td>The widespread use of plastics and their persistence in the environment have
+led to the accumulation of micro- and nano-plastics across air, water, and
+soil, posing serious health risks including respiratory, gastrointestinal, and
+neurological disorders. We propose a novel framework that leverages large
+language models to extract relational metapaths, multi-hop semantic chains
+linking pollutant sources to health impacts, from scientific abstracts. Our
+system identifies and connects entities across diverse contexts to construct
+structured relational metapaths, which are aggregated into a Toxicity
+Trajectory Graph that traces pollutant propagation through exposure routes and
+biological systems. Moreover, to ensure consistency and reliability, we
+incorporate a dynamic evidence reconciliation module that resolves semantic
+conflicts arising from evolving or contradictory research findings. Our
+approach demonstrates strong performance in extracting reliable, high-utility
+relational knowledge from noisy scientific text and offers a scalable solution
+for mining complex cause-effect structures in domain-specific corpora.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12282v1'>AIssistant: An Agentic Approach for Human--AI Collaborative Scientific Work on Reviews and Perspectives in Machine Learning</a></td><td>Advances in AI-assisted research have introduced powerful tools for
+literature retrieval, hypothesis generation, experimentation, and manuscript
+preparation. However, systems remain fragmented and lack human-centred
+workflows. To address these gaps, we introduce AIssistant, an agentic,
+open-source Human-AI collaborative framework designed to simplify the
+end-to-end creation of scientific workflows. Since our development is still in
+an early stage, we present here the first experiments with AIssistant for
+perspective and review research papers in machine learning. Our system
+integrates modular tools and agents for literature synthesis, section-wise
+experimentation, citation management, and automatic LaTeX paper text
+generation, while maintaining human oversight at every stage to ensure
+accuracy, coherence, and scholarly rigour. We conducted a comprehensive
+evaluation across three layers: (1) Independent Human Review, following NeurIPS
+double-blind standards; (2) Automated LLM Review, using GPT-5 as a scalable
+human review proxy; and (3) Program Chair Oversight, where the chair monitors
+the entire review process and makes final validation and acceptance decisions.
+The results demonstrate that AIssistant improves drafting efficiency and
+thematic consistency. Nonetheless, Human-AI collaboration remains essential for
+maintaining factual correctness, methodological soundness, and ethical
+compliance. Despite its effectiveness, we identify key limitations, including
+hallucinated citations, difficulty adapting to dynamic paper structures, and
+incomplete integration of multimodal content.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11285v1'>Efficient Single-Step Framework for Incremental Class Learning in Neural Networks</a></td><td>Incremental learning remains a critical challenge in machine learning, as
+models often struggle with catastrophic forgetting -the tendency to lose
+previously acquired knowledge when learning new information. These challenges
+are even more pronounced in resource-limited settings. Many existing Class
+Incremental Learning (CIL) methods achieve high accuracy by continually
+adapting their feature representations; however, they often require substantial
+computational resources and complex, iterative training procedures. This work
+introduces CIFNet (Class Incremental and Frugal Network), a novel CIL approach
+that addresses these limitations by offering a highly efficient and sustainable
+solution. CIFNet's key innovation lies in its novel integration of several
+existing, yet separately explored, components: a pre-trained and frozen feature
+extractor, a compressed data buffer, and an efficient non-iterative one-layer
+neural network for classification. A pre-trained and frozen feature extractor
+eliminates computationally expensive fine-tuning of the backbone. This,
+combined with a compressed buffer for efficient memory use, enables CIFNet to
+perform efficient class-incremental learning through a single-step optimization
+process on fixed features, minimizing computational overhead and training time
+without requiring multiple weight updates. Experiments on benchmark datasets
+confirm that CIFNet effectively mitigates catastrophic forgetting at the
+classifier level, achieving high accuracy comparable to that of existing
+state-of-the-art methods, while substantially improving training efficiency and
+sustainability. CIFNet represents a significant advancement in making
+class-incremental learning more accessible and pragmatic in environments with
+limited resources, especially when strong pre-trained feature extractors are
+available.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11270v1'>Embodied Intelligence in Disassembly: Multimodal Perception Cross-validation and Continual Learning in Neuro-Symbolic TAMP</a></td><td>With the rapid development of the new energy vehicle industry, the efficient
+disassembly and recycling of power batteries have become a critical challenge
+for the circular economy. In current unstructured disassembly scenarios, the
+dynamic nature of the environment severely limits the robustness of robotic
+perception, posing a significant barrier to autonomous disassembly in
+industrial applications. This paper proposes a continual learning framework
+based on Neuro-Symbolic task and motion planning (TAMP) to enhance the
+adaptability of embodied intelligence systems in dynamic environments. Our
+approach integrates a multimodal perception cross-validation mechanism into a
+bidirectional reasoning flow: the forward working flow dynamically refines and
+optimizes action strategies, while the backward learning flow autonomously
+collects effective data from historical task executions to facilitate continual
+system learning, enabling self-optimization. Experimental results show that the
+proposed framework improves the task success rate in dynamic disassembly
+scenarios from 81.68% to 100%, while reducing the average number of perception
+misjudgments from 3.389 to 1.128. This research provides a new paradigm for
+enhancing the robustness and adaptability of embodied intelligence in complex
+industrial environments.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11218v1'>Geometrically Constrained and Token-Based Probabilistic Spatial Transformers</a></td><td>Fine-grained visual classification (FGVC) remains highly sensitive to
+geometric variability, where objects appear under arbitrary orientations,
+scales, and perspective distortions. While equivariant architectures address
+this issue, they typically require substantial computational resources and
+restrict the hypothesis space. We revisit Spatial Transformer Networks (STNs)
+as a canonicalization tool for transformer-based vision pipelines, emphasizing
+their flexibility, backbone-agnostic nature, and lack of architectural
+constraints. We propose a probabilistic, component-wise extension that improves
+robustness. Specifically, we decompose affine transformations into rotation,
+scaling, and shearing, and regress each component under geometric constraints
+using a shared localization encoder. To capture uncertainty, we model each
+component with a Gaussian variational posterior and perform sampling-based
+canonicalization during inference.A novel component-wise alignment loss
+leverages augmentation parameters to guide spatial alignment. Experiments on
+challenging moth classification benchmarks demonstrate that our method
+consistently improves robustness compared to other STNs.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11206v2'>Evalet: Evaluating Large Language Models by Fragmenting Outputs into Functions</a></td><td>Practitioners increasingly rely on Large Language Models (LLMs) to evaluate
+generative AI outputs through "LLM-as-a-Judge" approaches. However, these
+methods produce holistic scores that obscure which specific elements influenced
+the assessments. We propose functional fragmentation, a method that dissects
+each output into key fragments and interprets the rhetoric functions that each
+fragment serves relative to evaluation criteria -- surfacing the elements of
+interest and revealing how they fulfill or hinder user goals. We instantiate
+this approach in Evalet, an interactive system that visualizes fragment-level
+functions across many outputs to support inspection, rating, and comparison of
+evaluations. A user study (N=10) found that, while practitioners struggled to
+validate holistic scores, our approach helped them identify 48% more evaluation
+misalignments. This helped them calibrate trust in LLM evaluations and rely on
+them to find more actionable issues in model outputs. Our work shifts LLM
+evaluation from quantitative scores toward qualitative, fine-grained analysis
+of model behavior.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11198v1'>Quantum Architecture Search for Solving Quantum Machine Learning Tasks</a></td><td>Quantum computing leverages quantum mechanics to address computational
+problems in ways that differ fundamentally from classical approaches. While
+current quantum hardware remains error-prone and limited in scale, Variational
+Quantum Circuits offer a noise-resilient framework suitable for today's
+devices. The performance of these circuits strongly depends on the underlying
+architecture of their parameterized quantum components. Identifying efficient,
+hardware-compatible quantum circuit architectures -- known as Quantum
+Architecture Search (QAS) -- is therefore essential. Manual QAS is complex and
+error-prone, motivating efforts to automate it. Among various automated
+strategies, Reinforcement Learning (RL) remains underexplored, particularly in
+Quantum Machine Learning contexts. This work introduces RL-QAS, a framework
+that applies RL to discover effective circuit architectures for classification
+tasks. We evaluate RL-QAS using the Iris and binary MNIST datasets. The agent
+autonomously discovers low-complexity circuit designs that achieve high test
+accuracy. Our results show that RL is a viable approach for automated
+architecture search in quantum machine learning. However, applying RL-QAS to
+more complex tasks will require further refinement of the search strategy and
+performance evaluation mechanisms.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13353v1'>Hybrid Quantum-Classical Model for Image Classification</a></td><td>This study presents a systematic comparison between hybrid quantum-classical
+neural networks and purely classical models across three benchmark datasets
+(MNIST, CIFAR100, and STL10) to evaluate their performance, efficiency, and
+robustness. The hybrid models integrate parameterized quantum circuits with
+classical deep learning architectures, while the classical counterparts use
+conventional convolutional neural networks (CNNs). Experiments were conducted
+over 50 training epochs for each dataset, with evaluations on validation
+accuracy, test accuracy, training time, computational resource usage, and
+adversarial robustness (tested with $\epsilon=0.1$ perturbations).Key findings
+demonstrate that hybrid models consistently outperform classical models in
+final accuracy, achieving {99.38\% (MNIST), 41.69\% (CIFAR100), and 74.05\%
+(STL10) validation accuracy, compared to classical benchmarks of 98.21\%,
+32.25\%, and 63.76\%, respectively. Notably, the hybrid advantage scales with
+dataset complexity, showing the most significant gains on CIFAR100 (+9.44\%)
+and STL10 (+10.29\%). Hybrid models also train 5--12$\times$ faster (e.g.,
+21.23s vs. 108.44s per epoch on MNIST) and use 6--32\% fewer parameters} while
+maintaining superior generalization to unseen test data.Adversarial robustness
+tests reveal that hybrid models are significantly more resilient on simpler
+datasets (e.g., 45.27\% robust accuracy on MNIST vs. 10.80\% for classical) but
+show comparable fragility on complex datasets like CIFAR100 ($\sim$1\%
+robustness for both). Resource efficiency analyses indicate that hybrid models
+consume less memory (4--5GB vs. 5--6GB for classical) and lower CPU utilization
+(9.5\% vs. 23.2\% on average).These results suggest that hybrid
+quantum-classical architectures offer compelling advantages in accuracy,
+training efficiency, and parameter scalability, particularly for complex vision
+tasks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11197v1'>DreamNav: A Trajectory-Based Imaginative Framework for Zero-Shot Vision-and-Language Navigation</a></td><td>Vision-and-Language Navigation in Continuous Environments (VLN-CE), which
+links language instructions to perception and control in the real world, is a
+core capability of embodied robots. Recently, large-scale pretrained foundation
+models have been leveraged as shared priors for perception, reasoning, and
+action, enabling zero-shot VLN without task-specific training. However,
+existing zero-shot VLN methods depend on costly perception and passive scene
+understanding, collapsing control to point-level choices. As a result, they are
+expensive to deploy, misaligned in action semantics, and short-sighted in
+planning. To address these issues, we present DreamNav that focuses on the
+following three aspects: (1) for reducing sensory cost, our EgoView Corrector
+aligns viewpoints and stabilizes egocentric perception; (2) instead of
+point-level actions, our Trajectory Predictor favors global trajectory-level
+planning to better align with instruction semantics; and (3) to enable
+anticipatory and long-horizon planning, we propose an Imagination Predictor to
+endow the agent with proactive thinking capability. On VLN-CE and real-world
+tests, DreamNav sets a new zero-shot state-of-the-art (SOTA), outperforming the
+strongest egocentric baseline with extra information by up to 7.49\% and
+18.15\% in terms of SR and SPL metrics. To our knowledge, this is the first
+zero-shot VLN method to unify trajectory-level planning and active imagination
+while using only egocentric inputs.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11196v1'>Federated Recommender System with Data Valuation for E-commerce Platform</a></td><td>Federated Learning (FL) is gaining prominence in machine learning as privacy
+concerns grow. This paradigm allows each client (e.g., an individual online
+store) to train a recommendation model locally while sharing only model
+updates, without exposing the raw interaction logs to a central server, thereby
+preserving privacy in a decentralized environment. Nonetheless, most existing
+FL-based recommender systems still rely solely on each client's private data,
+despite the abundance of publicly available datasets that could be leveraged to
+enrich local training; this potential remains largely underexplored. To this
+end, we consider a realistic scenario wherein a large shopping platform
+collaborates with multiple small online stores to build a global recommender
+system. The platform possesses global data, such as shareable user and item
+lists, while each store holds a portion of interaction data privately (or
+locally). Although integrating global data can help mitigate the limitations of
+sparse and biased clients' local data, it also introduces additional
+challenges: simply combining all global interactions can amplify noise and
+irrelevant patterns, worsening personalization and increasing computational
+costs. To address these challenges, we propose FedGDVE, which selectively
+augments each client's local graph with semantically aligned samples from the
+global dataset. FedGDVE employs: (i) a pre-trained graph encoder to extract
+global structural features, (ii) a local valid predictor to assess
+client-specific relevance, (iii) a reinforcement-learning-based probability
+estimator to filter and sample only the most pertinent global interactions.
+FedGDVE improves performance by up to 34.86% on recognized benchmarks in FL
+environments.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11167v1'>Harnessing Optimization Dynamics for Curvature-Informed Model Merging</a></td><td>Model merging is an effective post-training strategy for composing
+capabilities in large language models without joint retraining. We study this
+in the supervised fine-tuning (SFT) stage, where multiple capability-based SFT
+checkpoints -- spanning math, code, precise instruction following, general
+instruction following, and knowledge recall -- must be consolidated into a
+single model. We introduce Optimization Trajectory Aware (OTA) Merging, a
+curvature-aware aggregation that leverages optimizer second-moment statistics
+as a diagonal curvature proxy to reweight parameter edits and mitigate
+interference. Complementing OTA, we propose Fast Fisher Grafting (FFG), a
+curvature-driven task-localization step that sparsifies conflicting or
+low-importance edits. FFG induces extremely low-rank masks concentrated in
+early attention query/key projections and token embeddings, exploiting shared
+curvature across capabilities. We further develop a memory-light compression of
+the second moments that preserves OTA's effect. Across diverse capability-based
+SFT checkpoints, OTA+FFG improves merged-model quality over strong weight-space
+baselines, reduces negative transfer, and remains robust across sparsity
+levels. Analyses reveal substantial curvature overlap between checkpoints,
+offering a novel lens on why simple linear merging can be effective in
+practice. Ablations confirm that FFG is critical for reducing task interference
+and that the compressed second moments retain the gains of the full
+formulation. To facilitate reproducibility, we open-source all code, training
+and evaluation scripts, visualization artifacts, and capability-specific SFT
+checkpoints at https://github.com/pmahdavi/ota-merge.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13352v1'>Agentic UAVs: LLM-Driven Autonomy with Integrated Tool-Calling and Cognitive Reasoning</a></td><td>Unmanned Aerial Vehicles (UAVs) are increasingly deployed in defense,
+surveillance, and disaster response, yet most systems remain confined to SAE
+Level 2--3 autonomy. Their reliance on rule-based control and narrow AI
+restricts adaptability in dynamic, uncertain missions. Existing UAV frameworks
+lack context-aware reasoning, autonomous decision-making, and ecosystem-level
+integration; critically, none leverage Large Language Model (LLM) agents with
+tool-calling for real-time knowledge access. This paper introduces the Agentic
+UAVs framework, a five-layer architecture (Perception, Reasoning, Action,
+Integration, Learning) that augments UAVs with LLM-driven reasoning, database
+querying, and third-party system interaction. A ROS2 and Gazebo-based prototype
+integrates YOLOv11 object detection with GPT-4 reasoning and local Gemma-3
+deployment. In simulated search-and-rescue scenarios, agentic UAVs achieved
+higher detection confidence (0.79 vs. 0.72), improved person detection rates
+(91% vs. 75%), and markedly increased action recommendation (92% vs. 4.5%).
+These results confirm that modest computational overhead enables qualitatively
+new levels of autonomy and ecosystem integration.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12279v1'>Domain Adaptive SAR Wake Detection: Leveraging Similarity Filtering and Memory Guidance</a></td><td>Synthetic Aperture Radar (SAR), with its all-weather and wide-area
+observation capabilities, serves as a crucial tool for wake detection. However,
+due to its complex imaging mechanism, wake features in SAR images often appear
+abstract and noisy, posing challenges for accurate annotation. In contrast,
+optical images provide more distinct visual cues, but models trained on optical
+data suffer from performance degradation when applied to SAR images due to
+domain shift. To address this cross-modal domain adaptation challenge, we
+propose a Similarity-Guided and Memory-Guided Domain Adaptation (termed
+SimMemDA) framework for unsupervised domain adaptive ship wake detection via
+instance-level feature similarity filtering and feature memory guidance.
+Specifically, to alleviate the visual discrepancy between optical and SAR
+images, we first utilize WakeGAN to perform style transfer on optical images,
+generating pseudo-images close to the SAR style. Then, instance-level feature
+similarity filtering mechanism is designed to identify and prioritize source
+samples with target-like distributions, minimizing negative transfer.
+Meanwhile, a Feature-Confidence Memory Bank combined with a K-nearest neighbor
+confidence-weighted fusion strategy is introduced to dynamically calibrate
+pseudo-labels in the target domain, improving the reliability and stability of
+pseudo-labels. Finally, the framework further enhances generalization through
+region-mixed training, strategically combining source annotations with
+calibrated target pseudo-labels. Experimental results demonstrate that the
+proposed SimMemDA method can improve the accuracy and robustness of cross-modal
+ship wake detection tasks, validating the effectiveness and feasibility of the
+proposed method.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11154v1'>Feature Space Topology Control via Hopkins Loss</a></td><td>Feature space topology refers to the organization of samples within the
+feature space. Modifying this topology can be beneficial in machine learning
+applications, including dimensionality reduction, generative modeling, transfer
+learning, and robustness to adversarial attacks. This paper introduces a novel
+loss function, Hopkins loss, which leverages the Hopkins statistic to enforce a
+desired feature space topology, which is in contrast to existing
+topology-related methods that aim to preserve input feature topology. We
+evaluate the effectiveness of Hopkins loss on speech, text, and image data in
+two scenarios: classification and dimensionality reduction using nonlinear
+bottleneck autoencoders. Our experiments show that integrating Hopkins loss
+into classification or dimensionality reduction has only a small impact on
+classification performance while providing the benefit of modifying feature
+topology.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.14265v1'>Evolution of Kernels: Automated RISC-V Kernel Optimization with Large Language Models</a></td><td>Automated kernel design is critical for overcoming software ecosystem
+barriers in emerging hardware platforms like RISC-V. While large language
+models (LLMs) have shown promise for automated kernel optimization,
+demonstrating success in CUDA domains with comprehensive technical documents
+and mature codebases, their effectiveness remains unproven for reference-scarce
+domains like RISC-V. We present Evolution of Kernels (EoK), a novel LLM-based
+evolutionary program search framework that automates kernel design for domains
+with limited reference material. EoK mitigates reference scarcity by mining and
+formalizing reusable optimization ideas (general design principles + actionable
+thoughts) from established kernel libraries' development histories; it then
+guides parallel LLM explorations using these ideas, enriched via
+Retrieval-Augmented Generation (RAG) with RISC-V-specific context, prioritizing
+historically effective techniques. Empirically, EoK achieves a median 1.27x
+speedup, surpassing human experts on all 80 evaluated kernel design tasks and
+improving upon prior LLM-based automated kernel design methods by 20%. These
+results underscore the viability of incorporating human experience into
+emerging domains and highlight the immense potential of LLM-based automated
+kernel optimization.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12275v3'>Omni-CLST: Error-aware Curriculum Learning with guided Selective chain-of-Thought for audio question answering</a></td><td>With the rapid progress of large audio-language models (LALMs), audio
+question answering (AQA) has emerged as a challenging task requiring both
+fine-grained audio understanding and complex reasoning. While current methods
+mainly rely on constructing new datasets via captioning or reasoning traces,
+existing high-quality AQA data remains underutilized. To address this, we
+propose Omni-CLST, an error-aware Curriculum Learning framework with guided
+Selective Chain-of-Thought. The framework efficiently leverages existing
+high-quality dataset through two key strategies: an error-aware curriculum that
+organizes samples by difficulty, and a guided thought dropout mechanism that
+focuses reasoning on challenging cases. Experiments show that Omni-CLST
+achieves 73.80% on MMAU-mini and a new state of the art of 64.30% on MMAR,
+demonstrating robust generalization in multimodal audio-language understanding.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11112v1'>Multi-Modal Sensing Aided mmWave Beamforming for V2V Communications with Transformers</a></td><td>Beamforming techniques are utilized in millimeter wave (mmWave) communication
+to address the inherent path loss limitation, thereby establishing and
+maintaining reliable connections. However, adopting standard defined
+beamforming approach in highly dynamic vehicular environments often incurs high
+beam training overheads and reduces the available airtime for communications,
+which is mainly due to exchanging pilot signals and exhaustive beam
+measurements. To this end, we present a multi-modal sensing and fusion learning
+framework as a potential alternative solution to reduce such overheads. In this
+framework, we first extract the features individually from the visual and GPS
+coordinates sensing modalities by modality specific encoders, and subsequently
+fuse the multimodal features to obtain predicted top-k beams so that the best
+line-of-sight links can be proactively established. To show the
+generalizability of the proposed framework, we perform a comprehensive
+experiment in four different vehicle-to-vehicle (V2V) scenarios from real-world
+multi-modal sensing and communication dataset. From the experiment, we observe
+that the proposed framework achieves up to 77.58% accuracy on predicting top-15
+beams correctly, outperforms single modalities, incurs roughly as low as 2.32
+dB average power loss, and considerably reduces the beam searching space
+overheads by 76.56% for top-15 beams with respect to standard defined approach.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11079v1'>Difficulty-Aware Agent Orchestration in LLM-Powered Workflows</a></td><td>Large Language Model (LLM)-based agentic systems have shown strong
+capabilities across various tasks. However, existing multi-agent frameworks
+often rely on static or task-level workflows, which either over-process simple
+queries or underperform on complex ones, while also neglecting the
+efficiency-performance trade-offs across heterogeneous LLMs. To address these
+limitations, we propose Difficulty-Aware Agentic Orchestration (DAAO), a
+dynamic framework that adapts workflow depth, operator selection, and LLM
+assignment based on the difficulty of each input query. DAAO comprises three
+interdependent modules: a variational autoencoder (VAE) for difficulty
+estimation, a modular operator allocator, and a cost- and performance-aware LLM
+router. By leveraging heterogeneous LLMs and dynamically tailoring workflows,
+DAAO enables fine-grained, query-specific reasoning strategies. DAAO
+outperforms prior multi-agent systems in both accuracy and inference efficiency
+across six benchmarks. We will release our code and implementation details upon
+publication.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.11044v1'>FragmentGPT: A Unified GPT Model for Fragment Growing, Linking, and Merging in Molecular Design</a></td><td>Fragment-Based Drug Discovery (FBDD) is a popular approach in early drug
+development, but designing effective linkers to combine disconnected molecular
+fragments into chemically and pharmacologically viable candidates remains
+challenging. Further complexity arises when fragments contain structural
+redundancies, like duplicate rings, which cannot be addressed by simply adding
+or removing atoms or bonds. To address these challenges in a unified framework,
+we introduce FragmentGPT, which integrates two core components: (1) a novel
+chemically-aware, energy-based bond cleavage pre-training strategy that equips
+the GPT-based model with fragment growing, linking, and merging capabilities,
+and (2) a novel Reward Ranked Alignment with Expert Exploration (RAE) algorithm
+that combines expert imitation learning for diversity enhancement, data
+selection and augmentation for Pareto and composite score optimality, and
+Supervised Fine-Tuning (SFT) to align the learner policy with multi-objective
+goals. Conditioned on fragment pairs, FragmentGPT generates linkers that
+connect diverse molecular subunits while simultaneously optimizing for multiple
+pharmaceutical goals. It also learns to resolve structural redundancies-such as
+duplicated fragments-through intelligent merging, enabling the synthesis of
+optimized molecules. FragmentGPT facilitates controlled, goal-driven molecular
+assembly. Experiments and ablation studies on real-world cancer datasets
+demonstrate its ability to generate chemically valid, high-quality molecules
+tailored for downstream drug discovery tasks.</td></tr></tbody></table>
 
 ### 📅 2025-09-13
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11000v1'>Hardness, Structural Knowledge, and Opportunity: An Analytical Framework for Modular Performance Modeling</a></td><td>P, e, r, f, o, r, m, a, n, c, e, -, i, n, f, l, u, e, n, c, e,  , m, o, d, e, l, s,  , a, r, e,  , b, e, n, e, f, i, c, i, a, l,  , f, o, r,  , u, n, d, e, r, s, t, a, n, d, i, n, g,  , h, o, w, 
-, c, o, n, f, i, g, u, r, a, t, i, o, n, s,  , a, f, f, e, c, t,  , s, y, s, t, e, m,  , p, e, r, f, o, r, m, a, n, c, e, ,,  , b, u, t,  , t, h, e, i, r,  , c, r, e, a, t, i, o, n,  , i, s,  , c, h, a, l, l, e, n, g, i, n, g,  , d, u, e, 
-, t, o,  , t, h, e,  , e, x, p, o, n, e, n, t, i, a, l,  , g, r, o, w, t, h,  , o, f,  , c, o, n, f, i, g, u, r, a, t, i, o, n,  , s, p, a, c, e, s, .,  , W, h, i, l, e,  , g, r, a, y, -, b, o, x,  , a, p, p, r, o, a, c, h, e, s, 
-, l, e, v, e, r, a, g, e,  , s, e, l, e, c, t, i, v, e,  , ", s, t, r, u, c, t, u, r, a, l,  , k, n, o, w, l, e, d, g, e, ",  , (, l, i, k, e,  , t, h, e,  , m, o, d, u, l, e,  , e, x, e, c, u, t, i, o, n,  , g, r, a, p, h,  , o, f, 
-, t, h, e,  , s, y, s, t, e, m, ),  , t, o,  , i, m, p, r, o, v, e,  , m, o, d, e, l, i, n, g, ,,  , t, h, e,  , r, e, l, a, t, i, o, n, s, h, i, p,  , b, e, t, w, e, e, n,  , t, h, i, s,  , k, n, o, w, l, e, d, g, e, ,,  , a, 
-, s, y, s, t, e, m, ', s,  , c, h, a, r, a, c, t, e, r, i, s, t, i, c, s,  , (, w, e,  , c, a, l, l,  , t, h, e, m,  , ", s, t, r, u, c, t, u, r, a, l,  , a, s, p, e, c, t, s, ", ), ,,  , a, n, d,  , p, o, t, e, n, t, i, a, l, 
-, m, o, d, e, l,  , i, m, p, r, o, v, e, m, e, n, t, s,  , i, s,  , n, o, t,  , w, e, l, l,  , u, n, d, e, r, s, t, o, o, d, .,  , T, h, i, s,  , p, a, p, e, r,  , a, d, d, r, e, s, s, e, s,  , t, h, i, s,  , g, a, p,  , b, y, 
-, f, o, r, m, a, l, l, y,  , i, n, v, e, s, t, i, g, a, t, i, n, g,  , h, o, w,  , v, a, r, i, a, t, i, o, n, s,  , i, n,  , s, t, r, u, c, t, u, r, a, l,  , a, s, p, e, c, t, s,  , (, e, ., g, ., ,,  , t, h, e,  , n, u, m, b, e, r, 
-, o, f,  , m, o, d, u, l, e, s,  , a, n, d,  , o, p, t, i, o, n, s,  , p, e, r,  , m, o, d, u, l, e, ),  , a, n, d,  , t, h, e,  , l, e, v, e, l,  , o, f,  , s, t, r, u, c, t, u, r, a, l,  , k, n, o, w, l, e, d, g, e,  , i, m, p, a, c, t, 
-, t, h, e,  , c, r, e, a, t, i, o, n,  , o, f,  , ", o, p, p, o, r, t, u, n, i, t, i, e, s, ",  , f, o, r,  , i, m, p, r, o, v, e, d,  , ", m, o, d, u, l, a, r,  , p, e, r, f, o, r, m, a, n, c, e,  , m, o, d, e, l, i, n, g, ", .,  , W, e, 
-, i, n, t, r, o, d, u, c, e,  , a, n, d,  , q, u, a, n, t, i, f, y,  , t, h, e,  , c, o, n, c, e, p, t,  , o, f,  , m, o, d, e, l, i, n, g,  , ", h, a, r, d, n, e, s, s, ", ,,  , d, e, f, i, n, e, d,  , a, s,  , t, h, e, 
-, i, n, h, e, r, e, n, t,  , d, i, f, f, i, c, u, l, t, y,  , o, f,  , p, e, r, f, o, r, m, a, n, c, e,  , m, o, d, e, l, i, n, g, .,  , T, h, r, o, u, g, h,  , c, o, n, t, r, o, l, l, e, d,  , e, x, p, e, r, i, m, e, n, t, s, 
-, w, i, t, h,  , s, y, n, t, h, e, t, i, c,  , s, y, s, t, e, m,  , m, o, d, e, l, s, ,,  , w, e,  , e, s, t, a, b, l, i, s, h,  , a, n,  , ", a, n, a, l, y, t, i, c, a, l,  , m, a, t, r, i, x, ",  , t, o,  , m, e, a, s, u, r, e, 
-, t, h, e, s, e,  , c, o, n, c, e, p, t, s, .,  , O, u, r,  , f, i, n, d, i, n, g, s,  , s, h, o, w,  , t, h, a, t,  , m, o, d, e, l, i, n, g,  , h, a, r, d, n, e, s, s,  , i, s,  , p, r, i, m, a, r, i, l, y,  , d, r, i, v, e, n,  , b, y, 
-, t, h, e,  , n, u, m, b, e, r,  , o, f,  , m, o, d, u, l, e, s,  , a, n, d,  , c, o, n, f, i, g, u, r, a, t, i, o, n,  , o, p, t, i, o, n, s,  , p, e, r,  , m, o, d, u, l, e, .,  , M, o, r, e,  , i, m, p, o, r, t, a, n, t, l, y, ,, 
-, w, e,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , b, o, t, h,  , h, i, g, h, e, r,  , l, e, v, e, l, s,  , o, f,  , s, t, r, u, c, t, u, r, a, l,  , k, n, o, w, l, e, d, g, e,  , a, n, d,  , i, n, c, r, e, a, s, e, d, 
-, m, o, d, e, l, i, n, g,  , h, a, r, d, n, e, s, s,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , e, n, h, a, n, c, e,  , t, h, e,  , o, p, p, o, r, t, u, n, i, t, y,  , f, o, r,  , i, m, p, r, o, v, e, m, e, n, t, .,  , T, h, e, 
-, i, m, p, a, c, t,  , o, f,  , t, h, e, s, e,  , f, a, c, t, o, r, s,  , v, a, r, i, e, s,  , b, y,  , p, e, r, f, o, r, m, a, n, c, e,  , m, e, t, r, i, c, ;,  , f, o, r,  , r, a, n, k, i, n, g,  , a, c, c, u, r, a, c, y, 
-, (, e, ., g, ., ,,  , i, n,  , d, e, b, u, g, g, i, n, g,  , t, a, s, k, ), ,,  , s, t, r, u, c, t, u, r, a, l,  , k, n, o, w, l, e, d, g, e,  , i, s,  , m, o, r, e,  , d, o, m, i, n, a, n, t, ,,  , w, h, i, l, e,  , f, o, r, 
-, p, r, e, d, i, c, t, i, o, n,  , a, c, c, u, r, a, c, y,  , (, e, ., g, ., ,,  , i, n,  , r, e, s, o, u, r, c, e,  , m, a, n, a, g, e, m, e, n, t,  , t, a, s, k, ), ,,  , h, a, r, d, n, e, s, s,  , p, l, a, y, s,  , a, 
-, s, t, r, o, n, g, e, r,  , r, o, l, e, .,  , T, h, e, s, e,  , r, e, s, u, l, t, s,  , p, r, o, v, i, d, e,  , a, c, t, i, o, n, a, b, l, e,  , i, n, s, i, g, h, t, s,  , f, o, r,  , s, y, s, t, e, m,  , d, e, s, i, g, n, e, r, s, ,, 
-, g, u, i, d, i, n, g,  , t, h, e, m,  , t, o,  , s, t, r, a, t, e, g, i, c, a, l, l, y,  , a, l, l, o, c, a, t, e,  , t, i, m, e,  , a, n, d,  , s, e, l, e, c, t,  , a, p, p, r, o, p, r, i, a, t, e,  , m, o, d, e, l, i, n, g, 
-, a, p, p, r, o, a, c, h, e, s,  , b, a, s, e, d,  , o, n,  , a,  , s, y, s, t, e, m, ', s,  , c, h, a, r, a, c, t, e, r, i, s, t, i, c, s,  , a, n, d,  , a,  , g, i, v, e, n,  , t, a, s, k, ', s,  , o, b, j, e, c, t, i, v, e, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10972v1'>Enhancing Computational Cognitive Architectures with LLMs: A Case Study</a></td><td>C, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, g, n, i, t, i, v, e,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , a, r, e,  , b, r, o, a, d, l, y,  , s, c, o, p, e, d,  , m, o, d, e, l, s,  , o, f,  , t, h, e,  , h, u, m, a, n, 
-, m, i, n, d,  , t, h, a, t,  , c, o, m, b, i, n, e,  , d, i, f, f, e, r, e, n, t,  , p, s, y, c, h, o, l, o, g, i, c, a, l,  , f, u, n, c, t, i, o, n, a, l, i, t, i, e, s,  , (, a, s,  , w, e, l, l,  , a, s,  , o, f, t, e, n, 
-, d, i, f, f, e, r, e, n, t,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , m, e, t, h, o, d, s,  , f, o, r,  , t, h, e, s, e,  , d, i, f, f, e, r, e, n, t,  , f, u, n, c, t, i, o, n, a, l, i, t, i, e, s, ),  , i, n, t, o,  , o, n, e, 
-, u, n, i, f, i, e, d,  , f, r, a, m, e, w, o, r, k, .,  , T, h, e, y,  , s, t, r, u, c, t, u, r, e,  , t, h, e, m,  , i, n,  , a,  , p, s, y, c, h, o, l, o, g, i, c, a, l, l, y,  , p, l, a, u, s, i, b, l, e,  , a, n, d, 
-, v, a, l, i, d, a, t, e, d,  , w, a, y, .,  , H, o, w, e, v, e, r, ,,  , s, u, c, h,  , m, o, d, e, l, s,  , t, h, u, s,  , f, a, r,  , h, a, v, e,  , o, n, l, y,  , l, i, m, i, t, e, d,  , c, o, m, p, u, t, a, t, i, o, n, a, l, 
-, c, a, p, a, b, i, l, i, t, i, e, s, ,,  , m, o, s, t, l, y,  , l, i, m, i, t, e, d,  , b, y,  , t, h, e,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , t, o, o, l, s,  , a, n, d,  , t, e, c, h, n, i, q, u, e, s,  , t, h, a, t, 
-, w, e, r, e,  , a, d, o, p, t, e, d, .,  , M, o, r, e,  , r, e, c, e, n, t, l, y, ,,  , L, L, M, s,  , h, a, v, e,  , p, r, o, v, e, d,  , t, o,  , b, e,  , m, o, r, e,  , c, a, p, a, b, l, e, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , t, h, a, n,  , a, n, y,  , o, t, h, e, r,  , t, o, o, l, s, .,  , T, h, u, s, ,,  , i, n,  , o, r, d, e, r,  , t, o,  , d, e, a, l,  , w, i, t, h,  , b, o, t, h, 
-, r, e, a, l, -, w, o, r, l, d,  , c, o, m, p, l, e, x, i, t, y,  , a, n, d,  , p, s, y, c, h, o, l, o, g, i, c, a, l,  , r, e, a, l, i, s, m,  , a, t,  , t, h, e,  , s, a, m, e,  , t, i, m, e, ,,  , i, n, c, o, r, p, o, r, a, t, i, n, g, 
-, L, L, M, s,  , i, n, t, o,  , c, o, g, n, i, t, i, v, e,  , a, r, c, h, i, t, e, c, t, u, r, e, s,  , n, a, t, u, r, a, l, l, y,  , b, e, c, o, m, e, s,  , a, n,  , i, m, p, o, r, t, a, n, t,  , t, a, s, k, .,  , I, n,  , t, h, e, 
-, p, r, e, s, e, n, t,  , a, r, t, i, c, l, e, ,,  , a,  , s, y, n, e, r, g, i, s, t, i, c,  , c, o, m, b, i, n, a, t, i, o, n,  , o, f,  , t, h, e,  , C, l, a, r, i, o, n,  , c, o, g, n, i, t, i, v, e, 
-, a, r, c, h, i, t, e, c, t, u, r, e,  , a, n, d,  , L, L, M, s,  , i, s,  , d, i, s, c, u, s, s, e, d,  , a, s,  , a,  , c, a, s, e,  , s, t, u, d, y, .,  , T, h, e,  , i, m, p, l, i, c, i, t, -, e, x, p, l, i, c, i, t, 
-, d, i, c, h, o, t, o, m, y,  , t, h, a, t,  , i, s,  , f, u, n, d, a, m, e, n, t, a, l,  , t, o,  , C, l, a, r, i, o, n,  , i, s,  , l, e, v, e, r, a, g, e, d,  , f, o, r,  , a,  , s, e, a, m, l, e, s, s, 
-, i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , C, l, a, r, i, o, n,  , a, n, d,  , L, L, M, s, .,  , A, s,  , a,  , r, e, s, u, l, t, ,,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , p, o, w, e, r,  , o, f,  , L, L, M, s,  , i, s, 
-, c, o, m, b, i, n, e, d,  , w, i, t, h,  , p, s, y, c, h, o, l, o, g, i, c, a, l,  , n, i, c, e, t, y,  , o, f,  , C, l, a, r, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10946v1'>When the Code Autopilot Breaks: Why LLMs Falter in Embedded Machine Learning</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , a, r, e,  , i, n, c, r, e, a, s, i, n, g, l, y,  , u, s, e, d,  , t, o,  , a, u, t, o, m, a, t, e,  , s, o, f, t, w, a, r, e, 
-, g, e, n, e, r, a, t, i, o, n,  , i, n,  , e, m, b, e, d, d, e, d,  , m, a, c, h, i, n, e,  , l, e, a, r, n, i, n, g,  , w, o, r, k, f, l, o, w, s, ,,  , y, e, t,  , t, h, e, i, r,  , o, u, t, p, u, t, s,  , o, f, t, e, n,  , f, a, i, l, 
-, s, i, l, e, n, t, l, y,  , o, r,  , b, e, h, a, v, e,  , u, n, p, r, e, d, i, c, t, a, b, l, y, .,  , T, h, i, s,  , a, r, t, i, c, l, e,  , p, r, e, s, e, n, t, s,  , a, n,  , e, m, p, i, r, i, c, a, l, 
-, i, n, v, e, s, t, i, g, a, t, i, o, n,  , o, f,  , f, a, i, l, u, r, e,  , m, o, d, e, s,  , i, n,  , L, L, M, -, p, o, w, e, r, e, d,  , M, L,  , p, i, p, e, l, i, n, e, s, ,,  , b, a, s, e, d,  , o, n,  , a, n, 
-, a, u, t, o, p, i, l, o, t,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , o, r, c, h, e, s, t, r, a, t, e, s,  , d, a, t, a,  , p, r, e, p, r, o, c, e, s, s, i, n, g, ,,  , m, o, d, e, l,  , c, o, n, v, e, r, s, i, o, n, ,,  , a, n, d, 
-, o, n, -, d, e, v, i, c, e,  , i, n, f, e, r, e, n, c, e,  , c, o, d, e,  , g, e, n, e, r, a, t, i, o, n, .,  , W, e,  , s, h, o, w,  , h, o, w,  , p, r, o, m, p, t,  , f, o, r, m, a, t, ,,  , m, o, d, e, l,  , b, e, h, a, v, i, o, r, ,, 
-, a, n, d,  , s, t, r, u, c, t, u, r, a, l,  , a, s, s, u, m, p, t, i, o, n, s,  , i, n, f, l, u, e, n, c, e,  , b, o, t, h,  , s, u, c, c, e, s, s,  , r, a, t, e, s,  , a, n, d,  , f, a, i, l, u, r, e, 
-, c, h, a, r, a, c, t, e, r, i, s, t, i, c, s, ,,  , o, f, t, e, n,  , i, n,  , w, a, y, s,  , t, h, a, t,  , s, t, a, n, d, a, r, d,  , v, a, l, i, d, a, t, i, o, n,  , p, i, p, e, l, i, n, e, s,  , f, a, i, l,  , t, o, 
-, d, e, t, e, c, t, .,  , O, u, r,  , a, n, a, l, y, s, i, s,  , r, e, v, e, a, l, s,  , a,  , d, i, v, e, r, s, e,  , s, e, t,  , o, f,  , e, r, r, o, r, -, p, r, o, n, e,  , b, e, h, a, v, i, o, r, s, ,,  , i, n, c, l, u, d, i, n, g, 
-, f, o, r, m, a, t, -, i, n, d, u, c, e, d,  , m, i, s, i, n, t, e, r, p, r, e, t, a, t, i, o, n, s,  , a, n, d,  , r, u, n, t, i, m, e, -, d, i, s, r, u, p, t, i, v, e,  , c, o, d, e,  , t, h, a, t,  , c, o, m, p, i, l, e, s,  , b, u, t, 
-, b, r, e, a, k, s,  , d, o, w, n, s, t, r, e, a, m, .,  , W, e,  , d, e, r, i, v, e,  , a,  , t, a, x, o, n, o, m, y,  , o, f,  , f, a, i, l, u, r, e,  , c, a, t, e, g, o, r, i, e, s,  , a, n, d,  , a, n, a, l, y, z, e, 
-, e, r, r, o, r, s,  , a, c, r, o, s, s,  , m, u, l, t, i, p, l, e,  , L, L, M, s, ,,  , h, i, g, h, l, i, g, h, t, i, n, g,  , c, o, m, m, o, n,  , r, o, o, t,  , c, a, u, s, e, s,  , a, n, d,  , s, y, s, t, e, m, i, c, 
-, f, r, a, g, i, l, i, t, i, e, s, .,  , T, h, o, u, g, h,  , g, r, o, u, n, d, e, d,  , i, n,  , s, p, e, c, i, f, i, c,  , d, e, v, i, c, e, s, ,,  , o, u, r,  , s, t, u, d, y,  , r, e, v, e, a, l, s,  , b, r, o, a, d, e, r, 
-, c, h, a, l, l, e, n, g, e, s,  , i, n,  , L, L, M, -, b, a, s, e, d,  , c, o, d, e,  , g, e, n, e, r, a, t, i, o, n, .,  , W, e,  , c, o, n, c, l, u, d, e,  , b, y,  , d, i, s, c, u, s, s, i, n, g,  , d, i, r, e, c, t, i, o, n, s, 
-, f, o, r,  , i, m, p, r, o, v, i, n, g,  , r, e, l, i, a, b, i, l, i, t, y,  , a, n, d,  , t, r, a, c, e, a, b, i, l, i, t, y,  , i, n,  , L, L, M, -, p, o, w, e, r, e, d,  , e, m, b, e, d, d, e, d,  , M, L,  , s, y, s, t, e, m, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10886v1'>CultureSynth: A Hierarchical Taxonomy-Guided and Retrieval-Augmented Framework for Cultural Question-Answer Synthesis</a></td><td>C, u, l, t, u, r, a, l,  , c, o, m, p, e, t, e, n, c, e, ,,  , d, e, f, i, n, e, d,  , a, s,  , t, h, e,  , a, b, i, l, i, t, y,  , t, o,  , u, n, d, e, r, s, t, a, n, d,  , a, n, d,  , a, d, a, p, t,  , t, o, 
-, m, u, l, t, i, c, u, l, t, u, r, a, l,  , c, o, n, t, e, x, t, s, ,,  , i, s,  , i, n, c, r, e, a, s, i, n, g, l, y,  , v, i, t, a, l,  , f, o, r,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ), 
-, i, n,  , g, l, o, b, a, l,  , e, n, v, i, r, o, n, m, e, n, t, s, .,  , W, h, i, l, e,  , s, e, v, e, r, a, l,  , c, u, l, t, u, r, a, l,  , b, e, n, c, h, m, a, r, k, s,  , e, x, i, s, t,  , t, o,  , a, s, s, e, s, s,  , L, L, M, s, ', 
-, c, u, l, t, u, r, a, l,  , c, o, m, p, e, t, e, n, c, e, ,,  , c, u, r, r, e, n, t,  , e, v, a, l, u, a, t, i, o, n, s,  , s, u, f, f, e, r,  , f, r, o, m,  , f, r, a, g, m, e, n, t, e, d,  , t, a, x, o, n, o, m, i, e, s, ,, 
-, d, o, m, a, i, n,  , s, p, e, c, i, f, i, c, i, t, y, ,,  , a, n, d,  , h, e, a, v, y,  , r, e, l, i, a, n, c, e,  , o, n,  , m, a, n, u, a, l,  , d, a, t, a,  , a, n, n, o, t, a, t, i, o, n, .,  , T, o,  , a, d, d, r, e, s, s, 
-, t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , C, u, l, t, u, r, e, S, y, n, t, h, ,,  , a,  , n, o, v, e, l,  , f, r, a, m, e, w, o, r, k,  , c, o, m, p, r, i, s, i, n, g,  , (, 1, ), 
-, a,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , h, i, e, r, a, r, c, h, i, c, a, l,  , m, u, l, t, i, l, i, n, g, u, a, l,  , c, u, l, t, u, r, a, l,  , t, a, x, o, n, o, m, y,  , c, o, v, e, r, i, n, g,  , 1, 2,  , p, r, i, m, a, r, y, 
-, a, n, d,  , 1, 3, 0,  , s, e, c, o, n, d, a, r, y,  , t, o, p, i, c, s, ,,  , a, n, d,  , (, 2, ),  , a,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ), -, b, a, s, e, d, 
-, m, e, t, h, o, d, o, l, o, g, y,  , l, e, v, e, r, a, g, i, n, g,  , f, a, c, t, u, a, l,  , k, n, o, w, l, e, d, g, e,  , t, o,  , s, y, n, t, h, e, s, i, z, e,  , c, u, l, t, u, r, a, l, l, y,  , r, e, l, e, v, a, n, t, 
-, q, u, e, s, t, i, o, n, -, a, n, s, w, e, r,  , p, a, i, r, s, .,  , T, h, e,  , C, u, l, t, u, r, e, S, y, n, t, h, -, 7,  , s, y, n, t, h, e, t, i, c,  , b, e, n, c, h, m, a, r, k,  , c, o, n, t, a, i, n, s,  , 1, 9, ,, 3, 6, 0, 
-, e, n, t, r, i, e, s,  , a, n, d,  , 4, ,, 1, 4, 9,  , m, a, n, u, a, l, l, y,  , v, e, r, i, f, i, e, d,  , e, n, t, r, i, e, s,  , a, c, r, o, s, s,  , 7,  , l, a, n, g, u, a, g, e, s, .,  , E, v, a, l, u, a, t, i, o, n,  , o, f, 
-, 1, 4,  , p, r, e, v, a, l, e, n, t,  , L, L, M, s,  , o, f,  , d, i, f, f, e, r, e, n, t,  , s, i, z, e, s,  , r, e, v, e, a, l, s,  , c, l, e, a, r,  , p, e, r, f, o, r, m, a, n, c, e,  , s, t, r, a, t, i, f, i, c, a, t, i, o, n, 
-, l, e, d,  , b, y,  , C, h, a, t, G, P, T, -, 4, o, -, L, a, t, e, s, t,  , a, n, d,  , Q, w, e, n, 2, ., 5, -, 7, 2, B, -, I, n, s, t, r, u, c, t, .,  , T, h, e,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t, 
-, a,  , 3, B, -, p, a, r, a, m, e, t, e, r,  , t, h, r, e, s, h, o, l, d,  , i, s,  , n, e, c, e, s, s, a, r, y,  , f, o, r,  , a, c, h, i, e, v, i, n, g,  , b, a, s, i, c,  , c, u, l, t, u, r, a, l,  , c, o, m, p, e, t, e, n, c, e, ,, 
-, m, o, d, e, l, s,  , d, i, s, p, l, a, y,  , v, a, r, y, i, n, g,  , a, r, c, h, i, t, e, c, t, u, r, a, l,  , b, i, a, s, e, s,  , i, n,  , k, n, o, w, l, e, d, g, e,  , p, r, o, c, e, s, s, i, n, g, ,,  , a, n, d, 
-, s, i, g, n, i, f, i, c, a, n, t,  , g, e, o, g, r, a, p, h, i, c,  , d, i, s, p, a, r, i, t, i, e, s,  , e, x, i, s, t,  , a, c, r, o, s, s,  , m, o, d, e, l, s, .,  , W, e,  , b, e, l, i, e, v, e,  , t, h, a, t, 
-, C, u, l, t, u, r, e, S, y, n, t, h,  , o, f, f, e, r, s,  , a,  , s, c, a, l, a, b, l, e,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , d, e, v, e, l, o, p, i, n, g,  , c, u, l, t, u, r, a, l, l, y,  , a, w, a, r, e,  , A, I, 
-, s, y, s, t, e, m, s,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g,  , r, e, l, i, a, n, c, e,  , o, n,  , m, a, n, u, a, l,  , a, n, n, o, t, a, t, i, o, n, \, f, o, o, t, n, o, t, e, {, B, e, n, c, h, m, a, r, k,  , i, s, 
-, a, v, a, i, l, a, b, l, e,  , a, t,  , h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, E, y, r, 3, /, C, u, l, t, u, r, e, S, y, n, t, h, ., }, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10858v1'>Large Language Models for Security Operations Centers: A Comprehensive Survey</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , h, a, v, e,  , e, m, e, r, g, e, d,  , a, s,  , p, o, w, e, r, f, u, l,  , t, o, o, l, s,  , c, a, p, a, b, l, e,  , o, f, 
-, u, n, d, e, r, s, t, a, n, d, i, n, g,  , a, n, d,  , g, e, n, e, r, a, t, i, n, g,  , h, u, m, a, n, -, l, i, k, e,  , t, e, x, t, ,,  , o, f, f, e, r, i, n, g,  , t, r, a, n, s, f, o, r, m, a, t, i, v, e,  , p, o, t, e, n, t, i, a, l, 
-, a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , d, o, m, a, i, n, s, .,  , T, h, e,  , S, e, c, u, r, i, t, y,  , O, p, e, r, a, t, i, o, n, s,  , C, e, n, t, e, r,  , (, S, O, C, ), ,,  , r, e, s, p, o, n, s, i, b, l, e,  , f, o, r, 
-, s, a, f, e, g, u, a, r, d, i, n, g,  , d, i, g, i, t, a, l,  , i, n, f, r, a, s, t, r, u, c, t, u, r, e, ,,  , r, e, p, r, e, s, e, n, t, s,  , o, n, e,  , o, f,  , t, h, e, s, e,  , d, o, m, a, i, n, s, .,  , S, O, C, s, 
-, s, e, r, v, e,  , a, s,  , t, h, e,  , f, r, o, n, t, l, i, n, e,  , o, f,  , d, e, f, e, n, s, e,  , i, n,  , c, y, b, e, r, s, e, c, u, r, i, t, y, ,,  , t, a, s, k, e, d,  , w, i, t, h,  , c, o, n, t, i, n, u, o, u, s, 
-, m, o, n, i, t, o, r, i, n, g, ,,  , d, e, t, e, c, t, i, o, n, ,,  , a, n, d,  , r, e, s, p, o, n, s, e,  , t, o,  , i, n, c, i, d, e, n, t, s, .,  , H, o, w, e, v, e, r, ,,  , S, O, C, s,  , f, a, c, e,  , p, e, r, s, i, s, t, e, n, t, 
-, c, h, a, l, l, e, n, g, e, s,  , s, u, c, h,  , a, s,  , h, i, g, h,  , a, l, e, r, t,  , v, o, l, u, m, e, s, ,,  , l, i, m, i, t, e, d,  , r, e, s, o, u, r, c, e, s, ,,  , h, i, g, h,  , d, e, m, a, n, d,  , f, o, r, 
-, e, x, p, e, r, t, s,  , w, i, t, h,  , a, d, v, a, n, c, e, d,  , k, n, o, w, l, e, d, g, e, ,,  , d, e, l, a, y, e, d,  , r, e, s, p, o, n, s, e,  , t, i, m, e, s, ,,  , a, n, d,  , d, i, f, f, i, c, u, l, t, i, e, s,  , i, n, 
-, l, e, v, e, r, a, g, i, n, g,  , t, h, r, e, a, t,  , i, n, t, e, l, l, i, g, e, n, c, e,  , e, f, f, e, c, t, i, v, e, l, y, .,  , I, n,  , t, h, i, s,  , c, o, n, t, e, x, t, ,,  , L, L, M, s,  , c, a, n,  , o, f, f, e, r, 
-, p, r, o, m, i, s, i, n, g,  , s, o, l, u, t, i, o, n, s,  , b, y,  , a, u, t, o, m, a, t, i, n, g,  , l, o, g,  , a, n, a, l, y, s, i, s, ,,  , s, t, r, e, a, m, l, i, n, i, n, g,  , t, r, i, a, g, e, ,,  , i, m, p, r, o, v, i, n, g, 
-, d, e, t, e, c, t, i, o, n,  , a, c, c, u, r, a, c, y, ,,  , a, n, d,  , p, r, o, v, i, d, i, n, g,  , t, h, e,  , r, e, q, u, i, r, e, d,  , k, n, o, w, l, e, d, g, e,  , i, n,  , l, e, s, s,  , t, i, m, e, .,  , T, h, i, s, 
-, s, u, r, v, e, y,  , s, y, s, t, e, m, a, t, i, c, a, l, l, y,  , e, x, p, l, o, r, e, s,  , t, h, e,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , g, e, n, e, r, a, t, i, v, e,  , A, I,  , a, n, d,  , m, o, r, e, 
-, s, p, e, c, i, f, i, c, a, l, l, y,  , L, L, M, s,  , i, n, t, o,  , S, O, C,  , w, o, r, k, f, l, o, w, ,,  , p, r, o, v, i, d, i, n, g,  , a,  , s, t, r, u, c, t, u, r, e, d,  , p, e, r, s, p, e, c, t, i, v, e,  , o, n,  , i, t, s, 
-, c, a, p, a, b, i, l, i, t, i, e, s, ,,  , c, h, a, l, l, e, n, g, e, s, ,,  , a, n, d,  , f, u, t, u, r, e,  , d, i, r, e, c, t, i, o, n, s, .,  , W, e,  , b, e, l, i, e, v, e,  , t, h, a, t,  , t, h, i, s,  , s, u, r, v, e, y, 
-, o, f, f, e, r, s,  , r, e, s, e, a, r, c, h, e, r, s,  , a, n, d,  , S, O, C,  , m, a, n, a, g, e, r, s,  , a,  , b, r, o, a, d,  , o, v, e, r, v, i, e, w,  , o, f,  , t, h, e,  , c, u, r, r, e, n, t,  , s, t, a, t, e,  , o, f, 
-, L, L, M,  , i, n, t, e, g, r, a, t, i, o, n,  , w, i, t, h, i, n,  , a, c, a, d, e, m, i, c,  , s, t, u, d, y, .,  , T, o,  , t, h, e,  , b, e, s, t,  , o, f,  , o, u, r,  , k, n, o, w, l, e, d, g, e, ,,  , t, h, i, s,  , i, s, 
-, t, h, e,  , f, i, r, s, t,  , c, o, m, p, r, e, h, e, n, s, i, v, e,  , s, t, u, d, y,  , t, o,  , e, x, a, m, i, n, e,  , L, L, M,  , a, p, p, l, i, c, a, t, i, o, n, s,  , i, n,  , S, O, C, s,  , i, n,  , d, e, t, a, i, l, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10852v1'>Pre-Storage Reasoning for Episodic Memory: Shifting Inference Burden to Memory for Personalized Dialogue</a></td><td>E, f, f, e, c, t, i, v, e,  , l, o, n, g, -, t, e, r, m,  , m, e, m, o, r, y,  , i, n,  , c, o, n, v, e, r, s, a, t, i, o, n, a, l,  , A, I,  , r, e, q, u, i, r, e, s,  , s, y, n, t, h, e, s, i, z, i, n, g, 
-, i, n, f, o, r, m, a, t, i, o, n,  , a, c, r, o, s, s,  , m, u, l, t, i, p, l, e,  , s, e, s, s, i, o, n, s, .,  , H, o, w, e, v, e, r, ,,  , c, u, r, r, e, n, t,  , s, y, s, t, e, m, s,  , p, l, a, c, e,  , e, x, c, e, s, s, i, v, e, 
-, r, e, a, s, o, n, i, n, g,  , b, u, r, d, e, n,  , o, n,  , r, e, s, p, o, n, s, e,  , g, e, n, e, r, a, t, i, o, n, ,,  , m, a, k, i, n, g,  , p, e, r, f, o, r, m, a, n, c, e,  , s, i, g, n, i, f, i, c, a, n, t, l, y, 
-, d, e, p, e, n, d, e, n, t,  , o, n,  , m, o, d, e, l,  , s, i, z, e, s, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , P, R, E, M, e, m,  , (, P, r, e, -, s, t, o, r, a, g, e,  , R, e, a, s, o, n, i, n, g,  , f, o, r, 
-, E, p, i, s, o, d, i, c,  , M, e, m, o, r, y, ), ,,  , a,  , n, o, v, e, l,  , a, p, p, r, o, a, c, h,  , t, h, a, t,  , s, h, i, f, t, s,  , c, o, m, p, l, e, x,  , r, e, a, s, o, n, i, n, g,  , p, r, o, c, e, s, s, e, s,  , f, r, o, m, 
-, i, n, f, e, r, e, n, c, e,  , t, o,  , m, e, m, o, r, y,  , c, o, n, s, t, r, u, c, t, i, o, n, .,  , P, R, E, M, e, m,  , e, x, t, r, a, c, t, s,  , f, i, n, e, -, g, r, a, i, n, e, d,  , m, e, m, o, r, y,  , f, r, a, g, m, e, n, t, s, 
-, c, a, t, e, g, o, r, i, z, e, d,  , i, n, t, o,  , f, a, c, t, u, a, l, ,,  , e, x, p, e, r, i, e, n, t, i, a, l, ,,  , a, n, d,  , s, u, b, j, e, c, t, i, v, e,  , i, n, f, o, r, m, a, t, i, o, n, ;,  , i, t,  , t, h, e, n, 
-, e, s, t, a, b, l, i, s, h, e, s,  , e, x, p, l, i, c, i, t,  , r, e, l, a, t, i, o, n, s, h, i, p, s,  , b, e, t, w, e, e, n,  , m, e, m, o, r, y,  , i, t, e, m, s,  , a, c, r, o, s, s,  , s, e, s, s, i, o, n, s, ,, 
-, c, a, p, t, u, r, i, n, g,  , e, v, o, l, u, t, i, o, n,  , p, a, t, t, e, r, n, s,  , l, i, k, e,  , e, x, t, e, n, s, i, o, n, s, ,,  , t, r, a, n, s, f, o, r, m, a, t, i, o, n, s, ,,  , a, n, d, 
-, i, m, p, l, i, c, a, t, i, o, n, s, .,  , B, y,  , p, e, r, f, o, r, m, i, n, g,  , t, h, i, s,  , r, e, a, s, o, n, i, n, g,  , d, u, r, i, n, g,  , p, r, e, -, s, t, o, r, a, g, e,  , r, a, t, h, e, r,  , t, h, a, n,  , w, h, e, n, 
-, g, e, n, e, r, a, t, i, n, g,  , a,  , r, e, s, p, o, n, s, e, ,,  , P, R, E, M, e, m,  , c, r, e, a, t, e, s,  , e, n, r, i, c, h, e, d,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , d, e, m, a, n, d, s,  , d, u, r, i, n, g,  , i, n, t, e, r, a, c, t, i, o, n, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , s, i, g, n, i, f, i, c, a, n, t, 
-, p, e, r, f, o, r, m, a, n, c, e,  , i, m, p, r, o, v, e, m, e, n, t, s,  , a, c, r, o, s, s,  , a, l, l,  , m, o, d, e, l,  , s, i, z, e, s, ,,  , w, i, t, h,  , s, m, a, l, l, e, r,  , m, o, d, e, l, s,  , a, c, h, i, e, v, i, n, g, 
-, r, e, s, u, l, t, s,  , c, o, m, p, a, r, a, b, l, e,  , t, o,  , m, u, c, h,  , l, a, r, g, e, r,  , b, a, s, e, l, i, n, e, s,  , w, h, i, l, e,  , m, a, i, n, t, a, i, n, i, n, g,  , e, f, f, e, c, t, i, v, e, n, e, s, s, 
-, e, v, e, n,  , w, i, t, h,  , c, o, n, s, t, r, a, i, n, e, d,  , t, o, k, e, n,  , b, u, d, g, e, t, s, .,  , C, o, d, e,  , a, n, d,  , d, a, t, a, s, e, t,  , a, r, e,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, s, a, n, g, y, e, o, p, -, k, i, m, /, P, R, E, M, e, m, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10833v1'>Towards Automated Error Discovery: A Study in Conversational AI</a></td><td>A, l, t, h, o, u, g, h,  , L, L, M, -, b, a, s, e, d,  , c, o, n, v, e, r, s, a, t, i, o, n, a, l,  , a, g, e, n, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , s, t, r, o, n, g,  , f, l, u, e, n, c, y,  , a, n, d, 
-, c, o, h, e, r, e, n, c, e, ,,  , t, h, e, y,  , s, t, i, l, l,  , p, r, o, d, u, c, e,  , u, n, d, e, s, i, r, a, b, l, e,  , b, e, h, a, v, i, o, r, s,  , (, e, r, r, o, r, s, ),  , t, h, a, t,  , a, r, e, 
-, c, h, a, l, l, e, n, g, i, n, g,  , t, o,  , p, r, e, v, e, n, t,  , f, r, o, m,  , r, e, a, c, h, i, n, g,  , u, s, e, r, s,  , d, u, r, i, n, g,  , d, e, p, l, o, y, m, e, n, t, .,  , R, e, c, e, n, t,  , r, e, s, e, a, r, c, h, 
-, l, e, v, e, r, a, g, e, s,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , t, o,  , d, e, t, e, c, t,  , e, r, r, o, r, s,  , a, n, d,  , g, u, i, d, e, 
-, r, e, s, p, o, n, s, e, -, g, e, n, e, r, a, t, i, o, n,  , m, o, d, e, l, s,  , t, o, w, a, r, d,  , i, m, p, r, o, v, e, m, e, n, t, .,  , H, o, w, e, v, e, r, ,,  , c, u, r, r, e, n, t,  , L, L, M, s,  , s, t, r, u, g, g, l, e, 
-, t, o,  , i, d, e, n, t, i, f, y,  , e, r, r, o, r, s,  , n, o, t,  , e, x, p, l, i, c, i, t, l, y,  , s, p, e, c, i, f, i, e, d,  , i, n,  , t, h, e, i, r,  , i, n, s, t, r, u, c, t, i, o, n, s, ,,  , s, u, c, h,  , a, s, 
-, t, h, o, s, e,  , a, r, i, s, i, n, g,  , f, r, o, m,  , u, p, d, a, t, e, s,  , t, o,  , t, h, e,  , r, e, s, p, o, n, s, e, -, g, e, n, e, r, a, t, i, o, n,  , m, o, d, e, l,  , o, r,  , s, h, i, f, t, s,  , i, n,  , u, s, e, r, 
-, b, e, h, a, v, i, o, r, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , A, u, t, o, m, a, t, e, d,  , E, r, r, o, r,  , D, i, s, c, o, v, e, r, y, ,,  , a,  , f, r, a, m, e, w, o, r, k,  , f, o, r, 
-, d, e, t, e, c, t, i, n, g,  , a, n, d,  , d, e, f, i, n, i, n, g,  , e, r, r, o, r, s,  , i, n,  , c, o, n, v, e, r, s, a, t, i, o, n, a, l,  , A, I, ,,  , a, n, d,  , p, r, o, p, o, s, e,  , S, E, E, E, D,  , (, S, o, f, t, 
-, C, l, u, s, t, e, r, i, n, g,  , E, x, t, e, n, d, e, d,  , E, n, c, o, d, e, r, -, B, a, s, e, d,  , E, r, r, o, r,  , D, e, t, e, c, t, i, o, n, ), ,,  , a, s,  , a, n,  , e, n, c, o, d, e, r, -, b, a, s, e, d, 
-, a, p, p, r, o, a, c, h,  , t, o,  , i, t, s,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n, .,  , W, e,  , e, n, h, a, n, c, e,  , t, h, e,  , S, o, f, t,  , N, e, a, r, e, s, t,  , N, e, i, g, h, b, o, r,  , L, o, s, s,  , b, y, 
-, a, m, p, l, i, f, y, i, n, g,  , d, i, s, t, a, n, c, e,  , w, e, i, g, h, t, i, n, g,  , f, o, r,  , n, e, g, a, t, i, v, e,  , s, a, m, p, l, e, s,  , a, n, d,  , i, n, t, r, o, d, u, c, e,  , L, a, b, e, l, -, B, a, s, e, d, 
-, S, a, m, p, l, e,  , R, a, n, k, i, n, g,  , t, o,  , s, e, l, e, c, t,  , h, i, g, h, l, y,  , c, o, n, t, r, a, s, t, i, v, e,  , e, x, a, m, p, l, e, s,  , f, o, r,  , b, e, t, t, e, r,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, 
-, l, e, a, r, n, i, n, g, .,  , S, E, E, E, D,  , o, u, t, p, e, r, f, o, r, m, s,  , a, d, a, p, t, e, d,  , b, a, s, e, l, i, n, e, s,  , -, -,  , i, n, c, l, u, d, i, n, g,  , G, P, T, -, 4, o,  , a, n, d,  , P, h, i, -, 4,  , -, -, 
-, a, c, r, o, s, s,  , m, u, l, t, i, p, l, e,  , e, r, r, o, r, -, a, n, n, o, t, a, t, e, d,  , d, i, a, l, o, g, u, e,  , d, a, t, a, s, e, t, s, ,,  , i, m, p, r, o, v, i, n, g,  , t, h, e,  , a, c, c, u, r, a, c, y,  , f, o, r, 
-, d, e, t, e, c, t, i, n, g,  , u, n, k, n, o, w, n,  , e, r, r, o, r, s,  , b, y,  , u, p,  , t, o,  , 8,  , p, o, i, n, t, s,  , a, n, d,  , d, e, m, o, n, s, t, r, a, t, i, n, g,  , s, t, r, o, n, g, 
-, g, e, n, e, r, a, l, i, z, a, t, i, o, n,  , t, o,  , u, n, k, n, o, w, n,  , i, n, t, e, n, t,  , d, e, t, e, c, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10818v1'>LLM Enhancement with Domain Expert Mental Model to Reduce LLM Hallucination with Causal Prompt Engineering</a></td><td>D, i, f, f, i, c, u, l, t,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , p, r, o, b, l, e, m, s,  , a, b, o, u, n, d,  , i, n,  , v, a, r, i, o, u, s,  , d, i, s, c, i, p, l, i, n, e, s,  , a, n, d,  , d, o, m, a, i, n, s, ., 
-, T, h, e,  , p, r, o, l, i, f, e, r, a, t, i, o, n,  , o, f,  , g, e, n, e, r, a, t, i, v, e,  , t, e, c, h, n, i, q, u, e, s, ,,  , e, s, p, e, c, i, a, l, l, y,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, 
-, (, L, L, M, s, ), ,,  , h, a, s,  , e, x, c, i, t, e, d,  , i, n, t, e, r, e, s, t,  , i, n,  , u, s, i, n, g,  , t, h, e, m,  , f, o, r,  , d, e, c, i, s, i, o, n,  , s, u, p, p, o, r, t, .,  , H, o, w, e, v, e, r, ,,  , L, L, M, s, 
-, c, a, n, n, o, t,  , y, e, t,  , r, e, s, o, l, v, e,  , m, i, s, s, i, n, g, n, e, s, s,  , i, n,  , t, h, e, i, r,  , t, r, a, i, n, i, n, g,  , d, a, t, a, ,,  , l, e, a, d, i, n, g,  , t, o, 
-, h, a, l, l, u, c, i, n, a, t, i, o, n, s, .,  , R, e, t, r, i, e, v, a, l, -, A, u, g, m, e, n, t, e, d,  , G, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , e, n, h, a, n, c, e, s,  , L, L, M, s,  , b, y, 
-, i, n, c, o, r, p, o, r, a, t, i, n, g,  , e, x, t, e, r, n, a, l,  , i, n, f, o, r, m, a, t, i, o, n,  , r, e, t, r, i, e, v, a, l, ,,  , r, e, d, u, c, i, n, g,  , h, a, l, l, u, c, i, n, a, t, i, o, n, s,  , a, n, d, 
-, i, m, p, r, o, v, i, n, g,  , a, c, c, u, r, a, c, y, .,  , Y, e, t, ,,  , R, A, G,  , a, n, d,  , r, e, l, a, t, e, d,  , m, e, t, h, o, d, s,  , a, r, e,  , o, n, l, y,  , p, a, r, t, i, a, l,  , s, o, l, u, t, i, o, n, s, ,,  , a, s, 
-, t, h, e, y,  , m, a, y,  , l, a, c, k,  , a, c, c, e, s, s,  , t, o,  , a, l, l,  , n, e, c, e, s, s, a, r, y,  , s, o, u, r, c, e, s,  , o, r,  , k, e, y,  , m, i, s, s, i, n, g,  , i, n, f, o, r, m, a, t, i, o, n, .,  , E, v, e, n, 
-, e, v, e, r, y, d, a, y,  , i, s, s, u, e, s,  , o, f, t, e, n,  , c, h, a, l, l, e, n, g, e,  , L, L, M, s, ',  , a, b, i, l, i, t, i, e, s, .,  , S, u, b, m, i, t, t, i, n, g,  , l, o, n, g, e, r,  , p, r, o, m, p, t, s,  , w, i, t, h, 
-, c, o, n, t, e, x, t,  , a, n, d,  , e, x, a, m, p, l, e, s,  , i, s,  , o, n, e,  , a, p, p, r, o, a, c, h,  , t, o,  , a, d, d, r, e, s, s,  , k, n, o, w, l, e, d, g, e,  , g, a, p, s, ,,  , b, u, t,  , d, e, s, i, g, n, i, n, g, 
-, e, f, f, e, c, t, i, v, e,  , p, r, o, m, p, t, s,  , i, s,  , n, o, n, -, t, r, i, v, i, a, l,  , a, n, d,  , m, a, y,  , n, o, t,  , c, a, p, t, u, r, e,  , c, o, m, p, l, e, x,  , m, e, n, t, a, l,  , m, o, d, e, l, s,  , o, f, 
-, d, o, m, a, i, n,  , e, x, p, e, r, t, s, .,  , F, o, r,  , t, a, s, k, s,  , w, i, t, h,  , m, i, s, s, i, n, g,  , c, r, i, t, i, c, a, l,  , i, n, f, o, r, m, a, t, i, o, n, ,,  , L, L, M, s,  , a, r, e, 
-, i, n, s, u, f, f, i, c, i, e, n, t, ,,  , a, s,  , a, r, e,  , m, a, n, y,  , e, x, i, s, t, i, n, g,  , s, y, s, t, e, m, s,  , p, o, o, r, l, y,  , r, e, p, r, e, s, e, n, t, e, d,  , i, n,  , a, v, a, i, l, a, b, l, e, 
-, d, o, c, u, m, e, n, t, s, .,  , T, h, i, s,  , p, a, p, e, r,  , e, x, p, l, o, r, e, s,  , h, o, w,  , L, L, M, s,  , c, a, n,  , m, a, k, e,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , m, o, r, e, 
-, e, f, f, i, c, i, e, n, t, ,,  , u, s, i, n, g,  , a,  , r, u, n, n, i, n, g,  , e, x, a, m, p, l, e,  , o, f,  , e, v, a, l, u, a, t, i, n, g,  , w, h, e, t, h, e, r,  , t, o,  , r, e, s, p, o, n, d,  , t, o,  , a,  , c, a, l, l, 
-, f, o, r,  , p, r, o, p, o, s, a, l, s, .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , t, e, c, h, n, o, l, o, g, y,  , b, a, s, e, d,  , o, n,  , o, p, t, i, m, i, z, e, d,  , h, u, m, a, n, -, m, a, c, h, i, n, e, 
-, d, i, a, l, o, g, u, e,  , a, n, d,  , m, o, n, o, t, o, n, e,  , B, o, o, l, e, a, n,  , a, n, d,  , k, -, v, a, l, u, e, d,  , f, u, n, c, t, i, o, n, s,  , t, o,  , d, i, s, c, o, v, e, r,  , a, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , t, r, a, c, t, a, b, l, e,  , p, e, r, s, o, n, a, l,  , e, x, p, e, r, t,  , m, e, n, t, a, l,  , m, o, d, e, l,  , (, E, M, M, ),  , o, f, 
-, d, e, c, i, s, i, o, n, -, m, a, k, i, n, g, .,  , O, u, r,  , E, M, M,  , a, l, g, o, r, i, t, h, m,  , f, o, r,  , L, L, M,  , p, r, o, m, p, t,  , e, n, g, i, n, e, e, r, i, n, g,  , h, a, s,  , f, o, u, r,  , s, t, e, p, s, :, 
-, (, 1, ),  , f, a, c, t, o, r,  , i, d, e, n, t, i, f, i, c, a, t, i, o, n, ,,  , (, 2, ),  , h, i, e, r, a, r, c, h, i, c, a, l,  , s, t, r, u, c, t, u, r, i, n, g,  , o, f,  , f, a, c, t, o, r, s, ,,  , (, 3, ), 
-, g, e, n, e, r, a, t, i, n, g,  , a,  , g, e, n, e, r, a, l, i, z, e, d,  , e, x, p, e, r, t,  , m, e, n, t, a, l,  , m, o, d, e, l,  , s, p, e, c, i, f, i, c, a, t, i, o, n, ,,  , a, n, d,  , (, 4, ),  , g, e, n, e, r, a, t, i, n, g, 
-, a,  , d, e, t, a, i, l, e, d,  , g, e, n, e, r, a, l, i, z, e, d,  , e, x, p, e, r, t,  , m, e, n, t, a, l,  , m, o, d, e, l,  , f, r, o, m,  , t, h, a, t,  , s, p, e, c, i, f, i, c, a, t, i, o, n, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.11000v1'>Hardness, Structural Knowledge, and Opportunity: An Analytical Framework for Modular Performance Modeling</a></td><td>Performance-influence models are beneficial for understanding how
+configurations affect system performance, but their creation is challenging due
+to the exponential growth of configuration spaces. While gray-box approaches
+leverage selective "structural knowledge" (like the module execution graph of
+the system) to improve modeling, the relationship between this knowledge, a
+system's characteristics (we call them "structural aspects"), and potential
+model improvements is not well understood. This paper addresses this gap by
+formally investigating how variations in structural aspects (e.g., the number
+of modules and options per module) and the level of structural knowledge impact
+the creation of "opportunities" for improved "modular performance modeling". We
+introduce and quantify the concept of modeling "hardness", defined as the
+inherent difficulty of performance modeling. Through controlled experiments
+with synthetic system models, we establish an "analytical matrix" to measure
+these concepts. Our findings show that modeling hardness is primarily driven by
+the number of modules and configuration options per module. More importantly,
+we demonstrate that both higher levels of structural knowledge and increased
+modeling hardness significantly enhance the opportunity for improvement. The
+impact of these factors varies by performance metric; for ranking accuracy
+(e.g., in debugging task), structural knowledge is more dominant, while for
+prediction accuracy (e.g., in resource management task), hardness plays a
+stronger role. These results provide actionable insights for system designers,
+guiding them to strategically allocate time and select appropriate modeling
+approaches based on a system's characteristics and a given task's objectives.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10972v1'>Enhancing Computational Cognitive Architectures with LLMs: A Case Study</a></td><td>Computational cognitive architectures are broadly scoped models of the human
+mind that combine different psychological functionalities (as well as often
+different computational methods for these different functionalities) into one
+unified framework. They structure them in a psychologically plausible and
+validated way. However, such models thus far have only limited computational
+capabilities, mostly limited by the computational tools and techniques that
+were adopted. More recently, LLMs have proved to be more capable
+computationally than any other tools. Thus, in order to deal with both
+real-world complexity and psychological realism at the same time, incorporating
+LLMs into cognitive architectures naturally becomes an important task. In the
+present article, a synergistic combination of the Clarion cognitive
+architecture and LLMs is discussed as a case study. The implicit-explicit
+dichotomy that is fundamental to Clarion is leveraged for a seamless
+integration of Clarion and LLMs. As a result, computational power of LLMs is
+combined with psychological nicety of Clarion.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10946v1'>When the Code Autopilot Breaks: Why LLMs Falter in Embedded Machine Learning</a></td><td>Large Language Models (LLMs) are increasingly used to automate software
+generation in embedded machine learning workflows, yet their outputs often fail
+silently or behave unpredictably. This article presents an empirical
+investigation of failure modes in LLM-powered ML pipelines, based on an
+autopilot framework that orchestrates data preprocessing, model conversion, and
+on-device inference code generation. We show how prompt format, model behavior,
+and structural assumptions influence both success rates and failure
+characteristics, often in ways that standard validation pipelines fail to
+detect. Our analysis reveals a diverse set of error-prone behaviors, including
+format-induced misinterpretations and runtime-disruptive code that compiles but
+breaks downstream. We derive a taxonomy of failure categories and analyze
+errors across multiple LLMs, highlighting common root causes and systemic
+fragilities. Though grounded in specific devices, our study reveals broader
+challenges in LLM-based code generation. We conclude by discussing directions
+for improving reliability and traceability in LLM-powered embedded ML systems.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10886v1'>CultureSynth: A Hierarchical Taxonomy-Guided and Retrieval-Augmented Framework for Cultural Question-Answer Synthesis</a></td><td>Cultural competence, defined as the ability to understand and adapt to
+multicultural contexts, is increasingly vital for large language models (LLMs)
+in global environments. While several cultural benchmarks exist to assess LLMs'
+cultural competence, current evaluations suffer from fragmented taxonomies,
+domain specificity, and heavy reliance on manual data annotation. To address
+these limitations, we introduce CultureSynth, a novel framework comprising (1)
+a comprehensive hierarchical multilingual cultural taxonomy covering 12 primary
+and 130 secondary topics, and (2) a Retrieval-Augmented Generation (RAG)-based
+methodology leveraging factual knowledge to synthesize culturally relevant
+question-answer pairs. The CultureSynth-7 synthetic benchmark contains 19,360
+entries and 4,149 manually verified entries across 7 languages. Evaluation of
+14 prevalent LLMs of different sizes reveals clear performance stratification
+led by ChatGPT-4o-Latest and Qwen2.5-72B-Instruct. The results demonstrate that
+a 3B-parameter threshold is necessary for achieving basic cultural competence,
+models display varying architectural biases in knowledge processing, and
+significant geographic disparities exist across models. We believe that
+CultureSynth offers a scalable framework for developing culturally aware AI
+systems while reducing reliance on manual annotation\footnote{Benchmark is
+available at https://github.com/Eyr3/CultureSynth.}.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10858v1'>Large Language Models for Security Operations Centers: A Comprehensive Survey</a></td><td>Large Language Models (LLMs) have emerged as powerful tools capable of
+understanding and generating human-like text, offering transformative potential
+across diverse domains. The Security Operations Center (SOC), responsible for
+safeguarding digital infrastructure, represents one of these domains. SOCs
+serve as the frontline of defense in cybersecurity, tasked with continuous
+monitoring, detection, and response to incidents. However, SOCs face persistent
+challenges such as high alert volumes, limited resources, high demand for
+experts with advanced knowledge, delayed response times, and difficulties in
+leveraging threat intelligence effectively. In this context, LLMs can offer
+promising solutions by automating log analysis, streamlining triage, improving
+detection accuracy, and providing the required knowledge in less time. This
+survey systematically explores the integration of generative AI and more
+specifically LLMs into SOC workflow, providing a structured perspective on its
+capabilities, challenges, and future directions. We believe that this survey
+offers researchers and SOC managers a broad overview of the current state of
+LLM integration within academic study. To the best of our knowledge, this is
+the first comprehensive study to examine LLM applications in SOCs in details.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10852v1'>Pre-Storage Reasoning for Episodic Memory: Shifting Inference Burden to Memory for Personalized Dialogue</a></td><td>Effective long-term memory in conversational AI requires synthesizing
+information across multiple sessions. However, current systems place excessive
+reasoning burden on response generation, making performance significantly
+dependent on model sizes. We introduce PREMem (Pre-storage Reasoning for
+Episodic Memory), a novel approach that shifts complex reasoning processes from
+inference to memory construction. PREMem extracts fine-grained memory fragments
+categorized into factual, experiential, and subjective information; it then
+establishes explicit relationships between memory items across sessions,
+capturing evolution patterns like extensions, transformations, and
+implications. By performing this reasoning during pre-storage rather than when
+generating a response, PREMem creates enriched representations while reducing
+computational demands during interactions. Experiments show significant
+performance improvements across all model sizes, with smaller models achieving
+results comparable to much larger baselines while maintaining effectiveness
+even with constrained token budgets. Code and dataset are available at
+https://github.com/sangyeop-kim/PREMem.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10833v1'>Towards Automated Error Discovery: A Study in Conversational AI</a></td><td>Although LLM-based conversational agents demonstrate strong fluency and
+coherence, they still produce undesirable behaviors (errors) that are
+challenging to prevent from reaching users during deployment. Recent research
+leverages large language models (LLMs) to detect errors and guide
+response-generation models toward improvement. However, current LLMs struggle
+to identify errors not explicitly specified in their instructions, such as
+those arising from updates to the response-generation model or shifts in user
+behavior. In this work, we introduce Automated Error Discovery, a framework for
+detecting and defining errors in conversational AI, and propose SEEED (Soft
+Clustering Extended Encoder-Based Error Detection), as an encoder-based
+approach to its implementation. We enhance the Soft Nearest Neighbor Loss by
+amplifying distance weighting for negative samples and introduce Label-Based
+Sample Ranking to select highly contrastive examples for better representation
+learning. SEEED outperforms adapted baselines -- including GPT-4o and Phi-4 --
+across multiple error-annotated dialogue datasets, improving the accuracy for
+detecting unknown errors by up to 8 points and demonstrating strong
+generalization to unknown intent detection.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10818v1'>LLM Enhancement with Domain Expert Mental Model to Reduce LLM Hallucination with Causal Prompt Engineering</a></td><td>Difficult decision-making problems abound in various disciplines and domains.
+The proliferation of generative techniques, especially large language models
+(LLMs), has excited interest in using them for decision support. However, LLMs
+cannot yet resolve missingness in their training data, leading to
+hallucinations. Retrieval-Augmented Generation (RAG) enhances LLMs by
+incorporating external information retrieval, reducing hallucinations and
+improving accuracy. Yet, RAG and related methods are only partial solutions, as
+they may lack access to all necessary sources or key missing information. Even
+everyday issues often challenge LLMs' abilities. Submitting longer prompts with
+context and examples is one approach to address knowledge gaps, but designing
+effective prompts is non-trivial and may not capture complex mental models of
+domain experts. For tasks with missing critical information, LLMs are
+insufficient, as are many existing systems poorly represented in available
+documents. This paper explores how LLMs can make decision-making more
+efficient, using a running example of evaluating whether to respond to a call
+for proposals. We propose a technology based on optimized human-machine
+dialogue and monotone Boolean and k-valued functions to discover a
+computationally tractable personal expert mental model (EMM) of
+decision-making. Our EMM algorithm for LLM prompt engineering has four steps:
+(1) factor identification, (2) hierarchical structuring of factors, (3)
+generating a generalized expert mental model specification, and (4) generating
+a detailed generalized expert mental model from that specification.</td></tr></tbody></table>
 
 ### 📅 2025-09-12
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.10744v1'>Automated MCQA Benchmarking at Scale: Evaluating Reasoning Traces as Retrieval Sources for Domain Adaptation of Small Language Models</a></td><td>A, s,  , s, c, i, e, n, t, i, f, i, c,  , k, n, o, w, l, e, d, g, e,  , g, r, o, w, s,  , a, t,  , a, n,  , u, n, p, r, e, c, e, d, e, n, t, e, d,  , p, a, c, e, ,,  , e, v, a, l, u, a, t, i, o, n,  , b, e, n, c, h, m, a, r, k, s, 
-, m, u, s, t,  , e, v, o, l, v, e,  , t, o,  , r, e, f, l, e, c, t,  , n, e, w,  , d, i, s, c, o, v, e, r, i, e, s,  , a, n, d,  , e, n, s, u, r, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , a, r, e,  , t, e, s, t, e, d,  , o, n, 
-, c, u, r, r, e, n, t, ,,  , d, i, v, e, r, s, e,  , l, i, t, e, r, a, t, u, r, e, .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , s, c, a, l, a, b, l, e, ,,  , m, o, d, u, l, a, r,  , f, r, a, m, e, w, o, r, k,  , f, o, r, 
-, g, e, n, e, r, a, t, i, n, g,  , m, u, l, t, i, p, l, e, -, c, h, o, i, c, e,  , q, u, e, s, t, i, o, n, -, a, n, s, w, e, r, i, n, g,  , (, M, C, Q, A, ),  , b, e, n, c, h, m, a, r, k, s,  , d, i, r, e, c, t, l, y,  , f, r, o, m, 
-, l, a, r, g, e,  , c, o, r, p, o, r, a,  , o, f,  , s, c, i, e, n, t, i, f, i, c,  , p, a, p, e, r, s, .,  , O, u, r,  , p, i, p, e, l, i, n, e,  , a, u, t, o, m, a, t, e, s,  , e, v, e, r, y,  , s, t, a, g, e,  , o, f,  , M, C, Q, A, 
-, c, r, e, a, t, i, o, n, ,,  , i, n, c, l, u, d, i, n, g,  , P, D, F,  , p, a, r, s, i, n, g, ,,  , s, e, m, a, n, t, i, c,  , c, h, u, n, k, i, n, g, ,,  , q, u, e, s, t, i, o, n,  , g, e, n, e, r, a, t, i, o, n, ,,  , a, n, d, 
-, m, o, d, e, l,  , e, v, a, l, u, a, t, i, o, n, .,  , A, s,  , a,  , c, a, s, e,  , s, t, u, d, y, ,,  , w, e,  , g, e, n, e, r, a, t, e,  , m, o, r, e,  , t, h, a, n,  , 1, 6, ,, 0, 0, 0,  , M, C, Q, s,  , f, r, o, m, 
-, 2, 2, ,, 0, 0, 0,  , o, p, e, n, -, a, c, c, e, s, s,  , a, r, t, i, c, l, e, s,  , i, n,  , r, a, d, i, a, t, i, o, n,  , a, n, d,  , c, a, n, c, e, r,  , b, i, o, l, o, g, y, .,  , W, e,  , t, h, e, n,  , e, v, a, l, u, a, t, e,  , a, 
-, s, u, i, t, e,  , o, f,  , s, m, a, l, l,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, 1, ., 1, B, -, 1, 4, B,  , p, a, r, a, m, e, t, e, r, s, ),  , o, n,  , t, h, e, s, e,  , q, u, e, s, t, i, o, n, s, ,, 
-, c, o, m, p, a, r, i, n, g,  , b, a, s, e, l, i, n, e,  , a, c, c, u, r, a, c, y,  , w, i, t, h,  , r, e, t, r, i, e, v, a, l, -, a, u, g, m, e, n, t, e, d,  , g, e, n, e, r, a, t, i, o, n,  , (, R, A, G, ),  , f, r, o, m, 
-, p, a, p, e, r, -, d, e, r, i, v, e, d,  , s, e, m, a, n, t, i, c,  , c, h, u, n, k, s,  , a, n, d,  , f, r, o, m,  , r, e, a, s, o, n, i, n, g,  , t, r, a, c, e, s,  , d, i, s, t, i, l, l, e, d,  , f, r, o, m,  , G, P, T, -, 4, ., 1, ., 
-, W, e,  , f, i, n, d,  , t, h, a, t,  , r, e, a, s, o, n, i, n, g, -, t, r, a, c, e,  , r, e, t, r, i, e, v, a, l,  , c, o, n, s, i, s, t, e, n, t, l, y,  , i, m, p, r, o, v, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n, 
-, b, o, t, h,  , s, y, n, t, h, e, t, i, c,  , a, n, d,  , e, x, p, e, r, t, -, a, n, n, o, t, a, t, e, d,  , b, e, n, c, h, m, a, r, k, s, ,,  , e, n, a, b, l, i, n, g,  , s, e, v, e, r, a, l,  , s, m, a, l, l,  , m, o, d, e, l, s, 
-, t, o,  , s, u, r, p, a, s, s,  , G, P, T, -, 4,  , o, n,  , t, h, e,  , 2, 0, 2, 3,  , A, s, t, r, o,  , R, a, d, i, a, t, i, o, n,  , a, n, d,  , C, a, n, c, e, r,  , B, i, o, l, o, g, y,  , e, x, a, m, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10693v1'>Learning Concave Bid Shading Strategies in Online Auctions via Measure-valued Proximal Optimization</a></td><td>T, h, i, s,  , w, o, r, k,  , p, r, o, p, o, s, e, s,  , a,  , b, i, d,  , s, h, a, d, i, n, g,  , s, t, r, a, t, e, g, y,  , f, o, r,  , f, i, r, s, t, -, p, r, i, c, e,  , a, u, c, t, i, o, n, s,  , a, s,  , a, 
-, m, e, a, s, u, r, e, -, v, a, l, u, e, d,  , o, p, t, i, m, i, z, a, t, i, o, n,  , p, r, o, b, l, e, m, .,  , W, e,  , c, o, n, s, i, d, e, r,  , a,  , s, t, a, n, d, a, r, d,  , p, a, r, a, m, e, t, r, i, c,  , f, o, r, m,  , f, o, r, 
-, b, i, d,  , s, h, a, d, i, n, g,  , a, n, d,  , f, o, r, m, u, l, a, t, e,  , t, h, e,  , p, r, o, b, l, e, m,  , a, s,  , c, o, n, v, e, x,  , o, p, t, i, m, i, z, a, t, i, o, n,  , o, v, e, r,  , t, h, e,  , j, o, i, n, t, 
-, d, i, s, t, r, i, b, u, t, i, o, n,  , o, f,  , s, h, a, d, i, n, g,  , p, a, r, a, m, e, t, e, r, s, .,  , A, f, t, e, r,  , e, a, c, h,  , a, u, c, t, i, o, n, ,,  , t, h, e,  , s, h, a, d, i, n, g,  , p, a, r, a, m, e, t, e, r, 
-, d, i, s, t, r, i, b, u, t, i, o, n,  , i, s,  , a, d, a, p, t, e, d,  , v, i, a,  , a,  , r, e, g, u, l, a, r, i, z, e, d,  , W, a, s, s, e, r, s, t, e, i, n, -, p, r, o, x, i, m, a, l,  , u, p, d, a, t, e,  , w, i, t, h,  , a, 
-, d, a, t, a, -, d, r, i, v, e, n,  , e, n, e, r, g, y,  , f, u, n, c, t, i, o, n, a, l, .,  , T, h, i, s,  , e, n, e, r, g, y,  , f, u, n, c, t, i, o, n, a, l,  , i, s,  , c, o, n, d, i, t, i, o, n, a, l,  , o, n,  , t, h, e, 
-, c, o, n, t, e, x, t, ,,  , i, ., e, ., ,,  , o, n,  , p, u, b, l, i, s, h, e, r, /, u, s, e, r,  , a, t, t, r, i, b, u, t, e, s,  , s, u, c, h,  , a, s,  , d, o, m, a, i, n, ,,  , a, d,  , s, l, o, t,  , t, y, p, e, ,, 
-, d, e, v, i, c, e, ,,  , o, r,  , l, o, c, a, t, i, o, n, .,  , T, h, e,  , p, r, o, p, o, s, e, d,  , a, l, g, o, r, i, t, h, m,  , e, n, c, o, u, r, a, g, e, s,  , t, h, e,  , b, i, d,  , d, i, s, t, r, i, b, u, t, i, o, n,  , t, o, 
-, p, l, a, c, e,  , m, o, r, e,  , w, e, i, g, h, t,  , o, n,  , v, a, l, u, e, s,  , w, i, t, h,  , h, i, g, h, e, r,  , e, x, p, e, c, t, e, d,  , s, u, r, p, l, u, s, ,,  , i, ., e, ., ,,  , w, h, e, r, e,  , t, h, e,  , w, i, n, 
-, p, r, o, b, a, b, i, l, i, t, y,  , a, n, d,  , t, h, e,  , v, a, l, u, e,  , g, a, p,  , a, r, e,  , b, o, t, h,  , l, a, r, g, e, .,  , W, e,  , s, h, o, w,  , t, h, a, t,  , t, h, e,  , r, e, s, u, l, t, i, n, g, 
-, m, e, a, s, u, r, e, -, v, a, l, u, e, d,  , c, o, n, v, e, x,  , o, p, t, i, m, i, z, a, t, i, o, n,  , p, r, o, b, l, e, m,  , a, d, m, i, t, s,  , a,  , c, l, o, s, e, d,  , f, o, r, m,  , s, o, l, u, t, i, o, n, .,  , A, 
-, n, u, m, e, r, i, c, a, l,  , e, x, a, m, p, l, e,  , i, l, l, u, s, t, r, a, t, e, s,  , t, h, e,  , p, r, o, p, o, s, e, d,  , m, e, t, h, o, d, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13345v1'>Accuracy Paradox in Large Language Models: Regulating Hallucination Risks in Generative AI</a></td><td>A, s,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , p, e, r, m, e, a, t, e,  , e, v, e, r, y, d, a, y,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g, ,,  , t, h, e, i, r, 
-, e, p, i, s, t, e, m, i, c,  , a, n, d,  , s, o, c, i, e, t, a, l,  , r, i, s, k, s,  , d, e, m, a, n, d,  , u, r, g, e, n, t,  , s, c, r, u, t, i, n, y, .,  , H, a, l, l, u, c, i, n, a, t, i, o, n, s, ,,  , t, h, e, 
-, g, e, n, e, r, a, t, i, o, n,  , o, f,  , f, a, b, r, i, c, a, t, e, d, ,,  , m, i, s, l, e, a, d, i, n, g, ,,  , o, v, e, r, s, i, m, p, l, i, f, i, e, d,  , o, r,  , u, n, t, r, u, s, t, w, o, r, t, h, y,  , o, u, t, p, u, t, s, ,, 
-, h, a, s,  , e, m, e, r, g, e, d,  , a, s,  , i, m, p, e, r, a, t, i, v, e,  , c, h, a, l, l, e, n, g, e, s, .,  , W, h, i, l, e,  , r, e, g, u, l, a, t, o, r, y, ,,  , a, c, a, d, e, m, i, c, ,,  , a, n, d,  , t, e, c, h, n, i, c, a, l, 
-, d, i, s, c, o, u, r, s, e,  , p, o, s, i, t, i, o, n,  , a, c, c, u, r, a, c, y,  , a, s,  , t, h, e,  , p, r, i, n, c, i, p, a, l,  , b, e, n, c, h, m, a, r, k,  , f, o, r,  , m, i, t, i, g, a, t, i, n, g,  , s, u, c, h, 
-, h, a, r, m, s, ,,  , t, h, i, s,  , a, r, t, i, c, l, e,  , c, o, n, t, e, n, d, s,  , t, h, a, t,  , o, v, e, r, r, e, l, i, a, n, c, e,  , o, n,  , a, c, c, u, r, a, c, y,  , m, i, s, d, i, a, g, n, o, s, e, s,  , t, h, e, 
-, p, r, o, b, l, e, m,  , a, n, d,  , h, a, s,  , c, o, u, n, t, e, r, p, r, o, d, u, c, t, i, v, e,  , e, f, f, e, c, t, :,  , t, h, e,  , a, c, c, u, r, a, c, y,  , p, a, r, a, d, o, x, .,  , D, r, a, w, i, n, g,  , o, n, 
-, i, n, t, e, r, d, i, s, c, i, p, l, i, n, a, r, y,  , l, i, t, e, r, a, t, u, r, e, s, ,,  , t, h, i, s,  , a, r, t, i, c, l, e,  , d, e, v, e, l, o, p, s,  , a,  , t, a, x, o, n, o, m, y,  , o, f, 
-, h, a, l, l, u, c, i, n, a, t, i, o, n,  , t, y, p, e, s,  , a, n, d,  , s, h, o, w, s,  , t, h, e,  , p, a, r, a, d, o, x,  , a, l, o, n, g,  , t, h, r, e, e,  , i, n, t, e, r, t, w, i, n, i, n, g,  , d, i, m, e, n, s, i, o, n, s, :, 
-, o, u, t, p, u, t, s, ,,  , i, n, d, i, v, i, d, u, a, l, s,  , a, n, d,  , s, o, c, i, e, t, y, .,  , F, i, r, s, t, ,,  , a, c, c, u, r, a, c, y,  , f, u, n, c, t, i, o, n, s,  , a, s,  , a,  , s, u, p, e, r, f, i, c, i, a, l, 
-, p, r, o, x, y,  , f, o, r,  , r, e, l, i, a, b, i, l, i, t, y, ,,  , i, n, c, e, n, t, i, v, i, s, i, n, g,  , t, h, e,  , o, p, t, i, m, i, s, a, t, i, o, n,  , o, f,  , r, h, e, t, o, r, i, c, a, l,  , f, l, u, e, n, c, y,  , a, n, d, 
-, s, u, r, f, a, c, e, -, l, e, v, e, l,  , c, o, r, r, e, c, t, n, e, s, s,  , o, v, e, r,  , e, p, i, s, t, e, m, i, c,  , t, r, u, s, t, w, o, r, t, h, i, n, e, s, s, .,  , T, h, i, s,  , e, n, c, o, u, r, a, g, e, s, 
-, p, a, s, s, i, v, e,  , u, s, e, r,  , t, r, u, s, t,  , i, n,  , o, u, t, p, u, t, s,  , t, h, a, t,  , a, p, p, e, a, r,  , a, c, c, u, r, a, t, e,  , b, u, t,  , e, p, i, s, t, e, m, i, c, a, l, l, y,  , u, n, t, e, n, a, b, l, e, ., 
-, S, e, c, o, n, d, ,,  , a, c, c, u, r, a, c, y,  , a, s,  , a,  , s, i, n, g, u, l, a, r,  , m, e, t, r, i, c,  , f, a, i, l, s,  , t, o,  , d, e, t, e, c, t,  , h, a, r, m, s,  , t, h, a, t,  , a, r, e,  , n, o, t, 
-, f, a, c, t, u, a, l, l, y,  , f, a, l, s, e,  , b, u, t,  , a, r, e,  , n, o, n, e, t, h, e, l, e, s, s,  , m, i, s, l, e, a, d, i, n, g, ,,  , v, a, l, u, e, -, l, a, d, e, n, ,,  , o, r,  , s, o, c, i, a, l, l, y, 
-, d, i, s, t, o, r, t, i, n, g, ,,  , i, n, c, l, u, d, i, n, g,  , c, o, n, s, e, n, s, u, s,  , i, l, l, u, s, i, o, n, s, ,,  , s, y, c, o, p, h, a, n, t, i, c,  , a, l, i, g, n, m, e, n, t, ,,  , a, n, d,  , s, u, b, t, l, e, 
-, m, a, n, i, p, u, l, a, t, i, o, n, .,  , T, h, i, r, d, ,,  , r, e, g, u, l, a, t, o, r, y,  , o, v, e, r, e, m, p, h, a, s, i, s,  , o, n,  , a, c, c, u, r, a, c, y,  , o, b, s, c, u, r, e, s,  , t, h, e,  , w, i, d, e, r, 
-, s, o, c, i, e, t, a, l,  , c, o, n, s, e, q, u, e, n, c, e, s,  , o, f,  , h, a, l, l, u, c, i, n, a, t, i, o, n, ,,  , i, n, c, l, u, d, i, n, g,  , s, o, c, i, a, l,  , s, o, r, t, i, n, g, ,,  , p, r, i, v, a, c, y, 
-, v, i, o, l, a, t, i, o, n, s, ,,  , e, q, u, i, t, y,  , h, a, r, m, s, ,,  , e, p, i, s, t, e, m, i, c,  , c, o, n, v, e, r, g, e, n, c, e,  , t, h, a, t,  , m, a, r, g, i, n, a, l, i, s, e, s,  , d, i, s, s, e, n, t, ,, 
-, r, e, d, u, c, e, s,  , p, l, u, r, a, l, i, s, m, ,,  , a, n, d,  , c, a, u, s, e, s,  , s, o, c, i, a, l,  , d, e, s, k, i, l, l, i, n, g, .,  , B, y,  , e, x, a, m, i, n, i, n, g,  , t, h, e,  , E, U,  , A, I,  , A, c, t, ,, 
-, G, D, P, R, ,,  , a, n, d,  , D, S, A, ,,  , t, h, e,  , a, r, t, i, c, l, e,  , a, r, g, u, e, s,  , t, h, a, t,  , c, u, r, r, e, n, t,  , r, e, g, u, l, a, t, i, o, n, s,  , a, r, e,  , n, o, t,  , y, e, t, 
-, s, t, r, u, c, t, u, r, a, l, l, y,  , e, q, u, i, p, p, e, d,  , t, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , e, p, i, s, t, e, m, i, c, ,,  , r, e, l, a, t, i, o, n, a, l, ,,  , a, n, d,  , s, y, s, t, e, m, i, c, 
-, h, a, r, m, s,  , a, n, d,  , e, x, a, c, e, r, b, a, t, e, d,  , b, y,  , t, h, e,  , o, v, e, r, r, e, l, i, a, n, c, e,  , o, n,  , a, c, c, u, r, a, c, y, .,  , B, y,  , e, x, p, o, s, i, n, g,  , s, u, c, h, 
-, c, o, n, c, e, p, t, u, a, l,  , a, n, d,  , p, r, a, c, t, i, c, a, l,  , c, h, a, l, l, e, n, g, e, s, ,,  , t, h, i, s,  , a, r, t, i, c, l, e,  , c, a, l, l, s,  , f, o, r,  , a,  , f, u, n, d, a, m, e, n, t, a, l,  , s, h, i, f, t, 
-, t, o, w, a, r, d, s,  , p, l, u, r, a, l, i, s, t, i, c, ,,  , c, o, n, t, e, x, t, -, a, w, a, r, e, ,,  , a, n, d,  , m, a, n, i, p, u, l, a, t, i, o, n, -, r, e, s, i, l, i, e, n, t,  , a, p, p, r, o, a, c, h, e, s,  , t, o,  , A, I, 
-, t, r, u, s, t, w, o, r, t, h, y,  , g, o, v, e, r, n, a, n, c, e, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10656v1'>Self-Supervised Goal-Reaching Results in Multi-Agent Cooperation and Exploration</a></td><td>F, o, r,  , g, r, o, u, p, s,  , o, f,  , a, u, t, o, n, o, m, o, u, s,  , a, g, e, n, t, s,  , t, o,  , a, c, h, i, e, v, e,  , a,  , p, a, r, t, i, c, u, l, a, r,  , g, o, a, l, ,,  , t, h, e, y,  , m, u, s, t, 
-, e, n, g, a, g, e,  , i, n,  , c, o, o, r, d, i, n, a, t, i, o, n,  , a, n, d,  , l, o, n, g, -, h, o, r, i, z, o, n,  , r, e, a, s, o, n, i, n, g, .,  , H, o, w, e, v, e, r, ,,  , d, e, s, i, g, n, i, n, g,  , r, e, w, a, r, d, 
-, f, u, n, c, t, i, o, n, s,  , t, o,  , e, l, i, c, i, t,  , s, u, c, h,  , b, e, h, a, v, i, o, r,  , i, s,  , c, h, a, l, l, e, n, g, i, n, g, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , s, t, u, d, y,  , h, o, w, 
-, s, e, l, f, -, s, u, p, e, r, v, i, s, e, d,  , g, o, a, l, -, r, e, a, c, h, i, n, g,  , t, e, c, h, n, i, q, u, e, s,  , c, a, n,  , b, e,  , l, e, v, e, r, a, g, e, d,  , t, o,  , e, n, a, b, l, e,  , a, g, e, n, t, s,  , t, o, 
-, c, o, o, p, e, r, a, t, e, .,  , T, h, e,  , k, e, y,  , i, d, e, a,  , i, s,  , t, h, a, t, ,,  , r, a, t, h, e, r,  , t, h, a, n,  , h, a, v, e,  , a, g, e, n, t, s,  , m, a, x, i, m, i, z, e,  , s, o, m, e,  , s, c, a, l, a, r, 
-, r, e, w, a, r, d, ,,  , a, g, e, n, t, s,  , a, i, m,  , t, o,  , m, a, x, i, m, i, z, e,  , t, h, e,  , l, i, k, e, l, i, h, o, o, d,  , o, f,  , v, i, s, i, t, i, n, g,  , a,  , c, e, r, t, a, i, n,  , g, o, a, l, .,  , T, h, i, s, 
-, p, r, o, b, l, e, m,  , s, e, t, t, i, n, g,  , e, n, a, b, l, e, s,  , h, u, m, a, n,  , u, s, e, r, s,  , t, o,  , s, p, e, c, i, f, y,  , t, a, s, k, s,  , v, i, a,  , a,  , s, i, n, g, l, e,  , g, o, a, l,  , s, t, a, t, e, 
-, r, a, t, h, e, r,  , t, h, a, n,  , i, m, p, l, e, m, e, n, t, i, n, g,  , a,  , c, o, m, p, l, e, x,  , r, e, w, a, r, d,  , f, u, n, c, t, i, o, n, .,  , W, h, i, l, e,  , t, h, e,  , f, e, e, d, b, a, c, k,  , s, i, g, n, a, l, 
-, i, s,  , q, u, i, t, e,  , s, p, a, r, s, e, ,,  , w, e,  , w, i, l, l,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , s, e, l, f, -, s, u, p, e, r, v, i, s, e, d,  , g, o, a, l, -, r, e, a, c, h, i, n, g, 
-, t, e, c, h, n, i, q, u, e, s,  , e, n, a, b, l, e,  , a, g, e, n, t, s,  , t, o,  , l, e, a, r, n,  , f, r, o, m,  , s, u, c, h,  , f, e, e, d, b, a, c, k, .,  , O, n,  , M, A, R, L,  , b, e, n, c, h, m, a, r, k, s, ,,  , o, u, r, 
-, p, r, o, p, o, s, e, d,  , m, e, t, h, o, d,  , o, u, t, p, e, r, f, o, r, m, s,  , a, l, t, e, r, n, a, t, i, v, e,  , a, p, p, r, o, a, c, h, e, s,  , t, h, a, t,  , h, a, v, e,  , a, c, c, e, s, s,  , t, o,  , t, h, e,  , s, a, m, e, 
-, s, p, a, r, s, e,  , r, e, w, a, r, d,  , s, i, g, n, a, l,  , a, s,  , o, u, r,  , m, e, t, h, o, d, .,  , W, h, i, l, e,  , o, u, r,  , m, e, t, h, o, d,  , h, a, s,  , n, o,  , e, x, p, l, i, c, i, t,  , m, e, c, h, a, n, i, s, m, 
-, f, o, r,  , e, x, p, l, o, r, a, t, i, o, n, ,,  , w, e,  , o, b, s, e, r, v, e,  , t, h, a, t,  , s, e, l, f, -, s, u, p, e, r, v, i, s, e, d,  , m, u, l, t, i, -, a, g, e, n, t,  , g, o, a, l, -, r, e, a, c, h, i, n, g, 
-, l, e, a, d, s,  , t, o,  , e, m, e, r, g, e, n, t,  , c, o, o, p, e, r, a, t, i, o, n,  , a, n, d,  , e, x, p, l, o, r, a, t, i, o, n,  , i, n,  , s, e, t, t, i, n, g, s,  , w, h, e, r, e,  , a, l, t, e, r, n, a, t, i, v, e, 
-, a, p, p, r, o, a, c, h, e, s,  , n, e, v, e, r,  , w, i, t, n, e, s, s,  , a,  , s, i, n, g, l, e,  , s, u, c, c, e, s, s, f, u, l,  , t, r, i, a, l, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10653v1'>SCOR: A Framework for Responsible AI Innovation in Digital Ecosystems</a></td><td>A, I, -, d, r, i, v, e, n,  , d, i, g, i, t, a, l,  , e, c, o, s, y, s, t, e, m, s,  , s, p, a, n,  , d, i, v, e, r, s, e,  , s, t, a, k, e, h, o, l, d, e, r, s,  , i, n, c, l, u, d, i, n, g,  , t, e, c, h, n, o, l, o, g, y, 
-, f, i, r, m, s, ,,  , r, e, g, u, l, a, t, o, r, s, ,,  , a, c, c, e, l, e, r, a, t, o, r, s,  , a, n, d,  , c, i, v, i, l,  , s, o, c, i, e, t, y, ,,  , y, e, t,  , o, f, t, e, n,  , l, a, c, k,  , c, o, h, e, s, i, v, e, 
-, e, t, h, i, c, a, l,  , g, o, v, e, r, n, a, n, c, e, .,  , T, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , a,  , f, o, u, r, -, p, i, l, l, a, r,  , f, r, a, m, e, w, o, r, k,  , (, S, C, O, R, ),  , t, o,  , e, m, b, e, d, 
-, a, c, c, o, u, n, t, a, b, i, l, i, t, y, ,,  , f, a, i, r, n, e, s, s, ,,  , a, n, d,  , i, n, c, l, u, s, i, v, i, t, y,  , a, c, r, o, s, s,  , s, u, c, h,  , m, u, l, t, i, -, a, c, t, o, r,  , n, e, t, w, o, r, k, s, ., 
-, L, e, v, e, r, a, g, i, n, g,  , a,  , d, e, s, i, g, n,  , s, c, i, e, n, c, e,  , a, p, p, r, o, a, c, h, ,,  , w, e,  , d, e, v, e, l, o, p,  , a,  , S, h, a, r, e, d,  , E, t, h, i, c, a, l,  , C, h, a, r, t, e, r, (, S, ), ,, 
-, s, t, r, u, c, t, u, r, e, d,  , C, o, -, D, e, s, i, g, n,  , a, n, d,  , S, t, a, k, e, h, o, l, d, e, r,  , E, n, g, a, g, e, m, e, n, t,  , p, r, o, t, o, c, o, l, s, (, C, ), ,,  , a,  , s, y, s, t, e, m,  , o, f, 
-, C, o, n, t, i, n, u, o, u, s,  , O, v, e, r, s, i, g, h, t,  , a, n, d,  , L, e, a, r, n, i, n, g, (, O, ), ,,  , a, n, d,  , A, d, a, p, t, i, v, e,  , R, e, g, u, l, a, t, o, r, y,  , A, l, i, g, n, m, e, n, t, 
-, s, t, r, a, t, e, g, i, e, s, (, R, ), .,  , E, a, c, h,  , c, o, m, p, o, n, e, n, t,  , i, n, c, l, u, d, e, s,  , p, r, a, c, t, i, c, a, l,  , g, u, i, d, a, n, c, e, ,,  , f, r, o, m,  , l, i, t, e,  , m, o, d, u, l, e, s, 
-, f, o, r,  , r, e, s, o, u, r, c, e, -, c, o, n, s, t, r, a, i, n, e, d,  , s, t, a, r, t, -, u, p, s,  , t, o,  , i, n, -, d, e, p, t, h,  , a, u, d, i, t, i, n, g,  , s, y, s, t, e, m, s,  , f, o, r,  , l, a, r, g, e, r, 
-, c, o, n, s, o, r, t, i, a, .,  , T, h, r, o, u, g, h,  , i, l, l, u, s, t, r, a, t, i, v, e,  , v, i, g, n, e, t, t, e, s,  , i, n,  , h, e, a, l, t, h, c, a, r, e, ,,  , f, i, n, a, n, c, e, ,,  , a, n, d,  , s, m, a, r, t, 
-, c, i, t, y,  , c, o, n, t, e, x, t, s, ,,  , w, e,  , d, e, m, o, n, s, t, r, a, t, e,  , h, o, w,  , t, h, e,  , f, r, a, m, e, w, o, r, k,  , c, a, n,  , h, a, r, m, o, n, i, z, e,  , o, r, g, a, n, i, z, a, t, i, o, n, a, l, 
-, c, u, l, t, u, r, e, ,,  , l, e, a, d, e, r, s, h, i, p,  , i, n, c, e, n, t, i, v, e, s, ,,  , a, n, d,  , c, r, o, s, s, -, j, u, r, i, s, d, i, c, t, i, o, n, a, l,  , c, o, m, p, l, i, a, n, c, e, .,  , O, u, r, 
-, m, i, x, e, d, -, m, e, t, h, o, d,  , K, P, I,  , d, e, s, i, g, n,  , f, u, r, t, h, e, r,  , e, n, s, u, r, e, s,  , t, h, a, t,  , q, u, a, n, t, i, t, a, t, i, v, e,  , t, a, r, g, e, t, s,  , a, r, e, 
-, c, o, m, p, l, e, m, e, n, t, e, d,  , b, y,  , q, u, a, l, i, t, a, t, i, v, e,  , a, s, s, e, s, s, m, e, n, t, s,  , o, f,  , u, s, e, r,  , t, r, u, s, t,  , a, n, d,  , c, u, l, t, u, r, a, l,  , c, h, a, n, g, e, .,  , B, y, 
-, u, n, i, t, i, n, g,  , e, t, h, i, c, a, l,  , p, r, i, n, c, i, p, l, e, s,  , w, i, t, h,  , s, c, a, l, a, b, l, e,  , o, p, e, r, a, t, i, o, n, a, l,  , s, t, r, u, c, t, u, r, e, s, ,,  , t, h, i, s,  , p, a, p, e, r, 
-, o, f, f, e, r, s,  , a,  , r, e, p, l, i, c, a, b, l, e,  , p, a, t, h, w, a, y,  , t, o, w, a, r, d,  , r, e, s, p, o, n, s, i, b, l, e,  , A, I,  , i, n, n, o, v, a, t, i, o, n,  , i, n,  , c, o, m, p, l, e, x,  , d, i, g, i, t, a, l, 
-, e, c, o, s, y, s, t, e, m, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10641v1'>Test-Time Warmup for Multimodal Large Language Models</a></td><td>M, u, l, t, i, m, o, d, a, l,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, M, L, L, M, s, ),  , h, o, l, d,  , g, r, e, a, t,  , p, r, o, m, i, s, e,  , f, o, r,  , a, d, v, a, n, c, e, d, 
-, r, e, a, s, o, n, i, n, g,  , a, t,  , t, h, e,  , i, n, t, e, r, s, e, c, t, i, o, n,  , o, f,  , t, e, x, t,  , a, n, d,  , i, m, a, g, e, s, ,,  , y, e, t,  , t, h, e, y,  , h, a, v, e,  , n, o, t,  , f, u, l, l, y, 
-, r, e, a, l, i, z, e, d,  , t, h, i, s,  , p, o, t, e, n, t, i, a, l, .,  , M, L, L, M, s,  , t, y, p, i, c, a, l, l, y,  , i, n, t, e, g, r, a, t, e,  , a, n,  , L, L, M, ,,  , a,  , v, i, s, i, o, n,  , e, n, c, o, d, e, r, ,, 
-, a, n, d,  , a,  , c, o, n, n, e, c, t, o, r,  , t, h, a, t,  , m, a, p, s,  , t, h, e,  , v, i, s, i, o, n,  , e, n, c, o, d, e, r, ', s,  , e, m, b, e, d, d, i, n, g, s,  , i, n, t, o,  , t, h, e,  , L, L, M, ', s,  , t, e, x, t, 
-, e, m, b, e, d, d, i, n, g,  , s, p, a, c, e, .,  , A, l, t, h, o, u, g, h,  , e, a, c, h,  , c, o, m, p, o, n, e, n, t,  , i, s,  , p, r, e, t, r, a, i, n, e, d,  , o, n,  , m, a, s, s, i, v, e,  , d, a, t, a, s, e, t, s,  , w, i, t, h, 
-, b, i, l, l, i, o, n, s,  , o, f,  , s, a, m, p, l, e, s, ,,  , t, h, e,  , e, n, t, i, r, e,  , m, u, l, t, i, m, o, d, a, l,  , m, o, d, e, l,  , i, s,  , t, y, p, i, c, a, l, l, y,  , t, r, a, i, n, e, d,  , o, n,  , o, n, l, y, 
-, t, h, o, u, s, a, n, d, s,  , (, o, r,  , a,  , f, e, w,  , m, i, l, l, i, o, n, ),  , s, a, m, p, l, e, s, ,,  , w, h, i, c, h,  , c, a, n,  , r, e, s, u, l, t,  , i, n,  , w, e, a, k,  , p, e, r, f, o, r, m, a, n, c, e,  , o, n, 
-, c, o, m, p, l, e, x,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , s, h, o, r, t, c, o, m, i, n, g, s, ,,  , i, n, s, t, e, a, d,  , o, f,  , r, e, l, y, i, n, g,  , o, n, 
-, e, x, t, e, n, s, i, v, e,  , l, a, b, e, l, e, d,  , d, a, t, a, s, e, t, s,  , f, o, r,  , f, i, n, e, -, t, u, n, i, n, g, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , T, e, s, t, -, T, i, m, e,  , W, a, r, m, u, p, 
-, m, e, t, h, o, d,  , t, h, a, t,  , a, d, a, p, t, s,  , t, h, e,  , M, L, L, M,  , p, e, r,  , t, e, s, t,  , i, n, s, t, a, n, c, e,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , d, a, t, a,  , f, r, o, m,  , w, e, a, k, l, y, 
-, s, u, p, e, r, v, i, s, e, d,  , a, u, x, i, l, i, a, r, y,  , t, a, s, k, s, .,  , W, i, t, h,  , o, u, r,  , a, p, p, r, o, a, c, h, ,,  , w, e,  , o, b, s, e, r, v, e,  , a,  , r, e, l, a, t, i, v, e, 
-, p, e, r, f, o, r, m, a, n, c, e,  , i, m, p, r, o, v, e, m, e, n, t,  , o, f,  , 4, ., 0, 3, %,  , o, n,  , M, M, M, U, ,,  , 5, ., 2, 8, %,  , o, n,  , V, Q, A, -, R, a, d, ,,  , a, n, d,  , 1, ., 6, 3, %,  , o, n,  , G, Q, A,  , o, n, 
-, t, h, e,  , L, l, a, m, a, -, V, i, s, i, o, n, -, I, n, s, t, r, u, c, t,  , m, o, d, e, l, .,  , O, u, r,  , m, e, t, h, o, d,  , d, e, m, o, n, s, t, r, a, t, e, s,  , t, h, a, t,  , ', w, a, r, m, i, n, g,  , u, p, ', 
-, b, e, f, o, r, e,  , i, n, f, e, r, e, n, c, e,  , c, a, n,  , e, n, h, a, n, c, e,  , M, L, L, M, s, ',  , r, o, b, u, s, t, n, e, s, s,  , a, c, r, o, s, s,  , d, i, v, e, r, s, e,  , r, e, a, s, o, n, i, n, g,  , t, a, s, k, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10401v1'>Abduct, Act, Predict: Scaffolding Causal Inference for Automated Failure Attribution in Multi-Agent Systems</a></td><td>F, a, i, l, u, r, e,  , a, t, t, r, i, b, u, t, i, o, n,  , i, n,  , m, u, l, t, i, -, a, g, e, n, t,  , s, y, s, t, e, m, s,  , -, -,  , p, i, n, p, o, i, n, t, i, n, g,  , t, h, e,  , e, x, a, c, t,  , s, t, e, p, 
-, w, h, e, r, e,  , a,  , d, e, c, i, s, i, v, e,  , e, r, r, o, r,  , o, c, c, u, r, s,  , -, -,  , i, s,  , a,  , c, r, i, t, i, c, a, l,  , y, e, t,  , u, n, s, o, l, v, e, d,  , c, h, a, l, l, e, n, g, e, .,  , C, u, r, r, e, n, t, 
-, m, e, t, h, o, d, s,  , t, r, e, a, t,  , t, h, i, s,  , a, s,  , a,  , p, a, t, t, e, r, n,  , r, e, c, o, g, n, i, t, i, o, n,  , t, a, s, k,  , o, v, e, r,  , l, o, n, g,  , c, o, n, v, e, r, s, a, t, i, o, n,  , l, o, g, s, ,, 
-, l, e, a, d, i, n, g,  , t, o,  , c, r, i, t, i, c, a, l, l, y,  , l, o, w,  , s, t, e, p, -, l, e, v, e, l,  , a, c, c, u, r, a, c, y,  , (, b, e, l, o, w,  , 1, 7, \, %, ), ,,  , w, h, i, c, h,  , r, e, n, d, e, r, s,  , t, h, e, m, 
-, i, m, p, r, a, c, t, i, c, a, l,  , f, o, r,  , d, e, b, u, g, g, i, n, g,  , c, o, m, p, l, e, x,  , s, y, s, t, e, m, s, .,  , T, h, e, i, r,  , c, o, r, e,  , w, e, a, k, n, e, s, s,  , i, s,  , a,  , f, u, n, d, a, m, e, n, t, a, l, 
-, i, n, a, b, i, l, i, t, y,  , t, o,  , p, e, r, f, o, r, m,  , r, o, b, u, s, t,  , c, o, u, n, t, e, r, f, a, c, t, u, a, l,  , r, e, a, s, o, n, i, n, g, :,  , t, o,  , d, e, t, e, r, m, i, n, e,  , i, f, 
-, c, o, r, r, e, c, t, i, n, g,  , a,  , s, i, n, g, l, e,  , a, c, t, i, o, n,  , w, o, u, l, d,  , h, a, v, e,  , a, c, t, u, a, l, l, y,  , a, v, e, r, t, e, d,  , t, h, e,  , t, a, s, k,  , f, a, i, l, u, r, e, .,  , T, o, 
-, b, r, i, d, g, e,  , t, h, i, s,  , c, o, u, n, t, e, r, f, a, c, t, u, a, l,  , i, n, f, e, r, e, n, c, e,  , g, a, p, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , A, b, d, u, c, t, -, A, c, t, -, P, r, e, d, i, c, t,  , (, A, 2, P, ), 
-, S, c, a, f, f, o, l, d, i, n, g, ,,  , a,  , n, o, v, e, l,  , a, g, e, n, t,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , t, r, a, n, s, f, o, r, m, s,  , f, a, i, l, u, r, e,  , a, t, t, r, i, b, u, t, i, o, n,  , f, r, o, m, 
-, p, a, t, t, e, r, n,  , r, e, c, o, g, n, i, t, i, o, n,  , i, n, t, o,  , a,  , s, t, r, u, c, t, u, r, e, d,  , c, a, u, s, a, l,  , i, n, f, e, r, e, n, c, e,  , t, a, s, k, .,  , A, 2, P,  , e, x, p, l, i, c, i, t, l, y, 
-, g, u, i, d, e, s,  , a,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l,  , t, h, r, o, u, g, h,  , a,  , f, o, r, m, a, l,  , t, h, r, e, e, -, s, t, e, p,  , r, e, a, s, o, n, i, n, g,  , p, r, o, c, e, s, s, 
-, w, i, t, h, i, n,  , a,  , s, i, n, g, l, e,  , i, n, f, e, r, e, n, c, e,  , p, a, s, s, :,  , (, 1, ),  , A, b, d, u, c, t, i, o, n, ,,  , t, o,  , i, n, f, e, r,  , t, h, e,  , h, i, d, d, e, n,  , r, o, o, t,  , c, a, u, s, e, s, 
-, b, e, h, i, n, d,  , a, n,  , a, g, e, n, t, ', s,  , a, c, t, i, o, n, s, ;,  , (, 2, ),  , A, c, t, i, o, n, ,,  , t, o,  , d, e, f, i, n, e,  , a,  , m, i, n, i, m, a, l,  , c, o, r, r, e, c, t, i, v, e, 
-, i, n, t, e, r, v, e, n, t, i, o, n, ;,  , a, n, d,  , (, 3, ),  , P, r, e, d, i, c, t, i, o, n, ,,  , t, o,  , s, i, m, u, l, a, t, e,  , t, h, e,  , s, u, b, s, e, q, u, e, n, t,  , t, r, a, j, e, c, t, o, r, y,  , a, n, d, 
-, v, e, r, i, f, y,  , i, f,  , t, h, e,  , i, n, t, e, r, v, e, n, t, i, o, n,  , r, e, s, o, l, v, e, s,  , t, h, e,  , f, a, i, l, u, r, e, .,  , T, h, i, s,  , s, t, r, u, c, t, u, r, e, d,  , a, p, p, r, o, a, c, h, 
-, l, e, v, e, r, a, g, e, s,  , t, h, e,  , h, o, l, i, s, t, i, c,  , c, o, n, t, e, x, t,  , o, f,  , t, h, e,  , e, n, t, i, r, e,  , c, o, n, v, e, r, s, a, t, i, o, n,  , w, h, i, l, e,  , i, m, p, o, s, i, n, g,  , a, 
-, r, i, g, o, r, o, u, s,  , c, a, u, s, a, l,  , l, o, g, i, c,  , o, n,  , t, h, e,  , m, o, d, e, l, ', s,  , a, n, a, l, y, s, i, s, .,  , O, u, r,  , e, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, h, e, 
-, W, h, o, \, &, W, h, e, n,  , b, e, n, c, h, m, a, r, k,  , d, e, m, o, n, s, t, r, a, t, e,  , i, t, s,  , e, f, f, i, c, a, c, y, .,  , O, n,  , t, h, e,  , A, l, g, o, r, i, t, h, m, -, G, e, n, e, r, a, t, e, d, 
-, d, a, t, a, s, e, t, ,,  , A, 2, P,  , a, c, h, i, e, v, e, s,  , 4, 7, ., 4, 6, \, %,  , s, t, e, p, -, l, e, v, e, l,  , a, c, c, u, r, a, c, y, ,,  , a,  , 2, ., 8, 5, $, \, t, i, m, e, s, $,  , i, m, p, r, o, v, e, m, e, n, t, 
-, o, v, e, r,  , t, h, e,  , 1, 6, ., 6, 7, \, %,  , o, f,  , t, h, e,  , b, a, s, e, l, i, n, e, .,  , O, n,  , t, h, e,  , m, o, r, e,  , c, o, m, p, l, e, x,  , H, a, n, d, -, C, r, a, f, t, e, d,  , d, a, t, a, s, e, t, ,,  , i, t, 
-, a, c, h, i, e, v, e, s,  , 2, 9, ., 3, 1, \, %,  , s, t, e, p,  , a, c, c, u, r, a, c, y, ,,  , a,  , 2, ., 4, 3, $, \, t, i, m, e, s, $,  , i, m, p, r, o, v, e, m, e, n, t,  , o, v, e, r,  , t, h, e,  , b, a, s, e, l, i, n, e, ', s, 
-, 1, 2, ., 0, 7, \, %, .,  , B, y,  , r, e, f, r, a, m, i, n, g,  , t, h, e,  , p, r, o, b, l, e, m,  , t, h, r, o, u, g, h,  , a,  , c, a, u, s, a, l,  , l, e, n, s, ,,  , A, 2, P,  , S, c, a, f, f, o, l, d, i, n, g, 
-, p, r, o, v, i, d, e, s,  , a,  , r, o, b, u, s, t, ,,  , v, e, r, i, f, i, a, b, l, e, ,,  , a, n, d,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , m, o, r, e,  , a, c, c, u, r, a, t, e,  , s, o, l, u, t, i, o, n,  , f, o, r, 
-, a, u, t, o, m, a, t, e, d,  , f, a, i, l, u, r, e,  , a, t, t, r, i, b, u, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10344v1'>GLAM: Geometry-Guided Local Alignment for Multi-View VLP in Mammography</a></td><td>M, a, m, m, o, g, r, a, p, h, y,  , s, c, r, e, e, n, i, n, g,  , i, s,  , a, n,  , e, s, s, e, n, t, i, a, l,  , t, o, o, l,  , f, o, r,  , e, a, r, l, y,  , d, e, t, e, c, t, i, o, n,  , o, f,  , b, r, e, a, s, t, 
-, c, a, n, c, e, r, .,  , T, h, e,  , s, p, e, e, d,  , a, n, d,  , a, c, c, u, r, a, c, y,  , o, f,  , m, a, m, m, o, g, r, a, p, h, y,  , i, n, t, e, r, p, r, e, t, a, t, i, o, n,  , h, a, v, e,  , t, h, e,  , p, o, t, e, n, t, i, a, l, 
-, t, o,  , b, e,  , i, m, p, r, o, v, e, d,  , w, i, t, h,  , d, e, e, p,  , l, e, a, r, n, i, n, g,  , m, e, t, h, o, d, s, .,  , H, o, w, e, v, e, r, ,,  , t, h, e,  , d, e, v, e, l, o, p, m, e, n, t,  , o, f,  , a, 
-, f, o, u, n, d, a, t, i, o, n,  , v, i, s, u, a, l,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l,  , (, V, L, M, ),  , i, s,  , h, i, n, d, e, r, e, d,  , b, y,  , l, i, m, i, t, e, d,  , d, a, t, a,  , a, n, d,  , d, o, m, a, i, n, 
-, d, i, f, f, e, r, e, n, c, e, s,  , b, e, t, w, e, e, n,  , n, a, t, u, r, a, l,  , a, n, d,  , m, e, d, i, c, a, l,  , i, m, a, g, e, s, .,  , E, x, i, s, t, i, n, g,  , m, a, m, m, o, g, r, a, p, h, y,  , V, L, M, s, ,, 
-, a, d, a, p, t, e, d,  , f, r, o, m,  , n, a, t, u, r, a, l,  , i, m, a, g, e, s, ,,  , o, f, t, e, n,  , i, g, n, o, r, e,  , d, o, m, a, i, n, -, s, p, e, c, i, f, i, c,  , c, h, a, r, a, c, t, e, r, i, s, t, i, c, s, ,,  , s, u, c, h, 
-, a, s,  , m, u, l, t, i, -, v, i, e, w,  , r, e, l, a, t, i, o, n, s, h, i, p, s,  , i, n,  , m, a, m, m, o, g, r, a, p, h, y, .,  , U, n, l, i, k, e,  , r, a, d, i, o, l, o, g, i, s, t, s,  , w, h, o,  , a, n, a, l, y, z, e, 
-, b, o, t, h,  , v, i, e, w, s,  , t, o, g, e, t, h, e, r,  , t, o,  , p, r, o, c, e, s, s,  , i, p, s, i, l, a, t, e, r, a, l,  , c, o, r, r, e, s, p, o, n, d, e, n, c, e, ,,  , c, u, r, r, e, n, t,  , m, e, t, h, o, d, s, 
-, t, r, e, a, t,  , t, h, e, m,  , a, s,  , i, n, d, e, p, e, n, d, e, n, t,  , i, m, a, g, e, s,  , o, r,  , d, o,  , n, o, t,  , p, r, o, p, e, r, l, y,  , m, o, d, e, l,  , t, h, e,  , m, u, l, t, i, -, v, i, e, w, 
-, c, o, r, r, e, s, p, o, n, d, e, n, c, e,  , l, e, a, r, n, i, n, g, ,,  , l, o, s, i, n, g,  , c, r, i, t, i, c, a, l,  , g, e, o, m, e, t, r, i, c,  , c, o, n, t, e, x, t,  , a, n, d,  , r, e, s, u, l, t, i, n, g,  , i, n, 
-, s, u, b, o, p, t, i, m, a, l,  , p, r, e, d, i, c, t, i, o, n, .,  , W, e,  , p, r, o, p, o, s, e,  , G, L, A, M, :,  , G, l, o, b, a, l,  , a, n, d,  , L, o, c, a, l,  , A, l, i, g, n, m, e, n, t,  , f, o, r, 
-, M, u, l, t, i, -, v, i, e, w,  , m, a, m, m, o, g, r, a, p, h, y,  , f, o, r,  , V, L, M,  , p, r, e, t, r, a, i, n, i, n, g,  , u, s, i, n, g,  , g, e, o, m, e, t, r, y,  , g, u, i, d, a, n, c, e, .,  , B, y, 
-, l, e, v, e, r, a, g, i, n, g,  , t, h, e,  , p, r, i, o, r,  , k, n, o, w, l, e, d, g, e,  , a, b, o, u, t,  , t, h, e,  , m, u, l, t, i, -, v, i, e, w,  , i, m, a, g, i, n, g,  , p, r, o, c, e, s, s,  , o, f, 
-, m, a, m, m, o, g, r, a, m, s, ,,  , o, u, r,  , m, o, d, e, l,  , l, e, a, r, n, s,  , l, o, c, a, l,  , c, r, o, s, s, -, v, i, e, w,  , a, l, i, g, n, m, e, n, t, s,  , a, n, d,  , f, i, n, e, -, g, r, a, i, n, e, d,  , l, o, c, a, l, 
-, f, e, a, t, u, r, e, s,  , t, h, r, o, u, g, h,  , j, o, i, n, t,  , g, l, o, b, a, l,  , a, n, d,  , l, o, c, a, l, ,,  , v, i, s, u, a, l, -, v, i, s, u, a, l, ,,  , a, n, d,  , v, i, s, u, a, l, -, l, a, n, g, u, a, g, e, 
-, c, o, n, t, r, a, s, t, i, v, e,  , l, e, a, r, n, i, n, g, .,  , P, r, e, t, r, a, i, n, e, d,  , o, n,  , E, M, B, E, D,  , [, 1, 4, ], ,,  , o, n, e,  , o, f,  , t, h, e,  , l, a, r, g, e, s, t,  , o, p, e, n, 
-, m, a, m, m, o, g, r, a, p, h, y,  , d, a, t, a, s, e, t, s, ,,  , o, u, r,  , m, o, d, e, l,  , o, u, t, p, e, r, f, o, r, m, s,  , b, a, s, e, l, i, n, e, s,  , a, c, r, o, s, s,  , m, u, l, t, i, p, l, e,  , d, a, t, a, s, e, t, s, 
-, u, n, d, e, r,  , d, i, f, f, e, r, e, n, t,  , s, e, t, t, i, n, g, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10334v1'>I-Segmenter: Integer-Only Vision Transformer for Efficient Semantic Segmentation</a></td><td>V, i, s, i, o, n,  , T, r, a, n, s, f, o, r, m, e, r, s,  , (, V, i, T, s, ),  , h, a, v, e,  , r, e, c, e, n, t, l, y,  , a, c, h, i, e, v, e, d,  , s, t, r, o, n, g,  , r, e, s, u, l, t, s,  , i, n,  , s, e, m, a, n, t, i, c, 
-, s, e, g, m, e, n, t, a, t, i, o, n, ,,  , y, e, t,  , t, h, e, i, r,  , d, e, p, l, o, y, m, e, n, t,  , o, n,  , r, e, s, o, u, r, c, e, -, c, o, n, s, t, r, a, i, n, e, d,  , d, e, v, i, c, e, s,  , r, e, m, a, i, n, s, 
-, l, i, m, i, t, e, d,  , d, u, e,  , t, o,  , t, h, e, i, r,  , h, i, g, h,  , m, e, m, o, r, y,  , f, o, o, t, p, r, i, n, t,  , a, n, d,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, s, t, .,  , Q, u, a, n, t, i, z, a, t, i, o, n, 
-, o, f, f, e, r, s,  , a, n,  , e, f, f, e, c, t, i, v, e,  , s, t, r, a, t, e, g, y,  , t, o,  , i, m, p, r, o, v, e,  , e, f, f, i, c, i, e, n, c, y, ,,  , b, u, t,  , V, i, T, -, b, a, s, e, d,  , s, e, g, m, e, n, t, a, t, i, o, n, 
-, m, o, d, e, l, s,  , a, r, e,  , n, o, t, o, r, i, o, u, s, l, y,  , f, r, a, g, i, l, e,  , u, n, d, e, r,  , l, o, w,  , p, r, e, c, i, s, i, o, n, ,,  , a, s,  , q, u, a, n, t, i, z, a, t, i, o, n,  , e, r, r, o, r, s, 
-, a, c, c, u, m, u, l, a, t, e,  , a, c, r, o, s, s,  , d, e, e, p,  , e, n, c, o, d, e, r, -, d, e, c, o, d, e, r,  , p, i, p, e, l, i, n, e, s, .,  , W, e,  , i, n, t, r, o, d, u, c, e,  , I, -, S, e, g, m, e, n, t, e, r, ,,  , t, h, e, 
-, f, i, r, s, t,  , f, u, l, l, y,  , i, n, t, e, g, e, r, -, o, n, l, y,  , V, i, T,  , s, e, g, m, e, n, t, a, t, i, o, n,  , f, r, a, m, e, w, o, r, k, .,  , B, u, i, l, d, i, n, g,  , o, n,  , t, h, e,  , S, e, g, m, e, n, t, e, r, 
-, a, r, c, h, i, t, e, c, t, u, r, e, ,,  , I, -, S, e, g, m, e, n, t, e, r,  , s, y, s, t, e, m, a, t, i, c, a, l, l, y,  , r, e, p, l, a, c, e, s,  , f, l, o, a, t, i, n, g, -, p, o, i, n, t,  , o, p, e, r, a, t, i, o, n, s, 
-, w, i, t, h,  , i, n, t, e, g, e, r, -, o, n, l, y,  , c, o, u, n, t, e, r, p, a, r, t, s, .,  , T, o,  , f, u, r, t, h, e, r,  , s, t, a, b, i, l, i, z, e,  , b, o, t, h,  , t, r, a, i, n, i, n, g,  , a, n, d, 
-, i, n, f, e, r, e, n, c, e, ,,  , w, e,  , p, r, o, p, o, s, e,  , $, \, l, a, m, b, d, a, $, -, S, h, i, f, t, G, E, L, U, ,,  , a,  , n, o, v, e, l,  , a, c, t, i, v, a, t, i, o, n,  , f, u, n, c, t, i, o, n,  , t, h, a, t, 
-, m, i, t, i, g, a, t, e, s,  , t, h, e,  , l, i, m, i, t, a, t, i, o, n, s,  , o, f,  , u, n, i, f, o, r, m,  , q, u, a, n, t, i, z, a, t, i, o, n,  , i, n,  , h, a, n, d, l, i, n, g,  , l, o, n, g, -, t, a, i, l, e, d, 
-, a, c, t, i, v, a, t, i, o, n,  , d, i, s, t, r, i, b, u, t, i, o, n, s, .,  , I, n,  , a, d, d, i, t, i, o, n, ,,  , w, e,  , r, e, m, o, v, e,  , t, h, e,  , L, 2,  , n, o, r, m, a, l, i, z, a, t, i, o, n,  , l, a, y, e, r,  , a, n, d, 
-, r, e, p, l, a, c, e,  , b, i, l, i, n, e, a, r,  , i, n, t, e, r, p, o, l, a, t, i, o, n,  , i, n,  , t, h, e,  , d, e, c, o, d, e, r,  , w, i, t, h,  , n, e, a, r, e, s, t,  , n, e, i, g, h, b, o, r,  , u, p, s, a, m, p, l, i, n, g, ,, 
-, e, n, s, u, r, i, n, g,  , i, n, t, e, g, e, r, -, o, n, l, y,  , e, x, e, c, u, t, i, o, n,  , t, h, r, o, u, g, h, o, u, t,  , t, h, e,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , g, r, a, p, h, .,  , E, x, t, e, n, s, i, v, e, 
-, e, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , t, h, a, t,  , I, -, S, e, g, m, e, n, t, e, r,  , a, c, h, i, e, v, e, s,  , a, c, c, u, r, a, c, y,  , w, i, t, h, i, n,  , a,  , r, e, a, s, o, n, a, b, l, e,  , m, a, r, g, i, n, 
-, o, f,  , i, t, s,  , F, P, 3, 2,  , b, a, s, e, l, i, n, e,  , (, 5, ., 1,  , %,  , o, n,  , a, v, e, r, a, g, e, ), ,,  , w, h, i, l, e,  , r, e, d, u, c, i, n, g,  , m, o, d, e, l,  , s, i, z, e,  , b, y,  , u, p,  , t, o, 
-, 3, ., 8, x,  , a, n, d,  , e, n, a, b, l, i, n, g,  , u, p,  , t, o,  , 1, ., 2, x,  , f, a, s, t, e, r,  , i, n, f, e, r, e, n, c, e,  , w, i, t, h,  , o, p, t, i, m, i, z, e, d,  , r, u, n, t, i, m, e, s, .,  , N, o, t, a, b, l, y, ,, 
-, e, v, e, n,  , i, n,  , o, n, e, -, s, h, o, t,  , P, T, Q,  , w, i, t, h,  , a,  , s, i, n, g, l, e,  , c, a, l, i, b, r, a, t, i, o, n,  , i, m, a, g, e, ,,  , I, -, S, e, g, m, e, n, t, e, r,  , d, e, l, i, v, e, r, s, 
-, c, o, m, p, e, t, i, t, i, v, e,  , a, c, c, u, r, a, c, y, ,,  , u, n, d, e, r, s, c, o, r, i, n, g,  , i, t, s,  , p, r, a, c, t, i, c, a, l, i, t, y,  , f, o, r,  , r, e, a, l, -, w, o, r, l, d,  , d, e, p, l, o, y, m, e, n, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10594v1'>SME-TEAM: Leveraging Trust and Ethics for Secure and Responsible Use of AI and LLMs in SMEs</a></td><td>A, r, t, i, f, i, c, i, a, l,  , I, n, t, e, l, l, i, g, e, n, c, e,  , (, A, I, ),  , a, n, d,  , L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , a, r, e,  , r, e, s, h, a, p, i, n, g, 
-, t, o, d, a, y, ', s,  , b, u, s, i, n, e, s, s,  , p, r, a, c, t, i, c, e, s, ,,  , h, o, w, e, v, e, r, ,,  , t, h, e, i, r,  , a, d, o, p, t, i, o, n,  , w, i, t, h, i, n,  , s, m, a, l, l,  , a, n, d, 
-, m, e, d, i, u, m, -, s, i, z, e, d,  , e, n, t, e, r, p, r, i, s, e, s,  , (, S, M, E, s, ),  , r, a, i, s, e, s,  , s, i, g, n, i, f, i, c, a, n, t,  , t, e, c, h, n, i, c, a, l, ,,  , e, t, h, i, c, a, l,  , a, n, d,  , t, r, u, s, t, 
-, i, s, s, u, e, s, .,  , T, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , a,  , s, t, r, u, c, t, u, r, e, d, ,,  , m, u, l, t, i, -, p, h, a, s, e, d,  , f, r, a, m, e, w, o, r, k,  , d, e, s, i, g, n, e, d,  , t, o, 
-, e, m, b, e, d,  , t, r, u, s, t,  , a, n, d,  , e, t, h, i, c, a, l,  , p, r, i, n, c, i, p, l, e, s,  , t, h, r, o, u, g, h, o, u, t,  , t, h, e,  , A, I,  , l, i, f, e, c, y, c, l, e,  , f, o, r,  , t, h, e, i, r,  , s, e, c, u, r, e, 
-, a, n, d,  , r, e, s, p, o, n, s, i, b, l, e,  , u, s, e,  , i, n,  , S, M, E, s, .,  , S, t, r, u, c, t, u, r, e, d,  , a, r, o, u, n, d,  , f, o, u, r,  , p, i, l, l, a, r, s, ,,  , i, ., e, ., ,,  , D, a, t, a, ,, 
-, A, l, g, o, r, i, t, h, m, s, ,,  , H, u, m, a, n,  , o, v, e, r, s, i, g, h, t, ,,  , a, n, d,  , M, o, d, e, l,  , A, r, c, h, i, t, e, c, t, u, r, e, ,,  , t, h, e,  , f, r, a, m, e, w, o, r, k,  , b, r, i, d, g, e, s, 
-, t, h, e, o, r, e, t, i, c, a, l,  , e, t, h, i, c, a, l,  , p, r, i, n, c, i, p, l, e, s,  , w, i, t, h,  , o, p, e, r, a, t, i, o, n, a, l,  , p, r, a, c, t, i, c, e, ,,  , e, n, h, a, n, c, i, n, g,  , A, I, 
-, c, a, p, a, b, i, l, i, t, i, e, s,  , i, n,  , d, i, v, e, r, s, e,  , S, M, E,  , a, p, p, l, i, c, a, t, i, o, n, s, .,  , U, l, t, i, m, a, t, e, l, y, ,,  , t, h, i, s,  , p, a, p, e, r,  , o, f, f, e, r, s,  , a, 
-, s, t, r, u, c, t, u, r, e, d,  , r, o, a, d, m, a, p,  , f, o, r,  , r, e, s, p, o, n, s, i, b, l, e,  , A, I,  , a, d, o, p, t, i, o, n, ,,  , f, r, a, m, i, n, g,  , t, r, u, s, t,  , a, n, d,  , e, t, h, i, c, s,  , a, s,  , a, 
-, c, a, t, a, l, y, s, t,  , f, o, r,  , r, e, s, i, l, i, e, n, c, e, ,,  , c, o, m, p, e, t, i, t, i, v, e, n, e, s, s, ,,  , a, n, d,  , s, u, s, t, a, i, n, a, b, l, e,  , i, n, n, o, v, a, t, i, o, n,  , i, n,  , S, M, E, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10266v1'>SignClip: Leveraging Mouthing Cues for Sign Language Translation by Multimodal Contrastive Fusion</a></td><td>S, i, g, n,  , l, a, n, g, u, a, g, e,  , t, r, a, n, s, l, a, t, i, o, n,  , (, S, L, T, ),  , a, i, m, s,  , t, o,  , t, r, a, n, s, l, a, t, e,  , n, a, t, u, r, a, l,  , l, a, n, g, u, a, g, e,  , f, r, o, m,  , s, i, g, n, 
-, l, a, n, g, u, a, g, e,  , v, i, d, e, o, s, ,,  , s, e, r, v, i, n, g,  , a, s,  , a,  , v, i, t, a, l,  , b, r, i, d, g, e,  , f, o, r,  , i, n, c, l, u, s, i, v, e,  , c, o, m, m, u, n, i, c, a, t, i, o, n, .,  , W, h, i, l, e, 
-, r, e, c, e, n, t,  , a, d, v, a, n, c, e, s,  , l, e, v, e, r, a, g, e,  , p, o, w, e, r, f, u, l,  , v, i, s, u, a, l,  , b, a, c, k, b, o, n, e, s,  , a, n, d,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s, ,, 
-, m, o, s, t,  , a, p, p, r, o, a, c, h, e, s,  , m, a, i, n, l, y,  , f, o, c, u, s,  , o, n,  , m, a, n, u, a, l,  , s, i, g, n, a, l, s,  , (, h, a, n, d,  , g, e, s, t, u, r, e, s, ),  , a, n, d,  , t, e, n, d,  , t, o, 
-, o, v, e, r, l, o, o, k,  , n, o, n, -, m, a, n, u, a, l,  , c, u, e, s,  , l, i, k, e,  , m, o, u, t, h, i, n, g, .,  , I, n,  , f, a, c, t, ,,  , m, o, u, t, h, i, n, g,  , c, o, n, v, e, y, s,  , e, s, s, e, n, t, i, a, l, 
-, l, i, n, g, u, i, s, t, i, c,  , i, n, f, o, r, m, a, t, i, o, n,  , i, n,  , s, i, g, n,  , l, a, n, g, u, a, g, e, s,  , a, n, d,  , p, l, a, y, s,  , a,  , c, r, u, c, i, a, l,  , r, o, l, e,  , i, n, 
-, d, i, s, a, m, b, i, g, u, a, t, i, n, g,  , v, i, s, u, a, l, l, y,  , s, i, m, i, l, a, r,  , s, i, g, n, s, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , S, i, g, n, C, l, i, p, ,,  , a, 
-, n, o, v, e, l,  , f, r, a, m, e, w, o, r, k,  , t, o,  , i, m, p, r, o, v, e,  , t, h, e,  , a, c, c, u, r, a, c, y,  , o, f,  , s, i, g, n,  , l, a, n, g, u, a, g, e,  , t, r, a, n, s, l, a, t, i, o, n, .,  , I, t,  , f, u, s, e, s, 
-, m, a, n, u, a, l,  , a, n, d,  , n, o, n, -, m, a, n, u, a, l,  , c, u, e, s, ,,  , s, p, e, c, i, f, i, c, a, l, l, y,  , s, p, a, t, i, a, l,  , g, e, s, t, u, r, e,  , a, n, d,  , l, i, p,  , m, o, v, e, m, e, n, t, 
-, f, e, a, t, u, r, e, s, .,  , B, e, s, i, d, e, s, ,,  , S, i, g, n, C, l, i, p,  , i, n, t, r, o, d, u, c, e, s,  , a,  , h, i, e, r, a, r, c, h, i, c, a, l,  , c, o, n, t, r, a, s, t, i, v, e,  , l, e, a, r, n, i, n, g, 
-, f, r, a, m, e, w, o, r, k,  , w, i, t, h,  , m, u, l, t, i, -, l, e, v, e, l,  , a, l, i, g, n, m, e, n, t,  , o, b, j, e, c, t, i, v, e, s, ,,  , e, n, s, u, r, i, n, g,  , s, e, m, a, n, t, i, c,  , c, o, n, s, i, s, t, e, n, c, y, 
-, a, c, r, o, s, s,  , s, i, g, n, -, l, i, p,  , a, n, d,  , v, i, s, u, a, l, -, t, e, x, t,  , m, o, d, a, l, i, t, i, e, s, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , o, n,  , t, w, o, 
-, b, e, n, c, h, m, a, r, k,  , d, a, t, a, s, e, t, s, ,,  , P, H, O, E, N, I, X, 1, 4, T,  , a, n, d,  , H, o, w, 2, S, i, g, n, ,,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, e,  , s, u, p, e, r, i, o, r, i, t, y,  , o, f,  , o, u, r, 
-, a, p, p, r, o, a, c, h, .,  , F, o, r,  , e, x, a, m, p, l, e, ,,  , o, n,  , P, H, O, E, N, I, X, 1, 4, T, ,,  , i, n,  , t, h, e,  , G, l, o, s, s, -, f, r, e, e,  , s, e, t, t, i, n, g, ,,  , S, i, g, n, C, l, i, p, 
-, s, u, r, p, a, s, s, e, s,  , t, h, e,  , p, r, e, v, i, o, u, s,  , s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , m, o, d, e, l,  , S, p, a, M, o, ,,  , i, m, p, r, o, v, i, n, g,  , B, L, E, U, -, 4,  , f, r, o, m, 
-, 2, 4, ., 3, 2,  , t, o,  , 2, 4, ., 7, 1, ,,  , a, n, d,  , R, O, U, G, E,  , f, r, o, m,  , 4, 6, ., 5, 7,  , t, o,  , 4, 8, ., 3, 8, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10590v1'>Machine Unlearning for Responsible and Adaptive AI in Education</a></td><td>T, h, e,  , c, o, n, c, e, p, t,  , o, f,  , M, a, c, h, i, n, e,  , U, n, l, e, a, r, n, i, n, g,  , (, M, U, ),  , h, a, s,  , g, a, i, n, e, d,  , p, o, p, u, l, a, r, i, t, y,  , i, n,  , v, a, r, i, o, u, s, 
-, d, o, m, a, i, n, s,  , d, u, e,  , t, o,  , i, t, s,  , a, b, i, l, i, t, y,  , t, o,  , a, d, d, r, e, s, s,  , s, e, v, e, r, a, l,  , i, s, s, u, e, s,  , i, n,  , M, a, c, h, i, n, e,  , L, e, a, r, n, i, n, g,  , (, M, L, ), 
-, m, o, d, e, l, s, ,,  , p, a, r, t, i, c, u, l, a, r, l, y,  , t, h, o, s, e,  , r, e, l, a, t, e, d,  , t, o,  , p, r, i, v, a, c, y, ,,  , s, e, c, u, r, i, t, y, ,,  , b, i, a, s,  , m, i, t, i, g, a, t, i, o, n, ,,  , a, n, d, 
-, a, d, a, p, t, a, b, i, l, i, t, y, .,  , W, i, t, h,  , t, h, e, s, e,  , a, b, i, l, i, t, i, e, s, ,,  , M, U,  , i, s,  , e, v, o, l, v, i, n, g,  , i, n, t, o,  , a,  , p, r, o, m, i, s, i, n, g,  , t, e, c, h, n, o, l, o, g, y, 
-, i, n,  , u, p, h, o, l, d, i, n, g,  , R, e, s, p, o, n, s, i, b, l, e,  , A, I,  , p, r, i, n, c, i, p, l, e, s,  , a, n, d,  , o, p, t, i, m, i, z, i, n, g,  , M, L,  , m, o, d, e, l, s, ',  , p, e, r, f, o, r, m, a, n, c, e, ., 
-, H, o, w, e, v, e, r, ,,  , d, e, s, p, i, t, e,  , i, t, s,  , p, r, o, m, i, s, i, n, g,  , p, o, t, e, n, t, i, a, l, ,,  , t, h, e,  , c, o, n, c, e, p, t,  , h, a, s,  , n, o, t,  , r, e, c, e, i, v, e, d,  , m, u, c, h, 
-, a, t, t, e, n, t, i, o, n,  , i, n,  , t, h, e,  , e, d, u, c, a, t, i, o, n,  , s, e, c, t, o, r, .,  , I, n,  , a, n,  , a, t, t, e, m, p, t,  , t, o,  , e, n, c, o, u, r, a, g, e,  , f, u, r, t, h, e, r,  , u, p, t, a, k, e,  , o, f, 
-, t, h, i, s,  , p, r, o, m, i, s, i, n, g,  , t, e, c, h, n, o, l, o, g, y,  , i, n,  , t, h, e,  , e, d, u, c, a, t, i, o, n, a, l,  , l, a, n, d, s, c, a, p, e, ,,  , t, h, i, s,  , p, a, p, e, r,  , d, e, m, o, n, s, t, r, a, t, e, s, 
-, t, h, a, t,  , M, U,  , i, n, d, e, e, d,  , h, a, s,  , g, r, e, a, t,  , p, o, t, e, n, t, i, a, l,  , t, o,  , s, e, r, v, e,  , a, s,  , a,  , p, r, a, c, t, i, c, a, l,  , m, e, c, h, a, n, i, s, m,  , f, o, r, 
-, o, p, e, r, a, t, i, o, n, a, l, i, z, i, n, g,  , R, e, s, p, o, n, s, i, b, l, e,  , A, I,  , p, r, i, n, c, i, p, l, e, s,  , a, s,  , w, e, l, l,  , a, s,  , a, n,  , e, s, s, e, n, t, i, a, l,  , t, o, o, l,  , f, o, r, 
-, A, d, a, p, t, i, v, e,  , A, I,  , w, i, t, h, i, n,  , t, h, e,  , e, d, u, c, a, t, i, o, n, a, l,  , a, p, p, l, i, c, a, t, i, o, n,  , d, o, m, a, i, n,  , h, e, n, c, e,  , f, o, s, t, e, r, i, n, g,  , t, r, u, s, t,  , i, n, 
-, A, I, -, d, r, i, v, e, n,  , e, d, u, c, a, t, i, o, n, a, l,  , s, y, s, t, e, m, s, .,  , T, h, r, o, u, g, h,  , a,  , s, t, r, u, c, t, u, r, e, d,  , r, e, v, i, e, w,  , o, f,  , 4, 2,  , p, e, e, r, -, r, e, v, i, e, w, e, d, 
-, s, o, u, r, c, e, s, ,,  , w, e,  , i, d, e, n, t, i, f, y,  , f, o, u, r,  , d, o, m, a, i, n, s,  , w, h, e, r, e,  , M, U,  , h, o, l, d, s,  , p, a, r, t, i, c, u, l, a, r,  , p, r, o, m, i, s, e,  , n, a, m, e, l, y, 
-, p, r, i, v, a, c, y,  , p, r, o, t, e, c, t, i, o, n, ,,  , r, e, s, i, l, i, e, n, c, e,  , a, g, a, i, n, s, t,  , a, d, v, e, r, s, a, r, i, a, l,  , i, n, p, u, t, s, ,,  , m, i, t, i, g, a, t, i, o, n,  , o, f, 
-, s, y, s, t, e, m, i, c,  , b, i, a, s, ,,  , a, n, d,  , a, d, a, p, t, a, b, i, l, i, t, y,  , i, n,  , e, v, o, l, v, i, n, g,  , l, e, a, r, n, i, n, g,  , c, o, n, t, e, x, t, s, .,  , W, e, 
-, s, y, s, t, e, m, a, t, i, c, a, l, l, y,  , e, x, p, l, o, r, e,  , t, h, e, s, e,  , p, o, t, e, n, t, i, a, l, s,  , a, n, d,  , t, h, e, i, r,  , i, n, t, e, r, v, e, n, t, i, o, n, s,  , t, o,  , c, o, r, e, 
-, c, h, a, l, l, e, n, g, e, s,  , i, n,  , M, L, -, b, a, s, e, d,  , e, d, u, c, a, t, i, o, n,  , s, y, s, t, e, m, s, .,  , A, s,  , a,  , c, o, n, c, e, p, t, u, a, l,  , c, o, n, t, r, i, b, u, t, i, o, n, ,,  , w, e, 
-, p, r, e, s, e, n, t,  , a,  , r, e, f, e, r, e, n, c, e,  , M, a, c, h, i, n, e,  , U, n, l, e, a, r, n, i, n, g,  , a, p, p, l, i, c, a, t, i, o, n,  , a, r, c, h, i, t, e, c, t, u, r, e,  , f, o, r,  , R, e, s, p, o, n, s, i, b, l, e, 
-, a, n, d,  , A, d, a, p, t, i, v, e,  , A, I,  , (, M, U, -, R, A, A, I, ),  , i, n,  , e, d, u, c, a, t, i, o, n,  , c, o, n, t, e, x, t, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10162v1'>Online Robust Planning under Model Uncertainty: A Sample-Based Approach</a></td><td>O, n, l, i, n, e,  , p, l, a, n, n, i, n, g,  , i, n,  , M, a, r, k, o, v,  , D, e, c, i, s, i, o, n,  , P, r, o, c, e, s, s, e, s,  , (, M, D, P, s, ),  , e, n, a, b, l, e, s,  , a, g, e, n, t, s,  , t, o,  , m, a, k, e, 
-, s, e, q, u, e, n, t, i, a, l,  , d, e, c, i, s, i, o, n, s,  , b, y,  , s, i, m, u, l, a, t, i, n, g,  , f, u, t, u, r, e,  , t, r, a, j, e, c, t, o, r, i, e, s,  , f, r, o, m,  , t, h, e,  , c, u, r, r, e, n, t,  , s, t, a, t, e, ,, 
-, m, a, k, i, n, g,  , i, t,  , w, e, l, l, -, s, u, i, t, e, d,  , f, o, r,  , l, a, r, g, e, -, s, c, a, l, e,  , o, r,  , d, y, n, a, m, i, c,  , e, n, v, i, r, o, n, m, e, n, t, s, .,  , S, a, m, p, l, e, -, b, a, s, e, d, 
-, m, e, t, h, o, d, s,  , s, u, c, h,  , a, s,  , S, p, a, r, s, e,  , S, a, m, p, l, i, n, g,  , a, n, d,  , M, o, n, t, e,  , C, a, r, l, o,  , T, r, e, e,  , S, e, a, r, c, h,  , (, M, C, T, S, ),  , a, r, e,  , w, i, d, e, l, y, 
-, a, d, o, p, t, e, d,  , f, o, r,  , t, h, e, i, r,  , a, b, i, l, i, t, y,  , t, o,  , a, p, p, r, o, x, i, m, a, t, e,  , o, p, t, i, m, a, l,  , a, c, t, i, o, n, s,  , u, s, i, n, g,  , a,  , g, e, n, e, r, a, t, i, v, e, 
-, m, o, d, e, l, .,  , H, o, w, e, v, e, r, ,,  , i, n,  , p, r, a, c, t, i, c, a, l,  , s, e, t, t, i, n, g, s, ,,  , t, h, e,  , g, e, n, e, r, a, t, i, v, e,  , m, o, d, e, l,  , i, s,  , o, f, t, e, n,  , l, e, a, r, n, e, d, 
-, f, r, o, m,  , l, i, m, i, t, e, d,  , d, a, t, a, ,,  , i, n, t, r, o, d, u, c, i, n, g,  , a, p, p, r, o, x, i, m, a, t, i, o, n,  , e, r, r, o, r, s,  , t, h, a, t,  , c, a, n,  , d, e, g, r, a, d, e, 
-, p, e, r, f, o, r, m, a, n, c, e,  , o, r,  , l, e, a, d,  , t, o,  , u, n, s, a, f, e,  , b, e, h, a, v, i, o, r, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e, s, e,  , c, h, a, l, l, e, n, g, e, s, ,,  , R, o, b, u, s, t, 
-, M, D, P, s,  , (, R, M, D, P, s, ),  , o, f, f, e, r,  , a,  , p, r, i, n, c, i, p, l, e, d,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , p, l, a, n, n, i, n, g,  , u, n, d, e, r,  , m, o, d, e, l,  , u, n, c, e, r, t, a, i, n, t, y, ,, 
-, y, e, t,  , e, x, i, s, t, i, n, g,  , a, p, p, r, o, a, c, h, e, s,  , a, r, e,  , t, y, p, i, c, a, l, l, y,  , c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , i, n, t, e, n, s, i, v, e,  , a, n, d,  , n, o, t,  , s, u, i, t, e, d, 
-, f, o, r,  , r, e, a, l, -, t, i, m, e,  , u, s, e, .,  , I, n,  , t, h, i, s,  , w, o, r, k, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , R, o, b, u, s, t,  , S, p, a, r, s, e,  , S, a, m, p, l, i, n, g,  , (, R, S, S, ), ,,  , t, h, e, 
-, f, i, r, s, t,  , o, n, l, i, n, e,  , p, l, a, n, n, i, n, g,  , a, l, g, o, r, i, t, h, m,  , f, o, r,  , R, M, D, P, s,  , w, i, t, h,  , f, i, n, i, t, e, -, s, a, m, p, l, e,  , t, h, e, o, r, e, t, i, c, a, l, 
-, p, e, r, f, o, r, m, a, n, c, e,  , g, u, a, r, a, n, t, e, e, s, .,  , U, n, l, i, k, e,  , S, p, a, r, s, e,  , S, a, m, p, l, i, n, g, ,,  , w, h, i, c, h,  , e, s, t, i, m, a, t, e, s,  , t, h, e,  , n, o, m, i, n, a, l, 
-, v, a, l, u, e,  , f, u, n, c, t, i, o, n, ,,  , R, S, S,  , c, o, m, p, u, t, e, s,  , a,  , r, o, b, u, s, t,  , v, a, l, u, e,  , f, u, n, c, t, i, o, n,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , t, h, e, 
-, e, f, f, i, c, i, e, n, c, y,  , a, n, d,  , t, h, e, o, r, e, t, i, c, a, l,  , p, r, o, p, e, r, t, i, e, s,  , o, f,  , S, a, m, p, l, e,  , A, v, e, r, a, g, e,  , A, p, p, r, o, x, i, m, a, t, i, o, n,  , (, S, A, A, ), ,, 
-, e, n, a, b, l, i, n, g,  , t, r, a, c, t, a, b, l, e,  , r, o, b, u, s, t,  , p, o, l, i, c, y,  , c, o, m, p, u, t, a, t, i, o, n,  , i, n,  , o, n, l, i, n, e,  , s, e, t, t, i, n, g, s, .,  , R, S, S,  , i, s, 
-, a, p, p, l, i, c, a, b, l, e,  , t, o,  , i, n, f, i, n, i, t, e,  , o, r,  , c, o, n, t, i, n, u, o, u, s,  , s, t, a, t, e,  , s, p, a, c, e, s, ,,  , a, n, d,  , i, t, s,  , s, a, m, p, l, e,  , a, n, d, 
-, c, o, m, p, u, t, a, t, i, o, n, a, l,  , c, o, m, p, l, e, x, i, t, i, e, s,  , a, r, e,  , i, n, d, e, p, e, n, d, e, n, t,  , o, f,  , t, h, e,  , s, t, a, t, e,  , s, p, a, c, e,  , s, i, z, e, .,  , W, e,  , p, r, o, v, i, d, e, 
-, t, h, e, o, r, e, t, i, c, a, l,  , p, e, r, f, o, r, m, a, n, c, e,  , g, u, a, r, a, n, t, e, e, s,  , a, n, d,  , e, m, p, i, r, i, c, a, l, l, y,  , s, h, o, w,  , t, h, a, t,  , R, S, S,  , o, u, t, p, e, r, f, o, r, m, s, 
-, s, t, a, n, d, a, r, d,  , S, p, a, r, s, e,  , S, a, m, p, l, i, n, g,  , i, n,  , e, n, v, i, r, o, n, m, e, n, t, s,  , w, i, t, h,  , u, n, c, e, r, t, a, i, n,  , d, y, n, a, m, i, c, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10127v1'>Population-Aligned Persona Generation for LLM-based Social Simulation</a></td><td>R, e, c, e, n, t,  , a, d, v, a, n, c, e, s,  , i, n,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , h, a, v, e,  , e, n, a, b, l, e, d,  , h, u, m, a, n, -, l, i, k, e, 
-, s, o, c, i, a, l,  , s, i, m, u, l, a, t, i, o, n, s,  , a, t,  , u, n, p, r, e, c, e, d, e, n, t, e, d,  , s, c, a, l, e,  , a, n, d,  , f, i, d, e, l, i, t, y, ,,  , o, f, f, e, r, i, n, g,  , n, e, w, 
-, o, p, p, o, r, t, u, n, i, t, i, e, s,  , f, o, r,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , s, o, c, i, a, l,  , s, c, i, e, n, c, e, .,  , A,  , k, e, y,  , c, h, a, l, l, e, n, g, e, ,,  , h, o, w, e, v, e, r, ,,  , i, s, 
-, t, h, e,  , c, o, n, s, t, r, u, c, t, i, o, n,  , o, f,  , p, e, r, s, o, n, a,  , s, e, t, s,  , t, h, a, t,  , a, u, t, h, e, n, t, i, c, a, l, l, y,  , r, e, p, r, e, s, e, n, t,  , t, h, e,  , d, i, v, e, r, s, i, t, y,  , a, n, d, 
-, d, i, s, t, r, i, b, u, t, i, o, n,  , o, f,  , r, e, a, l, -, w, o, r, l, d,  , p, o, p, u, l, a, t, i, o, n, s, .,  , M, o, s, t,  , e, x, i, s, t, i, n, g,  , L, L, M, -, b, a, s, e, d,  , s, o, c, i, a, l, 
-, s, i, m, u, l, a, t, i, o, n,  , s, t, u, d, i, e, s,  , f, o, c, u, s,  , p, r, i, m, a, r, i, l, y,  , o, n,  , d, e, s, i, g, n, i, n, g,  , a, g, e, n, t, i, c,  , f, r, a, m, e, w, o, r, k, s,  , a, n, d, 
-, s, i, m, u, l, a, t, i, o, n,  , e, n, v, i, r, o, n, m, e, n, t, s, ,,  , o, f, t, e, n,  , o, v, e, r, l, o, o, k, i, n, g,  , t, h, e,  , c, o, m, p, l, e, x, i, t, i, e, s,  , o, f,  , p, e, r, s, o, n, a, 
-, g, e, n, e, r, a, t, i, o, n,  , a, n, d,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , b, i, a, s, e, s,  , i, n, t, r, o, d, u, c, e, d,  , b, y,  , u, n, r, e, p, r, e, s, e, n, t, a, t, i, v, e,  , p, e, r, s, o, n, a, 
-, s, e, t, s, .,  , I, n,  , t, h, i, s,  , p, a, p, e, r, ,,  , w, e,  , p, r, o, p, o, s, e,  , a,  , s, y, s, t, e, m, a, t, i, c,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , s, y, n, t, h, e, s, i, z, i, n, g, 
-, h, i, g, h, -, q, u, a, l, i, t, y, ,,  , p, o, p, u, l, a, t, i, o, n, -, a, l, i, g, n, e, d,  , p, e, r, s, o, n, a,  , s, e, t, s,  , f, o, r,  , L, L, M, -, d, r, i, v, e, n,  , s, o, c, i, a, l,  , s, i, m, u, l, a, t, i, o, n, ., 
-, O, u, r,  , a, p, p, r, o, a, c, h,  , b, e, g, i, n, s,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , L, L, M, s,  , t, o,  , g, e, n, e, r, a, t, e,  , n, a, r, r, a, t, i, v, e,  , p, e, r, s, o, n, a, s,  , f, r, o, m, 
-, l, o, n, g, -, t, e, r, m,  , s, o, c, i, a, l,  , m, e, d, i, a,  , d, a, t, a, ,,  , f, o, l, l, o, w, e, d,  , b, y,  , r, i, g, o, r, o, u, s,  , q, u, a, l, i, t, y,  , a, s, s, e, s, s, m, e, n, t,  , t, o,  , f, i, l, t, e, r, 
-, o, u, t,  , l, o, w, -, f, i, d, e, l, i, t, y,  , p, r, o, f, i, l, e, s, .,  , W, e,  , t, h, e, n,  , a, p, p, l, y,  , i, m, p, o, r, t, a, n, c, e,  , s, a, m, p, l, i, n, g,  , t, o,  , a, c, h, i, e, v, e,  , g, l, o, b, a, l, 
-, a, l, i, g, n, m, e, n, t,  , w, i, t, h,  , r, e, f, e, r, e, n, c, e,  , p, s, y, c, h, o, m, e, t, r, i, c,  , d, i, s, t, r, i, b, u, t, i, o, n, s, ,,  , s, u, c, h,  , a, s,  , t, h, e,  , B, i, g,  , F, i, v, e, 
-, p, e, r, s, o, n, a, l, i, t, y,  , t, r, a, i, t, s, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e,  , n, e, e, d, s,  , o, f,  , s, p, e, c, i, f, i, c,  , s, i, m, u, l, a, t, i, o, n,  , c, o, n, t, e, x, t, s, ,,  , w, e, 
-, f, u, r, t, h, e, r,  , i, n, t, r, o, d, u, c, e,  , a,  , t, a, s, k, -, s, p, e, c, i, f, i, c,  , m, o, d, u, l, e,  , t, h, a, t,  , a, d, a, p, t, s,  , t, h, e,  , g, l, o, b, a, l, l, y,  , a, l, i, g, n, e, d, 
-, p, e, r, s, o, n, a,  , s, e, t,  , t, o,  , t, a, r, g, e, t, e, d,  , s, u, b, p, o, p, u, l, a, t, i, o, n, s, .,  , E, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t, 
-, o, u, r,  , m, e, t, h, o, d,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , r, e, d, u, c, e, s,  , p, o, p, u, l, a, t, i, o, n, -, l, e, v, e, l,  , b, i, a, s,  , a, n, d,  , e, n, a, b, l, e, s,  , a, c, c, u, r, a, t, e, ,, 
-, f, l, e, x, i, b, l, e,  , s, o, c, i, a, l,  , s, i, m, u, l, a, t, i, o, n,  , f, o, r,  , a,  , w, i, d, e,  , r, a, n, g, e,  , o, f,  , r, e, s, e, a, r, c, h,  , a, n, d,  , p, o, l, i, c, y, 
-, a, p, p, l, i, c, a, t, i, o, n, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10104v1'>AI Harmonics: a human-centric and harms severity-adaptive AI risk assessment framework</a></td><td>T, h, e,  , a, b, s, o, l, u, t, e,  , d, o, m, i, n, a, n, c, e,  , o, f,  , A, r, t, i, f, i, c, i, a, l,  , I, n, t, e, l, l, i, g, e, n, c, e,  , (, A, I, ),  , i, n, t, r, o, d, u, c, e, s, 
-, u, n, p, r, e, c, e, d, e, n, t, e, d,  , s, o, c, i, e, t, a, l,  , h, a, r, m, s,  , a, n, d,  , r, i, s, k, s, .,  , E, x, i, s, t, i, n, g,  , A, I,  , r, i, s, k,  , a, s, s, e, s, s, m, e, n, t,  , m, o, d, e, l, s, 
-, f, o, c, u, s,  , o, n,  , i, n, t, e, r, n, a, l,  , c, o, m, p, l, i, a, n, c, e, ,,  , o, f, t, e, n,  , n, e, g, l, e, c, t, i, n, g,  , d, i, v, e, r, s, e,  , s, t, a, k, e, h, o, l, d, e, r,  , p, e, r, s, p, e, c, t, i, v, e, s, 
-, a, n, d,  , r, e, a, l, -, w, o, r, l, d,  , c, o, n, s, e, q, u, e, n, c, e, s, .,  , W, e,  , p, r, o, p, o, s, e,  , a,  , p, a, r, a, d, i, g, m,  , s, h, i, f, t,  , t, o,  , a,  , h, u, m, a, n, -, c, e, n, t, r, i, c, ,, 
-, h, a, r, m, -, s, e, v, e, r, i, t, y,  , a, d, a, p, t, i, v, e,  , a, p, p, r, o, a, c, h,  , g, r, o, u, n, d, e, d,  , i, n,  , e, m, p, i, r, i, c, a, l,  , i, n, c, i, d, e, n, t,  , d, a, t, a, .,  , W, e,  , p, r, e, s, e, n, t, 
-, A, I,  , H, a, r, m, o, n, i, c, s, ,,  , w, h, i, c, h,  , i, n, c, l, u, d, e, s,  , a,  , n, o, v, e, l,  , A, I,  , h, a, r, m,  , a, s, s, e, s, s, m, e, n, t,  , m, e, t, r, i, c,  , (, A, I, H, ),  , t, h, a, t, 
-, l, e, v, e, r, a, g, e, s,  , o, r, d, i, n, a, l,  , s, e, v, e, r, i, t, y,  , d, a, t, a,  , t, o,  , c, a, p, t, u, r, e,  , r, e, l, a, t, i, v, e,  , i, m, p, a, c, t,  , w, i, t, h, o, u, t,  , r, e, q, u, i, r, i, n, g, 
-, p, r, e, c, i, s, e,  , n, u, m, e, r, i, c, a, l,  , e, s, t, i, m, a, t, e, s, .,  , A, I,  , H, a, r, m, o, n, i, c, s,  , c, o, m, b, i, n, e, s,  , a,  , r, o, b, u, s, t, ,,  , g, e, n, e, r, a, l, i, z, e, d, 
-, m, e, t, h, o, d, o, l, o, g, y,  , w, i, t, h,  , a,  , d, a, t, a, -, d, r, i, v, e, n, ,,  , s, t, a, k, e, h, o, l, d, e, r, -, a, w, a, r, e,  , f, r, a, m, e, w, o, r, k,  , f, o, r,  , e, x, p, l, o, r, i, n, g,  , a, n, d, 
-, p, r, i, o, r, i, t, i, z, i, n, g,  , A, I,  , h, a, r, m, s, .,  , E, x, p, e, r, i, m, e, n, t, s,  , o, n,  , a, n, n, o, t, a, t, e, d,  , i, n, c, i, d, e, n, t,  , d, a, t, a,  , c, o, n, f, i, r, m,  , t, h, a, t, 
-, p, o, l, i, t, i, c, a, l,  , a, n, d,  , p, h, y, s, i, c, a, l,  , h, a, r, m, s,  , e, x, h, i, b, i, t,  , t, h, e,  , h, i, g, h, e, s, t,  , c, o, n, c, e, n, t, r, a, t, i, o, n,  , a, n, d,  , t, h, u, s,  , w, a, r, r, a, n, t, 
-, u, r, g, e, n, t,  , m, i, t, i, g, a, t, i, o, n, :,  , p, o, l, i, t, i, c, a, l,  , h, a, r, m, s,  , e, r, o, d, e,  , p, u, b, l, i, c,  , t, r, u, s, t, ,,  , w, h, i, l, e,  , p, h, y, s, i, c, a, l,  , h, a, r, m, s, 
-, p, o, s, e,  , s, e, r, i, o, u, s, ,,  , e, v, e, n,  , l, i, f, e, -, t, h, r, e, a, t, e, n, i, n, g,  , r, i, s, k, s, ,,  , u, n, d, e, r, s, c, o, r, i, n, g,  , t, h, e,  , r, e, a, l, -, w, o, r, l, d, 
-, r, e, l, e, v, a, n, c, e,  , o, f,  , o, u, r,  , a, p, p, r, o, a, c, h, .,  , F, i, n, a, l, l, y, ,,  , w, e,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , A, I,  , H, a, r, m, o, n, i, c, s, 
-, c, o, n, s, i, s, t, e, n, t, l, y,  , i, d, e, n, t, i, f, i, e, s,  , u, n, e, v, e, n,  , h, a, r, m,  , d, i, s, t, r, i, b, u, t, i, o, n, s, ,,  , e, n, a, b, l, i, n, g,  , p, o, l, i, c, y, m, a, k, e, r, s,  , a, n, d, 
-, o, r, g, a, n, i, z, a, t, i, o, n, s,  , t, o,  , t, a, r, g, e, t,  , t, h, e, i, r,  , m, i, t, i, g, a, t, i, o, n,  , e, f, f, o, r, t, s,  , e, f, f, e, c, t, i, v, e, l, y, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12250v1'>OnlineHOI: Towards Online Human-Object Interaction Generation and Perception</a></td><td>T, h, e,  , p, e, r, c, e, p, t, i, o, n,  , a, n, d,  , g, e, n, e, r, a, t, i, o, n,  , o, f,  , H, u, m, a, n, -, O, b, j, e, c, t,  , I, n, t, e, r, a, c, t, i, o, n,  , (, H, O, I, ),  , a, r, e,  , c, r, u, c, i, a, l, 
-, f, o, r,  , f, i, e, l, d, s,  , s, u, c, h,  , a, s,  , r, o, b, o, t, i, c, s, ,,  , A, R, /, V, R, ,,  , a, n, d,  , h, u, m, a, n,  , b, e, h, a, v, i, o, r,  , u, n, d, e, r, s, t, a, n, d, i, n, g, .,  , H, o, w, e, v, e, r, ,, 
-, c, u, r, r, e, n, t,  , a, p, p, r, o, a, c, h, e, s,  , m, o, d, e, l,  , t, h, i, s,  , t, a, s, k,  , i, n,  , a, n,  , o, f, f, l, i, n, e,  , s, e, t, t, i, n, g, ,,  , w, h, e, r, e,  , i, n, f, o, r, m, a, t, i, o, n,  , a, t, 
-, e, a, c, h,  , t, i, m, e,  , s, t, e, p,  , c, a, n,  , b, e,  , d, r, a, w, n,  , f, r, o, m,  , t, h, e,  , e, n, t, i, r, e,  , i, n, t, e, r, a, c, t, i, o, n,  , s, e, q, u, e, n, c, e, .,  , I, n,  , c, o, n, t, r, a, s, t, ,, 
-, i, n,  , r, e, a, l, -, w, o, r, l, d,  , s, c, e, n, a, r, i, o, s, ,,  , t, h, e,  , i, n, f, o, r, m, a, t, i, o, n,  , a, v, a, i, l, a, b, l, e,  , a, t,  , e, a, c, h,  , t, i, m, e,  , s, t, e, p,  , c, o, m, e, s,  , o, n, l, y, 
-, f, r, o, m,  , t, h, e,  , c, u, r, r, e, n, t,  , m, o, m, e, n, t,  , a, n, d,  , h, i, s, t, o, r, i, c, a, l,  , d, a, t, a, ,,  , i, ., e, ., ,,  , a, n,  , o, n, l, i, n, e,  , s, e, t, t, i, n, g, .,  , W, e,  , f, i, n, d, 
-, t, h, a, t,  , o, f, f, l, i, n, e,  , m, e, t, h, o, d, s,  , p, e, r, f, o, r, m,  , p, o, o, r, l, y,  , i, n,  , a, n,  , o, n, l, i, n, e,  , c, o, n, t, e, x, t, .,  , B, a, s, e, d,  , o, n,  , t, h, i, s, 
-, o, b, s, e, r, v, a, t, i, o, n, ,,  , w, e,  , p, r, o, p, o, s, e,  , t, w, o,  , n, e, w,  , t, a, s, k, s, :,  , O, n, l, i, n, e,  , H, O, I,  , G, e, n, e, r, a, t, i, o, n,  , a, n, d,  , P, e, r, c, e, p, t, i, o, n, .,  , T, o, 
-, a, d, d, r, e, s, s,  , t, h, i, s,  , t, a, s, k, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , t, h, e,  , O, n, l, i, n, e, H, O, I,  , f, r, a, m, e, w, o, r, k, ,,  , a,  , n, e, t, w, o, r, k,  , a, r, c, h, i, t, e, c, t, u, r, e, 
-, b, a, s, e, d,  , o, n,  , t, h, e,  , M, a, m, b, a,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , e, m, p, l, o, y, s,  , a,  , m, e, m, o, r, y,  , m, e, c, h, a, n, i, s, m, .,  , B, y,  , l, e, v, e, r, a, g, i, n, g, 
-, M, a, m, b, a, ', s,  , p, o, w, e, r, f, u, l,  , m, o, d, e, l, i, n, g,  , c, a, p, a, b, i, l, i, t, i, e, s,  , f, o, r,  , s, t, r, e, a, m, i, n, g,  , d, a, t, a,  , a, n, d,  , t, h, e,  , M, e, m, o, r, y, 
-, m, e, c, h, a, n, i, s, m, ', s,  , e, f, f, i, c, i, e, n, t,  , i, n, t, e, g, r, a, t, i, o, n,  , o, f,  , h, i, s, t, o, r, i, c, a, l,  , i, n, f, o, r, m, a, t, i, o, n, ,,  , w, e,  , a, c, h, i, e, v, e, 
-, s, t, a, t, e, -, o, f, -, t, h, e, -, a, r, t,  , r, e, s, u, l, t, s,  , o, n,  , t, h, e,  , C, o, r, e, 4, D,  , a, n, d,  , O, A, K, I, N, K, 2,  , o, n, l, i, n, e,  , g, e, n, e, r, a, t, i, o, n,  , t, a, s, k, s, ,,  , a, s, 
-, w, e, l, l,  , a, s,  , t, h, e,  , o, n, l, i, n, e,  , H, O, I, 4, D,  , p, e, r, c, e, p, t, i, o, n,  , t, a, s, k, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10004v1'>Unsupervised Hallucination Detection by Inspecting Reasoning Processes</a></td><td>U, n, s, u, p, e, r, v, i, s, e, d,  , h, a, l, l, u, c, i, n, a, t, i, o, n,  , d, e, t, e, c, t, i, o, n,  , a, i, m, s,  , t, o,  , i, d, e, n, t, i, f, y,  , h, a, l, l, u, c, i, n, a, t, e, d,  , c, o, n, t, e, n, t, 
-, g, e, n, e, r, a, t, e, d,  , b, y,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , w, i, t, h, o, u, t,  , r, e, l, y, i, n, g,  , o, n,  , l, a, b, e, l, e, d,  , d, a, t, a, ., 
-, W, h, i, l, e,  , u, n, s, u, p, e, r, v, i, s, e, d,  , m, e, t, h, o, d, s,  , h, a, v, e,  , g, a, i, n, e, d,  , p, o, p, u, l, a, r, i, t, y,  , b, y,  , e, l, i, m, i, n, a, t, i, n, g, 
-, l, a, b, o, r, -, i, n, t, e, n, s, i, v, e,  , h, u, m, a, n,  , a, n, n, o, t, a, t, i, o, n, s, ,,  , t, h, e, y,  , f, r, e, q, u, e, n, t, l, y,  , r, e, l, y,  , o, n,  , p, r, o, x, y,  , s, i, g, n, a, l, s, 
-, u, n, r, e, l, a, t, e, d,  , t, o,  , f, a, c, t, u, a, l,  , c, o, r, r, e, c, t, n, e, s, s, .,  , T, h, i, s,  , m, i, s, a, l, i, g, n, m, e, n, t,  , b, i, a, s, e, s,  , d, e, t, e, c, t, i, o, n,  , p, r, o, b, e, s, 
-, t, o, w, a, r, d,  , s, u, p, e, r, f, i, c, i, a, l,  , o, r,  , n, o, n, -, t, r, u, t, h, -, r, e, l, a, t, e, d,  , a, s, p, e, c, t, s, ,,  , l, i, m, i, t, i, n, g,  , g, e, n, e, r, a, l, i, z, a, b, i, l, i, t, y, 
-, a, c, r, o, s, s,  , d, a, t, a, s, e, t, s,  , a, n, d,  , s, c, e, n, a, r, i, o, s, .,  , T, o,  , o, v, e, r, c, o, m, e,  , t, h, e, s, e,  , l, i, m, i, t, a, t, i, o, n, s, ,,  , w, e,  , p, r, o, p, o, s, e,  , I, R, I, S, ,, 
-, a, n,  , u, n, s, u, p, e, r, v, i, s, e, d,  , h, a, l, l, u, c, i, n, a, t, i, o, n,  , d, e, t, e, c, t, i, o, n,  , f, r, a, m, e, w, o, r, k, ,,  , l, e, v, e, r, a, g, i, n, g,  , i, n, t, e, r, n, a, l, 
-, r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , i, n, t, r, i, n, s, i, c,  , t, o,  , f, a, c, t, u, a, l,  , c, o, r, r, e, c, t, n, e, s, s, .,  , I, R, I, S,  , p, r, o, m, p, t, s,  , t, h, e,  , L, L, M,  , t, o, 
-, c, a, r, e, f, u, l, l, y,  , v, e, r, i, f, y,  , t, h, e,  , t, r, u, t, h, f, u, l, n, e, s, s,  , o, f,  , a,  , g, i, v, e, n,  , s, t, a, t, e, m, e, n, t, ,,  , a, n, d,  , o, b, t, a, i, n,  , i, t, s, 
-, c, o, n, t, e, x, t, u, a, l, i, z, e, d,  , e, m, b, e, d, d, i, n, g,  , a, s,  , i, n, f, o, r, m, a, t, i, v, e,  , f, e, a, t, u, r, e, s,  , f, o, r,  , t, r, a, i, n, i, n, g, .,  , M, e, a, n, w, h, i, l, e, ,,  , t, h, e, 
-, u, n, c, e, r, t, a, i, n, t, y,  , o, f,  , e, a, c, h,  , r, e, s, p, o, n, s, e,  , i, s,  , c, o, n, s, i, d, e, r, e, d,  , a,  , s, o, f, t,  , p, s, e, u, d, o, l, a, b, e, l,  , f, o, r,  , t, r, u, t, h, f, u, l, n, e, s, s, ., 
-, E, x, p, e, r, i, m, e, n, t, a, l,  , r, e, s, u, l, t, s,  , d, e, m, o, n, s, t, r, a, t, e,  , t, h, a, t,  , I, R, I, S,  , c, o, n, s, i, s, t, e, n, t, l, y,  , o, u, t, p, e, r, f, o, r, m, s,  , e, x, i, s, t, i, n, g, 
-, u, n, s, u, p, e, r, v, i, s, e, d,  , m, e, t, h, o, d, s, .,  , O, u, r,  , a, p, p, r, o, a, c, h,  , i, s,  , f, u, l, l, y,  , u, n, s, u, p, e, r, v, i, s, e, d, ,,  , c, o, m, p, u, t, a, t, i, o, n, a, l, l, y,  , l, o, w, 
-, c, o, s, t, ,,  , a, n, d,  , w, o, r, k, s,  , w, e, l, l,  , e, v, e, n,  , w, i, t, h,  , f, e, w,  , t, r, a, i, n, i, n, g,  , d, a, t, a, ,,  , m, a, k, i, n, g,  , i, t,  , s, u, i, t, a, b, l, e,  , f, o, r, 
-, r, e, a, l, -, t, i, m, e,  , d, e, t, e, c, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09970v1'>Securing LLM-Generated Embedded Firmware through AI Agent-Driven Validation and Patching</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , s, h, o, w,  , p, r, o, m, i, s, e,  , i, n,  , g, e, n, e, r, a, t, i, n, g,  , f, i, r, m, w, a, r, e,  , f, o, r,  , e, m, b, e, d, d, e, d, 
-, s, y, s, t, e, m, s, ,,  , b, u, t,  , o, f, t, e, n,  , i, n, t, r, o, d, u, c, e,  , s, e, c, u, r, i, t, y,  , f, l, a, w, s,  , a, n, d,  , f, a, i, l,  , t, o,  , m, e, e, t,  , r, e, a, l, -, t, i, m, e, 
-, p, e, r, f, o, r, m, a, n, c, e,  , c, o, n, s, t, r, a, i, n, t, s, .,  , T, h, i, s,  , p, a, p, e, r,  , p, r, o, p, o, s, e, s,  , a,  , t, h, r, e, e, -, p, h, a, s, e,  , m, e, t, h, o, d, o, l, o, g, y,  , t, h, a, t, 
-, c, o, m, b, i, n, e, s,  , L, L, M, -, b, a, s, e, d,  , f, i, r, m, w, a, r, e,  , g, e, n, e, r, a, t, i, o, n,  , w, i, t, h,  , a, u, t, o, m, a, t, e, d,  , s, e, c, u, r, i, t, y,  , v, a, l, i, d, a, t, i, o, n,  , a, n, d, 
-, i, t, e, r, a, t, i, v, e,  , r, e, f, i, n, e, m, e, n, t,  , i, n,  , a,  , v, i, r, t, u, a, l, i, z, e, d,  , e, n, v, i, r, o, n, m, e, n, t, .,  , U, s, i, n, g,  , s, t, r, u, c, t, u, r, e, d,  , p, r, o, m, p, t, s, ,, 
-, m, o, d, e, l, s,  , l, i, k, e,  , G, P, T, -, 4,  , g, e, n, e, r, a, t, e,  , f, i, r, m, w, a, r, e,  , f, o, r,  , n, e, t, w, o, r, k, i, n, g,  , a, n, d,  , c, o, n, t, r, o, l,  , t, a, s, k, s, ,,  , d, e, p, l, o, y, e, d, 
-, o, n,  , F, r, e, e, R, T, O, S,  , v, i, a,  , Q, E, M, U, .,  , T, h, e, s, e,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n, s,  , a, r, e,  , t, e, s, t, e, d,  , u, s, i, n, g,  , f, u, z, z, i, n, g, ,,  , s, t, a, t, i, c, 
-, a, n, a, l, y, s, i, s, ,,  , a, n, d,  , r, u, n, t, i, m, e,  , m, o, n, i, t, o, r, i, n, g,  , t, o,  , d, e, t, e, c, t,  , v, u, l, n, e, r, a, b, i, l, i, t, i, e, s,  , s, u, c, h,  , a, s,  , b, u, f, f, e, r, 
-, o, v, e, r, f, l, o, w, s,  , (, C, W, E, -, 1, 2, 0, ), ,,  , r, a, c, e,  , c, o, n, d, i, t, i, o, n, s,  , (, C, W, E, -, 3, 6, 2, ), ,,  , a, n, d,  , d, e, n, i, a, l, -, o, f, -, s, e, r, v, i, c, e,  , t, h, r, e, a, t, s, 
-, (, C, W, E, -, 4, 0, 0, ), .,  , S, p, e, c, i, a, l, i, z, e, d,  , A, I,  , a, g, e, n, t, s,  , f, o, r,  , T, h, r, e, a, t,  , D, e, t, e, c, t, i, o, n, ,,  , P, e, r, f, o, r, m, a, n, c, e, 
-, O, p, t, i, m, i, z, a, t, i, o, n, ,,  , a, n, d,  , C, o, m, p, l, i, a, n, c, e,  , V, e, r, i, f, i, c, a, t, i, o, n,  , c, o, l, l, a, b, o, r, a, t, e,  , t, o,  , i, m, p, r, o, v, e,  , d, e, t, e, c, t, i, o, n,  , a, n, d, 
-, r, e, m, e, d, i, a, t, i, o, n, .,  , I, d, e, n, t, i, f, i, e, d,  , i, s, s, u, e, s,  , a, r, e,  , c, a, t, e, g, o, r, i, z, e, d,  , u, s, i, n, g,  , C, W, E, ,,  , t, h, e, n,  , u, s, e, d,  , t, o,  , p, r, o, m, p, t, 
-, t, a, r, g, e, t, e, d,  , L, L, M, -, g, e, n, e, r, a, t, e, d,  , p, a, t, c, h, e, s,  , i, n,  , a, n,  , i, t, e, r, a, t, i, v, e,  , l, o, o, p, .,  , E, x, p, e, r, i, m, e, n, t, s,  , s, h, o, w,  , a,  , 9, 2, ., 4, \, %, 
-, V, u, l, n, e, r, a, b, i, l, i, t, y,  , R, e, m, e, d, i, a, t, i, o, n,  , R, a, t, e,  , (, 3, 7, ., 3, \, %,  , i, m, p, r, o, v, e, m, e, n, t, ), ,,  , 9, 5, ., 8, \, %,  , T, h, r, e, a, t,  , M, o, d, e, l, 
-, C, o, m, p, l, i, a, n, c, e, ,,  , a, n, d,  , 0, ., 8, 7,  , S, e, c, u, r, i, t, y,  , C, o, v, e, r, a, g, e,  , I, n, d, e, x, .,  , R, e, a, l, -, t, i, m, e,  , m, e, t, r, i, c, s,  , i, n, c, l, u, d, e,  , 8, ., 6, m, s, 
-, w, o, r, s, t, -, c, a, s, e,  , e, x, e, c, u, t, i, o, n,  , t, i, m, e,  , a, n, d,  , 1, 9, 5, {, \, m, u, }, s,  , j, i, t, t, e, r, .,  , T, h, i, s,  , p, r, o, c, e, s, s,  , e, n, h, a, n, c, e, s,  , f, i, r, m, w, a, r, e, 
-, s, e, c, u, r, i, t, y,  , a, n, d,  , p, e, r, f, o, r, m, a, n, c, e,  , w, h, i, l, e,  , c, o, n, t, r, i, b, u, t, i, n, g,  , a, n,  , o, p, e, n, -, s, o, u, r, c, e,  , d, a, t, a, s, e, t,  , f, o, r,  , f, u, t, u, r, e, 
-, r, e, s, e, a, r, c, h, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09969v1'>Large Language Models Meet Legal Artificial Intelligence: A Survey</a></td><td>L, a, r, g, e,  , L, a, n, g, u, a, g, e,  , M, o, d, e, l, s,  , (, L, L, M, s, ),  , h, a, v, e,  , s, i, g, n, i, f, i, c, a, n, t, l, y,  , a, d, v, a, n, c, e, d,  , t, h, e,  , d, e, v, e, l, o, p, m, e, n, t,  , o, f, 
-, L, e, g, a, l,  , A, r, t, i, f, i, c, i, a, l,  , I, n, t, e, l, l, i, g, e, n, c, e,  , (, L, e, g, a, l,  , A, I, ),  , i, n,  , r, e, c, e, n, t,  , y, e, a, r, s, ,,  , e, n, h, a, n, c, i, n, g,  , t, h, e, 
-, e, f, f, i, c, i, e, n, c, y,  , a, n, d,  , a, c, c, u, r, a, c, y,  , o, f,  , l, e, g, a, l,  , t, a, s, k, s, .,  , T, o,  , a, d, v, a, n, c, e,  , r, e, s, e, a, r, c, h,  , a, n, d,  , a, p, p, l, i, c, a, t, i, o, n, s,  , o, f, 
-, L, L, M, -, b, a, s, e, d,  , a, p, p, r, o, a, c, h, e, s,  , i, n,  , l, e, g, a, l,  , d, o, m, a, i, n, ,,  , t, h, i, s,  , p, a, p, e, r,  , p, r, o, v, i, d, e, s,  , a,  , c, o, m, p, r, e, h, e, n, s, i, v, e, 
-, r, e, v, i, e, w,  , o, f,  , 1, 6,  , l, e, g, a, l,  , L, L, M, s,  , s, e, r, i, e, s,  , a, n, d,  , 4, 7,  , L, L, M, -, b, a, s, e, d,  , f, r, a, m, e, w, o, r, k, s,  , f, o, r,  , l, e, g, a, l,  , t, a, s, k, s, ,,  , a, n, d, 
-, a, l, s, o,  , g, a, t, h, e, r,  , 1, 5,  , b, e, n, c, h, m, a, r, k, s,  , a, n, d,  , 2, 9,  , d, a, t, a, s, e, t, s,  , t, o,  , e, v, a, l, u, a, t, e,  , d, i, f, f, e, r, e, n, t,  , l, e, g, a, l, 
-, c, a, p, a, b, i, l, i, t, i, e, s, .,  , A, d, d, i, t, i, o, n, a, l, l, y, ,,  , w, e,  , a, n, a, l, y, s, e,  , t, h, e,  , c, h, a, l, l, e, n, g, e, s,  , a, n, d,  , d, i, s, c, u, s, s,  , f, u, t, u, r, e, 
-, d, i, r, e, c, t, i, o, n, s,  , f, o, r,  , L, L, M, -, b, a, s, e, d,  , a, p, p, r, o, a, c, h, e, s,  , i, n,  , t, h, e,  , l, e, g, a, l,  , d, o, m, a, i, n, .,  , W, e,  , h, o, p, e,  , t, h, i, s,  , p, a, p, e, r, 
-, p, r, o, v, i, d, e, s,  , a,  , s, y, s, t, e, m, a, t, i, c,  , i, n, t, r, o, d, u, c, t, i, o, n,  , f, o, r,  , b, e, g, i, n, n, e, r, s,  , a, n, d,  , e, n, c, o, u, r, a, g, e, s,  , f, u, t, u, r, e,  , r, e, s, e, a, r, c, h, 
-, i, n,  , t, h, i, s,  , f, i, e, l, d, .,  , R, e, s, o, u, r, c, e, s,  , a, r, e,  , a, v, a, i, l, a, b, l, e,  , a, t, 
-, h, t, t, p, s, :, /, /, g, i, t, h, u, b, ., c, o, m, /, Z, h, i, t, i, a, n, H, o, u, /, L, L, M, s, 4, L, e, g, a, l, A, I, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09955v1'>Adaptive Token Merging for Efficient Transformer Semantic Communication at the Edge</a></td><td>L, a, r, g, e, -, s, c, a, l, e,  , t, r, a, n, s, f, o, r, m, e, r, s,  , a, r, e,  , c, e, n, t, r, a, l,  , t, o,  , m, o, d, e, r, n,  , s, e, m, a, n, t, i, c,  , c, o, m, m, u, n, i, c, a, t, i, o, n, ,,  , y, e, t, 
-, t, h, e, i, r,  , h, i, g, h,  , c, o, m, p, u, t, a, t, i, o, n, a, l,  , a, n, d,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , c, o, s, t, s,  , h, i, n, d, e, r,  , d, e, p, l, o, y, m, e, n, t,  , o, n, 
-, r, e, s, o, u, r, c, e, -, c, o, n, s, t, r, a, i, n, e, d,  , e, d, g, e,  , d, e, v, i, c, e, s, .,  , T, h, i, s,  , p, a, p, e, r,  , i, n, t, r, o, d, u, c, e, s,  , a,  , t, r, a, i, n, i, n, g, -, f, r, e, e, 
-, f, r, a, m, e, w, o, r, k,  , f, o, r,  , a, d, a, p, t, i, v, e,  , t, o, k, e, n,  , m, e, r, g, i, n, g, ,,  , a,  , n, o, v, e, l,  , m, e, c, h, a, n, i, s, m,  , t, h, a, t,  , c, o, m, p, r, e, s, s, e, s, 
-, t, r, a, n, s, f, o, r, m, e, r,  , r, e, p, r, e, s, e, n, t, a, t, i, o, n, s,  , a, t,  , r, u, n, t, i, m, e,  , b, y,  , s, e, l, e, c, t, i, v, e, l, y,  , m, e, r, g, i, n, g,  , s, e, m, a, n, t, i, c, a, l, l, y, 
-, r, e, d, u, n, d, a, n, t,  , t, o, k, e, n, s,  , u, n, d, e, r,  , p, e, r, -, l, a, y, e, r,  , s, i, m, i, l, a, r, i, t, y,  , t, h, r, e, s, h, o, l, d, s, .,  , U, n, l, i, k, e,  , p, r, i, o, r, 
-, f, i, x, e, d, -, r, a, t, i, o,  , r, e, d, u, c, t, i, o, n, ,,  , o, u, r,  , a, p, p, r, o, a, c, h,  , c, o, u, p, l, e, s,  , m, e, r, g, i, n, g,  , d, i, r, e, c, t, l, y,  , t, o,  , i, n, p, u, t, 
-, r, e, d, u, n, d, a, n, c, y, ,,  , e, n, a, b, l, i, n, g,  , d, a, t, a, -, d, e, p, e, n, d, e, n, t,  , a, d, a, p, t, a, t, i, o, n,  , t, h, a, t,  , b, a, l, a, n, c, e, s,  , e, f, f, i, c, i, e, n, c, y,  , a, n, d, 
-, t, a, s, k,  , r, e, l, e, v, a, n, c, e,  , w, i, t, h, o, u, t,  , r, e, t, r, a, i, n, i, n, g, .,  , W, e,  , c, a, s, t,  , t, h, e,  , d, i, s, c, o, v, e, r, y,  , o, f,  , m, e, r, g, i, n, g,  , s, t, r, a, t, e, g, i, e, s, 
-, a, s,  , a,  , m, u, l, t, i, -, o, b, j, e, c, t, i, v, e,  , o, p, t, i, m, i, z, a, t, i, o, n,  , p, r, o, b, l, e, m,  , a, n, d,  , l, e, v, e, r, a, g, e,  , B, a, y, e, s, i, a, n,  , o, p, t, i, m, i, z, a, t, i, o, n,  , t, o, 
-, o, b, t, a, i, n,  , P, a, r, e, t, o, -, o, p, t, i, m, a, l,  , t, r, a, d, e, -, o, f, f, s,  , b, e, t, w, e, e, n,  , a, c, c, u, r, a, c, y, ,,  , i, n, f, e, r, e, n, c, e,  , c, o, s, t, ,,  , a, n, d, 
-, c, o, m, m, u, n, i, c, a, t, i, o, n,  , c, o, s, t, .,  , O, n,  , I, m, a, g, e, N, e, t,  , c, l, a, s, s, i, f, i, c, a, t, i, o, n, ,,  , w, e,  , m, a, t, c, h,  , t, h, e,  , a, c, c, u, r, a, c, y,  , o, f,  , t, h, e, 
-, u, n, m, o, d, i, f, i, e, d,  , t, r, a, n, s, f, o, r, m, e, r,  , w, i, t, h,  , 3, 0, \, %,  , f, e, w, e, r,  , f, l, o, a, t, i, n, g, -, p, o, i, n, t,  , o, p, e, r, a, t, i, o, n, s,  , p, e, r,  , s, e, c, o, n, d,  , a, n, d, 
-, u, n, d, e, r,  , 2, 0, \, %,  , o, f,  , t, h, e,  , o, r, i, g, i, n, a, l,  , c, o, m, m, u, n, i, c, a, t, i, o, n,  , c, o, s, t, ,,  , w, h, i, l, e,  , f, o, r,  , v, i, s, u, a, l,  , q, u, e, s, t, i, o, n, 
-, a, n, s, w, e, r, i, n, g,  , o, u, r,  , m, e, t, h, o, d,  , a, c, h, i, e, v, e, s,  , p, e, r, f, o, r, m, a, n, c, e,  , c, o, m, p, e, t, i, t, i, v, e,  , w, i, t, h,  , t, h, e,  , f, u, l, l,  , L, L, a, V, A,  , m, o, d, e, l, 
-, a, t,  , l, e, s, s,  , t, h, a, n,  , o, n, e, -, t, h, i, r, d,  , o, f,  , t, h, e,  , c, o, m, p, u, t, e,  , a, n, d,  , o, n, e, -, t, e, n, t, h,  , o, f,  , t, h, e,  , b, a, n, d, w, i, d, t, h, .,  , F, i, n, a, l, l, y, ,, 
-, w, e,  , s, h, o, w,  , t, h, a, t,  , o, u, r,  , a, d, a, p, t, i, v, e,  , m, e, r, g, i, n, g,  , i, s,  , r, o, b, u, s, t,  , a, c, r, o, s, s,  , v, a, r, y, i, n, g,  , c, h, a, n, n, e, l,  , c, o, n, d, i, t, i, o, n, s, 
-, a, n, d,  , p, r, o, v, i, d, e, s,  , i, n, h, e, r, e, n, t,  , p, r, i, v, a, c, y,  , b, e, n, e, f, i, t, s, ,,  , s, u, b, s, t, a, n, t, i, a, l, l, y,  , d, e, g, r, a, d, i, n, g,  , t, h, e,  , e, f, f, i, c, a, c, y,  , o, f, 
-, m, o, d, e, l,  , i, n, v, e, r, s, i, o, n,  , a, t, t, a, c, k, s, .,  , O, u, r,  , f, r, a, m, e, w, o, r, k,  , p, r, o, v, i, d, e, s,  , a,  , p, r, a, c, t, i, c, a, l,  , a, n, d,  , v, e, r, s, a, t, i, l, e, 
-, s, o, l, u, t, i, o, n,  , f, o, r,  , d, e, p, l, o, y, i, n, g,  , p, o, w, e, r, f, u, l,  , t, r, a, n, s, f, o, r, m, e, r,  , m, o, d, e, l, s,  , i, n,  , r, e, s, o, u, r, c, e, -, l, i, m, i, t, e, d,  , e, d, g, e, 
-, i, n, t, e, l, l, i, g, e, n, c, e,  , s, c, e, n, a, r, i, o, s, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09919v1'>A Markovian Framing of WaveFunctionCollapse for Procedurally Generating Aesthetically Complex Environments</a></td><td>P, r, o, c, e, d, u, r, a, l,  , c, o, n, t, e, n, t,  , g, e, n, e, r, a, t, i, o, n,  , o, f, t, e, n,  , r, e, q, u, i, r, e, s,  , s, a, t, i, s, f, y, i, n, g,  , b, o, t, h, 
-, d, e, s, i, g, n, e, r, -, s, p, e, c, i, f, i, e, d,  , o, b, j, e, c, t, i, v, e, s,  , a, n, d,  , a, d, j, a, c, e, n, c, y,  , c, o, n, s, t, r, a, i, n, t, s,  , i, m, p, l, i, c, i, t, l, y,  , i, m, p, o, s, e, d,  , b, y, 
-, t, h, e,  , u, n, d, e, r, l, y, i, n, g,  , t, i, l, e,  , s, e, t, .,  , T, o,  , a, d, d, r, e, s, s,  , t, h, e,  , c, h, a, l, l, e, n, g, e, s,  , o, f,  , j, o, i, n, t, l, y,  , o, p, t, i, m, i, z, i, n, g,  , b, o, t, h, 
-, c, o, n, s, t, r, a, i, n, t, s,  , a, n, d,  , o, b, j, e, c, t, i, v, e, s, ,,  , w, e,  , r, e, f, o, r, m, u, l, a, t, e,  , W, a, v, e, F, u, n, c, t, i, o, n, C, o, l, l, a, p, s, e,  , (, W, F, C, ),  , a, s,  , a, 
-, M, a, r, k, o, v,  , D, e, c, i, s, i, o, n,  , P, r, o, c, e, s, s,  , (, M, D, P, ), ,,  , e, n, a, b, l, i, n, g,  , e, x, t, e, r, n, a, l,  , o, p, t, i, m, i, z, a, t, i, o, n,  , a, l, g, o, r, i, t, h, m, s,  , t, o, 
-, f, o, c, u, s,  , e, x, c, l, u, s, i, v, e, l, y,  , o, n,  , o, b, j, e, c, t, i, v, e,  , m, a, x, i, m, i, z, a, t, i, o, n,  , w, h, i, l, e,  , l, e, v, e, r, a, g, i, n, g,  , W, F, C, ', s,  , p, r, o, p, a, g, a, t, i, o, n, 
-, m, e, c, h, a, n, i, s, m,  , t, o,  , e, n, f, o, r, c, e,  , c, o, n, s, t, r, a, i, n, t,  , s, a, t, i, s, f, a, c, t, i, o, n, .,  , W, e,  , e, m, p, i, r, i, c, a, l, l, y,  , c, o, m, p, a, r, e,  , o, p, t, i, m, i, z, i, n, g, 
-, t, h, i, s,  , M, D, P,  , t, o,  , t, r, a, d, i, t, i, o, n, a, l,  , e, v, o, l, u, t, i, o, n, a, r, y,  , a, p, p, r, o, a, c, h, e, s,  , t, h, a, t,  , j, o, i, n, t, l, y,  , o, p, t, i, m, i, z, e,  , g, l, o, b, a, l, 
-, m, e, t, r, i, c, s,  , a, n, d,  , l, o, c, a, l,  , t, i, l, e,  , p, l, a, c, e, m, e, n, t, .,  , A, c, r, o, s, s,  , m, u, l, t, i, p, l, e,  , d, o, m, a, i, n, s,  , w, i, t, h,  , v, a, r, i, o, u, s, 
-, d, i, f, f, i, c, u, l, t, i, e, s, ,,  , w, e,  , f, i, n, d,  , t, h, a, t,  , j, o, i, n, t,  , o, p, t, i, m, i, z, a, t, i, o, n,  , n, o, t,  , o, n, l, y,  , s, t, r, u, g, g, l, e, s,  , a, s,  , t, a, s, k, 
-, c, o, m, p, l, e, x, i, t, y,  , i, n, c, r, e, a, s, e, s, ,,  , b, u, t,  , c, o, n, s, i, s, t, e, n, t, l, y,  , u, n, d, e, r, p, e, r, f, o, r, m, s,  , r, e, l, a, t, i, v, e,  , t, o,  , o, p, t, i, m, i, z, a, t, i, o, n, 
-, o, v, e, r,  , t, h, e,  , W, F, C, -, M, D, P, ,,  , u, n, d, e, r, s, c, o, r, i, n, g,  , t, h, e,  , a, d, v, a, n, t, a, g, e, s,  , o, f,  , d, e, c, o, u, p, l, i, n, g,  , l, o, c, a, l,  , c, o, n, s, t, r, a, i, n, t, 
-, s, a, t, i, s, f, a, c, t, i, o, n,  , f, r, o, m,  , g, l, o, b, a, l,  , o, b, j, e, c, t, i, v, e,  , o, p, t, i, m, i, z, a, t, i, o, n, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10584v1'>Smart Trial: Evaluating the Use of Large Language Models for Recruiting Clinical Trial Participants via Social Media</a></td><td>C, l, i, n, i, c, a, l,  , t, r, i, a, l, s,  , (, C, T, ),  , a, r, e,  , e, s, s, e, n, t, i, a, l,  , f, o, r,  , a, d, v, a, n, c, i, n, g,  , m, e, d, i, c, a, l,  , r, e, s, e, a, r, c, h,  , a, n, d, 
-, t, r, e, a, t, m, e, n, t, ,,  , y, e, t,  , e, f, f, i, c, i, e, n, t, l, y,  , r, e, c, r, u, i, t, i, n, g,  , e, l, i, g, i, b, l, e,  , p, a, r, t, i, c, i, p, a, n, t, s,  , -, -,  , e, a, c, h,  , o, f,  , w, h, o, m, 
-, m, u, s, t,  , m, e, e, t,  , c, o, m, p, l, e, x,  , e, l, i, g, i, b, i, l, i, t, y,  , c, r, i, t, e, r, i, a,  , -, -,  , r, e, m, a, i, n, s,  , a,  , s, i, g, n, i, f, i, c, a, n, t,  , c, h, a, l, l, e, n, g, e, ., 
-, T, r, a, d, i, t, i, o, n, a, l,  , r, e, c, r, u, i, t, m, e, n, t,  , a, p, p, r, o, a, c, h, e, s, ,,  , s, u, c, h,  , a, s,  , a, d, v, e, r, t, i, s, e, m, e, n, t, s,  , o, r,  , e, l, e, c, t, r, o, n, i, c,  , h, e, a, l, t, h, 
-, r, e, c, o, r, d,  , s, c, r, e, e, n, i, n, g,  , w, i, t, h, i, n,  , h, o, s, p, i, t, a, l, s, ,,  , a, r, e,  , o, f, t, e, n,  , t, i, m, e, -, c, o, n, s, u, m, i, n, g,  , a, n, d,  , g, e, o, g, r, a, p, h, i, c, a, l, l, y, 
-, c, o, n, s, t, r, a, i, n, e, d, .,  , T, h, i, s,  , w, o, r, k,  , a, d, d, r, e, s, s, e, s,  , t, h, e,  , r, e, c, r, u, i, t, m, e, n, t,  , c, h, a, l, l, e, n, g, e,  , b, y,  , l, e, v, e, r, a, g, i, n, g,  , t, h, e, 
-, v, a, s, t,  , a, m, o, u, n, t,  , o, f,  , h, e, a, l, t, h, -, r, e, l, a, t, e, d,  , i, n, f, o, r, m, a, t, i, o, n,  , i, n, d, i, v, i, d, u, a, l, s,  , s, h, a, r, e,  , o, n,  , s, o, c, i, a, l,  , m, e, d, i, a, 
-, p, l, a, t, f, o, r, m, s, .,  , W, i, t, h,  , t, h, e,  , e, m, e, r, g, e, n, c, e,  , o, f,  , p, o, w, e, r, f, u, l,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , c, a, p, a, b, l, e, 
-, o, f,  , s, o, p, h, i, s, t, i, c, a, t, e, d,  , t, e, x, t,  , u, n, d, e, r, s, t, a, n, d, i, n, g, ,,  , w, e,  , p, o, s, e,  , t, h, e,  , c, e, n, t, r, a, l,  , r, e, s, e, a, r, c, h,  , q, u, e, s, t, i, o, n, :,  , C, a, n, 
-, L, L, M, -, d, r, i, v, e, n,  , t, o, o, l, s,  , f, a, c, i, l, i, t, a, t, e,  , C, T,  , r, e, c, r, u, i, t, m, e, n, t,  , b, y,  , i, d, e, n, t, i, f, y, i, n, g,  , p, o, t, e, n, t, i, a, l, 
-, p, a, r, t, i, c, i, p, a, n, t, s,  , t, h, r, o, u, g, h,  , t, h, e, i, r,  , e, n, g, a, g, e, m, e, n, t,  , o, n,  , s, o, c, i, a, l,  , m, e, d, i, a, ?,  , T, o,  , i, n, v, e, s, t, i, g, a, t, e,  , t, h, i, s, 
-, q, u, e, s, t, i, o, n, ,,  , w, e,  , i, n, t, r, o, d, u, c, e,  , T, R, I, A, L, Q, A, ,,  , a,  , n, o, v, e, l,  , d, a, t, a, s, e, t,  , c, o, m, p, r, i, s, i, n, g,  , t, w, o,  , s, o, c, i, a, l,  , m, e, d, i, a, 
-, c, o, l, l, e, c, t, i, o, n, s,  , f, r, o, m,  , t, h, e,  , s, u, b, r, e, d, d, i, t, s,  , o, n,  , c, o, l, o, n,  , c, a, n, c, e, r,  , a, n, d,  , p, r, o, s, t, a, t, e,  , c, a, n, c, e, r, .,  , U, s, i, n, g, 
-, e, l, i, g, i, b, i, l, i, t, y,  , c, r, i, t, e, r, i, a,  , f, r, o, m,  , p, u, b, l, i, c,  , r, e, a, l, -, w, o, r, l, d,  , C, T, s, ,,  , e, x, p, e, r, i, e, n, c, e, d,  , a, n, n, o, t, a, t, o, r, s,  , a, r, e, 
-, h, i, r, e, d,  , t, o,  , a, n, n, o, t, a, t, e,  , T, R, I, A, L, Q, A,  , t, o,  , i, n, d, i, c, a, t, e,  , (, 1, ),  , w, h, e, t, h, e, r,  , a,  , s, o, c, i, a, l,  , m, e, d, i, a,  , u, s, e, r,  , m, e, e, t, s,  , a, 
-, g, i, v, e, n,  , e, l, i, g, i, b, i, l, i, t, y,  , c, r, i, t, e, r, i, o, n,  , a, n, d,  , (, 2, ),  , t, h, e,  , u, s, e, r, ', s,  , s, t, a, t, e, d,  , r, e, a, s, o, n, s,  , f, o, r,  , i, n, t, e, r, e, s, t,  , i, n, 
-, p, a, r, t, i, c, i, p, a, t, i, n, g,  , i, n,  , C, T, .,  , W, e,  , b, e, n, c, h, m, a, r, k,  , s, e, v, e, n,  , w, i, d, e, l, y,  , u, s, e, d,  , L, L, M, s,  , o, n,  , t, h, e, s, e,  , t, w, o, 
-, p, r, e, d, i, c, t, i, o, n,  , t, a, s, k, s, ,,  , e, m, p, l, o, y, i, n, g,  , s, i, x,  , d, i, s, t, i, n, c, t,  , t, r, a, i, n, i, n, g,  , a, n, d,  , i, n, f, e, r, e, n, c, e,  , s, t, r, a, t, e, g, i, e, s, .,  , O, u, r, 
-, e, x, t, e, n, s, i, v, e,  , e, x, p, e, r, i, m, e, n, t, s,  , r, e, v, e, a, l,  , t, h, a, t, ,,  , w, h, i, l, e,  , L, L, M, s,  , s, h, o, w,  , c, o, n, s, i, d, e, r, a, b, l, e,  , p, r, o, m, i, s, e, ,,  , t, h, e, y, 
-, s, t, i, l, l,  , f, a, c, e,  , c, h, a, l, l, e, n, g, e, s,  , i, n,  , p, e, r, f, o, r, m, i, n, g,  , t, h, e,  , c, o, m, p, l, e, x, ,,  , m, u, l, t, i, -, h, o, p,  , r, e, a, s, o, n, i, n, g,  , n, e, e, d, e, d,  , t, o, 
-, a, c, c, u, r, a, t, e, l, y,  , a, s, s, e, s, s,  , e, l, i, g, i, b, i, l, i, t, y,  , c, r, i, t, e, r, i, a, .</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09906v1'>Tackling One Health Risks: How Large Language Models are leveraged for Risk Negotiation and Consensus-building</a></td><td>K, e, y,  , g, l, o, b, a, l,  , c, h, a, l, l, e, n, g, e, s,  , o, f,  , o, u, r,  , t, i, m, e, s,  , a, r, e,  , c, h, a, r, a, c, t, e, r, i, z, e, d,  , b, y,  , c, o, m, p, l, e, x, 
-, i, n, t, e, r, d, e, p, e, n, d, e, n, c, i, e, s,  , a, n, d,  , c, a, n,  , o, n, l, y,  , b, e,  , e, f, f, e, c, t, i, v, e, l, y,  , a, d, d, r, e, s, s, e, d,  , t, h, r, o, u, g, h,  , a, n,  , i, n, t, e, g, r, a, t, e, d, ,, 
-, p, a, r, t, i, c, i, p, a, t, o, r, y,  , e, f, f, o, r, t, .,  , C, o, n, v, e, n, t, i, o, n, a, l,  , r, i, s, k,  , a, n, a, l, y, s, i, s,  , f, r, a, m, e, w, o, r, k, s,  , o, f, t, e, n,  , r, e, d, u, c, e, 
-, c, o, m, p, l, e, x, i, t, y,  , t, o,  , e, n, s, u, r, e,  , m, a, n, a, g, e, a, b, i, l, i, t, y, ,,  , c, r, e, a, t, i, n, g,  , s, i, l, o, s,  , t, h, a, t,  , h, i, n, d, e, r,  , c, o, m, p, r, e, h, e, n, s, i, v, e, 
-, s, o, l, u, t, i, o, n, s, .,  , A,  , f, u, n, d, a, m, e, n, t, a, l,  , s, h, i, f, t,  , t, o, w, a, r, d, s,  , h, o, l, i, s, t, i, c,  , s, t, r, a, t, e, g, i, e, s,  , i, s,  , e, s, s, e, n, t, i, a, l,  , t, o, 
-, e, n, a, b, l, e,  , e, f, f, e, c, t, i, v, e,  , n, e, g, o, t, i, a, t, i, o, n, s,  , b, e, t, w, e, e, n,  , d, i, f, f, e, r, e, n, t,  , s, e, c, t, o, r, s,  , a, n, d,  , t, o,  , b, a, l, a, n, c, e,  , t, h, e, 
-, c, o, m, p, e, t, i, n, g,  , i, n, t, e, r, e, s, t, s,  , o, f,  , s, t, a, k, e, h, o, l, d, e, r, s, .,  , H, o, w, e, v, e, r, ,,  , a, c, h, i, e, v, i, n, g,  , t, h, i, s,  , b, a, l, a, n, c, e,  , i, s,  , o, f, t, e, n, 
-, h, i, n, d, e, r, e, d,  , b, y,  , l, i, m, i, t, e, d,  , t, i, m, e, ,,  , v, a, s, t,  , a, m, o, u, n, t, s,  , o, f,  , i, n, f, o, r, m, a, t, i, o, n, ,,  , a, n, d,  , t, h, e,  , c, o, m, p, l, e, x, i, t, y,  , o, f, 
-, i, n, t, e, g, r, a, t, i, n, g,  , d, i, v, e, r, s, e,  , p, e, r, s, p, e, c, t, i, v, e, s, .,  , T, h, i, s,  , s, t, u, d, y,  , p, r, e, s, e, n, t, s,  , a, n,  , A, I, -, a, s, s, i, s, t, e, d, 
-, n, e, g, o, t, i, a, t, i, o, n,  , f, r, a, m, e, w, o, r, k,  , t, h, a, t,  , i, n, c, o, r, p, o, r, a, t, e, s,  , l, a, r, g, e,  , l, a, n, g, u, a, g, e,  , m, o, d, e, l, s,  , (, L, L, M, s, ),  , a, n, d, 
-, A, I, -, b, a, s, e, d,  , a, u, t, o, n, o, m, o, u, s,  , a, g, e, n, t, s,  , i, n, t, o,  , a,  , n, e, g, o, t, i, a, t, i, o, n, -, c, e, n, t, e, r, e, d,  , r, i, s, k,  , a, n, a, l, y, s, i, s,  , w, o, r, k, f, l, o, w, ., 
-, T, h, e,  , f, r, a, m, e, w, o, r, k,  , e, n, a, b, l, e, s,  , s, t, a, k, e, h, o, l, d, e, r, s,  , t, o,  , s, i, m, u, l, a, t, e,  , n, e, g, o, t, i, a, t, i, o, n, s, ,,  , s, y, s, t, e, m, a, t, i, c, a, l, l, y, 
-, m, o, d, e, l,  , d, y, n, a, m, i, c, s, ,,  , a, n, t, i, c, i, p, a, t, e,  , c, o, m, p, r, o, m, i, s, e, s, ,,  , a, n, d,  , e, v, a, l, u, a, t, e,  , s, o, l, u, t, i, o, n,  , i, m, p, a, c, t, s, .,  , B, y, 
-, l, e, v, e, r, a, g, i, n, g,  , L, L, M, s, ',  , s, e, m, a, n, t, i, c,  , a, n, a, l, y, s, i, s,  , c, a, p, a, b, i, l, i, t, i, e, s,  , w, e,  , c, o, u, l, d,  , m, i, t, i, g, a, t, e,  , i, n, f, o, r, m, a, t, i, o, n, 
-, o, v, e, r, l, o, a, d,  , a, n, d,  , a, u, g, m, e, n, t,  , d, e, c, i, s, i, o, n, -, m, a, k, i, n, g,  , p, r, o, c, e, s, s,  , u, n, d, e, r,  , t, i, m, e,  , c, o, n, s, t, r, a, i, n, t, s, ., 
-, P, r, o, o, f, -, o, f, -, c, o, n, c, e, p, t,  , i, m, p, l, e, m, e, n, t, a, t, i, o, n, s,  , w, e, r, e,  , c, o, n, d, u, c, t, e, d,  , i, n,  , t, w, o,  , r, e, a, l, -, w, o, r, l, d,  , s, c, e, n, a, r, i, o, s, :, 
-, (, i, ),  , p, r, u, d, e, n, t,  , u, s, e,  , o, f,  , a,  , b, i, o, p, e, s, t, i, c, i, d, e, ,,  , a, n, d,  , (, i, i, ),  , t, a, r, g, e, t, e, d,  , w, i, l, d,  , a, n, i, m, a, l,  , p, o, p, u, l, a, t, i, o, n, 
-, c, o, n, t, r, o, l, .,  , O, u, r,  , w, o, r, k,  , d, e, m, o, n, s, t, r, a, t, e, s,  , t, h, e,  , p, o, t, e, n, t, i, a, l,  , o, f,  , A, I, -, a, s, s, i, s, t, e, d,  , n, e, g, o, t, i, a, t, i, o, n,  , t, o, 
-, a, d, d, r, e, s, s,  , t, h, e,  , c, u, r, r, e, n, t,  , l, a, c, k,  , o, f,  , t, o, o, l, s,  , f, o, r,  , c, r, o, s, s, -, s, e, c, t, o, r, a, l,  , e, n, g, a, g, e, m, e, n, t, .,  , I, m, p, o, r, t, a, n, t, l, y, ,, 
-, t, h, e,  , s, o, l, u, t, i, o, n, ', s,  , o, p, e, n,  , s, o, u, r, c, e, ,,  , w, e, b,  , b, a, s, e, d,  , d, e, s, i, g, n, ,,  , s, u, i, t, s,  , f, o, r,  , a, p, p, l, i, c, a, t, i, o, n,  , b, y,  , a, 
-, b, r, o, a, d, e, r,  , a, u, d, i, e, n, c, e,  , w, i, t, h,  , l, i, m, i, t, e, d,  , r, e, s, o, u, r, c, e, s,  , a, n, d,  , e, n, a, b, l, e, s,  , u, s, e, r, s,  , t, o,  , t, a, i, l, o, r,  , a, n, d,  , d, e, v, e, l, o, p, 
-, i, t,  , f, o, r,  , t, h, e, i, r,  , o, w, n,  , n, e, e, d, s, .</td></tr></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href='http://arxiv.org/abs/2509.10744v1'>Automated MCQA Benchmarking at Scale: Evaluating Reasoning Traces as Retrieval Sources for Domain Adaptation of Small Language Models</a></td><td>As scientific knowledge grows at an unprecedented pace, evaluation benchmarks
+must evolve to reflect new discoveries and ensure language models are tested on
+current, diverse literature. We propose a scalable, modular framework for
+generating multiple-choice question-answering (MCQA) benchmarks directly from
+large corpora of scientific papers. Our pipeline automates every stage of MCQA
+creation, including PDF parsing, semantic chunking, question generation, and
+model evaluation. As a case study, we generate more than 16,000 MCQs from
+22,000 open-access articles in radiation and cancer biology. We then evaluate a
+suite of small language models (1.1B-14B parameters) on these questions,
+comparing baseline accuracy with retrieval-augmented generation (RAG) from
+paper-derived semantic chunks and from reasoning traces distilled from GPT-4.1.
+We find that reasoning-trace retrieval consistently improves performance on
+both synthetic and expert-annotated benchmarks, enabling several small models
+to surpass GPT-4 on the 2023 Astro Radiation and Cancer Biology exam.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10693v1'>Learning Concave Bid Shading Strategies in Online Auctions via Measure-valued Proximal Optimization</a></td><td>This work proposes a bid shading strategy for first-price auctions as a
+measure-valued optimization problem. We consider a standard parametric form for
+bid shading and formulate the problem as convex optimization over the joint
+distribution of shading parameters. After each auction, the shading parameter
+distribution is adapted via a regularized Wasserstein-proximal update with a
+data-driven energy functional. This energy functional is conditional on the
+context, i.e., on publisher/user attributes such as domain, ad slot type,
+device, or location. The proposed algorithm encourages the bid distribution to
+place more weight on values with higher expected surplus, i.e., where the win
+probability and the value gap are both large. We show that the resulting
+measure-valued convex optimization problem admits a closed form solution. A
+numerical example illustrates the proposed method.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.13345v1'>Accuracy Paradox in Large Language Models: Regulating Hallucination Risks in Generative AI</a></td><td>As Large Language Models (LLMs) permeate everyday decision-making, their
+epistemic and societal risks demand urgent scrutiny. Hallucinations, the
+generation of fabricated, misleading, oversimplified or untrustworthy outputs,
+has emerged as imperative challenges. While regulatory, academic, and technical
+discourse position accuracy as the principal benchmark for mitigating such
+harms, this article contends that overreliance on accuracy misdiagnoses the
+problem and has counterproductive effect: the accuracy paradox. Drawing on
+interdisciplinary literatures, this article develops a taxonomy of
+hallucination types and shows the paradox along three intertwining dimensions:
+outputs, individuals and society. First, accuracy functions as a superficial
+proxy for reliability, incentivising the optimisation of rhetorical fluency and
+surface-level correctness over epistemic trustworthiness. This encourages
+passive user trust in outputs that appear accurate but epistemically untenable.
+Second, accuracy as a singular metric fails to detect harms that are not
+factually false but are nonetheless misleading, value-laden, or socially
+distorting, including consensus illusions, sycophantic alignment, and subtle
+manipulation. Third, regulatory overemphasis on accuracy obscures the wider
+societal consequences of hallucination, including social sorting, privacy
+violations, equity harms, epistemic convergence that marginalises dissent,
+reduces pluralism, and causes social deskilling. By examining the EU AI Act,
+GDPR, and DSA, the article argues that current regulations are not yet
+structurally equipped to address these epistemic, relational, and systemic
+harms and exacerbated by the overreliance on accuracy. By exposing such
+conceptual and practical challenges, this article calls for a fundamental shift
+towards pluralistic, context-aware, and manipulation-resilient approaches to AI
+trustworthy governance.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10656v1'>Self-Supervised Goal-Reaching Results in Multi-Agent Cooperation and Exploration</a></td><td>For groups of autonomous agents to achieve a particular goal, they must
+engage in coordination and long-horizon reasoning. However, designing reward
+functions to elicit such behavior is challenging. In this paper, we study how
+self-supervised goal-reaching techniques can be leveraged to enable agents to
+cooperate. The key idea is that, rather than have agents maximize some scalar
+reward, agents aim to maximize the likelihood of visiting a certain goal. This
+problem setting enables human users to specify tasks via a single goal state
+rather than implementing a complex reward function. While the feedback signal
+is quite sparse, we will demonstrate that self-supervised goal-reaching
+techniques enable agents to learn from such feedback. On MARL benchmarks, our
+proposed method outperforms alternative approaches that have access to the same
+sparse reward signal as our method. While our method has no explicit mechanism
+for exploration, we observe that self-supervised multi-agent goal-reaching
+leads to emergent cooperation and exploration in settings where alternative
+approaches never witness a single successful trial.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10653v1'>SCOR: A Framework for Responsible AI Innovation in Digital Ecosystems</a></td><td>AI-driven digital ecosystems span diverse stakeholders including technology
+firms, regulators, accelerators and civil society, yet often lack cohesive
+ethical governance. This paper proposes a four-pillar framework (SCOR) to embed
+accountability, fairness, and inclusivity across such multi-actor networks.
+Leveraging a design science approach, we develop a Shared Ethical Charter(S),
+structured Co-Design and Stakeholder Engagement protocols(C), a system of
+Continuous Oversight and Learning(O), and Adaptive Regulatory Alignment
+strategies(R). Each component includes practical guidance, from lite modules
+for resource-constrained start-ups to in-depth auditing systems for larger
+consortia. Through illustrative vignettes in healthcare, finance, and smart
+city contexts, we demonstrate how the framework can harmonize organizational
+culture, leadership incentives, and cross-jurisdictional compliance. Our
+mixed-method KPI design further ensures that quantitative targets are
+complemented by qualitative assessments of user trust and cultural change. By
+uniting ethical principles with scalable operational structures, this paper
+offers a replicable pathway toward responsible AI innovation in complex digital
+ecosystems.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10641v1'>Test-Time Warmup for Multimodal Large Language Models</a></td><td>Multimodal Large Language Models (MLLMs) hold great promise for advanced
+reasoning at the intersection of text and images, yet they have not fully
+realized this potential. MLLMs typically integrate an LLM, a vision encoder,
+and a connector that maps the vision encoder's embeddings into the LLM's text
+embedding space. Although each component is pretrained on massive datasets with
+billions of samples, the entire multimodal model is typically trained on only
+thousands (or a few million) samples, which can result in weak performance on
+complex reasoning tasks. To address these shortcomings, instead of relying on
+extensive labeled datasets for fine-tuning, we propose a Test-Time Warmup
+method that adapts the MLLM per test instance by leveraging data from weakly
+supervised auxiliary tasks. With our approach, we observe a relative
+performance improvement of 4.03% on MMMU, 5.28% on VQA-Rad, and 1.63% on GQA on
+the Llama-Vision-Instruct model. Our method demonstrates that 'warming up'
+before inference can enhance MLLMs' robustness across diverse reasoning tasks.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10401v1'>Abduct, Act, Predict: Scaffolding Causal Inference for Automated Failure Attribution in Multi-Agent Systems</a></td><td>Failure attribution in multi-agent systems -- pinpointing the exact step
+where a decisive error occurs -- is a critical yet unsolved challenge. Current
+methods treat this as a pattern recognition task over long conversation logs,
+leading to critically low step-level accuracy (below 17\%), which renders them
+impractical for debugging complex systems. Their core weakness is a fundamental
+inability to perform robust counterfactual reasoning: to determine if
+correcting a single action would have actually averted the task failure. To
+bridge this counterfactual inference gap, we introduce Abduct-Act-Predict (A2P)
+Scaffolding, a novel agent framework that transforms failure attribution from
+pattern recognition into a structured causal inference task. A2P explicitly
+guides a large language model through a formal three-step reasoning process
+within a single inference pass: (1) Abduction, to infer the hidden root causes
+behind an agent's actions; (2) Action, to define a minimal corrective
+intervention; and (3) Prediction, to simulate the subsequent trajectory and
+verify if the intervention resolves the failure. This structured approach
+leverages the holistic context of the entire conversation while imposing a
+rigorous causal logic on the model's analysis. Our extensive experiments on the
+Who\&When benchmark demonstrate its efficacy. On the Algorithm-Generated
+dataset, A2P achieves 47.46\% step-level accuracy, a 2.85$\times$ improvement
+over the 16.67\% of the baseline. On the more complex Hand-Crafted dataset, it
+achieves 29.31\% step accuracy, a 2.43$\times$ improvement over the baseline's
+12.07\%. By reframing the problem through a causal lens, A2P Scaffolding
+provides a robust, verifiable, and significantly more accurate solution for
+automated failure attribution.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10344v1'>GLAM: Geometry-Guided Local Alignment for Multi-View VLP in Mammography</a></td><td>Mammography screening is an essential tool for early detection of breast
+cancer. The speed and accuracy of mammography interpretation have the potential
+to be improved with deep learning methods. However, the development of a
+foundation visual language model (VLM) is hindered by limited data and domain
+differences between natural and medical images. Existing mammography VLMs,
+adapted from natural images, often ignore domain-specific characteristics, such
+as multi-view relationships in mammography. Unlike radiologists who analyze
+both views together to process ipsilateral correspondence, current methods
+treat them as independent images or do not properly model the multi-view
+correspondence learning, losing critical geometric context and resulting in
+suboptimal prediction. We propose GLAM: Global and Local Alignment for
+Multi-view mammography for VLM pretraining using geometry guidance. By
+leveraging the prior knowledge about the multi-view imaging process of
+mammograms, our model learns local cross-view alignments and fine-grained local
+features through joint global and local, visual-visual, and visual-language
+contrastive learning. Pretrained on EMBED [14], one of the largest open
+mammography datasets, our model outperforms baselines across multiple datasets
+under different settings.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10334v1'>I-Segmenter: Integer-Only Vision Transformer for Efficient Semantic Segmentation</a></td><td>Vision Transformers (ViTs) have recently achieved strong results in semantic
+segmentation, yet their deployment on resource-constrained devices remains
+limited due to their high memory footprint and computational cost. Quantization
+offers an effective strategy to improve efficiency, but ViT-based segmentation
+models are notoriously fragile under low precision, as quantization errors
+accumulate across deep encoder-decoder pipelines. We introduce I-Segmenter, the
+first fully integer-only ViT segmentation framework. Building on the Segmenter
+architecture, I-Segmenter systematically replaces floating-point operations
+with integer-only counterparts. To further stabilize both training and
+inference, we propose $\lambda$-ShiftGELU, a novel activation function that
+mitigates the limitations of uniform quantization in handling long-tailed
+activation distributions. In addition, we remove the L2 normalization layer and
+replace bilinear interpolation in the decoder with nearest neighbor upsampling,
+ensuring integer-only execution throughout the computational graph. Extensive
+experiments show that I-Segmenter achieves accuracy within a reasonable margin
+of its FP32 baseline (5.1 % on average), while reducing model size by up to
+3.8x and enabling up to 1.2x faster inference with optimized runtimes. Notably,
+even in one-shot PTQ with a single calibration image, I-Segmenter delivers
+competitive accuracy, underscoring its practicality for real-world deployment.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10594v1'>SME-TEAM: Leveraging Trust and Ethics for Secure and Responsible Use of AI and LLMs in SMEs</a></td><td>Artificial Intelligence (AI) and Large Language Models (LLMs) are reshaping
+today's business practices, however, their adoption within small and
+medium-sized enterprises (SMEs) raises significant technical, ethical and trust
+issues. This paper proposes a structured, multi-phased framework designed to
+embed trust and ethical principles throughout the AI lifecycle for their secure
+and responsible use in SMEs. Structured around four pillars, i.e., Data,
+Algorithms, Human oversight, and Model Architecture, the framework bridges
+theoretical ethical principles with operational practice, enhancing AI
+capabilities in diverse SME applications. Ultimately, this paper offers a
+structured roadmap for responsible AI adoption, framing trust and ethics as a
+catalyst for resilience, competitiveness, and sustainable innovation in SMEs.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10266v1'>SignClip: Leveraging Mouthing Cues for Sign Language Translation by Multimodal Contrastive Fusion</a></td><td>Sign language translation (SLT) aims to translate natural language from sign
+language videos, serving as a vital bridge for inclusive communication. While
+recent advances leverage powerful visual backbones and large language models,
+most approaches mainly focus on manual signals (hand gestures) and tend to
+overlook non-manual cues like mouthing. In fact, mouthing conveys essential
+linguistic information in sign languages and plays a crucial role in
+disambiguating visually similar signs. In this paper, we propose SignClip, a
+novel framework to improve the accuracy of sign language translation. It fuses
+manual and non-manual cues, specifically spatial gesture and lip movement
+features. Besides, SignClip introduces a hierarchical contrastive learning
+framework with multi-level alignment objectives, ensuring semantic consistency
+across sign-lip and visual-text modalities. Extensive experiments on two
+benchmark datasets, PHOENIX14T and How2Sign, demonstrate the superiority of our
+approach. For example, on PHOENIX14T, in the Gloss-free setting, SignClip
+surpasses the previous state-of-the-art model SpaMo, improving BLEU-4 from
+24.32 to 24.71, and ROUGE from 46.57 to 48.38.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10590v1'>Machine Unlearning for Responsible and Adaptive AI in Education</a></td><td>The concept of Machine Unlearning (MU) has gained popularity in various
+domains due to its ability to address several issues in Machine Learning (ML)
+models, particularly those related to privacy, security, bias mitigation, and
+adaptability. With these abilities, MU is evolving into a promising technology
+in upholding Responsible AI principles and optimizing ML models' performance.
+However, despite its promising potential, the concept has not received much
+attention in the education sector. In an attempt to encourage further uptake of
+this promising technology in the educational landscape, this paper demonstrates
+that MU indeed has great potential to serve as a practical mechanism for
+operationalizing Responsible AI principles as well as an essential tool for
+Adaptive AI within the educational application domain hence fostering trust in
+AI-driven educational systems. Through a structured review of 42 peer-reviewed
+sources, we identify four domains where MU holds particular promise namely
+privacy protection, resilience against adversarial inputs, mitigation of
+systemic bias, and adaptability in evolving learning contexts. We
+systematically explore these potentials and their interventions to core
+challenges in ML-based education systems. As a conceptual contribution, we
+present a reference Machine Unlearning application architecture for Responsible
+and Adaptive AI (MU-RAAI) in education context.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10162v1'>Online Robust Planning under Model Uncertainty: A Sample-Based Approach</a></td><td>Online planning in Markov Decision Processes (MDPs) enables agents to make
+sequential decisions by simulating future trajectories from the current state,
+making it well-suited for large-scale or dynamic environments. Sample-based
+methods such as Sparse Sampling and Monte Carlo Tree Search (MCTS) are widely
+adopted for their ability to approximate optimal actions using a generative
+model. However, in practical settings, the generative model is often learned
+from limited data, introducing approximation errors that can degrade
+performance or lead to unsafe behaviors. To address these challenges, Robust
+MDPs (RMDPs) offer a principled framework for planning under model uncertainty,
+yet existing approaches are typically computationally intensive and not suited
+for real-time use. In this work, we introduce Robust Sparse Sampling (RSS), the
+first online planning algorithm for RMDPs with finite-sample theoretical
+performance guarantees. Unlike Sparse Sampling, which estimates the nominal
+value function, RSS computes a robust value function by leveraging the
+efficiency and theoretical properties of Sample Average Approximation (SAA),
+enabling tractable robust policy computation in online settings. RSS is
+applicable to infinite or continuous state spaces, and its sample and
+computational complexities are independent of the state space size. We provide
+theoretical performance guarantees and empirically show that RSS outperforms
+standard Sparse Sampling in environments with uncertain dynamics.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10127v1'>Population-Aligned Persona Generation for LLM-based Social Simulation</a></td><td>Recent advances in large language models (LLMs) have enabled human-like
+social simulations at unprecedented scale and fidelity, offering new
+opportunities for computational social science. A key challenge, however, is
+the construction of persona sets that authentically represent the diversity and
+distribution of real-world populations. Most existing LLM-based social
+simulation studies focus primarily on designing agentic frameworks and
+simulation environments, often overlooking the complexities of persona
+generation and the potential biases introduced by unrepresentative persona
+sets. In this paper, we propose a systematic framework for synthesizing
+high-quality, population-aligned persona sets for LLM-driven social simulation.
+Our approach begins by leveraging LLMs to generate narrative personas from
+long-term social media data, followed by rigorous quality assessment to filter
+out low-fidelity profiles. We then apply importance sampling to achieve global
+alignment with reference psychometric distributions, such as the Big Five
+personality traits. To address the needs of specific simulation contexts, we
+further introduce a task-specific module that adapts the globally aligned
+persona set to targeted subpopulations. Extensive experiments demonstrate that
+our method significantly reduces population-level bias and enables accurate,
+flexible social simulation for a wide range of research and policy
+applications.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10104v1'>AI Harmonics: a human-centric and harms severity-adaptive AI risk assessment framework</a></td><td>The absolute dominance of Artificial Intelligence (AI) introduces
+unprecedented societal harms and risks. Existing AI risk assessment models
+focus on internal compliance, often neglecting diverse stakeholder perspectives
+and real-world consequences. We propose a paradigm shift to a human-centric,
+harm-severity adaptive approach grounded in empirical incident data. We present
+AI Harmonics, which includes a novel AI harm assessment metric (AIH) that
+leverages ordinal severity data to capture relative impact without requiring
+precise numerical estimates. AI Harmonics combines a robust, generalized
+methodology with a data-driven, stakeholder-aware framework for exploring and
+prioritizing AI harms. Experiments on annotated incident data confirm that
+political and physical harms exhibit the highest concentration and thus warrant
+urgent mitigation: political harms erode public trust, while physical harms
+pose serious, even life-threatening risks, underscoring the real-world
+relevance of our approach. Finally, we demonstrate that AI Harmonics
+consistently identifies uneven harm distributions, enabling policymakers and
+organizations to target their mitigation efforts effectively.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.12250v1'>OnlineHOI: Towards Online Human-Object Interaction Generation and Perception</a></td><td>The perception and generation of Human-Object Interaction (HOI) are crucial
+for fields such as robotics, AR/VR, and human behavior understanding. However,
+current approaches model this task in an offline setting, where information at
+each time step can be drawn from the entire interaction sequence. In contrast,
+in real-world scenarios, the information available at each time step comes only
+from the current moment and historical data, i.e., an online setting. We find
+that offline methods perform poorly in an online context. Based on this
+observation, we propose two new tasks: Online HOI Generation and Perception. To
+address this task, we introduce the OnlineHOI framework, a network architecture
+based on the Mamba framework that employs a memory mechanism. By leveraging
+Mamba's powerful modeling capabilities for streaming data and the Memory
+mechanism's efficient integration of historical information, we achieve
+state-of-the-art results on the Core4D and OAKINK2 online generation tasks, as
+well as the online HOI4D perception task.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10004v1'>Unsupervised Hallucination Detection by Inspecting Reasoning Processes</a></td><td>Unsupervised hallucination detection aims to identify hallucinated content
+generated by large language models (LLMs) without relying on labeled data.
+While unsupervised methods have gained popularity by eliminating
+labor-intensive human annotations, they frequently rely on proxy signals
+unrelated to factual correctness. This misalignment biases detection probes
+toward superficial or non-truth-related aspects, limiting generalizability
+across datasets and scenarios. To overcome these limitations, we propose IRIS,
+an unsupervised hallucination detection framework, leveraging internal
+representations intrinsic to factual correctness. IRIS prompts the LLM to
+carefully verify the truthfulness of a given statement, and obtain its
+contextualized embedding as informative features for training. Meanwhile, the
+uncertainty of each response is considered a soft pseudolabel for truthfulness.
+Experimental results demonstrate that IRIS consistently outperforms existing
+unsupervised methods. Our approach is fully unsupervised, computationally low
+cost, and works well even with few training data, making it suitable for
+real-time detection.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09970v1'>Securing LLM-Generated Embedded Firmware through AI Agent-Driven Validation and Patching</a></td><td>Large Language Models (LLMs) show promise in generating firmware for embedded
+systems, but often introduce security flaws and fail to meet real-time
+performance constraints. This paper proposes a three-phase methodology that
+combines LLM-based firmware generation with automated security validation and
+iterative refinement in a virtualized environment. Using structured prompts,
+models like GPT-4 generate firmware for networking and control tasks, deployed
+on FreeRTOS via QEMU. These implementations are tested using fuzzing, static
+analysis, and runtime monitoring to detect vulnerabilities such as buffer
+overflows (CWE-120), race conditions (CWE-362), and denial-of-service threats
+(CWE-400). Specialized AI agents for Threat Detection, Performance
+Optimization, and Compliance Verification collaborate to improve detection and
+remediation. Identified issues are categorized using CWE, then used to prompt
+targeted LLM-generated patches in an iterative loop. Experiments show a 92.4\%
+Vulnerability Remediation Rate (37.3\% improvement), 95.8\% Threat Model
+Compliance, and 0.87 Security Coverage Index. Real-time metrics include 8.6ms
+worst-case execution time and 195{\mu}s jitter. This process enhances firmware
+security and performance while contributing an open-source dataset for future
+research.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09969v1'>Large Language Models Meet Legal Artificial Intelligence: A Survey</a></td><td>Large Language Models (LLMs) have significantly advanced the development of
+Legal Artificial Intelligence (Legal AI) in recent years, enhancing the
+efficiency and accuracy of legal tasks. To advance research and applications of
+LLM-based approaches in legal domain, this paper provides a comprehensive
+review of 16 legal LLMs series and 47 LLM-based frameworks for legal tasks, and
+also gather 15 benchmarks and 29 datasets to evaluate different legal
+capabilities. Additionally, we analyse the challenges and discuss future
+directions for LLM-based approaches in the legal domain. We hope this paper
+provides a systematic introduction for beginners and encourages future research
+in this field. Resources are available at
+https://github.com/ZhitianHou/LLMs4LegalAI.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09955v1'>Adaptive Token Merging for Efficient Transformer Semantic Communication at the Edge</a></td><td>Large-scale transformers are central to modern semantic communication, yet
+their high computational and communication costs hinder deployment on
+resource-constrained edge devices. This paper introduces a training-free
+framework for adaptive token merging, a novel mechanism that compresses
+transformer representations at runtime by selectively merging semantically
+redundant tokens under per-layer similarity thresholds. Unlike prior
+fixed-ratio reduction, our approach couples merging directly to input
+redundancy, enabling data-dependent adaptation that balances efficiency and
+task relevance without retraining. We cast the discovery of merging strategies
+as a multi-objective optimization problem and leverage Bayesian optimization to
+obtain Pareto-optimal trade-offs between accuracy, inference cost, and
+communication cost. On ImageNet classification, we match the accuracy of the
+unmodified transformer with 30\% fewer floating-point operations per second and
+under 20\% of the original communication cost, while for visual question
+answering our method achieves performance competitive with the full LLaVA model
+at less than one-third of the compute and one-tenth of the bandwidth. Finally,
+we show that our adaptive merging is robust across varying channel conditions
+and provides inherent privacy benefits, substantially degrading the efficacy of
+model inversion attacks. Our framework provides a practical and versatile
+solution for deploying powerful transformer models in resource-limited edge
+intelligence scenarios.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09919v1'>A Markovian Framing of WaveFunctionCollapse for Procedurally Generating Aesthetically Complex Environments</a></td><td>Procedural content generation often requires satisfying both
+designer-specified objectives and adjacency constraints implicitly imposed by
+the underlying tile set. To address the challenges of jointly optimizing both
+constraints and objectives, we reformulate WaveFunctionCollapse (WFC) as a
+Markov Decision Process (MDP), enabling external optimization algorithms to
+focus exclusively on objective maximization while leveraging WFC's propagation
+mechanism to enforce constraint satisfaction. We empirically compare optimizing
+this MDP to traditional evolutionary approaches that jointly optimize global
+metrics and local tile placement. Across multiple domains with various
+difficulties, we find that joint optimization not only struggles as task
+complexity increases, but consistently underperforms relative to optimization
+over the WFC-MDP, underscoring the advantages of decoupling local constraint
+satisfaction from global objective optimization.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.10584v1'>Smart Trial: Evaluating the Use of Large Language Models for Recruiting Clinical Trial Participants via Social Media</a></td><td>Clinical trials (CT) are essential for advancing medical research and
+treatment, yet efficiently recruiting eligible participants -- each of whom
+must meet complex eligibility criteria -- remains a significant challenge.
+Traditional recruitment approaches, such as advertisements or electronic health
+record screening within hospitals, are often time-consuming and geographically
+constrained. This work addresses the recruitment challenge by leveraging the
+vast amount of health-related information individuals share on social media
+platforms. With the emergence of powerful large language models (LLMs) capable
+of sophisticated text understanding, we pose the central research question: Can
+LLM-driven tools facilitate CT recruitment by identifying potential
+participants through their engagement on social media? To investigate this
+question, we introduce TRIALQA, a novel dataset comprising two social media
+collections from the subreddits on colon cancer and prostate cancer. Using
+eligibility criteria from public real-world CTs, experienced annotators are
+hired to annotate TRIALQA to indicate (1) whether a social media user meets a
+given eligibility criterion and (2) the user's stated reasons for interest in
+participating in CT. We benchmark seven widely used LLMs on these two
+prediction tasks, employing six distinct training and inference strategies. Our
+extensive experiments reveal that, while LLMs show considerable promise, they
+still face challenges in performing the complex, multi-hop reasoning needed to
+accurately assess eligibility criteria.</td></tr><tr><td><a href='http://arxiv.org/abs/2509.09906v1'>Tackling One Health Risks: How Large Language Models are leveraged for Risk Negotiation and Consensus-building</a></td><td>Key global challenges of our times are characterized by complex
+interdependencies and can only be effectively addressed through an integrated,
+participatory effort. Conventional risk analysis frameworks often reduce
+complexity to ensure manageability, creating silos that hinder comprehensive
+solutions. A fundamental shift towards holistic strategies is essential to
+enable effective negotiations between different sectors and to balance the
+competing interests of stakeholders. However, achieving this balance is often
+hindered by limited time, vast amounts of information, and the complexity of
+integrating diverse perspectives. This study presents an AI-assisted
+negotiation framework that incorporates large language models (LLMs) and
+AI-based autonomous agents into a negotiation-centered risk analysis workflow.
+The framework enables stakeholders to simulate negotiations, systematically
+model dynamics, anticipate compromises, and evaluate solution impacts. By
+leveraging LLMs' semantic analysis capabilities we could mitigate information
+overload and augment decision-making process under time constraints.
+Proof-of-concept implementations were conducted in two real-world scenarios:
+(i) prudent use of a biopesticide, and (ii) targeted wild animal population
+control. Our work demonstrates the potential of AI-assisted negotiation to
+address the current lack of tools for cross-sectoral engagement. Importantly,
+the solution's open source, web based design, suits for application by a
+broader audience with limited resources and enables users to tailor and develop
+it for their own needs.</td></tr></tbody></table>
