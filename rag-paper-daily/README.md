@@ -1,5 +1,8 @@
 # 📚 RAG Paper Daily
 
+### 📅 2025-09-19
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody></tbody></table>
+
 ### 📅 2025-09-18
 <table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.15210v1">Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a></td><td><details><summary>展开</summary>Realistic sound simulation plays a critical role in many applications. A key
 element in sound simulation is the room impulse response (RIR), which
