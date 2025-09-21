@@ -1,5 +1,8 @@
 # 📚 RAG Paper Daily
 
+### 📅 2025-09-20
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody></tbody></table>
+
 ### 📅 2025-09-19
 <table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody></tbody></table>
 
