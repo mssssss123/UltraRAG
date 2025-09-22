@@ -204,3 +204,142 @@ generation to improve SQL generation accuracy. We benchmarked multiple model
 configurations within DeKeySQL RAG pipeline. Experimental results demonstrate
 that fine-tuning with DeKeyNLU significantly improves SQL generation accuracy
 on both BIRD (62.31% to 69.10%) and Spider (84.2% to 88.7%) dev datasets.</details></td><td><details><summary>展开</summary>这篇论文提出DeKeyNLU数据集和DeKeySQL管道，通过改进任务分解和关键词提取增强RAG在自然语言转SQL（NL2SQL）中的性能，实验显示其显著提升了BIRD和Spider数据集上的SQL生成准确率。</details></td></tr></tbody></table>
+
+### 📅 2025-09-17
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.14436v1">When Content is Goliath and Algorithm is David: The Style and Semantic Effects of Generative Search Engine</a></td><td><details><summary>展开</summary>Generative search engines (GEs) leverage large language models (LLMs) to
+deliver AI-generated summaries with website citations, establishing novel
+traffic acquisition channels while fundamentally altering the search engine
+optimization landscape. To investigate the distinctive characteristics of GEs,
+we collect data through interactions with Google's generative and conventional
+search platforms, compiling a dataset of approximately ten thousand websites
+across both channels. Our empirical analysis reveals that GEs exhibit
+preferences for citing content characterized by significantly higher
+predictability for underlying LLMs and greater semantic similarity among
+selected sources. Through controlled experiments utilizing retrieval augmented
+generation (RAG) APIs, we demonstrate that these citation preferences emerge
+from intrinsic LLM tendencies to favor content aligned with their generative
+expression patterns. Motivated by applications of LLMs to optimize website
+content, we conduct additional experimentation to explore how LLM-based content
+polishing by website proprietors alters AI summaries, finding that such
+polishing paradoxically enhances information diversity within AI summaries.
+Finally, to assess the user-end impact of LLM-induced information increases, we
+design a generative search engine and recruit Prolific participants to conduct
+a randomized controlled experiment involving an information-seeking and writing
+task. We find that higher-educated users exhibit minimal changes in their final
+outputs' information diversity but demonstrate significantly reduced task
+completion time when original sites undergo polishing. Conversely,
+lower-educated users primarily benefit through enhanced information density in
+their task outputs while maintaining similar completion times across
+experimental groups.</details></td><td><details><summary>展开</summary>该论文研究生成式搜索引擎（GEs）的特点及其引用偏好，发现GEs倾向于引用与底层LLM生成表达模式一致的内容，并通过RAG API实验验证了这一偏好源自LLM的内在倾向。此外，论文还探讨了网站所有者通过LLM优化内容对AI摘要的影响，并评估了不同教育背景用户在使用GEs时的表现差异。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.14435v1">Causal-Counterfactual RAG: The Integration of Causal-Counterfactual Reasoning into RAG</a></td><td><details><summary>展开</summary>Large language models (LLMs) have transformed natural language processing
+(NLP), enabling diverse applications by integrating large-scale pre-trained
+knowledge. However, their static knowledge limits dynamic reasoning over
+external information, especially in knowledge-intensive domains.
+Retrieval-Augmented Generation (RAG) addresses this challenge by combining
+retrieval mechanisms with generative modeling to improve contextual
+understanding. Traditional RAG systems suffer from disrupted contextual
+integrity due to text chunking and over-reliance on semantic similarity for
+retrieval, often resulting in shallow and less accurate responses. We propose
+Causal-Counterfactual RAG, a novel framework that integrates explicit causal
+graphs representing cause-effect relationships into the retrieval process and
+incorporates counterfactual reasoning grounded on the causal structure. Unlike
+conventional methods, our framework evaluates not only direct causal evidence
+but also the counterfactuality of associated causes, combining results from
+both to generate more robust, accurate, and interpretable answers. By
+leveraging causal pathways and associated hypothetical scenarios,
+Causal-Counterfactual RAG preserves contextual coherence, reduces
+hallucination, and enhances reasoning fidelity.</details></td><td><details><summary>展开</summary>这篇论文提出了一种名为Causal-Counterfactual RAG的新框架，通过将显式因果图整合到检索过程中并引入基于因果结构的反事实推理，解决了传统RAG系统因文本分块和过度依赖语义相似性而导致的上下文不连贯和回答浅显的问题，从而生成更准确、鲁棒且可解释的答案。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.13978v1">LLM Agents for Interactive Workflow Provenance: Reference Architecture and Evaluation Methodology</a></td><td><details><summary>展开</summary>Modern scientific discovery increasingly relies on workflows that process
+data across the Edge, Cloud, and High Performance Computing (HPC) continuum.
+Comprehensive and in-depth analyses of these data are critical for hypothesis
+validation, anomaly detection, reproducibility, and impactful findings.
+Although workflow provenance techniques support such analyses, at large scale,
+the provenance data become complex and difficult to analyze. Existing systems
+depend on custom scripts, structured queries, or static dashboards, limiting
+data interaction. In this work, we introduce an evaluation methodology,
+reference architecture, and open-source implementation that leverages
+interactive Large Language Model (LLM) agents for runtime data analysis. Our
+approach uses a lightweight, metadata-driven design that translates natural
+language into structured provenance queries. Evaluations across LLaMA, GPT,
+Gemini, and Claude, covering diverse query classes and a real-world chemistry
+workflow, show that modular design, prompt tuning, and Retrieval-Augmented
+Generation (RAG) enable accurate and insightful LLM agent responses beyond
+recorded provenance.</details></td><td><details><summary>展开</summary>该论文提出了一种利用交互式大语言模型（LLM）代理进行运行时数据分析的方法，采用轻量级、以元数据驱动的设计将自然语言转换为结构化的溯源查询，并通过对比实验（涵盖多种LLM模型及实际化学工作流）证明，其模块化设计、提示调优及检索增强生成（RAG）技术能显著提升LLM代理响应的准确性和洞察力，超越了传统记录的溯源数据能力。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.13930v1">Linguistic Nepotism: Trading-off Quality for Language Preference in Multilingual RAG</a></td><td><details><summary>展开</summary>Multilingual Retrieval-Augmented Generation (mRAG) systems enable language
+models to answer knowledge-intensive queries with citation-supported responses
+across languages. While such systems have been proposed, an open questions is
+whether the mixture of different document languages impacts generation and
+citation in unintended ways. To investigate, we introduce a controlled
+methodology using model internals to measure language preference while holding
+other factors such as document relevance constant. Across eight languages and
+six open-weight models, we find that models preferentially cite English sources
+when queries are in English, with this bias amplified for lower-resource
+languages and for documents positioned mid-context. Crucially, we find that
+models sometimes trade-off document relevance for language preference,
+indicating that citation choices are not always driven by informativeness
+alone. Our findings shed light on how language models leverage multilingual
+context and influence citation behavior.</details></td><td><details><summary>展开</summary>本文研究多语言检索增强生成（mRAG）系统中语言偏好对生成和引用的影响，发现模型倾向于引用英文来源，且可能牺牲文档相关性而选择语言偏好，揭示了语言模型在多语言语境中的引用行为特点。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.13772v1">Who Taught the Lie? Responsibility Attribution for Poisoned Knowledge in Retrieval-Augmented Generation</a></td><td><details><summary>展开</summary>Retrieval-Augmented Generation (RAG) integrates external knowledge into large
+language models to improve response quality. However, recent work has shown
+that RAG systems are highly vulnerable to poisoning attacks, where malicious
+texts are inserted into the knowledge database to influence model outputs.
+While several defenses have been proposed, they are often circumvented by more
+adaptive or sophisticated attacks.
+  This paper presents RAGOrigin, a black-box responsibility attribution
+framework designed to identify which texts in the knowledge database are
+responsible for misleading or incorrect generations. Our method constructs a
+focused attribution scope tailored to each misgeneration event and assigns a
+responsibility score to each candidate text by evaluating its retrieval
+ranking, semantic relevance, and influence on the generated response. The
+system then isolates poisoned texts using an unsupervised clustering method. We
+evaluate RAGOrigin across seven datasets and fifteen poisoning attacks,
+including newly developed adaptive poisoning strategies and multi-attacker
+scenarios. Our approach outperforms existing baselines in identifying poisoned
+content and remains robust under dynamic and noisy conditions. These results
+suggest that RAGOrigin provides a practical and effective solution for tracing
+the origins of corrupted knowledge in RAG systems.</details></td><td><details><summary>展开</summary>本文提出RAGOrigin框架，针对RAG系统中知识库中毒攻击导致错误生成的问题，通过黑盒责任溯源方法分析检索排序、语义相关性和生成响应影响，识别和隔离恶意文本，并在多数据集和攻击场景下验证其优于现有基线。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.13702v1">DSCC-HS: A Dynamic Self-Reinforcing Framework for Hallucination Suppression in Large Language Models</a></td><td><details><summary>展开</summary>Large Language Model (LLM) hallucination is a significant barrier to their
+reliable deployment. Current methods like Retrieval-Augmented Generation (RAG)
+are often reactive. We introduce **Dynamic Self-reinforcing Calibration for
+Hallucination Suppression (DSCC-HS)**, a novel, proactive framework that
+intervenes during autoregressive decoding. Inspired by dual-process cognitive
+theory, DSCC-HS uses a compact proxy model, trained in adversarial roles as a
+Factual Alignment Proxy (FAP) and a Hallucination Detection Proxy (HDP). During
+inference, these proxies dynamically steer a large target model by injecting a
+real-time steering vector, which is the difference between FAP and HDP logits,
+at each decoding step. This plug-and-play approach requires no modification to
+the target model. Our experiments on TruthfulQA and BioGEN show DSCC-HS
+achieves state-of-the-art performance. On TruthfulQA, it reached a 99.2%
+Factual Consistency Rate (FCR). On the long-form BioGEN benchmark, it attained
+the highest FActScore of 46.50. These results validate DSCC-HS as a principled
+and efficient solution for enhancing LLM factuality.</details></td><td><details><summary>展开</summary>该论文提出了一种名为DSCC-HS的新型主动式框架，通过动态自我强化校准来抑制LLM的幻觉问题，采用双代理模型（FAP和HDP）在自回归解码过程中实时修正目标模型的输出。尽管属于RAG相关研究（提到RAG作为现有方法对比），但其核心创新点在于不依赖外部检索的主动干预机制，实验证明在TruthfulQA和BioGEN基准中显著提升了生成内容的真实性。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.13683v1">Improving Context Fidelity via Native Retrieval-Augmented Reasoning</a></td><td><details><summary>展开</summary>Large language models (LLMs) often struggle with context fidelity, producing
+inconsistent answers when responding to questions based on provided
+information. Existing approaches either rely on expensive supervised
+fine-tuning to generate evidence post-answer or train models to perform web
+searches without necessarily improving utilization of the given context. We
+propose CARE, a novel native retrieval-augmented reasoning framework that
+teaches LLMs to explicitly integrate in-context evidence within their reasoning
+process with the model's own retrieval capabilities. Our method requires
+limited labeled evidence data while significantly enhancing both retrieval
+accuracy and answer generation performance through strategically retrieved
+in-context tokens in the reasoning chain. Extensive experiments on multiple
+real-world and counterfactual QA benchmarks demonstrate that our approach
+substantially outperforms supervised fine-tuning, traditional
+retrieval-augmented generation methods, and external retrieval solutions. This
+work represents a fundamental advancement in making LLMs more accurate,
+reliable, and efficient for knowledge-intensive tasks.</details></td><td><details><summary>展开</summary>这篇论文提出了CARE框架，通过让大语言模型（LLMs）在推理过程中显式整合上下文证据并结合自身检索能力，改进了传统检索增强生成（RAG）方法，显著提升了检索准确性和答案生成性能。实验表明，该方法在多项QA基准测试中优于监督微调和外部检索方案，增强了LLMs在知识密集型任务中的准确性和可靠性。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.13626v1">Mind the Gap: Aligning Knowledge Bases with User Needs to Enhance Mental Health Retrieval</a></td><td><details><summary>展开</summary>Access to reliable mental health information is vital for early help-seeking,
+yet expanding knowledge bases is resource-intensive and often misaligned with
+user needs. This results in poor performance of retrieval systems when
+presented concerns are not covered or expressed in informal or contextualized
+language. We present an AI-based gap-informed framework for corpus augmentation
+that authentically identifies underrepresented topics (gaps) by overlaying
+naturalistic user data such as forum posts in order to prioritize expansions
+based on coverage and usefulness. In a case study, we compare Directed
+(gap-informed augmentations) with Non-Directed augmentation (random additions),
+evaluating the relevance and usefulness of retrieved information across four
+retrieval-augmented generation (RAG) pipelines. Directed augmentation achieved
+near-optimal performance with modest expansions--requiring only a 42% increase
+for Query Transformation, 74% for Reranking and Hierarchical, and 318% for
+Baseline--to reach ~95% of the performance of an exhaustive reference corpus.
+In contrast, Non-Directed augmentation required substantially larger and thus
+practically infeasible expansions to achieve comparable performance (232%,
+318%, 403%, and 763%, respectively). These results show that strategically
+targeted corpus growth can reduce content creation demands while sustaining
+high retrieval and provision quality, offering a scalable approach for building
+trusted health information repositories and supporting generative AI
+applications in high-stakes domains.</details></td><td><details><summary>展开</summary>该论文提出了一种基于AI的框架，通过识别未充分覆盖的主题（缺口）来增强语料库，并评估了其在四种检索增强生成（RAG）管道中的效果，结果显示定向增强能以较小的扩展达到接近最优的检索性能。</details></td></tr></tbody></table>
