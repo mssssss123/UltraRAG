@@ -7,6 +7,7 @@ from openai import AsyncOpenAI, AuthenticationError
 from openai._utils._logs import httpx_logger
 from tqdm import tqdm
 import base64
+import mimetypes
 
 from fastmcp.exceptions import ToolError
 from ultrarag.server import UltraRAG_MCP_Server
@@ -170,11 +171,12 @@ class Generation:
                 delay = base_delay
                 for attempt in range(retries):
                     try:
-                        resp = await client.chat.completions.create(
-                            model=model_name,
-                            messages=msg,
-                            **sampling_params,   
-                        )
+                        async with sem:  
+                            resp = await client.chat.completions.create(
+                                model=model_name,
+                                messages=msg,
+                                **sampling_params,
+                            )
                         return idx, (resp.choices[0].message.content or "")
                     except AuthenticationError as e:
                         raise ToolError(
@@ -206,13 +208,13 @@ class Generation:
                 )
                 for i, m in enumerate(messages_list)
             ]
-            ret = [None] * len(prompts)
+            ret = [None] * len(messages_list)
 
             for coro in tqdm(
                 asyncio.as_completed(tasks), total=len(tasks), desc="Generating: "
             ):
                 idx, ans = await coro
-                nvidi[idx] = ans
+                ret[idx] = ans
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
          
@@ -238,7 +240,7 @@ class Generation:
 
     async def multimodal_generate(
         self,
-        multimodal_path: List[Any],
+        multimodal_path: List[List[str]],
         prompt_ls: List[Union[str, Dict[str, Any]]],
         system_prompt: str = "",
     ) -> Dict[str, List[str]]:
@@ -262,10 +264,11 @@ class Generation:
                     app.logger.warning(f"[Image skip] idx={idx}, path={p}, err={e}")
                 print(f"multimodal_path item: {mp}")
             content.append({"type": "text", "text": p})
+
             msgs.append({"role": "user", "content": content})
             messages_list.append(msgs)
+        
         ret = await self._generate(messages_list)
-         
         return {"ans_ls": ret}
 
     def vllm_shutdown(self) -> None:
