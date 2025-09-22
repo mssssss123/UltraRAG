@@ -343,3 +343,81 @@ targeted corpus growth can reduce content creation demands while sustaining
 high retrieval and provision quality, offering a scalable approach for building
 trusted health information repositories and supporting generative AI
 applications in high-stakes domains.</details></td><td><details><summary>展开</summary>该论文提出了一种基于AI的框架，通过识别未充分覆盖的主题（缺口）来增强语料库，并评估了其在四种检索增强生成（RAG）管道中的效果，结果显示定向增强能以较小的扩展达到接近最优的检索性能。</details></td></tr></tbody></table>
+
+### 📅 2025-09-16
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.12765v1">InfoGain-RAG: Boosting Retrieval-Augmented Generation via Document Information Gain-based Reranking and Filtering</a></td><td><details><summary>展开</summary>Retrieval-Augmented Generation (RAG) has emerged as a promising approach to
+address key limitations of Large Language Models (LLMs), such as hallucination,
+outdated knowledge, and lacking reference. However, current RAG frameworks
+often struggle with identifying whether retrieved documents meaningfully
+contribute to answer generation. This shortcoming makes it difficult to filter
+out irrelevant or even misleading content, which notably impacts the final
+performance. In this paper, we propose Document Information Gain (DIG), a novel
+metric designed to quantify the contribution of retrieved documents to correct
+answer generation. DIG measures a document's value by computing the difference
+of LLM's generation confidence with and without the document augmented.
+Further, we introduce InfoGain-RAG, a framework that leverages DIG scores to
+train a specialized reranker, which prioritizes each retrieved document from
+exact distinguishing and accurate sorting perspectives. This approach can
+effectively filter out irrelevant documents and select the most valuable ones
+for better answer generation. Extensive experiments across various models and
+benchmarks demonstrate that InfoGain-RAG can significantly outperform existing
+approaches, on both single and multiple retrievers paradigm. Specifically on
+NaturalQA, it achieves the improvements of 17.9%, 4.5%, 12.5% in exact match
+accuracy against naive RAG, self-reflective RAG and modern ranking-based RAG
+respectively, and even an average of 15.3% increment on advanced proprietary
+model GPT-4o across all datasets. These results demonstrate the feasibility of
+InfoGain-RAG as it can offer a reliable solution for RAG in multiple
+applications.</details></td><td><details><summary>展开</summary>该论文提出了一种名为“文档信息增益（DIG）”的新指标，用于量化检索到的文档对生成正确答案的贡献，并进一步介绍了基于DIG的InfoGain-RAG框架，该框架通过训练专门的重新排序模型来优先选择最有价值的文档，显著提升了RAG的性能。实验结果表明，该方法在多个基准测试中优于现有方法。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.12743v1">Zero-shot Graph Reasoning via Retrieval Augmented Framework with LLMs</a></td><td><details><summary>展开</summary>We propose a new, training-free method, Graph Reasoning via Retrieval
+Augmented Framework (GRRAF), that harnesses retrieval-augmented generation
+(RAG) alongside the code-generation capabilities of large language models
+(LLMs) to address a wide range of graph reasoning tasks. In GRRAF, the target
+graph is stored in a graph database, and the LLM is prompted to generate
+executable code queries that retrieve the necessary information. This approach
+circumvents the limitations of existing methods that require extensive
+finetuning or depend on predefined algorithms, and it incorporates an error
+feedback loop with a time-out mechanism to ensure both correctness and
+efficiency. Experimental evaluations on the GraphInstruct dataset reveal that
+GRRAF achieves 100% accuracy on most graph reasoning tasks, including cycle
+detection, bipartite graph checks, shortest path computation, and maximum flow,
+while maintaining consistent token costs regardless of graph sizes. Imperfect
+but still very high performance is observed on subgraph matching. Notably,
+GRRAF scales effectively to large graphs with up to 10,000 nodes.</details></td><td><details><summary>展开</summary>该论文介绍了一种名为GRRAF的新型免训练方法，利用检索增强生成（RAG）技术和大型语言模型（LLMs）的代码生成能力来解决广泛的图推理任务。GRRAF通过将目标图存储在图形数据库中，并提示LLM生成可执行的代码查询来检索必要信息，从而避免了现有方法需要大量微调或依赖预定义算法的限制。实验结果显示，GRRAF在大多数图推理任务上实现了100%的准确率，并能有效扩展到包含多达10,000个节点的大型图中。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.12653v1">Beyond Artificial Misalignment: Detecting and Grounding Semantic-Coordinated Multimodal Manipulations</a></td><td><details><summary>展开</summary>The detection and grounding of manipulated content in multimodal data has
+emerged as a critical challenge in media forensics. While existing benchmarks
+demonstrate technical progress, they suffer from misalignment artifacts that
+poorly reflect real-world manipulation patterns: practical attacks typically
+maintain semantic consistency across modalities, whereas current datasets
+artificially disrupt cross-modal alignment, creating easily detectable
+anomalies. To bridge this gap, we pioneer the detection of
+semantically-coordinated manipulations where visual edits are systematically
+paired with semantically consistent textual descriptions. Our approach begins
+with constructing the first Semantic-Aligned Multimodal Manipulation (SAMM)
+dataset, generated through a two-stage pipeline: 1) applying state-of-the-art
+image manipulations, followed by 2) generation of contextually-plausible
+textual narratives that reinforce the visual deception. Building on this
+foundation, we propose a Retrieval-Augmented Manipulation Detection and
+Grounding (RamDG) framework. RamDG commences by harnessing external knowledge
+repositories to retrieve contextual evidence, which serves as the auxiliary
+texts and encoded together with the inputs through our image forgery grounding
+and deep manipulation detection modules to trace all manipulations. Extensive
+experiments demonstrate our framework significantly outperforms existing
+methods, achieving 2.06\% higher detection accuracy on SAMM compared to
+state-of-the-art approaches. The dataset and code are publicly available at
+https://github.com/shen8424/SAMM-RamDG-CAP.</details></td><td><details><summary>展开</summary>这篇论文提出了一种名为RAMDG的检索增强多模态篡改检测与定位框架，通过构建语义对齐的多模态篡改数据集（SAMM）并利用外部知识库检索辅助证据，显著提升了篡改检测的准确率。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.12589v1">Redefining CX with Agentic AI: Minerva CQ Case Study</a></td><td><details><summary>展开</summary>Despite advances in AI for contact centers, customer experience (CX)
+continues to suffer from high average handling time (AHT), low first-call
+resolution, and poor customer satisfaction (CSAT). A key driver is the
+cognitive load on agents, who must navigate fragmented systems, troubleshoot
+manually, and frequently place customers on hold. Existing AI-powered
+agent-assist tools are often reactive driven by static rules, simple prompting,
+or retrieval-augmented generation (RAG) without deeper contextual reasoning. We
+introduce Agentic AI goal-driven, autonomous, tool-using systems that
+proactively support agents in real time. Unlike conventional approaches,
+Agentic AI identifies customer intent, triggers modular workflows, maintains
+evolving context, and adapts dynamically to conversation state. This paper
+presents a case study of Minerva CQ, a real-time Agent Assist product deployed
+in voice-based customer support. Minerva CQ integrates real-time transcription,
+intent and sentiment detection, entity recognition, contextual retrieval,
+dynamic customer profiling, and partial conversational summaries enabling
+proactive workflows and continuous context-building. Deployed in live
+production, Minerva CQ acts as an AI co-pilot, delivering measurable
+improvements in agent efficiency and customer experience across multiple
+deployments.</details></td><td><details><summary>展开</summary>这篇论文介绍了Agentic AI在客服中心的应用，特别是Minerva CQ产品，它结合了实时转录、意图识别和检索增强生成（RAG）等技术，通过动态上下文和工作流提升客服代理效率及客户体验。尽管RAG是现有技术之一，但文章重点强调其超越传统RAG的自主性和实时性能力。</details></td></tr></tbody></table>
