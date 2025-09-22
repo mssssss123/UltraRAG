@@ -577,3 +577,47 @@ demonstrate that HiCBench effectively evaluates the impact of different
 chunking methods across the entire RAG pipeline. Moreover, HiChunk achieves
 better chunking quality within reasonable time consumption, thereby enhancing
 the overall performance of RAG systems.</details></td><td><details><summary>展开</summary>这篇论文聚焦于RAG系统中文档分块（chunking）评估的不足，提出带有手动标注多级分块点的评估基准HiCBench和证据密集型QA数据集，同时设计了基于微调LLMs的多级文档结构化框架HiChunk及Auto-Merge检索算法，实验证明其能有效提升分块质量和RAG整体性能。</details></td></tr></tbody></table>
+
+### 📅 2025-09-14
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.11376v1">Intelligent Reservoir Decision Support: An Integrated Framework Combining Large Language Models, Advanced Prompt Engineering, and Multimodal Data Fusion for Real-Time Petroleum Operations</a></td><td><details><summary>展开</summary>The petroleum industry faces unprecedented challenges in reservoir
+management, requiring rapid integration of complex multimodal datasets for
+real-time decision support. This study presents a novel integrated framework
+combining state-of-the-art large language models (GPT-4o, Claude 4 Sonnet,
+Gemini 2.5 Pro) with advanced prompt engineering techniques and multimodal data
+fusion for comprehensive reservoir analysis. The framework implements
+domain-specific retrieval-augmented generation (RAG) with over 50,000 petroleum
+engineering documents, chain-of-thought reasoning, and few-shot learning for
+rapid field adaptation. Multimodal integration processes seismic
+interpretations, well logs, and production data through specialized AI models
+with vision transformers. Field validation across 15 diverse reservoir
+environments demonstrates exceptional performance: 94.2% reservoir
+characterization accuracy, 87.6% production forecasting precision, and 91.4%
+well placement optimization success rate. The system achieves sub-second
+response times while maintaining 96.2% safety reliability with no high-risk
+incidents during evaluation. Economic analysis reveals 62-78% cost reductions
+(mean 72%) relative to traditional methods with 8-month payback period.
+Few-shot learning reduces field adaptation time by 72%, while automated prompt
+optimization achieves 89% improvement in reasoning quality. The framework
+processed real-time data streams with 96.2% anomaly detection accuracy and
+reduced environmental incidents by 45%. We provide detailed experimental
+protocols, baseline comparisons, ablation studies, and statistical significance
+testing to ensure reproducibility. This research demonstrates practical
+integration of cutting-edge AI technologies with petroleum domain expertise for
+enhanced operational efficiency, safety, and economic performance.</details></td><td><details><summary>展开</summary>该论文提出了一种结合大型语言模型、多模态数据融合和领域特定检索增强生成（RAG）技术的集成框架，用于石油行业的储层管理。通过整合超过50,000份石油工程文档的RAG系统、多模态数据处理（如地震解释、测井数据和生产数据）以及链式推理和少样本学习，显著提高了储层表征、产量预测和井位优化的准确性和效率，同时降低了成本和安全风险。实证结果表明该系统在多个性能指标上表现卓越。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.14265v1">Evolution of Kernels: Automated RISC-V Kernel Optimization with Large Language Models</a></td><td><details><summary>展开</summary>Automated kernel design is critical for overcoming software ecosystem
+barriers in emerging hardware platforms like RISC-V. While large language
+models (LLMs) have shown promise for automated kernel optimization,
+demonstrating success in CUDA domains with comprehensive technical documents
+and mature codebases, their effectiveness remains unproven for reference-scarce
+domains like RISC-V. We present Evolution of Kernels (EoK), a novel LLM-based
+evolutionary program search framework that automates kernel design for domains
+with limited reference material. EoK mitigates reference scarcity by mining and
+formalizing reusable optimization ideas (general design principles + actionable
+thoughts) from established kernel libraries' development histories; it then
+guides parallel LLM explorations using these ideas, enriched via
+Retrieval-Augmented Generation (RAG) with RISC-V-specific context, prioritizing
+historically effective techniques. Empirically, EoK achieves a median 1.27x
+speedup, surpassing human experts on all 80 evaluated kernel design tasks and
+improving upon prior LLM-based automated kernel design methods by 20%. These
+results underscore the viability of incorporating human experience into
+emerging domains and highlight the immense potential of LLM-based automated
+kernel optimization.</details></td><td><details><summary>展开</summary>该论文提出了一个名为EoK（Evolution of Kernels）的基于大语言模型的进化程序搜索框架，用于在RISC-V等参考资源稀缺的领域自动化内核设计。EoK通过从已有内核库的开发历史中挖掘和形式化可重用的优化思想，并利用检索增强生成（RAG）结合RISC-V特定上下文来指导并行的大语言模型探索，从而在80项内核设计任务中实现了中位数1.27倍的加速，超越人类专家和先前基于大语言模型的方法。</details></td></tr></tbody></table>
