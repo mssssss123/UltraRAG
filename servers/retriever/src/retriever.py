@@ -65,6 +65,20 @@ class Retriever:
     
     def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
         return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
+    
+    def _normalize_gpu_ids(self, gpu_ids) -> None:
+        if gpu_ids is None:
+            return
+        if isinstance(gpu_ids, int):
+            val = str(gpu_ids)
+        elif isinstance(gpu_ids, (list, tuple)):
+            val = ",".join(str(x) for x in gpu_ids if str(x).strip())
+        elif isinstance(gpu_ids, str):
+            val = ",".join([p.strip() for p in gpu_ids.split(",") if p.strip()])
+        else:
+            raise TypeError("gpu_ids must be str | int | list | tuple, e.g. '0', 0 or [0,1]")
+        os.environ["CUDA_VISIBLE_DEVICES"] = val
+        self.gpu_ids = gpu_ids
 
     def retriever_init(
         self,
@@ -90,21 +104,11 @@ class Retriever:
         self.backend = backend.lower()
         self.batch_size = int(batch_size)
 
-        self.gpu_ids = gpu_ids
-        if gpu_ids is not None:
-            if isinstance(gpu_ids, int):
-                gpu_ids = str(gpu_ids)
-            elif isinstance(gpu_ids, (list, tuple)):
-                gpu_ids = ",".join(str(x) for x in gpu_ids if str(x).strip() != "")
-            elif isinstance(gpu_ids, str):
-                gpu_ids = ",".join([p.strip() for p in gpu_ids.split(",") if p.strip() != ""])
-            else:
-                raise TypeError("gpu_ids must be str | int | list[int|str] | tuple, e.g. '0', 0 or [0,1]")
-            os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
-        
-
         self.backend_configs = backend_configs or {}
         cfg = self.backend_configs.get(self.backend, {}) or {}
+
+        if gpu_ids is not None:
+            self._normalize_gpu_ids(gpu_ids)
         
         if self.backend == "infinity":
             try:
@@ -127,10 +131,7 @@ class Retriever:
                 raise ImportError(err_msg)
             
             self.st_encode_params = cfg.get("sentencetransformers_encode", {}) or {}
-            st_params = self._drop_keys(
-                sampling_params,
-                banned=["sentencetransformers_encode"]
-            )
+            st_params = self._drop_keys(cfg, banned=["sentencetransformers_encode"])
             
             self.model = SentenceTransformer(model_name_or_path=model_name_or_path, **st_params)
         
@@ -211,7 +212,8 @@ class Retriever:
         overwrite: bool = False,
         is_multimodal: bool = False,
     ):
-
+        embeddings = None
+        
         if embedding_path is not None:
             if not embedding_path.endswith(".npy"):
                 err_msg = f"Embedding save path must end with .npy, now the path is {embedding_path}"
@@ -326,6 +328,8 @@ class Retriever:
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
 
+        if embeddings is None:
+            raise RuntimeError("Embedding generation failed: embeddings is None")
         embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
         app.logger.info("embedding success")
@@ -375,7 +379,7 @@ class Retriever:
 
         if not os.path.exists(embedding_path):
             app.logger.error(f"Embedding file not found: {embedding_path}")
-            NotFoundError(f"Embedding file not found: {embedding_path}")
+            raise NotFoundError(f"Embedding file not found: {embedding_path}")
 
         if index_path is not None:
             if not index_path.endswith(".index"):
