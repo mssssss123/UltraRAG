@@ -118,7 +118,7 @@ class Generation:
             self.sampling_params = SamplingParams(**vllm_sampling_params)
 
         elif self.backend == "openai":
-            self.model_name = cfg.get("openai_model")
+            self.model_name = cfg.get("model_name")
             api_base = cfg.get("api_base")
             api_key = cfg.get("api_key") or os.environ.get("LLM_API_KEY")
             self.client = AsyncOpenAI(base_url=api_base, api_key=api_key)
