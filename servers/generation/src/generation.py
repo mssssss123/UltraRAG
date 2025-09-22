@@ -29,6 +29,10 @@ class Generation:
             self.generate,
             output="prompt_ls,system_prompt->ans_ls",
         )
+        mcp_inst.tool(
+            self.vllm_shutdown,
+            output="->None",
+        )
     
     def _normalize_gpu_ids(self, gpu_ids) -> None:
         if gpu_ids is None:
@@ -209,6 +213,44 @@ class Generation:
 
          
         return {"ans_ls": ret}
+    def vllm_shutdown(self) -> None:
+
+        try:
+            if getattr(self, "backend", None) != "vllm":
+                app.logger.info("[vllm_shutdown] backend is not 'vllm'; skip.")
+                return
+
+            if getattr(self, "model", None) is None:
+                app.logger.info("[vllm_shutdown] model is None; nothing to do.")
+                return
+
+
+            fn = getattr(self.model, "shutdown", None)
+            if callable(fn):
+                app.logger.info("[vllm_shutdown] calling self.model.shutdown()")
+                fn()
+            else:
+                for path in ("llm_engine", "engine"):
+                    eng = getattr(self.model, path, None)
+                    if eng:
+                        for attr in ("shutdown", "close", "terminate"):
+                            f = getattr(eng, attr, None)
+                            if callable(f):
+                                app.logger.info(f"[vllm_shutdown] calling self.model.{path}.{attr}()")
+                                f()
+                                break
+
+            self.model = None
+            import gc, torch
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+                torch.cuda.synchronize()
+
+            app.logger.info("[vllm_shutdown] complete")
+
+        except Exception as e:
+            app.logger.warning(f"[vllm_shutdown] cleanup warning: {e}")
     
 
 

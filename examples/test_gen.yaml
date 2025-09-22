@@ -14,3 +14,4 @@ pipeline:
 - generation.generate
 - custom.output_extract_from_boxed
 - evaluation.evaluate
+- generation.vllm_shutdown
