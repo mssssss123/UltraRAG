@@ -421,3 +421,159 @@ proactive workflows and continuous context-building. Deployed in live
 production, Minerva CQ acts as an AI co-pilot, delivering measurable
 improvements in agent efficiency and customer experience across multiple
 deployments.</details></td><td><details><summary>展开</summary>这篇论文介绍了Agentic AI在客服中心的应用，特别是Minerva CQ产品，它结合了实时转录、意图识别和检索增强生成（RAG）等技术，通过动态上下文和工作流提升客服代理效率及客户体验。尽管RAG是现有技术之一，但文章重点强调其超越传统RAG的自主性和实时性能力。</details></td></tr></tbody></table>
+
+### 📅 2025-09-15
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.12382v1">LLM-as-a-Judge: Rapid Evaluation of Legal Document Recommendation for Retrieval-Augmented Generation</a></td><td><details><summary>展开</summary>The evaluation bottleneck in recommendation systems has become particularly
+acute with the rise of Generative AI, where traditional metrics fall short of
+capturing nuanced quality dimensions that matter in specialized domains like
+legal research. Can we trust Large Language Models to serve as reliable judges
+of their own kind? This paper investigates LLM-as-a-Judge as a principled
+approach to evaluating Retrieval-Augmented Generation systems in legal
+contexts, where the stakes of recommendation quality are exceptionally high.
+  We tackle two fundamental questions that determine practical viability: which
+inter-rater reliability metrics best capture the alignment between LLM and
+human assessments, and how do we conduct statistically sound comparisons
+between competing systems? Through systematic experimentation, we discover that
+traditional agreement metrics like Krippendorff's alpha can be misleading in
+the skewed distributions typical of AI system evaluations. Instead, Gwet's AC2
+and rank correlation coefficients emerge as more robust indicators for judge
+selection, while the Wilcoxon Signed-Rank Test with Benjamini-Hochberg
+corrections provides the statistical rigor needed for reliable system
+comparisons.
+  Our findings suggest a path toward scalable, cost-effective evaluation that
+maintains the precision demanded by legal applications, transforming what was
+once a human-intensive bottleneck into an automated, yet statistically
+principled, evaluation framework.</details></td><td><details><summary>展开</summary>这篇论文探讨了在推荐系统中利用大语言模型（LLM）作为评估工具的可行性，特别是在法律检索与生成（RAG）领域。研究重点关注如何选择可信的指标（如Gwet's AC2和秩相关系数）和统计方法（如Wilcoxon Signed-Rank Test）来对齐LLM与人类评估结果，从而为高风险的RAG系统提供可扩展且精准的自动化评估框架。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.12168v1">RAGs to Riches: RAG-like Few-shot Learning for Large Language Model Role-playing</a></td><td><details><summary>展开</summary>Role-playing Large language models (LLMs) are increasingly deployed in
+high-stakes domains such as healthcare, education, and governance, where
+failures can directly impact user trust and well-being. A cost effective
+paradigm for LLM role-playing is few-shot learning, but existing approaches
+often cause models to break character in unexpected and potentially harmful
+ways, especially when interacting with hostile users. Inspired by
+Retrieval-Augmented Generation (RAG), we reformulate LLM role-playing into a
+text retrieval problem and propose a new prompting framework called
+RAGs-to-Riches, which leverages curated reference demonstrations to condition
+LLM responses. We evaluate our framework with LLM-as-a-judge preference voting
+and introduce two novel token-level ROUGE metrics: Intersection over Output
+(IOO) to quantity how much an LLM improvises and Intersection over References
+(IOR) to measure few-shot demonstrations utilization rate during the evaluation
+tasks. When simulating interactions with a hostile user, our prompting strategy
+incorporates in its responses during inference an average of 35% more tokens
+from the reference demonstrations. As a result, across 453 role-playing
+interactions, our models are consistently judged as being more authentic, and
+remain in-character more often than zero-shot and in-context Learning (ICL)
+methods. Our method presents a scalable strategy for building robust,
+human-aligned LLM role-playing frameworks.</details></td><td><details><summary>展开</summary>本文提出了一种名为RAGs-to-Riches的提示框架，将大语言模型（LLM）的角色扮演重新构建为文本检索问题，通过利用精心策划的参考演示来调节LLM的响应。该框架在对抗性用户互动中表现更优，能更有效地利用参考演示，提高角色的真实性和一致性。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.12086v1">SAQ: Pushing the Limits of Vector Quantization through Code Adjustment and Dimension Segmentation</a></td><td><details><summary>展开</summary>Approximate Nearest Neighbor Search (ANNS) plays a critical role in
+applications such as search engines, recommender systems, and RAG for LLMs.
+Vector quantization (VQ), a crucial technique for ANNS, is commonly used to
+reduce space overhead and accelerate distance computations. However, despite
+significant research advances, state-of-the-art VQ methods still face
+challenges in balancing encoding efficiency and quantization accuracy. To
+address these limitations, we propose a novel VQ method called SAQ. To improve
+accuracy, SAQ employs a new dimension segmentation technique to strategically
+partition PCA-projected vectors into segments along their dimensions. By
+prioritizing leading dimension segments with larger magnitudes, SAQ allocates
+more bits to high-impact segments, optimizing the use of the available space
+quota. An efficient dynamic programming algorithm is developed to optimize
+dimension segmentation and bit allocation, ensuring minimal quantization error.
+To speed up vector encoding, SAQ devises a code adjustment technique to first
+quantize each dimension independently and then progressively refine quantized
+vectors using a coordinate-descent-like approach to avoid exhaustive
+enumeration. Extensive experiments demonstrate SAQ's superiority over classical
+methods (e.g., PQ, PCA) and recent state-of-the-art approaches (e.g., LVQ,
+Extended RabitQ). SAQ achieves up to 80% reduction in quantization error and
+accelerates encoding speed by over 80x compared to Extended RabitQ.</details></td><td><details><summary>展开</summary>这篇论文提出了一种名为SAQ的新型向量量化方法，旨在改进近似最近邻搜索（ANNS）中的编码效率和量化精度平衡问题，通过维度分割和动态编程优化技术显著降低量化误差并加速编码速度，直接关联并优化了RAG技术中检索环节的核心性能。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.12042v1">FinGEAR: Financial Mapping-Guided Enhanced Answer Retrieval</a></td><td><details><summary>展开</summary>Financial disclosures such as 10-K filings present challenging retrieval
+problems due to their length, regulatory section hierarchy, and domain-specific
+language, which standard retrieval-augmented generation (RAG) models underuse.
+We introduce FinGEAR (Financial Mapping-Guided Enhanced Answer Retrieval), a
+retrieval framework tailored to financial documents. FinGEAR combines a finance
+lexicon for Item-level guidance (FLAM), dual hierarchical indices for
+within-Item search (Summary Tree and Question Tree), and a two-stage
+cross-encoder reranker. This design aligns retrieval with disclosure structure
+and terminology, enabling fine-grained, query-aware context selection.
+Evaluated on full 10-Ks with queries aligned to the FinQA dataset, FinGEAR
+delivers consistent gains in precision, recall, F1, and relevancy, improving F1
+by up to 56.7% over flat RAG, 12.5% over graph-based RAGs, and 217.6% over
+prior tree-based systems, while also increasing downstream answer accuracy with
+a fixed reader. By jointly modeling section hierarchy and domain lexicon
+signals, FinGEAR improves retrieval fidelity and provides a practical
+foundation for high-stakes financial analysis.</details></td><td><details><summary>展开</summary>这篇论文介绍了FinGEAR，一个针对金融文档（如10-K文件）优化的检索框架，通过结合金融词汇表（FLAM）、双重层次索引和两阶段交叉编码器重排器，改进了传统RAG模型在金融领域的检索效果，显著提升了精确率、召回率和下游答案准确性。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.11947v1">A GPU-Accelerated RAG-Based Telegram Assistant for Supporting Parallel Processing Students</a></td><td><details><summary>展开</summary>This project addresses a critical pedagogical need: offering students
+continuous, on-demand academic assistance beyond conventional reception hours.
+I present a domain-specific Retrieval-Augmented Generation (RAG) system powered
+by a quantized Mistral-7B Instruct model and deployed as a Telegram bot. The
+assistant enhances learning by delivering real-time, personalized responses
+aligned with the "Introduction to Parallel Processing" course materials. GPU
+acceleration significantly improves inference latency, enabling practical
+deployment on consumer hardware. This approach demonstrates how consumer GPUs
+can enable affordable, private, and effective AI tutoring for HPC education.</details></td><td><details><summary>展开</summary>本文介绍了一个面向教育领域的RAG系统，基于量化版Mistral-7B Instruct模型构建，通过Telegram机器人提供并行处理课程的实时个性化学习支持，利用GPU加速实现消费级硬件部署，展示了低成本高效的AI辅导方案。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.11937v1">MMORE: Massive Multimodal Open RAG & Extraction</a></td><td><details><summary>展开</summary>We introduce MMORE, an open-source pipeline for Massive Multimodal Open
+RetrievalAugmented Generation and Extraction, designed to ingest, transform,
+and retrieve knowledge from heterogeneous document formats at scale. MMORE
+supports more than fifteen file types, including text, tables, images, emails,
+audio, and video, and processes them into a unified format to enable downstream
+applications for LLMs. The architecture offers modular, distributed processing,
+enabling scalable parallelization across CPUs and GPUs. On processing
+benchmarks, MMORE demonstrates a 3.8-fold speedup over single-node baselines
+and 40% higher accuracy than Docling on scanned PDFs. The pipeline integrates
+hybrid dense-sparse retrieval and supports both interactive APIs and batch RAG
+endpoints. Evaluated on PubMedQA, MMORE-augmented medical LLMs improve
+biomedical QA accuracy with increasing retrieval depth. MMORE provides a
+robust, extensible foundation for deploying task-agnostic RAG systems on
+diverse, real-world multimodal data. The codebase is available at
+https://github.com/swiss-ai/mmore.</details></td><td><details><summary>展开</summary>MMORE是一个开源的多模态检索增强生成（RAG）系统，支持处理多种文档格式（如文本、表格、图像等），并将其统一处理以供大语言模型使用。该系统通过分布式处理提高了效率和准确性，集成了混合检索方法，并在医疗QA任务中展现了性能提升。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.11687v1">A Dynamic Knowledge Update-Driven Model with Large Language Models for Fake News Detection</a></td><td><details><summary>展开</summary>As the Internet and social media evolve rapidly, distinguishing credible news
+from a vast amount of complex information poses a significant challenge. Due to
+the suddenness and instability of news events, the authenticity labels of news
+can potentially shift as events develop, making it crucial for fake news
+detection to obtain the latest event updates. Existing methods employ
+retrieval-augmented generation to fill knowledge gaps, but they suffer from
+issues such as insufficient credibility of retrieved content and interference
+from noisy information. We propose a dynamic knowledge update-driven model for
+fake news detection (DYNAMO), which leverages knowledge graphs to achieve
+continuous updating of new knowledge and integrates with large language models
+to fulfill dual functions: news authenticity detection and verification of new
+knowledge correctness, solving the two key problems of ensuring the
+authenticity of new knowledge and deeply mining news semantics. Specifically,
+we first construct a news-domain-specific knowledge graph. Then, we use Monte
+Carlo Tree Search to decompose complex news and verify them step by step.
+Finally, we extract and update new knowledge from verified real news texts and
+reasoning paths. Experimental results demonstrate that DYNAMO achieves the best
+performance on two real-world datasets.</details></td><td><details><summary>展开</summary>这篇论文提出了一种名为DYNAMO的假新闻检测模型，通过结合知识图谱的动态更新与大语言模型，解决了现有检索增强生成方法中检索内容可信度不足和噪声干扰的问题。模型利用新闻领域特定的知识图谱，通过蒙特卡洛树搜索逐步分解和验证复杂新闻，同时从已验证的真实新闻中提取和更新知识，实现了新闻真实性检测与新知识正确性验证的双重功能。实验结果表明DYNAMO在两个真实数据集上表现最佳。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.11645v1">Adapting and Evaluating Multimodal Large Language Models for Adolescent Idiopathic Scoliosis Self-Management: A Divide and Conquer Framework</a></td><td><details><summary>展开</summary>This study presents the first comprehensive evaluation of Multimodal Large
+Language Models (MLLMs) for Adolescent Idiopathic Scoliosis (AIS)
+self-management. We constructed a database of approximately 3,000
+anteroposterior X-rays with diagnostic texts and evaluated five MLLMs through a
+`Divide and Conquer' framework consisting of a visual question-answering task,
+a domain knowledge assessment task, and a patient education counseling
+assessment task. Our investigation revealed limitations of MLLMs' ability in
+interpreting complex spinal radiographs and comprehending AIS care knowledge.
+To address these, we pioneered enhancing MLLMs with spinal keypoint prompting
+and compiled an AIS knowledge base for retrieval augmented generation (RAG),
+respectively. Results showed varying effectiveness of visual prompting across
+different architectures, while RAG substantially improved models' performances
+on the knowledge assessment task. Our findings indicate current MLLMs are far
+from capable in realizing personalized assistant in AIS care. The greatest
+challenge lies in their abilities to obtain accurate detections of spinal
+deformity locations (best accuracy: 0.55) and directions (best accuracy: 0.13).</details></td><td><details><summary>展开</summary>该研究评估了多模态大语言模型(MLLMs)在青少年特发性脊柱侧凸(AIS)自我管理中的应用，发现模型在解读复杂脊柱X光片和理解AIS护理知识方面存在局限，并通过引入脊柱关键点提示和构建AIS知识库结合检索增强生成(RAG)技术来提升模型性能，结果显示RAG显著改善了模型的知识评估任务表现。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.14267v1">Graph-Enhanced Retrieval-Augmented Question Answering for E-Commerce Customer Support</a></td><td><details><summary>展开</summary>E-Commerce customer support requires quick and accurate answers grounded in
+product data and past support cases. This paper develops a novel
+retrieval-augmented generation (RAG) framework that uses knowledge graphs (KGs)
+to improve the relevance of the answer and the factual grounding. We examine
+recent advances in knowledge-augmented RAG and chatbots based on large language
+models (LLM) in customer support, including Microsoft's GraphRAG and hybrid
+retrieval architectures. We then propose a new answer synthesis algorithm that
+combines structured subgraphs from a domain-specific KG with text documents
+retrieved from support archives, producing more coherent and grounded
+responses. We detail the architecture and knowledge flow of our system, provide
+comprehensive experimental evaluation, and justify its design in real-time
+support settings. Our implementation demonstrates 23\% improvement in factual
+accuracy and 89\% user satisfaction in e-Commerce QA scenarios.</details></td><td><details><summary>展开</summary>该论文提出了一种新颖的基于知识图谱（KG）的RAG框架，旨在提升电子商务客服回答的相关性和事实依据，通过结合结构化子图和文本检索生成更连贯的响应，实验表明其实现23%的事实准确性提升和89%的用户满意度。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.11552v2">HiChunk: Evaluating and Enhancing Retrieval-Augmented Generation with Hierarchical Chunking</a></td><td><details><summary>展开</summary>Retrieval-Augmented Generation (RAG) enhances the response capabilities of
+language models by integrating external knowledge sources. However, document
+chunking as an important part of RAG system often lacks effective evaluation
+tools. This paper first analyzes why existing RAG evaluation benchmarks are
+inadequate for assessing document chunking quality, specifically due to
+evidence sparsity. Based on this conclusion, we propose HiCBench, which
+includes manually annotated multi-level document chunking points, synthesized
+evidence-dense quetion answer(QA) pairs, and their corresponding evidence
+sources. Additionally, we introduce the HiChunk framework, a multi-level
+document structuring framework based on fine-tuned LLMs, combined with the
+Auto-Merge retrieval algorithm to improve retrieval quality. Experiments
+demonstrate that HiCBench effectively evaluates the impact of different
+chunking methods across the entire RAG pipeline. Moreover, HiChunk achieves
+better chunking quality within reasonable time consumption, thereby enhancing
+the overall performance of RAG systems.</details></td><td><details><summary>展开</summary>这篇论文聚焦于RAG系统中文档分块（chunking）评估的不足，提出带有手动标注多级分块点的评估基准HiCBench和证据密集型QA数据集，同时设计了基于微调LLMs的多级文档结构化框架HiChunk及Auto-Merge检索算法，实验证明其能有效提升分块质量和RAG整体性能。</details></td></tr></tbody></table>
