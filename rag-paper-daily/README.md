@@ -7,7 +7,476 @@
 <table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody></tbody></table>
 
 ### 📅 2025-09-19
-<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody></tbody></table>
+<table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.16198v1">RPG: A Repository Planning Graph for Unified and Scalable Codebase Generation</a></td><td><details><summary>展开</summary>Large language models excel at function- and file-level code generation, yet
+generating complete repositories from scratch remains a fundamental challenge.
+This process demands coherent and reliable planning across proposal- and
+implementation-level stages, while natural language, due to its ambiguity and
+verbosity, is ill-suited for faithfully representing complex software
+structures. To address this, we introduce the Repository Planning Graph (RPG),
+a persistent representation that unifies proposal- and implementation-level
+planning by encoding capabilities, file structures, data flows, and functions
+in one graph. RPG replaces ambiguous natural language with an explicit
+blueprint, enabling long-horizon planning and scalable repository generation.
+Building on RPG, we develop ZeroRepo, a graph-driven framework for repository
+generation from scratch. It operates in three stages: proposal-level planning
+and implementation-level refinement to construct the graph, followed by
+graph-guided code generation with test validation. To evaluate this setting, we
+construct RepoCraft, a benchmark of six real-world projects with 1,052 tasks.
+On RepoCraft, ZeroRepo produces repositories averaging nearly 36K LOC, roughly
+3.9$\times$ the strongest baseline (Claude Code) and about 64$\times$ other
+baselines. It attains 81.5% functional coverage and a 69.7% pass rate,
+exceeding Claude Code by 27.3 and 35.8 percentage points, respectively. Further
+analysis shows that RPG models complex dependencies, enables progressively more
+sophisticated planning through near-linear scaling, and enhances LLM
+understanding of repositories, thereby accelerating agent localization.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16179v1">Fast OTSU Thresholding Using Bisection Method</a></td><td><details><summary>展开</summary>The Otsu thresholding algorithm represents a fundamental technique in image
+segmentation, yet its computational efficiency is severely limited by
+exhaustive search requirements across all possible threshold values. This work
+presents an optimized implementation that leverages the bisection method to
+exploit the unimodal characteristics of the between-class variance function.
+Our approach reduces the computational complexity from O(L) to O(log L)
+evaluations while preserving segmentation accuracy. Experimental validation on
+48 standard test images demonstrates a 91.63% reduction in variance
+computations and 97.21% reduction in algorithmic iterations compared to
+conventional exhaustive search. The bisection method achieves exact threshold
+matches in 66.67% of test cases, with 95.83% exhibiting deviations within 5
+gray levels. The algorithm maintains universal convergence within theoretical
+logarithmic bounds while providing deterministic performance guarantees
+suitable for real-time applications. This optimization addresses critical
+computational bottlenecks in large-scale image processing systems without
+compromising the theoretical foundations or segmentation quality of the
+original Otsu method.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16126v1">Network-Based Detection of Autism Spectrum Disorder Using Sustainable and Non-invasive Salivary Biomarkers</a></td><td><details><summary>展开</summary>Autism Spectrum Disorder (ASD) lacks reliable biological markers, delaying
+early diagnosis. Using 159 salivary samples analyzed by ATR-FTIR spectroscopy,
+we developed GANet, a genetic algorithm-based network optimization framework
+leveraging PageRank and Degree for importance-based feature characterization.
+GANet systematically optimizes network structure to extract meaningful patterns
+from high-dimensional spectral data. It achieved superior performance compared
+to linear discriminant analysis, support vector machines, and deep learning
+models, reaching 0.78 accuracy, 0.61 sensitivity, 0.90 specificity, and a 0.74
+harmonic mean. These results demonstrate GANet's potential as a robust,
+bio-inspired, non-invasive tool for precise ASD detection and broader
+spectral-based health applications.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16117v1">DiffusionNFT: Online Diffusion Reinforcement with Forward Process</a></td><td><details><summary>展开</summary>Online reinforcement learning (RL) has been central to post-training language
+models, but its extension to diffusion models remains challenging due to
+intractable likelihoods. Recent works discretize the reverse sampling process
+to enable GRPO-style training, yet they inherit fundamental drawbacks,
+including solver restrictions, forward-reverse inconsistency, and complicated
+integration with classifier-free guidance (CFG). We introduce Diffusion
+Negative-aware FineTuning (DiffusionNFT), a new online RL paradigm that
+optimizes diffusion models directly on the forward process via flow matching.
+DiffusionNFT contrasts positive and negative generations to define an implicit
+policy improvement direction, naturally incorporating reinforcement signals
+into the supervised learning objective. This formulation enables training with
+arbitrary black-box solvers, eliminates the need for likelihood estimation, and
+requires only clean images rather than sampling trajectories for policy
+optimization. DiffusionNFT is up to $25\times$ more efficient than FlowGRPO in
+head-to-head comparisons, while being CFG-free. For instance, DiffusionNFT
+improves the GenEval score from 0.24 to 0.98 within 1k steps, while FlowGRPO
+achieves 0.95 with over 5k steps and additional CFG employment. By leveraging
+multiple reward models, DiffusionNFT significantly boosts the performance of
+SD3.5-Medium in every benchmark tested.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16093v1">Beyond Pointwise Scores: Decomposed Criteria-Based Evaluation of LLM Responses</a></td><td><details><summary>展开</summary>Evaluating long-form answers in high-stakes domains such as law or medicine
+remains a fundamental challenge. Standard metrics like BLEU and ROUGE fail to
+capture semantic correctness, and current LLM-based evaluators often reduce
+nuanced aspects of answer quality into a single undifferentiated score. We
+introduce DeCE, a decomposed LLM evaluation framework that separates precision
+(factual accuracy and relevance) and recall (coverage of required concepts),
+using instance-specific criteria automatically extracted from gold answer
+requirements. DeCE is model-agnostic and domain-general, requiring no
+predefined taxonomies or handcrafted rubrics. We instantiate DeCE to evaluate
+different LLMs on a real-world legal QA task involving multi-jurisdictional
+reasoning and citation grounding. DeCE achieves substantially stronger
+correlation with expert judgments ($r=0.78$), compared to traditional metrics
+($r=0.12$), pointwise LLM scoring ($r=0.35$), and modern multidimensional
+evaluators ($r=0.48$). It also reveals interpretable trade-offs: generalist
+models favor recall, while specialized models favor precision. Importantly,
+only 11.95% of LLM-generated criteria required expert revision, underscoring
+DeCE's scalability. DeCE offers an interpretable and actionable LLM evaluation
+framework in expert domains.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16068v1">Communications to Circulations: 3D Wind Field Retrieval and Real-Time Prediction Using 5G GNSS Signals and Deep Learning</a></td><td><details><summary>展开</summary>Accurate atmospheric wind field information is crucial for various
+applications, including weather forecasting, aviation safety, and disaster risk
+reduction. However, obtaining high spatiotemporal resolution wind data remains
+challenging due to limitations in traditional in-situ observations and remote
+sensing techniques, as well as the computational expense and biases of
+numerical weather prediction (NWP) models. This paper introduces G-WindCast, a
+novel deep learning framework that leverages signal strength variations from 5G
+Global Navigation Satellite System (GNSS) signals to retrieve and forecast
+three-dimensional (3D) atmospheric wind fields. The framework utilizes Forward
+Neural Networks (FNN) and Transformer networks to capture complex, nonlinear,
+and spatiotemporal relationships between GNSS-derived features and wind
+dynamics. Our preliminary results demonstrate promising accuracy in both wind
+retrieval and short-term wind forecasting (up to 30 minutes lead time), with
+skill scores comparable to high-resolution NWP outputs in certain scenarios.
+The model exhibits robustness across different forecast horizons and pressure
+levels, and its predictions for wind speed and direction show superior
+agreement with observations compared to concurrent ERA5 reanalysis data.
+Furthermore, we show that the system can maintain excellent performance for
+localized forecasting even with a significantly reduced number of GNSS stations
+(e.g., around 100), highlighting its cost-effectiveness and scalability. This
+interdisciplinary approach underscores the transformative potential of
+exploiting non-traditional data sources and deep learning for advanced
+environmental monitoring and real-time atmospheric applications.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16028v1">Think, Verbalize, then Speak: Bridging Complex Thoughts and Comprehensible Speech</a></td><td><details><summary>展开</summary>Spoken dialogue systems increasingly employ large language models (LLMs) to
+leverage their advanced reasoning capabilities. However, direct application of
+LLMs in spoken communication often yield suboptimal results due to mismatches
+between optimal textual and verbal delivery. While existing approaches adapt
+LLMs to produce speech-friendly outputs, their impact on reasoning performance
+remains underexplored. In this work, we propose Think-Verbalize-Speak, a
+framework that decouples reasoning from spoken delivery to preserve the full
+reasoning capacity of LLMs. Central to our method is verbalizing, an
+intermediate step that translates thoughts into natural, speech-ready text. We
+also introduce ReVerT, a latency-efficient verbalizer based on incremental and
+asynchronous summarization. Experiments across multiple benchmarks show that
+our method enhances speech naturalness and conciseness with minimal impact on
+reasoning. The project page with the dataset and the source code is available
+at https://yhytoto12.github.io/TVS-ReVerT</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15964v1">MoE-CE: Enhancing Generalization for Deep Learning based Channel Estimation via a Mixture-of-Experts Framework</a></td><td><details><summary>展开</summary>Reliable channel estimation (CE) is fundamental for robust communication in
+dynamic wireless environments, where models must generalize across varying
+conditions such as signal-to-noise ratios (SNRs), the number of resource blocks
+(RBs), and channel profiles. Traditional deep learning (DL)-based methods
+struggle to generalize effectively across such diverse settings, particularly
+under multitask and zero-shot scenarios. In this work, we propose MoE-CE, a
+flexible mixture-of-experts (MoE) framework designed to enhance the
+generalization capability of DL-based CE methods. MoE-CE provides an
+appropriate inductive bias by leveraging multiple expert subnetworks, each
+specialized in distinct channel characteristics, and a learned router that
+dynamically selects the most relevant experts per input. This architecture
+enhances model capacity and adaptability without a proportional rise in
+computational cost while being agnostic to the choice of the backbone model and
+the learning algorithm. Through extensive experiments on synthetic datasets
+generated under diverse SNRs, RB numbers, and channel profiles, including
+multitask and zero-shot evaluations, we demonstrate that MoE-CE consistently
+outperforms conventional DL approaches, achieving significant performance gains
+while maintaining efficiency.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15952v1">Compose Yourself: Average-Velocity Flow Matching for One-Step Speech Enhancement</a></td><td><details><summary>展开</summary>Diffusion and flow matching (FM) models have achieved remarkable progress in
+speech enhancement (SE), yet their dependence on multi-step generation is
+computationally expensive and vulnerable to discretization errors. Recent
+advances in one-step generative modeling, particularly MeanFlow, provide a
+promising alternative by reformulating dynamics through average velocity
+fields. In this work, we present COSE, a one-step FM framework tailored for SE.
+To address the high training overhead of Jacobian-vector product (JVP)
+computations in MeanFlow, we introduce a velocity composition identity to
+compute average velocity efficiently, eliminating expensive computation while
+preserving theoretical consistency and achieving competitive enhancement
+quality. Extensive experiments on standard benchmarks show that COSE delivers
+up to 5x faster sampling and reduces training cost by 40%, all without
+compromising speech quality. Code is available at
+https://github.com/ICDM-UESTC/COSE.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15932v1">The Alignment Bottleneck</a></td><td><details><summary>展开</summary>Large language models improve with scale, yet feedback-based alignment still
+exhibits systematic deviations from intended behavior. Motivated by bounded
+rationality in economics and cognitive science, we view judgment as
+resource-limited and feedback as a constrained channel. On this basis, we model
+the loop as a two-stage cascade $U \to H \to Y$ given $S$, with cognitive
+capacity $C_{\text{cog}|S}$ and average total capacity
+$\bar{C}_{\text{tot}|S}$. Our main result is a capacity-coupled Alignment
+Performance Interval. It pairs a data size-independent Fano lower bound proved
+on a separable codebook mixture with a PAC-Bayes upper bound whose KL term is
+controlled by the same channel via $m \, \bar{C}_{\text{tot}|S}$. The PAC-Bayes
+bound becomes an upper bound on the same true risk when the canonical
+observable loss is used and the dataset is drawn from the same mixture. Under
+these matched conditions, both limits are governed by a single capacity.
+Consequences include that, with value complexity and capacity fixed, adding
+labels alone cannot cross the bound; attaining lower risk on more complex
+targets requires capacity that grows with $\log M$; and once useful signal
+saturates capacity, further optimization tends to fit channel regularities,
+consistent with reports of sycophancy and reward hacking. The analysis views
+alignment as interface engineering: measure and allocate limited capacity,
+manage task complexity, and decide where information is spent.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15908v1">An Equivariant Graph Network for Interpretable Nanoporous Materials Design</a></td><td><details><summary>展开</summary>Nanoporous materials hold promise for diverse sustainable applications, yet
+their vast chemical space poses challenges for efficient design. Machine
+learning offers a compelling pathway to accelerate the exploration, but
+existing models lack either interpretability or fidelity for elucidating the
+correlation between crystal geometry and property. Here, we report a
+three-dimensional periodic space sampling method that decomposes large
+nanoporous structures into local geometrical sites for combined property
+prediction and site-wise contribution quantification. Trained with a
+constructed database and retrieved datasets, our model achieves
+state-of-the-art accuracy and data efficiency for property prediction on gas
+storage, separation, and electrical conduction. Meanwhile, this approach
+enables the interpretation of the prediction and allows for accurate
+identification of significant local sites for targeted properties. Through
+identifying transferable high-performance sites across diverse nanoporous
+frameworks, our model paves the way for interpretable, symmetry-aware
+nanoporous materials design, which is extensible to other materials, like
+molecular crystals and beyond.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15895v1">From Data to Diagnosis: A Large, Comprehensive Bone Marrow Dataset and AI Methods for Childhood Leukemia Prediction</a></td><td><details><summary>展开</summary>Leukemia diagnosis primarily relies on manual microscopic analysis of bone
+marrow morphology supported by additional laboratory parameters, making it
+complex and time consuming. While artificial intelligence (AI) solutions have
+been proposed, most utilize private datasets and only cover parts of the
+diagnostic pipeline. Therefore, we present a large, high-quality, publicly
+available leukemia bone marrow dataset spanning the entire diagnostic process,
+from cell detection to diagnosis. Using this dataset, we further propose
+methods for cell detection, cell classification, and diagnosis prediction. The
+dataset comprises 246 pediatric patients with diagnostic, clinical and
+laboratory information, over 40 000 cells with bounding box annotations and
+more than 28 000 of these with high-quality class labels, making it the most
+comprehensive dataset publicly available. Evaluation of the AI models yielded
+an average precision of 0.96 for the cell detection, an area under the curve of
+0.98, and an F1-score of 0.61 for the 33-class cell classification, and a mean
+F1-score of 0.90 for the diagnosis prediction using predicted cell counts.
+While the proposed approaches demonstrate their usefulness for AI-assisted
+diagnostics, the dataset will foster further research and development in the
+field, ultimately contributing to more precise diagnoses and improved patient
+outcomes.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15848v1">A Comparative Study of Rule-Based and Data-Driven Approaches in Industrial Monitoring</a></td><td><details><summary>展开</summary>Industrial monitoring systems, especially when deployed in Industry 4.0
+environments, are experiencing a shift in paradigm from traditional rule-based
+architectures to data-driven approaches leveraging machine learning and
+artificial intelligence. This study presents a comparison between these two
+methodologies, analyzing their respective strengths, limitations, and
+application scenarios, and proposes a basic framework to evaluate their key
+properties. Rule-based systems offer high interpretability, deterministic
+behavior, and ease of implementation in stable environments, making them ideal
+for regulated industries and safety-critical applications. However, they face
+challenges with scalability, adaptability, and performance in complex or
+evolving contexts. Conversely, data-driven systems excel in detecting hidden
+anomalies, enabling predictive maintenance and dynamic adaptation to new
+conditions. Despite their high accuracy, these models face challenges related
+to data availability, explainability, and integration complexity. The paper
+suggests hybrid solutions as a possible promising direction, combining the
+transparency of rule-based logic with the analytical power of machine learning.
+Our hypothesis is that the future of industrial monitoring lies in intelligent,
+synergic systems that leverage both expert knowledge and data-driven insights.
+This dual approach enhances resilience, operational efficiency, and trust,
+paving the way for smarter and more flexible industrial environments.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15811v1">Best-of-L: Cross-Lingual Reward Modeling for Mathematical Reasoning</a></td><td><details><summary>展开</summary>While the reasoning abilities of large language models (LLMs) continue to
+advance, it remains unclear how such ability varies across languages in
+multilingual LLMs and whether different languages produce reasoning paths that
+complement each other. To investigate this question, we train a reward model to
+rank generated responses for a given question across languages. Our results
+show that our cross-lingual reward model substantially improves mathematical
+reasoning performance compared to using reward modeling within a single
+language, benefiting even high-resource languages. While English often exhibits
+the highest performance in multilingual models, we find that cross-lingual
+sampling particularly benefits English under low sampling budgets. Our findings
+reveal new opportunities to improve multilingual reasoning by leveraging the
+complementary strengths of diverse languages.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15810v1">Instance Generation for Meta-Black-Box Optimization through Latent Space Reverse Engineering</a></td><td><details><summary>展开</summary>To relieve intensive human-expertise required to design optimization
+algorithms, recent Meta-Black-Box Optimization (MetaBBO) researches leverage
+generalization strength of meta-learning to train neural network-based
+algorithm design policies over a predefined training problem set, which
+automates the adaptability of the low-level optimizers on unseen problem
+instances. Currently, a common training problem set choice in existing MetaBBOs
+is well-known benchmark suites CoCo-BBOB. Although such choice facilitates the
+MetaBBO's development, problem instances in CoCo-BBOB are more or less limited
+in diversity, raising the risk of overfitting of MetaBBOs, which might further
+results in poor generalization. In this paper, we propose an instance
+generation approach, termed as \textbf{LSRE}, which could generate diverse
+training problem instances for MetaBBOs to learn more generalizable policies.
+LSRE first trains an autoencoder which maps high-dimensional problem features
+into a 2-dimensional latent space. Uniform-grid sampling in this latent space
+leads to hidden representations of problem instances with sufficient diversity.
+By leveraging a genetic-programming approach to search function formulas with
+minimal L2-distance to these hidden representations, LSRE reverse engineers a
+diversified problem set, termed as \textbf{Diverse-BBO}. We validate the
+effectiveness of LSRE by training various MetaBBOs on Diverse-BBO and observe
+their generalization performances on either synthetic or realistic scenarios.
+Extensive experimental results underscore the superiority of Diverse-BBO to
+existing training set choices in MetaBBOs. Further ablation studies not only
+demonstrate the effectiveness of design choices in LSRE, but also reveal
+interesting insights on instance diversity and MetaBBO's generalization.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15800v1">ChronoForge-RL: Chronological Forging through Reinforcement Learning for Enhanced Video Understanding</a></td><td><details><summary>展开</summary>Current state-of-the-art video understanding methods typically struggle with
+two critical challenges: (1) the computational infeasibility of processing
+every frame in dense video content and (2) the difficulty in identifying
+semantically significant frames through naive uniform sampling strategies. In
+this paper, we propose a novel video understanding framework, called
+ChronoForge-RL, which combines Temporal Apex Distillation (TAD) and
+KeyFrame-aware Group Relative Policy Optimization (KF-GRPO) to tackle these
+issues. Concretely, we introduce a differentiable keyframe selection mechanism
+that systematically identifies semantic inflection points through a three-stage
+process to enhance computational efficiency while preserving temporal
+information. Then, two particular modules are proposed to enable effective
+temporal reasoning: Firstly, TAD leverages variation scoring, inflection
+detection, and prioritized distillation to select the most informative frames.
+Secondly, we introduce KF-GRPO which implements a contrastive learning paradigm
+with a saliency-enhanced reward mechanism that explicitly incentivizes models
+to leverage both frame content and temporal relationships. Finally, our
+proposed ChronoForge-RL achieves 69.1% on VideoMME and 52.7% on LVBench
+compared to baseline methods, clearly surpassing previous approaches while
+enabling our 7B parameter model to achieve performance comparable to 72B
+parameter alternatives.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15796v1">Monte Carlo Tree Diffusion with Multiple Experts for Protein Design</a></td><td><details><summary>展开</summary>The goal of protein design is to generate amino acid sequences that fold into
+functional structures with desired properties. Prior methods combining
+autoregressive language models with Monte Carlo Tree Search (MCTS) struggle
+with long-range dependencies and suffer from an impractically large search
+space. We propose MCTD-ME, Monte Carlo Tree Diffusion with Multiple Experts,
+which integrates masked diffusion models with tree search to enable multi-token
+planning and efficient exploration. Unlike autoregressive planners, MCTD-ME
+uses biophysical-fidelity-enhanced diffusion denoising as the rollout engine,
+jointly revising multiple positions and scaling to large sequence spaces. It
+further leverages experts of varying capacities to enrich exploration, guided
+by a pLDDT-based masking schedule that targets low-confidence regions while
+preserving reliable residues. We propose a novel multi-expert selection rule
+(PH-UCT-ME) extends predictive-entropy UCT to expert ensembles. On the inverse
+folding task (CAMEO and PDB benchmarks), MCTD-ME outperforms single-expert and
+unguided baselines in both sequence recovery (AAR) and structural similarity
+(scTM), with gains increasing for longer proteins and benefiting from
+multi-expert guidance. More generally, the framework is model-agnostic and
+applicable beyond inverse folding, including de novo protein engineering and
+multi-objective molecular generation.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15785v1">CBPNet: A Continual Backpropagation Prompt Network for Alleviating Plasticity Loss on Edge Devices</a></td><td><details><summary>展开</summary>To meet the demands of applications like robotics and autonomous driving that
+require real-time responses to dynamic environments, efficient continual
+learning methods suitable for edge devices have attracted increasing attention.
+In this transition, using frozen pretrained models with prompts has become a
+mainstream strategy to combat catastrophic forgetting. However, this approach
+introduces a new critical bottleneck: plasticity loss, where the model's
+ability to learn new knowledge diminishes due to the frozen backbone and the
+limited capacity of prompt parameters. We argue that the reduction in
+plasticity stems from a lack of update vitality in underutilized parameters
+during the training process. To this end, we propose the Continual
+Backpropagation Prompt Network (CBPNet), an effective and parameter efficient
+framework designed to restore the model's learning vitality. We innovatively
+integrate an Efficient CBP Block that counteracts plasticity decay by
+adaptively reinitializing these underutilized parameters. Experimental results
+on edge devices demonstrate CBPNet's effectiveness across multiple benchmarks.
+On Split CIFAR-100, it improves average accuracy by over 1% against a strong
+baseline, and on the more challenging Split ImageNet-R, it achieves a state of
+the art accuracy of 69.41%. This is accomplished by training additional
+parameters that constitute less than 0.2% of the backbone's size, validating
+our approach.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15733v1">GP3: A 3D Geometry-Aware Policy with Multi-View Images for Robotic Manipulation</a></td><td><details><summary>展开</summary>Effective robotic manipulation relies on a precise understanding of 3D scene
+geometry, and one of the most straightforward ways to acquire such geometry is
+through multi-view observations. Motivated by this, we present GP3 -- a 3D
+geometry-aware robotic manipulation policy that leverages multi-view input. GP3
+employs a spatial encoder to infer dense spatial features from RGB
+observations, which enable the estimation of depth and camera parameters,
+leading to a compact yet expressive 3D scene representation tailored for
+manipulation. This representation is fused with language instructions and
+translated into continuous actions via a lightweight policy head. Comprehensive
+experiments demonstrate that GP3 consistently outperforms state-of-the-art
+methods on simulated benchmarks. Furthermore, GP3 transfers effectively to
+real-world robots without depth sensors or pre-mapped environments, requiring
+only minimal fine-tuning. These results highlight GP3 as a practical,
+sensor-agnostic solution for geometry-aware robotic manipulation.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15676v1">KITE: Kernelized and Information Theoretic Exemplars for In-Context Learning</a></td><td><details><summary>展开</summary>In-context learning (ICL) has emerged as a powerful paradigm for adapting
+large language models (LLMs) to new and data-scarce tasks using only a few
+carefully selected task-specific examples presented in the prompt. However,
+given the limited context size of LLMs, a fundamental question arises: Which
+examples should be selected to maximize performance on a given user query?
+While nearest-neighbor-based methods like KATE have been widely adopted for
+this purpose, they suffer from well-known drawbacks in high-dimensional
+embedding spaces, including poor generalization and a lack of diversity. In
+this work, we study this problem of example selection in ICL from a principled,
+information theory-driven perspective. We first model an LLM as a linear
+function over input embeddings and frame the example selection task as a
+query-specific optimization problem: selecting a subset of exemplars from a
+larger example bank that minimizes the prediction error on a specific query.
+This formulation departs from traditional generalization-focused learning
+theoretic approaches by targeting accurate prediction for a specific query
+instance. We derive a principled surrogate objective that is approximately
+submodular, enabling the use of a greedy algorithm with an approximation
+guarantee. We further enhance our method by (i) incorporating the kernel trick
+to operate in high-dimensional feature spaces without explicit mappings, and
+(ii) introducing an optimal design-based regularizer to encourage diversity in
+the selected examples. Empirically, we demonstrate significant improvements
+over standard retrieval methods across a suite of classification tasks,
+highlighting the benefits of structure-aware, diverse example selection for ICL
+in real-world, label-scarce scenarios.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15651v1">Toward Efficient Influence Function: Dropout as a Compression Tool</a></td><td><details><summary>展开</summary>Assessing the impact the training data on machine learning models is crucial
+for understanding the behavior of the model, enhancing the transparency, and
+selecting training data. Influence function provides a theoretical framework
+for quantifying the effect of training data points on model's performance given
+a specific test data. However, the computational and memory costs of influence
+function presents significant challenges, especially for large-scale models,
+even when using approximation methods, since the gradients involved in
+computation are as large as the model itself. In this work, we introduce a
+novel approach that leverages dropout as a gradient compression mechanism to
+compute the influence function more efficiently. Our method significantly
+reduces computational and memory overhead, not only during the influence
+function computation but also in gradient compression process. Through
+theoretical analysis and empirical validation, we demonstrate that our method
+could preserves critical components of the data influence and enables its
+application to modern large-scale models.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15635v1">MicroRCA-Agent: Microservice Root Cause Analysis Method Based on Large Language Model Agents</a></td><td><details><summary>展开</summary>This paper presents MicroRCA-Agent, an innovative solution for microservice
+root cause analysis based on large language model agents, which constructs an
+intelligent fault root cause localization system with multimodal data fusion.
+The technical innovations are embodied in three key aspects: First, we combine
+the pre-trained Drain log parsing algorithm with multi-level data filtering
+mechanism to efficiently compress massive logs into high-quality fault
+features. Second, we employ a dual anomaly detection approach that integrates
+Isolation Forest unsupervised learning algorithms with status code validation
+to achieve comprehensive trace anomaly identification. Third, we design a
+statistical symmetry ratio filtering mechanism coupled with a two-stage LLM
+analysis strategy to enable full-stack phenomenon summarization across
+node-service-pod hierarchies. The multimodal root cause analysis module
+leverages carefully designed cross-modal prompts to deeply integrate multimodal
+anomaly information, fully exploiting the cross-modal understanding and logical
+reasoning capabilities of large language models to generate structured analysis
+results encompassing fault components, root cause descriptions, and reasoning
+trace. Comprehensive ablation studies validate the complementary value of each
+modal data and the effectiveness of the system architecture. The proposed
+solution demonstrates superior performance in complex microservice fault
+scenarios, achieving a final score of 50.71. The code has been released at:
+https://github.com/tangpan360/MicroRCA-Agent.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15582v1">Momentum-constrained Hybrid Heuristic Trajectory Optimization Framework with Residual-enhanced DRL for Visually Impaired Scenarios</a></td><td><details><summary>展开</summary>This paper proposes a momentum-constrained hybrid heuristic trajectory
+optimization framework (MHHTOF) tailored for assistive navigation in visually
+impaired scenarios, integrating trajectory sampling generation, optimization
+and evaluation with residual-enhanced deep reinforcement learning (DRL). In the
+first stage, heuristic trajectory sampling cluster (HTSC) is generated in the
+Frenet coordinate system using third-order interpolation with fifth-order
+polynomials and momentum-constrained trajectory optimization (MTO) constraints
+to ensure smoothness and feasibility. After first stage cost evaluation, the
+second stage leverages a residual-enhanced actor-critic network with LSTM-based
+temporal feature modeling to adaptively refine trajectory selection in the
+Cartesian coordinate system. A dual-stage cost modeling mechanism (DCMM) with
+weight transfer aligns semantic priorities across stages, supporting
+human-centered optimization. Experimental results demonstrate that the proposed
+LSTM-ResB-PPO achieves significantly faster convergence, attaining stable
+policy performance in approximately half the training iterations required by
+the PPO baseline, while simultaneously enhancing both reward outcomes and
+training stability. Compared to baseline method, the selected model reduces
+average cost and cost variance by 30.3% and 53.3%, and lowers ego and obstacle
+risks by over 77%. These findings validate the framework's effectiveness in
+enhancing robustness, safety, and real-time feasibility in complex assistive
+planning tasks.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15577v1">Relevance to Utility: Process-Supervised Rewrite for RAG</a></td><td><details><summary>展开</summary>Retrieval-Augmented Generation systems often suffer from a gap between
+optimizing retrieval relevance and generative utility: retrieved documents may
+be topically relevant but still lack the content needed for effective reasoning
+during generation. While existing "bridge" modules attempt to rewrite the
+retrieved text for better generation, we show how they fail to capture true
+document utility. In this work, we propose R2U, with a key distinction of
+directly optimizing to maximize the probability of generating a correct answer
+through process supervision. As such direct observation is expensive, we also
+propose approximating an efficient distillation pipeline by scaling the
+supervision from LLMs, which helps the smaller rewriter model generalize
+better. We evaluate our method across multiple open-domain question-answering
+benchmarks. The empirical results demonstrate consistent improvements over
+strong bridging baselines.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15568v1">LiteLong: Resource-Efficient Long-Context Data Synthesis for LLMs</a></td><td><details><summary>展开</summary>High-quality long-context data is essential for training large language
+models (LLMs) capable of processing extensive documents, yet existing synthesis
+approaches using relevance-based aggregation face challenges of computational
+efficiency. We present LiteLong, a resource-efficient method for synthesizing
+long-context data through structured topic organization and multi-agent debate.
+Our approach leverages the BISAC book classification system to provide a
+comprehensive hierarchical topic organization, and then employs a debate
+mechanism with multiple LLMs to generate diverse, high-quality topics within
+this structure. For each topic, we use lightweight BM25 retrieval to obtain
+relevant documents and concatenate them into 128K-token training samples.
+Experiments on HELMET and Ruler benchmarks demonstrate that LiteLong achieves
+competitive long-context performance and can seamlessly integrate with other
+long-dependency enhancement methods. LiteLong makes high-quality long-context
+data synthesis more accessible by reducing both computational and data
+engineering costs, facilitating further research in long-context language
+training.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15556v1">Exploring Polyglot Harmony: On Multilingual Data Allocation for Large Language Models Pretraining</a></td><td><details><summary>展开</summary>Large language models (LLMs) have become integral to a wide range of
+applications worldwide, driving an unprecedented global demand for effective
+multilingual capabilities. Central to achieving robust multilingual performance
+is the strategic allocation of language proportions within training corpora.
+However, determining optimal language ratios is highly challenging due to
+intricate cross-lingual interactions and sensitivity to dataset scale. This
+paper introduces Climb (Cross-Lingual Interaction-aware Multilingual
+Balancing), a novel framework designed to systematically optimize multilingual
+data allocation. At its core, Climb introduces a cross-lingual
+interaction-aware language ratio, explicitly quantifying each language's
+effective allocation by capturing inter-language dependencies. Leveraging this
+ratio, Climb proposes a principled two-step optimization procedure--first
+equalizing marginal benefits across languages, then maximizing the magnitude of
+the resulting language allocation vectors--significantly simplifying the
+inherently complex multilingual optimization problem. Extensive experiments
+confirm that Climb can accurately measure cross-lingual interactions across
+various multilingual settings. LLMs trained with Climb-derived proportions
+consistently achieve state-of-the-art multilingual performance, even achieving
+competitive performance with open-sourced LLMs trained with more tokens.</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.15541v1">Stress Testing Deliberative Alignment for Anti-Scheming Training</a></td><td><details><summary>展开</summary>Highly capable AI systems could secretly pursue misaligned goals -- what we
+call "scheming". Because a scheming AI would deliberately try to hide its
+misaligned goals and actions, measuring and mitigating scheming requires
+different strategies than are typically used in ML. We propose that assessing
+anti-scheming interventions requires at least (1) testing propensity to scheme
+on far out-of-distribution (OOD) tasks, (2) evaluating whether lack of scheming
+is driven by situational awareness, and (3) checking for robustness to
+pre-existing misaligned goals. We use a broad category of "covert actions" --
+such as secretly breaking rules or intentionally underperforming in tests -- as
+a proxy for scheming, and design evaluations for covert actions. We then
+stress-test deliberative alignment as a case study for anti-scheming. Across 26
+OOD evaluations (180+ environments), deliberative alignment reduces covert
+action rates (OpenAI o3: 13%->0.4%) but does not fully eliminate them. Our
+mitigation is also able to largely stop agents from pursuing a hidden goal
+previously trained into the model, but we still find misbehavior after
+additional red-teaming. We find that models' chain-of-thought (CoT) often
+demonstrates awareness of being evaluated for alignment, and show causal
+evidence that this awareness decreases covert behavior, while unawareness
+increases it. Therefore, we cannot exclude that the observed reductions in
+covert action rates are at least partially driven by situational awareness.
+While we rely on human-legible CoT for training, studying situational
+awareness, and demonstrating clear evidence of misalignment, our ability to
+rely on this degrades as models continue to depart from reasoning in standard
+English. We encourage research into alignment mitigations for scheming and
+their assessment, especially for the adversarial case of deceptive alignment,
+which this paper does not address.</details></td></tr></tbody></table>
 
 ### 📅 2025-09-18
 <table style='width:100%;'><colgroup><col style="width:61.8%;"><col style="width:38.2%;"></colgroup><thead><tr><th>title</th><th>abstract</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.15210v1">Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a></td><td><details><summary>展开</summary>Realistic sound simulation plays a critical role in many applications. A key
