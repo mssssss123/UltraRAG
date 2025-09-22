@@ -24,7 +24,7 @@ class Retriever:
     def __init__(self, mcp_inst: UltraRAG_MCP_Server):
         mcp_inst.tool(
             self.retriever_init,
-            output="model_name_or_path,backend_configs,batch_size,corpus_path,index_path,faiss_use_gpu,cuda_devices,is_multimodal,backend->None",
+            output="model_name_or_path,backend_configs,batch_size,corpus_path,index_path,faiss_use_gpu,gpu_ids,is_multimodal,backend->None",
         )
         mcp_inst.tool(
             self.retriever_embed,
@@ -62,6 +62,9 @@ class Retriever:
             self.retriever_zhipuai_search,
             output="q_ls,top_k,retrieve_thread_num->ret_psg",
         )
+    
+    def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
+        return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
 
     def retriever_init(
         self,
@@ -71,7 +74,7 @@ class Retriever:
         corpus_path: str,
         index_path: Optional[str] = None,
         faiss_use_gpu: bool = False,
-        cuda_devices: Optional[object] = None,
+        gpu_ids: Optional[object] = None,
         is_multimodal: bool = False,
         backend: str = "infinity",
     ):
@@ -87,17 +90,17 @@ class Retriever:
         self.backend = backend.lower()
         self.batch_size = int(batch_size)
 
-        self.cuda_devices = cuda_devices
-        if cuda_devices is not None:
-            if isinstance(cuda_devices, int):
-                cuda_devices = str(cuda_devices)
-            elif isinstance(cuda_devices, (list, tuple)):
-                cuda_devices = ",".join(str(x) for x in cuda_devices if str(x).strip() != "")
-            elif isinstance(cuda_devices, str):
-                cuda_devices = ",".join([p.strip() for p in cuda_devices.split(",") if p.strip() != ""])
+        self.gpu_ids = gpu_ids
+        if gpu_ids is not None:
+            if isinstance(gpu_ids, int):
+                gpu_ids = str(gpu_ids)
+            elif isinstance(gpu_ids, (list, tuple)):
+                gpu_ids = ",".join(str(x) for x in gpu_ids if str(x).strip() != "")
+            elif isinstance(gpu_ids, str):
+                gpu_ids = ",".join([p.strip() for p in gpu_ids.split(",") if p.strip() != ""])
             else:
-                raise TypeError("cuda_devices must be str | int | list[int|str] | tuple, e.g. '0', 0 or [0,1]")
-            os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
+                raise TypeError("gpu_ids must be str | int | list[int|str] | tuple, e.g. '0', 0 or [0,1]")
+            os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
         
 
         self.backend_configs = backend_configs or {}
@@ -123,7 +126,13 @@ class Retriever:
                 app.logger.error(err_msg)
                 raise ImportError(err_msg)
             
-            self.model = SentenceTransformer(model_name_or_path=model_name_or_path, **cfg)
+            self.st_encode_params = cfg.get("sentencetransformers_encode", {}) or {}
+            st_params = self._drop_keys(
+                sampling_params,
+                banned=["sentencetransformers_encode"]
+            )
+            
+            self.model = SentenceTransformer(model_name_or_path=model_name_or_path, **st_params)
         
         elif self.backend == "openai":
             from openai import AsyncOpenAI, OpenAIError
@@ -251,13 +260,12 @@ class Retriever:
         
         elif self.backend == "sentencetransformers":
             device_param = self._to_st_device_list()  
-            st_embed_cfg = getattr(self, "backend_configs", {}).get("sentencetransformers_encode", {}) or {}
             bs = int(getattr(self, "batch_size", 16))
             normalize = bool(
-                st_embed_cfg.get("normalize_embeddings", False)
+                self.st_encode_params.get("normalize_embeddings", False)
             )
-            csz = int(st_embed_cfg.get("chunk_size", 10000))
-            document_task = st_embed_cfg.get("document_task", None)
+            csz = int(self.st_encode_params.get("chunk_size", 10000))
+            document_task = self.st_encode_params.get("document_task", None)
 
             if is_multimodal:
                 data = []
@@ -324,14 +332,14 @@ class Retriever:
     
     def _to_st_device_list(self) -> str | list[str]:
         """
-        Convert cuda_devices to SentenceTransformers device format:
+        Convert gpu_ids to SentenceTransformers device format:
         - None         -> "cuda" (or "cpu")
         - int / "0"    -> "cuda:0"
         - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
         - If CUDA_VISIBLE_DEVICES="2,3", local process sees GPUs as 0/1
         """
 
-        cd = getattr(self, "cuda_devices", None)
+        cd = getattr(self, "gpu_ids", None)
         if cd is None:
             import torch
             return "cuda" if torch.cuda.is_available() else "cpu"
@@ -347,7 +355,7 @@ class Retriever:
             parts = [str(p).strip() for p in cd if str(p).strip()]
             return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
 
-        raise TypeError("cuda_devices must be None, int, str, or list[int|str]")
+        raise TypeError("gpu_ids must be None, int, str, or list[int|str]")
     
     
     def retriever_index(
@@ -447,12 +455,11 @@ class Retriever:
                 query_embedding, usage = await self.model.embed(sentences=queries)
         elif self.backend == "sentencetransformers":
             device_param = self._to_st_device_list()  
-            st_embed_cfg = getattr(self, "backend_configs", {}).get("sentencetransformers_encode", {}) or {}
             bs = int(getattr(self, "batch_size", 16))
             normalize = bool(
-                st_embed_cfg.get("normalize_embeddings", False)
+                self.st_encode_params.get("normalize_embeddings", False)
             )
-            query_task = st_embed_cfg.get("query_task", None)
+            query_task = self.st_encode_params.get("query_task", None)
 
             if isinstance(device_param, list) and len(device_param) > 1:
                 pool = self.model.start_multi_process_pool()

@@ -16,22 +16,22 @@ backend_configs:
   sentencetransformers:
     device: cuda
     trust_remote_code: true
+    sentencetransformers_encode:
+      normalize_embeddings: false
+      chunk_size: 10000
+      # Optional: specify different tasks for query and document encoding
+      # jina-embeddings-v4 needs both tasks to be set 'retrieval'
+      # some may need to be None
+      query_task: query
+      document_task: document
   openai:
     openai_model: text-embedding-3-small
     api_base: "https://api.openai.com/v1"
     api_key: ""
-  sentencetransformers_encode:
-    normalize_embeddings: false
-    chunk_size: 10000
-    # Optional: specify different tasks for query and document encoding
-    # jina-embeddings-v4 needs both tasks to be set 'retrieval'
-    # some may need to be None
-    query_task: query
-    document_task: document
 
 batch_size: 16
 top_k: 5
-cuda_devices: "2,3"
+gpu_ids: "2,3"
 query_instruction: ""
 is_multimodal: false
 faiss_use_gpu: True
