@@ -11,8 +11,6 @@ import base64
 from fastmcp.exceptions import ToolError
 from ultrarag.server import UltraRAG_MCP_Server
 
-os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
-
 app = UltraRAG_MCP_Server("generation")
 httpx_logger.setLevel(logging.WARNING)
 
@@ -30,7 +28,11 @@ class Generation:
             output="prompt_ls,system_prompt->ans_ls",
         )
         mcp_inst.tool(
-            self.vllm_shutdown,
+            self.multimodal_generate,
+            output="multimodal_path,prompt_ls,system_prompt->ans_ls",
+        )
+        mcp_inst.tool(
+            self.vllm_shutdown, 
             output="->None",
         )
     
@@ -69,6 +71,20 @@ class Generation:
             else:
                 raise ValueError(f"Unsupported message format: {m}")
         return prompts
+    
+    def _to_data_url(self, path_or_url: str) -> str:
+        s = str(path_or_url).strip()
+
+        if s.startswith(("http://", "https://", "data:image/")):
+            return s
+
+        if not os.path.isfile(s):
+            raise FileNotFoundError(f"image not found: {s}")
+        mime, _ = mimetypes.guess_type(s)
+        mime = mime or "image/jpeg"
+        with open(s, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode("utf-8")
+        return f"data:{mime};base64,{b64}"
 
     def generation_init(
         self,
@@ -83,7 +99,7 @@ class Generation:
 
         if self.backend == "vllm":
             from vllm import LLM, SamplingParams
-
+            os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
             gpu_ids = cfg.get("gpu_ids")
             self._normalize_gpu_ids(gpu_ids)
             model_name_or_path = cfg.get("model_name_or_path")
@@ -129,21 +145,10 @@ class Generation:
             raise ValueError(f"Unsupported backend: {self.backend}")
 
     
-    async def generate(
+    async def _generate(
         self,
-        prompt_ls: List[Union[str, Dict[str, Any]]],
-        system_prompt: str="",
-    ) -> Dict[str, List[str]]:
-
-        prompts = self._extract_text_prompts(prompt_ls)
-
-        messages_list: List[List[Dict[str, str]]] = []
-        for p in prompts:
-            msgs = []
-            if system_prompt:
-                msgs.append({"role": "system", "content": system_prompt})
-            msgs.append({"role": "user", "content": p})
-            messages_list.append(msgs)
+        messages_list: List[List[Dict[str, str]]],
+    ) -> List[str]:
 
         if self.backend == "vllm":
             outputs = self.model.chat(
@@ -210,9 +215,59 @@ class Generation:
                 nvidi[idx] = ans
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
+         
+        return ret
+    
+    
+    
+    async def generate(
+        self,
+        prompt_ls: List[Union[str, Dict[str, Any]]],
+        system_prompt: str = "",
+    ) -> Dict[str, List[str]]:
+        prompts = self._extract_text_prompts(prompt_ls)
+        messages_list: List[List[Dict[str, str]]] = []
+        for p in prompts:
+            msgs = []
+            if system_prompt:
+                msgs.append({"role": "system", "content": system_prompt})
+            msgs.append({"role": "user", "content": p})       
+            messages_list.append(msgs)
+        ret = await self._generate(messages_list)
+        return {"ans_ls": ret}
 
+    async def multimodal_generate(
+        self,
+        multimodal_path: List[Any],
+        prompt_ls: List[Union[str, Dict[str, Any]]],
+        system_prompt: str = "",
+    ) -> Dict[str, List[str]]:
+
+        prompts = self._extract_text_prompts(prompt_ls)
+
+        messages_list: List[List[Dict[str, str]]] = []
+        for i, p in enumerate(prompts):
+            msgs = []
+            if system_prompt:
+                msgs.append({"role": "system", "content": system_prompt})
+
+            content = []
+            curr_path = multimodal_path[i]
+            for mp in curr_path:
+                try:
+                    content.append(
+                        {"type": "image_url", "image_url": {"url": self._to_data_url(mp)}}
+                    )
+                except Exception as e:
+                    app.logger.warning(f"[Image skip] idx={idx}, path={p}, err={e}")
+                print(f"multimodal_path item: {mp}")
+            content.append({"type": "text", "text": p})
+            msgs.append({"role": "user", "content": content})
+            messages_list.append(msgs)
+        ret = await self._generate(messages_list)
          
         return {"ans_ls": ret}
+
     def vllm_shutdown(self) -> None:
 
         try:
@@ -251,7 +306,6 @@ class Generation:
 
         except Exception as e:
             app.logger.warning(f"[vllm_shutdown] cleanup warning: {e}")
-    
 
 
 
