@@ -11,8 +11,23 @@ from ultrarag.server import UltraRAG_MCP_Server
 app = UltraRAG_MCP_Server("corpus")
 
 
+def _load_jsonl(file_path):
+    documents = []
+    with open(file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            documents.append(json.loads(line))
+    return documents
+
+def _save_jsonl(documents, file_path):
+    with open(file_path, "w", encoding="utf-8") as f:
+        for doc in documents:
+            f.write(json.dumps(doc) + "\n")
+
+
 @app.tool(output="file_path->raw_data")
-def parse_documents(file_path: Union[str, Path]) -> Dict[str, str]:
+def parse_documents(
+    file_path: Union[str, Path]
+) -> Dict[str, str]:
 
     try:
         from llama_index.core import SimpleDirectoryReader
@@ -40,17 +55,63 @@ def parse_documents(file_path: Union[str, Path]) -> Dict[str, str]:
 
     return {"raw_data": raw_data}
 
-def _load_jsonl(file_path):
-    documents = []
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            documents.append(json.loads(line))
-    return documents
+@app.tool(output="pdf_file_path,mineru_dir,mineru_extra_params->None")
+async def mineru_parse(
+    pdf_file_path: str,
+    mineru_dir: str,
+    mineru_extra_params: Optional[Dict[str, Any]] = None,                    
+):
+    import asyncio
+    import shutil
 
-def _save_jsonl(documents, file_path):
-    with open(file_path, "w", encoding="utf-8") as f:
-        for doc in documents:
-            f.write(json.dumps(doc) + "\n")
+    if shutil.which("mineru") is None:
+        raise ToolError("`mineru` executable not found. Please install it or add it to PATH.")
+
+    if not pdf_file_path:
+        raise ToolError("`pdf_file_path` cannot be empty.")
+
+    pdf_path = os.path.abspath(pdf_file_path)
+    if not os.path.exists(pdf_path):
+        raise ToolError(f"PDF file does not exist: {pdf_path}")
+    if not pdf_path.lower().endswith(".pdf"):
+        raise ToolError(f"Only .pdf files are supported: {pdf_path}")
+
+    output_path = os.path.abspath(mineru_dir)
+    os.makedirs(output_path, exist_ok=True)
+
+    cmd = ["mineru", "-p", pdf_path, "-o", mineru_dir]
+
+    if mineru_extra_params:
+        if not isinstance(mineru_extra_params, dict):
+            raise ToolError("`mineru_extra_params` must be a dict, e.g. {'source': 'modelscope'}.")
+
+        for k in sorted(mineru_extra_params.keys()):
+            v = mineru_extra_params[k]
+            cmd.append(f"--{k}")
+            if v is not None and v != "":
+                cmd.append(str(v))  
+
+
+    try:
+        app.logger.info("Starting mineru command: %s", " ".join(cmd))
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.STDOUT,
+        )
+        assert proc.stdout is not None
+        async for line in proc.stdout:
+            app.logger.info(line.decode("utf-8", errors="replace").rstrip())
+
+        returncode = await proc.wait()
+        if returncode != 0:
+            raise ToolError(f"mineru exited with non-zero code: {returncode}")
+    except ToolError:
+        raise
+    except Exception as e:
+        raise ToolError(f"Unexpected error while running mineru: {e}")
+
+
 
 
 @app.tool(

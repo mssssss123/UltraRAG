@@ -1,6 +1,12 @@
 # servers/corpus/parameter.yaml
 file_path: data/UltraRAG.pdf
 
+# mineru
+pdf_file_path: data/UltraRAG.pdf
+mineru_dir: mineru/
+mineru_extra_params:
+  source: modelscope
+
 # chunking parameters
 raw_chunk_path: data/chunk_example.jsonl
 chunk_path: chunk/chunks.jsonl

@@ -19,6 +19,7 @@ output/
 logs/
 test/
 chunk/
+mineru/
 
 # Environment variables and secrets
 .env
