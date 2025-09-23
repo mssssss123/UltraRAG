@@ -1,5 +1,43 @@
 # 📚 RAG Paper Daily
 
+### 📅 2025-09-21
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.17197v1">SignalLLM: A General-Purpose LLM Agent Framework for Automated Signal Processing</a></td><td><details><summary>展开</summary>Modern signal processing (SP) pipelines, whether model-based or data-driven,
+often constrained by complex and fragmented workflow, rely heavily on expert
+knowledge and manual engineering, and struggle with adaptability and
+generalization under limited data. In contrast, Large Language Models (LLMs)
+offer strong reasoning capabilities, broad general-purpose knowledge,
+in-context learning, and cross-modal transfer abilities, positioning them as
+powerful tools for automating and generalizing SP workflows. Motivated by these
+potentials, we introduce SignalLLM, the first general-purpose LLM-based agent
+framework for general SP tasks. Unlike prior LLM-based SP approaches that are
+limited to narrow applications or tricky prompting, SignalLLM introduces a
+principled, modular architecture. It decomposes high-level SP goals into
+structured subtasks via in-context learning and domain-specific retrieval,
+followed by hierarchical planning through adaptive retrieval-augmented
+generation (RAG) and refinement; these subtasks are then executed through
+prompt-based reasoning, cross-modal reasoning, code synthesis, model
+invocation, or data-driven LLM-assisted modeling. Its generalizable design
+enables the flexible selection of problem solving strategies across different
+signal modalities, task types, and data conditions. We demonstrate the
+versatility and effectiveness of SignalLLM through five representative tasks in
+communication and sensing, such as radar target detection, human activity
+recognition, and text compression. Experimental results show superior
+performance over traditional and existing LLM-based methods, particularly in
+few-shot and zero-shot settings.</details></td><td><details><summary>展开</summary>这篇论文介绍了SignalLLM，一个基于大型语言模型（LLM）的通用信号处理（SP）代理框架，它通过引入模块化架构和检索增强生成（RAG）技术，将高层SP目标分解为结构化的子任务，并结合领域特定检索、分层规划和多模态推理，实现了跨信号模态和任务类型的灵活问题解决。实验证明其在少样本和零样本设定下的优越性。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.17066v1">RALLM-POI: Retrieval-Augmented LLM for Zero-shot Next POI Recommendation with Geographical Reranking</a></td><td><details><summary>展开</summary>Next point-of-interest (POI) recommendation predicts a user's next
+destination from historical movements. Traditional models require intensive
+training, while LLMs offer flexible and generalizable zero-shot solutions but
+often generate generic or geographically irrelevant results due to missing
+trajectory and spatial context. To address these issues, we propose RALLM-POI,
+a framework that couples LLMs with retrieval-augmented generation and
+self-rectification. We first propose a Historical Trajectory Retriever (HTR)
+that retrieves relevant past trajectories to serve as contextual references,
+which are then reranked by a Geographical Distance Reranker (GDR) for
+prioritizing spatially relevant trajectories. Lastly, an Agentic LLM Rectifier
+(ALR) is designed to refine outputs through self-reflection. Without additional
+training, RALLM-POI achieves substantial accuracy gains across three real-world
+Foursquare datasets, outperforming both conventional and LLM-based baselines.
+Code is released at https://github.com/LKRcrocodile/RALLM-POI.</details></td><td><details><summary>展开</summary>该论文提出RALLM-POI框架，通过检索增强生成（RAG）和自矫正技术改进基于大语言模型（LLM）的下一个兴趣点（POI）推荐。框架包含历史轨迹检索器（HTR）、地理距离重排序器（GDR）和LLM代理矫正器（ALR），利用相关轨迹作为上下文输入LLM并自我优化输出，无需额外训练即显著提升推荐准确性，在Foursquare数据集上超越传统和LLM基线方法。</details></td></tr></tbody></table>
+
 ### 📅 2025-09-20
 <table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.16780v1">Comparing RAG and GraphRAG for Page-Level Retrieval Question Answering on Math Textbook</a></td><td><details><summary>展开</summary>Technology-enhanced learning environments often help students retrieve
 relevant learning content for questions arising during self-paced study. Large
