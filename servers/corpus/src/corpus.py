@@ -1,7 +1,10 @@
 import json
 import os
 from pathlib import Path
-from typing import Dict, Optional, Union
+from typing import Dict, Optional, Union, Any
+from tqdm import tqdm
+import ast
+
 
 from ultrarag.server import UltraRAG_MCP_Server
 
@@ -37,66 +40,142 @@ def parse_documents(file_path: Union[str, Path]) -> Dict[str, str]:
 
     return {"raw_data": raw_data}
 
+def _load_jsonl(file_path):
+    documents = []
+    with open(file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            documents.append(json.loads(line))
+    return documents
+
+def _save_jsonl(documents, file_path):
+    with open(file_path, "w", encoding="utf-8") as f:
+        for doc in documents:
+            f.write(json.dumps(doc) + "\n")
+
 
 @app.tool(
-    output="chunk_strategy,chunk_size,raw_data,output_path,tokenizer_name_or_path->status"
+    output="raw_chunk_path,chunk_backend_configs,chunk_backend,chunk_path,use_title->None"
 )
 async def chunk_documents(
-    chunk_strategy: str,
-    chunk_size: int,
-    raw_data: str,
-    output_path: Optional[str] = None,
-    tokenizer_name_or_path: Optional[str] = None,
-) -> Dict[str, str]:
+    raw_chunk_path: str,
+    chunk_backend_configs: Dict[str, Any],
+    chunk_backend: str = "token",
+    chunk_path: Optional[str] = None,
+    use_title: bool = True,
+) -> None:
 
     try:
         import chonkie
     except ImportError:
         raise ImportError("Please install 'chonkie' via pip to use chunk_documents.")
 
-    if output_path is None:
+    if chunk_path is None:
         current_file = os.path.abspath(__file__)
         project_root = os.path.dirname(os.path.dirname(current_file))
         output_dir = os.path.join(project_root, "output", "corpus")
-        output_path = os.path.join(output_dir, "chunks.jsonl")
+        chunk_path = os.path.join(output_dir, "chunks.jsonl")
     else:
-        output_path = str(output_path)
-        output_dir = os.path.dirname(output_path)
-
+        chunk_path = str(chunk_path)
+        output_dir = os.path.dirname(chunk_path)
     os.makedirs(output_dir, exist_ok=True)
 
-    if chunk_strategy == "token":
-        chunker = chonkie.TokenChunker(
-            tokenizer=tokenizer_name_or_path, chunk_size=chunk_size
-        )
-    elif chunk_strategy == "word":
-        chunker = chonkie.TokenChunker(tokenizer="word", chunk_size=chunk_size)
-    elif chunk_strategy == "sentence":
-        chunker = chonkie.SentenceChunker(
-            tokenizer_or_token_counter=tokenizer_name_or_path, chunk_size=chunk_size
-        )
-    elif chunk_strategy == "recursive":
-        chunker = chonkie.RecursiveChunker(
-            tokenizer_or_token_counter=tokenizer_name_or_path,
+    documents = _load_jsonl(raw_chunk_path)
+
+    cfg = (chunk_backend_configs.get(chunk_backend) or {}).copy()
+    if chunk_backend == "token":
+        from chonkie import TokenChunker
+        import tiktoken
+        
+        tokenizer_name = cfg.get("tokenizer_or_token_counter")
+        if tokenizer_name not in ['word','character']:
+            tokenizer = tiktoken.get_encoding(tokenizer_name)
+        else:
+            tokenizer = tokenizer_name  
+        chunk_size = cfg.get("chunk_size")
+        chunk_overlap = cfg.get("chunk_overlap")
+        
+        chunker = TokenChunker(
+            tokenizer=tokenizer, 
             chunk_size=chunk_size,
-            min_characters_per_chunk=1,
+            chunk_overlap=chunk_overlap
+        )
+    elif chunk_backend == "sentence":
+        from chonkie import SentenceChunker
+        import tiktoken
+        
+        tokenizer_name = cfg.get("tokenizer_or_token_counter")
+        if tokenizer_name not in ['word','character']:
+            tokenizer = tiktoken.get_encoding(tokenizer_name)
+        else:
+            tokenizer = tokenizer_name  
+        chunk_size = cfg.get("chunk_size")
+        chunk_overlap = cfg.get("chunk_overlap")
+        min_sentences_per_chunk = cfg.get("min_sentences_per_chunk")
+        delim = cfg.get("delim")
+        delim = ast.literal_eval(delim)
+        chunker = SentenceChunker(
+            tokenizer_or_token_counter=tokenizer, 
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,               
+            min_sentences_per_chunk=min_sentences_per_chunk,
+            delim=delim 
+        )
+    elif chunk_backend == "recursive":
+        from chonkie import RecursiveChunker, RecursiveRules
+        import tiktoken
+        
+        tokenizer_name = cfg.get("tokenizer_or_token_counter")
+        if tokenizer_name not in ['word','character']:
+            tokenizer = tiktoken.get_encoding(tokenizer_name)
+        else:
+            tokenizer = tokenizer_name  
+        chunk_size = cfg.get("chunk_size")
+        min_characters_per_chunk = cfg.get("min_characters_per_chunk")
+        chunker = RecursiveChunker(
+            tokenizer_or_token_counter=tokenizer,
+            chunk_size=chunk_size,
+            rules=RecursiveRules(),
+            min_characters_per_chunk=min_characters_per_chunk,
         )
     else:
         raise ValueError(
-            f"Invalid chunking method: {chunk_strategy}. Supported: token, word, sentence, recursive"
+            f"Invalid chunking method: {chunk_backend}. Supported: token, sentence, recursive."
         )
 
-    chunks = chunker(raw_data)
+    chunked_documents = []
+    current_chunk_id = 0
+    for doc in tqdm(documents, desc=f"Chunking ({chunk_backend})", unit="doc"):
+        doc_id = doc.get("id") or ""  
+        title = (doc.get("title") or "").strip()  
+        text = (doc.get("contents") or "").strip()
 
-    chunked_documents = [
-        {"id": i, "contents": chunk.text} for i, chunk in enumerate(chunks)
-    ]
+        if not text:
+            app.logger.info(f"[WARN] doc_id={doc_id} has no contents, skipped.")
+            continue
+        try:
+            chunks = chunker.chunk(text)
+        except Exception as e:
+            raise RuntimeError(f"fail chunked(doc_id={doc_id}): {e}")
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        for doc in chunked_documents:
-            f.write(json.dumps(doc, ensure_ascii=False) + "\n")
+        for chunk in chunks:
+            if use_title:
+                contents = title + "\n" + chunk.text
+            else:
+                contents = chunk.text
+            meta_chunk = {
+                "id": current_chunk_id,
+                "doc_id": doc_id,
+                "title": title,
+                "contents": contents.strip(),
+            }
+            chunked_documents.append(meta_chunk)
+            current_chunk_id += 1
 
-    return {"status": "save chunks successful"}
+
+
+    _save_jsonl(chunked_documents, chunk_path)
+
+
 
 
 if __name__ == "__main__":

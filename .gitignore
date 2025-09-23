@@ -18,6 +18,7 @@ index/
 output/
 logs/
 test/
+chunk/
 
 # Environment variables and secrets
 .env
