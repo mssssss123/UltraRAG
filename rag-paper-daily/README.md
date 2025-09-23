@@ -1,7 +1,92 @@
 # 📚 RAG Paper Daily
 
 ### 📅 2025-09-20
-<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody></tbody></table>
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.16780v1">Comparing RAG and GraphRAG for Page-Level Retrieval Question Answering on Math Textbook</a></td><td><details><summary>展开</summary>Technology-enhanced learning environments often help students retrieve
+relevant learning content for questions arising during self-paced study. Large
+language models (LLMs) have emerged as novel aids for information retrieval
+during learning. While LLMs are effective for general-purpose
+question-answering, they typically lack alignment with the domain knowledge of
+specific course materials such as textbooks and slides. We investigate
+Retrieval-Augmented Generation (RAG) and GraphRAG, a knowledge graph-enhanced
+RAG approach, for page-level question answering in an undergraduate mathematics
+textbook. While RAG has been effective for retrieving discrete, contextually
+relevant passages, GraphRAG may excel in modeling interconnected concepts and
+hierarchical knowledge structures. We curate a dataset of 477 question-answer
+pairs, each tied to a distinct textbook page. We then compare the standard
+embedding-based RAG methods to GraphRAG for evaluating both retrieval
+accuracy-whether the correct page is retrieved-and generated answer quality via
+F1 scores. Our findings show that embedding-based RAG achieves higher retrieval
+accuracy and better F1 scores compared to GraphRAG, which tends to retrieve
+excessive and sometimes irrelevant content due to its entity-based structure.
+We also explored re-ranking the retrieved pages with LLM and observed mixed
+results, including performance drop and hallucinations when dealing with larger
+context windows. Overall, this study highlights both the promises and
+challenges of page-level retrieval systems in educational contexts, emphasizing
+the need for more refined retrieval methods to build reliable AI tutoring
+solutions in providing reference page numbers.</details></td><td><details><summary>展开</summary>这篇论文研究了检索增强生成（RAG）和知识图谱增强的GraphRAG方法在本科数学教科书页级问答中的应用，比较了它们在检索准确性和生成答案质量上的表现，发现基于嵌入的RAG优于GraphRAG，并探讨了教育场景中检索系统的潜力与挑战。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16584v1">From Scores to Steps: Diagnosing and Improving LLM Performance in Evidence-Based Medical Calculations</a></td><td><details><summary>展开</summary>Large language models (LLMs) have demonstrated promising performance on
+medical benchmarks; however, their ability to perform medical calculations, a
+crucial aspect of clinical decision-making, remains underexplored and poorly
+evaluated. Existing benchmarks often assess only the final answer with a wide
+numerical tolerance, overlooking systematic reasoning failures and potentially
+causing serious clinical misjudgments. In this work, we revisit medical
+calculation evaluation with a stronger focus on clinical trustworthiness.
+First, we clean and restructure the MedCalc-Bench dataset and propose a new
+step-by-step evaluation pipeline that independently assesses formula selection,
+entity extraction, and arithmetic computation. Under this granular framework,
+the accuracy of GPT-4o drops from 62.7% to 43.6%, revealing errors masked by
+prior evaluations. Second, we introduce an automatic error analysis framework
+that generates structured attribution for each failure mode. Human evaluation
+confirms its alignment with expert judgment, enabling scalable and explainable
+diagnostics. Finally, we propose a modular agentic pipeline, MedRaC, that
+combines retrieval-augmented generation and Python-based code execution.
+Without any fine-tuning, MedRaC improves the accuracy of different LLMs from
+16.35% up to 53.19%. Our work highlights the limitations of current benchmark
+practices and proposes a more clinically faithful methodology. By enabling
+transparent and transferable reasoning evaluation, we move closer to making
+LLM-based systems trustworthy for real-world medical applications.</details></td><td><details><summary>展开</summary>这篇论文探讨大语言模型（LLM）在医学计算任务中的性能问题，提出改进评估方法（MedCalc-Bench数据集和分步评估流程），发现现有评测掩盖系统性错误（如GPT-4o准确率从62.7%降至43.6%）。作者开发了自动错误分析框架，并提出结合检索增强生成（RAG）和Python代码执行的模块化流程MedRaC，显著提升不同LLM的准确率（最高达53.19%）。研究强调临床可信度评估的重要性，推动LLM在真实医疗场景的可靠应用。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16508v1">Federated Learning with Ad-hoc Adapter Insertions: The Case of Soft-Embeddings for Training Classifier-as-Retriever</a></td><td><details><summary>展开</summary>When existing retrieval-augmented generation (RAG) solutions are intended to
+be used for new knowledge domains, it is necessary to update their encoders,
+which are taken to be pretrained large language models (LLMs). However, fully
+finetuning these large models is compute- and memory-intensive, and even
+infeasible when deployed on resource-constrained edge devices. We propose a
+novel encoder architecture in this work that addresses this limitation by using
+a frozen small language model (SLM), which satisfies the memory constraints of
+edge devices, and inserting a small adapter network before the transformer
+blocks of the SLM. The trainable adapter takes the token embeddings of the new
+corpus and learns to produce enhanced soft embeddings for it, while requiring
+significantly less compute power to update than full fine-tuning. We further
+propose a novel retrieval mechanism by attaching a classifier head to the SLM
+encoder, which is trained to learn a similarity mapping of the input embeddings
+to their corresponding documents. Finally, to enable the online fine-tuning of
+both (i) the encoder soft embeddings and (ii) the classifier-as-retriever on
+edge devices, we adopt federated learning (FL) and differential privacy (DP) to
+achieve an efficient, privacy-preserving, and product-grade training solution.
+We conduct a theoretical analysis of our methodology, establishing convergence
+guarantees under mild assumptions on gradient variance when deployed for
+general smooth nonconvex loss functions. Through extensive numerical
+experiments, we demonstrate (i) the efficacy of obtaining soft embeddings to
+enhance the encoder, (ii) training a classifier to improve the retriever, and
+(iii) the role of FL in achieving speedup.</details></td><td><details><summary>展开</summary>本文提出了一种适用于边缘设备的新型RAG编码器架构，采用冻结的小语言模型（SLM）和适配器网络来减少计算和内存需求，同时引入基于分类器的检索机制和联邦学习（FL）进行隐私保护和高效在线微调，理论分析和实验验证了方法的有效性。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.16502v1">GRIL: Knowledge Graph Retrieval-Integrated Learning with Large Language Models</a></td><td><details><summary>展开</summary>Retrieval-Augmented Generation (RAG) has significantly mitigated the
+hallucinations of Large Language Models (LLMs) by grounding the generation with
+external knowledge. Recent extensions of RAG to graph-based retrieval offer a
+promising direction, leveraging the structural knowledge for multi-hop
+reasoning. However, existing graph RAG typically decouples retrieval and
+reasoning processes, which prevents the retriever from adapting to the
+reasoning needs of the LLM. They also struggle with scalability when performing
+multi-hop expansion over large-scale graphs, or depend heavily on annotated
+ground-truth entities, which are often unavailable in open-domain settings. To
+address these challenges, we propose a novel graph retriever trained end-to-end
+with LLM, which features an attention-based growing and pruning mechanism,
+adaptively navigating multi-hop relevant entities while filtering out noise.
+Within the extracted subgraph, structural knowledge and semantic features are
+encoded via soft tokens and the verbalized graph, respectively, which are
+infused into the LLM together, thereby enhancing its reasoning capability and
+facilitating interactive joint training of the graph retriever and the LLM
+reasoner. Experimental results across three QA benchmarks show that our
+approach consistently achieves state-of-the-art performance, validating the
+strength of joint graph-LLM optimization for complex reasoning tasks. Notably,
+our framework eliminates the need for predefined ground-truth entities by
+directly optimizing the retriever using LLM logits as implicit feedback, making
+it especially effective in open-domain settings.</details></td><td><details><summary>展开</summary>这篇论文提出了一种新颖的端到端训练方法，将基于图的检索器与大语言模型（LLM）联合优化，通过注意力机制动态导航多跳相关实体并过滤噪声，同时融合结构知识和语义特征以增强LLM的推理能力，显著提升了开放领域复杂问答任务的表现。</details></td></tr></tbody></table>
 
 ### 📅 2025-09-19
 <table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.16112v1">CodeRAG: Finding Relevant and Necessary Knowledge for Retrieval-Augmented Repository-Level Code Completion</a></td><td><details><summary>展开</summary>Repository-level code completion automatically predicts the unfinished code
