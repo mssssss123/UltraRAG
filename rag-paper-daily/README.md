@@ -1,5 +1,111 @@
 # 📚 RAG Paper Daily
 
+### 📅 2025-09-22
+<table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.18054v1">A Knowledge Graph-based Retrieval-Augmented Generation Framework for Algorithm Selection in the Facility Layout Problem</a></td><td><details><summary>展开</summary>Selecting a solution algorithm for the Facility Layout Problem (FLP), an
+NP-hard optimization problem with a multiobjective trade-off, is a complex task
+that requires deep expert knowledge. The performance of a given algorithm
+depends on specific problem characteristics such as its scale, objectives, and
+constraints. This creates a need for a data-driven recommendation method to
+guide algorithm selection in automated design systems. This paper introduces a
+new recommendation method to make such expertise accessible, based on a
+Knowledge Graph-based Retrieval-Augmented Generation (KG RAG) framework. To
+address this, a domain-specific knowledge graph is constructed from published
+literature. The method then employs a multi-faceted retrieval mechanism to
+gather relevant evidence from this knowledge graph using three distinct
+approaches, which include a precise graph-based search, flexible vector-based
+search, and high-level cluster-based search. The retrieved evidence is utilized
+by a Large Language Model (LLM) to generate algorithm recommendations with
+data-driven reasoning. The proposed KG-RAG method is compared against a
+commercial LLM chatbot with access to the knowledge base as a table, across a
+series of diverse, real-world FLP test cases. Based on recommendation accuracy
+and reasoning capability, the proposed method performed significantly better
+than the commercial LLM chatbot.</details></td><td><details><summary>展开</summary>这篇论文提出了一种基于知识图谱的检索增强生成（KG-RAG）框架，用于为设施布局问题（FLP）推荐合适的算法。该方法通过构建领域特定的知识图谱，结合多方面的检索机制（包括基于图的精确搜索、基于向量的灵活搜索和基于聚类的高级搜索），利用大语言模型（LLM）生成算法推荐，并在真实FLP案例中验证了其优于商用LLM聊天机器人的性能。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.17788v1">One Agent to Serve All: a Lite-Adaptive Stylized AI Assistant for Millions of Multi-Style Official Accounts</a></td><td><details><summary>展开</summary>Conversational agents deployed in industrial-scale official account platforms
+must generate responses that are both contextually grounded and stylistically
+aligned-requirements that existing methods struggle to meet. Chain-of-thought
+(CoT) prompting induces significant latency due to multi-turn reasoning;
+per-account fine-tuning is computationally prohibitive; and long prompt-based
+methods degrade the model's ability to grasp injected context and style. In
+this paper, we propose WeStar, a lite-adaptive framework for stylized
+contextual question answering that scales to millions of official accounts.
+WeStar combines context-grounded generation via RAG with style-aware generation
+using Parametric RAG (PRAG), where LoRA modules are dynamically activated per
+style cluster. Our contributions are fourfold: (1) We introduce WeStar, a
+unified framework capable of serving large volumes of official accounts with
+minimal overhead. (2) We propose a multi-dimensional, cluster-based parameter
+sharing scheme that enables compact style representation while preserving
+stylistic diversity. (3) We develop a style-enhanced Direct Preference
+Optimization (SeDPO) method to optimize each style cluster's parameters for
+improved generation quality. (4) Experiments on a large-scale industrial
+dataset validate the effectiveness and efficiency of WeStar, underscoring its
+pracitical value in real-world deployment.</details></td><td><details><summary>展开</summary>这篇论文提出了WeStar框架，结合RAG和Parametric RAG（PRAG）技术，通过动态激活LoRA模块实现风格化上下文问答，旨在为海量官方账号提供低延迟、高适应性的生成解决方案。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.17671v1">Turk-LettuceDetect: A Hallucination Detection Models for Turkish RAG Applications</a></td><td><details><summary>展开</summary>The widespread adoption of Large Language Models (LLMs) has been hindered by
+their tendency to hallucinate, generating plausible but factually incorrect
+information. While Retrieval-Augmented Generation (RAG) systems attempt to
+address this issue by grounding responses in external knowledge, hallucination
+remains a persistent challenge, particularly for morphologically complex,
+low-resource languages like Turkish. This paper introduces Turk-LettuceDetect,
+the first suite of hallucination detection models specifically designed for
+Turkish RAG applications. Building on the LettuceDetect framework, we formulate
+hallucination detection as a token-level classification task and fine-tune
+three distinct encoder architectures: a Turkish-specific ModernBERT,
+TurkEmbed4STS, and multilingual EuroBERT. These models were trained on a
+machine-translated version of the RAGTruth benchmark dataset containing 17,790
+instances across question answering, data-to-text generation, and summarization
+tasks. Our experimental results show that the ModernBERT-based model achieves
+an F1-score of 0.7266 on the complete test set, with particularly strong
+performance on structured tasks. The models maintain computational efficiency
+while supporting long contexts up to 8,192 tokens, making them suitable for
+real-time deployment. Comparative analysis reveals that while state-of-the-art
+LLMs demonstrate high recall, they suffer from low precision due to
+over-generation of hallucinated content, underscoring the necessity of
+specialized detection mechanisms. By releasing our models and translated
+dataset, this work addresses a critical gap in multilingual NLP and establishes
+a foundation for developing more reliable and trustworthy AI applications for
+Turkish and other languages.</details></td><td><details><summary>展开</summary>该论文针对土耳其语等低资源语言中RAG系统的幻觉问题，提出了首个土耳其语专用幻觉检测模型套件Turk-LettuceDetect。通过微调三种编码器架构并使用机器翻译的基准数据集进行训练，重点解决了问答、数据到文本生成和摘要任务中的幻觉检测问题，实验表明其模型在保持计算效率的同时有效提升了检测性能。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.17544v1">A Multimodal Conversational Assistant for the Characterization of Agricultural Plots from Geospatial Open Data</a></td><td><details><summary>展开</summary>The increasing availability of open Earth Observation (EO) and agricultural
+datasets holds great potential for supporting sustainable land management.
+However, their high technical entry barrier limits accessibility for non-expert
+users. This study presents an open-source conversational assistant that
+integrates multimodal retrieval and large language models (LLMs) to enable
+natural language interaction with heterogeneous agricultural and geospatial
+data. The proposed architecture combines orthophotos, Sentinel-2 vegetation
+indices, and user-provided documents through retrieval-augmented generation
+(RAG), allowing the system to flexibly determine whether to rely on multimodal
+evidence, textual knowledge, or both in formulating an answer. To assess
+response quality, we adopt an LLM-as-a-judge methodology using Qwen3-32B in a
+zero-shot, unsupervised setting, applying direct scoring in a multi-dimensional
+quantitative evaluation framework. Preliminary results show that the system is
+capable of generating clear, relevant, and context-aware responses to
+agricultural queries, while remaining reproducible and scalable across
+geographic regions. The primary contributions of this work include an
+architecture for fusing multimodal EO and textual knowledge sources, a
+demonstration of lowering the barrier to access specialized agricultural
+information through natural language interaction, and an open and reproducible
+design.</details></td><td><details><summary>展开</summary>这篇论文提出了一种结合多模态检索与大语言模型的开源对话助手，利用RAG技术整合农业与地理空间数据，通过自然语言交互降低非专家用户使用门槛，并采用LLM评估方法验证响应质量。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.17486v1">AttnComp: Attention-Guided Adaptive Context Compression for Retrieval-Augmented Generation</a></td><td><details><summary>展开</summary>Retrieval-augmented generation improves the factual accuracy of Large
+Language Models (LLMs) by incorporating external context, but often suffers
+from irrelevant retrieved content that hinders effectiveness. Context
+compression addresses this issue by filtering out irrelevant information from
+context before LLM generation. However, existing methods struggle to adaptively
+adjust compression rates for different context, maintain low latency and
+integrate information across multiple documents. To overcome these limitations,
+We introduce AttnComp, an adaptive, efficient and context-aware compression
+framework. By leveraging the attention mechanism of LLMs to identify relevant
+information, AttnComp employs a Top-P compression algorithm to retain the
+minimal set of documents whose cumulative attention weights exceeds a
+predefined threshold. In addition to compression, AttnComp estimates response
+confidence by assessing the overall relevance of the retrieved content,
+enabling users to gauge response reliability. Experiments demonstrate that
+AttnComp outperforms existing compression methods and uncompressed baselines,
+achieving higher accuracy with substantial compression rates and lower latency.</details></td><td><details><summary>展开</summary>这篇论文提出了一种名为AttnComp的自适应、高效且上下文感知的压缩框架，用于解决RAG中检索内容可能无关导致效果下降的问题。该框架利用大语言模型的注意力机制识别相关信息，并通过Top-P压缩算法保留关键文档，同时还能评估响应置信度以提升可靠性，实验证明其性能优于现有压缩方法和未压缩基线。</details></td></tr><tr><td><a href="http://arxiv.org/abs/2509.17395v1">FinDebate: Multi-Agent Collaborative Intelligence for Financial Analysis</a></td><td><details><summary>展开</summary>We introduce FinDebate, a multi-agent framework for financial analysis,
+integrating collaborative debate with domain-specific Retrieval-Augmented
+Generation (RAG). Five specialized agents, covering earnings, market,
+sentiment, valuation, and risk, run in parallel to synthesize evidence into
+multi-dimensional insights. To mitigate overconfidence and improve reliability,
+we introduce a safe debate protocol that enables agents to challenge and refine
+initial conclusions while preserving coherent recommendations. Experimental
+results, based on both LLM-based and human evaluations, demonstrate the
+framework's efficacy in producing high-quality analysis with calibrated
+confidence levels and actionable investment strategies across multiple time
+horizons.</details></td><td><details><summary>展开</summary>这篇文章介绍了一个名为FinDebate的多代理框架，用于金融分析，结合了协作辩论和特定领域的检索增强生成（RAG）。五个专业代理并行工作，将证据合成为多维度的见解，并通过安全辩论协议减少过度自信并提高可靠性。实验结果表明该框架能生成高质量的分析和可操作的投资策略。</details></td></tr></tbody></table>
+
 ### 📅 2025-09-21
 <table style='width:100%;'><colgroup><col><col><col></colgroup><thead><tr><th>title</th><th>abstract</th><th>summary</th></tr></thead><tbody><tr><td><a href="http://arxiv.org/abs/2509.17197v1">SignalLLM: A General-Purpose LLM Agent Framework for Automated Signal Processing</a></td><td><details><summary>展开</summary>Modern signal processing (SP) pipelines, whether model-based or data-driven,
 often constrained by complex and fragmented workflow, rely heavily on expert
