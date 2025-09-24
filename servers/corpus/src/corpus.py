@@ -246,10 +246,10 @@ def _list_images(images_dir: str) -> List[str]:
 
 
 @app.tool(
-    output="mineru_dir,mineru_corpus_prefix,text_corpus_save_path, image_corpus_save_path->None")
+    output="mineru_dir,parse_file_path,text_corpus_save_path,image_corpus_save_path->None")
 async def build_mineru_corpus(
     mineru_dir: str,             
-    mineru_corpus_prefix: str,              
+    parse_file_path: str,              
     text_corpus_save_path: str, 
     image_corpus_save_path: str,
 ) -> None:
@@ -257,6 +257,10 @@ async def build_mineru_corpus(
     root = os.path.abspath(mineru_dir)
     if not os.path.isdir(root):
         raise ToolError(f"MinerU root not found: {root}")
+    
+    if not parse_file_path:
+        raise ToolError("`parse_file_path` cannot be empty.")
+    mineru_corpus_prefix = os.path.splitext(os.path.basename(parse_file_path))[0] 
 
     auto_dir = os.path.join(root, mineru_corpus_prefix, "auto")
     if not os.path.isdir(auto_dir):

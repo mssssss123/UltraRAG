@@ -7,7 +7,6 @@ image_corpus_save_path: corpora/image.jsonl
 mineru_dir: corpora/
 mineru_extra_params:
   source: modelscope
-mineru_corpus_prefix: UltraRAG
 
 # chunking parameters
 raw_chunk_path: corpora/text.jsonl
