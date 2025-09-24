@@ -1,27 +1,37 @@
 import json
 import os
 from pathlib import Path
-from typing import Dict, Optional, Union, Any
+from typing import Dict, Optional, Union, Any, List, Iterable
 from tqdm import tqdm
 import ast
-
+from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
+import asyncio
+import shutil
+from PIL import Image
 
 from ultrarag.server import UltraRAG_MCP_Server
 
 app = UltraRAG_MCP_Server("corpus")
 
 
-def _load_jsonl(file_path):
-    documents = []
+def _save_jsonl(rows: Iterable[Dict[str, Any]], file_path: str) -> None:
+    out_dir = os.path.dirname(os.path.abspath(file_path))
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+
+    with open(file_path, "w", encoding="utf-8", newline="\n") as f:
+        for r in rows:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+def _load_jsonl(file_path: str) -> List[Dict[str, Any]]:
+    docs = []
     with open(file_path, "r", encoding="utf-8") as f:
         for line in f:
-            documents.append(json.loads(line))
-    return documents
-
-def _save_jsonl(documents, file_path):
-    with open(file_path, "w", encoding="utf-8") as f:
-        for doc in documents:
-            f.write(json.dumps(doc) + "\n")
+            line = line.strip()
+            if not line:
+                continue
+            docs.append(json.loads(line))
+    return docs
 
 
 @app.tool(output="file_path->raw_data")
@@ -55,22 +65,19 @@ def parse_documents(
 
     return {"raw_data": raw_data}
 
-@app.tool(output="pdf_file_path,mineru_dir,mineru_extra_params->None")
+@app.tool(output="parse_file_path,mineru_dir,mineru_extra_params->None")
 async def mineru_parse(
-    pdf_file_path: str,
+    parse_file_path: str,
     mineru_dir: str,
     mineru_extra_params: Optional[Dict[str, Any]] = None,                    
 ):
-    import asyncio
-    import shutil
-
     if shutil.which("mineru") is None:
         raise ToolError("`mineru` executable not found. Please install it or add it to PATH.")
 
-    if not pdf_file_path:
-        raise ToolError("`pdf_file_path` cannot be empty.")
+    if not parse_file_path:
+        raise ToolError("`parse_file_path` cannot be empty.")
 
-    pdf_path = os.path.abspath(pdf_file_path)
+    pdf_path = os.path.abspath(parse_file_path)
     if not os.path.exists(pdf_path):
         raise ToolError(f"PDF file does not exist: {pdf_path}")
     if not pdf_path.lower().endswith(".pdf"):
@@ -91,7 +98,6 @@ async def mineru_parse(
             if v is not None and v != "":
                 cmd.append(str(v))  
 
-
     try:
         app.logger.info("Starting mineru command: %s", " ".join(cmd))
         proc = await asyncio.create_subprocess_exec(
@@ -111,7 +117,86 @@ async def mineru_parse(
     except Exception as e:
         raise ToolError(f"Unexpected error while running mineru: {e}")
 
+def _list_images(images_dir: str) -> List[str]:
+    if not os.path.isdir(images_dir):
+        return []
+    exts = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tiff"}
+    rels = []
+    for dp, _, fns in os.walk(images_dir):
+        for fn in fns:
+            if os.path.splitext(fn)[1].lower() in exts:
+                rel = os.path.relpath(os.path.join(dp, fn), start=images_dir)
+                rels.append(rel.replace("\\", "/"))
+    rels.sort()
+    return rels
 
+
+@app.tool(
+    output="mineru_dir,mineru_corpus_prefix,text_corpus_save_path, image_corpus_save_path->None")
+async def build_mineru_corpus(
+    mineru_dir: str,             
+    mineru_corpus_prefix: str,              
+    text_corpus_save_path: str, 
+    image_corpus_save_path: str,
+) -> None:
+
+    root = os.path.abspath(mineru_dir)
+    if not os.path.isdir(root):
+        raise ToolError(f"MinerU root not found: {root}")
+
+    auto_dir = os.path.join(root, mineru_corpus_prefix, "auto")
+    if not os.path.isdir(auto_dir):
+        raise ToolError(f"Auto dir not found: {auto_dir}")
+
+
+    md_path = os.path.join(auto_dir, f"{mineru_corpus_prefix}.md")
+    text_rows: List[Dict[str, Any]] = []
+    if not os.path.isfile(md_path):
+        raise ToolError(f"Markdown not found: {md_path}")
+    with open(md_path, "r", encoding="utf-8") as f:
+        md_text = f.read().strip()
+    text_rows.append({
+        "id": mineru_corpus_prefix,
+        "title": mineru_corpus_prefix,
+        "contents": md_text
+    })
+    text_out = os.path.abspath(text_corpus_save_path)
+    _save_jsonl(text_rows, text_out)
+
+    images_dir = os.path.join(auto_dir, "images")
+    rel_list = _list_images(images_dir)
+    image_rows: List[Dict[str, Any]] = []
+    image_out = os.path.abspath(image_corpus_save_path)
+    out_root_dir = os.path.dirname(image_out)
+    out_img_dir = os.path.join(out_root_dir, "images")
+    os.makedirs(out_img_dir, exist_ok=True)
+
+    for idx, rel in enumerate(rel_list):
+        src = os.path.join(images_dir, rel)
+        dst = os.path.join(out_img_dir, rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+
+        try:
+            with Image.open(src) as im:
+                im.convert("RGB").copy()
+        except Exception as e:
+            app.logger.warning(f"Skip invalid image: {src}, reason: {e}")
+            continue
+
+        shutil.copy2(src, dst)
+        image_rows.append({
+            "id": idx,
+            "image_id": os.path.basename(rel),
+            "image_path": f"images/{rel}",
+        })
+
+    _save_jsonl(image_rows, image_out)
+
+
+    app.logger.info(
+        f"Text corpus -> {text_out} (rows={len(text_rows)}); "
+        f"Image corpus -> {image_out} (rows={len(image_rows)})"
+    )
 
 
 @app.tool(

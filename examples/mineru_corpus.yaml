@@ -1,0 +1,9 @@
+# MCP Server
+servers:
+  corpus: servers/corpus
+
+# MCP Client Pipeline
+pipeline:
+- corpus.mineru_parse
+- corpus.build_mineru_corpus
+- corpus.chunk_documents

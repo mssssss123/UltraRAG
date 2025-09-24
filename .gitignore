@@ -20,6 +20,7 @@ logs/
 test/
 chunk/
 mineru/
+corpus/
 
 # Environment variables and secrets
 .env
