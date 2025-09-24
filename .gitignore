@@ -18,9 +18,7 @@ index/
 output/
 logs/
 test/
-chunk/
-mineru/
-corpus/
+corpora/
 
 # Environment variables and secrets
 .env

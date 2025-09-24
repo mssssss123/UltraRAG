@@ -34,36 +34,71 @@ def _load_jsonl(file_path: str) -> List[Dict[str, Any]]:
     return docs
 
 
-@app.tool(output="file_path->raw_data")
-def parse_documents(
-    file_path: Union[str, Path]
-) -> Dict[str, str]:
+@app.tool(
+    output="parse_file_path,text_corpus_save_path->None"
+)
+async def build_text_corpus(
+    parse_file_path: str,           
+    text_corpus_save_path: str,            
+) -> None:
 
-    try:
-        from llama_index.core import SimpleDirectoryReader
-    except ImportError:
-        raise ImportError(
-            "Missing optional dependency 'llama-index-readers-file'. "
-            "Please install it with: pip install llama-index-readers-file"
-        )
+    TEXT_EXTS  = {".txt", ".md"}
+    PMLIKE_EXT = {".pdf", ".xps", ".oxps", ".epub", ".mobi", ".fb2"}
 
-    file_path = Path(file_path) if not isinstance(file_path, Path) else file_path
-    if not file_path.exists():
-        raise FileNotFoundError(f"File not found: {file_path}")
+    input_path = os.path.abspath(parse_file_path)
+    if not os.path.isfile(input_path):
+        raise ToolError(f"Input file not found: {input_path}")
 
-    ext = file_path.suffix.lower()
-    if ext in [".pdf", ".docx", ".txt", ".md"]:
-        reader = SimpleDirectoryReader(input_files=[file_path])
-        documents = reader.load_data()
-        raw_data = "\n".join([d.text for d in documents])
+    ext = os.path.splitext(input_path)[1].lower()
+    stem = os.path.splitext(os.path.basename(input_path))[0]  
+
+    rows: List[Dict[str, Any]] = []
+
+    if ext in TEXT_EXTS:
+        try:
+            with open(input_path, "r", encoding="utf-8") as f:
+                text = f.read()
+        except UnicodeDecodeError:
+            with open(input_path, "r", encoding="latin-1", errors="ignore") as f:
+                text = f.read()
+        text = text.replace("\r\n", "\n").replace("\r", "\n").strip()
+        rows.append({"id": stem, "title": stem, "contents": text})
+
+    elif ext in PMLIKE_EXT:
+        try:
+            import pymupdf
+        except ImportError:
+            raise ToolError("pymupdf not installed. Please `pip install pymupdf`.")
+
+        try:
+            doc = pymupdf.open(input_path)
+        except Exception as e:
+            raise ToolError(f"Failed to open with PyMuPDF: {e}")
+
+        if getattr(doc, "is_encrypted", False):
+            try:
+                doc.authenticate("")
+            except Exception:
+                raise ToolError("Encrypted document not supported (password required).")
+
+        texts = []
+        for pg in doc:
+            texts.append(pg.get_text("text").replace("\r\n", "\n").replace("\r", "\n").strip())
+        merged = "\n\n".join(texts)
+        rows.append({"id": stem, "title": stem, "contents": merged})
+
     else:
-        raise ValueError(
-            f"Unsupported file format: {file_path.suffix}. "
-            "Currently supported: .docx, .txt, .pdf, .md. "
-            "Please convert your file to a supported format."
+        raise ToolError(
+            f"Unsupported file type: {ext}. "
+            f"Supported: {sorted(TEXT_EXTS | PMLIKE_EXT)}"
         )
 
-    return {"raw_data": raw_data}
+    out_path = os.path.abspath(text_corpus_save_path)
+    _save_jsonl(rows, out_path)
+
+    app.logger.info(
+        f"Built text corpus: {out_path} (rows={len(rows)}, from={input_path})"
+    )
 
 @app.tool(output="parse_file_path,image_corpus_save_path->None")
 async def build_image_corpus(

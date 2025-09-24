@@ -1,18 +1,18 @@
 # servers/corpus/parameter.yaml
 parse_file_path: data/UltraRAG.pdf
-text_corpus_save_path: corpus/text.jsonl
-image_corpus_save_path: corpus/image.jsonl
+text_corpus_save_path: corpora/text.jsonl
+image_corpus_save_path: corpora/image.jsonl
 
 # mineru
-mineru_dir: mineru/
+mineru_dir: corpora/
 mineru_extra_params:
   source: modelscope
 mineru_corpus_prefix: UltraRAG
 
 # chunking parameters
-raw_chunk_path: data/chunk_example.jsonl
-chunk_path: chunk/chunks.jsonl
-use_title: true
+raw_chunk_path: corpora/text.jsonl
+chunk_path: corpora/chunks.jsonl
+use_title: false
 chunk_backend: token # choices=["token", "sentence", "recursive"]
 chunk_backend_configs:
   token:
