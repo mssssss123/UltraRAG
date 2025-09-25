@@ -38,66 +38,78 @@ def _load_jsonl(file_path: str) -> List[Dict[str, Any]]:
     output="parse_file_path,text_corpus_save_path->None"
 )
 async def build_text_corpus(
-    parse_file_path: str,           
-    text_corpus_save_path: str,            
+    parse_file_path: str,          
+    text_corpus_save_path: str,     
 ) -> None:
-
     TEXT_EXTS  = {".txt", ".md"}
     PMLIKE_EXT = {".pdf", ".xps", ".oxps", ".epub", ".mobi", ".fb2"}
 
-    input_path = os.path.abspath(parse_file_path)
-    if not os.path.isfile(input_path):
-        raise ToolError(f"Input file not found: {input_path}")
-
-    ext = os.path.splitext(input_path)[1].lower()
-    stem = os.path.splitext(os.path.basename(input_path))[0]  
+    in_path = os.path.abspath(parse_file_path)
+    if not os.path.exists(in_path):
+        raise ToolError(f"Input path not found: {in_path}")
 
     rows: List[Dict[str, Any]] = []
 
-    if ext in TEXT_EXTS:
-        try:
-            with open(input_path, "r", encoding="utf-8") as f:
-                text = f.read()
-        except UnicodeDecodeError:
-            with open(input_path, "r", encoding="latin-1", errors="ignore") as f:
-                text = f.read()
-        text = text.replace("\r\n", "\n").replace("\r", "\n").strip()
-        rows.append({"id": stem, "title": stem, "contents": text})
+    def process_one_file(fp: str) -> None:
+        ext = os.path.splitext(fp)[1].lower()
+        stem = os.path.splitext(os.path.basename(fp))[0]  
 
-    elif ext in PMLIKE_EXT:
-        try:
-            import pymupdf
-        except ImportError:
-            raise ToolError("pymupdf not installed. Please `pip install pymupdf`.")
-
-        try:
-            doc = pymupdf.open(input_path)
-        except Exception as e:
-            raise ToolError(f"Failed to open with PyMuPDF: {e}")
-
-        if getattr(doc, "is_encrypted", False):
+        if ext in TEXT_EXTS:
             try:
-                doc.authenticate("")
-            except Exception:
-                raise ToolError("Encrypted document not supported (password required).")
+                with open(fp, "r", encoding="utf-8") as f:
+                    text = f.read()
+            except UnicodeDecodeError:
+                with open(fp, "r", encoding="latin-1", errors="ignore") as f:
+                    text = f.read()
+            text = text.replace("\r\n", "\n").replace("\r", "\n").strip()
+            rows.append({"id": stem, "title": stem, "contents": text})
 
-        texts = []
-        for pg in doc:
-            texts.append(pg.get_text("text").replace("\r\n", "\n").replace("\r", "\n").strip())
-        merged = "\n\n".join(texts)
-        rows.append({"id": stem, "title": stem, "contents": merged})
+        elif ext in PMLIKE_EXT:
+            try:
+                import pymupdf
+            except ImportError:
+                raise ToolError("pymupdf not installed. Please `pip install pymupdf`.")
 
+            try:
+                doc = pymupdf.open(fp)
+            except Exception as e:
+                app.logger.warning(f"Skip (open failed): {fp} | reason: {e}")
+                return
+
+            if getattr(doc, "is_encrypted", False):
+                try:
+                    doc.authenticate("")
+                except Exception:
+                    app.logger.warning(f"Skip (encrypted): {fp}")
+                    return
+
+            texts = []
+            for pg in doc:
+                try:
+                    t = pg.get_text("text")
+                except Exception:
+                    t = ""
+                texts.append(t.replace("\r\n", "\n").replace("\r", "\n").strip())
+            merged = "\n\n".join(texts).strip()
+            rows.append({"id": stem, "title": stem, "contents": merged})
+
+        else:
+            app.logger.warning(f"Unsupported file type, skip: {fp}")
+            return
+
+    if os.path.isfile(in_path):
+        process_one_file(in_path)
     else:
-        raise ToolError(
-            f"Unsupported file type: {ext}. "
-            f"Supported: {sorted(TEXT_EXTS | PMLIKE_EXT)}"
-        )
+        for dp, _, fns in os.walk(in_path):
+            for fn in fns:
+                process_one_file(os.path.join(dp, fn))
 
     out_path = os.path.abspath(text_corpus_save_path)
     _save_jsonl(rows, out_path)
 
     app.logger.info(
-        f"Built text corpus: {out_path} (rows={len(rows)}, from={input_path})"
+        f"Built text corpus: {out_path} "
+        f"(rows={len(rows)}, from={'dir' if os.path.isdir(in_path) else 'file'}: {in_path})"
     )
 
 @app.tool(output="parse_file_path,image_corpus_save_path->None")
