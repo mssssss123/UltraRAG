@@ -117,78 +117,100 @@ async def build_image_corpus(
     parse_file_path: str,
     image_corpus_save_path: str,
 ) -> None:
-
     try:
         import pymupdf
     except ImportError:
         raise ToolError("Please install required packages: pip install pymupdf pillow")
 
-    pdf_path = os.path.abspath(parse_file_path)
-    if not os.path.exists(pdf_path):
-        raise ToolError(f"PDF file not found: {pdf_path}")
+    in_path = os.path.abspath(parse_file_path)
+    if not os.path.exists(in_path):
+        raise ToolError(f"Input path not found: {in_path}")
 
     corpus_jsonl = os.path.abspath(image_corpus_save_path)
     out_root = os.path.dirname(corpus_jsonl) or os.getcwd()
-    out_img_dir = os.path.join(out_root, "image")
-    os.makedirs(out_img_dir, exist_ok=True)
+    base_img_dir = os.path.join(out_root, "image")  
+    os.makedirs(base_img_dir, exist_ok=True)
 
-    try:
-        doc = pymupdf.open(pdf_path)
-    except Exception as e:
-        raise ToolError(f"Failed to open PDF: {e}")
+    pdf_list: List[str] = []
+    if os.path.isfile(in_path):
+        if not in_path.lower().endswith(".pdf"):
+            raise ToolError(f"Only PDF is supported here. Got: {os.path.splitext(in_path)[1]}")
+        pdf_list = [in_path]
+    else:
+        for dp, _, fns in os.walk(in_path):
+            for fn in fns:
+                if fn.lower().endswith(".pdf"):
+                    pdf_list.append(os.path.join(dp, fn))
+        pdf_list.sort()
 
-    if getattr(doc, "is_encrypted", False):
-        try:
-            doc.authenticate("")  # attempt empty password
-        except Exception:
-            raise ToolError("Encrypted PDF not supported (password required).")
-
-    dpi: int = 144
-    zoom = dpi / 72.0
-    mat = pymupdf.Matrix(zoom, zoom)
+    if not pdf_list:
+        raise ToolError(f"No PDF files found under: {in_path}")
 
     valid_rows: List[Dict[str, Any]] = []
-    page_idx = 0
-    for i, page in enumerate(doc):
+    gid = 0  
+
+    for pdf_path in pdf_list:
+        stem = os.path.splitext(os.path.basename(pdf_path))[0]           
+        out_img_dir = os.path.join(base_img_dir, stem)                
+        os.makedirs(out_img_dir, exist_ok=True)
+
         try:
-            pix = page.get_pixmap(matrix=mat, alpha=False, colorspace=pymupdf.csRGB)
+            doc = pymupdf.open(pdf_path)
         except Exception as e:
-            app.logger.warning(f"Skip page {i}: render error: {e}")
+            app.logger.warning(f"Skip PDF (open failed): {pdf_path} | reason: {e}")
             continue
 
-        filename = f"page_{i}.jpg"
-        save_path = os.path.join(out_img_dir, filename)
-
-        try:
-            pix.save(save_path, jpg_quality=90)
-        except Exception as e:
-            app.logger.warning(f"Skip page {i}: save error: {e}")
-            continue
-        finally:
-            pix = None
-
-        try:
-            with Image.open(save_path) as im:
-                im.verify()
-        except Exception as e:
-            app.logger.warning(f"Skip page {i}: invalid image file after save: {e}")
+        if getattr(doc, "is_encrypted", False):
             try:
-                os.remove(save_path)
-            except OSError:
-                pass
-            continue
+                doc.authenticate("")  
+            except Exception:
+                app.logger.warning(f"Skip PDF (encrypted): {pdf_path}")
+                continue
 
-        valid_rows.append({
-            "id": page_idx,
-            "image_id": filename,
-            "image_path": f"image/{filename}",
-        })
-        page_idx += 1
+        zoom = 144 / 72.0
+        mat = pymupdf.Matrix(zoom, zoom)
+
+        for i, page in enumerate(doc):
+            try:
+                pix = page.get_pixmap(matrix=mat, alpha=False, colorspace=pymupdf.csRGB)
+            except Exception as e:
+                app.logger.warning(f"Skip page {i} in {pdf_path}: render error: {e}")
+                continue
+
+            filename = f"page_{i}.jpg"
+            save_path = os.path.join(out_img_dir, filename)             
+            rel_path = f"image/{stem}/{filename}"                        
+
+            try:
+                pix.save(save_path, jpg_quality=90)  
+            except Exception as e:
+                app.logger.warning(f"Skip page {i} in {pdf_path}: save error: {e}")
+                continue
+            finally:
+                pix = None
+
+            try:
+                with Image.open(save_path) as im:
+                    im.verify()
+            except Exception as e:
+                app.logger.warning(f"Skip page {i} in {pdf_path}: invalid image after save: {e}")
+                try:
+                    os.remove(save_path)
+                except OSError:
+                    pass
+                continue
+
+            valid_rows.append({
+                "id": gid,
+                "image_id": f"{stem}/{filename}",  
+                "image_path": rel_path,           
+            })
+            gid += 1
 
     _save_jsonl(valid_rows, corpus_jsonl)
     app.logger.info(
-        f"Built image corpus: {corpus_jsonl} "
-        f"(valid images={len(valid_rows)}), stored in {out_img_dir}"
+        f"Built image corpus: {corpus_jsonl} (valid images={len(valid_rows)}), "
+        f"images root: {base_img_dir}, pdf_count={len(pdf_list)}"
     )
 
 @app.tool(output="parse_file_path,mineru_dir,mineru_extra_params->None")
