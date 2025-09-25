@@ -217,37 +217,39 @@ async def build_image_corpus(
 async def mineru_parse(
     parse_file_path: str,
     mineru_dir: str,
-    mineru_extra_params: Optional[Dict[str, Any]] = None,                    
-):
+    mineru_extra_params: Optional[Dict[str, Any]] = None,
+) -> None:
+
     if shutil.which("mineru") is None:
         raise ToolError("`mineru` executable not found. Please install it or add it to PATH.")
 
     if not parse_file_path:
         raise ToolError("`parse_file_path` cannot be empty.")
 
-    pdf_path = os.path.abspath(parse_file_path)
-    if not os.path.exists(pdf_path):
-        raise ToolError(f"PDF file does not exist: {pdf_path}")
-    if not pdf_path.lower().endswith(".pdf"):
-        raise ToolError(f"Only .pdf files are supported: {pdf_path}")
+    in_path = os.path.abspath(parse_file_path)
+    if not os.path.exists(in_path):
+        raise ToolError(f"Input path not found: {in_path}")
 
-    output_path = os.path.abspath(mineru_dir)
-    os.makedirs(output_path, exist_ok=True)
+    if os.path.isfile(in_path) and not in_path.lower().endswith(".pdf"):
+        raise ToolError(f"Only .pdf files or directories are supported: {in_path}")
 
-    cmd = ["mineru", "-p", pdf_path, "-o", mineru_dir]
+    out_root = os.path.abspath(mineru_dir)
+    os.makedirs(out_root, exist_ok=True)
 
+    extra_args: List[str] = []
     if mineru_extra_params:
         if not isinstance(mineru_extra_params, dict):
             raise ToolError("`mineru_extra_params` must be a dict, e.g. {'source': 'modelscope'}.")
-
         for k in sorted(mineru_extra_params.keys()):
             v = mineru_extra_params[k]
-            cmd.append(f"--{k}")
+            extra_args.append(f"--{k}")
             if v is not None and v != "":
-                cmd.append(str(v))  
+                extra_args.append(str(v))
+
+    cmd = ["mineru", "-p", in_path, "-o", out_root] + extra_args
+    app.logger.info("Starting mineru command: %s", " ".join(cmd))
 
     try:
-        app.logger.info("Starting mineru command: %s", " ".join(cmd))
         proc = await asyncio.create_subprocess_exec(
             *cmd,
             stdout=asyncio.subprocess.PIPE,
@@ -265,6 +267,8 @@ async def mineru_parse(
     except Exception as e:
         raise ToolError(f"Unexpected error while running mineru: {e}")
 
+    app.logger.info(f"mineru finished processing {in_path} into {out_root}")
+
 def _list_images(images_dir: str) -> List[str]:
     if not os.path.isdir(images_dir):
         return []
@@ -280,74 +284,113 @@ def _list_images(images_dir: str) -> List[str]:
 
 
 @app.tool(
-    output="mineru_dir,parse_file_path,text_corpus_save_path,image_corpus_save_path->None")
+    output="mineru_dir,parse_file_path,text_corpus_save_path,image_corpus_save_path->None"
+)
 async def build_mineru_corpus(
     mineru_dir: str,             
     parse_file_path: str,              
     text_corpus_save_path: str, 
     image_corpus_save_path: str,
 ) -> None:
+    import os, shutil
+    from typing import List, Dict, Any, Set
+    from fastmcp.exceptions import ToolError
+    from PIL import Image
 
+    # ---- 基础路径检查 ----
     root = os.path.abspath(mineru_dir)
     if not os.path.isdir(root):
         raise ToolError(f"MinerU root not found: {root}")
-    
     if not parse_file_path:
         raise ToolError("`parse_file_path` cannot be empty.")
-    mineru_corpus_prefix = os.path.splitext(os.path.basename(parse_file_path))[0] 
+    in_path = os.path.abspath(parse_file_path)
+    if not os.path.exists(in_path):
+        raise ToolError(f"Input path not found: {in_path}")
 
-    auto_dir = os.path.join(root, mineru_corpus_prefix, "auto")
-    if not os.path.isdir(auto_dir):
-        raise ToolError(f"Auto dir not found: {auto_dir}")
+    # ---- 根据传入是“文件/目录”确定要处理的 stem 列表 ----
+    stems: List[str] = []
+    if os.path.isfile(in_path):
+        if not in_path.lower().endswith(".pdf"):
+            raise ToolError(f"Only .pdf supported for file input: {in_path}")
+        stems = [os.path.splitext(os.path.basename(in_path))[0]]
+    else:
+        seen: Set[str] = set()
+        for dp, _, fns in os.walk(in_path):
+            for fn in fns:
+                if fn.lower().endswith(".pdf"):
+                    stem = os.path.splitext(fn)[0]
+                    if stem not in seen:
+                        stems.append(stem)
+                        seen.add(stem)
+        stems.sort()
+        if not stems:
+            raise ToolError(f"No PDF files found under: {in_path}")
 
-
-    md_path = os.path.join(auto_dir, f"{mineru_corpus_prefix}.md")
+    # ---- 收集文本 rows ----
     text_rows: List[Dict[str, Any]] = []
-    if not os.path.isfile(md_path):
-        raise ToolError(f"Markdown not found: {md_path}")
-    with open(md_path, "r", encoding="utf-8") as f:
-        md_text = f.read().strip()
-    text_rows.append({
-        "id": mineru_corpus_prefix,
-        "title": mineru_corpus_prefix,
-        "contents": md_text
-    })
-    text_out = os.path.abspath(text_corpus_save_path)
-    _save_jsonl(text_rows, text_out)
-
-    images_dir = os.path.join(auto_dir, "images")
-    rel_list = _list_images(images_dir)
+    # ---- 图像 jsonl rows 与输出基目录 ----
     image_rows: List[Dict[str, Any]] = []
     image_out = os.path.abspath(image_corpus_save_path)
     out_root_dir = os.path.dirname(image_out)
-    out_img_dir = os.path.join(out_root_dir, "images")
-    os.makedirs(out_img_dir, exist_ok=True)
+    base_out_img_dir = os.path.join(out_root_dir, "images")
+    os.makedirs(base_out_img_dir, exist_ok=True)
 
-    for idx, rel in enumerate(rel_list):
-        src = os.path.join(images_dir, rel)
-        dst = os.path.join(out_img_dir, rel)
-        os.makedirs(os.path.dirname(dst), exist_ok=True)
-
-        try:
-            with Image.open(src) as im:
-                im.convert("RGB").copy()
-        except Exception as e:
-            app.logger.warning(f"Skip invalid image: {src}, reason: {e}")
+    for stem in stems:
+        auto_dir = os.path.join(root, stem, "auto")
+        if not os.path.isdir(auto_dir):
+            # MinerU 还没产出的话，跳过此 stem
+            app.logger.warning(f"Auto dir not found for '{stem}': {auto_dir} (skip)")
             continue
 
-        shutil.copy2(src, dst)
-        image_rows.append({
-            "id": idx,
-            "image_id": os.path.basename(rel),
-            "image_path": f"images/{rel}",
-        })
+        # ---- 文本：<auto>/<stem>.md ----
+        md_path = os.path.join(auto_dir, f"{stem}.md")
+        if not os.path.isfile(md_path):
+            app.logger.warning(f"Markdown not found for '{stem}': {md_path} (skip text)")
+        else:
+            with open(md_path, "r", encoding="utf-8") as f:
+                md_text = f.read().strip()
+            text_rows.append({
+                "id": stem,
+                "title": stem,
+                "contents": md_text
+            })
 
+        # ---- 图像：<auto>/images/**/* 复制到 输出/images/<stem>/**/*
+        images_dir = os.path.join(auto_dir, "images")
+        if not os.path.isdir(images_dir):
+            app.logger.info(f"No images dir for '{stem}': {images_dir} (skip images)")
+            continue
+
+        rel_list = _list_images(images_dir)  # 你已有：返回相对 images/ 的路径列表
+        for idx, rel in enumerate(rel_list):
+            src = os.path.join(images_dir, rel)
+            dst = os.path.join(base_out_img_dir, stem, rel)  # 带上 <stem> 以避免重名
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+
+            try:
+                with Image.open(src) as im:
+                    im.convert("RGB").copy()  # 校验可读
+            except Exception as e:
+                app.logger.warning(f"Skip invalid image for '{stem}': {src}, reason: {e}")
+                continue
+
+            shutil.copy2(src, dst)
+            image_rows.append({
+                "id": len(image_rows),  # 全局自增
+                "image_id": f"{stem}/{os.path.basename(rel)}",  # 避免跨 PDF 重名
+                "image_path": f"images/{stem}/{rel}",          # 相对 paths（包含 stem）
+            })
+
+    # ---- 写出 JSONL ----
+    text_out = os.path.abspath(text_corpus_save_path)
+    _save_jsonl(text_rows, text_out)
     _save_jsonl(image_rows, image_out)
 
-
     app.logger.info(
-        f"Text corpus -> {text_out} (rows={len(text_rows)}); "
-        f"Image corpus -> {image_out} (rows={len(image_rows)})"
+        "Built MinerU corpus from %s | docs=%d | text_rows=%d | image_rows=%d\n"
+        "Text corpus -> %s\nImage corpus -> %s (images root: %s)",
+        in_path, len(stems), len(text_rows), len(image_rows),
+        text_out, image_out, base_out_img_dir
     )
 
 
