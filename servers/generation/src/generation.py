@@ -16,8 +16,6 @@ app = UltraRAG_MCP_Server("generation")
 httpx_logger.setLevel(logging.WARNING)
 
 
-
-
 class Generation:
     def __init__(self, mcp_inst: UltraRAG_MCP_Server):
         mcp_inst.tool(
@@ -33,10 +31,10 @@ class Generation:
             output="multimodal_path,prompt_ls,system_prompt->ans_ls",
         )
         mcp_inst.tool(
-            self.vllm_shutdown, 
+            self.vllm_shutdown,
             output="->None",
         )
-    
+
     def _normalize_gpu_ids(self, gpu_ids) -> None:
         if gpu_ids is None:
             return
@@ -47,7 +45,9 @@ class Generation:
         elif isinstance(gpu_ids, str):
             val = ",".join([p.strip() for p in gpu_ids.split(",") if p.strip()])
         else:
-            raise TypeError("gpu_ids must be str | int | list | tuple, e.g. '0', 0 or [0,1]")
+            raise TypeError(
+                "gpu_ids must be str | int | list | tuple, e.g. '0', 0 or [0,1]"
+            )
         os.environ["CUDA_VISIBLE_DEVICES"] = val
 
     def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
@@ -58,10 +58,14 @@ class Generation:
     ) -> List[str]:
         prompts = []
         for m in prompt_ls:
-            if hasattr(m, "content") and hasattr(m.content, "text"):  
+            if hasattr(m, "content") and hasattr(m.content, "text"):
                 prompts.append(m.content.text)
             elif isinstance(m, dict):
-                if "content" in m and isinstance(m["content"], dict) and "text" in m["content"]:
+                if (
+                    "content" in m
+                    and isinstance(m["content"], dict)
+                    and "text" in m["content"]
+                ):
                     prompts.append(m["content"]["text"])
                 elif "text" in m:
                     prompts.append(m["text"])
@@ -72,7 +76,7 @@ class Generation:
             else:
                 raise ValueError(f"Unsupported message format: {m}")
         return prompts
-    
+
     def _to_data_url(self, path_or_url: str) -> str:
         s = str(path_or_url).strip()
 
@@ -93,25 +97,26 @@ class Generation:
         sampling_params: Dict[str, Any],
         backend: str = "vllm",
     ) -> None:
-        
+
         self.backend = backend.lower()
         self.backend_configs = backend_configs or {}
         cfg = (self.backend_configs.get(self.backend) or {}).copy()
 
         if self.backend == "vllm":
             from vllm import LLM, SamplingParams
+
             os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
             gpu_ids = cfg.get("gpu_ids")
             self._normalize_gpu_ids(gpu_ids)
             model_name_or_path = cfg.get("model_name_or_path")
             vllm_pass_cfg = self._drop_keys(
-                cfg,
-                banned=["gpu_ids", "model_name_or_path"]
-            ) 
-            self.chat_template_kwargs = sampling_params.get("chat_template_kwargs", {}) or {}
+                cfg, banned=["gpu_ids", "model_name_or_path"]
+            )
+            self.chat_template_kwargs = (
+                sampling_params.get("chat_template_kwargs", {}) or {}
+            )
             vllm_sampling_params = self._drop_keys(
-                sampling_params,
-                banned=["chat_template_kwargs"]
+                sampling_params, banned=["chat_template_kwargs"]
             )
 
             self.model = LLM(model=model_name_or_path, **vllm_pass_cfg)
@@ -124,9 +129,15 @@ class Generation:
             self.client = AsyncOpenAI(base_url=api_base, api_key=api_key)
 
             allow_keys = {
-                "temperature", "top_p", "max_tokens",
-                "presence_penalty", "frequency_penalty",
-                "stop", "logit_bias", "seed", "n"
+                "temperature",
+                "top_p",
+                "max_tokens",
+                "presence_penalty",
+                "frequency_penalty",
+                "stop",
+                "logit_bias",
+                "seed",
+                "n",
             }
             sp = sampling_params or {}
             self.sampling_params = {k: v for k, v in sp.items() if k in allow_keys}
@@ -141,11 +152,45 @@ class Generation:
             self._max_concurrency = int(cfg.get("concurrency", 8))
             self._retries = int(cfg.get("retries", 3))
             self._base_delay = float(cfg.get("base_delay", 1.0))
-        
+
+        elif self.backend == "hf":
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+
+            gpu_ids = cfg.get("gpu_ids")
+            self._normalize_gpu_ids(gpu_ids)
+            model_name_or_path = cfg.get("model_name_or_path")
+            hf_pass_cfg = self._drop_keys(cfg, banned=["gpu_ids", "model_name_or_path"])
+
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model_name_or_path,
+                device_map="auto",
+                **hf_pass_cfg,
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                model_name_or_path, padding_side="left"
+            )
+            self.chat_template_kwargs = (
+                sampling_params.get("chat_template_kwargs", {}) or {}
+            )
+
+            allow_keys = {
+                "do_sample",
+                "temperature",
+                "top_p",
+                "top_k",
+                "repetition_penalty",
+                "max_new_tokens",
+                "num_beams",
+            }
+            hf_sampling_params = self._drop_keys(
+                sampling_params, banned=["chat_template_kwargs"]
+            )
+            self.sampling_params = {
+                k: v for k, v in hf_sampling_params.items() if k in allow_keys
+            }
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
 
-    
     async def _generate(
         self,
         messages_list: List[List[Dict[str, str]]],
@@ -159,11 +204,18 @@ class Generation:
             )
             ret = [o.outputs[0].text for o in outputs]
 
-
         elif self.backend == "openai":
             sem = asyncio.Semaphore(self._max_concurrency)
-            async def call_with_retry(idx, msg, client, model_name, sampling_params,
-                                      retries: int, base_delay: float):
+
+            async def call_with_retry(
+                idx,
+                msg,
+                client,
+                model_name,
+                sampling_params,
+                retries: int,
+                base_delay: float,
+            ):
 
                 import random
                 from openai import RateLimitError, APIStatusError
@@ -171,7 +223,7 @@ class Generation:
                 delay = base_delay
                 for attempt in range(retries):
                     try:
-                        async with sem:  
+                        async with sem:
                             resp = await client.chat.completions.create(
                                 model=model_name,
                                 messages=msg,
@@ -184,14 +236,20 @@ class Generation:
                             " Invalid or missing LLM_API_KEY."
                         ) from e
                     except RateLimitError as e:
-                        app.logger.warning(f"[429] Rate limited (idx={idx}, attempt={attempt+1}): {e}")
+                        app.logger.warning(
+                            f"[429] Rate limited (idx={idx}, attempt={attempt+1}): {e}"
+                        )
                     except APIStatusError as e:
                         if 500 <= e.status_code < 600:
-                            app.logger.warning(f"[{e.status_code}] Server error (idx={idx}, attempt={attempt+1}): {e}")
+                            app.logger.warning(
+                                f"[{e.status_code}] Server error (idx={idx}, attempt={attempt+1}): {e}"
+                            )
                         else:
                             raise
                     except Exception as e:
-                        app.logger.warning(f"[Retry {attempt+1}] Failed (idx={idx}): {e}")
+                        app.logger.warning(
+                            f"[Retry {attempt+1}] Failed (idx={idx}): {e}"
+                        )
 
                     await asyncio.sleep(delay + random.random() * 0.25)
                     delay *= 2
@@ -201,7 +259,11 @@ class Generation:
             tasks = [
                 asyncio.create_task(
                     call_with_retry(
-                        i, m, self.client, self.model_name, self.sampling_params,
+                        i,
+                        m,
+                        self.client,
+                        self.model_name,
+                        self.sampling_params,
                         retries=getattr(self, "_retries", 3),
                         base_delay=getattr(self, "_base_delay", 1.0),
                     )
@@ -215,13 +277,55 @@ class Generation:
             ):
                 idx, ans = await coro
                 ret[idx] = ans
+
+        elif self.backend == "hf":
+            prompt_txt_ls = []
+            for msg in messages_list:
+                prompt_txt = self.tokenizer.apply_chat_template(
+                    msg,
+                    tokenize=False,
+                    add_generation_prompt=True,
+                    **self.chat_template_kwargs,
+                )
+                prompt_txt_ls.append(prompt_txt)
+
+            input_ids_ls = []
+            for prompt_txt in prompt_txt_ls:
+                input_ids = self.tokenizer([prompt_txt], return_tensors="pt").to(
+                    self.model.device,
+                )
+                input_ids_ls.append(input_ids)
+
+            generated_ids_ls = []
+            for input_ids in tqdm(input_ids_ls):
+                generated_ids = self.model.generate(
+                    **input_ids,
+                    use_cache=False,
+                    **self.sampling_params,
+                )
+                generated_ids_ls.append(generated_ids)
+
+            output_ids_ls = []
+            for input_ids, generated_ids in zip(input_ids_ls, generated_ids_ls):
+                output_ids = [
+                    generated_ids[i][len(input_ids[i]) :]
+                    for i in range(len(input_ids["input_ids"]))
+                ]
+                output_ids_ls.append(output_ids)
+
+            ret = []
+            for output_ids in output_ids_ls:
+                output = self.tokenizer.batch_decode(
+                    output_ids,
+                    skip_special_tokens=True,
+                )[0]
+                ret.append(output)
+
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
-         
+
         return ret
-    
-    
-    
+
     async def generate(
         self,
         prompt_ls: List[Union[str, Dict[str, Any]]],
@@ -233,7 +337,7 @@ class Generation:
             msgs = []
             if system_prompt:
                 msgs.append({"role": "system", "content": system_prompt})
-            msgs.append({"role": "user", "content": p})       
+            msgs.append({"role": "user", "content": p})
             messages_list.append(msgs)
         ret = await self._generate(messages_list)
         return {"ans_ls": ret}
@@ -258,7 +362,10 @@ class Generation:
             for mp in curr_path:
                 try:
                     content.append(
-                        {"type": "image_url", "image_url": {"url": self._to_data_url(mp)}}
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": self._to_data_url(mp)},
+                        }
                     )
                 except Exception as e:
                     app.logger.warning(f"[Image skip] idx={idx}, path={p}, err={e}")
@@ -267,7 +374,7 @@ class Generation:
 
             msgs.append({"role": "user", "content": content})
             messages_list.append(msgs)
-        
+
         ret = await self._generate(messages_list)
         return {"ans_ls": ret}
 
@@ -282,7 +389,6 @@ class Generation:
                 app.logger.info("[vllm_shutdown] model is None; nothing to do.")
                 return
 
-
             fn = getattr(self.model, "shutdown", None)
             if callable(fn):
                 app.logger.info("[vllm_shutdown] calling self.model.shutdown()")
@@ -294,12 +400,15 @@ class Generation:
                         for attr in ("shutdown", "close", "terminate"):
                             f = getattr(eng, attr, None)
                             if callable(f):
-                                app.logger.info(f"[vllm_shutdown] calling self.model.{path}.{attr}()")
+                                app.logger.info(
+                                    f"[vllm_shutdown] calling self.model.{path}.{attr}()"
+                                )
                                 f()
                                 break
 
             self.model = None
             import gc, torch
+
             gc.collect()
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
@@ -309,10 +418,6 @@ class Generation:
 
         except Exception as e:
             app.logger.warning(f"[vllm_shutdown] cleanup warning: {e}")
-
-
-
-
 
 
 if __name__ == "__main__":
