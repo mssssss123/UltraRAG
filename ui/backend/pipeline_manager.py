@@ -7,6 +7,13 @@ import importlib.util
 import ast
 import logging
 import sys
+import io
+import threading
+import time
+import uuid
+from collections import deque
+from contextlib import redirect_stdout, redirect_stderr
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -35,6 +42,177 @@ if LEGACY_PIPELINES_DIR.exists():
 
 STUBBED_MODULES: set[str] = set()
 
+
+class RunLogStream:
+    def __init__(self, max_entries: int = 2000) -> None:
+        self._lock = threading.Lock()
+        self._entries: deque[Dict[str, Any]] = deque(maxlen=max_entries)
+        self._counter: int = 0
+        self._run_id: Optional[str] = None
+        self._status: Dict[str, Any] = {
+            "state": "idle",
+            "result": None,
+            "error": None,
+            "pipeline": None,
+        }
+        self._pipeline_name: Optional[str] = None
+
+    def is_running(self) -> bool:
+        with self._lock:
+            return self._status.get("state") == "running"
+
+    def start(self, pipeline_name: str) -> str:
+        with self._lock:
+            self._entries.clear()
+            self._counter = 0
+            self._run_id = f"{int(time.time() * 1000)}-{uuid.uuid4().hex[:6]}"
+            self._status = {
+                "state": "running",
+                "result": None,
+                "error": None,
+                "pipeline": pipeline_name,
+            }
+            self._pipeline_name = pipeline_name
+            self._append_unlocked(f"开始运行 {pipeline_name}", level="info", system=True)
+            return self._run_id
+
+    def _append_unlocked(self, message: str, *, level: str = "info", system: bool = False) -> Dict[str, Any]:
+        entry = {
+            "id": self._counter,
+            "message": message,
+            "timestamp": time.time(),
+            "run_id": self._run_id,
+            "level": level,
+            "system": system,
+        }
+        self._entries.append(entry)
+        self._counter += 1
+        return entry
+
+    def append(self, message: str, *, level: str = "info", system: bool = False, run_id: Optional[str] = None) -> None:
+        if message is None:
+            return
+        text = str(message)
+        if not text:
+            return
+        text = text.replace("\r\n", "\n")
+        with self._lock:
+            if self._run_id is None:
+                return
+            if run_id and run_id != self._run_id:
+                return
+            parts = text.split("\n")
+            for idx, part in enumerate(parts):
+                if part == "" and idx == len(parts) - 1:
+                    continue
+                self._append_unlocked(part, level=level, system=system)
+
+    def finish(self, run_id: str, state: str, *, result: Optional[str] = None, error: Optional[str] = None) -> None:
+        with self._lock:
+            if self._run_id != run_id:
+                return
+            self._status = {
+                "state": state,
+                "result": result,
+                "error": error,
+                "pipeline": self._pipeline_name,
+            }
+
+    def snapshot(self, since: int = -1, run_id: Optional[str] = None) -> Dict[str, Any]:
+        with self._lock:
+            current_run_id = self._run_id
+            reset = bool(run_id and current_run_id and run_id != current_run_id)
+            start_from = -1 if reset else since
+            entries = [dict(entry) for entry in self._entries if entry["id"] > start_from]
+            status = dict(self._status)
+        return {
+            "entries": entries,
+            "run_id": current_run_id,
+            "reset": reset,
+            "status": status,
+        }
+
+
+class _RunLogWriter(io.TextIOBase):
+    def __init__(self, stream: RunLogStream, run_id: str) -> None:
+        self._stream = stream
+        self._run_id = run_id
+        self._buffer: str = ""
+
+    @property
+    def encoding(self) -> str:
+        return "utf-8"
+
+    def write(self, data: str) -> int:  # type: ignore[override]
+        if not data:
+            return 0
+        text = str(data).replace("\r\n", "\n")
+        self._buffer += text
+        while "\n" in self._buffer:
+            line, self._buffer = self._buffer.split("\n", 1)
+            if line:
+                self._stream.append(line, run_id=self._run_id)
+        return len(data)
+
+    def flush(self) -> None:  # type: ignore[override]
+        if self._buffer:
+            self._stream.append(self._buffer, run_id=self._run_id)
+            self._buffer = ""
+
+
+RUN_LOG_STREAM = RunLogStream()
+RUN_EXECUTOR = ThreadPoolExecutor(max_workers=1)
+
+
+def _summarize_result(result: Any) -> Optional[str]:
+    if result is None:
+        return None
+    if isinstance(result, (str, int, float, bool)):
+        return str(result)
+    try:
+        rendered = yaml.safe_dump(result, sort_keys=False, allow_unicode=True).strip()
+        return rendered or None
+    except Exception:  # pragma: no cover - fallback repr
+        return repr(result)
+
+
+def _execute_run_task(name: str, run_id: str) -> None:
+    root_logger = logging.getLogger()
+    writer = _RunLogWriter(RUN_LOG_STREAM, run_id)
+    handler = logging.StreamHandler(writer)
+    handler.setLevel(logging.INFO)
+    handler.setFormatter(logging.Formatter("%(message)s"))
+    root_logger.addHandler(handler)
+    try:
+        config_file = _find_pipeline_file(name)
+        if config_file is None:
+            RUN_LOG_STREAM.append(f"未找到 Pipeline {name}", level="error", system=True, run_id=run_id)
+            RUN_LOG_STREAM.finish(run_id, "failed", error="pipeline-not-found")
+            return
+        RUN_LOG_STREAM.append(f"使用配置文件: {config_file}", system=True, run_id=run_id)
+        try:
+            _, run_func = _ensure_client_funcs()
+        except Exception as exc:  # pragma: no cover - dependency issues
+            writer.flush()
+            RUN_LOG_STREAM.append(f"无法加载运行环境: {exc}", level="error", system=True, run_id=run_id)
+            RUN_LOG_STREAM.finish(run_id, "failed", error=str(exc))
+            return
+        try:
+            with redirect_stdout(writer), redirect_stderr(writer):
+                result = _run_async(run_func(str(config_file)))
+        except Exception as exc:
+            writer.flush()
+            RUN_LOG_STREAM.append(f"运行过程中出现异常: {exc}", level="error", system=True, run_id=run_id)
+            RUN_LOG_STREAM.finish(run_id, "failed", error=str(exc))
+            return
+        writer.flush()
+        summary = _summarize_result(result)
+        if summary:
+            RUN_LOG_STREAM.append(f"运行结果: {summary}", system=True, run_id=run_id)
+        RUN_LOG_STREAM.append("Pipeline 运行完成", system=True, run_id=run_id)
+        RUN_LOG_STREAM.finish(run_id, "succeeded", result=summary)
+    finally:
+        root_logger.removeHandler(handler)
 
 def _missing_dependency(module_name: str):
     def _stub(*_args, **_kwargs):
@@ -499,14 +677,23 @@ def build(name: str) -> Dict[str, Any]:
     return {"status": "ok"}
 
 
-def run(name: str) -> Dict[str, Any]:
-    config_file = _find_pipeline_file(name)
-    if config_file is None:
-        raise PipelineManagerError(f"Pipeline {name} not found")
+def run(name: str, *, wait: bool = False) -> Dict[str, Any]:
+    if not wait and RUN_LOG_STREAM.is_running():
+        raise PipelineManagerError("已有 Pipeline 正在运行，请稍候再试")
     LOGGER.info("Running pipeline %s", name)
-    _, run_func = _ensure_client_funcs()
-    result = _run_async(run_func(str(config_file)))
-    return {"status": "ok", "result": result}
+    run_id = RUN_LOG_STREAM.start(name)
+    if wait:
+        _execute_run_task(name, run_id)
+        snapshot = RUN_LOG_STREAM.snapshot()
+        status = snapshot.get("status", {})
+        return {
+            "status": status.get("state", "unknown"),
+            "run_id": run_id,
+            "result": status.get("result"),
+            "error": status.get("error"),
+        }
+    RUN_EXECUTOR.submit(_execute_run_task, name, run_id)
+    return {"status": "started", "run_id": run_id}
 
 
 def _parameter_candidates(config_file: Path) -> List[Path]:
@@ -561,3 +748,7 @@ def save_parameters(name: str, params: Dict[str, Any]) -> None:
     LOGGER.info("Saving parameters for %s to %s", name, param_path)
     with param_path.open("w", encoding="utf-8") as handle:
         yaml.safe_dump(params, handle, sort_keys=False, allow_unicode=True)
+
+
+def fetch_run_logs(since: int = -1, run_id: Optional[str] = None) -> Dict[str, Any]:
+    return RUN_LOG_STREAM.snapshot(since=since, run_id=run_id)

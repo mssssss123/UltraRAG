@@ -8,7 +8,10 @@ const state = {
   isBuilt: false,
   parametersReady: false,
   mode: "builder",
+  logStream: { runId: null, lastId: -1, timer: null, status: "idle" },
 };
+
+const LOG_POLL_INTERVAL = 1500;
 
 const els = {
   log: document.getElementById("log"),
@@ -73,6 +76,63 @@ function log(message) {
   const stamp = new Date().toLocaleTimeString();
   els.log.textContent += `[${stamp}] ${message}\n`;
   els.log.scrollTop = els.log.scrollHeight;
+}
+
+function resetLogView() {
+  if (els.log) {
+    els.log.textContent = "";
+  }
+}
+
+function stopRunLogStream() {
+  if (state.logStream.timer) {
+    clearTimeout(state.logStream.timer);
+  }
+  state.logStream.timer = null;
+  state.logStream.runId = null;
+  state.logStream.lastId = -1;
+  state.logStream.status = "idle";
+}
+
+async function pollRunLogs() {
+  if (!state.logStream.runId) return;
+  const params = new URLSearchParams();
+  params.set("since", String(state.logStream.lastId));
+  params.set("run_id", state.logStream.runId);
+  try {
+    const data = await fetchJSON(`/api/logs/run?${params.toString()}`);
+    if (data.reset) {
+      resetLogView();
+      state.logStream.lastId = -1;
+    }
+    const entries = data.entries || [];
+    entries.forEach((entry) => {
+      state.logStream.lastId = Math.max(state.logStream.lastId, entry.id);
+      if (entry.message) {
+        log(entry.message);
+      }
+    });
+    const status = data.status || {};
+    const stateValue = status.state || "running";
+    state.logStream.status = stateValue;
+    if (stateValue === "running") {
+      state.logStream.timer = window.setTimeout(pollRunLogs, LOG_POLL_INTERVAL);
+    } else {
+      stopRunLogStream();
+    }
+  } catch (err) {
+    log(`拉取运行日志失败：${err.message}`);
+    stopRunLogStream();
+  }
+}
+
+function startRunLogStream(runId) {
+  if (!runId) return;
+  stopRunLogStream();
+  state.logStream.runId = runId;
+  state.logStream.lastId = -1;
+  state.logStream.status = "running";
+  pollRunLogs();
 }
 
 async function fetchJSON(url, options = {}) {
@@ -552,6 +612,7 @@ function handleNodePickerConfirm() {
 }
 
 function markPipelineDirty() {
+  stopRunLogStream();
   state.isBuilt = false;
   state.parametersReady = false;
   if (state.mode !== Modes.BUILDER) {
@@ -1172,9 +1233,25 @@ function runSelectedPipeline() {
     log("请先配置并保存参数");
     return;
   }
+  stopRunLogStream();
+  resetLogView();
+  log(`已发送运行请求：${state.selectedPipeline}`);
   fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/run`, { method: "POST" })
-    .then((resp) => log(`运行结束：${JSON.stringify(resp.result, null, 2)}`))
-    .catch((err) => log(err.message));
+    .then((resp) => {
+      if (resp && resp.run_id) {
+        log(`Pipeline ${state.selectedPipeline} 正在运行，run_id=${resp.run_id}`);
+        startRunLogStream(resp.run_id);
+      } else {
+        log("运行接口返回异常：缺少 run_id");
+      }
+      if (resp && resp.status && resp.status !== "started" && resp.status !== "running") {
+        state.logStream.status = resp.status;
+      }
+    })
+    .catch((err) => {
+      log(`运行失败：${err.message}`);
+      stopRunLogStream();
+    });
 }
 
 function deleteSelectedPipeline() {

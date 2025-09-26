@@ -86,7 +86,14 @@ def create_app() -> Flask:
 
     @app.route("/api/pipelines/<string:name>/run", methods=["POST"])
     def run_pipeline(name: str):
-        return jsonify(pm.run(name))
+        return jsonify(pm.run(name, wait=False))
+
+    @app.route("/api/logs/run", methods=["GET"])
+    def run_logs():
+        since = request.args.get("since", default=-1, type=int)
+        run_id = request.args.get("run_id") or None
+        payload = pm.fetch_run_logs(since=since, run_id=run_id)
+        return jsonify(payload)
 
     @app.route("/api/pipelines/<string:name>/parameters", methods=["GET"])
     def get_parameters(name: str):
