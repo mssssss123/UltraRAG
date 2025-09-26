@@ -9,6 +9,7 @@ const state = {
   parametersReady: false,
   mode: "builder",
   logStream: { runId: null, lastId: -1, timer: null, status: "idle" },
+  shutdownScheduled: false,
 };
 
 const LOG_POLL_INTERVAL = 1500;
@@ -74,6 +75,10 @@ let fallbackModalHandlers = null;
 
 function log(message) {
   const stamp = new Date().toLocaleTimeString();
+  if (!els.log) {
+    console.log(`[${stamp}] ${message}`);
+    return;
+  }
   els.log.textContent += `[${stamp}] ${message}\n`;
   els.log.scrollTop = els.log.scrollHeight;
 }
@@ -103,11 +108,31 @@ function setHeroStatusLabel(status) {
   els.heroStatus.textContent = statusMap[normalized] || statusMap.unknown;
 }
 
+function scheduleWindowClose() {
+  if (state.shutdownScheduled) return;
+  state.shutdownScheduled = true;
+  log("退出命令已发送，浏览器窗口即将关闭...");
+  setTimeout(() => {
+    try {
+      window.open("", "_self", "");
+      window.close();
+    } catch (err) {
+      console.debug("window.close 被浏览器阻止", err);
+    }
+    setTimeout(() => {
+      if (!window.closed) {
+        window.location.replace("about:blank");
+      }
+    }, 400);
+  }, 800);
+}
+
 function requestShutdown() {
   if (!window.confirm("确定退出 UltraRAG UI 吗？")) return;
   stopRunLogStream();
   log("正在请求关闭 UltraRAG 服务...");
-  fetch("/api/system/shutdown", { method: "POST" })
+  const fallbackCloseTimer = setTimeout(scheduleWindowClose, 5000);
+  const shutdownPromise = fetch("/api/system/shutdown", { method: "POST" })
     .then(async (resp) => {
       let data = {};
       try {
@@ -132,6 +157,10 @@ function requestShutdown() {
     .catch((err) => {
       log(`退出命令发送失败（服务器可能已终止）：${err.message}`);
     });
+  shutdownPromise.finally(() => {
+    clearTimeout(fallbackCloseTimer);
+    scheduleWindowClose();
+  });
 }
 
 function stopRunLogStream(finalStatus = "idle") {

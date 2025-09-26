@@ -76,6 +76,14 @@ class RunLogStream:
             self._append_unlocked(f"开始运行 {pipeline_name}", level="info", system=True)
             return self._run_id
 
+    def is_active(self, run_id: Optional[str] = None) -> bool:
+        with self._lock:
+            if self._run_id is None:
+                return False
+            if run_id is not None and run_id != self._run_id:
+                return False
+            return self._status.get("state") == "running"
+
     def _append_unlocked(self, message: str, *, level: str = "info", system: bool = False) -> Dict[str, Any]:
         entry = {
             "id": self._counter,
@@ -205,6 +213,16 @@ def _execute_run_task(name: str, run_id: str) -> None:
             RUN_LOG_STREAM.append(f"运行过程中出现异常: {exc}", level="error", system=True, run_id=run_id)
             RUN_LOG_STREAM.finish(run_id, "failed", error=str(exc))
             return
+        except BaseException as exc:  # pragma: no cover - critical signals
+            writer.flush()
+            RUN_LOG_STREAM.append(
+                f"运行过程中出现致命错误: {exc}",
+                level="error",
+                system=True,
+                run_id=run_id,
+            )
+            RUN_LOG_STREAM.finish(run_id, "failed", error=str(exc))
+            return
         writer.flush()
         summary = _summarize_result(result)
         if summary:
@@ -212,6 +230,14 @@ def _execute_run_task(name: str, run_id: str) -> None:
         RUN_LOG_STREAM.append("Pipeline 运行完成", system=True, run_id=run_id)
         RUN_LOG_STREAM.finish(run_id, "succeeded", result=summary)
     finally:
+        if RUN_LOG_STREAM.is_active(run_id):
+            RUN_LOG_STREAM.append(
+                "运行状态异常终止，已自动中止当前 Pipeline",
+                level="error",
+                system=True,
+                run_id=run_id,
+            )
+            RUN_LOG_STREAM.finish(run_id, "failed", error="aborted")
         root_logger.removeHandler(handler)
 
 def _missing_dependency(module_name: str):
