@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import logging
+import os
+import threading
 from pathlib import Path
 from typing import Any, Dict
 
@@ -94,6 +96,17 @@ def create_app() -> Flask:
         run_id = request.args.get("run_id") or None
         payload = pm.fetch_run_logs(since=since, run_id=run_id)
         return jsonify(payload)
+
+    @app.route("/api/system/shutdown", methods=["POST"])
+    def shutdown():
+        LOGGER.info("Shutdown requested via API")
+        func = request.environ.get("werkzeug.server.shutdown")
+        if func is None:
+            LOGGER.warning("Shutdown hook unavailable, falling back to os._exit")
+            threading.Timer(0.5, os._exit, args=(0,)).start()
+            return jsonify({"status": "shutting-down", "mode": "force"})
+        threading.Timer(0.2, func).start()
+        return jsonify({"status": "shutting-down", "mode": "graceful"})
 
     @app.route("/api/pipelines/<string:name>/parameters", methods=["GET"])
     def get_parameters(name: str):

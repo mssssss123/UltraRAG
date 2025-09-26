@@ -17,7 +17,6 @@ const els = {
   log: document.getElementById("log"),
   pipelineForm: document.getElementById("pipeline-form"),
   name: document.getElementById("pipeline-name"),
-  description: document.getElementById("pipeline-description"),
   flowCanvas: document.getElementById("flow-canvas"),
   contextControls: document.getElementById("context-controls"),
   pipelinePreview: document.getElementById("pipeline-preview"),
@@ -39,7 +38,6 @@ const els = {
   nodePickerTabs: document.querySelectorAll("[data-node-mode]"),
   nodePickerServer: document.getElementById("node-picker-server"),
   nodePickerTool: document.getElementById("node-picker-tool"),
-  nodePickerBranchCondition: document.getElementById("node-picker-branch-condition"),
   nodePickerBranchCases: document.getElementById("node-picker-branch-cases"),
   nodePickerLoopTimes: document.getElementById("node-picker-loop-times"),
   nodePickerCustom: document.getElementById("node-picker-custom"),
@@ -51,6 +49,7 @@ const els = {
   },
   nodePickerError: document.getElementById("node-picker-error"),
   nodePickerConfirm: document.getElementById("node-picker-confirm"),
+  shutdownApp: document.getElementById("shutdown-app"),
 };
 
 const Modes = {
@@ -62,7 +61,6 @@ const nodePickerState = {
   mode: "tool",
   server: null,
   tool: null,
-  branchCondition: "",
   branchCases: "case1, case2",
   loopTimes: 2,
   customValue: "",
@@ -82,6 +80,37 @@ function resetLogView() {
   if (els.log) {
     els.log.textContent = "";
   }
+}
+
+function requestShutdown() {
+  if (!window.confirm("确定退出 UltraRAG UI 吗？")) return;
+  stopRunLogStream();
+  log("正在请求关闭 UltraRAG 服务...");
+  fetch("/api/system/shutdown", { method: "POST" })
+    .then(async (resp) => {
+      let data = {};
+      try {
+        data = await resp.json();
+      } catch (err) {
+        // ignore JSON errors
+      }
+      if (!resp.ok) {
+        const msg = (data && data.error) || resp.statusText || "未知错误";
+        log(`退出命令发送失败：${msg}`);
+        return;
+      }
+      const mode = (data && data.mode) || "unknown";
+      if (mode === "force") {
+        log("退出命令已发送（强制模式），服务即将结束。");
+      } else if (mode === "graceful") {
+        log("退出命令已发送，服务正优雅关闭，请稍候...");
+      } else {
+        log("退出命令已发送，服务器即将停止。");
+      }
+    })
+    .catch((err) => {
+      log(`退出命令发送失败（服务器可能已终止）：${err.message}`);
+    });
 }
 
 function stopRunLogStream() {
@@ -339,15 +368,10 @@ function buildServersMapping(steps) {
 }
 
 function buildPipelinePayloadForPreview() {
-  const name = els.name.value.trim() || "pipeline";
-  const description = els.description.value.trim();
-  const payload = {
-    name,
+  return {
     servers: buildServersMapping(state.steps),
     pipeline: cloneDeep(state.steps),
   };
-  if (description) payload.description = description;
-  return payload;
 }
 
 function updatePipelinePreview() {
@@ -487,9 +511,6 @@ function populateNodePickerServers() {
 }
 
 function updateNodePickerInputs() {
-  if (els.nodePickerBranchCondition) {
-    els.nodePickerBranchCondition.value = nodePickerState.branchCondition || "";
-  }
   if (els.nodePickerBranchCases) {
     els.nodePickerBranchCases.value = nodePickerState.branchCases || "case1, case2";
   }
@@ -576,16 +597,9 @@ function handleNodePickerConfirm() {
         cases.forEach((caseKey) => {
           branchStep.branch.branches[caseKey] = [];
         });
-    const condition = (nodePickerState.branchCondition || "").trim();
-    if (condition) {
-      branchStep.branch.meta = { condition };
-    }
-    insertedPath = insertStepAt(location, index, branchStep);
+        insertedPath = insertStepAt(location, index, branchStep);
         enterStructureContext("branch", insertedPath);
         log(`已添加 Branch (${cases.join(", ")})`);
-        if (condition) {
-          log(`Branch 条件提示：${condition}`);
-        }
         break;
       }
       case "custom": {
@@ -998,14 +1012,24 @@ function renderContextControls() {
   ensureContextInitialized();
   const breadcrumb = document.createElement("div");
   breadcrumb.className = "context-breadcrumb d-flex flex-wrap gap-2";
-  state.contextStack.forEach((location, idx) => {
+
+  const rootBtn = document.createElement("button");
+  rootBtn.type = "button";
+  rootBtn.className = `btn btn-sm ${state.contextStack.length === 1 ? "btn-primary" : "btn-outline-secondary"}`;
+  rootBtn.textContent = "根流程";
+  rootBtn.addEventListener("click", () => setActiveLocation(createLocation([])));
+  breadcrumb.appendChild(rootBtn);
+
+  for (let idx = 1; idx < state.contextStack.length; idx += 1) {
+    const location = state.contextStack[idx];
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = `btn btn-sm ${idx === state.contextStack.length - 1 ? "btn-primary" : "btn-outline-secondary"}`;
     btn.textContent = ctxLabel(location, idx);
     btn.addEventListener("click", () => setActiveLocation(createLocation(location.segments || [])));
     breadcrumb.appendChild(btn);
-  });
+  }
+
   els.contextControls.appendChild(breadcrumb);
 
   const active = getActiveLocation();
@@ -1176,8 +1200,7 @@ async function refreshPipelines() {
 async function loadPipeline(name) {
   const cfg = await fetchJSON(`/api/pipelines/${encodeURIComponent(name)}`);
   state.selectedPipeline = name;
-  els.name.value = cfg.name || name;
-  els.description.value = cfg.description || "";
+  els.name.value = name;
   setSteps(cfg.pipeline || []);
   updatePipelineDropdownLabel();
   log(`已加载 Pipeline ${name}`);
@@ -1194,13 +1217,16 @@ function handleSubmit(event) {
     log("请先添加至少一个节点");
     return;
   }
-  const payload = buildPipelinePayloadForPreview();
+  const payload = {
+    name,
+    pipeline: cloneDeep(state.steps),
+  };
   fetchJSON("/api/pipelines", {
     method: "POST",
     body: JSON.stringify(payload),
   })
     .then((saved) => {
-      state.selectedPipeline = saved.name || payload.name;
+      state.selectedPipeline = saved.name || name;
       updatePipelineDropdownLabel();
       refreshPipelines();
       log(`Pipeline ${state.selectedPipeline} 已保存`);
@@ -1265,7 +1291,6 @@ function deleteSelectedPipeline() {
       log(`已删除 Pipeline ${state.selectedPipeline}`);
       state.selectedPipeline = null;
       els.name.value = "";
-      els.description.value = "";
       setSteps([]);
       updatePipelineDropdownLabel();
       refreshPipelines();
@@ -1478,6 +1503,9 @@ function bindEvents() {
   els.clearSteps.addEventListener("click", clearSteps);
   els.buildPipeline.addEventListener("click", buildSelectedPipeline);
   els.deletePipeline.addEventListener("click", deleteSelectedPipeline);
+  if (els.shutdownApp) {
+    els.shutdownApp.addEventListener("click", requestShutdown);
+  }
   if (els.parameterSave) {
     els.parameterSave.addEventListener("click", saveParameterForm);
   }
@@ -1492,7 +1520,6 @@ function bindEvents() {
   }
   els.refreshPipelines.addEventListener("click", () => refreshPipelines().catch((err) => log(err.message)));
   els.name.addEventListener("input", updatePipelinePreview);
-  els.description.addEventListener("input", updatePipelinePreview);
   els.stepEditor.querySelector("#step-editor-save").addEventListener("click", () => {
     if (!state.editingPath) return;
     try {
@@ -1519,11 +1546,6 @@ function bindEvents() {
   if (els.nodePickerTool) {
     els.nodePickerTool.addEventListener("change", () => {
       nodePickerState.tool = els.nodePickerTool.value || null;
-    });
-  }
-  if (els.nodePickerBranchCondition) {
-    els.nodePickerBranchCondition.addEventListener("input", () => {
-      nodePickerState.branchCondition = els.nodePickerBranchCondition.value;
     });
   }
   if (els.nodePickerBranchCases) {

@@ -417,8 +417,8 @@ class ServerTool:
 @dataclass
 class PipelineDefinition:
     name: str
-    description: Optional[str]
     steps: List[Any]
+    description: Optional[str] = None
 
     def _collect_servers(self, steps: List[Any]) -> set[str]:
         servers: set[str] = set()
@@ -445,8 +445,6 @@ class PipelineDefinition:
         server_names = sorted(self._collect_servers(self.steps))
         servers = {name: f"servers/{name}" for name in server_names}
         return {
-            "name": self.name,
-            "description": self.description or "",
             "servers": servers,
             "pipeline": self.steps,
         }
@@ -636,19 +634,18 @@ def list_pipelines() -> List[Dict[str, Any]]:
 def save_pipeline(payload: Dict[str, Any]) -> Dict[str, Any]:
     name = payload.get("name")
     steps = payload.get("pipeline") or []
-    description = payload.get("description")
     if not name or not isinstance(name, str):
         raise PipelineManagerError("Pipeline name is required")
     if not isinstance(steps, list) or not steps:
         raise PipelineManagerError("Pipeline must contain at least one step")
 
-    definition = PipelineDefinition(name=name, description=description, steps=steps)
+    definition = PipelineDefinition(name=name, steps=steps)
     yaml_payload = definition.to_yaml_payload()
     path = pipeline_path(name)
     print(f"save in: {path}")
     with path.open("w", encoding="utf-8") as handle:
         yaml.safe_dump(yaml_payload, handle, sort_keys=False, allow_unicode=True)
-    return yaml_payload
+    return {"name": name, **yaml_payload}
 
 
 def delete_pipeline(name: str) -> None:
@@ -678,7 +675,7 @@ def build(name: str) -> Dict[str, Any]:
 
 
 def run(name: str, *, wait: bool = False) -> Dict[str, Any]:
-    if not wait and RUN_LOG_STREAM.is_running():
+    if RUN_LOG_STREAM.is_running():
         raise PipelineManagerError("已有 Pipeline 正在运行，请稍候再试")
     LOGGER.info("Running pipeline %s", name)
     run_id = RUN_LOG_STREAM.start(name)
