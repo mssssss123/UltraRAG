@@ -8,75 +8,100 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-body text-default">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-    <div class="container-fluid justify-content-between">
-      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1">
-        <span class="navbar-brand fw-semibold mb-0">UltraRAG 2.1</span>
-        <span class="navbar-text text-light small">Less Code, Lower Barrier, Faster Deployment</span>
+  <nav class="navbar navbar-expand-lg navbar-light glass-nav">
+    <div class="container-fluid justify-content-between align-items-center gap-3">
+      <div class="nav-brand d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1">
+        <span class="navbar-brand fw-semibold mb-0">UltraRAG 2.0</span>
+        <span class="navbar-text text-muted small">Less Code · Lower Barrier · Faster Deployment</span>
       </div>
-      <button type="button" id="shutdown-app" class="btn btn-outline-light btn-sm">退出系统</button>
+      <div class="d-flex align-items-center gap-2">
+        <div class="status-chip">UI Connected</div>
+        <button type="button" id="shutdown-app" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1">
+          <span class="icon">&#10005;</span> 退出系统
+        </button>
+      </div>
     </div>
   </nav>
 
   <main class="container-fluid py-4">
+    <header class="page-hero glass-card mb-4">
+      <div class="hero-copy">
+        <h1 class="hero-title">可视化构建你的UltraRAG Pipeline</h1>
+        <p class="hero-subtitle">拖拽并连接结构化节点，灵活组装工具为串行、循环与分支的管线，高效构建专属RAG流程。</p>
+      </div>
+      <div class="hero-meta">
+        <div class="meta-block">
+          <span class="meta-label">当前 Pipeline</span>
+          <span class="meta-value" id="hero-selected-pipeline">尚未选择</span>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">状态</span>
+          <span class="meta-value status-pill" id="hero-status">Idle</span>
+        </div>
+      </div>
+    </header>
+
     <div class="row g-4">
       <div class="col-12">
-        <form id="pipeline-form" class="card shadow-sm border-0 d-flex flex-column gap-3 p-4">
-          <div class="d-flex flex-wrap align-items-center gap-2">
+        <form id="pipeline-form" class="glass-card flow-form d-flex flex-column gap-4 p-4">
+          <div class="d-flex flex-wrap align-items-center gap-2 form-toolbar">
             <div class="dropdown">
-              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="pipelineDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="btn btn-outline-primary btn-soft dropdown-toggle" type="button" id="pipelineDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
                 选择 Pipeline
               </button>
               <ul class="dropdown-menu" id="pipeline-menu"></ul>
             </div>
-            <button type="button" class="btn btn-outline-secondary btn-sm" id="refresh-pipelines">刷新 Pipelines</button>
-          </div>
-
-          <div class="row g-3">
-            <div class="col-sm-6 col-md-4 col-lg-3">
-              <label class="form-label">名称</label>
-              <input type="text" id="pipeline-name" class="form-control" />
+            <button type="button" class="btn btn-outline-secondary btn-soft btn-sm" id="refresh-pipelines">刷新 Pipelines</button>
+            <div class="divider-vertical"></div>
+            <div class="input-group compact-input">
+              <span class="input-group-text">名称</span>
+              <input type="text" id="pipeline-name" class="form-control" placeholder="例如：my_flow" />
             </div>
           </div>
 
-          <div class="card builder border-0 shadow-sm">
+          <div class="card builder border-0 shadow-sm glass-surface">
             <div class="card-body">
-              <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="canvas-toolbar d-flex align-items-center justify-content-between mb-3">
                 <p class="text-muted small mb-0">悬停在流程间隙，点击 <span class="flow-inline-plus">+</span> 选择要添加的工具或结构。</p>
-                <button type="button" id="clear-steps" class="btn btn-outline-danger btn-sm">清空</button>
+                <div class="d-flex gap-2">
+                  <button type="button" id="clear-steps" class="btn btn-outline-danger btn-soft btn-sm d-flex align-items-center gap-1"><span class="icon">&#128465;</span>清空</button>
+                </div>
               </div>
               <div id="flow-canvas" class="flow-canvas" aria-label="Pipeline canvas"></div>
               <div id="context-controls" class="context-controls mt-3"></div>
               <div class="mt-3">
-                <h6 class="fw-semibold mb-2">Pipeline YAML</h6>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <h6 class="fw-semibold mb-0">Pipeline YAML</h6>
+                  <span class="text-muted small">实时同步节点结构</span>
+                </div>
                 <pre id="pipeline-preview" class="pipeline-preview"></pre>
               </div>
             </div>
           </div>
 
-          <div class="d-flex flex-wrap gap-2">
-            <button type="submit" id="save-pipeline" class="btn btn-primary">保存 Pipeline</button>
-            <button type="button" id="build-pipeline" class="btn btn-outline-primary">构建</button>
-            <button type="button" id="delete-pipeline" class="btn btn-outline-danger ms-auto">删除</button>
+          <div class="d-flex flex-wrap gap-2 action-bar">
+            <button type="submit" id="save-pipeline" class="btn btn-primary btn-soft d-flex align-items-center gap-2"><span class="icon">&#128190;</span> 保存 Pipeline</button>
+            <button type="button" id="build-pipeline" class="btn btn-outline-primary btn-soft d-flex align-items-center gap-2"><span class="icon">&#9881;</span> 构建</button>
+            <button type="button" id="delete-pipeline" class="btn btn-outline-danger btn-soft ms-auto d-flex align-items-center gap-1"><span class="icon">&#10005;</span> 删除</button>
           </div>
         </form>
 
-        <div id="parameter-panel" class="card shadow-sm border-0 d-none mt-4">
+        <div id="parameter-panel" class="glass-card panel-soft d-none mt-4">
           <div class="card-body">
             <div class="d-flex align-items-center gap-2 mb-3">
               <h5 class="mb-0 flex-grow-1">参数配置</h5>
-              <button type="button" id="parameter-back" class="btn btn-outline-secondary btn-sm">返回流程</button>
+              <button type="button" id="parameter-back" class="btn btn-outline-secondary btn-soft btn-sm d-flex align-items-center gap-1"><span class="icon">&#11013;</span> 返回流程</button>
             </div>
             <p class="text-muted small mb-4">以下参数来自 <code>examples/parameter/&lt;name&gt;_parameter.yaml</code>。请根据需要修改后点击保存，再执行运行。</p>
             <div id="parameter-form" class="parameter-form"></div>
             <div class="d-flex flex-wrap gap-2 mt-4">
-              <button type="button" class="btn btn-primary" id="parameter-save">保存参数</button>
-              <button type="button" class="btn btn-success" id="parameter-run">运行</button>
+              <button type="button" class="btn btn-primary btn-soft" id="parameter-save">保存参数</button>
+              <button type="button" class="btn btn-success btn-soft" id="parameter-run">运行</button>
             </div>
           </div>
         </div>
 
-        <div id="step-editor" class="card shadow-sm border-0 mt-4" hidden>
+        <div id="step-editor" class="glass-card panel-soft mt-4" hidden>
           <div class="card-body">
             <h6 class="card-title">编辑节点</h6>
             <textarea id="step-editor-value" rows="6" class="form-control mb-3"></textarea>
@@ -89,9 +114,10 @@
       </div>
 
       <div class="col-12">
-        <div class="card shadow-sm border-0 mt-4">
-          <div class="card-header bg-white border-0">
+        <div class="glass-card panel-soft mt-4">
+          <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
             <h5 class="mb-0">运行日志</h5>
+            <span class="text-muted small">实时追踪 build / run 输出</span>
           </div>
           <div class="card-body">
             <pre id="log" class="log-area"></pre>

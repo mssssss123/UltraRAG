@@ -50,6 +50,8 @@ const els = {
   nodePickerError: document.getElementById("node-picker-error"),
   nodePickerConfirm: document.getElementById("node-picker-confirm"),
   shutdownApp: document.getElementById("shutdown-app"),
+  heroSelectedPipeline: document.getElementById("hero-selected-pipeline"),
+  heroStatus: document.getElementById("hero-status"),
 };
 
 const Modes = {
@@ -80,6 +82,25 @@ function resetLogView() {
   if (els.log) {
     els.log.textContent = "";
   }
+}
+
+function setHeroPipelineLabel(name) {
+  if (!els.heroSelectedPipeline) return;
+  els.heroSelectedPipeline.textContent = name ? name : "尚未选择";
+}
+
+function setHeroStatusLabel(status) {
+  if (!els.heroStatus) return;
+  const statusMap = {
+    idle: "Idle",
+    running: "Running",
+    succeeded: "Succeeded",
+    failed: "Failed",
+    unknown: "Pending",
+  };
+  const normalized = statusMap[status] ? status : "unknown";
+  els.heroStatus.dataset.status = normalized;
+  els.heroStatus.textContent = statusMap[normalized] || statusMap.unknown;
 }
 
 function requestShutdown() {
@@ -113,14 +134,15 @@ function requestShutdown() {
     });
 }
 
-function stopRunLogStream() {
+function stopRunLogStream(finalStatus = "idle") {
   if (state.logStream.timer) {
     clearTimeout(state.logStream.timer);
   }
   state.logStream.timer = null;
   state.logStream.runId = null;
   state.logStream.lastId = -1;
-  state.logStream.status = "idle";
+  state.logStream.status = finalStatus;
+  setHeroStatusLabel(finalStatus);
 }
 
 async function pollRunLogs() {
@@ -144,23 +166,25 @@ async function pollRunLogs() {
     const status = data.status || {};
     const stateValue = status.state || "running";
     state.logStream.status = stateValue;
+    setHeroStatusLabel(stateValue);
     if (stateValue === "running") {
       state.logStream.timer = window.setTimeout(pollRunLogs, LOG_POLL_INTERVAL);
     } else {
-      stopRunLogStream();
+      stopRunLogStream(stateValue);
     }
   } catch (err) {
     log(`拉取运行日志失败：${err.message}`);
-    stopRunLogStream();
+    stopRunLogStream("failed");
   }
 }
 
 function startRunLogStream(runId) {
   if (!runId) return;
-  stopRunLogStream();
+  stopRunLogStream("idle");
   state.logStream.runId = runId;
   state.logStream.lastId = -1;
   state.logStream.status = "running";
+  setHeroStatusLabel("running");
   pollRunLogs();
 }
 
@@ -1165,7 +1189,9 @@ function enterStructureContext(structureType, stepPath, announce = true) {
 
 function updatePipelineDropdownLabel() {
   if (!els.pipelineDropdownBtn) return;
-  els.pipelineDropdownBtn.textContent = state.selectedPipeline ? `Pipeline: ${state.selectedPipeline}` : "选择 Pipeline";
+  const label = state.selectedPipeline ? `Pipeline: ${state.selectedPipeline}` : "选择 Pipeline";
+  els.pipelineDropdownBtn.textContent = label;
+  setHeroPipelineLabel(state.selectedPipeline || "");
 }
 
 function renderPipelineMenu(items) {
@@ -1266,6 +1292,7 @@ function runSelectedPipeline() {
     .then((resp) => {
       if (resp && resp.run_id) {
         log(`Pipeline ${state.selectedPipeline} 正在运行，run_id=${resp.run_id}`);
+        setHeroStatusLabel("running");
         startRunLogStream(resp.run_id);
       } else {
         log("运行接口返回异常：缺少 run_id");
@@ -1575,6 +1602,8 @@ async function bootstrap() {
   updatePipelinePreview();
   bindEvents();
   updateActionButtons();
+  setHeroPipelineLabel(state.selectedPipeline || "");
+  setHeroStatusLabel("idle");
   try {
     await Promise.all([refreshPipelines(), refreshTools()]);
     log("界面已准备就绪，点击 + 号开始搭建 UltraRAG Flow 吧！");
