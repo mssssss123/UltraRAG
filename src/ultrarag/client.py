@@ -27,6 +27,29 @@ logger = None
 PipelineStep = Union[str, Dict[str, Any]]
 node_status = False
 
+def launch_ui(host: str = "127.0.0.1", port: int = 5050) -> None:
+    project_root = Path(__file__).resolve().parents[2]
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
+
+    try:
+        from ui.backend.app import create_app
+    except Exception as exc:  
+        raise RuntimeError(
+            "Failed to load the UI backend. Please ensure the `ui/backend` directory exists and is importable."
+        ) from exc
+
+    app = create_app()
+    ui_logger = logging.getLogger("UltraRAG-UI")
+    ui_logger.info("UltraRAG UI server started: http://%s:%d", host, port)
+
+    try:
+        app.run(host=host, port=port, debug=False)
+    except OSError as exc:
+        raise RuntimeError(
+            f"Failed to start UltraRAG UI (host={host}, port={port}): {exc}"
+        ) from exc
+
 
 class Configuration:
     def __init__(self) -> None:
@@ -1039,6 +1062,20 @@ def main():
         default="info",
         help="Set the logging level (debug, info, warn, error)",
     )
+    
+    p_show = subparsers.add_parser("show", help="Show helper interfaces")
+    show_sub = p_show.add_subparsers(dest="show_target", required=True)
+    p_show_ui = show_sub.add_parser("ui", help="Launch the UltraRAG web UI")
+    p_show_ui.add_argument("--host", default="127.0.0.1")
+    p_show_ui.add_argument("--port", type=int, default=5050)
+    p_show.add_argument(
+        "--log_level",
+        type=str,
+        default="info",
+        help="Set the logging level (debug, info, warn, error)",
+    )
+
+
     global log_level, logger
     args = parser.parse_args()
     log_level = args.log_level.lower()
@@ -1050,6 +1087,12 @@ def main():
         asyncio.run(build(args.config))
     elif args.cmd == "run":
         asyncio.run(run(args.config))
+    elif args.cmd == "show":
+        if args.show_target == "ui":
+            launch_ui(host=args.host, port=args.port)
+        else:  
+            parser.print_help()
+            sys.exit(1)
     else:
         parser.print_help()
         sys.exit(1)
