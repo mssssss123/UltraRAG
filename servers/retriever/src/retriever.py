@@ -118,6 +118,15 @@ class Retriever:
                 app.logger.error(err_msg)
                 raise ImportError(err_msg)
             
+            dev = str(cfg.get("device", "")).strip().lower()
+            if dev == "cpu":
+                self.device_num = 1
+            else:
+                env_gids = os.environ.get("CUDA_VISIBLE_DEVICES", "").strip()
+                self.device_num = len([p for p in env_gids.split(",") if p.strip()]) if env_gids else 1
+
+            app.logger.info(f"[Infinity] device={dev or 'auto'} -> device_num={self.device_num}")
+
             self.model = AsyncEngineArray.from_args(
                 [EngineArgs(model_name_or_path=model_name_or_path, batch_size=self.batch_size, **cfg)]
             )[0]
@@ -249,12 +258,14 @@ class Retriever:
                     data = self.contents
                     call = self.model.embed
                 
-                bs = max(1, int(getattr(self, "batch_size", 16)))
+                per_device_bs = max(1, int(getattr(self, "batch_size", 16)))
+                n_dev = max(1, int(getattr(self, "device_num", 1)))
+                eff_bs = per_device_bs * n_dev
                 n = len(data)
                 pbar = tqdm(total=n, desc="Embedding (Infinity)")
                 embeddings = []
-                for i in range(0, n, bs):
-                    chunk = data[i:i+bs]
+                for i in range(0, n, eff_bs):
+                    chunk = data[i:i + eff_bs]
                     vecs, _usage = await call(images=chunk) if is_multimodal else await call(sentences=chunk)
                     embeddings.extend(vecs)
                     pbar.update(len(chunk))
