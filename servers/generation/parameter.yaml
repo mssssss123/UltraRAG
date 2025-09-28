@@ -5,7 +5,6 @@ backend_configs:
   vllm:
     model_name_or_path: openbmb/MiniCPM4-8B
     gpu_ids: "2,3"
-    tensor_parallel_size: 2
     gpu_memory_utilization: 0.9
     dtype: auto
   openai:

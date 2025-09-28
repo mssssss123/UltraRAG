@@ -108,17 +108,28 @@ class Generation:
             os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
             gpu_ids = cfg.get("gpu_ids")
             self._normalize_gpu_ids(gpu_ids)
+            if gpu_ids:
+                if isinstance(gpu_ids, str):
+                    gpu_list = [g.strip() for g in gpu_ids.split(",") if g.strip()]
+                elif isinstance(gpu_ids, (list, tuple)):
+                    gpu_list = [str(g).strip() for g in gpu_ids if str(g).strip()]
+                else:
+                    raise ValueError(f"Invalid gpu_ids type: {type(gpu_ids)}")
+                self.tensor_parallel_size = len(gpu_list)
+            else:
+                self.tensor_parallel_size = 1
+
             model_name_or_path = cfg.get("model_name_or_path")
             vllm_pass_cfg = self._drop_keys(
                 cfg, banned=["gpu_ids", "model_name_or_path"]
             )
+            vllm_pass_cfg.setdefault("tensor_parallel_size", self.tensor_parallel_size)
             self.chat_template_kwargs = (
                 sampling_params.get("chat_template_kwargs", {}) or {}
             )
             vllm_sampling_params = self._drop_keys(
                 sampling_params, banned=["chat_template_kwargs"]
             )
-
             self.model = LLM(model=model_name_or_path, **vllm_pass_cfg)
             self.sampling_params = SamplingParams(**vllm_sampling_params)
 
