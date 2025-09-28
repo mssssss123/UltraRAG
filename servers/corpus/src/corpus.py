@@ -297,7 +297,6 @@ async def build_mineru_corpus(
     from fastmcp.exceptions import ToolError
     from PIL import Image
 
-    # ---- 基础路径检查 ----
     root = os.path.abspath(mineru_dir)
     if not os.path.isdir(root):
         raise ToolError(f"MinerU root not found: {root}")
@@ -307,7 +306,6 @@ async def build_mineru_corpus(
     if not os.path.exists(in_path):
         raise ToolError(f"Input path not found: {in_path}")
 
-    # ---- 根据传入是“文件/目录”确定要处理的 stem 列表 ----
     stems: List[str] = []
     if os.path.isfile(in_path):
         if not in_path.lower().endswith(".pdf"):
@@ -326,9 +324,7 @@ async def build_mineru_corpus(
         if not stems:
             raise ToolError(f"No PDF files found under: {in_path}")
 
-    # ---- 收集文本 rows ----
     text_rows: List[Dict[str, Any]] = []
-    # ---- 图像 jsonl rows 与输出基目录 ----
     image_rows: List[Dict[str, Any]] = []
     image_out = os.path.abspath(image_corpus_save_path)
     out_root_dir = os.path.dirname(image_out)
@@ -338,11 +334,9 @@ async def build_mineru_corpus(
     for stem in stems:
         auto_dir = os.path.join(root, stem, "auto")
         if not os.path.isdir(auto_dir):
-            # MinerU 还没产出的话，跳过此 stem
             app.logger.warning(f"Auto dir not found for '{stem}': {auto_dir} (skip)")
             continue
 
-        # ---- 文本：<auto>/<stem>.md ----
         md_path = os.path.join(auto_dir, f"{stem}.md")
         if not os.path.isfile(md_path):
             app.logger.warning(f"Markdown not found for '{stem}': {md_path} (skip text)")
@@ -355,33 +349,31 @@ async def build_mineru_corpus(
                 "contents": md_text
             })
 
-        # ---- 图像：<auto>/images/**/* 复制到 输出/images/<stem>/**/*
         images_dir = os.path.join(auto_dir, "images")
         if not os.path.isdir(images_dir):
             app.logger.info(f"No images dir for '{stem}': {images_dir} (skip images)")
             continue
 
-        rel_list = _list_images(images_dir)  # 你已有：返回相对 images/ 的路径列表
+        rel_list = _list_images(images_dir)  
         for idx, rel in enumerate(rel_list):
             src = os.path.join(images_dir, rel)
-            dst = os.path.join(base_out_img_dir, stem, rel)  # 带上 <stem> 以避免重名
+            dst = os.path.join(base_out_img_dir, stem, rel)  
             os.makedirs(os.path.dirname(dst), exist_ok=True)
 
             try:
                 with Image.open(src) as im:
-                    im.convert("RGB").copy()  # 校验可读
+                    im.convert("RGB").copy()  
             except Exception as e:
                 app.logger.warning(f"Skip invalid image for '{stem}': {src}, reason: {e}")
                 continue
 
             shutil.copy2(src, dst)
             image_rows.append({
-                "id": len(image_rows),  # 全局自增
-                "image_id": f"{stem}/{os.path.basename(rel)}",  # 避免跨 PDF 重名
-                "image_path": f"images/{stem}/{rel}",          # 相对 paths（包含 stem）
+                "id": len(image_rows),  
+                "image_id": f"{stem}/{os.path.basename(rel)}",  
+                "image_path": f"images/{stem}/{rel}",          
             })
 
-    # ---- 写出 JSONL ----
     text_out = os.path.abspath(text_corpus_save_path)
     _save_jsonl(text_rows, text_out)
     _save_jsonl(image_rows, image_out)
