@@ -9,7 +9,7 @@ backend_configs:
     dtype: auto
   openai:
     model_name: MiniCPM4-8B
-    api_base: http://localhost:8000/v1
+    base_url: http://localhost:8000/v1
     api_key: ""
     concurrency: 8
     retries: 3

@@ -35,21 +35,6 @@ class Generation:
             output="->None",
         )
 
-    def _normalize_gpu_ids(self, gpu_ids) -> None:
-        if gpu_ids is None:
-            return
-        if isinstance(gpu_ids, int):
-            val = str(gpu_ids)
-        elif isinstance(gpu_ids, (list, tuple)):
-            val = ",".join(str(x) for x in gpu_ids if str(x).strip())
-        elif isinstance(gpu_ids, str):
-            val = ",".join([p.strip() for p in gpu_ids.split(",") if p.strip()])
-        else:
-            raise TypeError(
-                "gpu_ids must be str | int | list | tuple, e.g. '0', 0 or [0,1]"
-            )
-        os.environ["CUDA_VISIBLE_DEVICES"] = val
-
     def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
         return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
 
@@ -67,6 +52,8 @@ class Generation:
                     and "text" in m["content"]
                 ):
                     prompts.append(m["content"]["text"])
+                elif "content" in m and isinstance(m["content"], str):
+                    prompts.append(m["content"])
                 elif "text" in m:
                     prompts.append(m["text"])
                 else:
@@ -100,77 +87,98 @@ class Generation:
 
         self.backend = backend.lower()
         self.backend_configs = backend_configs or {}
-        cfg = (self.backend_configs.get(self.backend) or {}).copy()
+        cfg: Dict[str, Any] = (self.backend_configs.get(self.backend) or {}).copy()
 
         if self.backend == "vllm":
-            from vllm import LLM, SamplingParams
+            try:
+                from vllm import LLM, SamplingParams
+            except ImportError:
+                err_msg = (
+                    "vllm is not installed. Please install it with `pip install vllm`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
 
+            gpu_ids = str(cfg.get("gpu_ids"))
+
+            os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
             os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
-            gpu_ids = cfg.get("gpu_ids")
-            self._normalize_gpu_ids(gpu_ids)
-            if gpu_ids:
-                if isinstance(gpu_ids, str):
-                    gpu_list = [g.strip() for g in gpu_ids.split(",") if g.strip()]
-                elif isinstance(gpu_ids, (list, tuple)):
-                    gpu_list = [str(g).strip() for g in gpu_ids if str(g).strip()]
-                else:
-                    raise ValueError(f"Invalid gpu_ids type: {type(gpu_ids)}")
-                self.tensor_parallel_size = len(gpu_list)
-            else:
-                self.tensor_parallel_size = 1
 
             model_name_or_path = cfg.get("model_name_or_path")
+
             vllm_pass_cfg = self._drop_keys(
-                cfg, banned=["gpu_ids", "model_name_or_path"]
-            )
-            vllm_pass_cfg.setdefault("tensor_parallel_size", self.tensor_parallel_size)
-            self.chat_template_kwargs = (
-                sampling_params.get("chat_template_kwargs", {}) or {}
+                cfg,
+                banned=["gpu_ids", "model_name_or_path"],
             )
             vllm_sampling_params = self._drop_keys(
-                sampling_params, banned=["chat_template_kwargs"]
+                sampling_params,
+                banned=["chat_template_kwargs"],
             )
+            vllm_pass_cfg["tensor_parallel_size"] = len(gpu_ids.split(","))
+            self.chat_template_kwargs = sampling_params.get("chat_template_kwargs", {})
+
             self.model = LLM(model=model_name_or_path, **vllm_pass_cfg)
             self.sampling_params = SamplingParams(**vllm_sampling_params)
 
         elif self.backend == "openai":
             self.model_name = cfg.get("model_name")
-            api_base = cfg.get("api_base")
+            if not self.model_name:
+                error_msg = "model_name is required for openai backend"
+                app.logger.error(error_msg)
+                raise ValueError(error_msg)
+
+            base_url = cfg.get("base_url")
+            if not base_url:
+                base_url = "https://api.openai.com/v1"
+                warn_msg = f"base_url is not set, default to {base_url}"
+                app.logger.warning(warn_msg)
+
             api_key = cfg.get("api_key") or os.environ.get("LLM_API_KEY")
-            self.client = AsyncOpenAI(base_url=api_base, api_key=api_key)
+            if not api_key:
+                api_key = "None"
+                warn_msg = "api_key is not set, default to None"
+                app.logger.warning(warn_msg)
 
-            allow_keys = {
-                "temperature",
-                "top_p",
-                "max_tokens",
-                "presence_penalty",
-                "frequency_penalty",
-                "stop",
-                "logit_bias",
-                "seed",
-                "n",
-            }
-            sp = sampling_params or {}
-            self.sampling_params = {k: v for k, v in sp.items() if k in allow_keys}
+            self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
+
+            self.chat_template_kwargs = sampling_params.get("chat_template_kwargs", {})
+            openai_sampling_params = self._drop_keys(
+                sampling_params, banned=["chat_template_kwargs"]
+            )
             extra_body = {}
-            if "top_k" in sp:
-                extra_body["top_k"] = sp["top_k"]
-            if "chat_template_kwargs" in sp:
-                extra_body["chat_template_kwargs"] = sp["chat_template_kwargs"]
+            if "top_k" in openai_sampling_params:
+                extra_body["top_k"] = openai_sampling_params["top_k"]
+            if self.chat_template_kwargs:
+                extra_body["chat_template_kwargs"] = self.chat_template_kwargs
             if extra_body:
-                self.sampling_params["extra_body"] = extra_body
+                openai_sampling_params["extra_body"] = extra_body
+            self.sampling_params = openai_sampling_params
 
-            self._max_concurrency = int(cfg.get("concurrency", 8))
+            self._max_concurrency = int(cfg.get("concurrency", 1))
             self._retries = int(cfg.get("retries", 3))
             self._base_delay = float(cfg.get("base_delay", 1.0))
 
         elif self.backend == "hf":
-            from transformers import AutoTokenizer, AutoModelForCausalLM
+            try:
+                from transformers import AutoTokenizer, AutoModelForCausalLM
+            except ImportError:
+                err_msg = "transformers is not installed. Please install it with `pip install transformers`."
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
 
-            gpu_ids = cfg.get("gpu_ids")
-            self._normalize_gpu_ids(gpu_ids)
+            gpu_ids = str(cfg.get("gpu_ids"))
+            os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
+
             model_name_or_path = cfg.get("model_name_or_path")
-            hf_pass_cfg = self._drop_keys(cfg, banned=["gpu_ids", "model_name_or_path"])
+            hf_pass_cfg = self._drop_keys(
+                cfg,
+                banned=["gpu_ids", "model_name_or_path"],
+            )
+            hf_sampling_params = self._drop_keys(
+                sampling_params, banned=["chat_template_kwargs"]
+            )
+            self.chat_template_kwargs = sampling_params.get("chat_template_kwargs", {})
+            self.sampling_params = hf_sampling_params
 
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name_or_path,
@@ -178,38 +186,22 @@ class Generation:
                 **hf_pass_cfg,
             )
             self.tokenizer = AutoTokenizer.from_pretrained(
-                model_name_or_path, padding_side="left"
+                model_name_or_path,
+                padding_side="left",
             )
-            self.chat_template_kwargs = (
-                sampling_params.get("chat_template_kwargs", {}) or {}
-            )
-
-            allow_keys = {
-                "do_sample",
-                "temperature",
-                "top_p",
-                "top_k",
-                "repetition_penalty",
-                "max_new_tokens",
-                "num_beams",
-            }
-            hf_sampling_params = self._drop_keys(
-                sampling_params, banned=["chat_template_kwargs"]
-            )
-            self.sampling_params = {
-                k: v for k, v in hf_sampling_params.items() if k in allow_keys
-            }
         else:
-            raise ValueError(f"Unsupported backend: {self.backend}")
+            err_msg = f"Unsupported backend: {self.backend}"
+            app.logger.error(err_msg)
+            raise ValueError(err_msg)
 
     async def _generate(
         self,
-        messages_list: List[List[Dict[str, str]]],
+        msg_ls: List[List[Dict[str, str]]],
     ) -> List[str]:
 
         if self.backend == "vllm":
             outputs = self.model.chat(
-                messages_list,
+                msg_ls,
                 self.sampling_params,
                 chat_template_kwargs=self.chat_template_kwargs,
             )
@@ -279,9 +271,9 @@ class Generation:
                         base_delay=getattr(self, "_base_delay", 1.0),
                     )
                 )
-                for i, m in enumerate(messages_list)
+                for i, m in enumerate(msg_ls)
             ]
-            ret = [None] * len(messages_list)
+            ret = [None] * len(msg_ls)
 
             for coro in tqdm(
                 asyncio.as_completed(tasks), total=len(tasks), desc="Generating: "
@@ -291,7 +283,7 @@ class Generation:
 
         elif self.backend == "hf":
             prompt_txt_ls = []
-            for msg in messages_list:
+            for msg in msg_ls:
                 prompt_txt = self.tokenizer.apply_chat_template(
                     msg,
                     tokenize=False,
@@ -318,9 +310,9 @@ class Generation:
 
             output_ids_ls = []
             for input_ids, generated_ids in zip(input_ids_ls, generated_ids_ls):
+                ii = input_ids["input_ids"]
                 output_ids = [
-                    generated_ids[i][len(input_ids[i]) :]
-                    for i in range(len(input_ids["input_ids"]))
+                    generated_ids[j][len(ii[j]) :] for j in range(ii.shape[0])
                 ]
                 output_ids_ls.append(output_ids)
 
@@ -343,14 +335,14 @@ class Generation:
         system_prompt: str = "",
     ) -> Dict[str, List[str]]:
         prompts = self._extract_text_prompts(prompt_ls)
-        messages_list: List[List[Dict[str, str]]] = []
+        msg_ls: List[List[Dict[str, str]]] = []
         for p in prompts:
             msgs = []
             if system_prompt:
                 msgs.append({"role": "system", "content": system_prompt})
             msgs.append({"role": "user", "content": p})
-            messages_list.append(msgs)
-        ret = await self._generate(messages_list)
+            msg_ls.append(msgs)
+        ret = await self._generate(msg_ls)
         return {"ans_ls": ret}
 
     async def multimodal_generate(
@@ -362,7 +354,7 @@ class Generation:
 
         prompts = self._extract_text_prompts(prompt_ls)
 
-        messages_list: List[List[Dict[str, str]]] = []
+        msg_ls: List[List[Dict[str, str]]] = []
         for i, p in enumerate(prompts):
             msgs = []
             if system_prompt:
@@ -379,14 +371,14 @@ class Generation:
                         }
                     )
                 except Exception as e:
-                    app.logger.warning(f"[Image skip] idx={idx}, path={p}, err={e}")
+                    app.logger.warning(f"[Image skip] idx={i}, path={mp}, err={e}")
                 print(f"multimodal_path item: {mp}")
             content.append({"type": "text", "text": p})
 
             msgs.append({"role": "user", "content": content})
-            messages_list.append(msgs)
+            msg_ls.append(msgs)
 
-        ret = await self._generate(messages_list)
+        ret = await self._generate(msg_ls)
         return {"ans_ls": ret}
 
     def vllm_shutdown(self) -> None:
