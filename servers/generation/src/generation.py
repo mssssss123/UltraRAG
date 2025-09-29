@@ -246,36 +246,39 @@ class Generation:
                             )
                         return idx, (resp.choices[0].message.content or "")
                     except AuthenticationError as e:
-                        raise ToolError(
-                            f"Unauthorized (401): Access denied at {getattr(client, 'base_url', 'unknown')}."
+                        error_msg = (
+                            f"[{e.status_code}] Unauthorized: Access denied at {getattr(client, 'base_url', 'unknown')}."
                             " Invalid or missing LLM_API_KEY."
-                        ) from e
+                        )
+                        app.logger.error(error_msg)
+                        raise ToolError(error_msg)
                     except RateLimitError as e:
-                        app.logger.warning(
-                            f"[429] Rate limited (idx={idx}, attempt={attempt+1}): {e}"
-                        )
+                        warn_msg = f"[{e.status_code}] API Rate limited (idx={idx}, attempt={attempt+1}): {e}"
+                        app.logger.warning(warn_msg)
+                        raise ToolError(warn_msg)
                     except APIStatusError as e:
-                        if 500 <= e.status_code < 600:
-                            app.logger.warning(
-                                f"[{e.status_code}] Server error (idx={idx}, attempt={attempt+1}): {e}"
-                            )
+                        if e.status_code >= 500:
+                            warn_msg = f"[{e.status_code}] Server error (idx={idx}, attempt={attempt+1}): {e}"
+                            app.logger.warning(warn_msg)
                         else:
-                            raise
+                            error_msg = f"[{e.status_code}] API error (idx={idx}, attempt={attempt+1}): {e}"
+                            app.logger.error(error_msg)
+                            raise ToolError(error_msg)
                     except Exception as e:
-                        app.logger.warning(
-                            f"[Retry {attempt+1}] Failed (idx={idx}): {e}"
-                        )
+                        error_msg = f"[Retry {attempt+1}] Failed (idx={idx}): {e}"
+                        app.logger.error(error_msg)
+                        raise ToolError(error_msg)
 
                     await asyncio.sleep(delay + random.random() * 0.25)
                     delay *= 2
 
-                return idx, "[ERROR]"
+                return idx, "<error>"
 
             tasks = [
                 asyncio.create_task(
                     call_with_retry(
-                        i,
-                        m,
+                        idx,
+                        msg,
                         self.client,
                         self.model_name,
                         self.sampling_params,
@@ -283,12 +286,14 @@ class Generation:
                         base_delay=getattr(self, "_base_delay", 1.0),
                     )
                 )
-                for i, m in enumerate(msg_ls)
+                for idx, msg in enumerate(msg_ls)
             ]
             ret = [None] * len(msg_ls)
 
             for coro in tqdm(
-                asyncio.as_completed(tasks), total=len(tasks), desc="Generating: "
+                asyncio.as_completed(tasks),
+                total=len(tasks),
+                desc="OpenAI Generating: ",
             ):
                 idx, ans = await coro
                 ret[idx] = ans
@@ -308,7 +313,10 @@ class Generation:
             bs = self.batch_size
 
             ret: List[str] = []
-            for i in tqdm(range(0, len(prompt_txt_ls), bs), desc="HF Generating"):
+            for i in tqdm(
+                range(0, len(prompt_txt_ls), bs),
+                desc="HF Generating",
+            ):
                 batch_prompts = prompt_txt_ls[i : i + bs]
                 enc = self.tokenizer(
                     batch_prompts,
@@ -329,7 +337,9 @@ class Generation:
                     ret.append(text)
 
         else:
-            raise ValueError(f"Unsupported backend: {self.backend}")
+            err_msg = f"Unsupported backend: {self.backend}"
+            app.logger.error(err_msg)
+            raise ValueError(err_msg)
 
         return ret
 
@@ -338,14 +348,21 @@ class Generation:
         prompt_ls: List[Union[str, Dict[str, Any]]],
         system_prompt: str = "",
     ) -> Dict[str, List[str]]:
-        prompts = self._extract_text_prompts(prompt_ls)
-        msg_ls: List[List[Dict[str, str]]] = []
-        for p in prompts:
-            msgs = []
-            if system_prompt:
-                msgs.append({"role": "system", "content": system_prompt})
-            msgs.append({"role": "user", "content": p})
-            msg_ls.append(msgs)
+        system_prompt = str(system_prompt or "").strip()
+        add_system = bool(system_prompt)
+        prompts = [str(p).strip() for p in self._extract_text_prompts(prompt_ls)]
+        if not prompts:
+            info_msg = (
+                "empty prompt list; return empty ans_ls."
+                f"system_prompt={system_prompt}"
+            )
+            app.logger.info(info_msg)
+            return {"ans_ls": []}
+
+        system_msgs = (
+            [{"role": "system", "content": system_prompt}] if add_system else []
+        )
+        msg_ls = [system_msgs + [{"role": "user", "content": p}] for p in prompts]
         ret = await self._generate(msg_ls)
         return {"ans_ls": ret}
 
@@ -355,18 +372,56 @@ class Generation:
         prompt_ls: List[Union[str, Dict[str, Any]]],
         system_prompt: str = "",
     ) -> Dict[str, List[str]]:
+        system_prompt = str(system_prompt or "").strip()
+        add_system = bool(system_prompt)
+        prompts = [str(p).strip() for p in self._extract_text_prompts(prompt_ls)]
+        if not prompts:
+            info_msg = (
+                "empty prompt list; return empty ans_ls."
+                f"system_prompt={system_prompt}"
+            )
+            app.logger.info(info_msg)
+            return {"ans_ls": []}
 
-        prompts = self._extract_text_prompts(prompt_ls)
+        paths: List[List[str]] = []
+        mm_len = len(multimodal_path or [])
+        if mm_len < len(prompts):
+            warn_msg = (
+                f"multimodal_path shorter than prompts: {mm_len} < {len(prompts)}; "
+                "missing entries will be treated as empty."
+            )
+            app.logger.warning(warn_msg)
+        elif mm_len > len(prompts):
+            warn_msg = (
+                f"multimodal_path longer than prompts: {mm_len} > {len(prompts)}; "
+                "extra entries will be ignored."
+            )
+            app.logger.warning(warn_msg)
 
-        msg_ls: List[List[Dict[str, str]]] = []
-        for i, p in enumerate(prompts):
-            msgs = []
-            if system_prompt:
+        for i in range(len(prompts)):
+            entry = multimodal_path[i] if i < mm_len else []
+            if isinstance(entry, (str, bytes)):
+                entry = [str(entry)]
+            elif not isinstance(entry, list):
+                warn_msg = (
+                    f"idx={i} path entry not list/str; "
+                    "got {type(entry)}; "
+                    "fallback to empty list."
+                )
+                app.logger.warning(warn_msg)
+                entry = []
+            paths.append([str(pth).strip() for pth in entry])
+
+        msg_ls: List[List[Dict[str, Any]]] = []
+        for i, (p, pths) in enumerate(zip(prompts, paths)):
+            msgs: List[Dict[str, Any]] = []
+            if add_system:
                 msgs.append({"role": "system", "content": system_prompt})
 
-            content = []
-            curr_path = multimodal_path[i]
-            for mp in curr_path:
+            content: List[Dict[str, Any]] = []
+            for mp in pths:
+                if not mp:
+                    continue
                 try:
                     content.append(
                         {
@@ -376,7 +431,6 @@ class Generation:
                     )
                 except Exception as e:
                     app.logger.warning(f"[Image skip] idx={i}, path={mp}, err={e}")
-                print(f"multimodal_path item: {mp}")
             content.append({"type": "text", "text": p})
 
             msgs.append({"role": "user", "content": content})
