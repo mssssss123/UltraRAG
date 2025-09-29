@@ -4,10 +4,10 @@
 import argparse
 import json
 import os
-from typing import Any, List
+from typing import Any, List, Set
 
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -18,9 +18,11 @@ class State:
     data_path: str = ""
     title: str = "Case Study Viewer"
     cases: List[List[dict]] = []
+    allowed_images: Set[str] = set()
 
 
 STATE = State()
+STATE.allowed_images = set()
 
 
 def load_cases(path: str) -> List[List[dict]]:
@@ -142,6 +144,55 @@ def _expand_cases_if_needed(cases: List[List[dict]]) -> List[List[dict]]:
     return expanded
 
 
+IMAGE_EXTENSIONS = {
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".tif",
+    ".webp",
+}
+
+
+def _is_remote_image(path: str) -> bool:
+    lower = path.lower()
+    return lower.startswith("http://") or lower.startswith("https://") or lower.startswith("data:")
+
+
+def _normalize_local_image_path(path: str) -> str | None:
+    if not isinstance(path, str):
+        return None
+    path = path.strip()
+    if not path or _is_remote_image(path):
+        return None
+    _, ext = os.path.splitext(path)
+    if ext.lower() not in IMAGE_EXTENSIONS:
+        return None
+    return os.path.abspath(path)
+
+
+def _collect_local_image_paths(cases: List[List[dict]]) -> Set[str]:
+    allowed: Set[str] = set()
+    for steps in cases:
+        for st in steps:
+            mem = st.get("memory", {}) if isinstance(st, dict) else {}
+            if not isinstance(mem, dict):
+                continue
+            for v in mem.values():
+                if isinstance(v, str):
+                    normalized = _normalize_local_image_path(v)
+                    if normalized:
+                        allowed.add(normalized)
+                elif isinstance(v, list):
+                    for item in v:
+                        normalized = _normalize_local_image_path(item) if isinstance(item, str) else None
+                        if normalized:
+                            allowed.add(normalized)
+    return allowed
+
+
 def escape_html(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
@@ -235,6 +286,32 @@ pre {
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
 .divider { height: 1px; background: var(--border); margin: 10px 0; opacity: .6; }
+.image-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+.image-card {
+  background: #0d1532;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.image-card img {
+  width: 100%;
+  border-radius: 8px;
+  background: #060a18;
+  object-fit: cover;
+}
+.image-caption {
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+}
 .footer { color: var(--muted); text-align: center; padding: 24px 8px; }
 """
 
@@ -275,6 +352,33 @@ function escapeHtml(s) {
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
+}
+
+const IMAGE_EXTS = new Set(
+  [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff", ".webp"].map(s => s.toLowerCase())
+);
+
+function isProbablyRemoteImage(path) {
+  const lower = path.toLowerCase();
+  return lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("data:");
+}
+
+function extractExtension(path) {
+  const idx = path.lastIndexOf(".");
+  return idx === -1 ? "" : path.slice(idx).toLowerCase();
+}
+
+function isProbablyImagePath(path) {
+  if (typeof path !== "string") return false;
+  const trimmed = path.trim();
+  if (!trimmed) return false;
+  if (isProbablyRemoteImage(trimmed)) return true;
+  return IMAGE_EXTS.has(extractExtension(trimmed));
+}
+
+function buildImageSrc(path) {
+  if (isProbablyRemoteImage(path)) return path;
+  return '/api/image?path=' + encodeURIComponent(path);
 }
 
 async function fetchCases() {
@@ -375,7 +479,6 @@ function render() {
         headBar.style = "display:flex;align-items:center;justify-content:space-between;";
         const badge = document.createElement("div");
         badge.className = "badge";
-        badge.textContent = "JSON";
         const copyBtn = document.createElement("button");
         copyBtn.className = "copy";
         copyBtn.setAttribute("data-key", dataKey);
@@ -388,27 +491,57 @@ function render() {
         pre.className = "pre-json";
         pre.setAttribute("data-key", dataKey);
 
-        var isStringArray = Array.isArray(val) && val.every(function(x){ return typeof x === "string"; });
+        const isStringArray = Array.isArray(val) && val.every(function(x){ return typeof x === "string"; });
+        const isImageList = isStringArray && val.length > 0 && val.every(isProbablyImagePath);
+
         var prettyText;
+        var badgeLabel = "JSON";
         if (typeof val === "string") {
-          // 字符串：直接原样显示，保留换行
           prettyText = val;
+          badgeLabel = "TEXT";
         } else if (isStringArray) {
-          // 字符串数组：合并为多行，避免 \" 和 \n 的转义显示
           prettyText = val.join("\n");
+          badgeLabel = isImageList ? "IMAGES" : "TEXT";
         } else {
-          // 其他类型：用 JSON 格式化
           try {
             prettyText = JSON.stringify(val, null, 2);
           } catch (e) {
-            // 兜底
             prettyText = String(val);
           }
         }
-        pre.textContent = prettyText;
+
+        badge.textContent = badgeLabel;
 
         // 拼装
         right.appendChild(headBar);
+
+        if (isImageList) {
+          const gallery = document.createElement("div");
+          gallery.className = "image-grid";
+          val.forEach(function(imgPath, idx){
+            const card = document.createElement("div");
+            card.className = "image-card";
+
+            const img = document.createElement("img");
+            img.loading = "lazy";
+            img.decoding = "async";
+            img.src = buildImageSrc(imgPath);
+            img.alt = `Image ${idx + 1}`;
+            card.appendChild(img);
+
+            const caption = document.createElement("div");
+            caption.className = "image-caption";
+            caption.textContent = imgPath;
+            card.appendChild(caption);
+
+            gallery.appendChild(card);
+          });
+          right.appendChild(gallery);
+          pre.classList.add("muted", "small");
+          pre.style.marginTop = "12px";
+        }
+
+        pre.textContent = prettyText;
         right.appendChild(pre);
         row.appendChild(keyDiv);
         row.appendChild(right);
@@ -503,10 +636,25 @@ def api_cases():
     return JSONResponse({"count": len(STATE.cases), "cases": STATE.cases})
 
 
+@app.get("/api/image")
+def api_image(path: str):
+    if not path:
+        raise HTTPException(status_code=400, detail="missing path")
+    normalized = _normalize_local_image_path(path)
+    if normalized is None:
+        raise HTTPException(status_code=404, detail="unsupported image path")
+    if normalized not in STATE.allowed_images:
+        raise HTTPException(status_code=404, detail="image not registered in current cases")
+    if not os.path.exists(normalized):
+        raise HTTPException(status_code=404, detail="image file not found")
+    return FileResponse(normalized)
+
+
 @app.get("/api/reload")
 def api_reload():
     try:
-        STATE.cases = load_cases(STATE.data_path)
+        STATE.cases = _expand_cases_if_needed(load_cases(STATE.data_path))
+        STATE.allowed_images = _collect_local_image_paths(STATE.cases)
         return JSONResponse({"ok": True, "count": len(STATE.cases), "msg": "reloaded"})
     except Exception as e:
         return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
@@ -539,6 +687,7 @@ def main():
     STATE.title = args.title
     try:
         STATE.cases = _expand_cases_if_needed(load_cases(STATE.data_path))
+        STATE.allowed_images = _collect_local_image_paths(STATE.cases)
     except Exception as e:
         raise SystemExit(f"!!! 加载数据失败: {e}")
 
