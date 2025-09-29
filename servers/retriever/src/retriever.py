@@ -11,6 +11,7 @@ import pandas as pd
 from tqdm import tqdm
 from flask import Flask, jsonify, request
 from PIL import Image
+import gc
 
 from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
 from ultrarag.server import UltraRAG_MCP_Server
@@ -277,8 +278,9 @@ class Retriever:
             normalize = bool(
                 self.st_encode_params.get("normalize_embeddings", False)
             )
-            csz = int(self.st_encode_params.get("chunk_size", 10000))
-            document_task = self.st_encode_params.get("document_task", None)
+            csz = int(self.st_encode_params.get("encode_chunk_size", 10000))
+            psg_prompt_name = self.st_encode_params.get("psg_prompt_name", None)
+            psg_task = self.st_encode_params.get("psg_task", None)
 
             if is_multimodal:
                 data = []
@@ -300,7 +302,8 @@ class Retriever:
                             show_progress_bar=True,
                             normalize_embeddings=normalize,
                             precision="float32",
-                            task=document_task,
+                            prompt_name=psg_prompt_name,
+                            task=psg_task,
                         )
                     embeddings = await asyncio.to_thread(_encode_all)
                 finally:
@@ -314,7 +317,8 @@ class Retriever:
                         show_progress_bar=True,
                         normalize_embeddings=normalize,
                         precision="float32",
-                        task=document_task,
+                        prompt_name=psg_prompt_name,
+                        task=psg_task,
                     )
                 embeddings = await asyncio.to_thread(_encode_single)
 
@@ -343,6 +347,9 @@ class Retriever:
             raise RuntimeError("Embedding generation failed: embeddings is None")
         embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
+        
+        del embeddings
+        gc.collect()
         app.logger.info("embedding success")
     
     def _to_st_device_list(self) -> str | list[str]:
@@ -474,7 +481,8 @@ class Retriever:
             normalize = bool(
                 self.st_encode_params.get("normalize_embeddings", False)
             )
-            query_task = self.st_encode_params.get("query_task", None)
+            q_prompt_name = self.st_encode_params.get("q_prompt_name", "")
+            q_task = self.st_encode_params.get("psg_task", None)
 
             if isinstance(device_param, list) and len(device_param) > 1:
                 pool = self.model.start_multi_process_pool()
@@ -487,7 +495,8 @@ class Retriever:
                             show_progress_bar=True,
                             normalize_embeddings=normalize,
                             precision="float32",
-                            task=query_task,  
+                            prompt_name=q_prompt_name,
+                            task=q_task,  
                         )
                     query_embedding = await asyncio.to_thread(_encode_all)
                 finally:
@@ -501,7 +510,8 @@ class Retriever:
                         show_progress_bar=True,
                         normalize_embeddings=normalize,
                         precision="float32",
-                        task=query_task,
+                        prompt_name=q_prompt_name,
+                        task=q_task,  
                     )
                 query_embedding = await asyncio.to_thread(_encode_single)
        
@@ -612,7 +622,6 @@ class Retriever:
             results.append([self.contents[i] for i in top_idx])
 
         return {"ret_psg": results}
-
 
     async def retriever_deploy_service(
         self,
