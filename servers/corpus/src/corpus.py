@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 from typing import Any, Dict, Iterable, List, Optional
+from pathlib import Path
 
 from fastmcp.exceptions import ToolError
 from PIL import Image
@@ -15,7 +16,7 @@ app = UltraRAG_MCP_Server("corpus")
 
 
 def _save_jsonl(rows: Iterable[Dict[str, Any]], file_path: str) -> None:
-    out_dir = os.path.dirname(os.path.abspath(file_path))
+    out_dir = Path(file_path).parent
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
 
@@ -199,7 +200,7 @@ async def build_image_corpus(
 
             filename = f"page_{i}.jpg"
             save_path = os.path.join(out_img_dir, filename)
-            rel_path = f"image/{stem}/{filename}"
+            rel_path = Path(os.path.join("image", stem, filename)).as_posix()
 
             try:
                 pix.save(save_path, jpg_quality=90)
@@ -226,7 +227,7 @@ async def build_image_corpus(
             valid_rows.append(
                 {
                     "id": gid,
-                    "image_id": f"{stem}/{filename}",
+                    "image_id": Path(os.path.join(stem, filename)).as_posix(),
                     "image_path": rel_path,
                 }
             )
@@ -299,10 +300,6 @@ async def mineru_parse(
             err_msg = f"mineru exited with non-zero code: {returncode}"
             app.logger.error(err_msg)
             raise ToolError(err_msg)
-    except ToolError as e:
-        err_msg = f"Unexpected error while running mineru: {e}"
-        app.logger.error(err_msg)
-        raise ToolError(err_msg)
     except Exception as e:
         err_msg = f"Unexpected error while running mineru: {e}"
         app.logger.error(err_msg)
@@ -321,7 +318,7 @@ def _list_images(images_dir: str) -> List[str]:
         for fn in sorted(fns):
             if os.path.splitext(fn)[1].lower() in exts:
                 rel = os.path.relpath(os.path.join(dp, fn), start=images_dir)
-                rels.append(rel.replace("\\", "/"))
+                rels.append(Path(rel).as_posix())
     rels.sort()
     return rels
 
@@ -424,8 +421,8 @@ async def build_mineru_corpus(
             image_rows.append(
                 {
                     "id": len(image_rows),
-                    "image_id": f"{stem}/{os.path.basename(rel)}",
-                    "image_path": f"images/{stem}/{rel}",
+                    "image_id": Path(os.path.join(stem, rel)).as_posix(),
+                    "image_path": Path(os.path.join("images", stem, rel)).as_posix(),
                 }
             )
 
