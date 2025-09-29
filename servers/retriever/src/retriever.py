@@ -44,14 +44,6 @@ class Retriever:
             output="q_ls,embedding_path,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
-            self.retriever_deploy_service,
-            output="retriever_url->None",
-        )
-        mcp_inst.tool(
-            self.retriever_deploy_search,
-            output="retriever_url,q_ls,top_k,query_instruction->ret_psg",
-        )
-        mcp_inst.tool(
             self.retriever_exa_search,
             output="q_ls,top_k,retrieve_thread_num->ret_psg",
         )
@@ -156,8 +148,6 @@ class Retriever:
                 raise ValueError("[openai] backend_configs.openai.openai_model is required")
             if not isinstance(api_base, str) or not api_base:
                 raise ValueError("[openai] backend_configs.openai.api_base must be a non-empty string")
-            if not isinstance(api_key, str) or not api_key:
-                raise ValueError("[openai] api_key is required (or via env RETRIEVER_API_KEY)")
             
             try:
                 self.model = AsyncOpenAI(base_url=api_base, api_key=api_key)
@@ -623,86 +613,7 @@ class Retriever:
 
         return {"ret_psg": results}
 
-    async def retriever_deploy_service(
-        self,
-        retriever_url: str,
-    ):
-        if getattr(self, "backend", None) != "infinity":
-            raise ValueError("retriever_deploy_service is only supported when backend='infinity'")
-        # Ensure URL is valid, adding "http://" prefix if necessary
-        retriever_url = retriever_url.strip()
-        if not retriever_url.startswith("http://") and not retriever_url.startswith(
-            "https://"
-        ):
-            retriever_url = f"http://{retriever_url}"
 
-        url_obj = urlparse(retriever_url)
-        retriever_host = url_obj.hostname
-        retriever_port = (
-            url_obj.port if url_obj.port else 8080
-        )  # Default port if none provided
-
-        @retriever_app.route("/search", methods=["POST"])
-        async def deploy_retrieval_model():
-            data = request.get_json()
-            query_list = data["query_list"]
-            top_k = data["top_k"]
-            async with self.model:
-                query_embedding, _ = await self.model.embed(sentences=query_list)
-            query_embedding = np.array(query_embedding, dtype=np.float16)
-            _, ids = self.faiss_index.search(query_embedding, top_k)
-
-            rets = []
-            for i, _ in enumerate(query_list):
-                cur_ret = []
-                for _, id in enumerate(ids[i]):
-                    cur_ret.append(self.contents[id])
-                rets.append(cur_ret)
-            return jsonify({"ret_psg": rets})
-
-        retriever_app.run(host=retriever_host, port=retriever_port)
-        app.logger.info(f"employ embedding server at {retriever_url}")
-
-    async def retriever_deploy_search(
-        self,
-        retriever_url: str,
-        query_list: List[str],
-        top_k: Optional[int] | None = None,
-        query_instruction: str = "",
-    ):
-        # Validate the URL format
-        url = retriever_url.strip()
-        if not url.startswith("http://") and not url.startswith("https://"):
-            url = f"http://{url}"
-        url_obj = urlparse(url)
-        api_url = urlunparse(url_obj._replace(path="/search"))
-        app.logger.info(f"Calling url: {api_url}")
-
-        if isinstance(query_list, str):
-            query_list = [query_list]
-        query_list = [f"{query_instruction}{query}" for query in query_list]
-
-        payload = {"query_list": query_list}
-        if top_k is not None:
-            payload["top_k"] = top_k
-
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                api_url,
-                json=payload,
-            ) as response:
-                if response.status == 200:
-                    response_data = await response.json()
-                    app.logger.debug(
-                        f"status_code: {response.status}, response data: {response_data}"
-                    )
-                    return response_data
-                else:
-                    err_msg = (
-                        f"Failed to call {retriever_url} with code {response.status}"
-                    )
-                    app.logger.error(err_msg)
-                    raise ToolError(err_msg)
 
     async def _parallel_search(
         self,

@@ -35,6 +35,5 @@ query_instruction: ""
 is_multimodal: false
 faiss_use_gpu: True
 overwrite: false
-retriever_url: http://localhost:8080
 index_chunk_size: 50000
 retrieve_thread_num: 1
