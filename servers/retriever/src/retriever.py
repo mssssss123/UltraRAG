@@ -446,7 +446,7 @@ class Retriever:
         # save
         faiss.write_index(cpu_index, index_path)
 
-        if self.faiss_index is None:
+        if self.faiss_index is None or overwrite:
             self.faiss_index = index
 
         app.logger.info("Indexing success")
