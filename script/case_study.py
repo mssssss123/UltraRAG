@@ -500,8 +500,21 @@ function render() {
           prettyText = val;
           badgeLabel = "TEXT";
         } else if (isStringArray) {
-          prettyText = val.join("\n");
-          badgeLabel = isImageList ? "IMAGES" : "TEXT";
+          if (isImageList) {
+            prettyText = val.join("\n");
+            badgeLabel = "IMAGES";
+          } else {
+            const separator = dataKey === "memory_ret_psg"
+              ? "\n\n" + "-".repeat(40) + "\n\n"
+              : "\n\n";
+            prettyText = val.map(function(text, idx){
+              if (dataKey === "memory_ret_psg") {
+                return `${idx + 1}. ${text}`;
+              }
+              return text;
+            }).join(separator);
+            badgeLabel = "TEXT";
+          }
         } else {
           try {
             prettyText = JSON.stringify(val, null, 2);
