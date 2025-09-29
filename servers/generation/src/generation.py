@@ -172,13 +172,14 @@ class Generation:
             model_name_or_path = cfg.get("model_name_or_path")
             hf_pass_cfg = self._drop_keys(
                 cfg,
-                banned=["gpu_ids", "model_name_or_path"],
+                banned=["gpu_ids", "model_name_or_path", "batch_size"],
             )
             hf_sampling_params = self._drop_keys(
                 sampling_params, banned=["chat_template_kwargs"]
             )
             self.chat_template_kwargs = sampling_params.get("chat_template_kwargs", {})
             self.sampling_params = hf_sampling_params
+            self.batch_size = int(cfg.get("batch_size", 1))
 
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name_or_path,
@@ -189,6 +190,17 @@ class Generation:
                 model_name_or_path,
                 padding_side="left",
             )
+            added_tokens = 0
+            if self.tokenizer.pad_token is None:
+                if self.tokenizer.eos_token is not None:
+                    self.tokenizer.pad_token = self.tokenizer.eos_token
+                else:
+                    added_tokens = self.tokenizer.add_special_tokens(
+                        {"pad_token": "[PAD]"}
+                    )
+
+            if added_tokens > 0 and hasattr(self.model, "resize_token_embeddings"):
+                self.model.resize_token_embeddings(len(self.tokenizer))
         else:
             err_msg = f"Unsupported backend: {self.backend}"
             app.logger.error(err_msg)
@@ -282,7 +294,7 @@ class Generation:
                 ret[idx] = ans
 
         elif self.backend == "hf":
-            prompt_txt_ls = []
+            prompt_txt_ls: List[str] = []
             for msg in msg_ls:
                 prompt_txt = self.tokenizer.apply_chat_template(
                     msg,
@@ -292,37 +304,29 @@ class Generation:
                 )
                 prompt_txt_ls.append(prompt_txt)
 
-            input_ids_ls = []
-            for prompt_txt in prompt_txt_ls:
-                input_ids = self.tokenizer([prompt_txt], return_tensors="pt").to(
-                    self.model.device,
-                )
-                input_ids_ls.append(input_ids)
+            device = self.model.device
+            bs = self.batch_size
 
-            generated_ids_ls = []
-            for input_ids in tqdm(input_ids_ls):
-                generated_ids = self.model.generate(
-                    **input_ids,
+            ret: List[str] = []
+            for i in tqdm(range(0, len(prompt_txt_ls), bs), desc="HF Generating"):
+                batch_prompts = prompt_txt_ls[i : i + bs]
+                enc = self.tokenizer(
+                    batch_prompts,
+                    return_tensors="pt",
+                    padding=True,
+                ).to(device)
+
+                generated = self.model.generate(
+                    **enc,
                     use_cache=False,
                     **self.sampling_params,
                 )
-                generated_ids_ls.append(generated_ids)
 
-            output_ids_ls = []
-            for input_ids, generated_ids in zip(input_ids_ls, generated_ids_ls):
-                ii = input_ids["input_ids"]
-                output_ids = [
-                    generated_ids[j][len(ii[j]) :] for j in range(ii.shape[0])
-                ]
-                output_ids_ls.append(output_ids)
-
-            ret = []
-            for output_ids in output_ids_ls:
-                output = self.tokenizer.batch_decode(
-                    output_ids,
-                    skip_special_tokens=True,
-                )[0]
-                ret.append(output)
+                input_lens = enc["attention_mask"].sum(dim=1).tolist()
+                for row_idx, in_len in enumerate(input_lens):
+                    out_ids = generated[row_idx, int(in_len) :].tolist()
+                    text = self.tokenizer.decode(out_ids, skip_special_tokens=True)
+                    ret.append(text)
 
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
