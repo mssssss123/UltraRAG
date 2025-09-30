@@ -5,7 +5,7 @@ corpus_path: data/corpus_example.jsonl
 embedding_path: embedding/embedding.npy
 index_path: index/index.index
 
-backend: infinity # options: infinity, sentencetransformers, openai
+backend: infinity # options: infinity, sentence_transformers, openai
 backend_configs:
   infinity:
     bettertransformer: false
@@ -13,10 +13,10 @@ backend_configs:
     device: cuda
     model_warmup: false
     trust_remote_code: true
-  sentencetransformers:
+  sentence_transformers:
     device: cuda
     trust_remote_code: true
-    sentencetransformers_encode:
+    sentence_transformers_encode:
       normalize_embeddings: false
       encode_chunk_size: 10000
       q_prompt_name: query
@@ -24,8 +24,8 @@ backend_configs:
       psg_task: null
       q_task: null
   openai:
-    openai_model: text-embedding-3-small
-    api_base: "https://api.openai.com/v1"
+    model_name: text-embedding-3-small
+    base_url: "https://api.openai.com/v1"
     api_key: ""
 
 batch_size: 16
