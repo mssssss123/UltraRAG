@@ -1,24 +1,19 @@
+import asyncio
+import gc
 import os
-from urllib.parse import urlparse, urlunparse
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import requests
 import aiohttp
-import asyncio
-import jsonlines
 import numpy as np
-import pandas as pd
-from tqdm import tqdm
-from flask import Flask, jsonify, request
 from PIL import Image
-import gc
+from tqdm import tqdm
+import jsonlines
 
 from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
 from ultrarag.server import UltraRAG_MCP_Server
-from pathlib import Path
 
 app = UltraRAG_MCP_Server("retriever")
-retriever_app = Flask(__name__)
 
 
 class Retriever:
@@ -55,23 +50,9 @@ class Retriever:
             self.retriever_zhipuai_search,
             output="q_ls,top_k,retrieve_thread_num->ret_psg",
         )
-    
+
     def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
         return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
-    
-    def _normalize_gpu_ids(self, gpu_ids) -> None:
-        if gpu_ids is None:
-            return
-        if isinstance(gpu_ids, int):
-            val = str(gpu_ids)
-        elif isinstance(gpu_ids, (list, tuple)):
-            val = ",".join(str(x) for x in gpu_ids if str(x).strip())
-        elif isinstance(gpu_ids, str):
-            val = ",".join([p.strip() for p in gpu_ids.split(",") if p.strip()])
-        else:
-            raise TypeError("gpu_ids must be str | int | list | tuple, e.g. '0', 0 or [0,1]")
-        os.environ["CUDA_VISIBLE_DEVICES"] = val
-        self.gpu_ids = gpu_ids
 
     def retriever_init(
         self,
@@ -89,20 +70,26 @@ class Retriever:
         try:
             import faiss
         except ImportError:
-            err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
+            err_msg = (
+                "faiss is not installed. "
+                "Please install it with `pip install faiss-cpu` "
+                "or `pip install faiss-gpu-cu12`."
+            )
             app.logger.error(err_msg)
             raise ImportError(err_msg)
 
         self.faiss_use_gpu = faiss_use_gpu
         self.backend = backend.lower()
-        self.batch_size = int(batch_size)
+        self.batch_size = batch_size
 
-        self.backend_configs = backend_configs or {}
-        cfg = self.backend_configs.get(self.backend, {}) or {}
+        self.backend_configs = backend_configs
+        cfg = self.backend_configs.get(self.backend, {})
 
-        if gpu_ids is not None:
-            self._normalize_gpu_ids(gpu_ids)
-        
+        gpu_ids = str(gpu_ids)
+        os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
+
+        self.device_num = len(gpu_ids.split(","))
+
         if self.backend == "infinity":
             try:
                 from infinity_emb import AsyncEngineArray, EngineArgs
@@ -110,54 +97,96 @@ class Retriever:
                 err_msg = "infinity_emb is not installed. Please install it with `pip install infinity-emb`."
                 app.logger.error(err_msg)
                 raise ImportError(err_msg)
-            
-            dev = str(cfg.get("device", "")).strip().lower()
-            if dev == "cpu":
+
+            device = str(cfg.get("device", "")).strip().lower()
+            if not device:
+                warn_msg = f"[infinity] device is not set, default to `cpu`"
+                app.logger.warning(warn_msg)
+                device = "cpu"
+
+            if device == "cpu":
+                info_msg = "[infinity] device=cpu, gpu_ids is ignored"
+                app.logger.info(info_msg)
                 self.device_num = 1
-            else:
-                env_gids = os.environ.get("CUDA_VISIBLE_DEVICES", "").strip()
-                self.device_num = len([p for p in env_gids.split(",") if p.strip()]) if env_gids else 1
 
-            app.logger.info(f"[Infinity] device={dev or 'auto'} -> device_num={self.device_num}")
+            app.logger.info(
+                f"[infinity] device={device}, gpu_ids={gpu_ids}, device_num={self.device_num}"
+            )
 
-            self.model = AsyncEngineArray.from_args(
-                [EngineArgs(model_name_or_path=model_name_or_path, batch_size=self.batch_size, **cfg)]
-            )[0]
-            
-        elif self.backend == "sentencetransformers":
+            infinity_engine_args = EngineArgs(
+                model_name_or_path=model_name_or_path,
+                batch_size=self.batch_size,
+                **cfg,
+            )
+            self.model = AsyncEngineArray.from_args([infinity_engine_args])[0]
+
+        elif self.backend == "sentence_transformers":
             try:
                 from sentence_transformers import SentenceTransformer
             except ImportError:
-                err_msg = "sentence_transformers is not installed. Please install it with `pip install sentence-transformers torch`."
+                err_msg = (
+                    "sentence_transformers is not installed. "
+                    "Please install it with `pip install sentence-transformers`."
+                )
                 app.logger.error(err_msg)
                 raise ImportError(err_msg)
-            
-            self.st_encode_params = cfg.get("sentencetransformers_encode", {}) or {}
-            st_params = self._drop_keys(cfg, banned=["sentencetransformers_encode"])
-            
-            self.model = SentenceTransformer(model_name_or_path=model_name_or_path, **st_params)
-        
+            self.st_encode_params = cfg.get("sentence_transformers_encode", {}) or {}
+            st_params = self._drop_keys(cfg, banned=["sentence_transformers_encode"])
+
+            device = str(cfg.get("device", "")).strip().lower()
+            if not device:
+                warn_msg = (
+                    f"[sentence_transformers] device is not set, default to `cpu`"
+                )
+                app.logger.warning(warn_msg)
+                device = "cpu"
+
+            if device == "cpu":
+                info_msg = "[sentence_transformers] device=cpu, gpu_ids is ignored"
+                app.logger.info(info_msg)
+                self.device_num = 1
+
+            app.logger.info(
+                f"[sentence_transformers] device={device}, gpu_ids={gpu_ids}, device_num={self.device_num}"
+            )
+
+            self.model = SentenceTransformer(
+                model_name_or_path=model_name_or_path,
+                **st_params,
+            )
+
         elif self.backend == "openai":
             from openai import AsyncOpenAI, OpenAIError
 
-            model_name = cfg.get("openai_model")
-            api_base = cfg.get("api_base")
+            model_name = cfg.get("model_name")
+            base_url = cfg.get("base_url")
             api_key = cfg.get("api_key") or os.environ.get("RETRIEVER_API_KEY")
 
             if not model_name:
-                raise ValueError("[openai] backend_configs.openai.openai_model is required")
-            if not isinstance(api_base, str) or not api_base:
-                raise ValueError("[openai] backend_configs.openai.api_base must be a non-empty string")
-            
+                err_msg = "[openai] model_name is required"
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
+            if not isinstance(base_url, str) or not base_url:
+                err_msg = "[openai] base_url must be a non-empty string"
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
+
             try:
-                self.model = AsyncOpenAI(base_url=api_base, api_key=api_key)
-                self.openai_model = model_name 
-                app.logger.info(f"OpenAI client initialized (model='{model_name}', base='{api_base}')")
+                self.model = AsyncOpenAI(base_url=base_url, api_key=api_key)
+                self.model_name = model_name
+                info_msg = f"[openai] OpenAI client initialized (model='{model_name}', base='{base_url}')"
+                app.logger.info(info_msg)
             except OpenAIError as e:
-                app.logger.error(f"Failed to initialize OpenAI client: {e}")
-                raise
+                err_msg = f"[openai] Failed to initialize OpenAI client: {e}"
+                app.logger.error(err_msg)
+                raise OpenAIError(err_msg)
         else:
-            raise ValueError(f"Unsupported backend: {backend}. Supported backends: 'infinity', 'sentencetransformers'")
+            error_msg = (
+                f"Unsupported backend: {backend}. "
+                "Supported backends: 'infinity', 'sentence_transformers', 'openai'"
+            )
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
         self.contents = []
         corpus_path_obj = Path(corpus_path)
@@ -166,22 +195,27 @@ class Retriever:
             if not is_multimodal:
                 for i, item in enumerate(reader):
                     if "contents" not in item:
-                        raise ValueError(
+                        error_msg = (
                             f"Line {i}: missing key 'contents'. full item={item}"
                         )
+                        app.logger.error(error_msg)
+                        raise ValueError(error_msg)
+
                     self.contents.append(item["contents"])
             else:
                 for i, item in enumerate(reader):
                     if "image_path" not in item:
-                        raise ValueError(
+                        error_msg = (
                             f"Line {i}: missing key 'image_path'. full item={item}"
                         )
+                        app.logger.error(error_msg)
+                        raise ValueError(error_msg)
+
                     rel = str(item["image_path"])
                     abs_path = str((corpus_dir / rel).resolve())
                     self.contents.append(abs_path)
 
-        self.faiss_index = None
-        if index_path is not None and os.path.exists(index_path):
+        if index_path and os.path.exists(index_path):
             cpu_index = faiss.read_index(index_path)
 
             if self.faiss_use_gpu:
@@ -190,21 +224,30 @@ class Retriever:
                 co.useFloat16 = True
                 try:
                     self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
-                    app.logger.info(f"Loaded index to GPU(s).")
+                    info_msg = f"[faiss] Loaded index to GPU(s) with {self.device_num} device(s)."
+                    app.logger.info(info_msg)
                 except RuntimeError as e:
-                    app.logger.error(
-                        f"GPU index load failed: {e}. Falling back to CPU."
+                    warn_msg = (
+                        f"[faiss] GPU index load failed: {e}. Falling back to CPU."
                     )
+                    app.logger.warning(warn_msg)
                     self.faiss_use_gpu = False
                     self.faiss_index = cpu_index
             else:
                 self.faiss_index = cpu_index
-                app.logger.info("Loaded index on CPU.")
+                info_msg = "[faiss] loaded index on CPU."
+                app.logger.info(info_msg)
 
-            app.logger.info(f"Retriever index path loaded successfully.")
+            info_msg = "[faiss] index path loaded successfully."
+            app.logger.info(info_msg)
         else:
-            app.logger.info("No index_path provided. Retriever initialized without index.")
-  
+            if index_path and not os.path.exists(index_path):
+                warn_msg = f"{index_path} is not exists."
+                app.logger.warning(warn_msg)
+            info_msg = (
+                "[faiss] no index_path provided. Retriever initialized without index."
+            )
+            app.logger.info(info_msg)
 
     async def retriever_embed(
         self,
@@ -213,10 +256,13 @@ class Retriever:
         is_multimodal: bool = False,
     ):
         embeddings = None
-        
+
         if embedding_path is not None:
             if not embedding_path.endswith(".npy"):
-                err_msg = f"Embedding save path must end with .npy, now the path is {embedding_path}"
+                err_msg = (
+                    f"Embedding save path must end with .npy, "
+                    f"now the path is {embedding_path}"
+                )
                 app.logger.error(err_msg)
                 raise ValidationError(err_msg)
             output_dir = os.path.dirname(embedding_path)
@@ -248,26 +294,28 @@ class Retriever:
                 else:
                     data = self.contents
                     call = self.model.embed
-                
-                per_device_bs = max(1, int(getattr(self, "batch_size", 16)))
-                n_dev = max(1, int(getattr(self, "device_num", 1)))
-                eff_bs = per_device_bs * n_dev
+
+                eff_bs = self.batch_size * self.device_num
                 n = len(data)
-                pbar = tqdm(total=n, desc="Embedding (Infinity)")
+                pbar = tqdm(total=n, desc="[infinity] Embedding: ")
                 embeddings = []
                 for i in range(0, n, eff_bs):
-                    chunk = data[i:i + eff_bs]
-                    vecs, _usage = await call(images=chunk) if is_multimodal else await call(sentences=chunk)
+                    chunk = data[i : i + eff_bs]
+                    vecs, _ = (
+                        await call(images=chunk)
+                        if is_multimodal
+                        else await call(sentences=chunk)
+                    )
                     embeddings.extend(vecs)
                     pbar.update(len(chunk))
                 pbar.close()
-        
-        elif self.backend == "sentencetransformers":
-            device_param = self._to_st_device_list()  
-            bs = int(getattr(self, "batch_size", 16))
-            normalize = bool(
-                self.st_encode_params.get("normalize_embeddings", False)
-            )
+
+        elif self.backend == "sentence_transformers":
+            if self.device_num == 1:
+                device_param = "cuda:0"
+            else:
+                device_param = [f"cuda:{i}" for i in range(self.device_num)]
+            normalize = bool(self.st_encode_params.get("normalize_embeddings", False))
             csz = int(self.st_encode_params.get("encode_chunk_size", 10000))
             psg_prompt_name = self.st_encode_params.get("psg_prompt_name", None)
             psg_task = self.st_encode_params.get("psg_task", None)
@@ -283,11 +331,12 @@ class Retriever:
             if isinstance(device_param, list) and len(device_param) > 1:
                 pool = self.model.start_multi_process_pool()
                 try:
+
                     def _encode_all():
                         return self.model.encode(
                             data,
                             pool=pool,
-                            batch_size=bs,
+                            batch_size=self.batch_size,
                             chunk_size=csz,
                             show_progress_bar=True,
                             normalize_embeddings=normalize,
@@ -295,81 +344,62 @@ class Retriever:
                             prompt_name=psg_prompt_name,
                             task=psg_task,
                         )
+
                     embeddings = await asyncio.to_thread(_encode_all)
                 finally:
                     self.model.stop_multi_process_pool(pool)
             else:
+
                 def _encode_single():
                     return self.model.encode(
                         data,
                         device=device_param,
-                        batch_size=bs,
+                        batch_size=self.batch_size,
                         show_progress_bar=True,
                         normalize_embeddings=normalize,
                         precision="float32",
                         prompt_name=psg_prompt_name,
                         task=psg_task,
                     )
-                embeddings = await asyncio.to_thread(_encode_single)
 
+                embeddings = await asyncio.to_thread(_encode_single)
 
         elif self.backend == "openai":
             if is_multimodal:
-                raise ValueError("openai backend does not support image embeddings in this path.")
-
-            bs = max(1, int(getattr(self, "batch_size", 16)))
+                err_msg = (
+                    "openai backend does not support image embeddings in this path."
+                )
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
 
             embeddings: list = []
-            with tqdm(total=len(self.contents), desc="OpenAI Embedding", unit="item") as pbar:
-                for start in range(0, len(self.contents), bs):
-                    chunk = self.contents[start:start + bs]
+            with tqdm(
+                total=len(self.contents),
+                desc="[openai] Embedding: ",
+                unit="item",
+            ) as pbar:
+                for start in range(0, len(self.contents), self.batch_size):
+                    chunk = self.contents[start : start + self.batch_size]
                     resp = await self.model.embeddings.create(
-                        model=self.openai_model,
+                        model=self.model_name,
                         input=chunk,
                     )
                     embeddings.extend([d.embedding for d in resp.data])
                     pbar.update(len(chunk))
-
         else:
-            raise ValueError(f"Unsupported backend: {self.backend}")
+            err_msg = f"Unsupported backend: {self.backend}"
+            app.logger.error(err_msg)
+            raise ValueError(err_msg)
 
         if embeddings is None:
             raise RuntimeError("Embedding generation failed: embeddings is None")
         embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
-        
+
         del embeddings
         gc.collect()
         app.logger.info("embedding success")
-    
-    def _to_st_device_list(self) -> str | list[str]:
-        """
-        Convert gpu_ids to SentenceTransformers device format:
-        - None         -> "cuda" (or "cpu")
-        - int / "0"    -> "cuda:0"
-        - "0,1" / [0,1]-> ["cuda:0","cuda:1"]
-        - If CUDA_VISIBLE_DEVICES="2,3", local process sees GPUs as 0/1
-        """
 
-        cd = getattr(self, "gpu_ids", None)
-        if cd is None:
-            import torch
-            return "cuda" if torch.cuda.is_available() else "cpu"
-
-        if isinstance(cd, int):
-            return f"cuda:{cd}"
-
-        if isinstance(cd, str):
-            parts = [p.strip() for p in cd.split(",") if p.strip()]
-            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
-
-        if isinstance(cd, (list, tuple)):
-            parts = [str(p).strip() for p in cd if str(p).strip()]
-            return f"cuda:{parts[0]}" if len(parts) == 1 else [f"cuda:{i}" for i in range(len(parts))]
-
-        raise TypeError("gpu_ids must be None, int, str, or list[int|str]")
-    
-    
     def retriever_index(
         self,
         embedding_path: str,
@@ -377,11 +407,14 @@ class Retriever:
         overwrite: bool = False,
         index_chunk_size: int = 50000,
     ):
-
         try:
             import faiss
         except ImportError:
-            err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
+            err_msg = (
+                "faiss is not installed. "
+                "Please install it with `pip install faiss-cpu` "
+                "or `pip install faiss-gpu-cu12`."
+            )
             app.logger.error(err_msg)
             raise ImportError(err_msg)
 
@@ -389,14 +422,12 @@ class Retriever:
             app.logger.error(f"Embedding file not found: {embedding_path}")
             raise NotFoundError(f"Embedding file not found: {embedding_path}")
 
-        if index_path is not None:
+        if index_path:
             if not index_path.endswith(".index"):
-                app.logger.error(
-                    f"Parameter index_path must end with .index now is {index_path}"
+                err_msg = (
+                    f"Parameter index_path must end with .index, now is {index_path}"
                 )
-                ValidationError(
-                    f"Parameter index_path must end with .index now is {index_path}"
-                )
+                raise ValidationError(err_msg)
             output_dir = os.path.dirname(index_path)
         else:
             current_file = os.path.abspath(__file__)
@@ -405,7 +436,11 @@ class Retriever:
             index_path = os.path.join(output_dir, "index.index")
 
         if not overwrite and os.path.exists(index_path):
-            app.logger.info("Index already exists, skipping")
+            info_msg = (
+                f"Index file already exists: {index_path}. "
+                "Set overwrite=True to overwrite."
+            )
+            app.logger.info(info_msg)
             return
 
         os.makedirs(output_dir, exist_ok=True)
@@ -414,20 +449,23 @@ class Retriever:
         dim = embedding.shape[1]
         vec_ids = np.arange(embedding.shape[0]).astype(np.int64)
 
-        # with cpu
         cpu_flat = faiss.IndexFlatIP(dim)
         cpu_index = faiss.IndexIDMap2(cpu_flat)
 
-        # chunk to write
         total = embedding.shape[0]
-        app.logger.info(f"Start building FAISS index, total vectors: {total}")
-        with tqdm(total=total, desc="Indexing (FAISS)", unit="vec") as pbar:
+        info_msg = f"Start building FAISS index, total vectors: {total}"
+        app.logger.info(info_msg)
+
+        with tqdm(
+            total=total,
+            desc="[faiss] Indexing: ",
+            unit="vec",
+        ) as pbar:
             for start in range(0, total, index_chunk_size):
                 end = min(start + index_chunk_size, total)
                 cpu_index.add_with_ids(embedding[start:end], vec_ids[start:end])
                 pbar.update(end - start)
-        
-        # with gpu
+
         if self.faiss_use_gpu:
             co = faiss.GpuMultipleClonerOptions()
             co.shard = True
@@ -435,21 +473,22 @@ class Retriever:
             try:
                 gpu_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
                 index = gpu_index
-                app.logger.info("Using GPU for indexing with sharding")
+                info_msg = f"Using GPU for indexing with sharding, device_num: {self.device_num}"
+                app.logger.info(info_msg)
             except RuntimeError as e:
-                app.logger.warning(f"GPU indexing failed ({e}); fall back to CPU")
+                err_msg = f"GPU indexing failed ({e}); fall back to CPU"
+                app.logger.warning(err_msg)
                 self.faiss_use_gpu = False
                 index = cpu_index
         else:
             index = cpu_index
 
-        # save
         faiss.write_index(cpu_index, index_path)
 
-        if self.faiss_index is None or overwrite:
+        if not self.faiss_index or overwrite:
             self.faiss_index = index
-
-        app.logger.info("Indexing success")
+        info_msg = "[faiss] Indexing success."
+        app.logger.info(info_msg)
 
     async def retriever_search(
         self,
@@ -464,70 +503,81 @@ class Retriever:
 
         if self.backend == "infinity":
             async with self.model:
-                query_embedding, usage = await self.model.embed(sentences=queries)
-        elif self.backend == "sentencetransformers":
-            device_param = self._to_st_device_list()  
-            bs = int(getattr(self, "batch_size", 16))
-            normalize = bool(
-                self.st_encode_params.get("normalize_embeddings", False)
-            )
+                query_embedding, _ = await self.model.embed(sentences=queries)
+        elif self.backend == "sentence_transformers":
+            if self.device_num == 1:
+                device_param = "cuda:0"
+            else:
+                device_param = [f"cuda:{i}" for i in range(self.device_num)]
+            normalize = bool(self.st_encode_params.get("normalize_embeddings", False))
             q_prompt_name = self.st_encode_params.get("q_prompt_name", "")
             q_task = self.st_encode_params.get("psg_task", None)
 
             if isinstance(device_param, list) and len(device_param) > 1:
                 pool = self.model.start_multi_process_pool()
                 try:
+
                     def _encode_all():
                         return self.model.encode(
                             queries,
                             pool=pool,
-                            batch_size=bs,
+                            batch_size=self.batch_size,
                             show_progress_bar=True,
                             normalize_embeddings=normalize,
                             precision="float32",
                             prompt_name=q_prompt_name,
-                            task=q_task,  
+                            task=q_task,
                         )
+
                     query_embedding = await asyncio.to_thread(_encode_all)
                 finally:
                     self.model.stop_multi_process_pool(pool)
             else:
+
                 def _encode_single():
                     return self.model.encode(
                         queries,
                         device=device_param,
-                        batch_size=bs,
+                        batch_size=self.batch_size,
                         show_progress_bar=True,
                         normalize_embeddings=normalize,
                         precision="float32",
                         prompt_name=q_prompt_name,
-                        task=q_task,  
+                        task=q_task,
                     )
+
                 query_embedding = await asyncio.to_thread(_encode_single)
-       
+
         elif self.backend == "openai":
-            bs = max(1, int(getattr(self, "batch_size", 16)))
             query_embedding = []
-            for i in tqdm(range(0, len(queries), bs), desc="Embedding (OpenAI: query)", unit="batch"):
-                chunk = queries[i:i + bs]
-                resp = await self.model.embeddings.create(model=self.openai_model, input=chunk)
+            for i in tqdm(
+                range(0, len(queries), self.batch_size),
+                desc="[openai] Embedding: ",
+                unit="batch",
+            ):
+                chunk = queries[i : i + self.batch_size]
+                resp = await self.model.embeddings.create(
+                    model=self.model_name, input=chunk
+                )
                 query_embedding.extend([d.embedding for d in resp.data])
 
         else:
-            raise ValueError(f"Unsupported backend: {self.backend}")
-        
-        
-        query_embedding = np.array(query_embedding, dtype=np.float32)
-        app.logger.info("query embedding finish")
+            error_msg = f"Unsupported backend: {self.backend}"
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
-        scores, ids = self.faiss_index.search(query_embedding, top_k)
+        query_embedding = np.array(query_embedding, dtype=np.float32)
+
+        info_msg = f"query embedding shape: {query_embedding.shape}"
+        app.logger.info(info_msg)
+
+        _, ids = self.faiss_index.search(query_embedding, top_k)
         rets = []
-        for i, query in enumerate(query_list):
+        for i, _ in enumerate(query_list):
             cur_ret = []
             for _, id in enumerate(ids[i]):
                 cur_ret.append(self.contents[id])
             rets.append(cur_ret)
-
         return {"ret_psg": rets}
 
     async def retriever_search_colbert_maxsim(
@@ -537,28 +587,32 @@ class Retriever:
         top_k: int = 5,
         query_instruction: str = "",
     ) -> Dict[str, List[List[str]]]:
-        import torch
+        try:
+            import torch
+        except ImportError:
+            err_msg = (
+                "torch is not installed. Please install it with `pip install torch`."
+            )
+            app.logger.error(err_msg)
+            raise ImportError(err_msg)
 
-        # Ensure that backend is Infinity (i.e., ColBERT/ColPali multi-vector)
-        if getattr(self, "backend", None) != "infinity":
-            raise ValueError(
+        if self.backend not in ["infinity"]:
+            error_msg = (
                 "retriever_search_colbert_maxsim only supports 'infinity' backend "
                 "with ColBERT/ColPali multi-vector models. "
                 "Use retriever_search or other backend-specific retrieval functions instead."
             )
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
         if isinstance(query_list, str):
             query_list = [query_list]
         queries = [f"{query_instruction}{query}" for query in query_list]
 
-        # Encode queries -> expected shape (Q, Kq, D)
         async with self.model:
-            query_embedding, usage = await self.model.embed(
-                sentences=queries
-            )  
-        
-        # Load document embeddings -> expected shape (N, Kd, D)
-        doc_embeddings = np.load(embedding_path)  
+            query_embedding, _ = await self.model.embed(sentences=queries)
+
+        doc_embeddings = np.load(embedding_path)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         if (
@@ -574,46 +628,53 @@ class Retriever:
                 stacked = np.stack(
                     [np.asarray(x, dtype=np.float32) for x in doc_embeddings.tolist()],
                     axis=0,
-                )  # (N,Kd,D)
+                )
                 docs_tensor = torch.from_numpy(stacked).to(device)
             except Exception:
-                raise ValueError(
-                    f"Document embeddings in {embedding_path} have inconsistent shapes, cannot stack into (N,Kd,D). "
+                error_msg = (
+                    f"Document embeddings in {embedding_path} have inconsistent shapes, "
+                    "cannot stack into (N,Kd,D). "
                     f"Check your retriever_embed."
                 )
+                app.logger.error(error_msg)
+                raise ValueError(error_msg)
         else:
-            raise ValueError(
-                f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, shape={getattr(doc_embeddings, 'shape', None)}"
+            error_msg = (
+                f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, "
+                f"shape={getattr(doc_embeddings, 'shape', None)}"
             )
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
         def _l2norm(t: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
             return t / t.norm(dim=-1, keepdim=True).clamp_min(eps)
 
-        N, Kd, D_docs = docs_tensor.shape
-        docs_tensor = _l2norm(docs_tensor)  
+        N, _, D_docs = docs_tensor.shape
+        docs_tensor = _l2norm(docs_tensor)
         k_pick = min(top_k, N)
 
         results = []
         for q_np in query_embedding:
-            q = torch.as_tensor(q_np, dtype=torch.float32, device=device)  # Shape: (Kq, D)
+            q = torch.as_tensor(
+                q_np,
+                dtype=torch.float32,
+                device=device,
+            )
             if q.shape[-1] != D_docs:
-                raise ValueError(f"Dimension mismatch: query D={q.shape[-1]} vs doc D={D_docs}")
-            q = _l2norm(q)  
+                error_msg = (
+                    f"Dimension mismatch: query D={q.shape[-1]} vs doc D={D_docs}"
+                )
+                app.logger.error(error_msg)
+                raise ValueError(error_msg)
 
-            # MaxSim calculation:
-            # sim[n, i, j] = dot(q[i], docs_tensor[n, j])
-            # Result shape: (N, Kq, Kd)
+            q = _l2norm(q)
             sim = torch.einsum("qd,nkd->nqk", q, docs_tensor)
-            sim_max = sim.max(dim=2).values # Max over Kd -> shape (N, Kq)
-            scores = sim_max.sum(dim=1)     # Sum over Kq -> shape (N,)
-
+            sim_max = sim.max(dim=2).values
+            scores = sim_max.sum(dim=1)
 
             top_idx = torch.topk(scores, k=k_pick, largest=True).indices.tolist()
             results.append([self.contents[i] for i in top_idx])
-
         return {"ret_psg": results}
-
-
 
     async def _parallel_search(
         self,
@@ -670,12 +731,14 @@ class Retriever:
                 except Exception as e:
                     status = getattr(getattr(e, "response", None), "status_code", None)
                     if status == 401 or "401" in str(e):
-                        raise ToolError(
-                            "Unauthorized (401): Invalid or missing EXA_API_KEY."
-                        ) from e
-                    app.logger.warning(
-                        f"[Retry {attempt+1}] EXA failed (idx={idx}): {e}"
-                    )
+                        err_msg = (
+                            "Unauthorized (401): Invalid or missing EXA_API_KEY. "
+                            "Please set it to use Exa."
+                        )
+                        app.logger.error(err_msg)
+                        raise ToolError(err_msg) from e
+                    warn_msg = f"[Retry {attempt+1}] EXA failed (idx={idx}): {e}"
+                    app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
 
@@ -708,9 +771,12 @@ class Retriever:
 
         tavily_api_key = os.environ.get("TAVILY_API_KEY", "")
         if not tavily_api_key:
-            raise MissingAPIKeyError(
-                "TAVILY_API_KEY environment variable is not set. Please set it to use Tavily."
+            err_msg = (
+                "TAVILY_API_KEY environment variable is not set. "
+                "Please set it to use Tavily."
             )
+            app.logger.error(err_msg)
+            raise MissingAPIKeyError(err_msg)
         tavily = AsyncTavilyClient(api_key=tavily_api_key)
 
         async def worker_factory(idx: int, q: str):
@@ -722,15 +788,16 @@ class Retriever:
                     psg_ls: List[str] = [(r.get("content") or "") for r in results]
                     return idx, psg_ls
                 except UsageLimitExceededError as e:
-                    app.logger.error(f"Usage limit exceeded: {e}")
-                    raise ToolError(f"Usage limit exceeded: {e}") from e
+                    err_msg = f"Usage limit exceeded: {e}"
+                    app.logger.error(err_msg)
+                    raise ToolError(err_msg) from e
                 except InvalidAPIKeyError as e:
-                    app.logger.error(f"Invalid API key: {e}")
-                    raise ToolError(f"Invalid API key: {e}") from e
+                    err_msg = f"Invalid API key: {e}"
+                    app.logger.error(err_msg)
+                    raise ToolError(err_msg) from e
                 except (BadRequestError, Exception) as e:
-                    app.logger.warning(
-                        f"[Retry {attempt+1}] Tavily failed (idx={idx}): {e}"
-                    )
+                    warn_msg = f"[Retry {attempt+1}] Tavily failed (idx={idx}): {e}"
+                    app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
 
@@ -750,9 +817,12 @@ class Retriever:
 
         zhipuai_api_key = os.environ.get("ZHIPUAI_API_KEY", "")
         if not zhipuai_api_key:
-            raise ToolError(
-                "ZHIPUAI_API_KEY environment variable is not set. Please set it to use ZhipuAI."
+            err_msg = (
+                "ZHIPUAI_API_KEY environment variable is not set. "
+                "Please set it to use ZhipuAI."
             )
+            app.logger.error(err_msg)
+            raise ToolError(err_msg)
 
         retrieval_url = "https://open.bigmodel.cn/api/paas/v4/web_search"
         headers = {
@@ -784,9 +854,8 @@ class Retriever:
                         # Respect top_k
                         return idx, (psg_ls[:top_k] if top_k is not None else psg_ls)
                 except (aiohttp.ClientError, Exception) as e:
-                    app.logger.warning(
-                        f"[Retry {attempt+1}] ZhipuAI failed (idx={idx}): {e}"
-                    )
+                    warn_msg = f"[Retry {attempt+1}] ZhipuAI failed (idx={idx}): {e}"
+                    app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
 
