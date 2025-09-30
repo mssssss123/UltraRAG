@@ -5,6 +5,7 @@ import asyncio
 from asyncio import run_coroutine_threadsafe
 import importlib.util
 import ast
+import json
 import logging
 import sys
 import io
@@ -41,6 +42,9 @@ if LEGACY_PIPELINES_DIR.exists():
     LEGACY_PIPELINES_DIR.mkdir(parents=True, exist_ok=True)
 
 STUBBED_MODULES: set[str] = set()
+
+CHAT_DATASET_DIR = PROJECT_ROOT / "data" / "chat_sessions"
+OUTPUT_DIR = PROJECT_ROOT / "output"
 
 
 class RunLogStream:
@@ -239,6 +243,124 @@ def _execute_run_task(name: str, run_id: str) -> None:
             )
             RUN_LOG_STREAM.finish(run_id, "failed", error="aborted")
         root_logger.removeHandler(handler)
+
+
+def _ensure_chat_dataset_dir() -> Path:
+    CHAT_DATASET_DIR.mkdir(parents=True, exist_ok=True)
+    return CHAT_DATASET_DIR
+
+
+def _as_project_relative(path: Path) -> str:
+    try:
+        relative = path.relative_to(PROJECT_ROOT)
+        return relative.as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def _extract_chat_answer(result_summary: Optional[str]) -> Optional[str]:
+    if not result_summary:
+        return None
+    text = result_summary.strip()
+    if not text:
+        return None
+    try:
+        parsed = yaml.safe_load(text)
+    except Exception:  # pragma: no cover - best effort
+        return text
+    if isinstance(parsed, dict):
+        for key in ("pred_ls", "ans_ls", "answers", "answer", "response"):
+            if key not in parsed:
+                continue
+            value = parsed[key]
+            if isinstance(value, list) and value:
+                return str(value[0])
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+        # flatten single value dicts
+        if len(parsed) == 1:
+            sole = next(iter(parsed.values()))
+            if isinstance(sole, str):
+                return sole.strip()
+            if isinstance(sole, list) and sole:
+                return str(sole[0])
+    if isinstance(parsed, list) and parsed:
+        return str(parsed[0])
+    return text
+
+
+def _collect_memory_files(pipeline_name: str) -> List[Path]:
+    if not OUTPUT_DIR.exists():
+        return []
+    pattern = f"memory_*_{pipeline_name}_*.json"
+    return sorted(OUTPUT_DIR.glob(pattern))
+
+
+def _coerce_memory_value(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        text = value.strip()
+        return text or None
+    if isinstance(value, list):
+        for item in value:
+            text = _coerce_memory_value(item)
+            if text:
+                return text
+        return None
+    if isinstance(value, dict):
+        for candidate in ("text", "value", "answer"):
+            if candidate in value:
+                text = _coerce_memory_value(value[candidate])
+                if text:
+                    return text
+        return None
+    try:
+        text = str(value).strip()
+        return text or None
+    except Exception:  # pragma: no cover - defensive
+        return None
+
+
+def _extract_answer_from_memory_file(path: Path) -> Optional[str]:
+    try:
+        snapshots = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # pragma: no cover - IO guard
+        LOGGER.warning("Failed to read memory file %s: %s", path, exc)
+        return None
+    if not isinstance(snapshots, list):
+        return None
+
+    preferred_keywords = ("pred", "ans", "answer", "result", "response")
+
+    def key_priority(key: str) -> tuple[int, int, str]:
+        lower = key.lower()
+        for idx, keyword in enumerate(preferred_keywords):
+            if keyword in lower:
+                return (0, idx, lower)
+        return (1, len(preferred_keywords), lower)
+
+    for snapshot in reversed(snapshots):
+        memory = snapshot.get("memory") if isinstance(snapshot, dict) else None
+        if not isinstance(memory, dict):
+            continue
+        for key in sorted(memory.keys(), key=key_priority):
+            value = _coerce_memory_value(memory[key])
+            if value:
+                return value
+    return None
+
+
+def _select_memory_answer(pipeline_name: str, before: set[str]) -> tuple[Optional[str], Optional[Path]]:
+    files = _collect_memory_files(pipeline_name)
+    if not files:
+        return None, None
+    candidates = [p for p in files if str(p) not in before]
+    if not candidates:
+        candidates = files
+    target = max(candidates, key=lambda p: p.stat().st_mtime)
+    answer = _extract_answer_from_memory_file(target)
+    return answer, target if answer else target
 
 def _missing_dependency(module_name: str):
     def _stub(*_args, **_kwargs):
@@ -717,6 +839,73 @@ def run(name: str, *, wait: bool = False) -> Dict[str, Any]:
         }
     RUN_EXECUTOR.submit(_execute_run_task, name, run_id)
     return {"status": "started", "run_id": run_id}
+
+
+def chat(name: str, question: str) -> Dict[str, Any]:
+    question_text = (question or "").strip()
+    if not question_text:
+        raise PipelineManagerError("问题内容不能为空")
+    param_path = _resolve_parameter_path(name, for_write=False)
+    if not param_path.exists():
+        raise PipelineManagerError("请先构建 Pipeline 以生成参数配置")
+
+    original_text = param_path.read_text(encoding="utf-8")
+    params = load_parameters(name)
+    benchmark_section = params.get("benchmark")
+    if not isinstance(benchmark_section, dict):
+        raise PipelineManagerError("当前配置未找到 benchmark 参数，请检查 Pipeline")
+    benchmark_cfg = benchmark_section.get("benchmark")
+    if not isinstance(benchmark_cfg, dict):
+        raise PipelineManagerError("benchmark 参数格式不正确，无法执行 Chat")
+
+    original_path = benchmark_cfg.get("path")
+    dataset_dir = _ensure_chat_dataset_dir()
+    timestamp = int(time.time() * 1000)
+    dataset_path = dataset_dir / f"{name}_{timestamp}.jsonl"
+    record = {
+        "id": 0,
+        "question": question_text,
+        "golden_answers": [],
+        "meta_data": {},
+    }
+    dataset_path.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
+    benchmark_cfg["path"] = _as_project_relative(dataset_path)
+
+    before_memory = {str(path) for path in _collect_memory_files(name)}
+
+    run_result: Optional[Dict[str, Any]] = None
+    try:
+        save_parameters(name, params)
+        run_result = run(name, wait=True)
+    finally:
+        # restore original content to keep user configuration untouched
+        param_path.write_text(original_text, encoding="utf-8")
+        if original_path is not None:
+            benchmark_cfg["path"] = original_path
+
+    if run_result is None:
+        raise PipelineManagerError("Chat 执行失败，未获取到运行结果")
+
+    status = run_result.get("status") if isinstance(run_result, dict) else None
+    answer = None
+    result_summary = None
+    if isinstance(run_result, dict):
+        result_summary = run_result.get("result")
+        answer = _extract_chat_answer(result_summary)
+
+    memory_answer, memory_file = _select_memory_answer(name, before_memory)
+    if memory_answer:
+        answer = memory_answer
+
+    return {
+        "status": status,
+        "answer": answer,
+        "result": result_summary,
+        "dataset_path": _as_project_relative(dataset_path),
+        "run_id": run_result.get("run_id") if isinstance(run_result, dict) else None,
+        "error": run_result.get("error") if isinstance(run_result, dict) else None,
+        "memory_path": _as_project_relative(memory_file) if memory_file else None,
+    }
 
 
 def _parameter_candidates(config_file: Path) -> List[Path]:

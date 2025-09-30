@@ -90,6 +90,12 @@ def create_app() -> Flask:
     def run_pipeline(name: str):
         return jsonify(pm.run(name, wait=False))
 
+    @app.route("/api/pipelines/<string:name>/chat", methods=["POST"])
+    def chat_pipeline(name: str):
+        payload: Dict[str, Any] = request.get_json(force=True)  # type: ignore[assignment]
+        question = payload.get("question", "") if isinstance(payload, dict) else ""
+        return jsonify(pm.chat(name, question))
+
     @app.route("/api/logs/run", methods=["GET"])
     def run_logs():
         since = request.args.get("since", default=-1, type=int)

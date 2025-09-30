@@ -10,11 +10,13 @@ const state = {
   mode: "builder",
   logStream: { runId: null, lastId: -1, timer: null, status: "idle" },
   shutdownScheduled: false,
+  chat: { history: [], running: false },
 };
 
 const LOG_POLL_INTERVAL = 1500;
 
 const els = {
+  mainRoot: document.querySelector("main"),
   log: document.getElementById("log"),
   pipelineForm: document.getElementById("pipeline-form"),
   name: document.getElementById("pipeline-name"),
@@ -35,6 +37,7 @@ const els = {
   parameterSave: document.getElementById("parameter-save"),
   parameterBack: document.getElementById("parameter-back"),
   parameterRun: document.getElementById("parameter-run"),
+  parameterChat: document.getElementById("parameter-chat"),
   nodePickerModal: document.getElementById("nodePickerModal"),
   nodePickerTabs: document.querySelectorAll("[data-node-mode]"),
   nodePickerServer: document.getElementById("node-picker-server"),
@@ -53,11 +56,20 @@ const els = {
   shutdownApp: document.getElementById("shutdown-app"),
   heroSelectedPipeline: document.getElementById("hero-selected-pipeline"),
   heroStatus: document.getElementById("hero-status"),
+  chatView: document.getElementById("chat-view"),
+  chatPipelineName: document.getElementById("chat-pipeline-name"),
+  chatBack: document.getElementById("chat-back"),
+  chatHistory: document.getElementById("chat-history"),
+  chatForm: document.getElementById("chat-form"),
+  chatInput: document.getElementById("chat-input"),
+  chatStatus: document.getElementById("chat-status"),
+  chatSend: document.getElementById("chat-send"),
 };
 
 const Modes = {
   BUILDER: "builder",
   PARAMETERS: "parameters",
+  CHAT: "chat",
 };
 
 const nodePickerState = {
@@ -81,6 +93,172 @@ function log(message) {
   }
   els.log.textContent += `[${stamp}] ${message}\n`;
   els.log.scrollTop = els.log.scrollHeight;
+}
+
+function resetChatSession() {
+  state.chat.history = [];
+  state.chat.running = false;
+  renderChatHistory();
+  setChatStatus("准备就绪", "ready");
+}
+
+function appendChatMessage(role, text, meta = {}) {
+  const entry = {
+    role,
+    text,
+    meta,
+    timestamp: new Date().toISOString(),
+  };
+  state.chat.history.push(entry);
+  renderChatHistory();
+}
+
+function renderChatHistory() {
+  if (!els.chatHistory) return;
+  els.chatHistory.innerHTML = "";
+  state.chat.history.forEach((entry) => {
+    const bubble = document.createElement("div");
+    bubble.className = `chat-bubble ${entry.role}`;
+    const content = document.createElement("div");
+    content.textContent = entry.text;
+    bubble.appendChild(content);
+    const timestamp = entry.timestamp ? new Date(entry.timestamp).toLocaleTimeString() : "";
+    const extra = entry.meta && entry.meta.hint ? ` · ${entry.meta.hint}` : "";
+    const metaText = `${timestamp}${extra}`.trim();
+    if (metaText) {
+      const metaLine = document.createElement("small");
+      metaLine.textContent = metaText;
+      bubble.appendChild(metaLine);
+    }
+    els.chatHistory.appendChild(bubble);
+  });
+  els.chatHistory.scrollTop = els.chatHistory.scrollHeight;
+}
+
+function setChatStatus(message, variant = "info") {
+  if (!els.chatStatus) return;
+  const badge = els.chatStatus;
+  const variants = {
+    info: "text-bg-light",
+    ready: "text-bg-light",
+    running: "text-bg-primary",
+    success: "text-bg-success",
+    warn: "text-bg-warning",
+    error: "text-bg-danger",
+  };
+  const classes = [
+    "text-bg-light",
+    "text-bg-primary",
+    "text-bg-success",
+    "text-bg-warning",
+    "text-bg-danger",
+  ];
+  classes.forEach((cls) => badge.classList.remove(cls));
+  badge.classList.add(variants[variant] || variants.info);
+  badge.dataset.variant = variant;
+  badge.textContent = message || "";
+}
+
+function setChatRunning(isRunning) {
+  state.chat.running = isRunning;
+  if (els.chatInput) {
+    els.chatInput.disabled = isRunning;
+  }
+  if (els.chatSend) {
+    els.chatSend.disabled = isRunning;
+  }
+  if (els.parameterChat && state.mode !== Modes.CHAT) {
+    els.parameterChat.disabled = isRunning || !canUseChat();
+  }
+  if (els.chatBack) {
+    els.chatBack.disabled = isRunning;
+  }
+  if (isRunning) {
+    setChatStatus("正在生成答案，请稍候...", "running");
+  }
+  if (!isRunning) {
+    updateActionButtons();
+  }
+}
+
+function canUseChat() {
+  return Boolean(state.isBuilt && state.selectedPipeline && state.parameterData);
+}
+
+function openChatView() {
+  if (!canUseChat()) {
+    log("请先构建并保存参数后再使用 Chat");
+    return;
+  }
+  if (els.chatPipelineName) {
+    els.chatPipelineName.textContent = state.selectedPipeline || "—";
+  }
+  renderChatHistory();
+  setMode(Modes.CHAT);
+  setChatRunning(state.chat.running);
+  if (!state.chat.running && (state.chat.history.length === 0 || !els.chatStatus.textContent)) {
+    setChatStatus("准备就绪", "ready");
+  }
+  if (!state.chat.running && els.chatInput) {
+    els.chatInput.focus();
+  }
+}
+
+async function handleChatSubmit(event) {
+  event.preventDefault();
+  if (!canUseChat()) {
+    log("请先构建并保存参数后再使用 Chat");
+    return;
+  }
+  if (state.chat.running) {
+    return;
+  }
+  const question = (els.chatInput ? els.chatInput.value : "").trim();
+  if (!question) {
+    return;
+  }
+  if (els.chatInput) {
+    els.chatInput.value = "";
+  }
+  appendChatMessage("user", question);
+  log(`[Chat] 提交问题：${question}`);
+  setChatRunning(true);
+  setHeroStatusLabel("running");
+  try {
+    if (!state.parametersReady) {
+      setChatStatus("正在保存参数...", "running");
+      await persistParameterData({ silent: true });
+      log("参数已保存（Chat 自动保存）");
+      setChatStatus("参数已保存，正在运行...", "running");
+    }
+    const endpoint = `/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/chat`;
+    const resp = await fetchJSON(endpoint, {
+      method: "POST",
+      body: JSON.stringify({ question }),
+    });
+    const status = resp.status || "unknown";
+    if (status) {
+      setHeroStatusLabel(status);
+    }
+    const answer = resp.answer || resp.result || "未获取到答案";
+    const hints = [];
+    if (resp.dataset_path) hints.push(`数据集: ${resp.dataset_path}`);
+    if (resp.memory_path) hints.push(`Memory: ${resp.memory_path}`);
+    const hint = hints.join(" | ");
+    appendChatMessage("assistant", answer, { hint });
+    log(`[Chat] 运行结果（${status}）`);
+    if (status !== "succeeded") {
+      const errorMsg = resp.error ? `（${resp.error}）` : "";
+      appendChatMessage("system", `运行未成功${errorMsg}`.trim());
+    }
+    setChatStatus(status === "succeeded" ? "运行完成" : "运行结束，有提示请查看日志", status === "succeeded" ? "success" : "warn");
+  } catch (err) {
+    setHeroStatusLabel("failed");
+    appendChatMessage("system", `运行失败：${err.message || err}`);
+    setChatStatus("运行失败，请查看日志", "error");
+  } finally {
+    setChatRunning(false);
+  }
 }
 
 function resetLogView() {
@@ -227,6 +405,24 @@ async function fetchJSON(url, options = {}) {
     throw new Error(text || resp.statusText);
   }
   return resp.json();
+}
+
+async function persistParameterData({ silent = false } = {}) {
+  if (!state.selectedPipeline) {
+    throw new Error("请先保存 Pipeline");
+  }
+  if (!state.parameterData) {
+    throw new Error("无参数可保存");
+  }
+  await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`, {
+    method: "PUT",
+    body: JSON.stringify(state.parameterData),
+  });
+  state.parametersReady = true;
+  updateActionButtons();
+  if (!silent) {
+    log("参数已保存");
+  }
 }
 
 function cloneDeep(value) {
@@ -435,12 +631,22 @@ function updatePipelinePreview() {
 
 function setMode(mode) {
   state.mode = mode;
+  const inChat = mode === Modes.CHAT;
+  if (els.mainRoot) {
+    els.mainRoot.classList.toggle("d-none", inChat);
+  }
+  if (els.chatView) {
+    els.chatView.classList.toggle("d-none", !inChat);
+  }
   if (mode === Modes.BUILDER) {
     if (els.pipelineForm) els.pipelineForm.classList.remove("d-none");
     if (els.parameterPanel) els.parameterPanel.classList.add("d-none");
   } else if (mode === Modes.PARAMETERS) {
     if (els.pipelineForm) els.pipelineForm.classList.add("d-none");
     if (els.parameterPanel) els.parameterPanel.classList.remove("d-none");
+  } else if (mode === Modes.CHAT) {
+    if (els.pipelineForm) els.pipelineForm.classList.add("d-none");
+    if (els.parameterPanel) els.parameterPanel.classList.add("d-none");
   }
 }
 
@@ -691,6 +897,7 @@ function markPipelineDirty() {
 function setSteps(steps) {
   state.steps = Array.isArray(steps) ? cloneDeep(steps) : [];
   state.parameterData = null;
+  resetChatSession();
   markPipelineDirty();
   resetContextStack();
   renderSteps();
@@ -705,6 +912,9 @@ function updateActionButtons() {
   if (els.parameterSave) {
     const canSave = !!(state.isBuilt && state.selectedPipeline);
     els.parameterSave.disabled = !canSave;
+  }
+  if (els.parameterChat && !state.chat.running) {
+    els.parameterChat.disabled = state.mode === Modes.CHAT || !canUseChat();
   }
 }
 
@@ -1517,16 +1727,8 @@ function saveParameterForm() {
     log("无参数可保存");
     return;
   }
-  fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`, {
-    method: "PUT",
-    body: JSON.stringify(state.parameterData),
-  })
-    .then(() => {
-      log("参数已保存");
-      state.parametersReady = true;
-      updateActionButtons();
-    })
-    .catch((err) => log(err.message));
+  persistParameterData()
+    .catch((err) => log(err.message || err));
 }
 
 function clearSteps() {
@@ -1573,6 +1775,20 @@ function bindEvents() {
   }
   if (els.parameterRun) {
     els.parameterRun.addEventListener("click", runSelectedPipeline);
+  }
+  if (els.parameterChat) {
+    els.parameterChat.addEventListener("click", openChatView);
+  }
+  if (els.chatForm) {
+    els.chatForm.addEventListener("submit", handleChatSubmit);
+  }
+  if (els.chatBack) {
+    els.chatBack.addEventListener("click", () => {
+      setChatRunning(false);
+      setMode(Modes.PARAMETERS);
+      setChatStatus("准备就绪", "ready");
+      log("已返回参数配置");
+    });
   }
   els.refreshPipelines.addEventListener("click", () => refreshPipelines().catch((err) => log(err.message)));
   els.name.addEventListener("input", updatePipelinePreview);

@@ -97,6 +97,7 @@
             <div class="d-flex flex-wrap gap-2 mt-4">
               <button type="button" class="btn btn-primary btn-soft" id="parameter-save">保存参数</button>
               <button type="button" class="btn btn-success btn-soft" id="parameter-run">运行</button>
+              <button type="button" class="btn btn-outline-primary btn-soft" id="parameter-chat">Chat</button>
             </div>
           </div>
         </div>
@@ -126,6 +127,29 @@
       </div>
     </div>
   </main>
+
+  <section id="chat-view" class="chat-view d-none">
+    <header class="chat-header glass-nav">
+      <div class="chat-header-left">
+        <span class="chat-label">当前 Pipeline</span>
+        <h2 class="chat-title" id="chat-pipeline-name">—</h2>
+      </div>
+      <div class="chat-header-actions">
+        <span id="chat-status" class="chat-status badge rounded-pill text-bg-light" aria-live="polite">准备就绪</span>
+        <button type="button" class="btn btn-outline-secondary btn-soft" id="chat-back">返回参数配置</button>
+      </div>
+    </header>
+    <div class="chat-body">
+      <div class="chat-history" id="chat-history"></div>
+      <form id="chat-form" class="chat-input-bar">
+        <div class="input-group input-group-lg">
+          <input type="text" id="chat-input" class="form-control" placeholder="输入问题并按回车" autocomplete="off" />
+          <button class="btn btn-primary" type="submit" id="chat-send">发送</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
   <div class="modal fade" id="nodePickerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
