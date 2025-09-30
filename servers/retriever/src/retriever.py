@@ -215,6 +215,7 @@ class Retriever:
                     abs_path = str((corpus_dir / rel).resolve())
                     self.contents.append(abs_path)
 
+        self.faiss_index = None
         if index_path and os.path.exists(index_path):
             cpu_index = faiss.read_index(index_path)
 
@@ -485,7 +486,7 @@ class Retriever:
 
         faiss.write_index(cpu_index, index_path)
 
-        if not self.faiss_index or overwrite:
+        if self.faiss_index is None or overwrite:
             self.faiss_index = index
         info_msg = "[faiss] Indexing success."
         app.logger.info(info_msg)
