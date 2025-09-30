@@ -19,7 +19,7 @@ output/
 logs/
 test/
 corpora/
-
+data/chat_sessions/
 # Environment variables and secrets
 .env
 
