@@ -14,8 +14,8 @@ pipeline:
 - benchmark.get_data
 - retriever.retriever_init
 - retriever.retriever_search
-- prompt.qa_boxed
 - generation.generation_init
+- prompt.qa_boxed
 - generation.multimodal_generate:
     input:
       multimodal_path: ret_psg
