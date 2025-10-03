@@ -21,4 +21,3 @@ pipeline:
       multimodal_path: ret_psg
 - custom.output_extract_from_boxed
 - evaluation.evaluate
-- generation.vllm_shutdown

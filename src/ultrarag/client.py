@@ -1054,10 +1054,29 @@ async def run(config_path: str, param_path: str | Path | None = None):
             if not tool.name.endswith("_build" if "_" in tool.name else "build")
         ]
         logger.info(f"Available tools: {tool_name_lst}")
-        result = await execute_steps(pipeline_cfg)
-        logger.info(f"Pipeline execution completed.")
+
+        cleanup_tools = [
+            tool.name for tool in tools if tool.name.endswith("vllm_shutdown")
+        ]
+
+        result = None
+        try:
+            result = await execute_steps(pipeline_cfg)
+            logger.info("Pipeline execution completed.")
+        finally:
+            for tool_name in cleanup_tools:
+                try:
+                    logger.info(f"Invoking cleanup tool: {tool_name}")
+                    await client.call_tool(tool_name, {})
+                except Exception as exc:
+                    logger.warning(
+                        f"Cleanup tool {tool_name} raised {exc.__class__.__name__}: {exc}"
+                    )
+
         # save memory snapshots
         Data.write_memory_output(cfg_name, datetime.now().strftime("%Y%m%d_%H%M%S"))
+        if result is None:
+            return None
         return result.data
 
 
