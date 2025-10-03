@@ -7,6 +7,7 @@ backend_configs:
     gpu_ids: "2,3"
     gpu_memory_utilization: 0.9
     dtype: auto
+    trust_remote_code: true
   openai:
     model_name: MiniCPM4-8B
     base_url: http://localhost:8000/v1
