@@ -1,9 +1,10 @@
 import asyncio
 import gc
 import os
+import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
+from typing import Any, Dict, List, Optional, Callable, Tuple
+import pickle
 import aiohttp
 import numpy as np
 from PIL import Image
@@ -31,12 +32,20 @@ class Retriever:
             output="embedding_path,index_path,overwrite,index_chunk_size->None",
         )
         mcp_inst.tool(
+            self.bm25_index,
+            output="index_path,overwrite->None",
+        )
+        mcp_inst.tool(
             self.retriever_search,
             output="q_ls,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
             self.retriever_search_colbert_maxsim,
             output="q_ls,embedding_path,top_k,query_instruction->ret_psg",
+        )
+        mcp_inst.tool(
+            self.bm25_search,
+            output="q_ls,top_k->ret_psg",
         )
         mcp_inst.tool(
             self.retriever_exa_search,
@@ -67,22 +76,23 @@ class Retriever:
         backend: str = "infinity",
     ):
 
-        try:
-            import faiss
-        except ImportError:
-            err_msg = (
-                "faiss is not installed. "
-                "Please install it with `pip install faiss-cpu` "
-                "or `pip install faiss-gpu-cu12`."
-            )
-            app.logger.error(err_msg)
-            raise ImportError(err_msg)
+        self.backend = backend.lower()
+        if self.backend in ["infinity", "sentence_transformers", "openai"]:
+            try:
+                import faiss
+            except ImportError:
+                err_msg = (
+                    "faiss is not installed. "
+                    "Please install it with `pip install faiss-cpu` "
+                    "or `pip install faiss-gpu-cu12`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
 
         self.faiss_use_gpu = faiss_use_gpu
-        self.backend = backend.lower()
         self.batch_size = batch_size
-
         self.backend_configs = backend_configs
+
         cfg = self.backend_configs.get(self.backend, {})
 
         gpu_ids = str(gpu_ids)
@@ -156,7 +166,15 @@ class Retriever:
             )
 
         elif self.backend == "openai":
-            from openai import AsyncOpenAI, OpenAIError
+            try:
+                from openai import AsyncOpenAI, OpenAIError
+            except ImportError:
+                err_msg = (
+                    "openai is not installed. "
+                    "Please install it with `pip install openai`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
 
             model_name = cfg.get("model_name")
             base_url = cfg.get("base_url")
@@ -180,6 +198,28 @@ class Retriever:
                 err_msg = f"[openai] Failed to initialize OpenAI client: {e}"
                 app.logger.error(err_msg)
                 raise OpenAIError(err_msg)
+        elif self.backend == "bm25":
+            try:
+                import bm25s
+            except ImportError:
+                err_msg = (
+                    "bm25s is not installed. "
+                    "Please install it with `pip install bm25s`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+
+            self.model = bm25s.BM25()
+            lang = cfg.get("lang", "en")
+            try:
+                self.tokenizer = bm25s.tokenization.Tokenizer(stopwords=lang)
+            except Exception as e:
+                err_msg = (
+                    f"Failed to initialize BM25 tokenizer for language '{lang}': {e}"
+                )
+                app.logger.error(err_msg)
+                raise RuntimeError(err_msg)
+
         else:
             error_msg = (
                 f"Unsupported backend: {backend}. "
@@ -204,7 +244,7 @@ class Retriever:
 
         with jsonlines.open(corpus_path, mode="r") as reader:
             pbar = tqdm(total=total, desc="Loading corpus", ncols=100)
-            if not is_multimodal:
+            if not is_multimodal or self.backend == "bm25":
                 for i, item in enumerate(reader):
                     if "contents" not in item:
                         error_msg = (
@@ -229,40 +269,54 @@ class Retriever:
                     self.contents.append(abs_path)
                     pbar.update(1)
 
-        self.faiss_index = None
-        if index_path and os.path.exists(index_path):
-            cpu_index = faiss.read_index(index_path)
+        if self.backend in ["infinity", "sentence_transformers", "openai"]:
+            self.faiss_index = None
+            if index_path and os.path.exists(index_path):
+                cpu_index = faiss.read_index(index_path)
 
-            if self.faiss_use_gpu:
-                co = faiss.GpuMultipleClonerOptions()
-                co.shard = True
-                co.useFloat16 = True
-                try:
-                    self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
-                    info_msg = f"[faiss] Loaded index to GPU(s) with {self.device_num} device(s)."
-                    app.logger.info(info_msg)
-                except RuntimeError as e:
-                    warn_msg = (
-                        f"[faiss] GPU index load failed: {e}. Falling back to CPU."
-                    )
-                    app.logger.warning(warn_msg)
-                    self.faiss_use_gpu = False
+                if self.faiss_use_gpu:
+                    co = faiss.GpuMultipleClonerOptions()
+                    co.shard = True
+                    co.useFloat16 = True
+                    try:
+                        self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
+                        info_msg = f"[faiss] Loaded index to GPU(s) with {self.device_num} device(s)."
+                        app.logger.info(info_msg)
+                    except RuntimeError as e:
+                        warn_msg = (
+                            f"[faiss] GPU index load failed: {e}. Falling back to CPU."
+                        )
+                        app.logger.warning(warn_msg)
+                        self.faiss_use_gpu = False
+                        self.faiss_index = cpu_index
+                else:
                     self.faiss_index = cpu_index
-            else:
-                self.faiss_index = cpu_index
-                info_msg = "[faiss] Loaded index on CPU."
-                app.logger.info(info_msg)
+                    info_msg = "[faiss] Loaded index on CPU."
+                    app.logger.info(info_msg)
 
-            info_msg = "[faiss] Index loaded successfully."
-            app.logger.info(info_msg)
-        else:
-            if index_path and not os.path.exists(index_path):
-                warn_msg = f"{index_path} does not exist."
-                app.logger.warning(warn_msg)
-            info_msg = (
-                "[faiss] no index_path provided. Retriever initialized without index."
-            )
-            app.logger.info(info_msg)
+                info_msg = "[faiss] Index loaded successfully."
+                app.logger.info(info_msg)
+            else:
+                if index_path and not os.path.exists(index_path):
+                    warn_msg = f"{index_path} does not exist."
+                    app.logger.warning(warn_msg)
+                info_msg = "[faiss] no index_path provided. Retriever initialized without index."
+                app.logger.info(info_msg)
+        elif self.backend == "bm25":
+            if index_path and os.path.exists(index_path):
+                self.model = self.model.load(index_path, mmap=True, load_corpus=False)
+                self.tokenizer.load_stopwords(index_path)
+                self.tokenizer.load_vocab(index_path)
+                self.model.corpus = self.contents
+                self.model.backend = "numba"
+                info_msg = "[bm25] Index loaded successfully."
+                app.logger.info(info_msg)
+            else:
+                if index_path and not os.path.exists(index_path):
+                    warn_msg = f"{index_path} does not exist."
+                    app.logger.warning(warn_msg)
+                info_msg = "[bm25] no index_path provided. Retriever initialized without index."
+                app.logger.info(info_msg)
 
     async def retriever_embed(
         self,
@@ -481,6 +535,12 @@ class Retriever:
                 cpu_index.add_with_ids(embedding[start:end], vec_ids[start:end])
                 pbar.update(end - start)
 
+        faiss.write_index(cpu_index, index_path)
+        if self.faiss_index is None or overwrite:
+            self.faiss_index = index
+        info_msg = "[faiss] Indexing success."
+        app.logger.info(info_msg)
+
         if self.faiss_use_gpu:
             co = faiss.GpuMultipleClonerOptions()
             co.shard = True
@@ -498,11 +558,41 @@ class Retriever:
         else:
             index = cpu_index
 
-        faiss.write_index(cpu_index, index_path)
+    def bm25_index(
+        self,
+        index_path: Optional[str] = None,
+        overwrite: bool = False,
+    ):
+        if index_path:
+            if not index_path.endswith(".index"):
+                err_msg = (
+                    f"Parameter 'index_path' must end with '.index', got '{index_path}'"
+                )
+                raise ValidationError(err_msg)
+            output_dir = os.path.dirname(index_path)
+        else:
+            current_file = os.path.abspath(__file__)
+            project_root = os.path.dirname(os.path.dirname(current_file))
+            output_dir = os.path.join(project_root, "output", "index")
+            index_path = os.path.join(output_dir, "index.index")
 
-        if self.faiss_index is None or overwrite:
-            self.faiss_index = index
-        info_msg = "[faiss] Indexing success."
+        if not overwrite and os.path.exists(index_path):
+            info_msg = (
+                f"Index file already exists: {index_path}. "
+                "Set overwrite=True to overwrite."
+            )
+            app.logger.info(info_msg)
+            return
+
+        if overwrite and os.path.exists(index_path):
+            os.remove(index_path)
+
+        corpus_tokens = self.tokenizer.tokenize(self.contents, return_as="tuple")
+        self.model.index(corpus_tokens)
+        self.model.save(index_path, corpus=None)
+        self.tokenizer.save_stopwords(index_path)
+        self.tokenizer.save_vocab(index_path)
+        info_msg = "[bm25] Indexing success."
         app.logger.info(info_msg)
 
     async def retriever_search(
@@ -689,6 +779,22 @@ class Retriever:
 
             top_idx = torch.topk(scores, k=k_pick, largest=True).indices.tolist()
             results.append([self.contents[i] for i in top_idx])
+        return {"ret_psg": results}
+
+    async def bm25_search(
+        self,
+        query_list: List[str],
+        top_k: int = 5,
+    ) -> Dict[str, List[List[str]]]:
+        results = []
+        q_toks = self.tokenizer.tokenize(
+            query_list,
+            return_as="tuple",
+            update_vocab=False,
+        )
+        results, scores = self.model.retrieve(q_toks, k=top_k)
+        results = results.tolist() if isinstance(results, np.ndarray) else results
+        scores = scores.tolist() if isinstance(scores, np.ndarray) else scores
         return {"ret_psg": results}
 
     async def _parallel_search(
