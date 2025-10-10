@@ -191,7 +191,19 @@ class Retriever:
         self.contents = []
         corpus_path_obj = Path(corpus_path)
         corpus_dir = corpus_path_obj.parent
+        try:
+            with jsonlines.open(corpus_path, mode="r") as r:
+                total = sum(1 for _ in r)
+        except Exception as e:
+            total = None
+            warn_msg = (
+                f"[corpus] failed to count records via jsonlines: {e}. "
+                "Use indeterminate progress bar."
+            )
+            app.logger.warning(warn_msg)
+
         with jsonlines.open(corpus_path, mode="r") as reader:
+            pbar = tqdm(total=total, desc="Loading corpus", ncols=100)
             if not is_multimodal:
                 for i, item in enumerate(reader):
                     if "contents" not in item:
@@ -202,6 +214,7 @@ class Retriever:
                         raise ValueError(error_msg)
 
                     self.contents.append(item["contents"])
+                    pbar.update(1)
             else:
                 for i, item in enumerate(reader):
                     if "image_path" not in item:
@@ -214,6 +227,7 @@ class Retriever:
                     rel = str(item["image_path"])
                     abs_path = str((corpus_dir / rel).resolve())
                     self.contents.append(abs_path)
+                    pbar.update(1)
 
         self.faiss_index = None
         if index_path and os.path.exists(index_path):
