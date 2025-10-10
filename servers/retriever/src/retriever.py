@@ -209,7 +209,15 @@ class Retriever:
                 app.logger.error(err_msg)
                 raise ImportError(err_msg)
 
-            self.model = bm25s.BM25()
+            try:
+                self.model = bm25s.BM25(backend="numba")
+            except Exception as e:
+                warn_msg = (
+                    f"Failed to initialize BM25 model with backend 'numba': {e}. "
+                    "Falling back to 'numpy' backend."
+                )
+                app.logger.warning(warn_msg)
+                self.model = bm25s.BM25(backend="numpy")
             lang = cfg.get("lang", "en")
             try:
                 self.tokenizer = bm25s.tokenization.Tokenizer(stopwords=lang)
@@ -219,7 +227,6 @@ class Retriever:
                 )
                 app.logger.error(err_msg)
                 raise RuntimeError(err_msg)
-
         else:
             error_msg = (
                 f"Unsupported backend: {backend}. "
@@ -536,11 +543,7 @@ class Retriever:
                 pbar.update(end - start)
 
         faiss.write_index(cpu_index, index_path)
-        if self.faiss_index is None or overwrite:
-            self.faiss_index = index
-        info_msg = "[faiss] Indexing success."
-        app.logger.info(info_msg)
-
+        index = cpu_index
         if self.faiss_use_gpu:
             co = faiss.GpuMultipleClonerOptions()
             co.shard = True
@@ -557,6 +560,11 @@ class Retriever:
                 index = cpu_index
         else:
             index = cpu_index
+
+        if self.faiss_index is None or overwrite:
+            self.faiss_index = index
+        info_msg = "[faiss] Indexing success."
+        app.logger.info(info_msg)
 
     def bm25_index(
         self,
