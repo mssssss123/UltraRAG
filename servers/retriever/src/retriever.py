@@ -197,7 +197,7 @@ class Retriever:
         except Exception as e:
             total = None
             warn_msg = (
-                f"[corpus] failed to count records via jsonlines: {e}. "
+                f"[corpus] Failed to count records via jsonlines: {e}. "
                 "Use indeterminate progress bar."
             )
             app.logger.warning(warn_msg)
@@ -250,14 +250,14 @@ class Retriever:
                     self.faiss_index = cpu_index
             else:
                 self.faiss_index = cpu_index
-                info_msg = "[faiss] loaded index on CPU."
+                info_msg = "[faiss] Loaded index on CPU."
                 app.logger.info(info_msg)
 
-            info_msg = "[faiss] index path loaded successfully."
+            info_msg = "[faiss] Index loaded successfully."
             app.logger.info(info_msg)
         else:
             if index_path and not os.path.exists(index_path):
-                warn_msg = f"{index_path} is not exists."
+                warn_msg = f"{index_path} does not exist."
                 app.logger.warning(warn_msg)
             info_msg = (
                 "[faiss] no index_path provided. Retriever initialized without index."
@@ -288,7 +288,7 @@ class Retriever:
             embedding_path = os.path.join(output_dir, "embedding.npy")
 
         if not overwrite and os.path.exists(embedding_path):
-            app.logger.info("embedding already exists, skipping")
+            app.logger.info("Embedding already exists, skipping")
             return
 
         os.makedirs(output_dir, exist_ok=True)
@@ -312,7 +312,7 @@ class Retriever:
 
                 eff_bs = self.batch_size * self.device_num
                 n = len(data)
-                pbar = tqdm(total=n, desc="[infinity] Embedding: ")
+                pbar = tqdm(total=n, desc="[infinity] Embedding:")
                 embeddings = []
                 for i in range(0, n, eff_bs):
                     chunk = data[i : i + eff_bs]
@@ -390,7 +390,7 @@ class Retriever:
             embeddings: list = []
             with tqdm(
                 total=len(self.contents),
-                desc="[openai] Embedding: ",
+                desc="[openai] Embedding:",
                 unit="item",
             ) as pbar:
                 for start in range(0, len(self.contents), self.batch_size):
@@ -440,7 +440,7 @@ class Retriever:
         if index_path:
             if not index_path.endswith(".index"):
                 err_msg = (
-                    f"Parameter index_path must end with .index, now is {index_path}"
+                    f"Parameter 'index_path' must end with '.index', got '{index_path}'"
                 )
                 raise ValidationError(err_msg)
             output_dir = os.path.dirname(index_path)
@@ -567,7 +567,7 @@ class Retriever:
             query_embedding = []
             for i in tqdm(
                 range(0, len(queries), self.batch_size),
-                desc="[openai] Embedding: ",
+                desc="[openai] Embedding:",
                 unit="batch",
             ):
                 chunk = queries[i : i + self.batch_size]
@@ -752,7 +752,7 @@ class Retriever:
                         )
                         app.logger.error(err_msg)
                         raise ToolError(err_msg) from e
-                    warn_msg = f"[Retry {attempt+1}] EXA failed (idx={idx}): {e}"
+                    warn_msg = f"[exa][retry {attempt+1}] failed (idx={idx}): {e}"
                     app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
@@ -811,7 +811,7 @@ class Retriever:
                     app.logger.error(err_msg)
                     raise ToolError(err_msg) from e
                 except (BadRequestError, Exception) as e:
-                    warn_msg = f"[Retry {attempt+1}] Tavily failed (idx={idx}): {e}"
+                    warn_msg = f"[tavily][retry {attempt+1}] failed (idx={idx}): {e}"
                     app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
@@ -869,7 +869,7 @@ class Retriever:
                         # Respect top_k
                         return idx, (psg_ls[:top_k] if top_k is not None else psg_ls)
                 except (aiohttp.ClientError, Exception) as e:
-                    warn_msg = f"[Retry {attempt+1}] ZhipuAI failed (idx={idx}): {e}"
+                    warn_msg = f"[zhipuai][retry {attempt+1}] failed (idx={idx}): {e}"
                     app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
