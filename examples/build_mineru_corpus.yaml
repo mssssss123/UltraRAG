@@ -1,3 +1,5 @@
+# mineru parse Demo
+
 # MCP Server
 servers:
   corpus: servers/corpus
@@ -6,4 +8,3 @@ servers:
 pipeline:
 - corpus.mineru_parse
 - corpus.build_mineru_corpus
-- corpus.chunk_documents
