@@ -1,17 +1,14 @@
 import asyncio
-import gc
 import os
-import re
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Callable, Tuple
-import pickle
-import aiohttp
-import numpy as np
-from PIL import Image
-from tqdm import tqdm
-import jsonlines
+from typing import Any, Dict, List, Optional
 
-from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
+import aiohttp
+import requests
+from fastmcp.exceptions import ToolError
+from infinity_emb import AsyncEngineArray, EngineArgs
+from infinity_emb.log_handler import LOG_LEVELS, logger
+from tqdm import tqdm
+
 from ultrarag.server import UltraRAG_MCP_Server
 
 app = UltraRAG_MCP_Server("retriever")

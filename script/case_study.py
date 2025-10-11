@@ -7,7 +7,12 @@ import os
 from typing import Any, List, Set
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse
+from fastapi.responses import (
+    FileResponse,
+    HTMLResponse,
+    JSONResponse,
+    PlainTextResponse,
+)
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -158,7 +163,11 @@ IMAGE_EXTENSIONS = {
 
 def _is_remote_image(path: str) -> bool:
     lower = path.lower()
-    return lower.startswith("http://") or lower.startswith("https://") or lower.startswith("data:")
+    return (
+        lower.startswith("http://")
+        or lower.startswith("https://")
+        or lower.startswith("data:")
+    )
 
 
 def _normalize_local_image_path(path: str) -> str | None:
@@ -187,7 +196,11 @@ def _collect_local_image_paths(cases: List[List[dict]]) -> Set[str]:
                         allowed.add(normalized)
                 elif isinstance(v, list):
                     for item in v:
-                        normalized = _normalize_local_image_path(item) if isinstance(item, str) else None
+                        normalized = (
+                            _normalize_local_image_path(item)
+                            if isinstance(item, str)
+                            else None
+                        )
                         if normalized:
                             allowed.add(normalized)
     return allowed
@@ -657,7 +670,9 @@ def api_image(path: str):
     if normalized is None:
         raise HTTPException(status_code=404, detail="unsupported image path")
     if normalized not in STATE.allowed_images:
-        raise HTTPException(status_code=404, detail="image not registered in current cases")
+        raise HTTPException(
+            status_code=404, detail="image not registered in current cases"
+        )
     if not os.path.exists(normalized):
         raise HTTPException(status_code=404, detail="image file not found")
     return FileResponse(normalized)

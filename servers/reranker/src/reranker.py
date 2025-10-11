@@ -1,17 +1,15 @@
 import asyncio
 import os
-from urllib.parse import urlparse, urlunparse
 from typing import Any, Dict, List, Optional
 
 import aiohttp
-from flask import Flask, jsonify, request
+import requests
+from tqdm import tqdm
 from infinity_emb import AsyncEngineArray, EngineArgs
 from infinity_emb.log_handler import LOG_LEVELS, logger
 
-from fastmcp.exceptions import ToolError
 from ultrarag.server import UltraRAG_MCP_Server
 
-retriever_app = Flask(__name__)
 app = UltraRAG_MCP_Server("reranker")
 
 
@@ -19,42 +17,117 @@ class Reranker:
     def __init__(self, mcp_inst: UltraRAG_MCP_Server):
         mcp_inst.tool(
             self.reranker_init,
-            output="reranker_path,infinity_kwargs,cuda_devices->None",
+            output="model_name_or_path,backend_configs,batch_size,gpu_ids,backend->None",
         )
         mcp_inst.tool(
             self.reranker_rerank,
             output="q_ls,ret_psg,top_k,query_instruction->rerank_psg",
         )
-        mcp_inst.tool(
-            self.rerank_deploy_service,
-            output="rerank_url->None",
-        )
-        mcp_inst.tool(
-            self.rerank_deploy_search,
-            output="rerank_url,q_ls,ret_psg,top_k,query_instruction->rerank_psg",
-        )
+
+    def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
+        return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
 
     async def reranker_init(
         self,
-        reranker_path: str,
-        infinity_kwargs: Optional[Dict[str, Any]] = None,
-        cuda_devices: Optional[str] = None,
+        model_name_or_path: str,
+        backend_configs: Dict[str, Any],
+        batch_size: int,
+        gpu_ids: Optional[object] = None,
+        backend: str = "infinity",
     ):
-        app.logger.setLevel(LOG_LEVELS["warning"])
+        self.backend = backend.lower()
+        self.batch_size = batch_size
+        self.backend_configs = backend_configs
 
-        if infinity_kwargs is None:
-            infinity_kwargs = {}
-        if cuda_devices is not None:
-            assert isinstance(cuda_devices, str), "cuda_devices should be a string"
-            os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
-        try:
-            self.model = AsyncEngineArray.from_args(
-                [EngineArgs(model_name_or_path=reranker_path, **infinity_kwargs)]
-            )[0]
-        except Exception as e:
-            app.logger.error(f"Reranker initialization failed: {str(e)}")
-            raise RuntimeError(f"Reranker initialization failed: {str(e)}")
-        app.logger.info(f"Reranker initialized")
+        cfg = self.backend_configs.get(self.backend, {})
+
+        gpu_ids = str(gpu_ids)
+        os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
+
+        self.device_num = len(gpu_ids.split(","))
+
+        if self.backend == "infinity":
+            try:
+                from infinity_emb import AsyncEngineArray, EngineArgs
+            except ImportError:
+                err_msg = "infinity_emb is not installed. Please install it with `pip install infinity-emb`."
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+
+            device = str(cfg.get("device", "")).strip().lower()
+            if not device:
+                warn_msg = f"[infinity] device is not set, default to `cpu`"
+                app.logger.warning(warn_msg)
+                device = "cpu"
+
+            if device == "cpu":
+                info_msg = "[infinity] device=cpu, gpu_ids is ignored"
+                app.logger.info(info_msg)
+                self.device_num = 1
+
+            app.logger.info(
+                f"[infinity] device={device}, gpu_ids={gpu_ids}, device_num={self.device_num}"
+            )
+
+            infinity_engine_args = EngineArgs(
+                model_name_or_path=model_name_or_path,
+                batch_size=self.batch_size,
+                **cfg,
+            )
+            self.model = AsyncEngineArray.from_args([infinity_engine_args])[0]
+
+        elif self.backend == "sentence_transformers":
+            try:
+                from sentence_transformers import CrossEncoder
+            except ImportError:
+                err_msg = (
+                    "sentence_transformers is not installed. "
+                    "Please install it with `pip install sentence-transformers`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+            self.st_encode_params = cfg.get("sentence_transformers_encode", {}) or {}
+            st_params = self._drop_keys(cfg, banned=["sentence_transformers_encode"])
+
+            device = str(cfg.get("device", "")).strip().lower()
+            if not device:
+                warn_msg = (
+                    f"[sentence_transformers] device is not set, default to `cpu`"
+                )
+                app.logger.warning(warn_msg)
+                device = "cpu"
+
+            if device == "cpu":
+                info_msg = "[sentence_transformers] device=cpu, gpu_ids is ignored"
+                app.logger.info(info_msg)
+                self.device_num = 1
+
+            app.logger.info(
+                f"[sentence_transformers] device={device}, gpu_ids={gpu_ids}, device_num={self.device_num}"
+            )
+
+            self.model = CrossEncoder(
+                model_name_or_path=model_name_or_path,
+                **st_params,
+            )
+
+        elif self.backend == "openai":
+            model_name = cfg.get("model_name")
+            base_url = cfg.get("base_url")
+            concurrency = cfg.get("concurrency", 1)
+
+            if not model_name:
+                err_msg = "[openai] model_name is required"
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
+            if not isinstance(base_url, str) or not base_url:
+                err_msg = "[openai] base_url must be a non-empty string"
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
+
+            self.rerank_url = base_url
+            self.model_name = model_name
+            self.concurrency = concurrency
 
     async def reranker_rerank(
         self,
@@ -64,44 +137,20 @@ class Reranker:
         query_instruction: str = "",
     ) -> Dict[str, List[Any]]:
 
-        assert (
-            hasattr(self, "model") and self.model is not None
-        ), "reranker model is not initialized"
+        if not len(query_list) == len(passages_list):
+            err_msg = f"[reranker] query_list and passages_list must have same length, but got {len(query_list)} and {len(passages_list)}"
+            app.logger.error(err_msg)
+            raise ValueError(err_msg)
+
         formatted_queries = [f"{query_instruction}{q}" for q in query_list]
 
-        assert len(formatted_queries) == len(
-            passages_list
-        ), "queries and passages must have same length"
-
-        async def rerank_single(query: str, docs: List[str]) -> List[str]:
-            ranking, _ = await self.model.rerank(query=query, docs=docs, top_n=top_k)
-            return [d.document for d in ranking]
-
-        async with self.model:
-            reranked_results = await asyncio.gather(
-                *[
-                    rerank_single(query, docs)
-                    for query, docs in zip(formatted_queries, passages_list)
-                ]
-            )
-
-        return {"rerank_psg": reranked_results}
-
-    async def rerank_deploy_service(
-        self,
-        rerank_url: str,
-    ):
-
-        @retriever_app.route("/rerank", methods=["POST"])
-        async def deploy_rerank_model():
-            data = request.get_json()
-            query_list = data["query_list"]
-            passages_list = data["passages_list"]
-            top_k = data["top_k"]
+        if self.backend == "infinity":
 
             async def rerank_single(query: str, docs: List[str]) -> List[str]:
                 ranking, _ = await self.model.rerank(
-                    query=query, docs=docs, top_n=top_k
+                    query=query,
+                    docs=docs,
+                    top_n=top_k,
                 )
                 return [d.document for d in ranking]
 
@@ -109,58 +158,70 @@ class Reranker:
                 reranked_results = await asyncio.gather(
                     *[
                         rerank_single(query, docs)
-                        for query, docs in zip(query_list, passages_list)
+                        for query, docs in zip(formatted_queries, passages_list)
                     ]
                 )
-            return jsonify({"rerank_psg": reranked_results})
 
-        rerank_url = rerank_url.split(":")
-        retriever_port = rerank_url[-1] if len(rerank_url) > 1 else 8080
-        retriever_app.run(host=rerank_url[0], port=retriever_port)
+        elif self.backend == "sentence_transformers":
 
-        app.logger.info(f"employ embedding server at {rerank_url}")
+            def _rank_all():
+                ranks = self.model.rank(
+                    query,
+                    docs,
+                    top_k=top_k,
+                    batch_size=self.batch_size,
+                    return_documents=True,
+                    show_progress_bar=False,
+                )
+                return [rank["text"] for rank in ranks]
 
-    async def rerank_deploy_search(
-        self,
-        rerank_url: str,
-        query_list: List[str],
-        passages_list: List[List[str]],
-        top_k: Optional[int] | None = None,
-        query_instruction: str = "",
-    ) -> Dict[str, List[Any]]:
-        # Validate the URL format
-        url = rerank_url.strip()
-        if not url.startswith("http://") and not url.startswith("https://"):
-            url = f"http://{url}"
-        url_obj = urlparse(url)
-        api_url = urlunparse(url_obj._replace(path="/search"))
-        app.logger.info(f"Calling url:{rerank_url}")
+            reranked_results = []
+            for query, docs in tqdm(
+                zip(formatted_queries, passages_list),
+                total=len(formatted_queries),
+            ):
+                reranked_results.append(await asyncio.to_thread(_rank_all))
 
-        if isinstance(query_list, str):
-            query_list = [query_list]
-        query_list = [f"{query_instruction}{query}" for query in query_list]
+        elif self.backend == "openai":
+            semaphore = asyncio.Semaphore(self.concurrency)
 
-        payload = {
-            "query_list": query_list,
-            "passages_list": passages_list,
-            "top_k": top_k,
-        }
+            async def rerank_single_oa(
+                session: aiohttp.ClientSession,
+                query: str,
+                docs: List[str],
+            ) -> List[str]:
+                payload = {
+                    "model": self.model_name,
+                    "query": query,
+                    "documents": docs,
+                    "top_n": top_k,
+                }
+                async with semaphore:
+                    async with session.post(self.rerank_url, json=payload) as resp:
+                        if resp.status != 200:
+                            err_msg = f"[{resp.status}] {await resp.text()}"
+                            raise RuntimeError(err_msg)
 
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                api_url,
-                json=payload,
-            ) as response:
-                if response.status == 200:
-                    response_data = await response.json()
-                    app.logger.debug(
-                        f"status_code: {response.status}, response data: {response_data}"
-                    )
-                    return response_data
-                else:
-                    err_msg = f"Failed to call {rerank_url} with code {response.status}"
-                    app.logger.error(err_msg)
-                    raise ToolError(err_msg)
+                        data = await resp.json()
+                        results = data.get("results", [])
+                        ret = []
+                        for item in results:
+                            doc_val = item.get("document")
+                            if isinstance(doc_val, dict):
+                                doc_val = doc_val.get("text", "")
+                            if isinstance(doc_val, str):
+                                ret.append(doc_val)
+                        return ret
+
+            async with aiohttp.ClientSession() as session:
+                reranked_results = await asyncio.gather(
+                    *[
+                        rerank_single_oa(session, query, docs)
+                        for query, docs in zip(formatted_queries, passages_list)
+                    ]
+                )
+
+        return {"rerank_psg": reranked_results}
 
 
 provider = Reranker(app)

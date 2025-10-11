@@ -143,7 +143,7 @@ class Generation:
 
             self.chat_template_kwargs = sampling_params.get("chat_template_kwargs", {})
             openai_sampling_params = self._drop_keys(
-                sampling_params, banned=["chat_template_kwargs","top_k"]
+                sampling_params, banned=["chat_template_kwargs", "top_k"]
             )
             extra_body = {}
             if "top_k" in sampling_params:

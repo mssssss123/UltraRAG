@@ -1,14 +1,23 @@
 # servers/reranker/parameter.yaml
-reranker_path: openbmb/MiniCPM-Reranker-Light
 
-infinity_kwargs:
-  engine: torch
-  bettertransformer: false
-  model_warmup: false
-  trust_remote_code: true
-  device: cuda
+model_name_or_path: openbmb/MiniCPM-Reranker-Light
+backend: sentence_transformers # options: infinity, sentence_transformers, openai
+backend_configs:
+  infinity:
+    bettertransformer: false
+    pooling_method: auto
+    device: cuda
+    model_warmup: false
+    trust_remote_code: true
+  sentence_transformers:
+    device: cuda
+    trust_remote_code: true
+  openai:
+    model_name: text-embedding-3-small
+    base_url: "https://api.openai.com/v1"
+    api_key: ""
 
-cuda_devices: "0,1"
-query_instruction: "Query: "
-rerank_url: http://localhost:8080
+gpu_ids: 0
 top_k: 5
+batch_size: 16
+query_instruction: ""

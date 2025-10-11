@@ -1,4 +1,5 @@
 """Helper utilities for the UltraRAG UI backend."""
+
 from __future__ import annotations
 
 import asyncio
@@ -77,7 +78,9 @@ class RunLogStream:
                 "pipeline": pipeline_name,
             }
             self._pipeline_name = pipeline_name
-            self._append_unlocked(f"开始运行 {pipeline_name}", level="info", system=True)
+            self._append_unlocked(
+                f"开始运行 {pipeline_name}", level="info", system=True
+            )
             return self._run_id
 
     def is_active(self, run_id: Optional[str] = None) -> bool:
@@ -88,7 +91,9 @@ class RunLogStream:
                 return False
             return self._status.get("state") == "running"
 
-    def _append_unlocked(self, message: str, *, level: str = "info", system: bool = False) -> Dict[str, Any]:
+    def _append_unlocked(
+        self, message: str, *, level: str = "info", system: bool = False
+    ) -> Dict[str, Any]:
         entry = {
             "id": self._counter,
             "message": message,
@@ -101,7 +106,14 @@ class RunLogStream:
         self._counter += 1
         return entry
 
-    def append(self, message: str, *, level: str = "info", system: bool = False, run_id: Optional[str] = None) -> None:
+    def append(
+        self,
+        message: str,
+        *,
+        level: str = "info",
+        system: bool = False,
+        run_id: Optional[str] = None,
+    ) -> None:
         if message is None:
             return
         text = str(message)
@@ -119,7 +131,14 @@ class RunLogStream:
                     continue
                 self._append_unlocked(part, level=level, system=system)
 
-    def finish(self, run_id: str, state: str, *, result: Optional[str] = None, error: Optional[str] = None) -> None:
+    def finish(
+        self,
+        run_id: str,
+        state: str,
+        *,
+        result: Optional[str] = None,
+        error: Optional[str] = None,
+    ) -> None:
         with self._lock:
             if self._run_id != run_id:
                 return
@@ -135,7 +154,9 @@ class RunLogStream:
             current_run_id = self._run_id
             reset = bool(run_id and current_run_id and run_id != current_run_id)
             start_from = -1 if reset else since
-            entries = [dict(entry) for entry in self._entries if entry["id"] > start_from]
+            entries = [
+                dict(entry) for entry in self._entries if entry["id"] > start_from
+            ]
             status = dict(self._status)
         return {
             "entries": entries,
@@ -198,15 +219,21 @@ def _execute_run_task(name: str, run_id: str) -> None:
     try:
         config_file = _find_pipeline_file(name)
         if config_file is None:
-            RUN_LOG_STREAM.append(f"未找到 Pipeline {name}", level="error", system=True, run_id=run_id)
+            RUN_LOG_STREAM.append(
+                f"未找到 Pipeline {name}", level="error", system=True, run_id=run_id
+            )
             RUN_LOG_STREAM.finish(run_id, "failed", error="pipeline-not-found")
             return
-        RUN_LOG_STREAM.append(f"使用配置文件: {config_file}", system=True, run_id=run_id)
+        RUN_LOG_STREAM.append(
+            f"使用配置文件: {config_file}", system=True, run_id=run_id
+        )
         try:
             _, run_func = _ensure_client_funcs()
         except Exception as exc:  # pragma: no cover - dependency issues
             writer.flush()
-            RUN_LOG_STREAM.append(f"无法加载运行环境: {exc}", level="error", system=True, run_id=run_id)
+            RUN_LOG_STREAM.append(
+                f"无法加载运行环境: {exc}", level="error", system=True, run_id=run_id
+            )
             RUN_LOG_STREAM.finish(run_id, "failed", error=str(exc))
             return
         try:
@@ -214,7 +241,9 @@ def _execute_run_task(name: str, run_id: str) -> None:
                 result = _run_async(run_func(str(config_file)))
         except Exception as exc:
             writer.flush()
-            RUN_LOG_STREAM.append(f"运行过程中出现异常: {exc}", level="error", system=True, run_id=run_id)
+            RUN_LOG_STREAM.append(
+                f"运行过程中出现异常: {exc}", level="error", system=True, run_id=run_id
+            )
             RUN_LOG_STREAM.finish(run_id, "failed", error=str(exc))
             return
         except BaseException as exc:  # pragma: no cover - critical signals
@@ -351,7 +380,9 @@ def _extract_answer_from_memory_file(path: Path) -> Optional[str]:
     return None
 
 
-def _select_memory_answer(pipeline_name: str, before: set[str]) -> tuple[Optional[str], Optional[Path]]:
+def _select_memory_answer(
+    pipeline_name: str, before: set[str]
+) -> tuple[Optional[str], Optional[Path]]:
     files = _collect_memory_files(pipeline_name)
     if not files:
         return None, None
@@ -361,6 +392,7 @@ def _select_memory_answer(pipeline_name: str, before: set[str]) -> tuple[Optiona
     target = max(candidates, key=lambda p: p.stat().st_mtime)
     answer = _extract_answer_from_memory_file(target)
     return answer, target if answer else target
+
 
 def _missing_dependency(module_name: str):
     def _stub(*_args, **_kwargs):
@@ -410,7 +442,9 @@ OPTIONAL_MODULE_ATTRS: Dict[str, Dict[str, Any]] = {
     "exa_py": {"Client": lambda *a, **kw: (_missing_dependency("exa_py"))(*a, **kw)},
     "tavily": {},
     "tavily.tavily": {},
-    "tavily.client": {"TavilyClient": lambda *a, **kw: (_missing_dependency("tavily"))(*a, **kw)},
+    "tavily.client": {
+        "TavilyClient": lambda *a, **kw: (_missing_dependency("tavily"))(*a, **kw)
+    },
 }
 
 
@@ -445,7 +479,9 @@ def _flatten_param_keys(data: Any, prefix: str = "") -> set[str]:
     return keys
 
 
-def _generate_server_stub(server_dir: Path, module_path: Path, parameter_path: Path) -> Dict[str, Any]:
+def _generate_server_stub(
+    server_dir: Path, module_path: Path, parameter_path: Path
+) -> Dict[str, Any]:
     try:
         source = module_path.read_text(encoding="utf-8")
     except FileNotFoundError:
@@ -464,7 +500,9 @@ def _generate_server_stub(server_dir: Path, module_path: Path, parameter_path: P
     param_keys: set[str] = set()
     if parameter_path.exists():
         try:
-            param_data = yaml.safe_load(parameter_path.read_text(encoding="utf-8")) or {}
+            param_data = (
+                yaml.safe_load(parameter_path.read_text(encoding="utf-8")) or {}
+            )
             param_keys = {k.split(".")[0] for k in _flatten_param_keys(param_data)}
         except yaml.YAMLError:
             param_keys = set()
@@ -474,7 +512,10 @@ def _generate_server_stub(server_dir: Path, module_path: Path, parameter_path: P
 
     class CallVisitor(ast.NodeVisitor):
         def visit_Call(self, node: ast.Call):
-            if isinstance(node.func, ast.Attribute) and node.func.attr in {"tool", "prompt"}:
+            if isinstance(node.func, ast.Attribute) and node.func.attr in {
+                "tool",
+                "prompt",
+            }:
                 tool_name = None
                 if node.args:
                     first = node.args[0]
@@ -486,7 +527,11 @@ def _generate_server_stub(server_dir: Path, module_path: Path, parameter_path: P
                     return
                 output_spec = None
                 for kw in node.keywords:
-                    if kw.arg == "output" and isinstance(kw.value, ast.Constant) and isinstance(kw.value.value, str):
+                    if (
+                        kw.arg == "output"
+                        and isinstance(kw.value, ast.Constant)
+                        and isinstance(kw.value.value, str)
+                    ):
                         output_spec = kw.value.value
                         break
 
@@ -501,7 +546,11 @@ def _generate_server_stub(server_dir: Path, module_path: Path, parameter_path: P
                 outputs: List[str] = []
                 if output_spec:
                     out_part = output_spec.split("->", 1)[-1]
-                    outputs = [item.strip() for item in out_part.split(",") if item.strip() and item.strip().lower() != "none"]
+                    outputs = [
+                        item.strip()
+                        for item in out_part.split(",")
+                        if item.strip() and item.strip().lower() != "none"
+                    ]
 
                 target = prompts if node.func.attr == "prompt" else tools
                 entry: Dict[str, Any] = {"input": input_mapping}
@@ -512,7 +561,9 @@ def _generate_server_stub(server_dir: Path, module_path: Path, parameter_path: P
     CallVisitor().visit(tree)
 
     if not tools and not prompts:
-        raise PipelineManagerError(f"Unable to infer tools for server {server_dir.name}")
+        raise PipelineManagerError(
+            f"Unable to infer tools for server {server_dir.name}"
+        )
 
     return {
         "path": str(module_path),
@@ -599,7 +650,9 @@ class PipelineDefinition:
 
 
 def _load_module_from_path(server_name: str, file_path: Path):
-    spec = importlib.util.spec_from_file_location(f"ultrarag_ui_{server_name}", file_path)
+    spec = importlib.util.spec_from_file_location(
+        f"ultrarag_ui_{server_name}", file_path
+    )
     if spec is None or spec.loader is None:
         raise PipelineManagerError(f"Cannot load server module for {server_name}")
     module = importlib.util.module_from_spec(spec)
@@ -615,7 +668,9 @@ def _load_module_from_path(server_name: str, file_path: Path):
         _ensure_stub_module(missing)
         return _load_module_from_path(server_name, file_path)
     except Exception as exc:  # pragma: no cover - bubble up
-        raise PipelineManagerError(f"Failed to import server {server_name}: {exc}") from exc
+        raise PipelineManagerError(
+            f"Failed to import server {server_name}: {exc}"
+        ) from exc
     return module
 
 
@@ -647,7 +702,9 @@ def _ensure_server_yaml(server_dir: Path) -> Dict[str, Any]:
 
     needs_rebuild = not server_yaml_path.exists()
     if not needs_rebuild and parameter_path.exists():
-        needs_rebuild = server_yaml_path.stat().st_mtime < parameter_path.stat().st_mtime
+        needs_rebuild = (
+            server_yaml_path.stat().st_mtime < parameter_path.stat().st_mtime
+        )
 
     if needs_rebuild:
         try:
@@ -677,7 +734,8 @@ def _ensure_server_yaml(server_dir: Path) -> Dict[str, Any]:
             except Exception as stub_exc:
                 if cached_cfg is not None:
                     LOGGER.warning(
-                        "Using cached server.yaml for %s despite build errors", server_name
+                        "Using cached server.yaml for %s despite build errors",
+                        server_name,
                     )
                     return cached_cfg
                 raise PipelineManagerError(
@@ -715,7 +773,11 @@ def list_server_tools() -> List[ServerTool]:
     servers = list_servers()
     for server, cfg in servers.items():
         if not isinstance(cfg, dict):
-            LOGGER.warning("Skipping server %s due to invalid config type: %s", server, type(cfg).__name__)
+            LOGGER.warning(
+                "Skipping server %s due to invalid config type: %s",
+                server,
+                type(cfg).__name__,
+            )
             continue
         for tool_name, meta in (cfg.get("tools") or {}).items():
             tools.append(
@@ -766,7 +828,11 @@ def load_pipeline(name: str) -> Dict[str, Any]:
 def _iter_pipeline_files() -> List[Path]:
     files = list(PIPELINES_DIR.glob("*.yaml"))
     if LEGACY_PIPELINES_DIR.exists():
-        files.extend(f for f in LEGACY_PIPELINES_DIR.glob("*.yaml") if f.stem not in {p.stem for p in files})
+        files.extend(
+            f
+            for f in LEGACY_PIPELINES_DIR.glob("*.yaml")
+            if f.stem not in {p.stem for p in files}
+        )
     return sorted(files)
 
 
@@ -868,7 +934,9 @@ def chat(name: str, question: str) -> Dict[str, Any]:
         "golden_answers": [],
         "meta_data": {},
     }
-    dataset_path.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
+    dataset_path.write_text(
+        json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     benchmark_cfg["path"] = _as_project_relative(dataset_path)
 
     before_memory = {str(path) for path in _collect_memory_files(name)}

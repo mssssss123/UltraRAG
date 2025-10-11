@@ -1,4 +1,5 @@
 """Flask application exposing a lightweight UltraRAG orchestration API."""
+
 from __future__ import annotations
 
 import logging
