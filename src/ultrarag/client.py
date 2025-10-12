@@ -27,6 +27,7 @@ logger = None
 PipelineStep = Union[str, Dict[str, Any]]
 node_status = False
 
+
 def launch_ui(host: str = "127.0.0.1", port: int = 5050) -> None:
     project_root = Path(__file__).resolve().parents[2]
     if str(project_root) not in sys.path:
@@ -34,7 +35,7 @@ def launch_ui(host: str = "127.0.0.1", port: int = 5050) -> None:
 
     try:
         from ui.backend.app import create_app
-    except Exception as exc:  
+    except Exception as exc:
         raise RuntimeError(
             "Failed to load the UI backend. Please ensure the `ui/backend` directory exists and is importable."
         ) from exc
@@ -125,7 +126,9 @@ class UltraData:
         if parameter_file is not None:
             param_file = Path(parameter_file)
         else:
-            param_file = cfg_path.parent / "parameter" / f"{cfg_path.stem}_parameter.yaml"
+            param_file = (
+                cfg_path.parent / "parameter" / f"{cfg_path.stem}_parameter.yaml"
+            )
         all_local_vals = cfg.load_parameter_config(param_file)
         self.local_vals.update(all_local_vals)
         self.io = {}
@@ -1112,7 +1115,7 @@ def main():
         default="info",
         help="Set the logging level (debug, info, warn, error)",
     )
-    
+
     p_show = subparsers.add_parser("show", help="Show helper interfaces")
     show_sub = p_show.add_subparsers(dest="show_target", required=True)
     p_show_ui = show_sub.add_parser("ui", help="Launch the UltraRAG web UI")
@@ -1124,7 +1127,6 @@ def main():
         default="info",
         help="Set the logging level (debug, info, warn, error)",
     )
-
 
     global log_level, logger
     args = parser.parse_args()
@@ -1140,7 +1142,7 @@ def main():
     elif args.cmd == "show":
         if args.show_target == "ui":
             launch_ui(host=args.host, port=args.port)
-        else:  
+        else:
             parser.print_help()
             sys.exit(1)
     else:
