@@ -1,14 +1,16 @@
 import asyncio
+import gc
 import os
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import aiohttp
-import requests
-from fastmcp.exceptions import ToolError
-from infinity_emb import AsyncEngineArray, EngineArgs
-from infinity_emb.log_handler import LOG_LEVELS, logger
+import orjson
+import numpy as np
 from tqdm import tqdm
+from PIL import Image
 
+from fastmcp.exceptions import ValidationError, NotFoundError, ToolError
 from ultrarag.server import UltraRAG_MCP_Server
 
 app = UltraRAG_MCP_Server("retriever")
@@ -235,43 +237,42 @@ class Retriever:
         self.contents = []
         corpus_path_obj = Path(corpus_path)
         corpus_dir = corpus_path_obj.parent
-        try:
-            with jsonlines.open(corpus_path, mode="r") as r:
-                total = sum(1 for _ in r)
-        except Exception as e:
-            total = None
-            warn_msg = (
-                f"[corpus] Failed to count records via jsonlines: {e}. "
-                "Use indeterminate progress bar."
-            )
-            app.logger.warning(warn_msg)
+        file_size = os.path.getsize(corpus_path)
 
-        with jsonlines.open(corpus_path, mode="r") as reader:
-            pbar = tqdm(total=total, desc="Loading corpus", ncols=100)
-            if not is_multimodal or self.backend == "bm25":
-                for i, item in enumerate(reader):
-                    if "contents" not in item:
-                        error_msg = (
-                            f"Line {i}: missing key 'contents'. full item={item}"
-                        )
-                        app.logger.error(error_msg)
-                        raise ValueError(error_msg)
+        with open(corpus_path, "rb") as f:
+            with tqdm(
+                total=file_size,
+                desc="Loading corpus",
+                unit="B",
+                unit_scale=True,
+                ncols=100,
+            ) as pbar:
+                if not is_multimodal or self.backend == "bm25":
+                    for i, line in enumerate(f):
+                        item = orjson.loads(line)
+                        pbar.update(len(item))
+                        if "contents" not in item:
+                            error_msg = (
+                                f"Line {i}: missing key 'contents'. full item={item}"
+                            )
+                            app.logger.error(error_msg)
+                            raise ValueError(error_msg)
 
-                    self.contents.append(item["contents"])
-                    pbar.update(1)
-            else:
-                for i, item in enumerate(reader):
-                    if "image_path" not in item:
-                        error_msg = (
-                            f"Line {i}: missing key 'image_path'. full item={item}"
-                        )
-                        app.logger.error(error_msg)
-                        raise ValueError(error_msg)
+                        self.contents.append(item["contents"])
+                else:
+                    for i, item in enumerate(f):
+                        item = orjson.loads(line)
+                        pbar.update(len(item))
+                        if "image_path" not in item:
+                            error_msg = (
+                                f"Line {i}: missing key 'image_path'. full item={item}"
+                            )
+                            app.logger.error(error_msg)
+                            raise ValueError(error_msg)
 
-                    rel = str(item["image_path"])
-                    abs_path = str((corpus_dir / rel).resolve())
-                    self.contents.append(abs_path)
-                    pbar.update(1)
+                        rel = str(item["image_path"])
+                        abs_path = str((corpus_dir / rel).resolve())
+                        self.contents.append(abs_path)
 
         if self.backend in ["infinity", "sentence_transformers", "openai"]:
             self.faiss_index = None
