@@ -144,6 +144,15 @@ def search_o1_query_extract(ans_ls: List[str]) -> Dict[str, List[str]]:
 
     return {"extract_query_list": query}
 
+@app.tool(output="temp_psg,ret_psg->ret_psg")
+def merge_passages(
+    temp_psg: List[List[List[str]] | None],
+    ret_psg: List[str | Any],
+) -> Dict[str, List[str]]:
+    for t_psg, psg in zip(temp_psg, ret_psg):
+        psg.extend(t_psg)
+
+    return {"ret_psg": ret_psg}
 
 if __name__ == "__main__":
     app.run(transport="stdio")
