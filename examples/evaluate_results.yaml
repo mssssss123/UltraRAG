@@ -1,0 +1,11 @@
+# Evaluate Results Demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  evaluation: servers/evaluation
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- evaluation.evaluate
