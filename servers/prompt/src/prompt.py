@@ -327,8 +327,23 @@ def search_o1_insert(
     return ret
 
 
+# prompt for loop and branch demo
 @app.prompt(output="q_ls,ret_psg,gen_subq_template->prompt_ls")
 def gen_subq(
+    q_ls: List[str],
+    ret_psg: List[str | Any],
+    template: str | Path,
+) -> List[PromptMessage]:
+    template: Template = load_prompt_template(template)
+    all_prompts = []
+    for q, psg in zip(q_ls, ret_psg):
+        passage_text = "\n".join(psg)
+        p = template.render(question=q, documents=passage_text)
+        all_prompts.append(p)
+    return all_prompts
+
+@app.prompt(output="q_ls,ret_psg,check_psg_template->prompt_ls")
+def check_passages(
     q_ls: List[str],
     ret_psg: List[str | Any],
     template: str | Path,

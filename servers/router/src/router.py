@@ -124,5 +124,24 @@ def search_o1_check(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
     return {"ans_ls": ans_ls}
 
 
+@app.tool(output="ans_ls->ans_ls")
+def check_model_state(ans_ls: List[str]) -> Dict[str, List[Dict[str, str]]]:
+
+    def check_state(text):
+        if "<search>" in text:
+            return True
+        else:
+            return False
+
+    ans_ls = [
+        {
+            "data": answer,
+            "state": "continue" if check_state(answer) else "stop",
+        }
+        for answer in ans_ls
+    ]
+    return {"ans_ls": ans_ls}
+
+
 if __name__ == "__main__":
     app.run(transport="stdio")
