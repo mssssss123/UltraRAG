@@ -247,10 +247,15 @@ class Retriever:
                 unit_scale=True,
                 ncols=100,
             ) as pbar:
-                if not is_multimodal or self.backend == "bm25":
-                    for i, line in enumerate(f):
+                bytes_read = 0
+                for i, line in enumerate(f):
+                    pbar.update(len(line))
+                    bytes_read += len(line)
+                    try:
                         item = orjson.loads(line)
-                        pbar.update(len(item))
+                    except orjson.JSONDecodeError as e:
+                        raise ToolError(f"Invalid JSON on line {i}: {e}") from e
+                    if not is_multimodal or self.backend == "bm25":
                         if "contents" not in item:
                             error_msg = (
                                 f"Line {i}: missing key 'contents'. full item={item}"
@@ -259,10 +264,7 @@ class Retriever:
                             raise ValueError(error_msg)
 
                         self.contents.append(item["contents"])
-                else:
-                    for i, item in enumerate(f):
-                        item = orjson.loads(line)
-                        pbar.update(len(item))
+                    else:
                         if "image_path" not in item:
                             error_msg = (
                                 f"Line {i}: missing key 'image_path'. full item={item}"
@@ -273,6 +275,9 @@ class Retriever:
                         rel = str(item["image_path"])
                         abs_path = str((corpus_dir / rel).resolve())
                         self.contents.append(abs_path)
+                if bytes_read < file_size:
+                    pbar.update(file_size - bytes_read)
+                pbar.refresh() 
 
         if self.backend in ["infinity", "sentence_transformers", "openai"]:
             self.faiss_index = None
