@@ -1,4 +1,4 @@
-# Multi-Modal RAG demo
+# VisRAG demo
 
 # MCP Server
 servers:
@@ -19,5 +19,3 @@ pipeline:
 - generation.multimodal_generate:
     input:
       multimodal_path: ret_psg
-- custom.output_extract_from_boxed
-- evaluation.evaluate
