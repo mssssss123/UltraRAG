@@ -4,15 +4,11 @@
 import argparse
 import json
 import os
-from typing import Any, List, Set
+from typing import Any, List
 
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import (
-    FileResponse,
-    HTMLResponse,
-    JSONResponse,
-    PlainTextResponse,
-)
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, FileResponse
+from mimetypes import guess_type
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -23,11 +19,10 @@ class State:
     data_path: str = ""
     title: str = "Case Study Viewer"
     cases: List[List[dict]] = []
-    allowed_images: Set[str] = set()
+    static_roots: List[str] = []
 
 
 STATE = State()
-STATE.allowed_images = set()
 
 
 def load_cases(path: str) -> List[List[dict]]:
@@ -149,61 +144,37 @@ def _expand_cases_if_needed(cases: List[List[dict]]) -> List[List[dict]]:
     return expanded
 
 
-IMAGE_EXTENSIONS = {
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".bmp",
-    ".tiff",
-    ".tif",
-    ".webp",
-}
+# Helper: collect image directories
+def _collect_image_dirs(cases: List[List[dict]]) -> List[str]:
+    """Scan cases to find directories that contain image paths so we can auto-serve them (supports nested arrays)."""
+    exts = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".svg")
+    dirs: set[str] = set()
 
+    def add_if_image_path(v: Any):
+        if isinstance(v, str) and v.lower().endswith(exts):
+            d = os.path.dirname(v)
+            if d:
+                dirs.add(d)
 
-def _is_remote_image(path: str) -> bool:
-    lower = path.lower()
-    return (
-        lower.startswith("http://")
-        or lower.startswith("https://")
-        or lower.startswith("data:")
-    )
+    def walk(x: Any):
+        if x is None:
+            return
+        if isinstance(x, list):
+            for it in x:
+                walk(it)
+        elif isinstance(x, dict):
+            for vv in x.values():
+                walk(vv)
+        else:
+            add_if_image_path(x)
 
+    for steps in cases or []:
+        for st in steps or []:
+            if isinstance(st, dict):
+                mem = st.get("memory", {})
+                walk(mem)
 
-def _normalize_local_image_path(path: str) -> str | None:
-    if not isinstance(path, str):
-        return None
-    path = path.strip()
-    if not path or _is_remote_image(path):
-        return None
-    _, ext = os.path.splitext(path)
-    if ext.lower() not in IMAGE_EXTENSIONS:
-        return None
-    return os.path.abspath(path)
-
-
-def _collect_local_image_paths(cases: List[List[dict]]) -> Set[str]:
-    allowed: Set[str] = set()
-    for steps in cases:
-        for st in steps:
-            mem = st.get("memory", {}) if isinstance(st, dict) else {}
-            if not isinstance(mem, dict):
-                continue
-            for v in mem.values():
-                if isinstance(v, str):
-                    normalized = _normalize_local_image_path(v)
-                    if normalized:
-                        allowed.add(normalized)
-                elif isinstance(v, list):
-                    for item in v:
-                        normalized = (
-                            _normalize_local_image_path(item)
-                            if isinstance(item, str)
-                            else None
-                        )
-                        if normalized:
-                            allowed.add(normalized)
-    return allowed
+    return sorted(dirs)
 
 
 def escape_html(s: str) -> str:
@@ -299,32 +270,6 @@ pre {
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
 .divider { height: 1px; background: var(--border); margin: 10px 0; opacity: .6; }
-.image-grid {
-  display: grid;
-  gap: 12px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-}
-.image-card {
-  background: #0d1532;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.image-card img {
-  width: 100%;
-  border-radius: 8px;
-  background: #060a18;
-  object-fit: cover;
-}
-.image-caption {
-  font-size: 11px;
-  color: var(--muted);
-  word-break: break-all;
-}
 .footer { color: var(--muted); text-align: center; padding: 24px 8px; }
 """
 
@@ -365,33 +310,6 @@ function escapeHtml(s) {
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
-}
-
-const IMAGE_EXTS = new Set(
-  [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff", ".webp"].map(s => s.toLowerCase())
-);
-
-function isProbablyRemoteImage(path) {
-  const lower = path.toLowerCase();
-  return lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("data:");
-}
-
-function extractExtension(path) {
-  const idx = path.lastIndexOf(".");
-  return idx === -1 ? "" : path.slice(idx).toLowerCase();
-}
-
-function isProbablyImagePath(path) {
-  if (typeof path !== "string") return false;
-  const trimmed = path.trim();
-  if (!trimmed) return false;
-  if (isProbablyRemoteImage(trimmed)) return true;
-  return IMAGE_EXTS.has(extractExtension(trimmed));
-}
-
-function buildImageSrc(path) {
-  if (isProbablyRemoteImage(path)) return path;
-  return '/api/image?path=' + encodeURIComponent(path);
 }
 
 async function fetchCases() {
@@ -492,6 +410,7 @@ function render() {
         headBar.style = "display:flex;align-items:center;justify-content:space-between;";
         const badge = document.createElement("div");
         badge.className = "badge";
+        badge.textContent = "JSON";
         const copyBtn = document.createElement("button");
         copyBtn.className = "copy";
         copyBtn.setAttribute("data-key", dataKey);
@@ -499,76 +418,108 @@ function render() {
         headBar.appendChild(badge);
         headBar.appendChild(copyBtn);
 
-        // 内容区域：根据类型决定如何渲染，确保字符串按原样显示（含换行），不出现多余反斜杠
-        const pre = document.createElement("pre");
-        pre.className = "pre-json";
-        pre.setAttribute("data-key", dataKey);
-
-        const isStringArray = Array.isArray(val) && val.every(function(x){ return typeof x === "string"; });
-        const isImageList = isStringArray && val.length > 0 && val.every(isProbablyImagePath);
-
-        var prettyText;
-        var badgeLabel = "JSON";
-        if (typeof val === "string") {
-          prettyText = val;
-          badgeLabel = "TEXT";
-        } else if (isStringArray) {
-          if (isImageList) {
-            prettyText = val.join("\n");
-            badgeLabel = "IMAGES";
-          } else {
-            const separator = dataKey === "memory_ret_psg"
-              ? "\n\n" + "-".repeat(40) + "\n\n"
-              : "\n\n";
-            prettyText = val.map(function(text, idx){
-              if (dataKey === "memory_ret_psg") {
-                return `${idx + 1}. ${text}`;
-              }
-              return text;
-            }).join(separator);
-            badgeLabel = "TEXT";
-          }
-        } else {
-          try {
-            prettyText = JSON.stringify(val, null, 2);
-          } catch (e) {
-            prettyText = String(val);
-          }
+        // 内容区域：根据类型决定如何渲染（文本 / 图片 / JSON）
+        function isImagePath(p) {
+          if (typeof p !== "string") return false;
+          const s = p.toLowerCase();
+          return s.endsWith(".png") || s.endsWith(".jpg") || s.endsWith(".jpeg") ||
+                 s.endsWith(".gif") || s.endsWith(".webp") || s.endsWith(".bmp") ||
+                 s.endsWith(".svg");
         }
-
-        badge.textContent = badgeLabel;
-
-        // 拼装
+        // 递归收集任意层结构里的图片路径
+        function collectImagePaths(anyVal) {
+          const out = [];
+          (function walk(x) {
+            if (x == null) return;
+            if (Array.isArray(x)) {
+              x.forEach(walk);
+            } else if (typeof x === "object") {
+              Object.values(x).forEach(walk);
+            } else if (typeof x === "string" && isImagePath(x)) {
+              out.push(x);
+            }
+          })(anyVal);
+          return out;
+        }
+        // 判断是否“仅由图片路径组成”的结构（允许对象/数组嵌套，只要叶子都是图片路径）
+        function isImagesOnly(anyVal) {
+          let only = true;
+          (function walk(x) {
+            if (!only) return;
+            if (x == null) return;
+            if (Array.isArray(x)) {
+              x.forEach(walk);
+            } else if (typeof x === "object") {
+              Object.values(x).forEach(walk);
+            } else if (typeof x === "string") {
+              if (!isImagePath(x)) only = false;
+            } else {
+              only = false;
+            }
+          })(anyVal);
+          return only;
+        }
+  
         right.appendChild(headBar);
-
-        if (isImageList) {
-          const gallery = document.createElement("div");
-          gallery.className = "image-grid";
-          val.forEach(function(imgPath, idx){
-            const card = document.createElement("div");
-            card.className = "image-card";
-
+  
+        let copyText = "";
+        const imgs = collectImagePaths(val);
+        const imagesOnly = isImagesOnly(val);
+  
+        if (typeof val === "string" && isImagePath(val)) {
+          // 单张图片
+          copyText = val;
+          const img = document.createElement("img");
+          img.src = "/file?path=" + encodeURIComponent(val);
+          img.alt = k;
+          img.style = "max-width:100%; border-radius:12px; display:block;";
+          right.appendChild(img);
+        } else if (imagesOnly && imgs.length > 0) {
+          // 图片集合（允许任意层嵌套）
+          copyText = imgs.join("\n");
+          const grid = document.createElement("div");
+          grid.style = "display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:10px;";
+          imgs.forEach(function(p){
+            const wrapImg = document.createElement("div");
+            wrapImg.style = "background:#0c1125; border:1px solid var(--border); border-radius:12px; padding:6px;";
             const img = document.createElement("img");
-            img.loading = "lazy";
-            img.decoding = "async";
-            img.src = buildImageSrc(imgPath);
-            img.alt = `Image ${idx + 1}`;
-            card.appendChild(img);
-
-            const caption = document.createElement("div");
-            caption.className = "image-caption";
-            caption.textContent = imgPath;
-            card.appendChild(caption);
-
-            gallery.appendChild(card);
+            img.src = "/file?path=" + encodeURIComponent(p);
+            img.alt = k;
+            img.style = "width:100%; height:140px; object-fit:cover; border-radius:8px; display:block;";
+            wrapImg.appendChild(img);
+            grid.appendChild(wrapImg);
           });
-          right.appendChild(gallery);
-          pre.classList.add("muted", "small");
-          pre.style.marginTop = "12px";
+          right.appendChild(grid);
+        } else {
+          // 文本 / 其他 JSON
+          const pre = document.createElement("pre");
+          pre.className = "pre-json";
+          pre.setAttribute("data-key", dataKey);
+  
+          let prettyText;
+          if (typeof val === "string") {
+            prettyText = val;
+          } else if (Array.isArray(val) && val.every(function(x){ return typeof x === "string"; })) {
+            prettyText = val.join("\n");
+          } else {
+            try {
+              prettyText = JSON.stringify(val, null, 2);
+            } catch (e) {
+              prettyText = String(val);
+            }
+          }
+          copyText = prettyText;
+          pre.textContent = prettyText;
+          right.appendChild(pre);
         }
-
-        pre.textContent = prettyText;
-        right.appendChild(pre);
+  
+        // 覆盖复制逻辑，针对图片时复制原始路径文本
+        copyBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(copyText || "").then(() => {
+            copyBtn.textContent = "已复制";
+            setTimeout(() => { copyBtn.textContent = "复制"; }, 1200);
+          });
+        });
         row.appendChild(keyDiv);
         row.appendChild(right);
 
@@ -662,30 +613,37 @@ def api_cases():
     return JSONResponse({"count": len(STATE.cases), "cases": STATE.cases})
 
 
-@app.get("/api/image")
-def api_image(path: str):
-    if not path:
-        raise HTTPException(status_code=400, detail="missing path")
-    normalized = _normalize_local_image_path(path)
-    if normalized is None:
-        raise HTTPException(status_code=404, detail="unsupported image path")
-    if normalized not in STATE.allowed_images:
-        raise HTTPException(
-            status_code=404, detail="image not registered in current cases"
-        )
-    if not os.path.exists(normalized):
-        raise HTTPException(status_code=404, detail="image file not found")
-    return FileResponse(normalized)
-
-
 @app.get("/api/reload")
 def api_reload():
     try:
-        STATE.cases = _expand_cases_if_needed(load_cases(STATE.data_path))
-        STATE.allowed_images = _collect_local_image_paths(STATE.cases)
+        STATE.cases = load_cases(STATE.data_path)
+        # auto-detect static roots again
+        auto_roots = _collect_image_dirs(STATE.cases)
+        if auto_roots:
+            STATE.static_roots = auto_roots
         return JSONResponse({"ok": True, "count": len(STATE.cases), "msg": "reloaded"})
     except Exception as e:
         return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
+
+
+# Serve local files (images) under allowed roots
+@app.get("/file")
+def get_file(path: str):
+    # Security: only serve files under configured static roots (if provided / detected)
+    real = os.path.realpath(path)
+    if STATE.static_roots:
+        allowed = False
+        for root in STATE.static_roots:
+            r = os.path.realpath(root)
+            if real == r or real.startswith(r + os.sep):
+                allowed = True
+                break
+        if not allowed:
+            return PlainTextResponse("Forbidden", status_code=403)
+    if not os.path.exists(real):
+        return PlainTextResponse("Not Found", status_code=404)
+    mime = guess_type(real)[0] or "application/octet-stream"
+    return FileResponse(real, media_type=mime)
 
 
 @app.get("/health")
@@ -706,6 +664,7 @@ def parse_args():
     p.add_argument("--host", default="127.0.0.1", help="绑定地址，默认 127.0.0.1")
     p.add_argument("--port", type=int, default=8080, help="端口，默认 8080")
     p.add_argument("--title", "-t", default="Case Study Viewer", help="页面标题")
+    p.add_argument("--static-root", action="append", default=[], help="本地静态资源根目录，可多次指定，用于图片/文件直出")
     return p.parse_args()
 
 
@@ -715,9 +674,29 @@ def main():
     STATE.title = args.title
     try:
         STATE.cases = _expand_cases_if_needed(load_cases(STATE.data_path))
-        STATE.allowed_images = _collect_local_image_paths(STATE.cases)
     except Exception as e:
         raise SystemExit(f"!!! 加载数据失败: {e}")
+
+    # Configure static roots (manual > auto-detect)
+    if args.static_root:
+        # de-duplicate while preserving order
+        seen = set()
+        roots = []
+        for r in args.static_root:
+            r = os.path.realpath(r)
+            if r not in seen:
+                roots.append(r)
+                seen.add(r)
+        STATE.static_roots = roots
+    else:
+        STATE.static_roots = _collect_image_dirs(STATE.cases)
+
+    if STATE.static_roots:
+        print("[OK] Static roots:")
+        for r in STATE.static_roots:
+            print("     -", r)
+    else:
+        print("[Info] No static roots detected; image paths will be shown as text.")
 
     app.add_middleware(
         CORSMiddleware,
