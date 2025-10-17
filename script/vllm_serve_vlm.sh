@@ -1,9 +1,11 @@
+#!/bin/bash
+
 CUDA_VISIBLE_DEVICES=0,1 python -m vllm.entrypoints.openai.api_server \
     --served-model-name minicpm-v-4 \
     --model openbmb/MiniCPM-V-4 \
     --trust-remote-code \
-    --host 0.0.0.0 \
-    --port 8087 \
+    --host 127.0.0.1 \
+    --port 65503 \
     --max-model-len 32768 \
     --gpu-memory-utilization 0.9 \
     --tensor-parallel-size 2 \
