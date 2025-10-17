@@ -1,0 +1,11 @@
+# Web Search API Demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_tavily_search
