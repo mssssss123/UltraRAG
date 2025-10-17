@@ -1,4 +1,4 @@
-# Vanilla LLM demo using vLLM initialization
+# Vanilla VLM demo
 
 # MCP Server
 servers:
@@ -10,9 +10,9 @@ servers:
 
 # MCP Client Pipeline
 pipeline:
-- generation.initialize_local_vllm
 - benchmark.get_data
+- generation.generation_init
 - prompt.qa_boxed
-- generation.generate
+- generation.multimodal_generate
 - custom.output_extract_from_boxed
 - evaluation.evaluate
