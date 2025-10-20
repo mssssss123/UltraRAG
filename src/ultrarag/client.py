@@ -1116,7 +1116,7 @@ def main():
         help="Set the logging level (debug, info, warn, error)",
     )
 
-    p_show = subparsers.add_parser("show", help="Show helper interfaces")
+    p_show = subparsers.add_parser("show", help="Show UI interface")
     show_sub = p_show.add_subparsers(dest="show_target", required=True)
     p_show_ui = show_sub.add_parser("ui", help="Launch the UltraRAG web UI")
     p_show_ui.add_argument("--host", default="127.0.0.1")
