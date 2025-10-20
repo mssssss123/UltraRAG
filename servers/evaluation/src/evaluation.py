@@ -333,7 +333,7 @@ def evaluate(
     return save_evaluation_results(results, markdown=True, save_path=save_path)
 
 
-@app.tool(output="run_path,qrels_path,metrics,ks,save_path->eval_res")
+@app.tool(output="run_path,qrels_path,ir_metrics,ks,save_path->eval_res")
 def evaluate_trec(
     run_path: str,
     qrels_path: str,
@@ -377,7 +377,7 @@ def evaluate_trec(
 
 
 @app.tool(
-    output="run_new_path,run_old_path,qrels_path,metrics,ks,n_resamples,save_path->eval_res"
+    output="run_new_path,run_old_path,qrels_path,ir_metrics,ks,n_resamples,save_path->eval_res"
 )
 def evaluate_trec_pvalue(
     run_new_path: str,

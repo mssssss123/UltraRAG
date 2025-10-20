@@ -7,8 +7,8 @@ metrics: [ 'acc', 'f1', 'em', 'coverem', 'stringem', 'rouge-1', 'rouge-2', 'roug
 # Retrieval task
 qrels_path: data/qrels.txt
 run_path: data/run_a.txt
-ks: [1, 5, 10, 20, 50, 100]
-# metrics: ["mrr", "map", "recall", "ndcg", "precision"]
+ks: [ 1, 5, 10, 20, 50, 100 ]
+ir_metrics: [ "mrr", "map", "recall", "ndcg", "precision" ]
 
 # significant
 run_new_path: data/run_a.txt
