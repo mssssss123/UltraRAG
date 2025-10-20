@@ -1,4 +1,4 @@
-# Vanilla RAG demo for multiple choice datasets
+# Vanilla RAG Demo for Multiple Choice Datasets
 
 # MCP Server
 servers:
@@ -12,7 +12,9 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-- retriever.retriever_deploy_search
+- retriever.retriever_init
+- retriever.retriever_search
+- generation.generation_init
 - prompt.qa_rag_boxed_multiple_choice
 - generation.generate
 - custom.output_extract_from_boxed

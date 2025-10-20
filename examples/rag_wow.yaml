@@ -1,4 +1,4 @@
-# Vanilla RAG demo for WoW dataset
+# Vanilla RAG Demo for WoW Dataset
 
 # MCP Server
 servers:
@@ -11,7 +11,9 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-- retriever.retriever_deploy_search
+- retriever.retriever_init
+- retriever.retriever_search
+- generation.generation_init
 - prompt.qa_rag_boxed
 - generation.generate
 - evaluation.evaluate:
