@@ -1,28 +1,56 @@
 ---
-title: "Benchmark Server"
+title: "Benchmark"
 icon: "chart-line"
 ---
 
-## Configuration Parameters
+## `get_data`
 
-- **name** (`str`): Benchmark dataset name, e.g.: `nq`  
-- **path** (`str`): Path to the dataset file  
-- **key_map** (`Dict[str, str]`): Field mapping rules, where `key` represents the name used in the returned result, and `value` represents the field name in the original dataset  
-- **shuffle** (`bool`): Whether to shuffle the dataset after loading  
-- **seed** (`int`): Random seed to ensure reproducible `shuffle` results  
-- **limit** (`int`): Number of dataset entries to load, default `-1` loads all  
+**Signature**  
+```python
+@app.tool(output="benchmark->q_ls,gt_ls")
+def get_data(benchmark: Dict[str, Any]) -> Dict[str, List[Any]]
+```
+
+**Function**  
+- Loads evaluation samples from a local file, supporting **.jsonl / .json / .parquet** formats.
+- Maps original fields to standardized output keys (e.g., `q_ls`, `gt_ls`) according to `key_map`.
+- Supports sample shuffling (`shuffle`) and limiting the number of samples (`limit`).
+
+**Output Format (JSON)**  
+```json
+{
+  "q_ls": ["Question 1", "Question 2"],
+  "gt_ls": [["Answer A1", "Answer A2"], ["Answer B"]]
+}
+```
+
 
 ---
 
-## API Description
+## Parameter Configuration
 
-### `get_data`
+```yaml servers/benchmark/parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  name: nq
+  path: data/sample_nq_10.jsonl
+  key_map:
+    q_ls: question
+    gt_ls: golden_answers
+  shuffle: false
+  seed: 42
+  limit: -1
+```
 
-#### Function
-Loads the benchmark dataset from a local file and returns results according to the field mapping.
+Parameter Description:
 
-#### Input Parameters
-- **benchmark** (`Dict[str, Any]`): Configuration parameter dictionary  
+| Parameter | Type | Description |
+|------------|------|-------------|
+| `name` | str | Name of the benchmark dataset, used for logging and identification (e.g., `nq`) |
+| `path` | str | Path to the data file, supports `.jsonl`, `.json`, and `.parquet` |
+| `key_map` | dict | Field mapping table that maps original dataset fields to tool output keys |
+| `key_map.q_ls` | str | Name of the question field (e.g., `question`) |
+| `key_map.gt_ls` | str | Name of the ground truth field (e.g., `golden_answers`, supports lists) |
+| `shuffle` | bool | Whether to shuffle the samples (default: `false`) |
+| `seed` | int | Random seed (effective when `shuffle=true`) |
+| `limit` | int | Sampling limit: `-1` means all samples, a positive integer specifies the number of samples to take |
 
-#### Return Parameters
-- **data** (`Dict[str, List[Any]]`): Data dictionary containing the mapped content  

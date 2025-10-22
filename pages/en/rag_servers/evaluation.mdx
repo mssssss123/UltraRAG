@@ -1,0 +1,301 @@
+---
+title: "Evaluation"
+icon: "clipboard-check"
+---
+
+## Overview
+
+The **Evaluation Server** provides a comprehensive automated evaluation toolkit for systematically and reproducibly assessing model performance in both retrieval and generation tasks.  
+It supports multiple mainstream metrics, including ranking-based, matching-based, and summarization-based evaluations.  
+This module can be directly embedded at the end of a Pipeline to automatically calculate and save evaluation results.
+
+### Retrieval
+
+| Metric Name | Type | Description |
+|:-------------|:------|:------------|
+| `MRR` | float | Mean Reciprocal Rank — measures the average position of the first relevant document. |
+| `MAP` | float | Mean Average Precision — considers both precision and recall across ranked results. |
+| `Recall` | float | Recall — measures how many relevant documents were retrieved. |
+| `Precision` | float | Precision — measures how many retrieved documents are actually relevant. |
+| `NDCG` | float | Normalized Discounted Cumulative Gain — evaluates the similarity between the ranked list and the ideal ranking. |
+
+### Generation
+
+| Metric Name | Type | Description |
+|:-------------|:------|:------------|
+| `EM` | float | Exact Match — prediction exactly matches any of the references. |
+| `Acc` | float | Accuracy — prediction contains any form of the reference answer (loose matching). |
+| `StringEM` | float | Soft match ratio for multiple answers (commonly used in multi-choice or nested QA). |
+| `CoverEM` | float | Whether the reference answer is fully covered by the predicted text. |
+| `F1` | float | Token-level F1 score. |
+| `Rouge_1` | float | 1-gram ROUGE-F1 score. |
+| `Rouge_2` | float | 2-gram ROUGE-F1 score. |
+| `Rouge_L` | float | ROUGE based on the Longest Common Subsequence (LCS). |
+
+## Usage Example
+
+### Retrieval
+
+#### TREC File Evaluation
+
+In information retrieval, the **TREC format** is the standard evaluation interface used to assess system performance in ranking and recall.  
+TREC evaluation typically involves two files: **qrel** (manually annotated ground truth) and **run** (system output results).
+
+**1. qrel file (ground truth, human relevance judgments)**
+
+The qrel file stores human-labeled relevance information — which documents are relevant to which queries.  
+During evaluation, system outputs are compared with qrel data to compute metrics such as MAP, NDCG, Recall, and Precision.
+
+Format (4 columns, space-separated):
+```
+<query_id>  <iter>  <doc_id>  <relevance>
+```
+- `query_id`: query identifier  
+- `iter`: typically `0` (legacy field, can be ignored)  
+- `doc_id`: document identifier  
+- `relevance`: relevance label (0 = irrelevant, 1 or higher = relevant)
+
+Example:
+```
+1 0 DOC123 1
+1 0 DOC456 0
+2 0 DOC321 1
+2 0 DOC654 1
+```
+
+**2. run file (system output results)**
+
+The run file stores the retrieval system’s output, used to compare against qrels for evaluation.  
+Each line represents one document retrieved for a query along with its ranking information.
+
+Format (6 columns, space-separated):
+```
+<query_id>  Q0  <doc_id>  <rank>  <score>  <run_name>
+```
+- `query_id`: query identifier  
+- `Q0`: constant string “Q0” (required by TREC)  
+- `doc_id`: document identifier  
+- `rank`: rank position (1 = most relevant)  
+- `score`: system-assigned score  
+- `run_name`: system name (e.g., bm25, dense_retriever)
+
+Example:
+```
+1 Q0 DOC123 1 12.34 bm25
+1 Q0 DOC456 2 11.21 bm25
+2 Q0 DOC654 1 13.89 bm25
+2 Q0 DOC321 2 12.01 bm25
+```
+
+<Note>You can download example files here: [qrels.test](https://github.com/usnistgov/trec_eval/blob/main/test/qrels.test) and [results.test](https://github.com/usnistgov/trec_eval/blob/main/test/results.test)</Note>
+
+```yaml examples/eval_trec.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  evaluation: servers/evaluation
+
+# MCP Client Pipeline
+pipeline:
+- evaluation.evaluate_trec
+```
+
+Run the following command to build the Pipeline:
+
+```shell
+ultrarag build examples/eval_trec.yaml
+```
+
+```yaml examples/parameters/eval_trec_parameter.yaml icon="/images/yaml.svg"
+evaluation:
+  ir_metrics:
+  - mrr
+  - map
+  - recall
+  - ndcg
+  - precision
+  ks:
+  - 1
+  - 5
+  - 10
+  - 20
+  - 50
+  - 100
+  qrels_path: data/qrels.txt # [!code --]
+  run_path: data/run_a.txt # [!code --]
+  qrels_path: data/qrels.test # [!code ++]
+  run_path: data/results.test # [!code ++]
+  save_path: output/evaluate_results.json
+```
+
+Run the following command to execute the Pipeline:
+
+```shell
+ultrarag run examples/eval_trec.yaml
+```
+
+#### Significance Testing
+
+**Significance testing** determines whether performance differences between two retrieval systems are statistically meaningful or due to random variation.  
+It answers the question: *Is the improvement of system A over system B statistically significant?*
+
+Retrieval performance is usually measured as an average over multiple queries (e.g., MAP, NDCG, Recall).  
+However, such averages may not always be reliable due to query variability.  
+Significance testing uses statistical tests to verify whether improvements are consistent and reproducible.
+
+Common approaches include:
+
+- **Permutation Test** — randomly swaps results between systems A and B many times (e.g., 10,000 iterations) to build a random difference distribution. If the observed improvement exceeds 95% of random outcomes (p < 0.05), it is considered significant.  
+- **Paired t-test** — assumes per-query scores follow a normal distribution and evaluates whether the difference in means is significant.
+
+UR-2.0 implements a **two-sided permutation test** by default, outputting the following statistics automatically:
+
+- **A_mean / B_mean** — average metrics of the new and old systems  
+- **Diff(A-B)** — performance difference  
+- **p_value** — probability from the significance test  
+- **significant** — True if p < 0.05
+
+```yaml examples/eval_trec_pvalue.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  evaluation: servers/evaluation
+
+# MCP Client Pipeline
+pipeline:
+- evaluation.evaluate_trec_pvalue
+```
+
+Run the following command to build the Pipeline:
+
+```shell
+ultrarag build examples/eval_trec_pvalue.yaml
+```
+
+```yaml examples/parameters/eval_trec_pvalue_parameter.yaml icon="/images/yaml.svg"
+evaluation:
+  ir_metrics:
+  - mrr
+  - map
+  - recall
+  - ndcg
+  - precision
+  ks:
+  - 1
+  - 5
+  - 10
+  - 20
+  - 50
+  - 100
+  n_resamples: 10000
+  qrels_path: data/qrels.txt
+  run_new_path: data/run_a.txt
+  run_old_path: data/run_b.txt
+  save_path: output/evaluate_results.json
+```
+
+Run the following command to execute the Pipeline:
+
+```shell
+ultrarag run examples/eval_trec_pvalue.yaml
+```
+
+### Generation
+
+#### Basic Usage
+
+```yaml examples/rag_full.yaml icon="/images/yaml.svg" highlight="5,19"
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+- retriever.retriever_search
+- generation.generation_init
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+Simply add the `evaluation.evaluate` tool at the end of the Pipeline.  
+It will automatically compute all specified evaluation metrics after the task completes and save the results to the configured output path.
+
+#### Evaluate Existing Results
+
+If you already have generated model results and want to evaluate them directly, organize them in standard JSONL format.  
+The file should include at least fields representing reference answers and model predictions, for example:
+
+```json icon="/images/json.svg"
+{"id": 0, "question": "when was the last time anyone was on the moon", "golden_answers": ["14 December 1972 UTC", "December 1972"], "pred_answer": "December 14, 1973"}
+{"id": 1, "question": "who wrote he ain't heavy he's my brother lyrics", "golden_answers": ["Bobby Scott", "Bob Russell"], "pred_answer": "The documents do not provide information about the author of the lyrics to \"He Ain't Heavy, He's My Brother.\""}
+```
+
+```yaml examples/evaluate_results.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  evaluation: servers/evaluation
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- evaluation.evaluate
+```
+
+To enable the Benchmark Server to read generated results, add the `pred_ls` field in the `get_data` function:
+
+```python servers/prompt/src/benchmark.py icon="python"
+@app.tool(output="benchmark->q_ls,gt_ls") # [!code --]
+@app.tool(output="benchmark->q_ls,gt_ls,pred_ls") # [!code ++]
+def get_data(
+    benchmark: Dict[str, Any],
+) -> Dict[str, List[Any]]:
+```
+
+Then run the following command to build the Pipeline:
+
+```shell
+ultrarag build examples/evaluate_results.yaml
+```
+
+In the generated parameter file, add the new field `pred_ls` and specify its corresponding key in the original data, while updating dataset name and path to point to the evaluation file:
+
+```yaml examples/parameters/evaluate_results_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+      pred_ls: pred_answer  # [!code ++]
+    limit: -1
+    name: nq  # [!code --]
+    path: data/sample_nq_10.jsonl # [!code --]
+    name: evaluate  # [!code ++]
+    path: data/test_evaluate.jsonl # [!code ++]
+    seed: 42
+    shuffle: false
+evaluation:
+  metrics:
+  - acc
+  - f1
+  - em
+  - coverem
+  - stringem
+  - rouge-1
+  - rouge-2
+  - rouge-l
+  save_path: output/evaluate_results.json
+```
+
+Run the following command to execute the Pipeline:
+
+```shell
+ultrarag run examples/evaluate_results.yaml
+```

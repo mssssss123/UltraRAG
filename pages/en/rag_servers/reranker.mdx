@@ -1,0 +1,117 @@
+---
+title: "Reranker"
+icon: "ranking-star"
+---
+
+## Overview
+
+The **Reranker Server** in UR-2.0 is responsible for fine-ranking retrieved results.  
+It takes the initial retrieval outputs from the **Retriever Server** and reorders the candidate documents based on semantic relevance, thereby improving retrieval precision and enhancing the quality of final generation results.  
+This module natively supports several mainstream backends, including [Sentence-Transformers](https://github.com/UKPLab/sentence-transformers), [Infinity](https://github.com/michaelfeil/infinity), and [OpenAI](https://platform.openai.com/docs/guides/embeddings).
+
+## Usage Example
+
+```yaml examples/corpus_rerank.yaml icon="/images/yaml.svg" highlight="5,14,15"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  reranker: servers/reranker
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+- retriever.retriever_search
+- reranker.reranker_init
+- reranker.reranker_rerank
+```
+
+Build the Pipeline:
+
+```shell
+ultrarag build examples/corpus_rerank.yaml
+```
+
+Modify the parameters:
+```yaml examples/parameters/corpus_search_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+    limit: -1
+    name: nq
+    path: data/sample_nq_10.jsonl
+    seed: 42
+    shuffle: false
+reranker:
+  backend: sentence_transformers
+  backend_configs:
+    infinity:
+      bettertransformer: false
+      device: cuda
+      model_warmup: false
+      pooling_method: auto
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_url: https://api.openai.com/v1
+      model_name: text-embedding-3-small
+    sentence_transformers:
+      device: cuda
+      trust_remote_code: true
+  batch_size: 16
+  gpu_ids: 0
+  model_name_or_path: openbmb/MiniCPM-Reranker-Light # [!code --]
+  model_name_or_path: BAAI/bge-reranker-large # [!code ++]
+  query_instruction: ''
+  top_k: 5
+retriever:
+  backend: sentence_transformers
+  backend_configs:
+    bm25:
+      lang: en
+    infinity:
+      bettertransformer: false
+      device: cuda
+      model_warmup: false
+      pooling_method: auto
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_url: https://api.openai.com/v1
+      model_name: text-embedding-3-small
+    sentence_transformers:
+      device: cuda
+      sentence_transformers_encode:
+        encode_chunk_size: 10000
+        normalize_embeddings: false
+        psg_prompt_name: document
+        psg_task: null
+        q_prompt_name: query
+        q_task: null
+      trust_remote_code: true
+  batch_size: 16
+  corpus_path: data/corpus_example.jsonl
+  embedding_path: embedding/embedding.npy
+  faiss_use_gpu: true
+  gpu_ids: 0,1 # [!code --]
+  gpu_ids: 1 # [!code ++]
+  index_chunk_size: 50000
+  index_path: index/index.index
+  is_multimodal: false
+  model_name_or_path: openbmb/MiniCPM-Embedding-Light # [!code --]
+  model_name_or_path: Qwen/Qwen3-Embedding-0.6B # [!code ++]
+  overwrite: false
+  query_instruction: ''
+  top_k: 5
+
+```
+
+Run the Pipeline:
+```shell
+ultrarag run examples/corpus_rerank.yaml
+```

@@ -1,0 +1,320 @@
+---
+title: "Generation"
+icon: "pen-nib"
+---
+
+## Overview
+
+The **Generation Server** is the core module in UR-2.0 responsible for **invoking and deploying Large Language Models (LLMs)**.
+It receives input prompts constructed by the **Prompt Server** and generates the corresponding outputs.
+This module supports both **text generation** and **image-text multimodal generation**, making it adaptable to diverse task scenarios such as question answering, reasoning, summarization, and visual question answering.
+
+The Generation Server natively supports the following popular backends:  
+[vLLM](https://github.com/vllm-project/vllm), [HuggingFace](https://github.com/huggingface/transformers), and [OpenAI](https://platform.openai.com/docs/quickstart).
+
+## Usage Example
+
+### Text Generation
+
+The following example demonstrates how to use the Generation Server to perform a basic text generation task.
+The workflow first constructs the prompt using the Prompt Server, then calls the LLM to generate responses, followed by result extraction and evaluation.
+
+```yaml examples/vanilla_llm.yaml icon="/images/yaml.svg" highlight="5,12,14"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- generation.generation_init
+- prompt.qa_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+Build the Pipeline:
+
+```shell
+ultrarag build examples/vanilla_llm.yaml
+```
+
+Modify parameters:
+```yaml examples/parameters/vanilla_llm_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+    limit: -1
+    name: nq
+    path: data/sample_nq_10.jsonl
+    seed: 42
+    shuffle: false
+custom: {}
+evaluation:
+  metrics:
+  - acc
+  - f1
+  - em
+  - coverem
+  - stringem
+  - rouge-1
+  - rouge-2
+  - rouge-l
+  save_path: output/evaluate_results.json
+generation:
+  backend: vllm
+  backend_configs:
+    hf:
+      batch_size: 8
+      gpu_ids: 2,3
+      model_name_or_path: openbmb/MiniCPM4-8B
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_delay: 1.0
+      base_url: http://localhost:8000/v1
+      concurrency: 8
+      model_name: MiniCPM4-8B
+      retries: 3
+    vllm:
+      dtype: auto
+      gpu_ids: 2,3
+      gpu_memory_utilization: 0.9
+      model_name_or_path: openbmb/MiniCPM4-8B # [!code --]
+      model_name_or_path: Qwen/Qwen3-8B # [!code ++]
+      trust_remote_code: true
+  sampling_params:
+    chat_template_kwargs:
+      enable_thinking: false
+    max_tokens: 2048
+    temperature: 0.7
+    top_p: 0.8
+  system_prompt: ''
+prompt:
+  template: prompt/qa_boxed.jinja
+```
+
+Run the Pipeline:
+```shell
+ultrarag run examples/vanilla_llm.yaml
+```
+
+### Multimodal Reasoning
+
+In multimodal scenarios, the Generation Server can process not only textual input but also visual information such as images, enabling more complex reasoning tasks.
+The following example illustrates how to achieve this.
+
+First, prepare a sample dataset (including image paths):
+
+```json data/test.jsonl icon="/images/json.svg"
+{"id": 0, "question": "when was the last time anyone was on the moon", "golden_answers": ["14 December 1972 UTC", "December 1972"], "image":["image/page_0.jpg"],"meta_data": {}}
+```
+
+Before multimodal generation, you need to add a `multimodal_path` field in the `get_data` function of the Benchmark Server to specify the image input path.
+<Note>For instructions on adding new fields, refer to [Adding Additional Dataset Fields](/pages/en/rag_servers/benchmark).</Note>
+
+```yaml examples/vanilla_vlm.yaml icon="/images/yaml.svg" highlight="5,12,14"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- generation.generation_init
+- prompt.qa_boxed
+- generation.multimodal_generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+Build the Pipeline:
+
+```shell
+ultrarag build examples/vanilla_vlm.yaml
+```
+
+Modify parameters:
+```yaml examples/parameters/vanilla_vlm_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+      multimodal_path: image # [!code ++]
+    limit: -1
+    name: nq # [!code --]
+    path: data/sample_nq_10.jsonl # [!code --]
+    name: test # [!code ++]
+    path: data/test.jsonl # [!code ++]
+    seed: 42
+    shuffle: false
+custom: {}
+evaluation:
+  metrics:
+  - acc
+  - f1
+  - em
+  - coverem
+  - stringem
+  - rouge-1
+  - rouge-2
+  - rouge-l
+  save_path: output/evaluate_results.json
+generation:
+  backend: vllm
+  backend_configs:
+    hf:
+      batch_size: 8
+      gpu_ids: 2,3
+      model_name_or_path: openbmb/MiniCPM4-8B 
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_delay: 1.0
+      base_url: http://localhost:8000/v1
+      concurrency: 8
+      model_name: MiniCPM4-8B
+      retries: 3
+    vllm:
+      dtype: auto
+      gpu_ids: 2,3
+      gpu_memory_utilization: 0.9
+      model_name_or_path: openbmb/MiniCPM4-8B # [!code --]
+      model_name_or_path: openbmb/MiniCPM-V-4 # [!code ++]
+      trust_remote_code: true
+  sampling_params:
+    chat_template_kwargs:
+      enable_thinking: false
+    max_tokens: 2048
+    temperature: 0.7
+    top_p: 0.8
+  system_prompt: ''
+prompt:
+  template: prompt/qa_boxed.jinja
+```
+
+Run:
+```shell
+ultrarag run examples/vanilla_vlm.yaml
+```
+
+
+### Model Deployment
+
+UR-2.0 is fully compatible with the **OpenAI API** specification, allowing any model conforming to this standard to be integrated directly—no extra adaptation or code modification required.
+The following example shows how to deploy a local model using [vLLM](https://docs.vllm.ai/en/latest/cli/serve.html#parallelconfig).
+
+**Step 1: Run the Model in the Background**
+
+We recommend using **screen** to run it in the background for real-time log and status monitoring.
+
+Start a new screen session:
+
+```shell
+screen -S llm
+```
+
+Run the following command to deploy the model (using Qwen3-8B as an example):
+
+```shell script/vllm_serve_emb.sh
+CUDA_VISIBLE_DEVICES=0,1 python -m vllm.entrypoints.openai.api_server \
+    --served-model-name qwen3-8b \
+    --model Qwen/Qwen3-8B \
+    --trust-remote-code \
+    --host 127.0.0.1 \
+    --port 65501 \
+    --max-model-len 32768 \
+    --gpu-memory-utilization 0.9 \
+    --tensor-parallel-size 2 \
+    --enforce-eager
+```
+
+If you see output similar to the following, the model server has started successfully:
+
+```
+(APIServer pid=2811812) INFO:     Started server process [2811812]
+(APIServer pid=2811812) INFO:     Waiting for application startup.
+(APIServer pid=2811812) INFO:     Application startup complete.
+```
+
+Press **Ctrl + A + D** to detach and keep the process running in the background.
+To reattach the session, run:
+
+```shell
+screen -r llm
+```
+
+**Step 2: Modify Pipeline Parameters**
+
+Modify parameters as follows:
+```yaml examples/parameters/vanilla_llm_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+    limit: -1
+    name: nq
+    path: data/sample_nq_10.jsonl
+    seed: 42
+    shuffle: false
+custom: {}
+evaluation:
+  metrics:
+  - acc
+  - f1
+  - em
+  - coverem
+  - stringem
+  - rouge-1
+  - rouge-2
+  - rouge-l
+  save_path: output/evaluate_results.json
+generation:
+  backend: vllm # [!code --]
+  backend: openai # [!code ++]
+  backend_configs:
+    hf:
+      batch_size: 8
+      gpu_ids: 2,3
+      model_name_or_path: openbmb/MiniCPM4-8B
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_delay: 1.0
+      base_url: http://localhost:8000/v1 # [!code --]
+      base_url: http://127.0.0.1:65501/v1 # [!code ++]
+      concurrency: 8
+      model_name: MiniCPM4-8B # [!code --]
+      model_name: qwen3-8b # [!code ++]
+      retries: 3
+    vllm:
+      dtype: auto
+      gpu_ids: 2,3
+      gpu_memory_utilization: 0.9
+      model_name_or_path: openbmb/MiniCPM4-8B 
+      trust_remote_code: true
+  sampling_params:
+    chat_template_kwargs:
+      enable_thinking: false
+    max_tokens: 2048
+    temperature: 0.7
+    top_p: 0.8
+  system_prompt: ''
+prompt:
+  template: prompt/qa_boxed.jinja
+```
+
+Once the configuration is complete, you can run the Pipeline normally.

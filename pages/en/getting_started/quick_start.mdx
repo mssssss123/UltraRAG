@@ -1,66 +1,214 @@
 ---
-title: "Quick Start"
+title: "Quickstart"
 icon: "rocket-launch"
 ---
 
-This section will guide you through a minimal runnable example **sayhello** to help you quickly understand how to implement a minimal system based on UR-2.0, including:
+This section will help you quickly understand how to run a complete RAG Pipeline using UR-2.0. The workflow in UR-2.0 mainly includes the following three stages:
 
-- The basic structure of the Pipeline configuration file
-- How to modify parameters
-- How to run the complete process
+- Writing the Pipeline configuration file  
+- Building the Pipeline and adjusting parameters  
+- Running the Pipeline  
 
-<Tip>If you have not installed UR-2.0 yet, please refer to [Environment Setup](/pages/cn/getting_started/installation) first.</Tip>
+Additionally, you can analyze and evaluate the execution results using built-in visualization tools.
 
-<Tip>For more advanced RAG practices, please visit [Development Guide](/pages/cn/tutorials/part_1/server_index).</Tip>
+<Tip>If UR-2.0 is not yet installed, please refer to [Installation](/pages/en/getting_started/installation).</Tip>
 
-## Step 1: Understand the Pipeline Configuration Structure
+<Tip>For a more comprehensive RAG development guide, please refer to the full documentation.</Tip>
 
-<Info>Make sure the development root directory is under the UltraRAG folder</Info>
+## Step 1: Write the Pipeline Configuration File
 
-Below is a minimal example configuration file:
+<Info>Please ensure that your current working directory is set to the UltraRAG root directory.</Info>
 
-```yaml examples/sayhello.yaml icon="/images/yaml.svg"
+Create and write your Pipeline configuration file in the `examples` folder, for example:
+
+```yaml examples/rag_full.yaml icon="/images/yaml.svg"
 servers:
-  sayhello: servers/sayhello
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
 
 pipeline:
-  - sayhello.greet
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+- retriever.retriever_search
+- generation.generation_init
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
 ```
 
-This configuration file contains two core parts:
+A UR-2.0 Pipeline configuration file contains two essential sections:
 
-- `servers`: Declares all components (Servers) used in the current process. Here, the example `sayhello` Server is used.
-- `pipeline`: Defines the calling order of the functional functions (Tools) in the Server. In this example, the `greet` tool function of the `sayhello` Server is called, which outputs a welcome message.
+- `servers`: Declares the modules (Servers) required for the workflow. For example, the retrieval stage requires the `retriever` Server.
+- `pipeline`: Defines the execution order of functional methods (Tools) within each Server.  
+  The above example demonstrates a complete process covering data loading, retrieval embedding and indexing, generation, and evaluation.
 
-## Step 2: Automatically Generate Parameter Configuration File
+## Step 2: Build the Pipeline and Adjust Parameters
 
-Before running the code, the primary step is to configure the parameters required for execution. UR-2.0 provides a convenient Build command to automate this process: the system reads the parameter.yaml of each Server, parses all parameter items involved in this process, and aggregates them into a unified configuration file. Run the following command:
+Before running the code, you need to configure the required parameters. UR-2.0 provides a convenient **build** command that automatically generates a complete parameter file for the current Pipeline.  
+The system reads the `parameter.yaml` file from each Server, parses all involved parameter items, and consolidates them into a single unified configuration file.  
+Execute the following command:
 
 ```shell
-ultrarag build examples/sayhello.yaml
+ultrarag build examples/rag_full.yaml
 ```
 
-Terminal output:
+After execution, the terminal will display the following output:
 
-![](/images/getting_started/sayhello_build.png)
+![](/images/getting_started/rag_build.png)
 
-You will get an automatically generated parameter configuration file with a basic format as follows:
+The system will generate a parameter configuration file in the `examples/parameters/` folder.  
+Open the file and modify parameters as needed, for example:
 
-```yaml examples/parameters/sayhello_parameter.yaml icon="/images/yaml.svg"
-sayhello:
-  name: UltraRAG 2.0  # You can modify this to the name you want to pass in
+```yaml examples/parameters/rag_full_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers   # Ground-truth answers field name
+      q_ls: question          # Question field name
+    limit: -1                 # Limit the number of samples loaded (-1 = all)
+    name: nq                  # Dataset name (e.g., Natural Questions)
+    path: data/sample_nq_10.jsonl  # Path to the data file
+    seed: 42                  # Random seed for reproducibility
+    shuffle: false            # Whether to shuffle samples; false = preserve order
+
+custom: {}                    # Custom Server (empty in this example)
+
+evaluation:
+  metrics:
+  - acc
+  - f1
+  - em
+  - coverem
+  - stringem
+  - rouge-1
+  - rouge-2
+  - rouge-l
+  save_path: output/evaluate_results.json
+
+generation:
+  backend: vllm
+  backend_configs:
+    hf:
+      batch_size: 8
+      gpu_ids: 2,3
+      model_name_or_path: openbmb/MiniCPM4-8B
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_delay: 1.0
+      base_url: http://localhost:8000/v1
+      concurrency: 8
+      model_name: MiniCPM4-8B
+      retries: 3
+    vllm:
+      dtype: auto
+      gpu_ids: 2,3
+      gpu_memory_utilization: 0.9
+      model_name_or_path: Qwen/Qwen3-8B
+      trust_remote_code: true
+  sampling_params:
+    chat_template_kwargs:
+      enable_thinking: false
+    max_tokens: 2048
+    temperature: 0.7
+    top_p: 0.8
+  system_prompt: ''
+
+prompt:
+  template: prompt/qa_rag_boxed.jinja
+
+retriever:
+  backend: sentence_transformers
+  backend_configs:
+    infinity:
+      bettertransformer: false
+      device: cuda
+      model_warmup: false
+      pooling_method: auto
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_url: https://api.openai.com/v1
+      model_name: text-embedding-3-small
+    sentence_transformers:
+      device: cuda
+      sentence_transformers_encode:
+        encode_chunk_size: 10000
+        normalize_embeddings: false
+        psg_prompt_name: document
+        psg_task: null
+        q_prompt_name: query
+        q_task: null
+      trust_remote_code: true
+  batch_size: 16
+  corpus_path: data/corpus_example.jsonl
+  embedding_path: embedding/embedding.npy
+  faiss_use_gpu: true
+  gpu_ids: 0,1
+  index_chunk_size: 50000
+  index_path: index/index.index
+  is_multimodal: false
+  model_name_or_path: Qwen/Qwen3-Embedding-0.6B
+  overwrite: false
+  query_instruction: ''
+  top_k: 5
 ```
 
-Fill in the parameters you want to pass to the `greet` tool here (such as the name in the welcome message).
+You can modify parameters as needed, for example:
+
+- Set the template to `prompt/qa_rag_boxed.jinja` for RAG-style prompting.  
+- Replace `model_name_or_path` for both retriever and generator with local model paths.  
+- Adjust `gpu_ids` to match your available devices in a multi-GPU environment.
 
 ## Step 3: Run the Pipeline
 
-Once everything is ready, run the following command to execute the complete process:
+Once parameters are configured, you can execute the entire workflow with a single command:
 
 ```shell
-ultrarag run examples/sayhello.yaml
+ultrarag run examples/rag_full.yaml
 ```
 
-You will see similar output in the terminal and log files:
+The system will sequentially execute all Servers and Tools defined in the configuration file, displaying real-time logs and progress in the terminal:
 
-![](/images/getting_started/sayhello_run.png)
+![](/images/getting_started/rag_run.png)
+
+Upon completion, results (such as generated outputs and evaluation reports) will be automatically saved in the specified output path.  
+For example, the file `output/memory_nq_rag_full_20251010_145420.json` can be used directly for further analysis and visualization.
+
+## Step 4: Visualize and Analyze Case Studies
+
+After completing the workflow, you can use the built-in visualization tool to quickly analyze generation results.  
+Run the following command to start the Case Study Viewer:
+
+```shell
+python ./script/case_study.py \
+  --data output/memory_nq_rag_full_20251010_145420.json \
+  --host 127.0.0.1 \
+  --port 8080 \
+  --title "Case Study Viewer"
+```
+
+Once launched, the terminal will display an access address.  
+Open it in your browser to explore the Case Study Viewer, where you can interactively browse and analyze results.  
+Example interface:
+
+![](/images/getting_started/case1.png)
+![](/images/getting_started/case2.png)
+
+## Summary
+
+You have now completed the full RAG workflow—from Pipeline configuration and parameter compilation to execution and visualization analysis.  
+UR-2.0, with its modular MCP architecture and unified evaluation system, makes RAG system construction, execution, and analysis more efficient, intuitive, and reproducible.
+
+You can further:
+
+- Swap out models or retrievers to explore different combinations.  
+- Create custom Servers and Tools to extend system functionality.  
+- Use the evaluation module to compare results and conduct systematic research.

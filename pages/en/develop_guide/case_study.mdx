@@ -1,0 +1,26 @@
+---
+title: "Case Study"
+icon: "chart-line"
+---
+
+UR-2.0 provides a convenient **Case Study visualization mechanism** that helps researchers quickly inspect and analyze whether a constructed Pipeline is functioning as expected.
+
+After executing the Pipeline, the system automatically generates a **memory log file** in the `output` folder.  
+Simply run the following command to launch the Case Study visualization web page:
+
+```shell
+python ./script/case_study.py \
+  --data output/memory_nq_rag_branch_20251014_152438.json \
+  --host 127.0.0.1 \
+  --port 8070 \
+  --title "Case Study Viewer"
+```
+
+<Note>Please adjust the file path, port number, and other parameters as needed.</Note>
+
+Once started, you can open the corresponding address in your browser to access the **Case Study Viewer** interface.  
+This interface presents the inputs and outputs of each stage of the Pipeline through intuitive visualizations, making it easier to review reasoning chains and intermediate states step by step.
+
+![](/images/develop_guide/case_study.png)
+
+On this page, you can navigate between different cases to visually compare the relationships among the **input question**, **retrieval results**, and **model outputs**, allowing you to efficiently identify potential issues, optimize Pipeline design, and verify whether the overall reasoning process behaves as intended.

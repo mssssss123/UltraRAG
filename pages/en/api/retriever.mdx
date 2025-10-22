@@ -1,118 +1,292 @@
 ---
-title: "Retriever Server"
+title: "Retriever"
 icon: "magnifying-glass"
 ---
 
-## Configuration Parameters
+## `retriever_init`
 
-- **retriever_path** (`str`): Path or name of the embedding model  
-- **corpus_path** (`str`): Path to the corpus file (JSONL format)  
-- **embedding_path** (`str`): Path to the `.npy` file storing generated embedding vectors  
-- **index_path** (`str`): Path to the `.index` file storing the Faiss index  
-- **infinity_kwargs** (`dict`): Model configuration passed to `infinity_emb.EngineArgs`  
-  - **bettertransformer** (`bool`): Whether to enable BetterTransformer acceleration (default `false`)  
-  - **pooling_method** (`str`): Vector pooling method (`auto`, `cls`, `mean`)  
-  - **device** (`str`): Device to load the model on (e.g., `cuda`, `cpu`)  
-  - **batch_size** (`int`): Batch size when embedding in batches  
-- **cuda_devices** (`str`): Visible GPU settings, e.g., `"0,1"` means using GPU 0 and GPU 1  
-- **query_instruction** (`str`): Prefix prompt for queries  
-- **faiss_use_gpu** (`bool`): Whether to enable GPU Faiss (fallback to CPU if failed)  
-- **top_k** (`int`): Number of retrieved documents to return  
-- **overwrite** (`bool`): Whether to overwrite if the target exists  
-- **retriever_url** (`str`): Service address (can be `host:port` or full `http://host:port`, default port `8080` if not specified)  
-- **index_chunk_size** (`int`): Batch size for `add_with_ids` in chunks  
+**Signature**  
+```python
+def retriever_init(
+    model_name_or_path: str,
+    backend_configs: Dict[str, Any],
+    batch_size: int,
+    corpus_path: str,
+    index_path: Optional[str] = None,
+    faiss_use_gpu: bool = False,
+    gpu_ids: Optional[object] = None,
+    is_multimodal: bool = False,
+    backend: str = "infinity",
+) -> None
+```
 
----
-
-## API Description
-
-### `retriever_init`
-
-#### Function
-Initialize the retriever model based on the Infinity Embedding library and load the corpus file; if `index_path` is provided and exists, load the Faiss index (GPU/CPU).
-
-#### Input Parameters
-- **retriever_path** (`str`): Infinity model path or name (passed to `EngineArgs`)  
-- **corpus_path** (`str`): Corpus file (JSONL), each line must contain the key `"contents"`  
-- **index_path** (`Optional[str]`): Existing `.index` file path of the built index, load if exists  
-- **faiss_use_gpu** (`bool`): Whether to enable GPU Faiss (fallback to CPU if failed)  
-- **infinity_kwargs** (`Optional[Dict[str, Any]]`): Other parameters passed to `EngineArgs` (e.g., `dtype`, `batch_size`, etc.)  
-- **cuda_devices** (`Optional[str]`): Visible GPUs, e.g., `"0,1"`; will be set to `CUDA_VISIBLE_DEVICES`  
-
-#### Return Parameters
-- None  
+**Function**  
+- Initializes the retrieval backend and corpus index.
 
 ---
 
-### `retriever_embed`
+## `retriever_embed`
 
-#### Function
-Encode the corpus using the retriever model into embeddings and save as `.npy`.
+**Signature**  
+```python
+async def retriever_embed(
+    embedding_path: Optional[str] = None,
+    overwrite: bool = False,
+    is_multimodal: bool = False,
+) -> None
+```
 
-#### Input Parameters
-- **embedding_path** (`Optional[str]`): Output `.npy` file path; if not provided, defaults to `<project_root>/output/embedding/embedding.npy`  
-- **overwrite** (`bool`): Whether to overwrite if the target exists  
-
-#### Return Parameters
-- None  
-
----
-
-### `retriever_index`
-
-#### Function
-Build Faiss Index (`IndexIDMap2(FlatIP)`) based on `.npy` embeddings, supports chunked insertion and GPU construction.
-
-#### Input Parameters
-- **embedding_path** (`str`): File storing the encoded embeddings, `.npy` file  
-- **index_path** (`Optional[str]`): Output `.index` file path; defaults to `<project_root>/output/index/index.index` if not provided  
-- **overwrite** (`bool`): Whether to overwrite if exists  
-- **index_chunk_size** (`int`): Batch size for `add_with_ids` in chunks  
-
-#### Return Parameters
-- None  
+**Function**  
+- Encodes corpus embeddings and saves them to `*.npy`.
 
 ---
 
-### `retriever_search`
+## `retriever_index`
 
-#### Function
-Perform vector retrieval on the Faiss index.
+**Signature**  
+```python
+def retriever_index(
+    embedding_path: str,
+    index_path: Optional[str] = None,
+    overwrite: bool = False,
+    index_chunk_size: int = 50000,
+) -> None
+```
 
-#### Input Parameters
-- **query_list** (`List[str]`): List of queries or a single string (automatically wrapped into a list)  
-- **top_k** (`int`): Number of results to return  
-- **query_instruction** (`str`): Prefix prompt added to each query (instruction-based query)  
-- **use_openai** (`bool`): Whether to use OpenAI to generate query vectors; otherwise use the Infinity model by default  
-
-#### Return Parameters
-- **ret_psg** (`Dict[str, List[List[str]]]`): Retrieved passages  
-
----
-
-### `retriever_deploy_service`
-
-#### Function
-Start a lightweight Flask service to deploy the retriever model.
-
-#### Input Parameters
-- **retriever_url** (`str`): Service address (can be `host:port` or full `http://host:port`, default port `8080` if not specified)  
-
-#### Return Parameters
-- None  
+**Function**  
+- Builds an inverted index for embeddings using FAISS.
 
 ---
 
-### `retriever_deploy_search`
+## `bm25_index`
 
-#### Function
-Call the remote `/search` endpoint of the `retriever_deploy_service` as a client and return remote retrieval results.
+**Signature**  
+```python
+def bm25_index(
+    index_path: Optional[str] = None,
+    overwrite: bool = False,
+) -> None
+```
 
-#### Input Parameters
-- **retriever_url** (`str`): Remote base address  
-- **query_list** (`List[str]`): List of queries or a single string (automatically wrapped into a list)  
-- **top_k** (`int`): Number of results to return  
-- **query_instruction** (`str`): Prefix prompt added to each query (instruction-based query)  
+**Function**  
+- Builds a BM25 index and saves stopwords and the vocabulary.
 
-#### Return Parameters
-- **ret_psg** (`Dict[str, List[List[str]]]`): Retrieved passages  
+---
+
+## `retriever_search`
+
+**Signature**  
+```python
+async def retriever_search(
+    query_list: List[str],
+    top_k: int = 5,
+    query_instruction: str = "",
+) -> Dict[str, List[List[str]]]
+```
+
+**Function**  
+- Standard **FAISS vector index**-based semantic retrieval supporting: `infinity` / `sentence_transformers` / `openai`.
+
+**Output Format (JSON)**  
+```json
+{"ret_psg": [["passage 1", "passage 2"], ["..."]]} 
+```
+
+---
+
+## `retriever_search_colbert_maxsim`
+
+**Signature**  
+```python
+async def retriever_search_colbert_maxsim(
+    query_list: List[str],
+    embedding_path: str,
+    top_k: int = 5,
+    query_instruction: str = "",
+) -> Dict[str, List[List[str]]]
+```
+
+**Function**  
+- Supports **ColBERT/ColPali** multi-vector retrieval (only for the `infinity` backend).  
+- Reads `embedding_path` (shape `(N, Kd, D)` or `dtype=object` for variable-length vectors), aggregates scores via **MaxSim**, and returns top-k results.
+
+**Output Format (JSON)**  
+```json
+{"ret_psg": [["passage 1", "passage 2"], ["..."]]} 
+```
+
+---
+
+## `bm25_search`
+
+**Signature**  
+```python
+async def bm25_search(
+    query_list: List[str],
+    top_k: int = 5,
+) -> Dict[str, List[List[str]]]
+```
+
+**Function**  
+- Performs BM25 inverted index retrieval and returns the top-k text results for each query.
+
+**Output Format (JSON)**  
+```json
+{"ret_psg": [["passage 1", "passage 2"], ["..."]]} 
+```
+
+---
+
+## `retriever_exa_search`
+
+**Signature**  
+```python
+async def retriever_exa_search(
+    query_list: List[str],
+    top_k: Optional[int] | None = 5,
+    retrieve_thread_num: Optional[int] | None = 1,
+) -> Dict[str, List[List[str]]]
+```
+
+**Function**  
+- Performs **Exa Web Search** (requires `EXA_API_KEY`).
+
+**Output Format (JSON)**  
+```json
+{"ret_psg": [["snippet 1", "snippet 2"], ["..."]]} 
+```
+
+---
+
+## `retriever_tavily_search`
+
+**Signature**  
+```python
+async def retriever_tavily_search(
+    query_list: List[str],
+    top_k: Optional[int] | None = 5,
+    retrieve_thread_num: Optional[int] | None = 1,
+) -> Dict[str, List[List[str]]]
+```
+
+**Function**  
+- Performs **Tavily Web Search** (requires `TAVILY_API_KEY`).
+
+**Output Format (JSON)**  
+```json
+{"ret_psg": [["snippet 1", "snippet 2"], ["..."]]} 
+```
+
+---
+
+## `retriever_zhipuai_search`
+
+**Signature**  
+```python
+async def retriever_zhipuai_search(
+    query_list: List[str],
+    top_k: Optional[int] | None = 5,
+    retrieve_thread_num: Optional[int] | None = 1,
+) -> Dict[str, List[List[str]]]
+```
+
+**Function**  
+- Performs **ZhipuAI Web Search** (requires `ZHIPUAI_API_KEY`).
+
+**Output Format (JSON)**  
+```json
+{"ret_psg": [["snippet 1", "snippet 2"], ["..."]]} 
+```
+
+---
+
+## Parameter Configuration
+
+```yaml servers/retriever/parameter.yaml icon="/images/yaml.svg"
+model_name_or_path: openbmb/MiniCPM-Embedding-Light
+corpus_path: data/corpus_example.jsonl
+embedding_path: embedding/embedding.npy
+index_path: index/index.index
+
+backend: sentence_transformers # options: infinity, sentence_transformers, openai, bm25
+backend_configs:
+  infinity:
+    bettertransformer: false
+    pooling_method: auto
+    device: cuda
+    model_warmup: false
+    trust_remote_code: true
+  sentence_transformers:
+    device: cuda
+    trust_remote_code: true
+    sentence_transformers_encode:
+      normalize_embeddings: false
+      encode_chunk_size: 10000
+      q_prompt_name: query
+      psg_prompt_name: document
+      psg_task: null
+      q_task: null
+  openai:
+    model_name: text-embedding-3-small
+    base_url: "https://api.openai.com/v1"
+    api_key: ""
+  bm25:
+    lang: en
+
+batch_size: 16
+top_k: 5
+gpu_ids: "0,1"
+query_instruction: ""
+is_multimodal: false
+faiss_use_gpu: True
+overwrite: false
+index_chunk_size: 50000
+retrieve_thread_num: 1
+```
+
+Parameter Description:
+
+| Parameter | Type | Description |
+|------------|------|-------------|
+| `model_name_or_path` | str | Path or name of the retrieval model (e.g., HuggingFace model ID) |
+| `corpus_path` | str | Path to the input corpus JSONL file |
+| `embedding_path` | str | Path to save the vector embeddings (`.npy`) |
+| `index_path` | str | Path to save the FAISS/BM25 index (`.index`) |
+| `backend` | str | Selects the retrieval backend: `infinity`, `sentence_transformers`, `openai`, `bm25` |
+| `backend_configs` | dict | Backend-specific configuration (see below) |
+| `batch_size` | int | Batch size for embedding generation or retrieval |
+| `top_k` | int | Number of passages to return |
+| `gpu_ids` | str | Visible GPU devices, e.g., `"0,1"` |
+| `query_instruction` | str | Query prefix (used in instruction-tuned models) |
+| `is_multimodal` | bool | Enables multimodal embedding (e.g., images) |
+| `faiss_use_gpu` | bool | Whether to use GPU acceleration for FAISS |
+| `overwrite` | bool | Whether to overwrite existing embeddings or index files |
+| `index_chunk_size` | int | Number of vectors per batch during index building |
+| `retrieve_thread_num` | int | Number of concurrent threads for external web retrieval (Exa/Tavily/Zhipu) |
+
+### `backend_configs` Subfields:
+
+| Backend | Parameter | Description |
+|----------|------------|-------------|
+| **infinity** | `bettertransformer` | Enables optimized inference acceleration |
+|  | `pooling_method` | Pooling method (e.g., `auto`, `mean`) |
+|  | `device` | Execution device (`cuda` or `cpu`) |
+|  | `model_warmup` | Whether to preload the model into GPU memory |
+|  | `trust_remote_code` | Whether to trust remote custom code (for custom models) |
+| **sentence_transformers** | `device` | Execution device (`cuda` or `cpu`) |
+|  | `trust_remote_code` | Allows loading models with custom code |
+|  | `sentence_transformers_encode` | Advanced encoding parameters (see below) |
+| **openai** | `model_name` | OpenAI model name (e.g., `text-embedding-3-small`) |
+|  | `base_url` | API base URL |
+|  | `api_key` | OpenAI API key |
+| **bm25** | `lang` | Language setting (determines stopwords and tokenizer) |
+
+### `sentence_transformers_encode` Parameters
+
+| Parameter | Type | Description |
+|------------|------|-------------|
+| `normalize_embeddings` | bool | Whether to normalize vectors |
+| `encode_chunk_size` | int | Chunk size during encoding (to prevent OOM) |
+| `q_prompt_name` | str | Query template name |
+| `psg_prompt_name` | str | Passage template name |
+| `q_task` / `psg_task` | str/null | Task tags (if prompt adaptation is needed) |

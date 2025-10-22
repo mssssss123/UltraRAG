@@ -1,0 +1,77 @@
+---
+title: "Module Reuse"
+icon: "book-copy"
+---
+
+In many real-world scenarios, you may want to use multiple Retriever or Generation modules within the same Pipeline to perform different logical tasks, such as hybrid retrieval or multi-agent systems.  
+In fact, this can be achieved simply by configuring different parameters for the same module.
+
+To support this, UR-2.0 provides a simple and flexible mechanism —  
+you can reuse and independently invoke the same Server module by assigning different aliases to it.
+
+## Usage Example
+
+### Step 1: Configure Aliased Servers
+
+In the `pipeline.yaml` file, you can define multiple aliases for the same module path under the `servers` field:
+
+```yaml examples/hybrid_search.yaml icon="/images/yaml.svg" highlight="4,5"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  dense: servers/retriever
+  bm25: servers/retriever
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- dense.retriever_init
+- bm25.retriever_init
+- dense.retriever_search:
+    output:
+      ret_psg: dense_psg
+- bm25.bm25_search:
+    output:
+      ret_psg: sparse_psg
+- custom.merge_passages:
+    input:
+      ret_psg: dense_psg
+      temp_psg: sparse_psg
+```
+
+In this example, both `dense` and `bm25` point to the same module path `servers/retriever`,  
+but they are built and invoked as two independent Server instances.
+
+### Step 2: Call Them Separately in the Pipeline
+
+In the Pipeline definition, you can use these aliases just like separate modules:
+
+```yaml examples/hybrid_search.yaml icon="/images/yaml.svg" highlight="11-18"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  dense: servers/retriever
+  bm25: servers/retriever
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- dense.retriever_init
+- bm25.retriever_init
+- dense.retriever_search:
+    output:
+      ret_psg: dense_psg
+- bm25.bm25_search:
+    output:
+      ret_psg: sparse_psg
+- custom.merge_passages:
+    input:
+      ret_psg: dense_psg
+      temp_psg: sparse_psg
+```
+
+At runtime, UltraRAG will automatically distinguish between these two instances:  
+each alias corresponds to an independent parameter file, runtime context, and cache space —  
+enabling multiple modules to run in parallel without interfering with one another.

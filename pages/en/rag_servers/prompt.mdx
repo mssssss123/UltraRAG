@@ -1,0 +1,194 @@
+---
+title: "Prompt"
+icon: "terminal"
+---
+
+## Overview
+
+The **Prompt Tool** is the core component used to construct inputs (prompts) for language models.  
+Each Prompt Tool is defined using the `@app.prompt` decorator.  
+Its main responsibility is to load the corresponding template file based on the input content (e.g., question, retrieved passages) and generate standardized `PromptMessage` objects that can be directly passed to the Large Language Model (LLM) for generation or inference.
+
+
+## Implementation Example
+
+### Step 1: Prepare the Prompt Template
+
+Save your prompt template as a file ending with `.jinja`, for example:
+
+```jinja prompt/qa_rag_boxed.jinja icon="/images/jinja.svg"
+Please answer the following question based on the given documents.
+Think step by step.
+Provide your final answer in the format \boxed{YOUR_ANSWER}.
+
+Documents:
+{{documents}}
+
+Question: {{question}}
+```
+
+### Step 2: Implement the Tool in the Prompt Server
+
+Call the `load_prompt_template` method to load the template and implement a tool function in the Prompt Server to assemble the prompt:
+
+```python servers/prompt/src/prompt.py icon="python"
+@app.prompt(output="q_ls,ret_psg,template->prompt_ls")
+def qa_rag_boxed(
+    q_ls: List[str], ret_psg: List[str | Any], template: str | Path
+) -> list[PromptMessage]:
+    template: Template = load_prompt_template(template)
+    ret = []
+    for q, psg in zip(q_ls, ret_psg):
+        passage_text = "\n".join(psg)
+        p = template.render(question=q, documents=passage_text)
+        ret.append(p)
+    return ret
+```
+
+## Usage Example
+
+Before calling the generation tool, you must first construct the input prompt using the corresponding Prompt Tool.
+
+```yaml examples/rag_full.yaml icon="/images/yaml.svg" highlight="3,16"
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+- retriever.retriever_search
+- generation.generation_init
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+## Multiple Prompt Tool Usage Scenarios
+
+In complex Pipelines, the model may need to perform different tasks at different stages—for example, generating sub-questions first, and then producing the final answer based on new retrieval results.  
+In such cases, multiple Prompt Tools can be configured within the same Pipeline, each responsible for constructing prompts for a specific task.
+
+```yaml examples/rag_loop.yaml icon="/images/yaml.svg" highlight="19,29"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- generation.generation_init
+- retriever.retriever_search
+- loop:
+    times: 3
+    steps:
+    - prompt.gen_subq
+    - generation.generate:
+        output:
+          ans_ls: subq_ls
+    - retriever.retriever_search:
+        input:
+          query_list: subq_ls
+        output:
+          ret_psg: temp_psg
+    - custom.merge_passages
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+If you want to load different templates for different tasks, specify distinct template field names when registering each Prompt Tool:
+
+```python servers/prompt/src/prompt.py icon="python" highlight="1,13"
+@app.prompt(output="q_ls,ret_psg,template->prompt_ls")
+def qa_rag_boxed(
+    q_ls: List[str], ret_psg: List[str | Any], template: str | Path
+) -> list[PromptMessage]:
+    template: Template = load_prompt_template(template)
+    ret = []
+    for q, psg in zip(q_ls, ret_psg):
+        passage_text = "\n".join(psg)
+        p = template.render(question=q, documents=passage_text)
+        ret.append(p)
+    return ret
+
+@app.prompt(output="q_ls,ret_psg,gen_subq_template->prompt_ls")
+def gen_subq(
+    q_ls: List[str],
+    ret_psg: List[str | Any],
+    template: str | Path,
+) -> List[PromptMessage]:
+    template: Template = load_prompt_template(template)
+    all_prompts = []
+    for q, psg in zip(q_ls, ret_psg):
+        passage_text = "\n".join(psg)
+        p = template.render(question=q, documents=passage_text)
+        all_prompts.append(p)
+    return all_prompts
+```
+
+Then, add the corresponding template fields in `servers/prompt/parameter.yaml`:
+
+<Note>Ensure you complete this modification before running the `build` command.</Note>
+
+```yaml servers/prompt/parameter.yaml icon="/images/yaml.svg" 
+# servers/prompt/parameter.yaml
+
+# QA
+template: prompt/qa_boxed.jinja
+
+# RankCoT
+kr_template: prompt/RankCoT_knowledge_refinement.jinja
+qa_template: prompt/RankCoT_question_answering.jinja
+
+# Search-R1
+search_r1_gen_template: prompt/search_r1_append.jinja
+
+# R1-Searcher
+r1_searcher_gen_template: prompt/r1_searcher_append.jinja
+
+# For other prompts, please add parameters here as needed
+
+# Take webnote as an example:
+webnote_gen_plan_template: prompt/webnote_gen_plan.jinja
+webnote_init_page_template: prompt/webnote_init_page.jinja
+webnote_gen_subq_template: prompt/webnote_gen_subq.jinja
+webnote_fill_page_template: prompt/webnote_fill_page.jinja
+webnote_gen_answer_template: prompt/webnote_gen_answer.jinja
+
+gen_subq_template: prompt/gen_subq.jinja  # [!code ++]
+```
+
+Build the Pipeline:
+
+```shell
+ultrarag build rag_loop.yaml
+```
+
+The system will automatically register the new field in the generated parameter file:
+
+```yaml examples/rag_loop_parameter.yaml icon="/images/yaml.svg" highlight="3"
+...
+prompt:
+  gen_subq_template: prompt/gen_subq.jinja
+  template: prompt/qa_boxed.jinja
+retriever:
+  backend: sentence_transformers
+...
+```
+
+You can then execute the Pipeline normally.

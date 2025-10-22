@@ -1,0 +1,44 @@
+---
+title: "Sequential Structure"
+icon: "arrow-right-arrow-left"
+---
+
+The **sequential structure** is the most fundamental and commonly used execution pattern in a Pipeline.  
+Multiple steps are executed in order, where the output of one step (if any) can serve as the input to the next, or each step can run independently.  
+A standard RAG workflow can typically be constructed using only the sequential structure, allowing smooth execution from data loading to final evaluation.
+
+## Usage Example
+
+```yaml examples/rag.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_search
+- generation.generation_init
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+In a sequential structure, each line in the Pipeline represents a call to a specific Tool.  
+The basic syntax is as follows:
+
+```yaml
+- server_name.tool_name
+```
+
+- `server_name`: The name of the module being invoked. It must be declared in the `servers` section in advance.  
+- `tool_name`: The name of the function registered within that module using the `@tool(...)` or `@prompt(...)` decorator.
+
+This structure is suitable for most single-turn question-answering or reasoning tasks and serves as the foundation for understanding more complex structures such as loops and branches.

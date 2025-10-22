@@ -1,0 +1,52 @@
+---
+title: "Loop Structure"
+icon: "rotate-right"
+---
+
+In tasks such as multi-turn reasoning, multi-hop question answering, or iterative retrieval, a single execution often fails to produce an ideal final answer.  
+In such cases, a **loop structure** can be used to repeatedly execute specific modules, enabling gradual information refinement and continuous optimization of results.
+
+## Usage Example
+
+```yaml examples/rag_loop.yaml icon="/images/yaml.svg" highlight="16-28"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- generation.generation_init
+- retriever.retriever_search
+- loop:
+    times: 3
+    steps:
+    - prompt.gen_subq
+    - generation.generate:
+        output:
+          ans_ls: subq_ls
+    - retriever.retriever_search:
+        input:
+          query_list: subq_ls
+        output:
+          ret_psg: temp_psg
+    - custom.merge_passages
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+In a loop structure, the Pipeline uses the following keywords to define the tools that should be executed repeatedly:
+
+- `loop`: Declares a loop block, indicating that the enclosed steps will be executed multiple times.  
+- `times`: Specifies the maximum number of iterations.  
+- `steps`: Defines the sequence of tool invocations within each iteration.
+
+<Note>If you wish to dynamically control loop termination conditions, you can combine the **Branch Structure (branch)** with the **Router Server**. See [Branch Structure](/pages/en/rag_client/branch) for details.</Note>

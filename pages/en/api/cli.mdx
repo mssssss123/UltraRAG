@@ -1,0 +1,79 @@
+---
+title: "CLI"
+icon: "command"
+---
+
+
+## help — Command Overview
+
+```bash
+ultrarag --help
+```
+
+```
+usage: ultrarag [-h] {build,run,show} ...
+
+UltraRAG CLI
+
+positional arguments:
+  {build,run,show}
+    build           Build the configuration
+    run             Run the pipeline with the given configuration
+    show            Show UI interfaces
+
+options:
+  -h, --help        show this help message and exit
+```
+
+---
+
+## build — Build Configuration
+
+**Purpose**: Automatically generate a unified parameter configuration file based on `pipeline.yaml`.
+
+```bash
+ultrarag build <CONFIG> [--log_level DEBUG|INFO|WARN|ERROR]
+```
+
+| Argument | Description |
+|-----------|--------------|
+| `<CONFIG>` | Path to the Pipeline configuration file, e.g., `examples/pipeline.yaml` |
+| `--log_level` | Logging level, default is `INFO` |
+
+
+
+---
+
+## run — Execute Pipeline
+
+**Purpose**: Start executing the Pipeline.
+
+```bash
+ultrarag run <CONFIG> [--param <PARAM_FILE>] [--log_level DEBUG|INFO|WARN|ERROR]
+```
+
+| Argument | Description |
+|-----------|--------------|
+| `<CONFIG>` | Path to the `pipeline.yaml` to execute |
+| `--param <PARAM_FILE>` | Custom parameter file path, overriding the default file in the `parameter/` directory |
+| `--log_level` | Logging level, default is `INFO` |
+
+---
+
+## show ui — Launch Web Control Interface
+
+**Purpose**: Start the web-based UI.
+
+```bash
+ultrarag show ui [--host 127.0.0.1] [--port 5050] [--log_level DEBUG|INFO|WARN|ERROR]
+```
+
+| Argument | Description |
+|-----------|--------------|
+| `--host` | Host IP address for the web service (default: `127.0.0.1`) |
+| `--port` | Port for the web service (default: `5050`) |
+| `--log_level` | Logging level, default is `INFO` |
+
+After startup, open `http://<host>:<port>` in your browser to access the UI.  
+
+

@@ -1,0 +1,303 @@
+---
+title: "Vanilla RAG"
+icon: "ice-cream"
+---
+
+<Note>We recorded an instructional video for this demo: [📺 bilibili](https://www.bilibili.com/video/BV1B9apz4E7K/?share_source=copy_web&vd_source=7035ae721e76c8149fb74ea7a2432710).</Note>
+## What is RAG?
+
+> Imagine you’re taking an open-book exam. You are the large language model — capable of understanding the questions and writing the answers.  
+> However, you can’t possibly remember every piece of knowledge.  
+> Now, you’re allowed to bring a reference book — that’s **retrieval**.  
+> You look up relevant sections in the book, combine them with your own reasoning, and write an answer that is both accurate and well-grounded.  
+> This process is **RAG — Retrieval-Augmented Generation**.
+
+**RAG (Retrieval-Augmented Generation)** is a framework that allows a large language model (LLM) to first *retrieve* relevant documents or knowledge before *generating* answers. The model uses this retrieved information as context to enhance the quality, factuality, and reliability of its output.
+
+### Workflow
+
+**Retrieval Stage** — Retrieve the most relevant content from a document collection (e.g., knowledge base, web pages, etc.) based on the user’s query.  
+![](/images/pipeline/rag/retrieve_stage.png)
+
+**Generation Stage** — Feed the retrieved content into the LLM as contextual input, allowing it to generate answers grounded in factual information.  
+![](/images/pipeline/rag/gen_stage.png)
+
+### Why RAG?
+
+- Improves factual accuracy and reduces hallucinations  
+- Keeps responses up-to-date without retraining the model  
+- Increases interpretability and trustworthiness  
+  
+
+## Corpus Encoding and Indexing
+
+Before using RAG, you must first **encode your corpus** (convert text into vector representations) and **build an index**.  
+This enables the system to efficiently search through large-scale corpora and retrieve relevant content at query time.
+- **Embedding** — Converts natural language text into numerical vectors so that semantic similarity can be computed mathematically.  
+- **Indexing** — Organizes the vectors (e.g., using FAISS) so that the system can quickly retrieve the most relevant documents among millions.
+
+![](/images/pipeline/rag/emb_index.png)
+
+### Example Corpus (Wiki Text)
+
+```json data/corpus_example.jsonl icon="/images/json.svg"
+{"id": "2066692", "contents": "Truman Sports Complex The Harry S. Truman Sports...."}
+{"id": "15106858", "contents": "Arrowhead Stadium 1970s...."}
+```
+
+This is a typical Wikipedia-style corpus, where `id` represents the document identifier and `contents` contains the text content.  
+We will later encode the `contents` and build an index for retrieval.
+
+### Writing the Encoding & Indexing Pipeline
+
+```yaml examples/corpus_index.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  retriever: servers/retriever
+
+# MCP Client Pipeline
+pipeline:
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+```
+This defines a minimal three-step pipeline: **initialize → embed → build index**.
+
+### Build the Pipeline File
+
+```shell
+ultrarag build examples/corpus_index.yaml
+```
+
+### Modify the Parameter File
+
+```yaml examples/parameters/corpus_index_parameter.yaml icon="/images/yaml.svg" 
+retriever:
+  backend: sentence_transformers 
+  backend_configs:
+    bm25:
+      lang: en
+    infinity:
+      bettertransformer: false
+      device: cuda
+      model_warmup: false
+      pooling_method: auto
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_url: https://api.openai.com/v1
+      model_name: text-embedding-3-small
+    sentence_transformers:
+      device: cuda
+      sentence_transformers_encode:
+        encode_chunk_size: 10000
+        normalize_embeddings: false
+        psg_prompt_name: document
+        psg_task: null
+        q_prompt_name: query
+        q_task: null
+      trust_remote_code: true
+  batch_size: 16
+  corpus_path: data/corpus_example.jsonl
+  embedding_path: embedding/embedding.npy
+  faiss_use_gpu: true
+  gpu_ids: 0,1
+  index_chunk_size: 50000
+  index_path: index/index.index
+  is_multimodal: false
+  model_name_or_path: openbmb/MiniCPM-Embedding-Light # [!code --]
+  model_name_or_path: Qwen/Qwen3-Embedding-0.6B # [!code ++]
+  overwrite: false
+```
+
+### Run the Pipeline File
+
+```shell
+ultrarag run examples/corpus_index.yaml
+```
+
+Encoding and indexing often involve large-scale corpus processing and can take time.  
+We recommend running them in the background using `screen` or `nohup`, for example:
+
+```shell
+nohup ultrarag run examples/corpus_index.yaml > log.txt 2>&1 &
+```
+
+After successful execution, you will obtain the corpus embeddings and index files, which can be directly used by the downstream RAG Pipeline.
+
+## Building the RAG Pipeline
+
+Once the corpus index is ready, the next step is to combine the **retriever** and **LLM** into a complete RAG workflow.  
+This allows the system to retrieve relevant documents for a query and then generate the final answer using the model.
+
+### Retrieval Process
+
+![](/images/pipeline/rag/retrieve.png)
+
+### Generation Process
+
+![](/images/pipeline/rag/gen_stage.png)
+
+### Data Format (Example: NQ Dataset)
+
+```json data/sample_nq_10.jsonl icon="/images/json.svg"
+{"id": 0, "question": "when was the last time anyone was on the moon", "golden_answers": ["14 December 1972 UTC", "December 1972"], "meta_data": {}}
+{"id": 1, "question": "who wrote he ain't heavy he's my brother lyrics", "golden_answers": ["Bobby Scott", "Bob Russell"], "meta_data": {}}
+{"id": 2, "question": "how many seasons of the bastard executioner are there", "golden_answers": ["one", "one season"], "meta_data": {}}
+{"id": 3, "question": "when did the eagles win last super bowl", "golden_answers": ["2017"], "meta_data": {}}
+{"id": 4, "question": "who won last year's ncaa women's basketball", "golden_answers": ["South Carolina"], "meta_data": {}}
+```
+Each sample includes a question, ground-truth answers (`golden_answers`), and metadata (`meta_data`),  
+which serve as input and evaluation reference.
+
+### Writing the RAG Pipeline
+
+```yaml examples/rag.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_search
+- generation.generation_init
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+This process completes the following steps:
+1. Load data  
+2. Initialize retriever and perform search  
+3. Start the LLM service  
+4. Construct the prompt  
+5. Generate the answer  
+6. Extract the final result  
+7. Evaluate the performance  
+
+### Build the Pipeline File
+
+```shell
+ultrarag build examples/rag.yaml
+```
+
+### Modify the Parameter File (Dataset, Model, and Retrieval Configuration)
+
+```yaml examples/parameters/rag_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+    limit: -1
+    name: nq
+    path: data/sample_nq_10.jsonl
+    seed: 42
+    shuffle: false
+custom: {}
+evaluation:
+  metrics:
+  - acc
+  - f1
+  - em
+  - coverem
+  - stringem
+  - rouge-1
+  - rouge-2
+  - rouge-l
+  save_path: output/evaluate_results.json
+generation:
+  backend: vllm
+  backend_configs:
+    hf:
+      batch_size: 8
+      gpu_ids: 2,3
+      model_name_or_path: openbmb/MiniCPM4-8B
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_delay: 1.0
+      base_url: http://localhost:8000/v1
+      concurrency: 8
+      model_name: MiniCPM4-8B
+      retries: 3
+    vllm:
+      dtype: auto
+      gpu_ids: 2,3
+      gpu_memory_utilization: 0.9
+      model_name_or_path: openbmb/MiniCPM4-8B  # [!code --]
+      model_name_or_path: Qwen/Qwen3-8B # [!code ++]
+      trust_remote_code: true
+  sampling_params:
+    chat_template_kwargs:
+      enable_thinking: false
+    max_tokens: 2048
+    temperature: 0.7
+    top_p: 0.8
+  system_prompt: ''
+prompt:
+  template: prompt/qa_boxed.jinja # [!code --]
+  template: prompt/qa_rag_boxed.jinja  # [!code ++]
+retriever:
+  backend: sentence_transformers
+  backend_configs:
+    bm25:
+      lang: en
+    infinity:
+      bettertransformer: false
+      device: cuda
+      model_warmup: false
+      pooling_method: auto
+      trust_remote_code: true
+    openai:
+      api_key: ''
+      base_url: https://api.openai.com/v1
+      model_name: text-embedding-3-small
+    sentence_transformers:
+      device: cuda
+      sentence_transformers_encode:
+        encode_chunk_size: 10000
+        normalize_embeddings: false
+        psg_prompt_name: document
+        psg_task: null
+        q_prompt_name: query
+        q_task: null
+      trust_remote_code: true
+  batch_size: 16
+  corpus_path: data/corpus_example.jsonl
+  faiss_use_gpu: true
+  gpu_ids: 0,1
+  index_path: index/index.index
+  is_multimodal: false
+  model_name_or_path: openbmb/MiniCPM-Embedding-Light  # [!code --]
+  model_name_or_path: Qwen/Qwen3-Embedding-0.6B  # [!code ++]
+  query_instruction: ''
+  top_k: 5
+
+```
+
+### Run the Pipeline File
+
+```shell
+ultrarag run examples/rag.yaml
+```
+
+### Visualize Results
+
+Use the visualization script to quickly inspect model outputs:
+
+```shell
+python ./script/case_study.py \
+  --data output/memory_nq_rag_full_20251010_145420.json \
+  --host 127.0.0.1 \
+  --port 8080 \
+  --title "Case Study Viewer"
+```

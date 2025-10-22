@@ -1,0 +1,102 @@
+---
+title: "Reranker"
+icon: "ranking-star"
+---
+
+## `reranker_init`
+
+**Signature**  
+```python
+async def reranker_init(
+    model_name_or_path: str,
+    backend_configs: Dict[str, Any],
+    batch_size: int,
+    gpu_ids: Optional[object] = None,
+    backend: str = "infinity",
+) -> None
+```
+
+**Function**  
+- Initializes the reranking backend and model.
+
+---
+
+## `reranker_rerank`
+
+**Signature**  
+```python
+async def reranker_rerank(
+    query_list: List[str],
+    passages_list: List[List[str]],
+    top_k: int = 5,
+    query_instruction: str = "",
+) -> Dict[str, List[Any]]
+```
+
+**Function**  
+- Performs **reranking** on candidate passages.
+
+**Output Format (JSON)**  
+```json
+{
+  "rerank_psg": [
+    ["best passage for q0", "..."],
+    ["best passage for q1", "..."]
+  ]
+}
+```
+
+---
+
+## Parameter Configuration
+
+```yaml servers/reranker/parameter.yaml icon="/images/yaml.svg"
+model_name_or_path: openbmb/MiniCPM-Reranker-Light
+backend: sentence_transformers # options: infinity, sentence_transformers, openai
+backend_configs:
+  infinity:
+    bettertransformer: false
+    pooling_method: auto
+    device: cuda
+    model_warmup: false
+    trust_remote_code: true
+  sentence_transformers:
+    device: cuda
+    trust_remote_code: true
+  openai:
+    model_name: text-embedding-3-small
+    base_url: "https://api.openai.com/v1"
+    api_key: ""
+
+gpu_ids: 0
+top_k: 5
+batch_size: 16
+query_instruction: ""
+```
+
+Parameter Description:
+
+| Parameter | Type | Description |
+|------------|------|-------------|
+| `model_name_or_path` | str | Model path or name (local or from HuggingFace Hub) |
+| `backend` | str | Backend type: `infinity`, `sentence_transformers`, or `openai` |
+| `backend_configs` | dict | Specific configuration settings for each backend |
+| `gpu_ids` | str/int | GPU device ID(s) (supports multiple, e.g., `"0,1"`) |
+| `top_k` | int | Number of reranked results to return |
+| `batch_size` | int | Number of samples per processing batch |
+| `query_instruction` | str | Optional query prefix for prompt tuning or query modification |
+
+Detailed description of `backend_configs`:
+
+| Backend | Parameter | Description |
+|----------|------------|-------------|
+| **infinity** | `device` | Device type (`cuda` / `cpu`) |
+|  | `bettertransformer` | Enables optimized inference acceleration |
+|  | `pooling_method` | Vector pooling strategy |
+|  | `model_warmup` | Whether to preload the model into memory |
+|  | `trust_remote_code` | Whether to trust remote code (required for HuggingFace models) |
+| **sentence_transformers** | `device` | Device type (`cuda` / `cpu`) |
+|  | `trust_remote_code` | Whether to trust remote code |
+| **openai** | `model_name` | API model name |
+|  | `base_url` | API access URL |
+|  | `api_key` | OpenAI API key |

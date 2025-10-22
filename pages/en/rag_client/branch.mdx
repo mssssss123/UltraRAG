@@ -1,0 +1,69 @@
+---
+title: "Branch Structure"
+icon: "code-branch"
+---
+
+In complex reasoning tasks, it is often necessary to determine whether the subsequent process should continue based on the model’s intermediate output or current state.  
+For example, by examining the model’s generated content:
+
+- If the model generates a new query, proceed to the next retrieval round.  
+- If the model has already produced the final answer, terminate the process.
+
+To achieve this, UR-2.0 provides a **branch structure**, which allows the construction of controlled reasoning workflows with conditional flow logic.
+
+<Check>The Router Server is the companion of the branch structure. It determines the current state and returns a state label to control the execution flow.</Check>
+
+<Note>If you are not familiar with implementing a Router Tool, refer to [Router Server](/pages/en/rag_servers/router).</Note>
+
+## Usage Example
+
+
+```yaml examples/rag_branch.yaml icon="/images/yaml.svg" highlight="22-37"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+  router: servers/router
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- generation.generation_init
+- retriever.retriever_search
+- loop:
+    times: 10
+    steps:
+    - prompt.check_passages
+    - generation.generate
+    - branch:
+        router:
+        - router.check_model_state
+        branches:
+          continue:
+          - prompt.gen_subq
+          - generation.generate:
+              output:
+                ans_ls: subq_ls
+          - retriever.retriever_search:
+              input:
+                query_list: subq_ls
+              output:
+                ret_psg: temp_psg
+          - custom.merge_passages
+          stop: []
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
+```
+
+In a branch structure, the Pipeline uses the following keywords to define the control logic of dynamic workflows:
+
+- `branch`: Declares the start of a branch structure.  
+- `router`: Specifies the Router Tool that determines the branch logic. The tool must return a state label (e.g., `incomplete` / `complete`).  
+- `branches`: Defines the sequence of steps corresponding to each state. The keys represent state labels (which must match the state values returned by the Router Tool), and the values are the step lists to execute under each state (can be empty to indicate process termination).

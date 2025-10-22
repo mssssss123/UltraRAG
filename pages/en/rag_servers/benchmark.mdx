@@ -1,0 +1,105 @@
+---
+title: "Benchmark"
+icon: "chart-line"
+---
+
+## Overview
+
+The **Benchmark Server** is used to load evaluation datasets. It is commonly employed during the data configuration stage of benchmark testing, question answering (QA), or generation tasks.
+
+<Info>We strongly recommend preprocessing your dataset into the `.jsonl` format.</Info>
+
+Example data:
+
+```json data/sample_nq_10.jsonl icon="/images/json.svg"
+{"id": 0, "question": "when was the last time anyone was on the moon", "golden_answers": ["14 December 1972 UTC", "December 1972"], "meta_data": {}}
+{"id": 1, "question": "who wrote he ain't heavy he's my brother lyrics", "golden_answers": ["Bobby Scott", "Bob Russell"], "meta_data": {}}
+{"id": 2, "question": "how many seasons of the bastard executioner are there", "golden_answers": ["one", "one season"], "meta_data": {}}
+{"id": 3, "question": "when did the eagles win last super bowl", "golden_answers": ["2017"], "meta_data": {}}
+{"id": 4, "question": "who won last year's ncaa women's basketball", "golden_answers": ["South Carolina"], "meta_data": {}}
+```
+
+## Usage Example
+
+### Basic Usage
+
+```yaml examples/load_data.yaml icon="/images/yaml.svg"
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+```
+
+Run the following command to build the Pipeline:
+
+```shell
+ultrarag build examples/load_data.yaml
+```
+
+Then modify parameters as needed:
+
+```yaml examples/parameters/load_data_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+    limit: -1
+    name: nq
+    path: data/sample_nq_10.jsonl
+    seed: 42
+    shuffle: false
+```
+
+Run the following command to execute the Pipeline:
+
+```shell
+ultrarag run examples/load_data.yaml
+```
+
+After execution, the system automatically loads and outputs dataset sample information, providing input support for subsequent retrieval and generation tasks.
+
+### Adding Additional Dataset Fields
+
+In some cases, you may want to load not only the `query` and `ground_truth` fields, but also other information from the dataset — for example, pre-retrieved `passage` data.  
+In such scenarios, you can modify the Benchmark Server code to include additional fields in the output.
+
+<Note>You can extend other fields (such as `cot`, `retrieved_passages`, etc.) in the same way — simply add the corresponding key names both in the decorator’s output and in `key_map`.</Note>
+<Check>If you already have generated results (such as a `pred` field), you can use them with the [Evaluation Server](/pages/en/rag_servers/evaluation) to perform quick evaluation.</Check>
+
+The following example demonstrates how to add an `id_ls` field in the `get_data` function:
+
+```python servers/prompt/src/benchmark.py icon="python"
+@app.tool(output="benchmark->q_ls,gt_ls") # [!code --]
+@app.tool(output="benchmark->q_ls,gt_ls,id_ls") # [!code ++]
+def get_data(
+    benchmark: Dict[str, Any],
+) -> Dict[str, List[Any]]:
+```
+
+Then, run the following command again to rebuild the Pipeline:
+
+```shell
+ultrarag build examples/load_data.yaml
+```
+
+In the generated parameter file, add the `id_ls` field and specify the corresponding key name from the raw data:
+
+```yaml examples/parameters/load_data_parameter.yaml icon="/images/yaml.svg"
+benchmark:
+  benchmark:
+    key_map:
+      gt_ls: golden_answers
+      q_ls: question
+      id_ls: id  # [!code ++]
+    limit: -1
+    name: nq
+    path: data/sample_nq_10.jsonl
+    seed: 42
+    shuffle: false
+```
+
+After completing the modification, rerun the Pipeline to load data samples that include the `id` field.

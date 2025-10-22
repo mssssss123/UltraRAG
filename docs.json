@@ -2,6 +2,10 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "UltraRAG 2.0",
+  "banner": {
+    "content": "📣 Tutorials have been updated and are now fully aligned with UltraRAG 2.1 — check out [what’s new](/pages/cn/getting_started/update).",
+    "dismissible": true
+  },
   "colors": {
     "primary": "#722EA5",
     "dark": "#9B5BB7",
@@ -14,90 +18,91 @@
         "language": "cn",
         "tabs": [
           {
-            "tab": "项目文档",
+            "tab": "Documentation",
             "groups": [
               {
                 "group": "开始使用",
                 "pages": [
                   "pages/cn/getting_started/introduction",
                   "pages/cn/getting_started/installation",
-                  "pages/cn/getting_started/quick_start"
+                  "pages/cn/getting_started/quick_start",
+                  "pages/cn/getting_started/update"
+                ]
+              },
+              {
+                "group": "RAG Servers",
+                "pages": [
+                  "pages/cn/rag_servers/overview",
+                  {
+                    "group": "核心模块",
+                    "icon": "gears",
+                    "pages": [
+                      "pages/cn/rag_servers/corpus",
+                      "pages/cn/rag_servers/benchmark",
+                      "pages/cn/rag_servers/retriever",
+                      "pages/cn/rag_servers/reranker",
+                      "pages/cn/rag_servers/prompt",
+                      "pages/cn/rag_servers/generation",
+                      "pages/cn/rag_servers/evaluation",
+                      "pages/cn/rag_servers/router",
+                      "pages/cn/rag_servers/custom"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "RAG Client",
+                "pages": [
+                  "pages/cn/rag_client/pipeline",
+                  "pages/cn/rag_client/serial",
+                  "pages/cn/rag_client/loop",
+                  "pages/cn/rag_client/branch",
+                  "pages/cn/rag_client/data_and_params",
+                  "pages/cn/rag_client/multi_agents"
                 ]
               },
               {
                 "group": "开发指南",
                 "pages": [
-                  {
-                    "group": "RAG 组件开发指南",
-                    "icon": "compass",
-                    "pages": [
-                      "pages/cn/tutorials/part_1/server_index",
-                      "pages/cn/tutorials/part_1/benchmark",
-                      "pages/cn/tutorials/part_1/retriever",
-                      "pages/cn/tutorials/part_1/prompt",
-                      "pages/cn/tutorials/part_1/generation",
-                      "pages/cn/tutorials/part_1/evaluation",
-                      "pages/cn/tutorials/part_1/router",
-                      "pages/cn/tutorials/part_1/custom"
-                    ]
-                  },
-                  {
-                    "group": "掌握 RAG 推理流程",
-                    "icon": "share-nodes",
-                    "pages": [
-                      "pages/cn/tutorials/part_2/pipeline",
-                      "pages/cn/tutorials/part_2/serial",
-                      "pages/cn/tutorials/part_2/loop",
-                      "pages/cn/tutorials/part_2/branch",
-                      "pages/cn/tutorials/part_2/data_and_params"
-                    ]
-                  },
-                  {
-                    "group": "数据构建与基线复现",
-                    "icon": "database",
-                    "pages": [
-                      "pages/cn/tutorials/part_3/prepare_dataset",
-                      "pages/cn/tutorials/part_3/emb_and_index",
-                      "pages/cn/tutorials/part_3/reproduction"
-                    ]
-                  },
-                  {
-                    "group": "开发进阶与部署指南",
-                    "icon": "code",
-                    "pages": [
-                      "pages/cn/tutorials/part_4/debug",
-                      "pages/cn/tutorials/part_4/deploy_retriever_serve",
-                      "pages/cn/tutorials/part_4/multi_agent",
-                      "pages/cn/tutorials/part_4/memory",
-                      "pages/cn/tutorials/part_4/case_study"
-                    ]
-                  },
-                  {
-                    "group": "UltraRAG 开发实战",
-                    "icon": "screwdriver-wrench",
-                    "pages": [
-                      "pages/cn/tutorials/part_5/series",
-                      "pages/cn/tutorials/part_5/loop",
-                      "pages/cn/tutorials/part_5/branch",
-                      "pages/cn/tutorials/part_5/memory",
-                      "pages/cn/tutorials/part_5/alias",
-                      "pages/cn/tutorials/part_5/deep_research"
-                    ]
-                  }
+                  "pages/cn/develop_guide/debug",
+                  "pages/cn/develop_guide/case_study",
+                  "pages/cn/develop_guide/dataset",
+                  "pages/cn/develop_guide/parallel"
                 ]
               }
             ]
           },
           {
-            "tab": "API Reference",
+            "tab": "Demo",
+            "groups": [
+              {
+                "group": "Pipeline",
+                "pages": [
+                  "pages/cn/pipeline/rag",
+                  "pages/cn/pipeline/light_deepresearch",
+                  "pages/cn/pipeline/visrag"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "SDK Reference",
             "groups": [
               {
                 "group": "RAG Servers",
                 "pages": [
+                  "pages/cn/api/corpus",
                   "pages/cn/api/benchmark",
                   "pages/cn/api/retriever",
+                  "pages/cn/api/reranker",
                   "pages/cn/api/generation",
                   "pages/cn/api/evaluation"
+                ]
+              },
+              {
+                "group": "CLI",
+                "pages": [
+                  "pages/cn/api/cli"
                 ]
               }
             ]
@@ -108,90 +113,91 @@
         "language": "en",
         "tabs": [
           {
-            "tab": "Project Docs",
+            "tab": "Documentation",
             "groups": [
               {
-                "group": "Getting Started",
+                "group": "Get Started",
                 "pages": [
                   "pages/en/getting_started/introduction",
                   "pages/en/getting_started/installation",
-                  "pages/en/getting_started/quick_start"
+                  "pages/en/getting_started/quick_start",
+                  "pages/en/getting_started/update"
                 ]
               },
               {
-                "group": "Developer Guide",
+                "group": "RAG Servers",
                 "pages": [
+                  "pages/en/rag_servers/overview",
                   {
-                    "group": "RAG Component Development Guide",
-                    "icon": "compass",
+                    "group": "Core Modules",
+                    "icon": "gears",
                     "pages": [
-                      "pages/en/tutorials/part_1/server_index",
-                      "pages/en/tutorials/part_1/benchmark",
-                      "pages/en/tutorials/part_1/retriever",
-                      "pages/en/tutorials/part_1/prompt",
-                      "pages/en/tutorials/part_1/generation",
-                      "pages/en/tutorials/part_1/evaluation",
-                      "pages/en/tutorials/part_1/router",
-                      "pages/en/tutorials/part_1/custom"
-                    ]
-                  },
-                  {
-                    "group": "Mastering RAG Inference Flow",
-                    "icon": "share-nodes",
-                    "pages": [
-                      "pages/en/tutorials/part_2/pipeline",
-                      "pages/en/tutorials/part_2/serial",
-                      "pages/en/tutorials/part_2/loop",
-                      "pages/en/tutorials/part_2/branch",
-                      "pages/en/tutorials/part_2/data_and_params"
-                    ]
-                  },
-                  {
-                    "group": "Data Construction and Baseline Reproduction",
-                    "icon": "database",
-                    "pages": [
-                      "pages/en/tutorials/part_3/prepare_dataset",
-                      "pages/en/tutorials/part_3/emb_and_index",
-                      "pages/en/tutorials/part_3/reproduction"
-                    ]
-                  },
-                  {
-                    "group": "Advanced Development and Deployment Guide",
-                    "icon": "code",
-                    "pages": [
-                      "pages/en/tutorials/part_4/debug",
-                      "pages/en/tutorials/part_4/deploy_retriever_serve",
-                      "pages/en/tutorials/part_4/multi_agent",
-                      "pages/en/tutorials/part_4/memory",
-                      "pages/en/tutorials/part_4/case_study"
-                    ]
-                  },
-                  {
-                    "group": "UltraRAG Development Practice",
-                    "icon": "screwdriver-wrench",
-                    "pages": [
-                      "pages/en/tutorials/part_5/series",
-                      "pages/en/tutorials/part_5/loop",
-                      "pages/en/tutorials/part_5/branch",
-                      "pages/en/tutorials/part_5/memory",
-                      "pages/en/tutorials/part_5/alias",
-                      "pages/en/tutorials/part_5/deep_research"
+                      "pages/en/rag_servers/corpus",
+                      "pages/en/rag_servers/benchmark",
+                      "pages/en/rag_servers/retriever",
+                      "pages/en/rag_servers/reranker",
+                      "pages/en/rag_servers/prompt",
+                      "pages/en/rag_servers/generation",
+                      "pages/en/rag_servers/evaluation",
+                      "pages/en/rag_servers/router",
+                      "pages/en/rag_servers/custom"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "RAG Client",
+                "pages": [
+                  "pages/en/rag_client/pipeline",
+                  "pages/en/rag_client/serial",
+                  "pages/en/rag_client/loop",
+                  "pages/en/rag_client/branch",
+                  "pages/en/rag_client/data_and_params",
+                  "pages/en/rag_client/multi_agents"
+                ]
+              },
+              {
+                "group": "Develop Guide",
+                "pages": [
+                  "pages/en/develop_guide/debug",
+                  "pages/en/develop_guide/case_study",
+                  "pages/en/develop_guide/dataset",
+                  "pages/en/develop_guide/parallel"
                 ]
               }
             ]
           },
           {
-            "tab": "API Reference",
+            "tab": "Demo",
+            "groups": [
+              {
+                "group": "Pipeline",
+                "pages": [
+                  "pages/en/pipeline/rag",
+                  "pages/en/pipeline/light_deepresearch",
+                  "pages/en/pipeline/visrag"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "SDK Reference",
             "groups": [
               {
                 "group": "RAG Servers",
                 "pages": [
+                  "pages/en/api/corpus",
                   "pages/en/api/benchmark",
                   "pages/en/api/retriever",
+                  "pages/en/api/reranker",
                   "pages/en/api/generation",
                   "pages/en/api/evaluation"
+                ]
+              },
+              {
+                "group": "CLI",
+                "pages": [
+                  "pages/en/api/cli"
                 ]
               }
             ]
@@ -205,10 +211,6 @@
       {
         "label": "Project",
         "href": "https://openbmb.github.io/UltraRAG/"
-      },
-      {
-        "label": "Datasets",
-        "href": "https://huggingface.co/datasets/UltraRAG/UltraRAG_Benchmark"
       }
     ],
     "primary": {

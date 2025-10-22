@@ -1,27 +1,109 @@
 ---
-title: "Evaluation Server"
+title: "Evaluation"
 icon: "clipboard-check"
 ---
 
-## Configuration Parameters
+## `evaluate`
 
-- **metrics** (`List[str] | None`): List of evaluation metric names  
-- **save_path** (`str`): Save path (filename will automatically include a timestamp)  
+**Signature**  
+```python
+@app.tool(output="pred_ls,gt_ls,metrics,save_path->eval_res")
+def evaluate(
+    pred_ls: List[str],
+    gt_ls: List[List[str]],
+    metrics: List[str] | None,
+    save_path: str,
+) -> Dict[str, Any]
+```
+
+**Function**  
+- Performs automatic metric evaluation for QA or generation tasks.  
+- Supported metrics: `acc`, `em`, `coverem`, `stringem`, `f1`, `rouge-1`, `rouge-2`, `rouge-l`.  
+- Automatically saves results as a `.json` file and prints them in Markdown table format.
+
 
 ---
 
-## API Description
+## `evaluate_trec`
 
-### `evaluate`
+**Signature**  
+```python
+@app.tool(output="run_path,qrels_path,ir_metrics,ks,save_path->eval_res")
+def evaluate_trec(
+    run_path: str,
+    qrels_path: str,
+    metrics: List[str] | None,
+    ks: List[int] | None,
+    save_path: str,
+)
+```
 
-#### Function
-Computes the specified metrics, returns evaluation results, and also supports saving the results.
+**Function**  
+- Evaluates IR retrieval metrics based on `pytrec_eval`.  
+- Reads standard TREC-formatted files:  
+  - **qrels**: `<qid> <iter> <docid> <rel>`  
+  - **run**: `<qid> Q0 <docid> <rank> <score> <tag>`  
+- Supported metrics: `mrr`, `map`, `recall@k`, `precision@k`, `ndcg@k`.  
+- Automatically computes and outputs aggregated results in a table.
 
-#### Input Parameters
-- **pred_ls** (`List[str]`): List of predicted answers  
-- **gt_ls** (`List[List[str]]`): List of reference answers, may contain one or multiple  
-- **metrics** (`List[str] | None`): List of evaluation metric names  
-- **save_path** (`str`): Save path (filename will automatically include a timestamp)  
+---
 
-#### Return Parameters
-- **eval_res** (`Dict[str, Any]`): Evaluation results  
+## `evaluate_trec_pvalue`
+
+**Signature**  
+```python
+@app.tool(
+    output="run_new_path,run_old_path,qrels_path,ir_metrics,ks,n_resamples,save_path->eval_res"
+)
+def evaluate_trec_pvalue(
+    run_new_path: str,
+    run_old_path: str,
+    qrels_path: str,
+    metrics: List[str] | None,
+    ks: List[int] | None,
+    n_resamples: int | None,
+    save_path: str,
+)
+```
+
+**Function**  
+- Performs a significance comparison between two TREC result files using a **two-tailed permutation test** to compute p-values.  
+- Default resampling count: `n_resamples=10000`.  
+- Outputs mean, difference, p-value, and significance markers.  
+
+
+---
+
+## Parameter Configuration
+
+```yaml servers/evaluation/parameter.yaml icon="/images/yaml.svg"
+save_path: output/evaluate_results.json
+
+# QA task
+metrics: [ 'acc', 'f1', 'em', 'coverem', 'stringem', 'rouge-1', 'rouge-2', 'rouge-l' ]
+
+# Retrieval task
+qrels_path: data/qrels.txt
+run_path: data/run_a.txt
+ks: [ 1, 5, 10, 20, 50, 100 ]
+ir_metrics: [ "mrr", "map", "recall", "ndcg", "precision" ]
+
+# significant
+run_new_path: data/run_a.txt
+run_old_path: data/run_b.txt
+n_resamples: 10000
+```
+
+Parameter Description:
+
+| Parameter | Type | Description |
+|------|------|------|
+| `save_path` | str | Path to save evaluation results (automatically timestamped) |
+| `metrics` | list[str] | Metric set used for QA / generation tasks |
+| `qrels_path` | str | Path to TREC-format ground truth file |
+| `run_path` | str | Path to the retrieval task result file |
+| `ks` | list[int] | Cutoff levels for computing NDCG@K, P@K, Recall@K, etc. |
+| `ir_metrics` | list[str] | IR metric names, supporting `mrr`, `map`, `recall`, `ndcg`, `precision` |
+| `run_new_path` | str | Path to the new model’s run file (for significance testing) |
+| `run_old_path` | str | Path to the old model’s run file (for significance testing) |
+| `n_resamples` | int | Number of resampling iterations for the permutation test |
