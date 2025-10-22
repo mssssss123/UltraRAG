@@ -1,71 +1,50 @@
+import asyncio
+import gc
 import os
-from urllib.parse import urlparse, urlunparse
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import requests
 import aiohttp
-import asyncio
-import jsonlines
+import orjson
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
-from flask import Flask, jsonify, request
-from openai import AsyncOpenAI, OpenAIError
+from PIL import Image
 
-
-from fastmcp.exceptions import NotFoundError, ToolError, ValidationError
+from fastmcp.exceptions import ValidationError, NotFoundError, ToolError
 from ultrarag.server import UltraRAG_MCP_Server
-from pathlib import Path
 
 app = UltraRAG_MCP_Server("retriever")
-retriever_app = Flask(__name__)
 
 
 class Retriever:
     def __init__(self, mcp_inst: UltraRAG_MCP_Server):
         mcp_inst.tool(
             self.retriever_init,
-            output="retriever_path,corpus_path,index_path,faiss_use_gpu,infinity_kwargs,cuda_devices,is_multimodal->None",
-        )
-        mcp_inst.tool(
-            self.retriever_init_openai,
-            output="corpus_path,openai_model,api_base,api_key,faiss_use_gpu,index_path,cuda_devices->None",
+            output="model_name_or_path,backend_configs,batch_size,corpus_path,index_path,faiss_use_gpu,gpu_ids,is_multimodal,backend->None",
         )
         mcp_inst.tool(
             self.retriever_embed,
             output="embedding_path,overwrite,is_multimodal->None",
         )
         mcp_inst.tool(
-            self.retriever_embed_openai,
-            output="embedding_path,overwrite->None",
-        )
-        mcp_inst.tool(
             self.retriever_index,
             output="embedding_path,index_path,overwrite,index_chunk_size->None",
         )
         mcp_inst.tool(
-            self.retriever_index_lancedb,
-            output="embedding_path,lancedb_path,table_name,overwrite->None",
+            self.bm25_index,
+            output="index_path,overwrite->None",
         )
         mcp_inst.tool(
             self.retriever_search,
-            output="q_ls,top_k,query_instruction,use_openai->ret_psg",
+            output="q_ls,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
-            self.retriever_search_maxsim,
+            self.retriever_search_colbert_maxsim,
             output="q_ls,embedding_path,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
-            self.retriever_search_lancedb,
-            output="q_ls,top_k,query_instruction,use_openai,lancedb_path,table_name,filter_expr->ret_psg",
-        )
-        mcp_inst.tool(
-            self.retriever_deploy_service,
-            output="retriever_url->None",
-        )
-        mcp_inst.tool(
-            self.retriever_deploy_search,
-            output="retriever_url,q_ls,top_k,query_instruction->ret_psg",
+            self.bm25_search,
+            output="q_ls,top_k->ret_psg",
         )
         mcp_inst.tool(
             self.retriever_exa_search,
@@ -80,159 +59,274 @@ class Retriever:
             output="q_ls,top_k,retrieve_thread_num->ret_psg",
         )
 
+    def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
+        return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
+
     def retriever_init(
         self,
-        retriever_path: str,
+        model_name_or_path: str,
+        backend_configs: Dict[str, Any],
+        batch_size: int,
         corpus_path: str,
         index_path: Optional[str] = None,
         faiss_use_gpu: bool = False,
-        infinity_kwargs: Optional[Dict[str, Any]] = None,
-        cuda_devices: Optional[str] = None,
+        gpu_ids: Optional[object] = None,
         is_multimodal: bool = False,
+        backend: str = "infinity",
     ):
 
-        try:
-            import faiss
-        except ImportError:
-            err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
-            app.logger.error(err_msg)
-            raise ImportError(err_msg)
-
-        try:
-            from infinity_emb.log_handler import LOG_LEVELS
-            from infinity_emb import AsyncEngineArray, EngineArgs
-        except ImportError:
-            err_msg = "infinity_emb is not installed. Please install it with `pip install infinity-emb`."
-            app.logger.error(err_msg)
-            raise ImportError(err_msg)
+        self.backend = backend.lower()
+        if self.backend in ["infinity", "sentence_transformers", "openai"]:
+            try:
+                import faiss
+            except ImportError:
+                err_msg = (
+                    "faiss is not installed. "
+                    "Please install it with `pip install faiss-cpu` "
+                    "or `pip install faiss-gpu-cu12`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
 
         self.faiss_use_gpu = faiss_use_gpu
-        app.logger.setLevel(LOG_LEVELS["warning"])
+        self.batch_size = batch_size
+        self.backend_configs = backend_configs
 
-        if cuda_devices is not None:
-            assert isinstance(cuda_devices, str), "cuda_devices should be a string"
-            os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
+        cfg = self.backend_configs.get(self.backend, {})
 
-        infinity_kwargs = infinity_kwargs or {}
-        self.model = AsyncEngineArray.from_args(
-            [EngineArgs(model_name_or_path=retriever_path, **infinity_kwargs)]
-        )[0]
+        gpu_ids = str(gpu_ids)
+        os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
+
+        self.device_num = len(gpu_ids.split(","))
+
+        if self.backend == "infinity":
+            try:
+                from infinity_emb import AsyncEngineArray, EngineArgs
+            except ImportError:
+                err_msg = "infinity_emb is not installed. Please install it with `pip install infinity-emb`."
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+
+            device = str(cfg.get("device", "")).strip().lower()
+            if not device:
+                warn_msg = f"[infinity] device is not set, default to `cpu`"
+                app.logger.warning(warn_msg)
+                device = "cpu"
+
+            if device == "cpu":
+                info_msg = "[infinity] device=cpu, gpu_ids is ignored"
+                app.logger.info(info_msg)
+                self.device_num = 1
+
+            app.logger.info(
+                f"[infinity] device={device}, gpu_ids={gpu_ids}, device_num={self.device_num}"
+            )
+
+            infinity_engine_args = EngineArgs(
+                model_name_or_path=model_name_or_path,
+                batch_size=self.batch_size,
+                **cfg,
+            )
+            self.model = AsyncEngineArray.from_args([infinity_engine_args])[0]
+
+        elif self.backend == "sentence_transformers":
+            try:
+                from sentence_transformers import SentenceTransformer
+            except ImportError:
+                err_msg = (
+                    "sentence_transformers is not installed. "
+                    "Please install it with `pip install sentence-transformers`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+            self.st_encode_params = cfg.get("sentence_transformers_encode", {}) or {}
+            st_params = self._drop_keys(cfg, banned=["sentence_transformers_encode"])
+
+            device = str(cfg.get("device", "")).strip().lower()
+            if not device:
+                warn_msg = (
+                    f"[sentence_transformers] device is not set, default to `cpu`"
+                )
+                app.logger.warning(warn_msg)
+                device = "cpu"
+
+            if device == "cpu":
+                info_msg = "[sentence_transformers] device=cpu, gpu_ids is ignored"
+                app.logger.info(info_msg)
+                self.device_num = 1
+
+            app.logger.info(
+                f"[sentence_transformers] device={device}, gpu_ids={gpu_ids}, device_num={self.device_num}"
+            )
+
+            self.model = SentenceTransformer(
+                model_name_or_path=model_name_or_path,
+                **st_params,
+            )
+
+        elif self.backend == "openai":
+            try:
+                from openai import AsyncOpenAI, OpenAIError
+            except ImportError:
+                err_msg = (
+                    "openai is not installed. "
+                    "Please install it with `pip install openai`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+
+            model_name = cfg.get("model_name")
+            base_url = cfg.get("base_url")
+            api_key = cfg.get("api_key") or os.environ.get("RETRIEVER_API_KEY")
+
+            if not model_name:
+                err_msg = "[openai] model_name is required"
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
+            if not isinstance(base_url, str) or not base_url:
+                err_msg = "[openai] base_url must be a non-empty string"
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
+
+            try:
+                self.model = AsyncOpenAI(base_url=base_url, api_key=api_key)
+                self.model_name = model_name
+                info_msg = f"[openai] OpenAI client initialized (model='{model_name}', base='{base_url}')"
+                app.logger.info(info_msg)
+            except OpenAIError as e:
+                err_msg = f"[openai] Failed to initialize OpenAI client: {e}"
+                app.logger.error(err_msg)
+                raise OpenAIError(err_msg)
+        elif self.backend == "bm25":
+            try:
+                import bm25s
+            except ImportError:
+                err_msg = (
+                    "bm25s is not installed. "
+                    "Please install it with `pip install bm25s`."
+                )
+                app.logger.error(err_msg)
+                raise ImportError(err_msg)
+
+            try:
+                self.model = bm25s.BM25(backend="numba")
+            except Exception as e:
+                warn_msg = (
+                    f"Failed to initialize BM25 model with backend 'numba': {e}. "
+                    "Falling back to 'numpy' backend."
+                )
+                app.logger.warning(warn_msg)
+                self.model = bm25s.BM25(backend="numpy")
+            lang = cfg.get("lang", "en")
+            try:
+                self.tokenizer = bm25s.tokenization.Tokenizer(stopwords=lang)
+            except Exception as e:
+                err_msg = (
+                    f"Failed to initialize BM25 tokenizer for language '{lang}': {e}"
+                )
+                app.logger.error(err_msg)
+                raise RuntimeError(err_msg)
+        else:
+            error_msg = (
+                f"Unsupported backend: {backend}. "
+                "Supported backends: 'infinity', 'sentence_transformers', 'openai'"
+            )
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
         self.contents = []
         corpus_path_obj = Path(corpus_path)
         corpus_dir = corpus_path_obj.parent
-        if not is_multimodal:
-            with jsonlines.open(corpus_path, mode="r") as reader:
-                self.contents = [item["contents"] for item in reader]
-        else:
-            with jsonlines.open(corpus_path, mode="r") as reader:
-                for i, item in enumerate(reader):
-                    if "image_path" not in item:
-                        raise ValueError(
-                            f"Line {i}: expected key 'image_path' in multimodal corpus JSONL, got keys={list(item.keys())}"
+        file_size = os.path.getsize(corpus_path)
+
+        with open(corpus_path, "rb") as f:
+            with tqdm(
+                total=file_size,
+                desc="Loading corpus",
+                unit="B",
+                unit_scale=True,
+                ncols=100,
+            ) as pbar:
+                bytes_read = 0
+                for i, line in enumerate(f):
+                    pbar.update(len(line))
+                    bytes_read += len(line)
+                    try:
+                        item = orjson.loads(line)
+                    except orjson.JSONDecodeError as e:
+                        raise ToolError(f"Invalid JSON on line {i}: {e}") from e
+                    if not is_multimodal or self.backend == "bm25":
+                        if "contents" not in item:
+                            error_msg = (
+                                f"Line {i}: missing key 'contents'. full item={item}"
+                            )
+                            app.logger.error(error_msg)
+                            raise ValueError(error_msg)
+
+                        self.contents.append(item["contents"])
+                    else:
+                        if "image_path" not in item:
+                            error_msg = (
+                                f"Line {i}: missing key 'image_path'. full item={item}"
+                            )
+                            app.logger.error(error_msg)
+                            raise ValueError(error_msg)
+
+                        rel = str(item["image_path"])
+                        abs_path = str((corpus_dir / rel).resolve())
+                        self.contents.append(abs_path)
+                if bytes_read < file_size:
+                    pbar.update(file_size - bytes_read)
+                pbar.refresh() 
+
+        if self.backend in ["infinity", "sentence_transformers", "openai"]:
+            self.faiss_index = None
+            if index_path and os.path.exists(index_path):
+                cpu_index = faiss.read_index(index_path)
+
+                if self.faiss_use_gpu:
+                    co = faiss.GpuMultipleClonerOptions()
+                    co.shard = True
+                    co.useFloat16 = True
+                    try:
+                        self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
+                        info_msg = f"[faiss] Loaded index to GPU(s) with {self.device_num} device(s)."
+                        app.logger.info(info_msg)
+                    except RuntimeError as e:
+                        warn_msg = (
+                            f"[faiss] GPU index load failed: {e}. Falling back to CPU."
                         )
-                    rel = str(item["image_path"])
-                    abs_path = str((corpus_dir / rel).resolve())
-                    self.contents.append(abs_path)
-
-        self.faiss_index = None
-        if index_path is not None and os.path.exists(index_path):
-            cpu_index = faiss.read_index(index_path)
-
-            if self.faiss_use_gpu:
-                co = faiss.GpuMultipleClonerOptions()
-                co.shard = True
-                co.useFloat16 = True
-                try:
-                    self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
-                    app.logger.info(f"Loaded index to GPU(s).")
-                except RuntimeError as e:
-                    app.logger.error(
-                        f"GPU index load failed: {e}. Falling back to CPU."
-                    )
-                    self.faiss_use_gpu = False
+                        app.logger.warning(warn_msg)
+                        self.faiss_use_gpu = False
+                        self.faiss_index = cpu_index
+                else:
                     self.faiss_index = cpu_index
+                    info_msg = "[faiss] Loaded index on CPU."
+                    app.logger.info(info_msg)
+
+                info_msg = "[faiss] Index loaded successfully."
+                app.logger.info(info_msg)
             else:
-                self.faiss_index = cpu_index
-                app.logger.info("Loaded index on CPU.")
-
-            app.logger.info(f"Retriever index path has already been built")
-        else:
-            app.logger.warning(f"Cannot find path: {index_path}")
-            self.faiss_index = None
-            app.logger.info(f"Retriever initialized")
-
-    def retriever_init_openai(
-        self,
-        corpus_path: str,
-        openai_model: str,
-        api_base: str,
-        api_key: str = None,
-        faiss_use_gpu: bool = False,
-        index_path: Optional[str] = None,
-        cuda_devices: Optional[str] = None,
-    ):
-        try:
-            import faiss
-        except ImportError:
-            err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
-            app.logger.error(err_msg)
-            raise ImportError(err_msg)
-
-        if not openai_model:
-            raise ValueError("openai_model must be provided.")
-        if not api_base or not isinstance(api_base, str):
-            raise ValueError("api_base must be a non-empty string.")
-
-        api_key = os.environ.get("RETRIEVER_API_KEY") or api_key
-
-        if not api_key or not isinstance(api_key, str):
-            raise ValueError("api_key must be a non-empty string.")
-
-        self.faiss_use_gpu = faiss_use_gpu
-        if cuda_devices is not None:
-            assert isinstance(cuda_devices, str), "cuda_devices should be a string"
-            os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
-
-        self.faiss_index = None
-        if index_path is not None and os.path.exists(index_path):
-            cpu_index = faiss.read_index(index_path)
-
-            if self.faiss_use_gpu:
-                co = faiss.GpuMultipleClonerOptions()
-                co.shard = True
-                co.useFloat16 = True
-                try:
-                    self.faiss_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
-                    app.logger.info(f"Loaded index to GPU(s).")
-                except RuntimeError as e:
-                    app.logger.error(
-                        f"GPU index load failed: {e}. Falling back to CPU."
-                    )
-                    self.faiss_use_gpu = False
-                    self.faiss_index = cpu_index
+                if index_path and not os.path.exists(index_path):
+                    warn_msg = f"{index_path} does not exist."
+                    app.logger.warning(warn_msg)
+                info_msg = "[faiss] no index_path provided. Retriever initialized without index."
+                app.logger.info(info_msg)
+        elif self.backend == "bm25":
+            if index_path and os.path.exists(index_path):
+                self.model = self.model.load(index_path, mmap=True, load_corpus=False)
+                self.tokenizer.load_stopwords(index_path)
+                self.tokenizer.load_vocab(index_path)
+                self.model.corpus = self.contents
+                self.model.backend = "numba"
+                info_msg = "[bm25] Index loaded successfully."
+                app.logger.info(info_msg)
             else:
-                self.faiss_index = cpu_index
-                app.logger.info("Loaded index on CPU.")
-
-            app.logger.info(f"Retriever index path has already been built")
-        else:
-            app.logger.warning(f"Cannot find path: {index_path}")
-            self.faiss_index = None
-            app.logger.info(f"Retriever initialized")
-
-        self.contents = []
-        with jsonlines.open(corpus_path, mode="r") as reader:
-            self.contents = [item["contents"] for item in reader]
-
-        try:
-            self.openai_model = openai_model
-            self.client = AsyncOpenAI(base_url=api_base, api_key=api_key)
-            app.logger.info(
-                f"OpenAI client initialized with model '{openai_model}' and base '{api_base}'"
-            )
-        except OpenAIError as e:
-            app.logger.error(f"Failed to initialize OpenAI client: {e}")
+                if index_path and not os.path.exists(index_path):
+                    warn_msg = f"{index_path} does not exist."
+                    app.logger.warning(warn_msg)
+                info_msg = "[bm25] no index_path provided. Retriever initialized without index."
+                app.logger.info(info_msg)
 
     async def retriever_embed(
         self,
@@ -240,10 +334,14 @@ class Retriever:
         overwrite: bool = False,
         is_multimodal: bool = False,
     ):
+        embeddings = None
 
         if embedding_path is not None:
             if not embedding_path.endswith(".npy"):
-                err_msg = f"Embedding save path must end with .npy, now the path is {embedding_path}"
+                err_msg = (
+                    f"Embedding save path must end with .npy, "
+                    f"now the path is {embedding_path}"
+                )
                 app.logger.error(err_msg)
                 raise ValidationError(err_msg)
             output_dir = os.path.dirname(embedding_path)
@@ -254,67 +352,131 @@ class Retriever:
             embedding_path = os.path.join(output_dir, "embedding.npy")
 
         if not overwrite and os.path.exists(embedding_path):
-            app.logger.info("embedding already exists, skipping")
+            app.logger.info("Embedding already exists, skipping")
             return
 
         os.makedirs(output_dir, exist_ok=True)
 
-        async with self.model:
-            if is_multimodal:
-                from PIL import Image
+        if self.backend == "infinity":
+            async with self.model:
+                if is_multimodal:
+                    data = []
+                    for i, p in enumerate(self.contents):
+                        try:
+                            with Image.open(p) as im:
+                                data.append(im.convert("RGB").copy())
+                        except Exception as e:
+                            err_msg = f"Failed to load image at index {i}: {p} ({e})"
+                            app.logger.error(err_msg)
+                            raise RuntimeError(err_msg)
+                    call = self.model.image_embed
+                else:
+                    data = self.contents
+                    call = self.model.embed
 
-                images = []
-                for i, p in enumerate(self.contents):
-                    try:
-                        with Image.open(p) as im:
-                            images.append(im.convert("RGB").copy())
-                    except Exception as e:
-                        err_msg = f"Failed to load image at index {i}: {p} ({e})"
-                        app.logger.error(err_msg)
-                        raise RuntimeError(err_msg)
-                embeddings, usage = await self.model.image_embed(images=images)
+                eff_bs = self.batch_size * self.device_num
+                n = len(data)
+                pbar = tqdm(total=n, desc="[infinity] Embedding:")
+                embeddings = []
+                for i in range(0, n, eff_bs):
+                    chunk = data[i : i + eff_bs]
+                    vecs, _ = (
+                        await call(images=chunk)
+                        if is_multimodal
+                        else await call(sentences=chunk)
+                    )
+                    embeddings.extend(vecs)
+                    pbar.update(len(chunk))
+                pbar.close()
+
+        elif self.backend == "sentence_transformers":
+            if self.device_num == 1:
+                device_param = "cuda:0"
             else:
-                embeddings, usage = await self.model.embed(sentences=self.contents)
+                device_param = [f"cuda:{i}" for i in range(self.device_num)]
+            normalize = bool(self.st_encode_params.get("normalize_embeddings", False))
+            csz = int(self.st_encode_params.get("encode_chunk_size", 10000))
+            psg_prompt_name = self.st_encode_params.get("psg_prompt_name", None)
+            psg_task = self.st_encode_params.get("psg_task", None)
 
-        embeddings = np.array(embeddings, dtype=np.float16)
-        np.save(embedding_path, embeddings)
-        app.logger.info("embedding success")
+            if is_multimodal:
+                data = []
+                for p in self.contents:
+                    with Image.open(p) as im:
+                        data.append(im.convert("RGB").copy())
+            else:
+                data = self.contents
 
-    async def retriever_embed_openai(
-        self,
-        embedding_path: Optional[str] = None,
-        overwrite: bool = False,
-    ):
-        if embedding_path is not None:
-            if not embedding_path.endswith(".npy"):
-                err_msg = f"Embedding save path must end with .npy, now the path is {embedding_path}"
-                app.logger.error(err_msg)
-                raise ValidationError(err_msg)
-            output_dir = os.path.dirname(embedding_path)
-        else:
-            current_file = os.path.abspath(__file__)
-            project_root = os.path.dirname(os.path.dirname(current_file))
-            output_dir = os.path.join(project_root, "output", "embedding")
-            embedding_path = os.path.join(output_dir, "embedding.npy")
+            if isinstance(device_param, list) and len(device_param) > 1:
+                pool = self.model.start_multi_process_pool()
+                try:
 
-        if not overwrite and os.path.exists(embedding_path):
-            app.logger.info("embedding already exists, skipping")
+                    def _encode_all():
+                        return self.model.encode(
+                            data,
+                            pool=pool,
+                            batch_size=self.batch_size,
+                            chunk_size=csz,
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",
+                            prompt_name=psg_prompt_name,
+                            task=psg_task,
+                        )
 
-        os.makedirs(output_dir, exist_ok=True)
+                    embeddings = await asyncio.to_thread(_encode_all)
+                finally:
+                    self.model.stop_multi_process_pool(pool)
+            else:
 
-        async def openai_embed(texts):
-            embeddings = []
-            for text in texts:
-                response = await self.client.embeddings.create(
-                    input=text, model=self.openai_model
+                def _encode_single():
+                    return self.model.encode(
+                        data,
+                        device=device_param,
+                        batch_size=self.batch_size,
+                        show_progress_bar=True,
+                        normalize_embeddings=normalize,
+                        precision="float32",
+                        prompt_name=psg_prompt_name,
+                        task=psg_task,
+                    )
+
+                embeddings = await asyncio.to_thread(_encode_single)
+
+        elif self.backend == "openai":
+            if is_multimodal:
+                err_msg = (
+                    "openai backend does not support image embeddings in this path."
                 )
-                embeddings.append(response.data[0].embedding)
-            return embeddings
+                app.logger.error(err_msg)
+                raise ValueError(err_msg)
 
-        embeddings = await openai_embed(self.contents)
+            embeddings: list = []
+            with tqdm(
+                total=len(self.contents),
+                desc="[openai] Embedding:",
+                unit="item",
+            ) as pbar:
+                for start in range(0, len(self.contents), self.batch_size):
+                    chunk = self.contents[start : start + self.batch_size]
+                    resp = await self.model.embeddings.create(
+                        model=self.model_name,
+                        input=chunk,
+                    )
+                    embeddings.extend([d.embedding for d in resp.data])
+                    pbar.update(len(chunk))
+        else:
+            err_msg = f"Unsupported backend: {self.backend}"
+            app.logger.error(err_msg)
+            raise ValueError(err_msg)
 
-        embeddings = np.array(embeddings, dtype=np.float16)
+        if embeddings is None:
+            raise RuntimeError("Embedding generation failed: embeddings is None")
+        embeddings = np.array(embeddings, dtype=np.float32)
         np.save(embedding_path, embeddings)
+
+        del embeddings
+        gc.collect()
         app.logger.info("embedding success")
 
     def retriever_index(
@@ -324,34 +486,27 @@ class Retriever:
         overwrite: bool = False,
         index_chunk_size: int = 50000,
     ):
-        """
-        Build a Faiss index from an embedding matrix.
-
-        Args:
-            embedding_path (str): .npy file of shape (N, dim), dtype float32.
-            index_path (str, optional): where to save .index file.
-            overwrite (bool): overwrite existing index.
-            index_chunk_size (int): batch size for add_with_ids.
-        """
         try:
             import faiss
         except ImportError:
-            err_msg = "faiss is not installed. Please install it with `conda install -c pytorch faiss-cpu` or `conda install -c pytorch faiss-gpu`."
+            err_msg = (
+                "faiss is not installed. "
+                "Please install it with `pip install faiss-cpu` "
+                "or `pip install faiss-gpu-cu12`."
+            )
             app.logger.error(err_msg)
             raise ImportError(err_msg)
 
         if not os.path.exists(embedding_path):
             app.logger.error(f"Embedding file not found: {embedding_path}")
-            NotFoundError(f"Embedding file not found: {embedding_path}")
+            raise NotFoundError(f"Embedding file not found: {embedding_path}")
 
-        if index_path is not None:
+        if index_path:
             if not index_path.endswith(".index"):
-                app.logger.error(
-                    f"Parameter index_path must end with .index now is {index_path}"
+                err_msg = (
+                    f"Parameter 'index_path' must end with '.index', got '{index_path}'"
                 )
-                ValidationError(
-                    f"Parameter index_path must end with .index now is {index_path}"
-                )
+                raise ValidationError(err_msg)
             output_dir = os.path.dirname(index_path)
         else:
             current_file = os.path.abspath(__file__)
@@ -360,7 +515,11 @@ class Retriever:
             index_path = os.path.join(output_dir, "index.index")
 
         if not overwrite and os.path.exists(index_path):
-            app.logger.info("Index already exists, skipping")
+            info_msg = (
+                f"Index file already exists: {index_path}. "
+                "Set overwrite=True to overwrite."
+            )
+            app.logger.info(info_msg)
             return
 
         os.makedirs(output_dir, exist_ok=True)
@@ -369,17 +528,25 @@ class Retriever:
         dim = embedding.shape[1]
         vec_ids = np.arange(embedding.shape[0]).astype(np.int64)
 
-        # with cpu
         cpu_flat = faiss.IndexFlatIP(dim)
         cpu_index = faiss.IndexIDMap2(cpu_flat)
 
-        # chunk to write
         total = embedding.shape[0]
-        for start in range(0, total, index_chunk_size):
-            end = min(start + index_chunk_size, total)
-            cpu_index.add_with_ids(embedding[start:end], vec_ids[start:end])
+        info_msg = f"Start building FAISS index, total vectors: {total}"
+        app.logger.info(info_msg)
 
-        # with gpu
+        with tqdm(
+            total=total,
+            desc="[faiss] Indexing: ",
+            unit="vec",
+        ) as pbar:
+            for start in range(0, total, index_chunk_size):
+                end = min(start + index_chunk_size, total)
+                cpu_index.add_with_ids(embedding[start:end], vec_ids[start:end])
+                pbar.update(end - start)
+
+        faiss.write_index(cpu_index, index_path)
+        index = cpu_index
         if self.faiss_use_gpu:
             co = faiss.GpuMultipleClonerOptions()
             co.shard = True
@@ -387,134 +554,181 @@ class Retriever:
             try:
                 gpu_index = faiss.index_cpu_to_all_gpus(cpu_index, co)
                 index = gpu_index
-                app.logger.info("Using GPU for indexing with sharding")
+                info_msg = f"Using GPU for indexing with sharding, device_num: {self.device_num}"
+                app.logger.info(info_msg)
             except RuntimeError as e:
-                app.logger.warning(f"GPU indexing failed ({e}); fall back to CPU")
+                err_msg = f"GPU indexing failed ({e}); fall back to CPU"
+                app.logger.warning(err_msg)
                 self.faiss_use_gpu = False
                 index = cpu_index
         else:
             index = cpu_index
 
-        # save
-        faiss.write_index(cpu_index, index_path)
-
-        if self.faiss_index is None:
+        if self.faiss_index is None or overwrite:
             self.faiss_index = index
+        info_msg = "[faiss] Indexing success."
+        app.logger.info(info_msg)
 
-        app.logger.info("Indexing success")
-
-    def retriever_index_lancedb(
+    def bm25_index(
         self,
-        embedding_path: str,
-        lancedb_path: str,
-        table_name: str,
+        index_path: Optional[str] = None,
         overwrite: bool = False,
     ):
-        """
-        Build a Faiss index from an embedding matrix.
-
-        Args:
-            embedding_path (str): .npy file of shape (N, dim), dtype float32.
-            lancedb_path (str): directory path to store LanceDB tables.
-            table_name (str): the name of the LanceDB table.
-            overwrite (bool): overwrite existing index.
-        """
-        try:
-            import lancedb
-        except ImportError:
-            err_msg = "lancedb is not installed. Please install it with `pip install lancedb`."
-            app.logger.error(err_msg)
-            raise ImportError(err_msg)
-
-        if not os.path.exists(embedding_path):
-            app.logger.error(f"Embedding file not found: {embedding_path}")
-            NotFoundError(f"Embedding file not found: {embedding_path}")
-
-        if lancedb_path is None:
+        if index_path:
+            if not index_path.endswith(".index"):
+                err_msg = (
+                    f"Parameter 'index_path' must end with '.index', got '{index_path}'"
+                )
+                raise ValidationError(err_msg)
+            output_dir = os.path.dirname(index_path)
+        else:
             current_file = os.path.abspath(__file__)
             project_root = os.path.dirname(os.path.dirname(current_file))
-            lancedb_path = os.path.join(project_root, "output", "lancedb")
+            output_dir = os.path.join(project_root, "output", "index")
+            index_path = os.path.join(output_dir, "index.index")
 
-        os.makedirs(lancedb_path, exist_ok=True)
-        db = lancedb.connect(lancedb_path)
-
-        if table_name in db.table_names() and not overwrite:
-            info_msg = f"LanceDB table '{table_name}' already exists, skipping"
+        if not overwrite and os.path.exists(index_path):
+            info_msg = (
+                f"Index file already exists: {index_path}. "
+                "Set overwrite=True to overwrite."
+            )
             app.logger.info(info_msg)
-            return {"status": info_msg}
-        elif table_name in db.table_names() and overwrite:
-            import shutil
+            return
 
-            shutil.rmtree(os.path.join(lancedb_path, table_name))
-            app.logger.info(f"Overwriting LanceDB table '{table_name}'")
+        if overwrite and os.path.exists(index_path):
+            os.remove(index_path)
 
-        embedding = np.load(embedding_path)
-        ids = [str(i) for i in range(len(embedding))]
-        data = [{"id": i, "vector": v} for i, v in zip(ids, embedding)]
-        df = pd.DataFrame(data)
-        db.create_table(table_name, data=df)
-
-        app.logger.info("LanceDB indexing success")
+        corpus_tokens = self.tokenizer.tokenize(self.contents, return_as="tuple")
+        self.model.index(corpus_tokens)
+        self.model.save(index_path, corpus=None)
+        self.tokenizer.save_stopwords(index_path)
+        self.tokenizer.save_vocab(index_path)
+        info_msg = "[bm25] Indexing success."
+        app.logger.info(info_msg)
 
     async def retriever_search(
         self,
         query_list: List[str],
         top_k: int = 5,
         query_instruction: str = "",
-        use_openai: bool = False,
     ) -> Dict[str, List[List[str]]]:
 
         if isinstance(query_list, str):
             query_list = [query_list]
         queries = [f"{query_instruction}{query}" for query in query_list]
 
-        if use_openai:
-
-            async def openai_embed(texts):
-                embeddings = []
-                for text in texts:
-                    response = await self.client.embeddings.create(
-                        input=text, model=self.openai_model
-                    )
-                    embeddings.append(response.data[0].embedding)
-                return embeddings
-
-            query_embedding = await openai_embed(queries)
-        else:
+        if self.backend == "infinity":
             async with self.model:
-                query_embedding, usage = await self.model.embed(sentences=queries)
-        query_embedding = np.array(query_embedding, dtype=np.float16)
-        app.logger.info("query embedding finish")
+                query_embedding, _ = await self.model.embed(sentences=queries)
+        elif self.backend == "sentence_transformers":
+            if self.device_num == 1:
+                device_param = "cuda:0"
+            else:
+                device_param = [f"cuda:{i}" for i in range(self.device_num)]
+            normalize = bool(self.st_encode_params.get("normalize_embeddings", False))
+            q_prompt_name = self.st_encode_params.get("q_prompt_name", "")
+            q_task = self.st_encode_params.get("psg_task", None)
 
-        scores, ids = self.faiss_index.search(query_embedding, top_k)
+            if isinstance(device_param, list) and len(device_param) > 1:
+                pool = self.model.start_multi_process_pool()
+                try:
+
+                    def _encode_all():
+                        return self.model.encode(
+                            queries,
+                            pool=pool,
+                            batch_size=self.batch_size,
+                            show_progress_bar=True,
+                            normalize_embeddings=normalize,
+                            precision="float32",
+                            prompt_name=q_prompt_name,
+                            task=q_task,
+                        )
+
+                    query_embedding = await asyncio.to_thread(_encode_all)
+                finally:
+                    self.model.stop_multi_process_pool(pool)
+            else:
+
+                def _encode_single():
+                    return self.model.encode(
+                        queries,
+                        device=device_param,
+                        batch_size=self.batch_size,
+                        show_progress_bar=True,
+                        normalize_embeddings=normalize,
+                        precision="float32",
+                        prompt_name=q_prompt_name,
+                        task=q_task,
+                    )
+
+                query_embedding = await asyncio.to_thread(_encode_single)
+
+        elif self.backend == "openai":
+            query_embedding = []
+            for i in tqdm(
+                range(0, len(queries), self.batch_size),
+                desc="[openai] Embedding:",
+                unit="batch",
+            ):
+                chunk = queries[i : i + self.batch_size]
+                resp = await self.model.embeddings.create(
+                    model=self.model_name, input=chunk
+                )
+                query_embedding.extend([d.embedding for d in resp.data])
+
+        else:
+            error_msg = f"Unsupported backend: {self.backend}"
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
+
+        query_embedding = np.array(query_embedding, dtype=np.float32)
+
+        info_msg = f"query embedding shape: {query_embedding.shape}"
+        app.logger.info(info_msg)
+
+        _, ids = self.faiss_index.search(query_embedding, top_k)
         rets = []
-        for i, query in enumerate(query_list):
+        for i, _ in enumerate(query_list):
             cur_ret = []
             for _, id in enumerate(ids[i]):
                 cur_ret.append(self.contents[id])
             rets.append(cur_ret)
-        app.logger.debug(f"ret_psg: {rets}")
         return {"ret_psg": rets}
 
-    async def retriever_search_maxsim(
+    async def retriever_search_colbert_maxsim(
         self,
         query_list: List[str],
         embedding_path: str,
         top_k: int = 5,
         query_instruction: str = "",
     ) -> Dict[str, List[List[str]]]:
-        import torch
+        try:
+            import torch
+        except ImportError:
+            err_msg = (
+                "torch is not installed. Please install it with `pip install torch`."
+            )
+            app.logger.error(err_msg)
+            raise ImportError(err_msg)
+
+        if self.backend not in ["infinity"]:
+            error_msg = (
+                "retriever_search_colbert_maxsim only supports 'infinity' backend "
+                "with ColBERT/ColPali multi-vector models. "
+                "Use retriever_search or other backend-specific retrieval functions instead."
+            )
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
         if isinstance(query_list, str):
             query_list = [query_list]
         queries = [f"{query_instruction}{query}" for query in query_list]
 
         async with self.model:
-            query_embedding, usage = await self.model.embed(
-                sentences=queries
-            )  # (Q, Kq, D)
+            query_embedding, _ = await self.model.embed(sentences=queries)
 
-        doc_embeddings = np.load(embedding_path)  # (N, Kd, D)
+        doc_embeddings = np.load(embedding_path)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         if (
@@ -522,7 +736,6 @@ class Retriever:
             and doc_embeddings.dtype != object
             and doc_embeddings.ndim == 3
         ):
-            # (N,Kd,D)
             docs_tensor = torch.from_numpy(
                 doc_embeddings.astype("float32", copy=False)
             ).to(device)
@@ -531,193 +744,69 @@ class Retriever:
                 stacked = np.stack(
                     [np.asarray(x, dtype=np.float32) for x in doc_embeddings.tolist()],
                     axis=0,
-                )  # (N,Kd,D)
+                )
                 docs_tensor = torch.from_numpy(stacked).to(device)
             except Exception:
-                raise ValueError(
-                    f"Document embeddings in {embedding_path} have inconsistent shapes, cannot stack into (N,Kd,D). "
+                error_msg = (
+                    f"Document embeddings in {embedding_path} have inconsistent shapes, "
+                    "cannot stack into (N,Kd,D). "
                     f"Check your retriever_embed."
                 )
+                app.logger.error(error_msg)
+                raise ValueError(error_msg)
         else:
-            raise ValueError(
-                f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, shape={getattr(doc_embeddings, 'shape', None)}"
+            error_msg = (
+                f"Unexpected doc_embeddings format: type={type(doc_embeddings)}, "
+                f"shape={getattr(doc_embeddings, 'shape', None)}"
             )
-
-        results = []
+            app.logger.error(error_msg)
+            raise ValueError(error_msg)
 
         def _l2norm(t: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
             return t / t.norm(dim=-1, keepdim=True).clamp_min(eps)
 
-        N, Kd, D_docs = docs_tensor.shape
-
-        docs_tensor = _l2norm(docs_tensor)  # (N,Kd,D)
-
-        results = []
+        N, _, D_docs = docs_tensor.shape
+        docs_tensor = _l2norm(docs_tensor)
         k_pick = min(top_k, N)
 
+        results = []
         for q_np in query_embedding:
+            q = torch.as_tensor(
+                q_np,
+                dtype=torch.float32,
+                device=device,
+            )
+            if q.shape[-1] != D_docs:
+                error_msg = (
+                    f"Dimension mismatch: query D={q.shape[-1]} vs doc D={D_docs}"
+                )
+                app.logger.error(error_msg)
+                raise ValueError(error_msg)
 
-            q = torch.as_tensor(q_np, dtype=torch.float32, device=device)  # (Kq,D)
-
-            D_query = q.shape[-1]
-            if D_query != D_docs:
-                raise ValueError(f"Dim mismatch: query D={D_query} vs doc D={D_docs}")
-
-            q = _l2norm(q)  # (Kq,D)
-
-            # MaxSim
-            # sim[n, i, j] = dot(q[i], docs_tensor[n, j])
-            # (Kq,D) x (N,Kd,D) -> (N,Kq,Kd)
+            q = _l2norm(q)
             sim = torch.einsum("qd,nkd->nqk", q, docs_tensor)
-            # doc tokens -> (N,Kq)
             sim_max = sim.max(dim=2).values
-            # query tokens-> (N,)
             scores = sim_max.sum(dim=1)
 
             top_idx = torch.topk(scores, k=k_pick, largest=True).indices.tolist()
-            top_contents = [self.contents[i] for i in top_idx]
-            results.append(top_contents)
-
+            results.append([self.contents[i] for i in top_idx])
         return {"ret_psg": results}
 
-    async def retriever_search_lancedb(
+    async def bm25_search(
         self,
         query_list: List[str],
-        top_k: Optional[int] | None = None,
-        query_instruction: str = "",
-        use_openai: bool = False,
-        lancedb_path: str = "",
-        table_name: str = "",
-        filter_expr: Optional[str] = None,
+        top_k: int = 5,
     ) -> Dict[str, List[List[str]]]:
-
-        try:
-            import lancedb
-        except ImportError:
-            err_msg = "lancedb is not installed. Please install it with `pip install lancedb`."
-            app.logger.error(err_msg)
-            raise ImportError(err_msg)
-
-        if isinstance(query_list, str):
-            query_list = [query_list]
-        queries = [f"{query_instruction}{query}" for query in query_list]
-
-        if use_openai:
-
-            async def openai_embed(texts):
-                embeddings = []
-                for text in texts:
-                    response = await self.client.embeddings.create(
-                        input=text, model=self.openai_model
-                    )
-                    embeddings.append(response.data[0].embedding)
-                return embeddings
-
-            query_embedding = await openai_embed(queries)
-        else:
-            async with self.model:
-                query_embedding, usage = await self.model.embed(sentences=queries)
-        query_embedding = np.array(query_embedding, dtype=np.float16)
-        app.logger.info("query embedding finish")
-
-        rets = []
-
-        if not lancedb_path:
-            NotFoundError(f"`lancedb_path` must be provided.")
-        db = lancedb.connect(lancedb_path)
-        self.lancedb_table = db.open_table(table_name)
-        for i, query_vec in enumerate(query_embedding):
-            q = self.lancedb_table.search(query_vec).limit(top_k)
-            if filter_expr:
-                q = q.where(filter_expr)
-            df = q.to_df()
-            cur_ret = []
-            for id_str in df["id"]:
-                id_int = int(id_str)
-                cur_ret.append(self.contents[id_int])
-            rets.append(cur_ret)
-
-        app.logger.debug(f"ret_psg: {rets}")
-        return {"ret_psg": rets}
-
-    async def retriever_deploy_service(
-        self,
-        retriever_url: str,
-    ):
-        # Ensure URL is valid, adding "http://" prefix if necessary
-        retriever_url = retriever_url.strip()
-        if not retriever_url.startswith("http://") and not retriever_url.startswith(
-            "https://"
-        ):
-            retriever_url = f"http://{retriever_url}"
-
-        url_obj = urlparse(retriever_url)
-        retriever_host = url_obj.hostname
-        retriever_port = (
-            url_obj.port if url_obj.port else 8080
-        )  # Default port if none provided
-
-        @retriever_app.route("/search", methods=["POST"])
-        async def deploy_retrieval_model():
-            data = request.get_json()
-            query_list = data["query_list"]
-            top_k = data["top_k"]
-            async with self.model:
-                query_embedding, _ = await self.model.embed(sentences=query_list)
-            query_embedding = np.array(query_embedding, dtype=np.float16)
-            _, ids = self.faiss_index.search(query_embedding, top_k)
-
-            rets = []
-            for i, _ in enumerate(query_list):
-                cur_ret = []
-                for _, id in enumerate(ids[i]):
-                    cur_ret.append(self.contents[id])
-                rets.append(cur_ret)
-            return jsonify({"ret_psg": rets})
-
-        retriever_app.run(host=retriever_host, port=retriever_port)
-        app.logger.info(f"employ embedding server at {retriever_url}")
-
-    async def retriever_deploy_search(
-        self,
-        retriever_url: str,
-        query_list: List[str],
-        top_k: Optional[int] | None = None,
-        query_instruction: str = "",
-    ):
-        # Validate the URL format
-        url = retriever_url.strip()
-        if not url.startswith("http://") and not url.startswith("https://"):
-            url = f"http://{url}"
-        url_obj = urlparse(url)
-        api_url = urlunparse(url_obj._replace(path="/search"))
-        app.logger.info(f"Calling url: {api_url}")
-
-        if isinstance(query_list, str):
-            query_list = [query_list]
-        query_list = [f"{query_instruction}{query}" for query in query_list]
-
-        payload = {"query_list": query_list}
-        if top_k is not None:
-            payload["top_k"] = top_k
-
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                api_url,
-                json=payload,
-            ) as response:
-                if response.status == 200:
-                    response_data = await response.json()
-                    app.logger.debug(
-                        f"status_code: {response.status}, response data: {response_data}"
-                    )
-                    return response_data
-                else:
-                    err_msg = (
-                        f"Failed to call {retriever_url} with code {response.status}"
-                    )
-                    app.logger.error(err_msg)
-                    raise ToolError(err_msg)
+        results = []
+        q_toks = self.tokenizer.tokenize(
+            query_list,
+            return_as="tuple",
+            update_vocab=False,
+        )
+        results, scores = self.model.retrieve(q_toks, k=top_k)
+        results = results.tolist() if isinstance(results, np.ndarray) else results
+        scores = scores.tolist() if isinstance(scores, np.ndarray) else scores
+        return {"ret_psg": results}
 
     async def _parallel_search(
         self,
@@ -774,12 +863,14 @@ class Retriever:
                 except Exception as e:
                     status = getattr(getattr(e, "response", None), "status_code", None)
                     if status == 401 or "401" in str(e):
-                        raise ToolError(
-                            "Unauthorized (401): Invalid or missing EXA_API_KEY."
-                        ) from e
-                    app.logger.warning(
-                        f"[Retry {attempt+1}] EXA failed (idx={idx}): {e}"
-                    )
+                        err_msg = (
+                            "Unauthorized (401): Invalid or missing EXA_API_KEY. "
+                            "Please set it to use Exa."
+                        )
+                        app.logger.error(err_msg)
+                        raise ToolError(err_msg) from e
+                    warn_msg = f"[exa][retry {attempt+1}] failed (idx={idx}): {e}"
+                    app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
 
@@ -812,9 +903,12 @@ class Retriever:
 
         tavily_api_key = os.environ.get("TAVILY_API_KEY", "")
         if not tavily_api_key:
-            raise MissingAPIKeyError(
-                "TAVILY_API_KEY environment variable is not set. Please set it to use Tavily."
+            err_msg = (
+                "TAVILY_API_KEY environment variable is not set. "
+                "Please set it to use Tavily."
             )
+            app.logger.error(err_msg)
+            raise MissingAPIKeyError(err_msg)
         tavily = AsyncTavilyClient(api_key=tavily_api_key)
 
         async def worker_factory(idx: int, q: str):
@@ -826,15 +920,16 @@ class Retriever:
                     psg_ls: List[str] = [(r.get("content") or "") for r in results]
                     return idx, psg_ls
                 except UsageLimitExceededError as e:
-                    app.logger.error(f"Usage limit exceeded: {e}")
-                    raise ToolError(f"Usage limit exceeded: {e}") from e
+                    err_msg = f"Usage limit exceeded: {e}"
+                    app.logger.error(err_msg)
+                    raise ToolError(err_msg) from e
                 except InvalidAPIKeyError as e:
-                    app.logger.error(f"Invalid API key: {e}")
-                    raise ToolError(f"Invalid API key: {e}") from e
+                    err_msg = f"Invalid API key: {e}"
+                    app.logger.error(err_msg)
+                    raise ToolError(err_msg) from e
                 except (BadRequestError, Exception) as e:
-                    app.logger.warning(
-                        f"[Retry {attempt+1}] Tavily failed (idx={idx}): {e}"
-                    )
+                    warn_msg = f"[tavily][retry {attempt+1}] failed (idx={idx}): {e}"
+                    app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
 
@@ -854,9 +949,12 @@ class Retriever:
 
         zhipuai_api_key = os.environ.get("ZHIPUAI_API_KEY", "")
         if not zhipuai_api_key:
-            raise ToolError(
-                "ZHIPUAI_API_KEY environment variable is not set. Please set it to use ZhipuAI."
+            err_msg = (
+                "ZHIPUAI_API_KEY environment variable is not set. "
+                "Please set it to use ZhipuAI."
             )
+            app.logger.error(err_msg)
+            raise ToolError(err_msg)
 
         retrieval_url = "https://open.bigmodel.cn/api/paas/v4/web_search"
         headers = {
@@ -888,9 +986,8 @@ class Retriever:
                         # Respect top_k
                         return idx, (psg_ls[:top_k] if top_k is not None else psg_ls)
                 except (aiohttp.ClientError, Exception) as e:
-                    app.logger.warning(
-                        f"[Retry {attempt+1}] ZhipuAI failed (idx={idx}): {e}"
-                    )
+                    warn_msg = f"[zhipuai][retry {attempt+1}] failed (idx={idx}): {e}"
+                    app.logger.warning(warn_msg)
                     await asyncio.sleep(delay)
             return idx, []
 

@@ -1,4 +1,4 @@
-# Vanilla LLM demo for WoW dataset
+# Vanilla LLM Demo for WoW Dataset
 
 # MCP Server
 servers:
@@ -10,6 +10,7 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
+- generation.generation_init
 - prompt.qa_boxed
 - generation.generate
 - evaluation.evaluate:

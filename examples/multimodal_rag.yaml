@@ -1,8 +1,9 @@
-# Vanilla LLM demo using vLLM initialization
+# Multi-Modal RAG Demo
 
 # MCP Server
 servers:
   benchmark: servers/benchmark
+  retriever: servers/retriever
   prompt: servers/prompt
   generation: servers/generation
   evaluation: servers/evaluation
@@ -10,9 +11,13 @@ servers:
 
 # MCP Client Pipeline
 pipeline:
-- generation.initialize_local_vllm
 - benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_search
+- generation.generation_init
 - prompt.qa_boxed
-- generation.generate
+- generation.multimodal_generate:
+    input:
+      multimodal_path: ret_psg
 - custom.output_extract_from_boxed
 - evaluation.evaluate

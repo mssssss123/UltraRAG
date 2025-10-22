@@ -1,4 +1,4 @@
-# RankCoT demo
+# RankCoT Demo
 
 # MCP Server
 servers:
@@ -12,7 +12,8 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-- retriever.retriever_deploy_search
+- retriever.retriever_init
+- retriever.retriever_search
 - prompt.RankCoT_kr
 - cot.generate:
     output:

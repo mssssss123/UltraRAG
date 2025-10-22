@@ -1,6 +1,30 @@
 # servers/corpus/parameter.yaml
-file_path: data/UltraRAG.pdf
-chunk_strategy: word # choices=["token", "word", "sentence", "recursive"]
-chunk_size: 256
-output_path: null
-tokenizer_name_or_path: null
+parse_file_path: data/UltraRAG.pdf
+text_corpus_save_path: corpora/text.jsonl
+image_corpus_save_path: corpora/image.jsonl
+
+# mineru
+mineru_dir: corpora/
+mineru_extra_params:
+  source: modelscope
+
+# chunking parameters
+raw_chunk_path: corpora/text.jsonl
+chunk_path: corpora/chunks.jsonl
+use_title: false
+chunk_backend: token # choices=["token", "sentence", "recursive"]
+chunk_backend_configs:
+  token:
+    tokenizer_or_token_counter: gpt2
+    chunk_size: 256
+    chunk_overlap: 50
+  sentence:
+    tokenizer_or_token_counter: character
+    chunk_size: 256
+    chunk_overlap: 50
+    min_sentences_per_chunk: 1
+    delim: "['.', '!', '?', '\\n']"
+  recursive:
+    tokenizer_or_token_counter: character
+    chunk_size: 256
+    min_characters_per_chunk: 12

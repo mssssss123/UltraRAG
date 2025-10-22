@@ -1,4 +1,4 @@
-# Vanilla LLM demo for multiple choice dataset
+# Vanilla LLM Demo for Multiple Choice Dataset
 
 # MCP Server
 servers:
@@ -11,6 +11,7 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
+- generation.generation_init
 - prompt.qa_boxed_multiple_choice
 - generation.generate
 - custom.output_extract_from_boxed

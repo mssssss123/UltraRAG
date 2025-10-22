@@ -1,4 +1,4 @@
-# IterRetGen demo
+# IterRetGen Demo
 
 # MCP Server
 servers:
@@ -12,7 +12,9 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-- retriever.retriever_deploy_search
+- retriever.retriever_init
+- retriever.retriever_search
+- generation.generation_init
 - prompt.qa_rag_boxed
 - generation.generate
 - custom.output_extract_from_boxed
@@ -22,7 +24,7 @@ pipeline:
     - custom.iterretgen_nextquery:
         input:
           ans_ls: pred_ls
-    - retriever.retriever_deploy_search:
+    - retriever.retriever_search:
         input:
           query_list: nextq_ls
     - prompt.qa_rag_boxed

@@ -1,4 +1,4 @@
-# Deploy Retriever Demo
+# Corpus BM25 Indexing Demo
 
 # MCP Server
 servers:
@@ -7,4 +7,4 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - retriever.retriever_init
-- retriever.retriever_deploy_service
+- retriever.bm25_index

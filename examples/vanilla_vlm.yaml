@@ -1,9 +1,8 @@
-# Vanilla RAG api demo
+# Vanilla VLM Demo
 
 # MCP Server
 servers:
   benchmark: servers/benchmark
-  retriever: servers/retriever
   prompt: servers/prompt
   generation: servers/generation
   evaluation: servers/evaluation
@@ -12,11 +11,8 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-- retriever.retriever_init_openai
-- retriever.retriever_embed_openai
-- retriever.retriever_index
-- retriever.retriever_search
-- prompt.qa_rag_boxed
-- generation.generate
+- generation.generation_init
+- prompt.qa_boxed
+- generation.multimodal_generate
 - custom.output_extract_from_boxed
 - evaluation.evaluate

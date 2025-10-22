@@ -1,0 +1,24 @@
+# Corpus Search with Dense and Sparse Demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  dense: servers/retriever
+  bm25: servers/retriever
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- dense.retriever_init
+- bm25.retriever_init
+- dense.retriever_search:
+    output:
+      ret_psg: dense_psg
+- bm25.bm25_search:
+    output:
+      ret_psg: sparse_psg
+- custom.merge_passages:
+    input:
+      ret_psg: dense_psg
+      temp_psg: sparse_psg

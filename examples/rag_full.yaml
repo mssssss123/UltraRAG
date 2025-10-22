@@ -1,8 +1,9 @@
-# Vanilla LLM demo
+# Vanilla RAG with Corpus Indexing Demo
 
 # MCP Server
 servers:
   benchmark: servers/benchmark
+  retriever: servers/retriever
   prompt: servers/prompt
   generation: servers/generation
   evaluation: servers/evaluation
@@ -11,7 +12,12 @@ servers:
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
-- prompt.qa_boxed
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+- retriever.retriever_search
+- generation.generation_init
+- prompt.qa_rag_boxed
 - generation.generate
 - custom.output_extract_from_boxed
 - evaluation.evaluate

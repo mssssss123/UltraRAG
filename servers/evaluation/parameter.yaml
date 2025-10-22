@@ -1,3 +1,16 @@
 # servers/evaluation/parameter.yaml
-metrics: [ 'acc', 'f1', 'em', 'coverem', 'stringem', 'rouge-1', 'rouge-2', 'rouge-l' ]
 save_path: output/evaluate_results.json
+
+# QA task
+metrics: [ 'acc', 'f1', 'em', 'coverem', 'stringem', 'rouge-1', 'rouge-2', 'rouge-l' ]
+
+# Retrieval task
+qrels_path: data/qrels.txt
+run_path: data/run_a.txt
+ks: [ 1, 5, 10, 20, 50, 100 ]
+ir_metrics: [ "mrr", "map", "recall", "ndcg", "precision" ]
+
+# significant
+run_new_path: data/run_a.txt
+run_old_path: data/run_b.txt
+n_resamples: 10000

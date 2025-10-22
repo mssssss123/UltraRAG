@@ -1,0 +1,17 @@
+# Corpus Rerank Demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  reranker: servers/reranker
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- retriever.retriever_embed
+- retriever.retriever_index
+- retriever.retriever_search
+- reranker.reranker_init
+- reranker.reranker_rerank

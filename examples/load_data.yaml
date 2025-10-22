@@ -1,0 +1,9 @@
+# Load Data Demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data

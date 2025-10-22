@@ -1,4 +1,4 @@
-# VisRAG demo
+# VisRAG Demo
 
 # MCP Server
 servers:
@@ -7,17 +7,15 @@ servers:
   prompt: servers/prompt
   generation: servers/generation
   evaluation: servers/evaluation
+  custom: servers/custom
 
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
 - retriever.retriever_init
-- retriever.retriever_embed
-- retriever.retriever_search_maxsim:
-    output:
-      ret_psg: ret_path
+- retriever.retriever_search
+- generation.generation_init
 - prompt.qa_boxed
-- generation.multimodal_generate
-- evaluation.evaluate:
+- generation.multimodal_generate:
     input:
-      pred_ls: ans_ls
+      multimodal_path: ret_psg

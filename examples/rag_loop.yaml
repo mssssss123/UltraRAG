@@ -1,0 +1,34 @@
+# RAG Loop Demo
+
+# MCP Server
+servers:
+  benchmark: servers/benchmark
+  retriever: servers/retriever
+  prompt: servers/prompt
+  generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
+
+# MCP Client Pipeline
+pipeline:
+- benchmark.get_data
+- retriever.retriever_init
+- generation.generation_init
+- retriever.retriever_search
+- loop:
+    times: 3
+    steps:
+    - prompt.gen_subq
+    - generation.generate:
+        output:
+          ans_ls: subq_ls
+    - retriever.retriever_search:
+        input:
+          query_list: subq_ls
+        output:
+          ret_psg: temp_psg
+    - custom.merge_passages
+- prompt.qa_rag_boxed
+- generation.generate
+- custom.output_extract_from_boxed
+- evaluation.evaluate
