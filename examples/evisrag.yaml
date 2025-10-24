@@ -6,14 +6,19 @@ servers:
   retriever: servers/retriever
   prompt: servers/prompt
   generation: servers/generation
+  evaluation: servers/evaluation
+  custom: servers/custom
 
 # MCP Client Pipeline
 pipeline:
 - benchmark.get_data
 - retriever.retriever_init
 - retriever.retriever_search
+- custom.evisrag_is_sufficient
 - generation.generation_init
-- prompt.qa_boxed
+- prompt.evisrag_vqa
 - generation.multimodal_generate:
     input:
       multimodal_path: ret_psg
+- custom.evisrag_output_extract_from_special
+- evaluation.evisrag_evaluate
