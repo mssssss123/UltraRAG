@@ -40,6 +40,10 @@ class Retriever:
             output="q_ls,top_k,query_instruction->ret_psg",
         )
         mcp_inst.tool(
+            self.retriever_deploy_search,
+            output="retriever_url,q_ls,top_k,query_instruction->ret_psg",
+        )
+        mcp_inst.tool(
             self.retriever_search_colbert_maxsim,
             output="q_ls,embedding_path,top_k,query_instruction->ret_psg",
         )
@@ -628,6 +632,58 @@ class Retriever:
         rets = self.index_backend.search(query_embedding, top_k)
 
         return {"ret_psg": rets}
+    
+    async def retriever_deploy_search(
+        self,
+        retriever_url: str,
+        query_list: List[str],
+        top_k: int = 5,
+        query_instruction: str = "",
+    ) -> Dict[str, List[List[str]]]:
+        from urllib.parse import urlparse, urlunparse
+        import aiohttp
+
+        url = retriever_url.strip()
+        if not url.startswith("http://") and not url.startswith("https://"):
+            url = f"http://{url}"
+
+        url_obj = urlparse(url)
+        api_url = urlunparse(url_obj._replace(path="/search", query="", fragment=""))
+
+        app.logger.info(f"[remote_retriever] Calling remote retriever at: {api_url}")
+
+
+        payload: Dict[str, Any] = {
+            "query_list": query_list,
+            "top_k": top_k,
+            "query_instruction": query_instruction,
+        }
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(api_url, json=payload) as response:
+                if response.status != 200:
+                    err_text = await response.text()
+                    err_msg = (
+                        f"[remote_retriever] Failed to call {api_url}, "
+                        f"status={response.status}, body={err_text}"
+                    )
+                    app.logger.error(err_msg)
+                    raise ToolError(err_msg)
+
+                response_data = await response.json()
+                app.logger.debug(
+                    f"[remote_retriever] status={response.status}, keys={list(response_data.keys())}"
+                )
+
+                if "ret_psg" not in response_data:
+                    err_msg = (
+                        f"[remote_retriever] Response missing 'ret_psg' field: "
+                        f"{response_data}"
+                    )
+                    app.logger.error(err_msg)
+                    raise ToolError(err_msg)
+
+                return {"ret_psg": response_data["ret_psg"]}
 
     async def retriever_search_colbert_maxsim(
         self,
