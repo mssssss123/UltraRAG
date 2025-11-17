@@ -1,0 +1,66 @@
+{
+  "model_name_or_path": "openbmb/MiniCPM-Embedding-Light",
+  "corpus_path": "data/corpus_example.jsonl",
+
+  "backend": "sentence_transformers",
+  "backend_configs": {
+    "infinity": {
+      "bettertransformer": false,
+      "pooling_method": "auto",
+      "device": "cuda",
+      "model_warmup": false,
+      "trust_remote_code": true
+    },
+    "sentence_transformers": {
+      "device": "cuda",
+      "trust_remote_code": true,
+      "sentence_transformers_encode": {
+        "normalize_embeddings": false,
+        "encode_chunk_size": 10000,
+        "q_prompt_name": "query",
+        "psg_prompt_name": "document",
+        "psg_task": null,
+        "q_task": null
+      }
+    },
+    "openai": {
+      "model_name": "text-embedding-3-small",
+      "base_url": "https://api.openai.com/v1",
+      "api_key": ""
+    },
+    "bm25": {
+      "lang": "en",
+      "save_path": "index/bm25"
+    }
+  },
+
+  "index_backend": "faiss",
+  "index_backend_configs": {
+    "faiss": {
+      "index_use_gpu": true,
+      "index_chunk_size": 50000,
+      "index_path": "index/index.index"
+    },
+    "milvus": {
+      "uri": "index/milvus_demo.db",
+      "token": null,
+      "collection_name": "ultrarag_embeddings",
+      "id_field_name": "id",
+      "vector_field_name": "vector",
+      "metric_type": "IP",
+      "index_params": {
+        "index_type": "AUTOINDEX",
+        "metric_type": "IP"
+      },
+      "search_params": {
+        "metric_type": "IP",
+        "params": {}
+      },
+      "index_chunk_size": 50000
+    }
+  },
+
+  "batch_size": 16,
+  "gpu_ids": "0,1",
+  "is_multimodal": false
+}
