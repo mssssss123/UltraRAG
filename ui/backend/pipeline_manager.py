@@ -13,6 +13,12 @@ from dataclasses import dataclass
 from types import ModuleType
 import yaml
 import ast
+import os
+
+try:
+    from pymilvus import MilvusClient
+except ImportError:
+    MilvusClient = None
 
 LOGGER = logging.getLogger(__name__)
 
@@ -28,8 +34,17 @@ LEGACY_PIPELINES_DIR = BASE_DIR / "pipelines"
 CHAT_DATASET_DIR = PROJECT_ROOT / "data" / "chat_sessions"
 OUTPUT_DIR = PROJECT_ROOT / "output"
 
-for d in [LEGACY_PIPELINES_DIR, CHAT_DATASET_DIR, OUTPUT_DIR]:
+KB_ROOT = PROJECT_ROOT / "data" / "knowledge_base"
+KB_RAW_DIR = KB_ROOT / "raw"       
+KB_CORPUS_DIR = KB_ROOT / "corpus" 
+KB_CHUNKS_DIR = KB_ROOT / "chunks" 
+KB_INDEX_DIR = KB_ROOT / "index"
+KB_CONFIG_PATH = KB_ROOT / "kb_config.json"
+
+for d in [LEGACY_PIPELINES_DIR, CHAT_DATASET_DIR, OUTPUT_DIR, KB_RAW_DIR, KB_CORPUS_DIR, KB_CHUNKS_DIR, KB_INDEX_DIR]:
     d.mkdir(parents=True, exist_ok=True)
+
+
 
 class PipelineManagerError(RuntimeError):
     pass
@@ -647,3 +662,228 @@ def interrupt_chat(session_id: str):
         success = session.interrupt_task()
         return {"status": "interrupted", "active_task_cancelled": success}
     return {"status": "session_not_found"}
+
+# Knowledge Base Management   
+def load_kb_config() -> Dict[str, Any]:
+    default_config = {
+        "milvus": {
+            "uri": str(KB_INDEX_DIR / "default.db"),
+            "token": "",
+            "id_field_name": "id",
+            "vector_field_name": "vector",
+            "text_field_name": "contents",
+            "id_max_length": 64,
+            "text_max_length": 60000,
+            "metric_type": "IP",
+            "index_params": {
+                "index_type": "AUTOINDEX",
+                "metric_type": "IP"
+            },
+            "search_params": {
+                "metric_type": "IP",
+                "params": {}
+            },
+            "index_chunk_size": 1000
+        }
+    }
+    
+    if not KB_CONFIG_PATH.exists():
+        return default_config
+        
+    try:
+        saved = json.loads(KB_CONFIG_PATH.read_text(encoding="utf-8"))
+        if "milvus" not in saved: 
+            return default_config
+        
+        full_cfg = default_config["milvus"].copy()
+        full_cfg.update(saved["milvus"])
+        return {"milvus": full_cfg}
+        
+    except Exception:
+        return default_config
+    
+def save_kb_config(config: Dict[str, str]):
+    KB_CONFIG_PATH.write_text(json.dumps(config, indent=2), encoding="utf-8")
+
+def _get_milvus_client():
+    cfg = load_kb_config()
+    try:
+        milvus_cfg = cfg.get("milvus", {})
+        uri = milvus_cfg.get("uri", "")
+        
+        if not uri: raise ValueError("URI is empty")
+
+        if not uri.startswith("http") and not Path(uri).is_absolute():
+            pass 
+            
+        return MilvusClient(uri=uri, token=milvus_cfg.get("token", ""))
+    except Exception as e:
+        LOGGER.error(f"Failed to connect to Milvus: {e}")
+        raise e
+
+def list_kb_files() -> Dict[str, List[Dict[str, Any]]]:
+    def _scan_files(d: Path, category: str):
+        return [
+            {
+                "name": f.name, "path": _as_project_relative(f), 
+                "size": f.stat().st_size, "mtime": f.stat().st_mtime, 
+                "category": category
+            }
+            for f in sorted(d.glob("*")) if f.is_file() and not f.name.startswith(".")
+        ]
+    
+    collections = []
+    db_status = "unknown"
+    try:
+        client = _get_milvus_client()
+        names = client.list_collections()
+        for name in names:
+            res = client.get_collection_stats(name)
+            count = res.get("row_count", 0)
+            collections.append({
+                "name": name,
+                "count": count,
+                "category": "collection"
+            })
+        client.close()
+        db_status = "connected"
+    except Exception as e:
+        LOGGER.warning(f"Milvus connection failed: {e}")
+        db_status = "error"
+
+    return {
+        "raw": _scan_files(KB_RAW_DIR, "raw"),
+        "corpus": _scan_files(KB_CORPUS_DIR, "corpus"),
+        "chunks": _scan_files(KB_CHUNKS_DIR, "chunks"),
+        "index": collections,
+        "db_status": db_status, 
+        "db_config": load_kb_config() 
+    }
+
+def upload_kb_file(file_obj) -> Dict[str, Any]:
+    from werkzeug.utils import secure_filename
+    filename = secure_filename(file_obj.filename)
+    save_path = KB_RAW_DIR / filename
+    file_obj.save(save_path)
+    LOGGER.info(f"File uploaded: {save_path}")
+    return {
+        "name": filename,
+        "path": _as_project_relative(save_path),
+        "size": save_path.stat().st_size
+    }
+
+def delete_kb_file(category: str, filename: str) -> Dict[str, str]:
+    if category == "collection" or category == "index":
+        try:
+            client = _get_milvus_client()
+            if client.has_collection(filename):
+                client.drop_collection(filename)
+            client.close()
+            LOGGER.info(f"Collection dropped: {filename}")
+            return {"status": "dropped"}
+        except Exception as e:
+            raise PipelineManagerError(f"Failed to drop collection: {e}")
+
+    target_dir = {"raw": KB_RAW_DIR, "corpus": KB_CORPUS_DIR, "chunks": KB_CHUNKS_DIR}.get(category)
+    if target_dir:
+        file_path = target_dir / Path(filename).name
+        if file_path.exists(): file_path.unlink()
+        return {"status": "deleted"}
+    
+    raise PipelineManagerError("Invalid category")
+
+def run_kb_pipeline_tool(
+    pipeline_name: str, 
+    target_file_path: str,
+    output_dir: str,
+    collection_name: Optional[str] = None,
+    index_mode: str = "append", # 'append' (追加), 'overwrite' (覆盖)
+) -> Dict[str, Any]:
+
+    pipeline_cfg = load_pipeline(pipeline_name)
+    if not pipeline_cfg:
+        raise PipelineManagerError(f"Pipeline '{pipeline_name}' not found. Please create it in Builder.")
+        
+    base_params = load_parameters(pipeline_name) 
+    if not base_params:
+        raise PipelineManagerError(f"Pipeline '{pipeline_name}' parameters not found. Please Build & Save first.")
+    
+    target_file = Path(target_file_path)
+    stem = target_file.stem
+    override_params = {}
+    
+    if pipeline_name == "build_text_corpus":
+        out_path = os.path.join(output_dir, f"{stem}.jsonl")
+        override_params = {
+            "corpus": {
+                "parse_file_path": str(target_file),
+                "text_corpus_save_path": out_path,
+            }
+        }
+
+    elif pipeline_name == "corpus_chunk":
+        out_path = os.path.join(output_dir, f"{stem}.jsonl")
+        override_params = {
+            "corpus": {
+                "raw_chunk_path": str(target_file),
+                "chunk_path": out_path
+            }
+        }
+        
+    elif pipeline_name == "milvus_index":
+        final_collection_name = collection_name if collection_name else stem
+
+        is_overwrite = (index_mode == "overwrite")
+
+        full_kb_cfg = load_kb_config()
+        milvus_config_dict = full_kb_cfg["milvus"] 
+        
+        # 确保父目录存在
+        KB_INDEX_DIR.mkdir(parents=True, exist_ok=True)
+
+        override_params = {
+            "retriever": {
+                "corpus_path": str(target_file),
+                "collection_name": final_collection_name,
+                "overwrite": is_overwrite,
+                "index_backend": "milvus",
+                "index_backend_configs": {
+                    "milvus": milvus_config_dict
+                }
+            }
+        }
+
+    else:
+        raise PipelineManagerError(f"Unsupported KB Pipeline: {pipeline_name}")
+
+    funcs = _ensure_client_funcs()
+    config_file = str(_find_pipeline_file(pipeline_name))
+    param_file = str(_resolve_parameter_path(pipeline_name))
+
+    async def _async_task():
+        context = funcs["load_ctx"](config_file, param_file)
+        
+        client = funcs["create_client"](context["mcp_cfg"])
+        
+        async with client:
+            return await funcs["exec_pipe"](
+                client, 
+                context, 
+                is_demo=True, 
+                return_all=True,
+                override_params=override_params 
+            )
+    
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            raw_result = loop.run_until_complete(_async_task())
+        finally:
+            loop.close()
+            
+        return {"status": "success", "result": _extract_result(raw_result)}
+        
+    except Exception as e:
+        LOGGER.error(f"KB Task Failed: {e}")
+        raise e

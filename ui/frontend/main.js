@@ -78,6 +78,12 @@ const els = {
   chatSessionList: document.getElementById("chat-session-list"),
   demoToggleBtn: document.getElementById("demo-toggle-btn"), // 引擎开关
 
+  // [新增] 视图容器
+  chatMainView: document.getElementById("chat-main-view"),
+  kbMainView: document.getElementById("kb-main-view"),
+  // [新增] 按钮
+  kbBtn: document.getElementById("kb-btn"),
+
   // [新增] Chat 顶部控件
   chatPipelineLabel: document.getElementById("chat-pipeline-label"),
   chatPipelineMenu: document.getElementById("chat-pipeline-menu"),
@@ -98,6 +104,32 @@ const els = {
   },
   nodePickerError: document.getElementById("node-picker-error"),
   nodePickerConfirm: document.getElementById("nodePickerConfirm"),
+
+  // --- [Start] Knowledge Base Elements ---
+  listRaw: document.getElementById("list-raw"),
+  listCorpus: document.getElementById("list-corpus"),
+  listChunks: document.getElementById("list-chunks"),
+  // 文件上传 input (虽然是隐藏的，但我们需要引用它来绑定事件或触发点击)
+  fileUpload: document.getElementById("file-upload"),
+  // 状态条
+  taskStatusBar: document.getElementById("task-status-bar"),
+  taskMsg: document.getElementById("task-msg"),
+  // 数据库配置元素
+  dbConnectionStatus: document.getElementById("db-connection-status"),
+  dbUriDisplay: document.getElementById("db-uri-display"),
+  dbConfigModal: document.getElementById("db-config-modal"), // 新增的配置弹窗
+  cfgUri: document.getElementById("cfg-uri"),                 // 配置弹窗 - URI输入
+  cfgToken: document.getElementById("cfg-token"),              // 配置弹窗 - Token输入
+  listIndexes: document.getElementById("list-indexes"),         // Collection 列表容器
+  modalTargetDb: document.getElementById("modal-target-db"),   // Milvus 弹窗中的提示文本
+  
+  // Milvus 弹窗相关 (保留并确认 ID)
+  milvusDialog: document.getElementById("milvus-dialog"),
+  idxCollection: document.getElementById("idx-collection"),
+  idxMode: document.getElementById("idx-mode"),
+  // [新增] 刷新按钮
+  refreshCollectionsBtn: document.getElementById("refresh-collections-btn"),
+  // --- [End] Knowledge Base Elements ---
 };
 
 const Modes = {
@@ -117,6 +149,309 @@ const nodePickerState = {
 
 let nodePickerModalInstance = null;
 let pendingInsert = null;
+
+// ==========================================
+// --- Knowledge Base Logic ---
+// ==========================================
+
+let currentTargetFile = null; // 暂存当前正在操作的文件路径
+
+// 1. 刷新文件列表
+async function refreshKBFiles() {
+    try {
+        const data = await fetchJSON('/api/kb/files');
+        
+        // 渲染三列文件
+        renderKBList(els.listRaw, data.raw, 'build_text_corpus', 'Parse');
+        renderKBList(els.listCorpus, data.corpus, 'corpus_chunk', 'Chunk');
+        renderKBList(els.listChunks, data.chunks, 'milvus_index', 'Index');
+        
+        // 渲染 Collections 和更新状态
+        renderCollectionList(els.listIndexes, data.index);
+        updateDbStatusUI(data.db_status, data.db_config);
+        
+    } catch (e) {
+        console.error("Failed to load KB files:", e);
+    }
+}
+
+// 2. 渲染列表辅助函数
+function renderKBList(container, files, nextPipeline, actionLabel) {
+    if (!container) return;
+    container.innerHTML = '';
+    
+    if (!files || files.length === 0) {
+        container.innerHTML = '<div class="text-muted small text-center mt-4">Empty</div>';
+        return;
+    }
+
+    files.forEach(f => {
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        // 注意：这里使用了 window.handleKBAction，确保全局可访问
+        div.innerHTML = `
+            <div class="file-name" title="${f.name}">${f.name}</div>
+            <button class="btn-action" onclick="window.handleKBAction('${f.path}', '${nextPipeline}')">
+                ${actionLabel}
+            </button>
+        `;
+        // [新增] 添加删除按钮 (用于原始文件)
+        if (f.category !== 'collection') {
+            div.innerHTML += `<button class="btn btn-sm btn-icon text-danger ms-2 p-0" onclick="deleteKBFile('${f.category}', '${f.name}')" title="Delete File">×</button>`;
+        }
+        container.appendChild(div);
+    });
+}
+
+// 3. 渲染 Collection 列表 (新增)
+function renderCollectionList(container, collections) {
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (!collections || collections.length === 0) {
+        container.innerHTML = '<div class="text-muted small mt-3">No collections found in this database.</div>';
+        return;
+    }
+
+    collections.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'index-card-group'; 
+        const countStr = c.count !== undefined ? `${c.count} entities` : '';
+        
+        div.innerHTML = `
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="d-flex align-items-center">
+                    <div class="index-icon me-2">📚</div>
+                    <div>
+                        <div class="fw-bold text-dark">${c.name}</div>
+                        <div class="text-muted text-xs">${countStr}</div>
+                    </div>
+                </div>
+                <button class="btn-icon-sm text-danger" onclick="deleteKBFile('collection', '${c.name}')" title="Drop Collection">✕</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// 4. UI 状态更新 (新增)
+function updateDbStatusUI(status, config) {
+    currentDbConfig = config; 
+    
+    if (!els.dbConnectionStatus || !els.dbUriDisplay) return;
+
+    // 状态 Badge
+    if (status === 'connected') {
+        els.dbConnectionStatus.className = 'badge rounded-pill bg-success';
+        els.dbConnectionStatus.textContent = 'Connected';
+    } else {
+        els.dbConnectionStatus.className = 'badge rounded-pill bg-danger';
+        els.dbConnectionStatus.textContent = 'Disconnected';
+    }
+    
+    // URI 显示
+    let uri = config.milvus.uri || "Not configured";
+    if (uri.length > 50) uri = '...' + uri.slice(-45); // 截断长 URI
+    els.dbUriDisplay.textContent = uri;
+}
+
+// 5. 配置弹窗逻辑 (新增 - 挂载到 window)
+window.openDbConfigModal = async function() {
+    const res = await fetchJSON('/api/kb/config');
+    const cfg = res;
+    
+    // 从 milvus 字段下读取
+    const milvus = cfg.milvus || {};
+    
+    if (els.cfgUri) els.cfgUri.value = milvus.uri || '';
+    if (els.cfgToken) els.cfgToken.value = milvus.token || '';
+    
+    // 暂存完整配置结构，以便保存时合并
+    window._currentFullKbConfig = cfg;
+    
+    if (els.dbConfigModal) els.dbConfigModal.showModal();
+};
+
+window.saveDbConfig = async function() {
+    if (!els.cfgUri) return;
+    const uri = els.cfgUri.value.trim();
+    const token = els.cfgToken.value.trim();
+    
+    if(!uri) { alert("URI is required"); return; }
+    
+    const fullConfig = window._currentFullKbConfig || {};
+    if (!fullConfig.milvus) fullConfig.milvus = {};
+
+    // 只更新 URI 和 Token，保留其他高级字段
+    fullConfig.milvus.uri = uri;
+    fullConfig.milvus.token = token;
+    
+    // 发送完整的 JSON 结构回去
+    await fetch('/api/kb/config', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fullConfig)
+    });
+    
+    if (els.dbConfigModal) els.dbConfigModal.close();
+    refreshKBFiles(); // 立即刷新，测试连接状态
+};
+
+// 6. 处理操作按钮点击 (修改 - 挂载到 window)
+window.handleKBAction = function(filePath, pipelineName) {
+    currentTargetFile = filePath;
+    
+    if (pipelineName === 'milvus_index') {
+        // 更新 Milvus 弹窗里的提示和默认值
+        const uriTxt = els.dbUriDisplay ? els.dbUriDisplay.textContent : "Current DB";
+        if (els.modalTargetDb) els.modalTargetDb.textContent = uriTxt;
+
+        // 自动填充 Collection 名 (使用文件名作为默认集合名)
+        const fileName = filePath.split('/').pop().replace('.jsonl', '').replace('.', '_');
+        if (els.idxCollection) els.idxCollection.value = fileName;
+        
+        if (els.milvusDialog) els.milvusDialog.showModal();
+        return;
+    }
+    
+    // 其他任务直接开始
+    runKBTask(pipelineName, filePath);
+};
+
+// 7. 确认建索引 (修改 - 挂载到 window)
+window.confirmIndexTask = function() {
+    if (!els.idxCollection || !els.idxMode) return;
+    const collName = els.idxCollection.value.trim();
+    
+    if (!collName) { alert("Collection name required"); return; }
+    const mode = els.idxMode.value;
+    
+    if (els.milvusDialog) els.milvusDialog.close();
+    
+    // 发起任务
+    runKBTask('milvus_index', currentTargetFile, {
+        collection_name: collName,
+        index_mode: mode
+    });
+};
+
+// 8. 处理文件上传 (保持不变)
+window.handleFileUpload = async function(input) {
+    if (!input.files.length) return;
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+
+    updateKBStatus(true, 'Uploading...');
+    try {
+        const res = await fetch('/api/kb/upload', { method: 'POST', body: formData });
+        if (res.ok) {
+            await refreshKBFiles(); // 刷新列表
+            updateKBStatus(false);
+        } else {
+            alert('Upload failed');
+            updateKBStatus(false);
+        }
+    } catch (e) {
+        console.error(e);
+        updateKBStatus(false);
+        alert("Upload error: " + e.message);
+    } finally {
+        input.value = ''; // 重置 input，允许重复上传同名文件
+    }
+};
+
+// 9. 删除文件 (新增 - 挂载到 window)
+window.deleteKBFile = async function(category, filename) {
+    const action = category === 'collection' ? 'drop this collection' : 'delete this file';
+    if(!confirm(`Permanently ${action} (${filename})?`)) return;
+    
+    try {
+        const res = await fetch(`/api/kb/files/${category}/${filename}`, { method: 'DELETE' });
+        if(res.ok) {
+            refreshKBFiles();
+        } else {
+            const err = await res.json();
+            alert("Delete failed: " + (err.error || res.statusText));
+        }
+    } catch(e) {
+        console.error(e);
+    }
+};
+
+
+
+// 6. 核心：提交任务并轮询
+async function runKBTask(pipelineName, filePath, extraParams = {}) {
+    updateKBStatus(true, `Running ${pipelineName}...`);
+    
+    try {
+        // A. 提交任务
+        const res = await fetch('/api/kb/run', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                pipeline_name: pipelineName,
+                target_file: filePath,
+                ...extraParams
+            })
+        });
+        
+        const data = await res.json();
+        
+        if (res.status === 202) {
+            // B. 开始轮询
+            pollTaskStatus(data.task_id);
+        } else {
+            throw new Error(data.error || 'Task start failed');
+        }
+    } catch (e) {
+        alert(e.message);
+        updateKBStatus(false);
+    }
+}
+
+// 7. 轮询逻辑
+function pollTaskStatus(taskId) {
+    const interval = setInterval(async () => {
+        try {
+            const res = await fetch(`/api/kb/status/${taskId}`);
+            const task = await res.json();
+            
+            if (task.status === 'success') {
+                clearInterval(interval);
+                updateKBStatus(false);
+                refreshKBFiles(); // 任务完成，刷新列表显示新生成的文件
+                console.log('Task Result:', task.result);
+            } else if (task.status === 'failed') {
+                clearInterval(interval);
+                updateKBStatus(false);
+                alert(`Task Failed: ${task.error}`);
+            } else {
+                // still running...
+                console.log('Task running...');
+            }
+        } catch (e) {
+            clearInterval(interval);
+            updateKBStatus(false);
+        }
+    }, 1500); // 每 1.5 秒查一次
+}
+
+// UI 工具：显示/隐藏状态条
+function updateKBStatus(show, msg = '') {
+    if (!els.taskStatusBar || !els.taskMsg) return;
+    if (show) {
+        els.taskStatusBar.classList.remove('hidden');
+        els.taskMsg.textContent = msg;
+    } else {
+        els.taskStatusBar.classList.add('hidden');
+    }
+}
+
+// ==========================================
+// --- End Knowledge Base Logic ---
+// ==========================================
 
 // --- Utilities ---
 function uuidv4() {
@@ -399,6 +734,38 @@ function updateDemoControls() {
 
 // --- Chat Logic (Updated with Streaming) ---
 
+// [新增] 切换到知识库视图
+function openKBView() {
+    if (!els.chatMainView || !els.kbMainView) return;
+
+    // 刷新数据 [新增]
+    refreshKBFiles();
+    
+    // 隐藏聊天，显示知识库
+    els.chatMainView.classList.add("d-none");
+    els.kbMainView.classList.remove("d-none");
+    
+    // 更新按钮状态
+    if (els.kbBtn) els.kbBtn.classList.add("active");
+    
+    // 取消所有 Session 列表的高亮 (视觉上告诉用户现在没在聊任何会话)
+    const items = document.querySelectorAll(".chat-session-item");
+    items.forEach(el => el.classList.remove("active"));
+}
+
+// [新增] 切换回聊天视图 (复位)
+function backToChatView() {
+    if (!els.chatMainView || !els.kbMainView) return;
+
+    els.kbMainView.classList.add("d-none");
+    els.chatMainView.classList.remove("d-none");
+    
+    if (els.kbBtn) els.kbBtn.classList.remove("active");
+    
+    // 重新渲染侧边栏以恢复当前会话的高亮状态
+    renderChatSidebar(); 
+}
+
 // [新增] 渲染 Pipeline 列表到下拉菜单
 async function renderChatPipelineMenu() {
     if (!els.chatPipelineMenu) return;
@@ -513,6 +880,7 @@ function createNewChatSession() {
     renderChatHistory(); renderChatSidebar();
     setChatStatus("Ready", "ready");
     if(els.chatInput && state.chat.engineSessionId) els.chatInput.focus();
+    backToChatView();
 }
 
 function loadChatSession(sessionId) {
@@ -541,6 +909,8 @@ function loadChatSession(sessionId) {
     if (window.innerWidth < 768 && sidebar) {
         sidebar.classList.remove('show');
     }
+
+    backToChatView();
 }
 
 function saveCurrentSession(force = false) {
@@ -786,6 +1156,8 @@ function openChatView() {
   updateDemoControls();
   if(!state.chat.engineSessionId) setChatStatus("Engine Offline", "info");
   else setChatStatus("Ready", "ready");
+
+  backToChatView();
 }
 
 async function stopGeneration() {
@@ -1720,6 +2092,28 @@ function bindEvents() {
 
     if (els.directChatBtn) els.directChatBtn.onclick = openChatView;
 
+    if (els.kbBtn) {
+        els.kbBtn.onclick = openKBView; 
+    }
+
+    if (els.refreshCollectionsBtn) {
+        els.refreshCollectionsBtn.onclick = async () => {
+            log("Manually refreshing collections...");
+            
+            // 增加视觉反馈 (可选)
+            els.refreshCollectionsBtn.disabled = true;
+            els.refreshCollectionsBtn.innerHTML = '⟳'; // 用一个旋转图标代替
+
+            try {
+                await refreshKBFiles(); // 调用已包含同步逻辑的刷新函数
+            } finally {
+                // 恢复按钮状态
+                els.refreshCollectionsBtn.disabled = false;
+                els.refreshCollectionsBtn.innerHTML = '↻';
+            }
+        };
+    }
+
     if (els.chatBack) {
         els.chatBack.onclick = async () => {
             // 1. 保存当前对话
@@ -1742,6 +2136,8 @@ function bindEvents() {
 
     if (els.chatNewBtn) els.chatNewBtn.onclick = createNewChatSession;
     if (els.demoToggleBtn) els.demoToggleBtn.onclick = toggleDemoSession;
+
+    if (els.kbBtn) els.kbBtn.onclick = openKBView;
     
     document.getElementById("step-editor-save").onclick = () => {
         if (!state.editingPath) return;
