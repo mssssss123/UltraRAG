@@ -14,6 +14,9 @@ from types import ModuleType
 import yaml
 import ast
 import os
+import uuid
+import shutil
+from datetime import datetime
 
 try:
     from pymilvus import MilvusClient
@@ -667,7 +670,7 @@ def interrupt_chat(session_id: str):
 def load_kb_config() -> Dict[str, Any]:
     default_config = {
         "milvus": {
-            "uri": str(KB_INDEX_DIR / "default.db"),
+            "uri": "tcp://127.0.0.1:19530",
             "token": "",
             "id_field_name": "id",
             "vector_field_name": "vector",
@@ -723,14 +726,29 @@ def _get_milvus_client():
 
 def list_kb_files() -> Dict[str, List[Dict[str, Any]]]:
     def _scan_files(d: Path, category: str):
-        return [
-            {
-                "name": f.name, "path": _as_project_relative(f), 
-                "size": f.stat().st_size, "mtime": f.stat().st_mtime, 
-                "category": category
-            }
-            for f in sorted(d.glob("*")) if f.is_file() and not f.name.startswith(".")
-        ]
+        items = []
+        if not d.exists(): return items
+        
+        for f in sorted(d.glob("*")):
+            if f.name.startswith("."): continue
+
+            is_dir = f.is_dir()
+            
+            size = 0
+            if is_dir:
+                size = sum(p.stat().st_size for p in f.rglob('*') if p.is_file())
+            else:
+                size = f.stat().st_size
+
+            items.append({
+                "name": f.name, 
+                "path": _as_project_relative(f), 
+                "size": size,
+                "mtime": f.stat().st_mtime,
+                "category": category,
+                "type": "folder" if is_dir else "file" 
+            })
+        return items
     
     collections = []
     db_status = "unknown"
@@ -760,37 +778,106 @@ def list_kb_files() -> Dict[str, List[Dict[str, Any]]]:
         "db_config": load_kb_config() 
     }
 
-def upload_kb_file(file_obj) -> Dict[str, Any]:
-    from werkzeug.utils import secure_filename
-    filename = secure_filename(file_obj.filename)
-    save_path = KB_RAW_DIR / filename
-    file_obj.save(save_path)
-    LOGGER.info(f"File uploaded: {save_path}")
-    return {
-        "name": filename,
-        "path": _as_project_relative(save_path),
-        "size": save_path.stat().st_size
-    }
+def upload_kb_files_batch(file_objs: List[Any]) -> Dict[str, Any]:
+
+    if not file_objs:
+        return {"error": "No files provided"}
+
+    session_id = f"upload_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}"
+    session_dir = KB_RAW_DIR / session_id
+    session_dir.mkdir(parents=True, exist_ok=True)
+
+    saved_files = []
+    total_size = 0
+
+    try:
+        for file_obj in file_objs:
+
+            from werkzeug.utils import secure_filename
+            original_name = file_obj.filename
+            safe_name = secure_filename(original_name) 
+            if not safe_name: 
+                safe_name = f"file_{str(uuid.uuid4())[:8]}{Path(original_name).suffix}"
+          
+            save_path = session_dir / safe_name
+            
+            counter = 1
+            while save_path.exists():
+                stem = Path(safe_name).stem
+                suffix = Path(safe_name).suffix
+                save_path = session_dir / f"{stem}_{counter}{suffix}"
+                counter += 1
+
+            file_obj.save(save_path)
+            
+            saved_files.append(safe_name)
+            total_size += save_path.stat().st_size
+
+        LOGGER.info(f"Created upload session: {session_dir} with {len(saved_files)} files.")
+
+        return {
+            "name": session_id,  
+            "path": _as_project_relative(session_dir), 
+            "size": total_size,
+            "type": "folder",    
+            "file_count": len(saved_files),
+            "mtime": session_dir.stat().st_mtime
+        }
+
+    except Exception as e:
+        if session_dir.exists():
+            shutil.rmtree(session_dir)
+        raise e
 
 def delete_kb_file(category: str, filename: str) -> Dict[str, str]:
-    if category == "collection" or category == "index":
-        try:
-            client = _get_milvus_client()
-            if client.has_collection(filename):
-                client.drop_collection(filename)
-            client.close()
-            LOGGER.info(f"Collection dropped: {filename}")
-            return {"status": "dropped"}
-        except Exception as e:
-            raise PipelineManagerError(f"Failed to drop collection: {e}")
-
-    target_dir = {"raw": KB_RAW_DIR, "corpus": KB_CORPUS_DIR, "chunks": KB_CHUNKS_DIR}.get(category)
-    if target_dir:
-        file_path = target_dir / Path(filename).name
-        if file_path.exists(): file_path.unlink()
-        return {"status": "deleted"}
+    base_dir = None
+    if category == "raw":
+        base_dir = KB_RAW_DIR
+    elif category == "corpus":
+        base_dir = KB_CORPUS_DIR
+    elif category == "chunks":
+        base_dir = KB_CHUNKS_DIR
+    elif category == "collection":
+        return _delete_milvus_collection(filename)
+    elif category == "index":
+        return _delete_milvus_collection(filename)
+        
+    if not base_dir:
+        raise ValueError("Invalid category")
     
-    raise PipelineManagerError("Invalid category")
+    target_path = base_dir / filename
+    
+    if not str(target_path.resolve()).startswith(str(base_dir.resolve())):
+         raise ValueError("Invalid filename path")
+
+    if not target_path.exists():
+        raise FileNotFoundError(f"File or directory not found: {filename}")
+
+    try:
+        if target_path.is_dir():
+            shutil.rmtree(target_path)
+            LOGGER.info(f"Deleted folder: {target_path}")
+        else:
+            target_path.unlink()
+            LOGGER.info(f"Deleted file: {target_path}")
+            
+        return {"status": "deleted", "file": filename}
+        
+    except Exception as e:
+        LOGGER.error(f"Failed to delete {filename}: {e}")
+        raise e
+
+def _delete_milvus_collection(name: str):
+    try:
+        client = _get_milvus_client() 
+        if client.has_collection(name):
+            client.drop_collection(name)
+            LOGGER.info(f"Dropped collection: {name}")
+        client.close()
+        return {"status": "deleted", "collection": name}
+    except Exception as e:
+        LOGGER.error(f"Failed to drop collection {name}: {e}")
+        raise e
 
 def run_kb_pipeline_tool(
     pipeline_name: str, 
