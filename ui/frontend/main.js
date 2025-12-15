@@ -813,7 +813,7 @@ async function renderChatCollectionOptions() {
         const data = await fetchJSON('/api/kb/files');
         const collections = data.index || []; // data.index 存放的是 collection 列表
         
-        els.chatCollectionSelect.innerHTML = '<option value="">⚪ No Knowledge Base</option>';
+        els.chatCollectionSelect.innerHTML = '<option value="">No Knowledge Base</option>';
         
         collections.forEach(c => {
             const opt = document.createElement("option");
@@ -1155,8 +1155,37 @@ function formatCitationHtml(html) {
 function renderChatHistory() {
     if (!els.chatHistory) return;
     els.chatHistory.innerHTML = "";
+    // [核心修改] 仿 Gemini 空白欢迎页
     if (state.chat.history.length === 0) { 
-        els.chatHistory.innerHTML = '<div class="text-center mt-5 pt-5 text-muted small"><p>Ready.</p></div>'; 
+        els.chatHistory.innerHTML = `
+            <div class="empty-state-wrapper fade-in-up">
+                <div class="greeting-section">
+                    <div class="greeting-text">
+                        <span class="greeting-gradient">Hi there</span>
+                    </div>
+                    <h1 class="greeting-title">Where should we start?</h1>
+                </div>
+                
+                <div class="suggestion-chips">
+                    <button class="chip-btn" onclick="setQuickPrompt('Summarize this document')">
+                        <span class="chip-icon">📝</span>
+                        <span>Research</span>
+                    </button>
+                    <button class="chip-btn" onclick="setQuickPrompt('Write a Python script for RAG')">
+                        <span class="chip-icon">💻</span>
+                        <span>Write Code</span>
+                    </button>
+                    <button class="chip-btn" onclick="setQuickPrompt('Explain quantum computing')">
+                        <span class="chip-icon">💡</span>
+                        <span>Learn Concept</span>
+                    </button>
+                    <button class="chip-btn" onclick="setQuickPrompt('Brainstorm marketing ideas')">
+                        <span class="chip-icon">🤯</span>
+                        <span>Brainstorm</span>
+                    </button>
+                </div>
+            </div>
+        `;
         return; 
     }
     state.chat.history.forEach((entry) => {
@@ -1197,6 +1226,16 @@ function renderChatHistory() {
     });
     els.chatHistory.scrollTop = els.chatHistory.scrollHeight;
 }
+
+// [新增] 快速填入提示词的辅助函数 (加在 main.js 任意位置)
+window.setQuickPrompt = function(text) {
+    if (els.chatInput) {
+        els.chatInput.value = text;
+        els.chatInput.focus();
+        // 可选：如果想点击直接发送，取消下面这行的注释
+        // els.chatSend.click();
+    }
+};
 
 function setChatStatus(message, variant = "info") {
   if (!els.chatStatus) return;
@@ -1349,7 +1388,7 @@ function renderSources(bubble, sources, isAppend = false) {
         // 第一次创建容器
         refContainer = document.createElement("div");
         refContainer.className = "reference-container";
-        refContainer.innerHTML = `<div class="ref-header">📚 References</div>`;
+        refContainer.innerHTML = `<div class="ref-header">References</div>`;
         list = document.createElement("div");
         list.className = "ref-list";
         refContainer.appendChild(list);
@@ -1523,6 +1562,22 @@ async function handleChatSubmit(event) {
     state.chat.history.push({ role: "assistant", text: "", meta: {} });
     
     const chatContainer = document.getElementById("chat-history");
+
+    // [核心优化] 定义一个标志位：默认为 true (一开始就自动跟随)
+    let shouldAutoScroll = true;
+
+    // [核心优化] 监听用户的滚动行为
+    // 只要用户一旦发生滚动，就立即计算：我现在是不是在底部？
+    // 如果不在底部，shouldAutoScroll 就会变成 false，生成循环就不会再打扰用户了。
+    const handleScroll = () => {
+        const threshold = 30; // 只要距离底部超过 30px，就认为用户在“往上看”
+        const distance = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight;
+        shouldAutoScroll = distance <= threshold;
+    };
+    
+    // 绑定监听
+    chatContainer.addEventListener('scroll', handleScroll);
+
     const bubble = document.createElement("div");
     bubble.className = "chat-bubble assistant";
     const contentDiv = document.createElement("div");
@@ -1579,7 +1634,11 @@ async function handleChatSubmit(event) {
                 
                 // 渲染 (true 表示追加到列表末尾)
                 renderSources(bubble, remappedDocs, true);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // [修改] 只有当标志位允许时，才滚动
+                 if (shouldAutoScroll) {
+                     chatContainer.scrollTop = chatContainer.scrollHeight;
+                 }
             } 
             // [修改] 处理 Token：应用偏移高亮
             else if (data.type === "token") {
@@ -1596,7 +1655,10 @@ async function handleChatSubmit(event) {
                     html = formatCitationHtmlWithOffset(html, currentBatchOffset);
                     
                     contentDiv.innerHTML = html;
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    // [修改] 只有当标志位允许时，才滚动
+                    if (shouldAutoScroll) {
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }
                 }
             } 
             else if (data.type === "final") {
@@ -1607,6 +1669,10 @@ async function handleChatSubmit(event) {
                 // 最终定格也应用偏移
                 html = formatCitationHtmlWithOffset(html, currentBatchOffset);
                 contentDiv.innerHTML = html;
+                // [新增] 最终渲染完后，如果原本就在底部，也要自动滚到底
+                if (shouldAutoScroll) {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
                 state.chat.history[entryIndex].text = finalText;
 
                 // ================= [新增] 引用筛选逻辑 =================
