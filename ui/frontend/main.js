@@ -85,6 +85,9 @@ const els = {
   // [新增] 按钮
   kbBtn: document.getElementById("kb-btn"),
 
+  chatSidebar: document.querySelector(".chat-sidebar"),
+  chatSidebarToggleBtn: document.getElementById("sidebar-toggle-btn"),
+
   // [新增] Chat 顶部控件
   chatPipelineLabel: document.getElementById("chat-pipeline-label"),
   chatPipelineMenu: document.getElementById("chat-pipeline-menu"),
@@ -828,6 +831,49 @@ function isPendingLanguageFence(text, languages = []) {
   return languages.some(lang => lang.startsWith(langFragment));
 }
 
+function protectMath(text) {
+  const mathBlocks = [];
+  // Match: code blocks (skip), $$...$$, \[...\], \(...\), $...$
+  const regex = /(```[\s\S]*?```|`[^`\n]+`)|(\$\$[\s\S]*?\$\$)|(\\\[[\s\S]*?\\\])|(\\\([\s\S]*?\\\))|(\$[^\$\n]+\$)/g;
+  
+  const protectedText = text.replace(regex, (match, code) => {
+    if (code) return code; // Keep code blocks as-is
+    mathBlocks.push(match);
+    return `MATHPLACEHOLDER${mathBlocks.length - 1}END`;
+  });
+  return { text: protectedText, mathBlocks };
+}
+
+function restoreMath(html, mathBlocks) {
+  if (!mathBlocks.length) return html;
+  
+  // Simply restore the original LaTeX with delimiters
+  return html.replace(/MATHPLACEHOLDER(\d+)END/g, (match, id) => {
+    return mathBlocks[parseInt(id, 10)] || match;
+  });
+}
+
+function renderLatex(element) {
+  if (!element || !window.renderMathInElement) {
+    console.warn("KaTeX renderMathInElement not available");
+    return;
+  }
+  try {
+    window.renderMathInElement(element, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false,
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    });
+  } catch (e) {
+    console.error("KaTeX rendering error:", e);
+  }
+}
+
 function renderMarkdown(text, { allowCodeBlock = true, unwrapLanguages = [] } = {}) {
   if (!text) return "";
   if (unwrapLanguages.length) {
@@ -838,14 +884,24 @@ function renderMarkdown(text, { allowCodeBlock = true, unwrapLanguages = [] } = 
       window.marked.setOptions({ breaks: true, gfm: true });
       markdownConfigured = true;
     }
+    
+    // Protect Math from Markdown processing
+    const { text: protectedText, mathBlocks } = protectMath(text);
+
     let rendererOptions = undefined;
     if (!allowCodeBlock && window.marked) {
       const renderer = new window.marked.Renderer();
       renderer.code = (code) => `<p>${escapeHtml(code).replace(/\n/g, "<br>")}</p>`;
       rendererOptions = { renderer };
     }
-    const rawHtml = window.marked.parse(text, rendererOptions);
-    return window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+    
+    const rawHtml = window.marked.parse(protectedText, rendererOptions);
+    let sanitized = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+    
+    // Restore original LaTeX (with $$ delimiters intact)
+    sanitized = restoreMath(sanitized, mathBlocks);
+
+    return sanitized;
   }
   return basicMarkdown(text, { allowCodeBlock });
 }
@@ -1374,6 +1430,7 @@ function renderChatHistory() {
             // 使用当初的 offset 进行渲染
             // 这样如果你当初生成时是 [6]，现在渲染出来依然是 [6]
             content.innerHTML = formatCitationHtmlWithOffset(htmlContent, msgOffset);
+            renderLatex(content);
         } else {
             // 用户消息一般不需要 markdown，或者简单的转义即可
             content.textContent = entry.text;
@@ -1558,6 +1615,7 @@ function showSourceDetail(title, content) {
 
         if (typeof renderMarkdown === 'function') {
             contentDiv.innerHTML = renderMarkdown(cleanedText);
+            renderLatex(contentDiv);
         } else {
             // 降级处理：直接显示清洗后的纯文本，也比之前好读很多
             contentDiv.innerText = cleanedText;
@@ -1876,6 +1934,7 @@ async function handleChatSubmit(event) {
                     html = formatCitationHtmlWithOffset(html, currentBatchOffset);
                     
                     contentDiv.innerHTML = html;
+                    renderLatex(contentDiv);
                     if (shouldAutoScroll) {
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                     }
@@ -1889,6 +1948,7 @@ async function handleChatSubmit(event) {
                 // 最终渲染
                 html = formatCitationHtmlWithOffset(html, currentBatchOffset);
                 contentDiv.innerHTML = html;
+                renderLatex(contentDiv);
 
                 // 渲染参考资料卡片
                 if (pendingRenderSources && pendingRenderSources.length > 0) {
@@ -2503,6 +2563,13 @@ function bindEvents() {
         els.kbBtn.onclick = openKBView; 
     }
 
+    if (els.chatSidebarToggleBtn && els.chatSidebar) {
+        els.chatSidebarToggleBtn.onclick = () => {
+            const isCollapsed = els.chatSidebar.classList.toggle("collapsed");
+            localStorage.setItem("ultrarag_sidebar_collapsed", isCollapsed);
+        };
+    }
+
     if (els.refreshCollectionsBtn) {
         els.refreshCollectionsBtn.onclick = async () => {
             log("Manually refreshing collections...");
@@ -2605,6 +2672,11 @@ async function bootstrap() {
       log("UI Ready."); 
   } catch (err) { 
       log(`Initialization error: ${err.message}`); 
+  }
+
+  const wasCollapsed = localStorage.getItem("ultrarag_sidebar_collapsed") === "true";
+  if (wasCollapsed && els.chatSidebar) {
+    els.chatSidebar.classList.add("collapsed");
   }
 
   // 2. [修改] 数据加载完后，再恢复历史会话和选中状态
