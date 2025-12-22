@@ -254,5 +254,77 @@ def evisrag_output_extract_from_special(ans_ls: List[str]) -> Dict[str, List[str
     return {"pred_ls": [extract(ans) for ans in ans_ls]}
 
 
+@app.tool(output="ret_psg->ret_psg")
+def assign_citation_ids(
+    ret_psg: List[List[str]],
+) -> Dict[str, Any]:
+    result_psg = []
+    
+    for docs_list in ret_psg:
+        cited_docs = []
+        for idx, doc in enumerate(docs_list, start=1):
+            doc_text = str(doc).strip()
+            cited_docs.append(f"[{idx}] {doc_text}")
+        result_psg.append(cited_docs)
+    
+    return {
+        "ret_psg": result_psg,
+    }
+
+
+class CitationRegistry:
+    _instances: Dict[int, Dict[str, Any]] = {}
+    
+    @classmethod
+    def reset(cls):
+        cls._instances = {}
+    
+    @classmethod
+    def get_or_create(cls, query_index: int) -> Dict[str, Any]:
+        if query_index not in cls._instances:
+            cls._instances[query_index] = {
+                "registry": {},
+                "counter": 0
+            }
+        return cls._instances[query_index]
+    
+    @classmethod
+    def assign_id(cls, query_index: int, doc_text: str) -> int:
+        state = cls.get_or_create(query_index)
+        doc_hash = doc_text.strip()
+        
+        if doc_hash in state["registry"]:
+            return state["registry"][doc_hash]
+        else:
+            state["counter"] += 1
+            state["registry"][doc_hash] = state["counter"]
+            return state["counter"]
+
+
+@app.tool(output="q_ls->q_ls")
+def init_citation_registry(q_ls: List[str]) -> Dict[str, Any]:
+    CitationRegistry.reset()
+    return {"q_ls": q_ls}
+
+
+@app.tool(output="ret_psg->ret_psg")
+def assign_citation_ids_stateful(
+    ret_psg: List[List[str]],
+) -> Dict[str, Any]:
+    result_psg = []
+    
+    for i, docs_list in enumerate(ret_psg):
+        cited_docs = []
+        for doc in docs_list:
+            doc_text = str(doc).strip()
+            doc_id = CitationRegistry.assign_id(i, doc_text)
+            cited_docs.append(f"[{doc_id}] {doc_text}")
+        result_psg.append(cited_docs)
+    
+    return {
+        "ret_psg": result_psg,
+    }
+
+
 if __name__ == "__main__":
     app.run(transport="stdio")

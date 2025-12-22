@@ -717,14 +717,12 @@ function log(message) {
 let markdownConfigured = false;
 const MARKDOWN_LANGS = ["markdown", "md", "mdx"];
 
-// [新增] 带偏移量的引用高亮函数
-// 将文本中的 [1] 替换为带点击事件的 <span ...>[1+offset]</span>
-function formatCitationHtmlWithOffset(html, offset) {
+// 引用高亮函数 - 将 [1] 替换为可点击的引用链接
+function formatCitationHtml(html) {
     if (!html) return "";
     return html.replace(/\[(\d+)\]/g, (match, p1) => {
-        const originalId = parseInt(p1, 10);
-        const newId = originalId + offset; // 核心逻辑：加上偏移量
-        return `<span class="citation-link" onclick="scrollToReference(${newId})">[${newId}]</span>`;
+        const id = parseInt(p1, 10);
+        return `<span class="citation-link" onclick="scrollToReference(${id})">[${id}]</span>`;
     });
 }
 
@@ -1451,14 +1449,7 @@ function renderChatHistory() {
 
         if (entry.role === "assistant") {
             let htmlContent = renderMarkdown(entry.text || "", { unwrapLanguages: MARKDOWN_LANGS });
-            
-            // [核心修复] 读取该消息专属的 offset
-            // 如果是老消息没有 meta，或者是第一轮对话，则默认为 0
-            const msgOffset = (entry.meta && entry.meta.citationOffset) ? entry.meta.citationOffset : 0;
-            
-            // 使用当初的 offset 进行渲染
-            // 这样如果你当初生成时是 [6]，现在渲染出来依然是 [6]
-            content.innerHTML = formatCitationHtmlWithOffset(htmlContent, msgOffset);
+            content.innerHTML = formatCitationHtml(htmlContent);
             renderLatex(content);
         } else {
             // 用户消息：保留换行效果
@@ -1908,24 +1899,6 @@ async function handleChatSubmit(event) {
     chatContainer.appendChild(bubble);
 
     let currentText = "";
-    
-    // =========================================================
-    // [核心修复] 计算历史引用的总数，作为本轮的起始偏移量
-    // =========================================================
-    let initialSourceCount = 0;
-    // 遍历现有的历史记录（不包含刚刚 push 进去的那个空的 assistant）
-    for (let i = 0; i < entryIndex; i++) {
-        const entry = state.chat.history[i];
-        if (entry.meta && Array.isArray(entry.meta.sources)) {
-            initialSourceCount += entry.meta.sources.length;
-        }
-    }
-
-    // 这一轮的计数器，从历史总数开始累加
-    let sessionSourceCount = initialSourceCount; 
-    // 这一轮的固定偏移量，就是历史总数 (例如第一轮有5个，那第二轮偏移量就是5)
-    let currentBatchOffset = initialSourceCount; 
-    
     let allSources = [];        
     let pendingRenderSources = [];
 
@@ -1950,20 +1923,13 @@ async function handleChatSubmit(event) {
                 updateProcessUI(entryIndex, data);
             } 
             else if (data.type === "sources") {
-                // 1. 这一批的偏移量 = 当前累计的总数
-                currentBatchOffset = sessionSourceCount;
-                // 2. 累加总数
-                sessionSourceCount += data.data.length;
-                
-                // 3. 映射 ID
-                const remappedDocs = data.data.map((doc, idx) => ({
+                // 后端已为每个文档分配了唯一ID，直接使用
+                const docs = data.data.map((doc) => ({
                     ...doc, 
-                    // [核心] ID = (历史总数 + 之前批次) + (当前索引 + 1)
-                    displayId: currentBatchOffset + (idx + 1)
+                    displayId: doc.id
                 }));
-                
-                allSources = allSources.concat(remappedDocs);
-                pendingRenderSources = pendingRenderSources.concat(remappedDocs);
+                allSources = allSources.concat(docs);
+                pendingRenderSources = pendingRenderSources.concat(docs);
             } 
             else if (data.type === "token") {
                 if (!data.is_final) updateProcessUI(entryIndex, data);
@@ -1972,10 +1938,7 @@ async function handleChatSubmit(event) {
                     if (typeof isPendingLanguageFence === 'function' && isPendingLanguageFence(currentText, MARKDOWN_LANGS)) continue;
                     
                     let html = renderMarkdown(currentText, { unwrapLanguages: MARKDOWN_LANGS });
-                    
-                    // 使用计算正确的 currentBatchOffset
-                    html = formatCitationHtmlWithOffset(html, currentBatchOffset);
-                    
+                    html = formatCitationHtml(html);
                     contentDiv.innerHTML = html;
                     renderLatex(contentDiv);
                     if (shouldAutoScroll) {
@@ -1987,9 +1950,7 @@ async function handleChatSubmit(event) {
                 const final = data.data;
                 let finalText = currentText || final.answer || "";
                 let html = renderMarkdown(finalText, { unwrapLanguages: MARKDOWN_LANGS });
-                
-                // 最终渲染
-                html = formatCitationHtmlWithOffset(html, currentBatchOffset);
+                html = formatCitationHtml(html);
                 contentDiv.innerHTML = html;
                 renderLatex(contentDiv);
 
@@ -2005,27 +1966,20 @@ async function handleChatSubmit(event) {
                 // 更新历史记录
                 state.chat.history[entryIndex].text = finalText;
                 if (!state.chat.history[entryIndex].meta) state.chat.history[entryIndex].meta = {};
-                
-                // [关键] 保存这一轮使用的 offset
-                state.chat.history[entryIndex].meta.citationOffset = currentBatchOffset; 
-                // [关键] 保存所有的 source 对象 (包含正确的 displayId)
                 state.chat.history[entryIndex].meta.sources = allSources;
 
-                // 引用筛选/高亮逻辑
-                const usedLocalIds = new Set();
+                // 高亮被引用的文档卡片
+                const usedIds = new Set();
                 const regex = /\[(\d+)\]/g;
                 let match;
                 while ((match = regex.exec(finalText)) !== null) {
-                    usedLocalIds.add(parseInt(match[1], 10));
+                    usedIds.add(parseInt(match[1], 10));
                 }
 
                 const refItems = bubble.querySelectorAll(".ref-item");
                 refItems.forEach(item => {
-                    const globalId = parseInt(item.id.replace("ref-item-", ""), 10);
-                    // 还原为 Local ID 进行比对
-                    const localId = globalId - currentBatchOffset;
-                    
-                    if (usedLocalIds.has(localId)) {
+                    const id = parseInt(item.id.replace("ref-item-", ""), 10);
+                    if (usedIds.has(id)) {
                         item.classList.add("used");
                         item.classList.remove("unused");
                     } else {
