@@ -16,6 +16,8 @@ import ast
 import os
 import uuid
 import shutil
+import re
+import unicodedata
 from datetime import datetime
 
 try:
@@ -43,6 +45,19 @@ KB_CORPUS_DIR = KB_ROOT / "corpus"
 KB_CHUNKS_DIR = KB_ROOT / "chunks" 
 KB_INDEX_DIR = KB_ROOT / "index"
 KB_CONFIG_PATH = KB_ROOT / "kb_config.json"
+
+
+def _secure_filename_unicode(filename: str) -> str:
+    """
+    安全化文件名，保留 Unicode 字符（如中文），但移除危险字符。
+    """
+    filename = unicodedata.normalize('NFC', filename)
+    # 移除路径分隔符和危险字符
+    filename = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '', filename)
+    # 移除首尾空白和点
+    filename = filename.strip().strip('.')
+    return filename
+
 
 for d in [LEGACY_PIPELINES_DIR, CHAT_DATASET_DIR, OUTPUT_DIR, KB_RAW_DIR, KB_CORPUS_DIR, KB_CHUNKS_DIR, KB_INDEX_DIR]:
     d.mkdir(parents=True, exist_ok=True)
@@ -872,9 +887,8 @@ def upload_kb_files_batch(file_objs: List[Any]) -> Dict[str, Any]:
     try:
         for file_obj in file_objs:
 
-            from werkzeug.utils import secure_filename
             original_name = file_obj.filename
-            safe_name = secure_filename(original_name) 
+            safe_name = _secure_filename_unicode(original_name)
             if not safe_name: 
                 safe_name = f"file_{str(uuid.uuid4())[:8]}{Path(original_name).suffix}"
           
@@ -957,6 +971,58 @@ def _delete_milvus_collection(name: str):
     except Exception as e:
         LOGGER.error(f"Failed to drop collection {name}: {e}")
         raise e
+
+def clear_staging_area() -> Dict[str, Any]:
+    """清空暂存区：删除 raw, corpus, chunks 三个目录中的所有文件"""
+    deleted_counts = {"raw": 0, "corpus": 0, "chunks": 0}
+    errors = []
+    
+    for category, base_dir in [
+        ("raw", KB_RAW_DIR),
+        ("corpus", KB_CORPUS_DIR),
+        ("chunks", KB_CHUNKS_DIR)
+    ]:
+        if not base_dir.exists():
+            continue
+            
+        try:
+            # 遍历目录中的所有文件和文件夹
+            for item in base_dir.iterdir():
+                if item.name.startswith("."):
+                    continue
+                    
+                try:
+                    if item.is_dir():
+                        shutil.rmtree(item)
+                        deleted_counts[category] += 1
+                        LOGGER.info(f"Deleted folder: {item}")
+                    else:
+                        item.unlink()
+                        deleted_counts[category] += 1
+                        LOGGER.info(f"Deleted file: {item}")
+                except Exception as e:
+                    error_msg = f"Failed to delete {item} in {category}: {e}"
+                    LOGGER.error(error_msg)
+                    errors.append(error_msg)
+                    
+        except Exception as e:
+            error_msg = f"Error processing {category} directory: {e}"
+            LOGGER.error(error_msg)
+            errors.append(error_msg)
+    
+    total_deleted = sum(deleted_counts.values())
+    result = {
+        "status": "completed",
+        "deleted_counts": deleted_counts,
+        "total_deleted": total_deleted
+    }
+    
+    if errors:
+        result["errors"] = errors
+        result["status"] = "completed_with_errors"
+    
+    LOGGER.info(f"Staging area cleared: {total_deleted} items deleted")
+    return result
 
 def run_kb_pipeline_tool(
     pipeline_name: str, 
