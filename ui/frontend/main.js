@@ -9,6 +9,9 @@ const state = {
   parametersReady: false,
   mode: "builder",
   
+  // 应用模式：true = admin (完整界面)，false = chat-only
+  adminMode: true,
+  
   // [修改] 聊天状态管理
   chat: { 
     history: [], 
@@ -717,14 +720,7 @@ function log(message) {
 let markdownConfigured = false;
 const MARKDOWN_LANGS = ["markdown", "md", "mdx"];
 
-// 引用高亮函数 - 将 [1] 替换为可点击的引用链接
-function formatCitationHtml(html) {
-    if (!html) return "";
-    return html.replace(/\[(\d+)\]/g, (match, p1) => {
-        const id = parseInt(p1, 10);
-        return `<span class="citation-link" onclick="scrollToReference(${id})">[${id}]</span>`;
-    });
-}
+// 引用高亮函数已移至后面的 formatCitationHtml(html, messageIdx) 定义
 
 function escapeHtml(str) {
   return str
@@ -1390,13 +1386,14 @@ function appendChatMessage(role, text, meta = {}) {
   saveCurrentSession(); 
 }
 
-function formatCitationHtml(html) {
+function formatCitationHtml(html, messageIdx = null) {
     if (!html) return "";
-    // [关键修改] 增加 onclick="scrollToReference(1)"
+    // [关键修改] 增加 onclick="scrollToReference(1, messageIdx)"
     // 注意：scrollToReference 函数必须挂在 window 上或定义在全局作用域
+    // messageIdx 用于定位到具体的消息气泡，避免多条消息引用混淆
     return html.replace(
         /\[(\d+)\]/g, 
-        '<span class="citation-link" onclick="scrollToReference($1)">[$1]</span>'
+        (match, p1) => `<span class="citation-link" onclick="scrollToReference(${p1}, ${messageIdx})">[${p1}]</span>`
     );
 }
 
@@ -1437,10 +1434,12 @@ function renderChatHistory() {
         `;
         return; 
     }
-    state.chat.history.forEach((entry) => {
+    state.chat.history.forEach((entry, index) => {
         const bubble = document.createElement("div"); 
         // 加上 fade-in 动画类，稍微好看点
         bubble.className = `chat-bubble ${entry.role} fade-in-up`;
+        // 添加消息索引标识，用于引用定位
+        bubble.setAttribute("data-message-idx", index);
         // 历史记录直接展示，不需要动画延迟
         bubble.style.animationDelay = "0ms";
 
@@ -1449,7 +1448,7 @@ function renderChatHistory() {
 
         if (entry.role === "assistant") {
             let htmlContent = renderMarkdown(entry.text || "", { unwrapLanguages: MARKDOWN_LANGS });
-            content.innerHTML = formatCitationHtml(htmlContent);
+            content.innerHTML = formatCitationHtml(htmlContent, index);
             renderLatex(content);
         } else {
             // 用户消息：保留换行效果
@@ -1671,11 +1670,24 @@ window.closeSourceDetail = function() {
 };
 
 // 点击 citation [x] 高亮引用项并显示详情
-window.scrollToReference = function(refId) {
-    const targetId = `ref-item-${refId}`;
-    // 查找当前可见的引用列表项 (倒序查找最近的)
-    const allRefs = document.querySelectorAll(`[id='${targetId}']`);
-    const target = allRefs[allRefs.length - 1];
+// messageIdx 参数用于定位到具体的消息气泡，确保显示正确消息的引用
+window.scrollToReference = function(refId, messageIdx = null) {
+    let target = null;
+    
+    if (messageIdx !== null) {
+        // 优先在指定消息气泡内查找引用
+        const bubble = document.querySelector(`[data-message-idx="${messageIdx}"]`);
+        if (bubble) {
+            target = bubble.querySelector(`[data-ref-id="${refId}"]`);
+        }
+    }
+    
+    // 如果没找到，回退到旧逻辑（兼容性）
+    if (!target) {
+        const targetId = `ref-item-${refId}`;
+        const allRefs = document.querySelectorAll(`[id='${targetId}']`);
+        target = allRefs[allRefs.length - 1];
+    }
 
     if (target) {
         // 1. 清除所有引用项的高亮
@@ -1741,6 +1753,8 @@ function renderSources(bubble, sources, usedIds = null) {
         const item = document.createElement("div");
         item.className = "ref-item";
         item.id = `ref-item-${showId}`;
+        // 添加 data-ref-id 属性，用于通过 messageIdx 精确定位引用
+        item.setAttribute("data-ref-id", showId);
         item._sourceData = src; 
         item.onclick = (e) => {
             e.stopPropagation();
@@ -1963,6 +1977,8 @@ async function handleChatSubmit(event) {
 
     const bubble = document.createElement("div");
     bubble.className = "chat-bubble assistant";
+    // 添加消息索引标识，用于引用定位
+    bubble.setAttribute("data-message-idx", entryIndex);
     const contentDiv = document.createElement("div");
     contentDiv.className = "msg-content";
     bubble.appendChild(contentDiv);
@@ -2008,7 +2024,7 @@ async function handleChatSubmit(event) {
                     if (typeof isPendingLanguageFence === 'function' && isPendingLanguageFence(currentText, MARKDOWN_LANGS)) continue;
                     
                     let html = renderMarkdown(currentText, { unwrapLanguages: MARKDOWN_LANGS });
-                    html = formatCitationHtml(html);
+                    html = formatCitationHtml(html, entryIndex);
                     contentDiv.innerHTML = html;
                     renderLatex(contentDiv);
                     if (shouldAutoScroll) {
@@ -2020,7 +2036,7 @@ async function handleChatSubmit(event) {
                 const final = data.data;
                 let finalText = currentText || final.answer || "";
                 let html = renderMarkdown(finalText, { unwrapLanguages: MARKDOWN_LANGS });
-                html = formatCitationHtml(html);
+                html = formatCitationHtml(html, entryIndex);
                 contentDiv.innerHTML = html;
                 renderLatex(contentDiv);
 
@@ -2731,7 +2747,24 @@ window.updateKbLabel = function(selectEl) {
 };
 
 async function bootstrap() {
-  setMode(Modes.BUILDER); 
+  // 0. 首先获取应用模式配置
+  try {
+      const modeConfig = await fetchJSON('/api/config/mode');
+      state.adminMode = modeConfig.admin_mode === true;
+  } catch (err) {
+      console.warn("Failed to fetch app mode, defaulting to admin mode:", err);
+      state.adminMode = true;
+  }
+  
+  // 根据模式决定初始视图
+  if (state.adminMode) {
+      setMode(Modes.BUILDER);
+  } else {
+      // Chat-only 模式：直接进入 Chat 视图
+      setMode(Modes.CHAT);
+      applyChatOnlyMode();
+  }
+  
   resetContextStack(); 
   renderSteps(); 
   updatePipelinePreview(); 
@@ -2766,11 +2799,11 @@ async function bootstrap() {
                   state.chat.currentSessionId = session.id;
                   state.chat.history = cloneDeep(session.messages || []);
                   
-                  // [关键] 如果上次有选中的 Pipeline，自动加载它
-                  if (session.pipeline) {
+                  // [关键] 只在 Admin 模式下自动加载 Pipeline（Chat-only 模式在 initChatOnlyView 中处理）
+                  if (state.adminMode && session.pipeline) {
                       // 此时 refreshPipelines 已完成，UI 是安全的
                       loadPipeline(session.pipeline); 
-                  } else {
+                  } else if (state.adminMode) {
                       // 如果没有 pipeline 记录，只设置 label
                       setHeroPipelineLabel(state.selectedPipeline || "");
                   }
@@ -2781,9 +2814,54 @@ async function bootstrap() {
           console.warn("Failed to load history:", e);
           state.chat.sessions = [];
       }
-  } else {
+  } else if (state.adminMode) {
       setHeroPipelineLabel(state.selectedPipeline || "");
   }
+  
+  // Chat-only 模式下，初始化 Chat 界面
+  if (!state.adminMode) {
+      await initChatOnlyView();
+  }
+}
+
+// Chat-only 模式下隐藏管理相关的按钮
+function applyChatOnlyMode() {
+  // 隐藏 "Configure Pipeline" 返回按钮（不允许返回 Builder）
+  if (els.chatBack) {
+      els.chatBack.style.display = 'none';
+  }
+}
+
+// Chat-only 模式下初始化 Chat 界面
+async function initChatOnlyView() {
+  // 1. 渲染 Pipeline 选择菜单
+  await renderChatPipelineMenu();
+  
+  // 2. 渲染知识库选项
+  renderChatCollectionOptions();
+  
+  // 3. 渲染侧边栏会话列表
+  renderChatSidebar();
+  
+  // 4. 渲染聊天历史
+  renderChatHistory();
+  
+  // 5. 如果有已保存的会话且有对应的 Pipeline，尝试自动加载
+  const lastId = localStorage.getItem("ultrarag_last_active_id");
+  if (lastId) {
+      const session = state.chat.sessions.find(s => s.id === lastId);
+      if (session && session.pipeline) {
+          // 尝试加载上次使用的 Pipeline
+          try {
+              await switchChatPipeline(session.pipeline);
+          } catch (e) {
+              console.warn("Failed to restore last pipeline:", e);
+          }
+      }
+  }
+  
+  // 6. 更新 Demo 控制按钮状态
+  updateDemoControls();
 }
 
 bootstrap();
