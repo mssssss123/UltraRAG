@@ -64,6 +64,10 @@ class Retriever:
             self.retriever_zhipuai_search,
             output="q_ls,top_k,retrieve_thread_num->ret_psg",
         )
+        mcp_inst.tool(
+            self.retriever_batch_search,
+            output="batch_query_list,top_k,query_instruction,collection_name->ret_psg_ls",
+        )
 
     def _drop_keys(self, d: Dict[str, Any], banned: List[str]) -> Dict[str, Any]:
         return {k: v for k, v in (d or {}).items() if k not in banned and v is not None}
@@ -812,6 +816,32 @@ class Retriever:
         )
    
         return {"ret_psg": rets}
+
+    async def retriever_batch_search(
+        self,
+        batch_query_list: List[List[str]],
+        top_k: int = 5,
+        query_instruction: str = "",
+        collection_name: str = "",
+    ) -> Dict[str, List[List[List[str]]]]:
+
+        ret_psg_ls = []
+        for query_list in batch_query_list:
+            if not query_list:
+                ret_psg_ls.append([])
+                continue
+            
+            result = await self.retriever_search(
+                query_list=query_list,
+                top_k=top_k,
+                query_instruction=query_instruction,
+                collection_name=collection_name,
+            )
+            
+            ret_psg = result.get("ret_psg", [])
+            ret_psg_ls.append(ret_psg)
+        
+        return {"ret_psg_ls": ret_psg_ls}
     
     async def retriever_deploy_search(
         self,
