@@ -1080,8 +1080,21 @@ async function renderChatCollectionOptions() {
 // [新增] 切换到知识库视图
 function openKBView() {
     if (!els.chatMainView || !els.kbMainView) return;
+    
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndOpenKB();
+        });
+        return;
+    }
 
-    // 刷新数据 [新增]
+    doOpenKBView();
+}
+
+// 实际执行打开KB视图
+function doOpenKBView() {
+    // 刷新数据
     refreshKBFiles();
     
     // 隐藏聊天，显示知识库
@@ -1091,9 +1104,20 @@ function openKBView() {
     // 更新按钮状态
     if (els.kbBtn) els.kbBtn.classList.add("active");
     
-    // 取消所有 Session 列表的高亮 (视觉上告诉用户现在没在聊任何会话)
+    // 取消所有 Session 列表的高亮
     const items = document.querySelectorAll(".chat-session-item");
     items.forEach(el => el.classList.remove("active"));
+}
+
+// 中断生成并打开KB
+function interruptAndOpenKB() {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+        state.chat.controller = null;
+    }
+    setChatRunning(false);
+    saveCurrentSession(true);
+    doOpenKBView();
 }
 
 // [新增] 切换回聊天视图 (复位)
@@ -1222,7 +1246,35 @@ function resetChatSession() {
 function generateChatId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
 
 function createNewChatSession() {
-    if (state.chat.history.length > 0) saveCurrentSession(true);
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndCreateNewChat();
+        });
+        return;
+    }
+    
+    if (state.chat.history.length > 0) {
+        saveCurrentSession(true);
+    }
+    
+    state.chat.currentSessionId = generateChatId();
+    state.chat.history = [];
+    renderChatHistory(); renderChatSidebar();
+    setChatStatus("Ready", "ready");
+    if(els.chatInput && state.chat.engineSessionId) els.chatInput.focus();
+    backToChatView();
+}
+
+// 中断生成并创建新会话
+function interruptAndCreateNewChat() {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+        state.chat.controller = null;
+    }
+    setChatRunning(false);
+    saveCurrentSession(true);
+    
     state.chat.currentSessionId = generateChatId();
     state.chat.history = [];
     renderChatHistory(); renderChatSidebar();
@@ -1232,7 +1284,13 @@ function createNewChatSession() {
 }
 
 function loadChatSession(sessionId) {
-    if (state.chat.running) return; // 正在生成时不许切
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndLoadSession(sessionId);
+        });
+        return;
+    }
     
     // 先保存当前正在进行的会话
     saveCurrentSession(false); 
@@ -1259,6 +1317,83 @@ function loadChatSession(sessionId) {
     }
 
     backToChatView();
+}
+
+// 中断生成并加载会话
+function interruptAndLoadSession(sessionId) {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+        state.chat.controller = null;
+    }
+    setChatRunning(false);
+    saveCurrentSession(true);
+    
+    const session = state.chat.sessions.find(s => s.id === sessionId);
+    if (!session) return;
+
+    state.chat.currentSessionId = session.id;
+    state.chat.history = cloneDeep(session.messages || []);
+    
+    renderChatHistory();
+    renderChatSidebar();
+    setChatStatus("Ready", "ready");
+    
+    const sidebar = document.querySelector('.chat-sidebar');
+    if (window.innerWidth < 768 && sidebar) {
+        sidebar.classList.remove('show');
+    }
+    backToChatView();
+}
+
+// 显示中断确认弹窗
+function showInterruptConfirmDialog(onConfirm) {
+    // 创建或获取弹窗
+    let dialog = document.getElementById('interrupt-confirm-dialog');
+    if (!dialog) {
+        dialog = document.createElement('dialog');
+        dialog.id = 'interrupt-confirm-dialog';
+        dialog.className = 'interrupt-confirm-dialog';
+        document.body.appendChild(dialog);
+    }
+    
+    dialog.innerHTML = `
+        <div class="interrupt-dialog-content">
+            <div class="interrupt-dialog-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3>Generation in Progress</h3>
+            <p>A response is currently being generated. This action will interrupt the generation.</p>
+            <p class="interrupt-dialog-tip">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                Tip: Use <strong>Background</strong> mode to run tasks without interruption.
+            </p>
+            <div class="interrupt-dialog-actions">
+                <button class="btn-interrupt-cancel">Cancel</button>
+                <button class="btn-interrupt-confirm">Interrupt & Continue</button>
+            </div>
+        </div>
+    `;
+    
+    const cancelBtn = dialog.querySelector('.btn-interrupt-cancel');
+    const confirmBtn = dialog.querySelector('.btn-interrupt-confirm');
+    
+    cancelBtn.onclick = () => {
+        dialog.close();
+    };
+    
+    confirmBtn.onclick = () => {
+        dialog.close();
+        if (onConfirm) onConfirm();
+    };
+    
+    // 点击背景关闭
+    dialog.onclick = (e) => {
+        if (e.target === dialog) {
+            dialog.close();
+        }
+    };
+    
+    dialog.showModal();
 }
 
 function saveCurrentSession(force = false) {
@@ -1483,6 +1618,11 @@ function renderChatHistory() {
         }
         bubble.appendChild(content);
 
+        // [新增] 渲染 Show Thinking 步骤信息
+        if (entry.role === "assistant" && entry.meta && entry.meta.steps && entry.meta.steps.length > 0) {
+            renderStepsFromHistory(bubble, entry.meta.steps, entry.meta.interrupted);
+        }
+
         // 渲染底部的引用卡片
         if (entry.meta && entry.meta.sources) {
             // 计算哪些引用被使用了
@@ -1591,6 +1731,8 @@ function openChatView() {
         updateDemoControls();
     }
 
+  // Initialize background tasks
+  initBackgroundTasks();
 }
 
 async function stopGeneration() {
@@ -1598,6 +1740,7 @@ async function stopGeneration() {
 
     // 1. 前端断开连接 (停止接收数据流)
     // 这会让 fetch 抛出 AbortError，跳到 catch 块
+    // AbortError 处理会保存已生成的内容
     if (state.chat.controller) {
         state.chat.controller.abort();
         state.chat.controller = null;
@@ -1616,9 +1759,7 @@ async function stopGeneration() {
 
     log("Generation stopped by user.");
     
-    // UI 立即恢复
-    setChatRunning(false);
-    appendChatMessage("system", "Generation interrupted.");
+    // UI 状态会在 AbortError 处理中更新
 }
 
 // [新增] 辅助函数：清洗 PDF 提取文本中的脏格式
@@ -1854,6 +1995,101 @@ function formatMessageText(text) {
     return safeText;
 }
 
+// [新增] 从历史记录中恢复步骤信息
+function renderStepsFromHistory(bubble, steps, isInterrupted = false) {
+    if (!steps || steps.length === 0) return;
+    
+    // 创建 Process Container（与实时渲染格式完全一致）
+    const procDiv = document.createElement("div");
+    procDiv.className = "process-container collapsed"; // 默认折叠
+    procDiv.innerHTML = `
+        <div class="process-header" onclick="this.parentNode.classList.toggle('collapsed')">
+            <span>Show Thinking</span>
+            <span style="font-size:0.8em">▼</span>
+        </div>
+        <div class="process-body"></div>
+    `;
+    
+    const body = procDiv.querySelector(".process-body");
+    
+    // 解析步骤，合并 step_start 和 step_end
+    const stepMap = new Map();
+    const stepOrder = []; // 保持顺序
+    
+    for (const step of steps) {
+        if (step.type === 'step_start') {
+            if (!stepMap.has(step.name)) {
+                stepOrder.push(step.name);
+            }
+            stepMap.set(step.name, { 
+                name: step.name, 
+                tokens: step.tokens || '',
+                output: '',
+                completed: false 
+            });
+        } else if (step.type === 'step_end') {
+            const existing = stepMap.get(step.name);
+            if (existing) {
+                existing.completed = true;
+                if (step.output) {
+                    existing.output = step.output;
+                }
+            }
+        }
+    }
+    
+    // 按顺序渲染每个步骤（与实时渲染格式完全一致）
+    for (const name of stepOrder) {
+        const stepData = stepMap.get(name);
+        if (!stepData) continue;
+        
+        const stepDiv = document.createElement("div");
+        stepDiv.className = "process-step";
+        stepDiv.dataset.stepName = name;
+        
+        // 标题部分：完成的显示空（因为 spinner 被移除了），未完成的显示警告
+        let titleContent = '';
+        if (!stepData.completed && isInterrupted) {
+            titleContent = '<span class="step-spinner" style="border-color: #f59e0b transparent transparent transparent;"></span>';
+        }
+        // 注意：已完成的步骤在实时渲染中 spinner 被移除了，所以这里也不显示
+        
+        stepDiv.innerHTML = `
+            <div class="step-title">
+                ${titleContent}
+                <span>${name}</span>
+            </div>
+        `;
+        
+        // 添加流式内容（如果有）
+        if (stepData.tokens) {
+            const streamDiv = document.createElement("div");
+            streamDiv.className = "step-content-stream";
+            // 使用 textContent 保持与实时渲染一致
+            streamDiv.textContent = stepData.tokens;
+            stepDiv.appendChild(streamDiv);
+        }
+        
+        // 添加 output 摘要（如果有）
+        if (stepData.output) {
+            const detailsDiv = document.createElement("div");
+            detailsDiv.className = "step-details";
+            detailsDiv.textContent = stepData.output;
+            stepDiv.appendChild(detailsDiv);
+        }
+        
+        body.appendChild(stepDiv);
+    }
+    
+    // 插入到气泡最前面（与实时渲染一致）
+    bubble.insertBefore(procDiv, bubble.firstChild);
+}
+
+// 用于跟踪 process-body 的滚动状态
+const processScrollState = {
+    shouldAutoScroll: true
+};
+
 function updateProcessUI(entryIndex, eventData) {
     // 1. 找到对应的 Chat Bubble (最后一个 assistant 气泡)
     const container = document.getElementById("chat-history");
@@ -1876,9 +2112,27 @@ function updateProcessUI(entryIndex, eventData) {
         `;
         // 插在气泡最前面
         lastBubble.insertBefore(procDiv, lastBubble.firstChild);
+        
+        // [新增] 为 process-body 添加滚动监听，实现智能吸附
+        const newBody = procDiv.querySelector(".process-body");
+        if (newBody) {
+            processScrollState.shouldAutoScroll = true; // 重置状态
+            newBody.addEventListener('scroll', function() {
+                const threshold = 30;
+                const distance = this.scrollHeight - this.scrollTop - this.clientHeight;
+                processScrollState.shouldAutoScroll = distance <= threshold;
+            });
+        }
     }
     
     const body = procDiv.querySelector(".process-body");
+
+    // 辅助函数：智能滚动到底部
+    const smartScrollToBottom = () => {
+        if (processScrollState.shouldAutoScroll && body) {
+            body.scrollTop = body.scrollHeight;
+        }
+    };
 
     // 3. 处理不同事件
     if (eventData.type === "step_start") {
@@ -1893,7 +2147,7 @@ function updateProcessUI(entryIndex, eventData) {
             <div class="step-content-stream"></div> `;
         body.appendChild(stepDiv);
         // 自动滚动到底部
-        body.scrollTop = body.scrollHeight;
+        smartScrollToBottom();
 
     } else if (eventData.type === "token") {
         // 如果 Token 不是 final 的，就显示在思考过程里 (作为详细日志)
@@ -1907,6 +2161,8 @@ function updateProcessUI(entryIndex, eventData) {
                 const span = document.createElement("span");
                 span.textContent = eventData.content;
                 streamDiv.appendChild(span);
+                // [新增] 智能滚动跟随
+                smartScrollToBottom();
             }
         }
 
@@ -1929,6 +2185,8 @@ function updateProcessUI(entryIndex, eventData) {
                 details.className = "step-details";
                 details.textContent = eventData.output;
                 currentStep.appendChild(details);
+                // [新增] 智能滚动跟随
+                smartScrollToBottom();
                 
                 // (可选) 隐藏流式过程，只看结果? 
                 // currentStep.querySelector(".step-content-stream").style.display = 'none';
@@ -1936,6 +2194,7 @@ function updateProcessUI(entryIndex, eventData) {
         }
     }
 }
+
 
 async function handleChatSubmit(event) {
   if (event) event.preventDefault();
@@ -1945,8 +2204,21 @@ async function handleChatSubmit(event) {
 
   const question = els.chatInput.value.trim();
   if (!question) return;
+  
+  // Check if background mode is enabled
+  if (backgroundTaskState.backgroundModeEnabled) {
+    els.chatInput.value = "";
+    if (els.chatInput) els.chatInput.style.height = 'auto';
+    await sendToBackground(question);
+    // Disable background mode after sending
+    backgroundTaskState.backgroundModeEnabled = false;
+    const toggle = document.getElementById('bg-mode-toggle');
+    if (toggle) toggle.classList.remove('active');
+    return;
+  }
+  
   els.chatInput.value = "";
-  // 重置textarea高度
+  // Reset textarea height
   if (els.chatInput) {
     els.chatInput.style.height = 'auto';
   }
@@ -1983,6 +2255,12 @@ async function handleChatSubmit(event) {
     // 先占位
     const entryIndex = state.chat.history.length;
     state.chat.history.push({ role: "assistant", text: "", meta: {} });
+    
+    // [修复] 将这些变量提升到更高作用域，以便在中断时能够保存
+    state.chat._streamingText = "";
+    state.chat._streamingSources = [];
+    state.chat._streamingSteps = []; // 保存步骤信息
+    state.chat._streamingEntryIndex = entryIndex;
     
     const chatContainer = document.getElementById("chat-history");
 
@@ -2027,6 +2305,18 @@ async function handleChatSubmit(event) {
             
             if (data.type === "step_start" || data.type === "step_end") {
                 updateProcessUI(entryIndex, data);
+                // [新增] 保存步骤信息以便恢复
+                if (!state.chat._streamingSteps) state.chat._streamingSteps = [];
+                const stepInfo = {
+                    type: data.type,
+                    name: data.name,
+                    timestamp: Date.now()
+                };
+                // 保存 step_end 的 output 摘要
+                if (data.type === "step_end" && data.output) {
+                    stepInfo.output = data.output;
+                }
+                state.chat._streamingSteps.push(stepInfo);
             } 
             else if (data.type === "sources") {
                 // 后端已为每个文档分配了唯一ID，直接使用
@@ -2036,11 +2326,26 @@ async function handleChatSubmit(event) {
                 }));
                 allSources = allSources.concat(docs);
                 pendingRenderSources = pendingRenderSources.concat(docs);
+                // [修复] 同步更新状态，以便中断时能保存
+                state.chat._streamingSources = allSources;
             } 
             else if (data.type === "token") {
-                if (!data.is_final) updateProcessUI(entryIndex, data);
+                if (!data.is_final) {
+                    updateProcessUI(entryIndex, data);
+                    // [新增] 保存 thinking 内容
+                    if (!state.chat._streamingSteps) state.chat._streamingSteps = [];
+                    // 找到最后一个 step_start，追加 token 内容
+                    const lastStep = state.chat._streamingSteps.filter(s => s.type === 'step_start').pop();
+                    if (lastStep) {
+                        if (!lastStep.tokens) lastStep.tokens = "";
+                        lastStep.tokens += data.content;
+                    }
+                }
                 if (data.is_final) {
                     currentText += data.content;
+                    // [修复] 同步更新状态，以便中断时能保存
+                    state.chat._streamingText = currentText;
+                    
                     if (typeof isPendingLanguageFence === 'function' && isPendingLanguageFence(currentText, MARKDOWN_LANGS)) continue;
                     
                     let html = renderMarkdown(currentText, { unwrapLanguages: MARKDOWN_LANGS });
@@ -2081,6 +2386,10 @@ async function handleChatSubmit(event) {
                 state.chat.history[entryIndex].text = finalText;
                 if (!state.chat.history[entryIndex].meta) state.chat.history[entryIndex].meta = {};
                 state.chat.history[entryIndex].meta.sources = allSources;
+                // [新增] 保存步骤信息
+                if (state.chat._streamingSteps && state.chat._streamingSteps.length > 0) {
+                    state.chat.history[entryIndex].meta.steps = state.chat._streamingSteps;
+                }
                 
                 const hints = [];
                 if (final.dataset_path) hints.push(`Dataset: ${final.dataset_path}`);
@@ -2100,7 +2409,36 @@ async function handleChatSubmit(event) {
       }
     }
   } catch (err) {
-      if (err.name === 'AbortError') return;
+      if (err.name === 'AbortError') {
+          // [修复] 中断时保存已生成的内容
+          if (state.chat._streamingEntryIndex !== undefined) {
+              const idx = state.chat._streamingEntryIndex;
+              if (state.chat.history[idx]) {
+                  // 保存已生成的文本
+                  if (state.chat._streamingText) {
+                      state.chat.history[idx].text = state.chat._streamingText + "\n\n*(Generation interrupted)*";
+                  }
+                  state.chat.history[idx].meta = state.chat.history[idx].meta || {};
+                  state.chat.history[idx].meta.sources = state.chat._streamingSources || [];
+                  state.chat.history[idx].meta.interrupted = true;
+                  // [新增] 保存步骤信息
+                  if (state.chat._streamingSteps && state.chat._streamingSteps.length > 0) {
+                      state.chat.history[idx].meta.steps = state.chat._streamingSteps;
+                  }
+              }
+          }
+          // 清理流式状态
+          delete state.chat._streamingText;
+          delete state.chat._streamingSources;
+          delete state.chat._streamingSteps;
+          delete state.chat._streamingEntryIndex;
+          
+          setChatRunning(false);
+          setChatStatus("Interrupted", "info");
+          saveCurrentSession();
+          chatContainer.removeEventListener('scroll', handleScroll);
+          return;
+      }
       console.error(err);
       appendChatMessage("system", `Network Error: ${err.message}`);
       setChatStatus("Error", "error");
@@ -2109,6 +2447,12 @@ async function handleChatSubmit(event) {
           state.chat.controller = null;
           setChatRunning(false);
       }
+      // 清理流式状态
+      delete state.chat._streamingText;
+      delete state.chat._streamingSources;
+      delete state.chat._streamingSteps;
+      delete state.chat._streamingEntryIndex;
+      
       saveCurrentSession();
       chatContainer.removeEventListener('scroll', handleScroll); // 记得移除监听
   }
@@ -2315,7 +2659,7 @@ function markPipelineDirty() {
     const currentName = state.selectedPipeline;
     if (currentName && state.chat.activeEngines[currentName]) {
         const sid = state.chat.activeEngines[currentName];
-        // 尝试后台停止
+        // Try to stop in background
         fetchJSON(`/api/pipelines/demo/stop`, { 
             method: "POST", body: JSON.stringify({ session_id: sid }) 
         }).catch(() => {});
@@ -2699,7 +3043,7 @@ function bindEvents() {
     if (els.chatForm) els.chatForm.onsubmit = handleChatSubmit;
     if (els.chatSend) els.chatSend.onclick = handleChatSubmit;
     
-    // 支持Shift+Enter换行，Enter提交
+    // Support Shift+Enter for newline, Enter for submit
     if (els.chatInput) {
         els.chatInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -2853,6 +3197,550 @@ function applyChatOnlyMode() {
   }
 }
 
+// ===== Background Task Management =====
+
+// Background task state
+const backgroundTaskState = {
+    tasks: [],
+    polling: null,
+    panelOpen: false,
+    notifiedTasks: new Set(), // Already notified task IDs
+    backgroundModeEnabled: false, // Whether background mode is active
+    cachedTasks: [], // Cached completed tasks from localStorage
+};
+
+// LocalStorage key for background tasks
+const BG_TASKS_STORAGE_KEY = 'ultrarag_background_tasks';
+
+// Load cached background tasks from localStorage
+function loadCachedBackgroundTasks() {
+    try {
+        const cached = localStorage.getItem(BG_TASKS_STORAGE_KEY);
+        if (cached) {
+            backgroundTaskState.cachedTasks = JSON.parse(cached);
+            // Mark already notified tasks to avoid duplicate notifications
+            backgroundTaskState.cachedTasks.forEach(t => {
+                if (t.status === 'completed' || t.status === 'failed') {
+                    backgroundTaskState.notifiedTasks.add(t.task_id);
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Failed to load cached background tasks:', e);
+        backgroundTaskState.cachedTasks = [];
+    }
+}
+
+// Save background tasks to localStorage
+function saveCachedBackgroundTasks() {
+    try {
+        // Only cache completed and failed tasks (with full results)
+        const toCache = backgroundTaskState.tasks.filter(t => 
+            t.status === 'completed' || t.status === 'failed'
+        );
+        localStorage.setItem(BG_TASKS_STORAGE_KEY, JSON.stringify(toCache));
+        backgroundTaskState.cachedTasks = toCache;
+    } catch (e) {
+        console.warn('Failed to save background tasks:', e);
+    }
+}
+
+// Merge server tasks with cached tasks
+function mergeBackgroundTasks(serverTasks) {
+    const merged = [...serverTasks];
+    const serverTaskIds = new Set(serverTasks.map(t => t.task_id));
+    
+    // Add cached tasks that are not on the server (e.g., server restarted)
+    for (const cached of backgroundTaskState.cachedTasks) {
+        if (!serverTaskIds.has(cached.task_id)) {
+            // Mark as cached so we know it's from localStorage
+            merged.push({ ...cached, fromCache: true });
+        }
+    }
+    
+    // Sort by created_at (newest first)
+    merged.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+    
+    return merged;
+}
+
+// Toggle background mode
+window.toggleBackgroundMode = function() {
+    backgroundTaskState.backgroundModeEnabled = !backgroundTaskState.backgroundModeEnabled;
+    
+    const toggle = document.getElementById('bg-mode-toggle');
+    
+    if (toggle) {
+        toggle.classList.toggle('active', backgroundTaskState.backgroundModeEnabled);
+    }
+};
+
+// Show notification toast
+function showNotification(type, title, message, onClick = null) {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `notification-toast ${type}`;
+    
+    const iconSvg = type === 'success' 
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+        : type === 'error'
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+    
+    toast.innerHTML = `
+        <div class="notification-icon">${iconSvg}</div>
+        <div class="notification-content">
+            <div class="notification-title">${title}</div>
+            <div class="notification-message">${message}</div>
+        </div>
+        <button class="notification-close" onclick="event.stopPropagation(); this.parentElement.remove();">×</button>
+    `;
+    
+    if (onClick) {
+        toast.onclick = () => {
+            onClick();
+            toast.remove();
+        };
+    }
+    
+    container.appendChild(toast);
+    
+    // Auto remove
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 8000);
+    
+    // Try browser native notification
+    requestBrowserNotification(title, message);
+}
+
+// Request browser notification permission and show notification
+async function requestBrowserNotification(title, message) {
+    if (!('Notification' in window)) return;
+    
+    if (Notification.permission === 'default') {
+        await Notification.requestPermission();
+    }
+    
+    if (Notification.permission === 'granted' && document.hidden) {
+        const notification = new Notification(title, {
+            body: message,
+            icon: '/favicon.svg',
+            tag: 'ultrarag-bg-task'
+        });
+        
+        notification.onclick = () => {
+            window.focus();
+            notification.close();
+        };
+    }
+}
+
+// Toggle background tasks panel
+window.toggleBackgroundPanel = function() {
+    const panel = document.getElementById('background-tasks-panel');
+    if (!panel) return;
+    
+    backgroundTaskState.panelOpen = !backgroundTaskState.panelOpen;
+    panel.classList.toggle('d-none', !backgroundTaskState.panelOpen);
+    
+    if (backgroundTaskState.panelOpen) {
+        refreshBackgroundTasks();
+    }
+};
+
+// Refresh background tasks list
+window.refreshBackgroundTasks = async function() {
+    try {
+        const serverTasks = await fetchJSON('/api/background-tasks?limit=20');
+        
+        // Merge with cached tasks (for tasks that may have been lost on server restart)
+        backgroundTaskState.tasks = mergeBackgroundTasks(serverTasks);
+        
+        // Save completed tasks to cache
+        saveCachedBackgroundTasks();
+        
+        renderBackgroundTasksList();
+        updateBackgroundTasksCount();
+        
+        // Check for newly completed tasks and notify
+        checkForCompletedTasks(backgroundTaskState.tasks);
+    } catch (e) {
+        console.error('Failed to refresh background tasks:', e);
+        // If server is unavailable, show cached tasks
+        if (backgroundTaskState.cachedTasks.length > 0) {
+            backgroundTaskState.tasks = [...backgroundTaskState.cachedTasks];
+            renderBackgroundTasksList();
+            updateBackgroundTasksCount();
+        }
+    }
+};
+
+// Check for newly completed tasks
+function checkForCompletedTasks(tasks) {
+    for (const task of tasks) {
+        if (task.status === 'completed' && !backgroundTaskState.notifiedTasks.has(task.task_id)) {
+            backgroundTaskState.notifiedTasks.add(task.task_id);
+            showNotification(
+                'success',
+                'Background Task Completed',
+                task.question,
+                () => showBackgroundTaskDetail(task.task_id)
+            );
+        } else if (task.status === 'failed' && !backgroundTaskState.notifiedTasks.has(task.task_id)) {
+            backgroundTaskState.notifiedTasks.add(task.task_id);
+            showNotification(
+                'error',
+                'Background Task Failed',
+                task.error || task.question,
+                () => showBackgroundTaskDetail(task.task_id)
+            );
+        }
+    }
+}
+
+// Render background tasks list
+function renderBackgroundTasksList() {
+    const container = document.getElementById('bg-tasks-list');
+    if (!container) return;
+    
+    if (backgroundTaskState.tasks.length === 0) {
+        container.innerHTML = '<div class="text-muted text-center py-4 small">No background tasks</div>';
+        return;
+    }
+    
+    container.innerHTML = backgroundTaskState.tasks.map(task => {
+        const time = task.created_at ? new Date(task.created_at * 1000).toLocaleTimeString() : '';
+        return `
+            <div class="bg-task-item ${task.status}" onclick="showBackgroundTaskDetail('${task.task_id}')">
+                <div class="bg-task-header">
+                    <div class="bg-task-question">${escapeHtml(task.question)}</div>
+                    <span class="bg-task-status ${task.status}">${task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed'}</span>
+                </div>
+                <div class="bg-task-meta">
+                    <span>${task.pipeline_name}</span>
+                    <span>${time}</span>
+                </div>
+                ${task.status === 'completed' && task.result_preview ? `
+                    <div class="bg-task-preview">${escapeHtml(task.result_preview)}</div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// HTML escape
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Update background tasks count
+function updateBackgroundTasksCount() {
+    const countEl = document.getElementById('bg-tasks-count');
+    const fab = document.getElementById('bg-tasks-fab');
+    if (!countEl || !fab) return;
+    
+    const runningCount = backgroundTaskState.tasks.filter(t => t.status === 'running').length;
+    
+    if (runningCount > 0) {
+        countEl.textContent = runningCount;
+        countEl.classList.remove('d-none');
+        fab.classList.remove('d-none');
+    } else if (backgroundTaskState.tasks.length > 0) {
+        countEl.classList.add('d-none');
+        fab.classList.remove('d-none');
+    } else {
+        fab.classList.add('d-none');
+    }
+}
+
+// Show background task detail
+window.showBackgroundTaskDetail = async function(taskId) {
+    try {
+        // Try to get from server first, fallback to cache
+        let task;
+        try {
+            task = await fetchJSON(`/api/background-tasks/${taskId}`);
+        } catch (e) {
+            // Server may not have this task (e.g., after restart), try cache
+            task = backgroundTaskState.cachedTasks.find(t => t.task_id === taskId);
+            if (!task) {
+                task = backgroundTaskState.tasks.find(t => t.task_id === taskId);
+            }
+            if (!task) {
+                showNotification('error', 'Error', 'Task not found');
+                return;
+            }
+        }
+        
+        // Create or get detail modal
+        let modal = document.getElementById('bg-task-detail-modal');
+        if (!modal) {
+            modal = document.createElement('dialog');
+            modal.id = 'bg-task-detail-modal';
+            modal.className = 'bg-task-detail-modal';
+            document.body.appendChild(modal);
+        }
+        
+        const statusClass = task.status === 'completed' ? 'success' : task.status === 'failed' ? 'error' : 'info';
+        const statusText = task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed';
+        
+        modal.innerHTML = `
+            <div class="bg-task-detail-header">
+                <div>
+                    <span class="bg-task-status ${task.status}">${statusText}</span>
+                    <div class="text-muted">${task.pipeline_name}</div>
+                </div>
+                <button class="bg-modal-close-btn" onclick="document.getElementById('bg-task-detail-modal').close()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="bg-task-detail-body">
+                <div class="bg-task-detail-question">
+                    <strong>Question</strong>
+                    ${escapeHtml(task.full_question || task.question)}
+                </div>
+                ${task.status === 'completed' ? `
+                    <div class="bg-task-detail-answer">
+                        ${typeof renderMarkdown === 'function' ? renderMarkdown(task.result || '') : escapeHtml(task.result || '')}
+                    </div>
+                ` : task.status === 'failed' ? `
+                    <div class="bg-task-detail-question" style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15);">
+                        <strong style="color: #ef4444;">Error</strong>
+                        ${escapeHtml(task.error || 'Unknown error')}
+                    </div>
+                ` : `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div class="spinner-border" style="color: #3b82f6; width: 2rem; height: 2rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">Processing your request...</div>
+                    </div>
+                `}
+                <div class="d-flex gap-2">
+                    ${task.status === 'completed' ? `
+                        <button class="btn btn-primary" onclick="copyTaskResult('${taskId}')">Copy Result</button>
+                        <button class="btn btn-outline-secondary" onclick="loadTaskToChat('${taskId}')">Load to Chat</button>
+                    ` : ''}
+                    <button class="btn btn-outline-danger ms-auto" onclick="deleteBackgroundTask('${taskId}')">Delete</button>
+                </div>
+            </div>
+        `;
+        
+        modal.showModal();
+        
+        // If task is still running, refresh periodically
+        if (task.status === 'running') {
+            const refreshInterval = setInterval(async () => {
+                const updated = await fetchJSON(`/api/background-tasks/${taskId}`);
+                if (updated.status !== 'running') {
+                    clearInterval(refreshInterval);
+                    showBackgroundTaskDetail(taskId);
+                }
+            }, 2000);
+            
+            modal.addEventListener('close', () => clearInterval(refreshInterval), { once: true });
+        }
+    } catch (e) {
+        console.error('Failed to load task detail:', e);
+    }
+};
+
+// Copy task result
+window.copyTaskResult = async function(taskId) {
+    try {
+        // Try server first, fallback to cache
+        let task;
+        try {
+            task = await fetchJSON(`/api/background-tasks/${taskId}`);
+        } catch (e) {
+            task = backgroundTaskState.cachedTasks.find(t => t.task_id === taskId) ||
+                   backgroundTaskState.tasks.find(t => t.task_id === taskId);
+        }
+        
+        if (task && task.result) {
+            await navigator.clipboard.writeText(task.result);
+            showNotification('success', 'Copied', 'Result copied to clipboard');
+        }
+    } catch (e) {
+        console.error('Failed to copy:', e);
+    }
+};
+
+// Load task result to chat
+window.loadTaskToChat = async function(taskId) {
+    try {
+        // Try server first, fallback to cache
+        let task;
+        try {
+            task = await fetchJSON(`/api/background-tasks/${taskId}`);
+        } catch (e) {
+            task = backgroundTaskState.cachedTasks.find(t => t.task_id === taskId) ||
+                   backgroundTaskState.tasks.find(t => t.task_id === taskId);
+        }
+        
+        if (!task || task.status !== 'completed') return;
+        
+        // Close modal
+        const modal = document.getElementById('bg-task-detail-modal');
+        if (modal) modal.close();
+        
+        // Add to chat history
+        state.chat.history.push({ 
+            role: 'user', 
+            text: task.full_question || task.question,
+            timestamp: new Date(task.created_at * 1000).toISOString()
+        });
+        state.chat.history.push({ 
+            role: 'assistant', 
+            text: task.result || '',
+            meta: { sources: task.sources || [] },
+            timestamp: new Date(task.completed_at * 1000).toISOString()
+        });
+        
+        // Save and render
+        saveCurrentSession();
+        renderChatHistory();
+        
+        // Close background panel
+        toggleBackgroundPanel();
+        
+        showNotification('success', 'Loaded', 'Background task result loaded to current chat');
+    } catch (e) {
+        console.error('Failed to load task to chat:', e);
+    }
+};
+
+// Delete background task
+window.deleteBackgroundTask = async function(taskId) {
+    if (!confirm('Are you sure you want to delete this task?')) return;
+    
+    try {
+        // Try to delete from server (may fail if task is only in cache)
+        try {
+            await fetchJSON(`/api/background-tasks/${taskId}`, { method: 'DELETE' });
+        } catch (e) {
+            // Ignore server error, may be a cached-only task
+        }
+        
+        // Also remove from local cache
+        backgroundTaskState.cachedTasks = backgroundTaskState.cachedTasks.filter(t => t.task_id !== taskId);
+        backgroundTaskState.tasks = backgroundTaskState.tasks.filter(t => t.task_id !== taskId);
+        localStorage.setItem(BG_TASKS_STORAGE_KEY, JSON.stringify(backgroundTaskState.cachedTasks));
+        
+        // Close detail modal
+        const modal = document.getElementById('bg-task-detail-modal');
+        if (modal) modal.close();
+        
+        // Update UI
+        renderBackgroundTasksList();
+        updateBackgroundTasksCount();
+    } catch (e) {
+        console.error('Failed to delete task:', e);
+    }
+};
+
+// Clear completed tasks
+window.clearCompletedTasks = async function() {
+    try {
+        // Try to clear from server
+        let serverCount = 0;
+        try {
+            const result = await fetchJSON('/api/background-tasks/clear-completed', { method: 'POST' });
+            serverCount = result.count || 0;
+        } catch (e) {
+            // Ignore server error
+        }
+        
+        // Also clear from local cache
+        const cachedCount = backgroundTaskState.cachedTasks.filter(t => t.status === 'completed').length;
+        backgroundTaskState.cachedTasks = backgroundTaskState.cachedTasks.filter(t => t.status !== 'completed');
+        backgroundTaskState.tasks = backgroundTaskState.tasks.filter(t => t.status !== 'completed');
+        localStorage.setItem(BG_TASKS_STORAGE_KEY, JSON.stringify(backgroundTaskState.cachedTasks));
+        
+        const totalCleared = Math.max(serverCount, cachedCount);
+        showNotification('success', 'Cleared', `Cleared ${totalCleared} completed tasks`);
+        
+        // Update UI
+        renderBackgroundTasksList();
+        updateBackgroundTasksCount();
+    } catch (e) {
+        console.error('Failed to clear tasks:', e);
+    }
+};
+
+// Send to background
+async function sendToBackground(question) {
+    if (!state.chat.engineSessionId) {
+        alert('Please start the engine first');
+        return null;
+    }
+    
+    const selectedCollection = els.chatCollectionSelect ? els.chatCollectionSelect.value : '';
+    const dynamicParams = {};
+    if (selectedCollection) {
+        dynamicParams['collection_name'] = selectedCollection;
+    }
+    
+    try {
+        const response = await fetchJSON(
+            `/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/chat/background`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    question,
+                    session_id: state.chat.engineSessionId,
+                    dynamic_params: dynamicParams
+                })
+            }
+        );
+        
+        showNotification('info', 'Task Submitted', 'Question sent to background, you will be notified when complete');
+        
+        // Show background tasks FAB
+        const fab = document.getElementById('bg-tasks-fab');
+        if (fab) fab.classList.remove('d-none');
+        
+        // Start polling
+        startBackgroundPolling();
+        
+        return response.task_id;
+    } catch (e) {
+        console.error('Failed to send to background:', e);
+        showNotification('error', '发送失败', e.message || '无法发送到后台');
+        return null;
+    }
+}
+
+// Start background task polling
+function startBackgroundPolling() {
+    if (backgroundTaskState.polling) return;
+    
+    backgroundTaskState.polling = setInterval(async () => {
+        await refreshBackgroundTasks();
+        
+        // Stop polling if no running tasks
+        const hasRunning = backgroundTaskState.tasks.some(t => t.status === 'running');
+        if (!hasRunning) {
+            stopBackgroundPolling();
+        }
+    }, 3000);
+}
+
+// Stop background task polling
+function stopBackgroundPolling() {
+    if (backgroundTaskState.polling) {
+        clearInterval(backgroundTaskState.polling);
+        backgroundTaskState.polling = null;
+    }
+}
+
 // Chat-only 模式下初始化 Chat 界面
 async function initChatOnlyView() {
   // 1. 渲染 Pipeline 选择菜单
@@ -2883,6 +3771,48 @@ async function initChatOnlyView() {
   
   // 6. 更新 Demo 控制按钮状态
   updateDemoControls();
+  
+  // 7. Initialize background tasks state
+  initBackgroundTasks();
 }
+
+// Initialize background tasks functionality
+async function initBackgroundTasks() {
+    // Load cached tasks from localStorage first
+    loadCachedBackgroundTasks();
+    
+    // Request browser notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+        // 延迟请求，避免打扰用户
+        setTimeout(() => {
+            Notification.requestPermission();
+        }, 5000);
+    }
+    
+    // Load background tasks list
+    await refreshBackgroundTasks();
+    
+    // Start polling if there are running tasks
+    if (backgroundTaskState.tasks.some(t => t.status === 'running')) {
+        startBackgroundPolling();
+    }
+}
+
+// 页面刷新/关闭时处理
+window.addEventListener('beforeunload', function(e) {
+    // 如果正在生成，显示浏览器确认弹窗
+    if (state.chat.running) {
+        // 保存当前已生成的内容
+        saveCurrentSession(true);
+        // 显示浏览器原生确认弹窗
+        e.preventDefault();
+        e.returnValue = 'A response is being generated. Are you sure you want to leave?';
+        return e.returnValue;
+    }
+    // 正常情况下保存会话
+    if (state.chat.history.length > 0 && state.chat.currentSessionId) {
+        saveCurrentSession(true);
+    }
+});
 
 bootstrap();
