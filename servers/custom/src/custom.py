@@ -328,6 +328,112 @@ def assign_citation_ids_stateful(
     }
 
 
+# ==================== SurveyCPM Citation Tools ====================
+
+
+class SurveyCPMCitationRegistry:
+    """Citation registry for SurveyCPM pipeline.
+    
+    Maintains unique citation IDs across multiple search rounds for each query.
+    """
+    _instances: Dict[int, Dict[str, Any]] = {}
+    
+    @classmethod
+    def reset(cls):
+        cls._instances = {}
+    
+    @classmethod
+    def get_or_create(cls, query_index: int) -> Dict[str, Any]:
+        if query_index not in cls._instances:
+            cls._instances[query_index] = {
+                "registry": {},
+                "counter": 0
+            }
+        return cls._instances[query_index]
+    
+    @classmethod
+    def assign_id(cls, query_index: int, doc_text: str) -> int:
+        """Assign a unique ID to a document, deduplicating across rounds."""
+        state = cls.get_or_create(query_index)
+        doc_hash = doc_text.strip()
+        
+        if doc_hash in state["registry"]:
+            return state["registry"][doc_hash]
+        else:
+            state["counter"] += 1
+            state["registry"][doc_hash] = state["counter"]
+            return state["counter"]
+
+
+@app.tool(output="instruction_ls->instruction_ls")
+def surveycpm_init_citation_registry(instruction_ls: List[str]) -> Dict[str, Any]:
+    """Initialize citation registry for SurveyCPM pipeline."""
+    SurveyCPMCitationRegistry.reset()
+    return {"instruction_ls": instruction_ls}
+
+
+@app.tool(output="ret_psg_ls->retrieved_info_ls,ret_psg")
+def surveycpm_process_passages_with_citation(
+    ret_psg_ls: List[List[List[str]]],
+) -> Dict[str, Any]:
+    """Process passages and assign unique citation IDs for SurveyCPM.
+    
+    Similar to surveycpm_process_passages, but adds [id] prefix to each passage
+    for citation tracking.
+    
+    Returns:
+        - retrieved_info_ls: List of formatted strings for prompts
+        - ret_psg: List of lists of cited passages for frontend rendering
+                   (same length as ret_psg_ls, each element is a list of cited docs)
+    """
+    top_k = 20
+    retrieved_info_ls = []
+    ret_psg_output = []  # List of lists for frontend sources (same length as input)
+    
+    for query_idx, ret_psg in enumerate(ret_psg_ls):
+        if not ret_psg:
+            retrieved_info_ls.append("")
+            ret_psg_output.append([])
+            continue
+        
+        num_queries = len(ret_psg)
+        per_query_limit = max(1, top_k // num_queries)
+        
+        seen = set()
+        all_passages = []
+        
+        # First pass: get unique passages up to per_query_limit from each query
+        for passages in ret_psg:
+            for psg in passages[:per_query_limit]:
+                if psg not in seen:
+                    seen.add(psg)
+                    # Assign unique citation ID
+                    citation_id = SurveyCPMCitationRegistry.assign_id(query_idx, psg)
+                    cited_psg = f"[{citation_id}] {psg}"
+                    all_passages.append(cited_psg)
+        
+        # Second pass: fill remaining slots
+        remaining_slots = top_k - len(all_passages)
+        if remaining_slots > 0:
+            for passages in ret_psg:
+                for psg in passages[per_query_limit:]:
+                    if psg not in seen and remaining_slots > 0:
+                        seen.add(psg)
+                        citation_id = SurveyCPMCitationRegistry.assign_id(query_idx, psg)
+                        cited_psg = f"[{citation_id}] {psg}"
+                        all_passages.append(cited_psg)
+                        remaining_slots -= 1
+        
+        info = "\n\n".join(all_passages).strip()
+        retrieved_info_ls.append(info)
+        ret_psg_output.append(all_passages)  # List of cited docs for this query
+    
+    return {
+        "retrieved_info_ls": retrieved_info_ls,
+        "ret_psg": ret_psg_output  # List of lists, same length as input
+    }
+
+
 # ==================== SurveyCPM Custom Tools ====================
 
 
@@ -856,7 +962,7 @@ def surveycpm_after_init_plan(
                 "title": action.get("title", ""),
                 "sections": action.get("sections", [])
             }
-            new_survey_ls.append(json.dumps(new_survey))
+            new_survey_ls.append(json.dumps(new_survey, ensure_ascii=False))
             new_cursor_ls.append(_surveycpm_check_progress_postion(new_survey))
         else:
             new_survey_ls.append(survey_json)
@@ -893,7 +999,7 @@ def surveycpm_after_write(
                     position=cursor,
                     update_data={"content": content}
                 )
-                new_survey_ls.append(json.dumps(new_survey))
+                new_survey_ls.append(json.dumps(new_survey, ensure_ascii=False))
                 new_cursor = _surveycpm_check_progress_postion(new_survey)
                 new_cursor_ls.append(new_cursor)
             else:
@@ -938,7 +1044,7 @@ def surveycpm_after_extend(
                     position=position,
                     update_data={"subsections": copy.deepcopy(subsections)}
                 )
-                new_survey_ls.append(json.dumps(new_survey))
+                new_survey_ls.append(json.dumps(new_survey, ensure_ascii=False))
                 new_cursor_ls.append(_surveycpm_check_progress_postion(new_survey))
                 new_extend_result_ls.append("extended")
             else:
@@ -1093,6 +1199,38 @@ def surveycpm_check_completion(
     return {"state_ls": new_state_ls}
 
 
+def _surveycpm_clean_content(content: str) -> str:
+    """Clean up content text for proper Markdown formatting.
+    
+    This function:
+    - Removes "Section-X.X.X" style references from content
+    - Fixes improper markdown headers (headers with leading spaces)
+    - Normalizes multiple consecutive blank lines to single blank line
+    - Ensures proper spacing around headers
+    """
+    if not content:
+        return ""
+    
+    # Remove "Section-X.X.X" patterns (e.g., "Section-1", "Section-2.3", "Section-4.3.1")
+    # But preserve the context around them
+    content = re.sub(r'\bSection-(\d+(?:\.\d+)*)\b', '', content)
+    
+    # Fix headers that have leading spaces (not valid markdown)
+    # Match lines like "    ## Title" or "        ### Title" and remove leading spaces
+    content = re.sub(r'^[ \t]+(#{1,6})\s+', r'\1 ', content, flags=re.MULTILINE)
+    
+    # Normalize multiple consecutive blank lines to at most two newlines
+    content = re.sub(r'\n{3,}', '\n\n', content)
+    
+    # Ensure headers have a blank line before them (except at start)
+    content = re.sub(r'([^\n])\n(#{1,6}\s)', r'\1\n\n\2', content)
+    
+    # Ensure headers have a blank line after them
+    content = re.sub(r'(#{1,6}\s[^\n]+)\n([^\n#])', r'\1\n\n\2', content)
+    
+    return content.strip()
+
+
 def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     """Format survey as clean Markdown for final output.
     
@@ -1100,6 +1238,9 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     - Does NOT add [OK] or [PLAN] prefixes
     - Preserves proper paragraph breaks and formatting
     - Produces clean, renderable Markdown
+    - Cleans up "Section-X.X.X" references in content
+    - Ensures proper markdown header formatting
+    - Adds section numbers (Section 1. xxx, Section 1.1 xxx, etc.)
     """
     if not survey or survey == {}:
         return "No survey generated."
@@ -1115,15 +1256,18 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     sections = survey.get("sections", [])
     for i, section in enumerate(sections):
         title_key = "name" if "name" in section else "title"
-        section_title = section.get(title_key, f"Section {i+1}")
+        section_title = section.get(title_key, "")
+        section_num = i + 1
         
-        lines.append(f"## {section_title}")
+        lines.append(f"## {section_num} {section_title}")
         lines.append("")
         
         # Section content
         if "content" in section and section["content"]:
-            lines.append(section["content"].strip())
-            lines.append("")
+            cleaned_content = _surveycpm_clean_content(section["content"])
+            if cleaned_content:
+                lines.append(cleaned_content)
+                lines.append("")
         elif "plan" in section and section["plan"]:
             lines.append(f"*{section['plan'].strip()}*")
             lines.append("")
@@ -1131,14 +1275,17 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
         # Subsections
         if "subsections" in section:
             for j, subsection in enumerate(section["subsections"]):
-                subsection_title = subsection.get(title_key, f"Subsection {j+1}")
+                subsection_title = subsection.get(title_key, "")
+                subsection_num = f"{section_num}.{j + 1}"
                 
-                lines.append(f"### {subsection_title}")
+                lines.append(f"### {subsection_num} {subsection_title}")
                 lines.append("")
                 
                 if "content" in subsection and subsection["content"]:
-                    lines.append(subsection["content"].strip())
-                    lines.append("")
+                    cleaned_content = _surveycpm_clean_content(subsection["content"])
+                    if cleaned_content:
+                        lines.append(cleaned_content)
+                        lines.append("")
                 elif "plan" in subsection and subsection["plan"]:
                     lines.append(f"*{subsection['plan'].strip()}*")
                     lines.append("")
@@ -1146,19 +1293,25 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                 # Sub-subsections
                 if "subsections" in subsection:
                     for k, subsubsection in enumerate(subsection["subsections"]):
-                        subsubsection_title = subsubsection.get(title_key, f"Sub-subsection {k+1}")
+                        subsubsection_title = subsubsection.get(title_key, "")
+                        subsubsection_num = f"{section_num}.{j + 1}.{k + 1}"
                         
-                        lines.append(f"#### {subsubsection_title}")
+                        lines.append(f"#### {subsubsection_num} {subsubsection_title}")
                         lines.append("")
                         
                         if "content" in subsubsection and subsubsection["content"]:
-                            lines.append(subsubsection["content"].strip())
-                            lines.append("")
+                            cleaned_content = _surveycpm_clean_content(subsubsection["content"])
+                            if cleaned_content:
+                                lines.append(cleaned_content)
+                                lines.append("")
                         elif "plan" in subsubsection and subsubsection["plan"]:
                             lines.append(f"*{subsubsection['plan'].strip()}*")
                             lines.append("")
     
-    return "\n".join(lines).strip()
+    # Final cleanup: normalize multiple blank lines
+    result = "\n".join(lines)
+    result = re.sub(r'\n{3,}', '\n\n', result)
+    return result.strip()
 
 
 @app.tool(output="survey_ls,instruction_ls->ans_ls")
