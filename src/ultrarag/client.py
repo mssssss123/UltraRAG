@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Union, Any, Tuple
 import copy
 import logging
+import contextvars
 
 from fastmcp import Client
 from ultrarag.cli import log_server_banner
@@ -85,7 +86,20 @@ class Configuration:
 
 ROOT = "BASE"
 SEP = "/"
-LoopTerminal: list[bool] = []
+# 使用 ContextVar 实现协程安全的循环终止标志
+# 每个协程（用户请求）都有独立的 LoopTerminal 副本
+_loop_terminal_var: contextvars.ContextVar[list[bool]] = contextvars.ContextVar(
+    'loop_terminal', default=[]
+)
+
+# 哨兵值：用于区分"数据未设置"和"数据是 None"
+class _Unset:
+    """Sentinel value to indicate data has not been set by any branch."""
+    __slots__ = ()
+    def __repr__(self):
+        return "<UNSET>"
+
+UNSET = _Unset()
 
 
 def parse_path(path: str) -> List[Tuple[int, str]]:
@@ -174,7 +188,8 @@ class UltraData:
         new_full = []
         for elem in skeleton:
             new_elem = {k: v for k, v in elem.items() if k != "data"}
-            new_elem["data"] = None
+            new_elem["data"] = UNSET  # 使用哨兵值标记"未设置"
+            new_elem["data"] = UNSET  # 使用哨兵值标记"未设置"
             new_full.append(new_elem)
 
         it = iter(sub_list)
@@ -394,7 +409,8 @@ class UltraData:
                             sub = [
                                 e["data"]
                                 for e in val
-                                if elem_match(e, path_pairs) and e["data"] is not None
+                                if elem_match(e, path_pairs) and e["data"] is not UNSET
+                                if elem_match(e, path_pairs) and e["data"] is not UNSET
                             ]
                             val = sub
                             if signal is None:
@@ -1054,6 +1070,9 @@ async def execute_pipeline(
     stream_callback: Callable[[str], Awaitable[None]] = None,
     override_params: Dict[str, Any] = None
 ) -> Any:
+    # 为当前协程创建独立的循环终止标志列表
+    # 使用 ContextVar 确保多用户并发时互不干扰
+    _loop_terminal_var.set([])
     
     config_path = context["config_path"]
     server_cfg = context["server_cfg"]
@@ -1132,22 +1151,23 @@ async def execute_pipeline(
                 })
 
             if isinstance(step, dict) and "loop" in step:
-                LoopTerminal.append(True)
+                loop_terminal = _loop_terminal_var.get()
+                loop_terminal.append(True)
                 loop_cfg = step["loop"]
                 times = loop_cfg.get("times")
                 inner_steps = loop_cfg.get("steps", [])
                 if times is None or not isinstance(inner_steps, list):
                     raise ValueError(f"Invalid loop config: {loop_cfg}")
                 for st in range(times):
-                    LoopTerminal[-1] = True
+                    loop_terminal[-1] = True
                     loop_res = await _execute_steps(inner_steps, depth + 1, state)
                     if loop_res is not None:
                         result = loop_res
                     logger.debug(
-                        f"{indent}Loop iteration {st + 1}/{times} completed {LoopTerminal}"
+                        f"{indent}Loop iteration {st + 1}/{times} completed {loop_terminal}"
                     )
-                    if LoopTerminal[-1]:
-                        LoopTerminal.pop()
+                    if loop_terminal[-1]:
+                        loop_terminal.pop()
                         logger.debug(
                             f"{indent}Loop terminal in iteration {st + 1}/{times}"
                         )
@@ -1262,18 +1282,23 @@ async def execute_pipeline(
                             state, 
                             tool_value.get("output", {})
                         )
-                        if depth > 0: LoopTerminal[depth - 1] &= signal
+                        if depth > 0: _loop_terminal_var.get()[depth - 1] &= signal
                         continue 
 
                 if depth > 0:
-                    LoopTerminal[depth - 1] &= signal
+                    _loop_terminal_var.get()[depth - 1] &= signal
                 if not signal:
                     if server_name == "prompt":
                         result = await client.get_prompt(concated, args_input)
                     else:
                         result = await client.call_tool(concated, args_input)
 
-                    if stream_callback and server_name in retriever_aliases:
+                    # Check for sources in retriever or citation tools
+                    should_extract_sources = (
+                        server_name in retriever_aliases or 
+                        "citation" in tool_name.lower()
+                    )
+                    if stream_callback and should_extract_sources:
                         try:
                             content_str = ""
                             if hasattr(result, "content") and result.content:
@@ -1291,21 +1316,35 @@ async def execute_pipeline(
                                 sources = []
                                 for i, doc in enumerate(raw_docs):
                                     text = str(doc)
-                                    lines = text.strip().split('\n')
-                                    title = lines[0][:30] + "..." if lines else f"Doc {i+1}"
-
-                                    doc_hash = text.strip()
-                                    if doc_hash in doc_content_to_id:
-                                        current_id = doc_content_to_id[doc_hash]
+                                    
+                                    # Check if doc already has [id] prefix
+                                    import re
+                                    id_match = re.match(r'^\[(\d+)\]\s*', text)
+                                    if id_match:
+                                        # Extract existing ID and remove prefix from content
+                                        current_id = int(id_match.group(1))
+                                        text_without_prefix = text[id_match.end():]
+                                        lines = text_without_prefix.strip().split('\n')
+                                        title = lines[0][:30] + "..." if lines else f"Doc {current_id}"
+                                        content = text_without_prefix
                                     else:
-                                        doc_id_counter += 1
-                                        current_id = doc_id_counter
-                                        doc_content_to_id[doc_hash] = current_id
+                                        # No prefix, assign new ID
+                                        lines = text.strip().split('\n')
+                                        title = lines[0][:30] + "..." if lines else f"Doc {i+1}"
+                                        content = text
+                                        
+                                        doc_hash = text.strip()
+                                        if doc_hash in doc_content_to_id:
+                                            current_id = doc_content_to_id[doc_hash]
+                                        else:
+                                            doc_id_counter += 1
+                                            current_id = doc_id_counter
+                                            doc_content_to_id[doc_hash] = current_id
                                     
                                     sources.append({
                                         "id": current_id,
                                         "title": title,
-                                        "content": text
+                                        "content": content
                                     })
                                 
                                 await stream_callback({"type": "sources", "data": sources})
@@ -1382,19 +1421,24 @@ async def execute_pipeline(
 
                         Data.save_data(server_name, tool_name, mock_result_obj, state)
                        
-                        if depth > 0: LoopTerminal[depth - 1] = signal
+                        if depth > 0: _loop_terminal_var.get()[depth - 1] = signal
                         continue 
 
 
                 if depth > 0:
-                    LoopTerminal[depth - 1] = signal
+                    _loop_terminal_var.get()[depth - 1] = signal
                 if not signal:
                     if server_name == "prompt":
                         result = await client.get_prompt(concated, args_input)
                     else:
                         result = await client.call_tool(concated, args_input)
 
-                    if stream_callback and server_name in retriever_aliases:
+                    # Check for sources in retriever or citation tools
+                    should_extract_sources = (
+                        server_name in retriever_aliases or 
+                        "citation" in tool_name.lower()
+                    )
+                    if stream_callback and should_extract_sources:
                         try:
                             content_str = ""
                             if hasattr(result, "content") and result.content:
@@ -1409,21 +1453,35 @@ async def execute_pipeline(
                                 sources = []
                                 for i, doc in enumerate(raw_docs):
                                     text = str(doc)
-                                    lines = text.strip().split('\n')
-                                    title = lines[0][:30] + "..." if lines else f"Doc {i+1}"
-
-                                    doc_hash = text.strip()
-                                    if doc_hash in doc_content_to_id:
-                                        current_id = doc_content_to_id[doc_hash]
+                                    
+                                    # Check if doc already has [id] prefix
+                                    import re
+                                    id_match = re.match(r'^\[(\d+)\]\s*', text)
+                                    if id_match:
+                                        # Extract existing ID and remove prefix from content
+                                        current_id = int(id_match.group(1))
+                                        text_without_prefix = text[id_match.end():]
+                                        lines = text_without_prefix.strip().split('\n')
+                                        title = lines[0][:30] + "..." if lines else f"Doc {current_id}"
+                                        content = text_without_prefix
                                     else:
-                                        doc_id_counter += 1
-                                        current_id = doc_id_counter
-                                        doc_content_to_id[doc_hash] = current_id
+                                        # No prefix, assign new ID
+                                        lines = text.strip().split('\n')
+                                        title = lines[0][:30] + "..." if lines else f"Doc {i+1}"
+                                        content = text
+                                        
+                                        doc_hash = text.strip()
+                                        if doc_hash in doc_content_to_id:
+                                            current_id = doc_content_to_id[doc_hash]
+                                        else:
+                                            doc_id_counter += 1
+                                            current_id = doc_id_counter
+                                            doc_content_to_id[doc_hash] = current_id
 
                                     sources.append({
                                         "id": current_id,
                                         "title": title,
-                                        "content": text
+                                        "content": content
                                     })
                                 await stream_callback({"type": "sources", "data": sources})
                         except Exception as e:

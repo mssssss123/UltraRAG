@@ -1080,30 +1080,68 @@ async function renderChatCollectionOptions() {
 // [新增] 切换到知识库视图
 function openKBView() {
     if (!els.chatMainView || !els.kbMainView) return;
+    
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndOpenKB();
+        });
+        return;
+    }
 
-    // 刷新数据 [新增]
+    doOpenKBView();
+}
+
+// 实际执行打开KB视图
+function doOpenKBView() {
+    // 刷新数据
     refreshKBFiles();
     
-    // 隐藏聊天，显示知识库
+    // 隐藏聊天和PaperAgent，显示知识库
     els.chatMainView.classList.add("d-none");
     els.kbMainView.classList.remove("d-none");
     
+    // 隐藏 PaperAgent 视图
+    const paView = document.getElementById("paperagent-main-view");
+    if (paView) paView.classList.add("d-none");
+    
     // 更新按钮状态
     if (els.kbBtn) els.kbBtn.classList.add("active");
+    const paBtn = document.getElementById("paperagent-btn");
+    if (paBtn) paBtn.classList.remove("active");
     
-    // 取消所有 Session 列表的高亮 (视觉上告诉用户现在没在聊任何会话)
+    // 取消所有 Session 列表的高亮
     const items = document.querySelectorAll(".chat-session-item");
     items.forEach(el => el.classList.remove("active"));
 }
 
+// 中断生成并打开KB
+function interruptAndOpenKB() {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+        state.chat.controller = null;
+    }
+    setChatRunning(false);
+    saveCurrentSession(true);
+    doOpenKBView();
+}
+
 // [新增] 切换回聊天视图 (复位)
 function backToChatView() {
-    if (!els.chatMainView || !els.kbMainView) return;
+    if (!els.chatMainView) return;
 
-    els.kbMainView.classList.add("d-none");
+    // 隐藏其他视图
+    if (els.kbMainView) els.kbMainView.classList.add("d-none");
+    const paView = document.getElementById("paperagent-main-view");
+    if (paView) paView.classList.add("d-none");
+    
+    // 显示聊天视图
     els.chatMainView.classList.remove("d-none");
     
+    // 更新按钮状态
     if (els.kbBtn) els.kbBtn.classList.remove("active");
+    const paBtn = document.getElementById("paperagent-btn");
+    if (paBtn) paBtn.classList.remove("active");
     
     // 重新渲染侧边栏以恢复当前会话的高亮状态
     renderChatCollectionOptions();
@@ -1222,7 +1260,35 @@ function resetChatSession() {
 function generateChatId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
 
 function createNewChatSession() {
-    if (state.chat.history.length > 0) saveCurrentSession(true);
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndCreateNewChat();
+        });
+        return;
+    }
+    
+    if (state.chat.history.length > 0) {
+        saveCurrentSession(true);
+    }
+    
+    state.chat.currentSessionId = generateChatId();
+    state.chat.history = [];
+    renderChatHistory(); renderChatSidebar();
+    setChatStatus("Ready", "ready");
+    if(els.chatInput && state.chat.engineSessionId) els.chatInput.focus();
+    backToChatView();
+}
+
+// 中断生成并创建新会话
+function interruptAndCreateNewChat() {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+        state.chat.controller = null;
+    }
+    setChatRunning(false);
+    saveCurrentSession(true);
+    
     state.chat.currentSessionId = generateChatId();
     state.chat.history = [];
     renderChatHistory(); renderChatSidebar();
@@ -1232,7 +1298,13 @@ function createNewChatSession() {
 }
 
 function loadChatSession(sessionId) {
-    if (state.chat.running) return; // 正在生成时不许切
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndLoadSession(sessionId);
+        });
+        return;
+    }
     
     // 先保存当前正在进行的会话
     saveCurrentSession(false); 
@@ -1259,6 +1331,83 @@ function loadChatSession(sessionId) {
     }
 
     backToChatView();
+}
+
+// 中断生成并加载会话
+function interruptAndLoadSession(sessionId) {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+        state.chat.controller = null;
+    }
+    setChatRunning(false);
+    saveCurrentSession(true);
+    
+    const session = state.chat.sessions.find(s => s.id === sessionId);
+    if (!session) return;
+
+    state.chat.currentSessionId = session.id;
+    state.chat.history = cloneDeep(session.messages || []);
+    
+    renderChatHistory();
+    renderChatSidebar();
+    setChatStatus("Ready", "ready");
+    
+    const sidebar = document.querySelector('.chat-sidebar');
+    if (window.innerWidth < 768 && sidebar) {
+        sidebar.classList.remove('show');
+    }
+    backToChatView();
+}
+
+// 显示中断确认弹窗
+function showInterruptConfirmDialog(onConfirm) {
+    // 创建或获取弹窗
+    let dialog = document.getElementById('interrupt-confirm-dialog');
+    if (!dialog) {
+        dialog = document.createElement('dialog');
+        dialog.id = 'interrupt-confirm-dialog';
+        dialog.className = 'interrupt-confirm-dialog';
+        document.body.appendChild(dialog);
+    }
+    
+    dialog.innerHTML = `
+        <div class="interrupt-dialog-content">
+            <div class="interrupt-dialog-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3>Generation in Progress</h3>
+            <p>A response is currently being generated. This action will interrupt the generation.</p>
+            <p class="interrupt-dialog-tip">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                Tip: Use <strong>Background</strong> mode to run tasks without interruption.
+            </p>
+            <div class="interrupt-dialog-actions">
+                <button class="btn-interrupt-cancel">Cancel</button>
+                <button class="btn-interrupt-confirm">Interrupt & Continue</button>
+            </div>
+        </div>
+    `;
+    
+    const cancelBtn = dialog.querySelector('.btn-interrupt-cancel');
+    const confirmBtn = dialog.querySelector('.btn-interrupt-confirm');
+    
+    cancelBtn.onclick = () => {
+        dialog.close();
+    };
+    
+    confirmBtn.onclick = () => {
+        dialog.close();
+        if (onConfirm) onConfirm();
+    };
+    
+    // 点击背景关闭
+    dialog.onclick = (e) => {
+        if (e.target === dialog) {
+            dialog.close();
+        }
+    };
+    
+    dialog.showModal();
 }
 
 function saveCurrentSession(force = false) {
@@ -1483,6 +1632,11 @@ function renderChatHistory() {
         }
         bubble.appendChild(content);
 
+        // [新增] 渲染 Show Thinking 步骤信息
+        if (entry.role === "assistant" && entry.meta && entry.meta.steps && entry.meta.steps.length > 0) {
+            renderStepsFromHistory(bubble, entry.meta.steps, entry.meta.interrupted);
+        }
+
         // 渲染底部的引用卡片
         if (entry.meta && entry.meta.sources) {
             // 计算哪些引用被使用了
@@ -1496,13 +1650,13 @@ function renderChatHistory() {
             renderSources(bubble, entry.meta.sources, usedIds);
         }
         
-        // 渲染调试信息 (Hint)
-        if (entry.meta && entry.meta.hint) {
-            const hintDiv = document.createElement("div");
-            hintDiv.className = "text-xs text-muted mt-2 pt-2 border-top";
-            hintDiv.textContent = entry.meta.hint;
-            bubble.appendChild(hintDiv);
-        }
+        // 调试信息 (Hint) 已禁用，不再显示 Dataset/Memory 路径
+        // if (entry.meta && entry.meta.hint) {
+        //     const hintDiv = document.createElement("div");
+        //     hintDiv.className = "text-xs text-muted mt-2 pt-2 border-top";
+        //     hintDiv.textContent = entry.meta.hint;
+        //     bubble.appendChild(hintDiv);
+        // }
 
         els.chatHistory.appendChild(bubble);
     });
@@ -1591,6 +1745,8 @@ function openChatView() {
         updateDemoControls();
     }
 
+  // Initialize background tasks
+  initBackgroundTasks();
 }
 
 async function stopGeneration() {
@@ -1598,6 +1754,7 @@ async function stopGeneration() {
 
     // 1. 前端断开连接 (停止接收数据流)
     // 这会让 fetch 抛出 AbortError，跳到 catch 块
+    // AbortError 处理会保存已生成的内容
     if (state.chat.controller) {
         state.chat.controller.abort();
         state.chat.controller = null;
@@ -1616,9 +1773,7 @@ async function stopGeneration() {
 
     log("Generation stopped by user.");
     
-    // UI 立即恢复
-    setChatRunning(false);
-    appendChatMessage("system", "Generation interrupted.");
+    // UI 状态会在 AbortError 处理中更新
 }
 
 // [新增] 辅助函数：清洗 PDF 提取文本中的脏格式
@@ -1854,6 +2009,101 @@ function formatMessageText(text) {
     return safeText;
 }
 
+// [新增] 从历史记录中恢复步骤信息
+function renderStepsFromHistory(bubble, steps, isInterrupted = false) {
+    if (!steps || steps.length === 0) return;
+    
+    // 创建 Process Container（与实时渲染格式完全一致）
+    const procDiv = document.createElement("div");
+    procDiv.className = "process-container collapsed"; // 默认折叠
+    procDiv.innerHTML = `
+        <div class="process-header" onclick="this.parentNode.classList.toggle('collapsed')">
+            <span>Show Thinking</span>
+            <span style="font-size:0.8em">▼</span>
+        </div>
+        <div class="process-body"></div>
+    `;
+    
+    const body = procDiv.querySelector(".process-body");
+    
+    // 解析步骤，合并 step_start 和 step_end
+    const stepMap = new Map();
+    const stepOrder = []; // 保持顺序
+    
+    for (const step of steps) {
+        if (step.type === 'step_start') {
+            if (!stepMap.has(step.name)) {
+                stepOrder.push(step.name);
+            }
+            stepMap.set(step.name, { 
+                name: step.name, 
+                tokens: step.tokens || '',
+                output: '',
+                completed: false 
+            });
+        } else if (step.type === 'step_end') {
+            const existing = stepMap.get(step.name);
+            if (existing) {
+                existing.completed = true;
+                if (step.output) {
+                    existing.output = step.output;
+                }
+            }
+        }
+    }
+    
+    // 按顺序渲染每个步骤（与实时渲染格式完全一致）
+    for (const name of stepOrder) {
+        const stepData = stepMap.get(name);
+        if (!stepData) continue;
+        
+        const stepDiv = document.createElement("div");
+        stepDiv.className = "process-step";
+        stepDiv.dataset.stepName = name;
+        
+        // 标题部分：完成的显示空（因为 spinner 被移除了），未完成的显示警告
+        let titleContent = '';
+        if (!stepData.completed && isInterrupted) {
+            titleContent = '<span class="step-spinner" style="border-color: #f59e0b transparent transparent transparent;"></span>';
+        }
+        // 注意：已完成的步骤在实时渲染中 spinner 被移除了，所以这里也不显示
+        
+        stepDiv.innerHTML = `
+            <div class="step-title">
+                ${titleContent}
+                <span>${name}</span>
+            </div>
+        `;
+        
+        // 添加流式内容（如果有）
+        if (stepData.tokens) {
+            const streamDiv = document.createElement("div");
+            streamDiv.className = "step-content-stream";
+            // 使用 textContent 保持与实时渲染一致
+            streamDiv.textContent = stepData.tokens;
+            stepDiv.appendChild(streamDiv);
+        }
+        
+        // 添加 output 摘要（如果有）
+        if (stepData.output) {
+            const detailsDiv = document.createElement("div");
+            detailsDiv.className = "step-details";
+            detailsDiv.textContent = stepData.output;
+            stepDiv.appendChild(detailsDiv);
+        }
+        
+        body.appendChild(stepDiv);
+    }
+    
+    // 插入到气泡最前面（与实时渲染一致）
+    bubble.insertBefore(procDiv, bubble.firstChild);
+}
+
+// 用于跟踪 process-body 的滚动状态
+const processScrollState = {
+    shouldAutoScroll: true
+};
+
 function updateProcessUI(entryIndex, eventData) {
     // 1. 找到对应的 Chat Bubble (最后一个 assistant 气泡)
     const container = document.getElementById("chat-history");
@@ -1876,9 +2126,27 @@ function updateProcessUI(entryIndex, eventData) {
         `;
         // 插在气泡最前面
         lastBubble.insertBefore(procDiv, lastBubble.firstChild);
+        
+        // [新增] 为 process-body 添加滚动监听，实现智能吸附
+        const newBody = procDiv.querySelector(".process-body");
+        if (newBody) {
+            processScrollState.shouldAutoScroll = true; // 重置状态
+            newBody.addEventListener('scroll', function() {
+                const threshold = 30;
+                const distance = this.scrollHeight - this.scrollTop - this.clientHeight;
+                processScrollState.shouldAutoScroll = distance <= threshold;
+            });
+        }
     }
     
     const body = procDiv.querySelector(".process-body");
+
+    // 辅助函数：智能滚动到底部
+    const smartScrollToBottom = () => {
+        if (processScrollState.shouldAutoScroll && body) {
+            body.scrollTop = body.scrollHeight;
+        }
+    };
 
     // 3. 处理不同事件
     if (eventData.type === "step_start") {
@@ -1893,7 +2161,7 @@ function updateProcessUI(entryIndex, eventData) {
             <div class="step-content-stream"></div> `;
         body.appendChild(stepDiv);
         // 自动滚动到底部
-        body.scrollTop = body.scrollHeight;
+        smartScrollToBottom();
 
     } else if (eventData.type === "token") {
         // 如果 Token 不是 final 的，就显示在思考过程里 (作为详细日志)
@@ -1907,6 +2175,8 @@ function updateProcessUI(entryIndex, eventData) {
                 const span = document.createElement("span");
                 span.textContent = eventData.content;
                 streamDiv.appendChild(span);
+                // [新增] 智能滚动跟随
+                smartScrollToBottom();
             }
         }
 
@@ -1929,6 +2199,8 @@ function updateProcessUI(entryIndex, eventData) {
                 details.className = "step-details";
                 details.textContent = eventData.output;
                 currentStep.appendChild(details);
+                // [新增] 智能滚动跟随
+                smartScrollToBottom();
                 
                 // (可选) 隐藏流式过程，只看结果? 
                 // currentStep.querySelector(".step-content-stream").style.display = 'none';
@@ -1936,6 +2208,7 @@ function updateProcessUI(entryIndex, eventData) {
         }
     }
 }
+
 
 async function handleChatSubmit(event) {
   if (event) event.preventDefault();
@@ -1945,8 +2218,21 @@ async function handleChatSubmit(event) {
 
   const question = els.chatInput.value.trim();
   if (!question) return;
+  
+  // Check if background mode is enabled
+  if (backgroundTaskState.backgroundModeEnabled) {
+    els.chatInput.value = "";
+    if (els.chatInput) els.chatInput.style.height = 'auto';
+    await sendToBackground(question);
+    // Disable background mode after sending
+    backgroundTaskState.backgroundModeEnabled = false;
+    const toggle = document.getElementById('bg-mode-toggle');
+    if (toggle) toggle.classList.remove('active');
+    return;
+  }
+  
   els.chatInput.value = "";
-  // 重置textarea高度
+  // Reset textarea height
   if (els.chatInput) {
     els.chatInput.style.height = 'auto';
   }
@@ -1983,6 +2269,12 @@ async function handleChatSubmit(event) {
     // 先占位
     const entryIndex = state.chat.history.length;
     state.chat.history.push({ role: "assistant", text: "", meta: {} });
+    
+    // [修复] 将这些变量提升到更高作用域，以便在中断时能够保存
+    state.chat._streamingText = "";
+    state.chat._streamingSources = [];
+    state.chat._streamingSteps = []; // 保存步骤信息
+    state.chat._streamingEntryIndex = entryIndex;
     
     const chatContainer = document.getElementById("chat-history");
 
@@ -2027,6 +2319,18 @@ async function handleChatSubmit(event) {
             
             if (data.type === "step_start" || data.type === "step_end") {
                 updateProcessUI(entryIndex, data);
+                // [新增] 保存步骤信息以便恢复
+                if (!state.chat._streamingSteps) state.chat._streamingSteps = [];
+                const stepInfo = {
+                    type: data.type,
+                    name: data.name,
+                    timestamp: Date.now()
+                };
+                // 保存 step_end 的 output 摘要
+                if (data.type === "step_end" && data.output) {
+                    stepInfo.output = data.output;
+                }
+                state.chat._streamingSteps.push(stepInfo);
             } 
             else if (data.type === "sources") {
                 // 后端已为每个文档分配了唯一ID，直接使用
@@ -2036,11 +2340,26 @@ async function handleChatSubmit(event) {
                 }));
                 allSources = allSources.concat(docs);
                 pendingRenderSources = pendingRenderSources.concat(docs);
+                // [修复] 同步更新状态，以便中断时能保存
+                state.chat._streamingSources = allSources;
             } 
             else if (data.type === "token") {
-                if (!data.is_final) updateProcessUI(entryIndex, data);
+                if (!data.is_final) {
+                    updateProcessUI(entryIndex, data);
+                    // [新增] 保存 thinking 内容
+                    if (!state.chat._streamingSteps) state.chat._streamingSteps = [];
+                    // 找到最后一个 step_start，追加 token 内容
+                    const lastStep = state.chat._streamingSteps.filter(s => s.type === 'step_start').pop();
+                    if (lastStep) {
+                        if (!lastStep.tokens) lastStep.tokens = "";
+                        lastStep.tokens += data.content;
+                    }
+                }
                 if (data.is_final) {
                     currentText += data.content;
+                    // [修复] 同步更新状态，以便中断时能保存
+                    state.chat._streamingText = currentText;
+                    
                     if (typeof isPendingLanguageFence === 'function' && isPendingLanguageFence(currentText, MARKDOWN_LANGS)) continue;
                     
                     let html = renderMarkdown(currentText, { unwrapLanguages: MARKDOWN_LANGS });
@@ -2081,11 +2400,16 @@ async function handleChatSubmit(event) {
                 state.chat.history[entryIndex].text = finalText;
                 if (!state.chat.history[entryIndex].meta) state.chat.history[entryIndex].meta = {};
                 state.chat.history[entryIndex].meta.sources = allSources;
+                // [新增] 保存步骤信息
+                if (state.chat._streamingSteps && state.chat._streamingSteps.length > 0) {
+                    state.chat.history[entryIndex].meta.steps = state.chat._streamingSteps;
+                }
                 
-                const hints = [];
-                if (final.dataset_path) hints.push(`Dataset: ${final.dataset_path}`);
-                if (final.memory_path) hints.push(`Memory: ${final.memory_path}`);
-                state.chat.history[entryIndex].meta.hint = hints.join(" | ");
+                // 不再显示调试信息（Dataset/Memory路径）
+                // const hints = [];
+                // if (final.dataset_path) hints.push(`Dataset: ${final.dataset_path}`);
+                // if (final.memory_path) hints.push(`Memory: ${final.memory_path}`);
+                // state.chat.history[entryIndex].meta.hint = hints.join(" | ");
                 
                 const procDiv = bubble.querySelector(".process-container");
                 if (procDiv) procDiv.classList.add("collapsed");
@@ -2100,7 +2424,36 @@ async function handleChatSubmit(event) {
       }
     }
   } catch (err) {
-      if (err.name === 'AbortError') return;
+      if (err.name === 'AbortError') {
+          // [修复] 中断时保存已生成的内容
+          if (state.chat._streamingEntryIndex !== undefined) {
+              const idx = state.chat._streamingEntryIndex;
+              if (state.chat.history[idx]) {
+                  // 保存已生成的文本
+                  if (state.chat._streamingText) {
+                      state.chat.history[idx].text = state.chat._streamingText + "\n\n*(Generation interrupted)*";
+                  }
+                  state.chat.history[idx].meta = state.chat.history[idx].meta || {};
+                  state.chat.history[idx].meta.sources = state.chat._streamingSources || [];
+                  state.chat.history[idx].meta.interrupted = true;
+                  // [新增] 保存步骤信息
+                  if (state.chat._streamingSteps && state.chat._streamingSteps.length > 0) {
+                      state.chat.history[idx].meta.steps = state.chat._streamingSteps;
+                  }
+              }
+          }
+          // 清理流式状态
+          delete state.chat._streamingText;
+          delete state.chat._streamingSources;
+          delete state.chat._streamingSteps;
+          delete state.chat._streamingEntryIndex;
+          
+          setChatRunning(false);
+          setChatStatus("Interrupted", "info");
+          saveCurrentSession();
+          chatContainer.removeEventListener('scroll', handleScroll);
+          return;
+      }
       console.error(err);
       appendChatMessage("system", `Network Error: ${err.message}`);
       setChatStatus("Error", "error");
@@ -2109,6 +2462,12 @@ async function handleChatSubmit(event) {
           state.chat.controller = null;
           setChatRunning(false);
       }
+      // 清理流式状态
+      delete state.chat._streamingText;
+      delete state.chat._streamingSources;
+      delete state.chat._streamingSteps;
+      delete state.chat._streamingEntryIndex;
+      
       saveCurrentSession();
       chatContainer.removeEventListener('scroll', handleScroll); // 记得移除监听
   }
@@ -2315,7 +2674,7 @@ function markPipelineDirty() {
     const currentName = state.selectedPipeline;
     if (currentName && state.chat.activeEngines[currentName]) {
         const sid = state.chat.activeEngines[currentName];
-        // 尝试后台停止
+        // Try to stop in background
         fetchJSON(`/api/pipelines/demo/stop`, { 
             method: "POST", body: JSON.stringify({ session_id: sid }) 
         }).catch(() => {});
@@ -2699,7 +3058,7 @@ function bindEvents() {
     if (els.chatForm) els.chatForm.onsubmit = handleChatSubmit;
     if (els.chatSend) els.chatSend.onclick = handleChatSubmit;
     
-    // 支持Shift+Enter换行，Enter提交
+    // Support Shift+Enter for newline, Enter for submit
     if (els.chatInput) {
         els.chatInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -2853,6 +3212,585 @@ function applyChatOnlyMode() {
   }
 }
 
+// ===== Background Task Management =====
+
+// User ID management for isolating background tasks per user
+const USER_ID_STORAGE_KEY = 'ultrarag_user_id';
+
+function getUserId() {
+    let userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+    if (!userId) {
+        // Generate a unique user ID
+        userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem(USER_ID_STORAGE_KEY, userId);
+    }
+    return userId;
+}
+
+// Background task state
+const backgroundTaskState = {
+    tasks: [],
+    polling: null,
+    panelOpen: false,
+    notifiedTasks: new Set(), // Already notified task IDs
+    backgroundModeEnabled: false, // Whether background mode is active
+    cachedTasks: [], // Cached completed tasks from localStorage
+};
+
+// LocalStorage key for background tasks
+const BG_TASKS_STORAGE_KEY = 'ultrarag_background_tasks';
+
+// Load cached background tasks from localStorage
+function loadCachedBackgroundTasks() {
+    try {
+        const cached = localStorage.getItem(BG_TASKS_STORAGE_KEY);
+        if (cached) {
+            backgroundTaskState.cachedTasks = JSON.parse(cached);
+            // Mark already notified tasks to avoid duplicate notifications
+            backgroundTaskState.cachedTasks.forEach(t => {
+                if (t.status === 'completed' || t.status === 'failed') {
+                    backgroundTaskState.notifiedTasks.add(t.task_id);
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Failed to load cached background tasks:', e);
+        backgroundTaskState.cachedTasks = [];
+    }
+}
+
+// Save background tasks to localStorage
+function saveCachedBackgroundTasks() {
+    try {
+        // Only cache completed and failed tasks (with full results)
+        const toCache = backgroundTaskState.tasks.filter(t => 
+            t.status === 'completed' || t.status === 'failed'
+        );
+        localStorage.setItem(BG_TASKS_STORAGE_KEY, JSON.stringify(toCache));
+        backgroundTaskState.cachedTasks = toCache;
+    } catch (e) {
+        console.warn('Failed to save background tasks:', e);
+    }
+}
+
+// Merge server tasks with cached tasks
+function mergeBackgroundTasks(serverTasks) {
+    const merged = [...serverTasks];
+    const serverTaskIds = new Set(serverTasks.map(t => t.task_id));
+    
+    // Add cached tasks that are not on the server (e.g., server restarted)
+    for (const cached of backgroundTaskState.cachedTasks) {
+        if (!serverTaskIds.has(cached.task_id)) {
+            // Mark as cached so we know it's from localStorage
+            merged.push({ ...cached, fromCache: true });
+        }
+    }
+    
+    // Sort by created_at (newest first)
+    merged.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+    
+    return merged;
+}
+
+// Toggle background mode
+window.toggleBackgroundMode = function() {
+    backgroundTaskState.backgroundModeEnabled = !backgroundTaskState.backgroundModeEnabled;
+    
+    const toggle = document.getElementById('bg-mode-toggle');
+    
+    if (toggle) {
+        toggle.classList.toggle('active', backgroundTaskState.backgroundModeEnabled);
+    }
+};
+
+// Show notification toast
+function showNotification(type, title, message, onClick = null) {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `notification-toast ${type}`;
+    
+    const iconSvg = type === 'success' 
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+        : type === 'error'
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+    
+    toast.innerHTML = `
+        <div class="notification-icon">${iconSvg}</div>
+        <div class="notification-content">
+            <div class="notification-title">${title}</div>
+            <div class="notification-message">${message}</div>
+        </div>
+        <button class="notification-close" onclick="event.stopPropagation(); this.parentElement.remove();">×</button>
+    `;
+    
+    if (onClick) {
+        toast.onclick = () => {
+            onClick();
+            toast.remove();
+        };
+    }
+    
+    container.appendChild(toast);
+    
+    // Auto remove
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 8000);
+    
+    // Try browser native notification
+    requestBrowserNotification(title, message);
+}
+
+// Request browser notification permission and show notification
+async function requestBrowserNotification(title, message) {
+    if (!('Notification' in window)) return;
+    
+    if (Notification.permission === 'default') {
+        await Notification.requestPermission();
+    }
+    
+    if (Notification.permission === 'granted' && document.hidden) {
+        const notification = new Notification(title, {
+            body: message,
+            icon: '/favicon.svg',
+            tag: 'ultrarag-bg-task'
+        });
+        
+        notification.onclick = () => {
+            window.focus();
+            notification.close();
+        };
+    }
+}
+
+// Toggle background tasks panel
+window.toggleBackgroundPanel = function() {
+    const panel = document.getElementById('background-tasks-panel');
+    if (!panel) return;
+    
+    backgroundTaskState.panelOpen = !backgroundTaskState.panelOpen;
+    panel.classList.toggle('d-none', !backgroundTaskState.panelOpen);
+    
+    if (backgroundTaskState.panelOpen) {
+        refreshBackgroundTasks();
+    }
+};
+
+// Refresh background tasks list
+window.refreshBackgroundTasks = async function() {
+    try {
+        const userId = getUserId();
+        const serverTasks = await fetchJSON(`/api/background-tasks?limit=20&user_id=${encodeURIComponent(userId)}`);
+        
+        // Merge with cached tasks (for tasks that may have been lost on server restart)
+        backgroundTaskState.tasks = mergeBackgroundTasks(serverTasks);
+        
+        // Save completed tasks to cache
+        saveCachedBackgroundTasks();
+        
+        renderBackgroundTasksList();
+        updateBackgroundTasksCount();
+        
+        // Check for newly completed tasks and notify
+        checkForCompletedTasks(backgroundTaskState.tasks);
+    } catch (e) {
+        console.error('Failed to refresh background tasks:', e);
+        // If server is unavailable, show cached tasks
+        if (backgroundTaskState.cachedTasks.length > 0) {
+            backgroundTaskState.tasks = [...backgroundTaskState.cachedTasks];
+            renderBackgroundTasksList();
+            updateBackgroundTasksCount();
+        }
+    }
+};
+
+// Check for newly completed tasks
+function checkForCompletedTasks(tasks) {
+    for (const task of tasks) {
+        if (task.status === 'completed' && !backgroundTaskState.notifiedTasks.has(task.task_id)) {
+            backgroundTaskState.notifiedTasks.add(task.task_id);
+            showNotification(
+                'success',
+                'Background Task Completed',
+                task.question,
+                () => showBackgroundTaskDetail(task.task_id)
+            );
+            
+            // 如果是 PaperAgent 报告生成任务，刷新报告列表
+            if (task.pipeline_name === 'paper_research' || 
+                task.question?.includes('研究报告') || 
+                task.question?.includes('热点分析') ||
+                task.question?.includes('请生成关于')) {
+                console.log('[PaperAgent] Report generation completed, refreshing reports...');
+                loadReports();
+                showNotification('success', '报告生成完成', '可在 PaperAgent 的研究报告中查看');
+            }
+        } else if (task.status === 'failed' && !backgroundTaskState.notifiedTasks.has(task.task_id)) {
+            backgroundTaskState.notifiedTasks.add(task.task_id);
+            showNotification(
+                'error',
+                'Background Task Failed',
+                task.error || task.question,
+                () => showBackgroundTaskDetail(task.task_id)
+            );
+        }
+    }
+}
+
+// Render background tasks list
+function renderBackgroundTasksList() {
+    const container = document.getElementById('bg-tasks-list');
+    if (!container) return;
+    
+    if (backgroundTaskState.tasks.length === 0) {
+        container.innerHTML = '<div class="text-muted text-center py-4 small">No background tasks</div>';
+        return;
+    }
+    
+    container.innerHTML = backgroundTaskState.tasks.map(task => {
+        const time = task.created_at ? new Date(task.created_at * 1000).toLocaleTimeString() : '';
+        return `
+            <div class="bg-task-item ${task.status}" onclick="showBackgroundTaskDetail('${task.task_id}')">
+                <div class="bg-task-header">
+                    <div class="bg-task-question">${escapeHtml(task.question)}</div>
+                    <span class="bg-task-status ${task.status}">${task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed'}</span>
+                </div>
+                <div class="bg-task-meta">
+                    <span>${task.pipeline_name}</span>
+                    <span>${time}</span>
+                </div>
+                ${task.status === 'completed' && task.result_preview ? `
+                    <div class="bg-task-preview">${escapeHtml(task.result_preview)}</div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// HTML escape
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Update background tasks count
+function updateBackgroundTasksCount() {
+    const countEl = document.getElementById('bg-tasks-count');
+    const fab = document.getElementById('bg-tasks-fab');
+    if (!countEl || !fab) return;
+    
+    const runningCount = backgroundTaskState.tasks.filter(t => t.status === 'running').length;
+    
+    if (runningCount > 0) {
+        countEl.textContent = runningCount;
+        countEl.classList.remove('d-none');
+        fab.classList.remove('d-none');
+    } else if (backgroundTaskState.tasks.length > 0) {
+        countEl.classList.add('d-none');
+        fab.classList.remove('d-none');
+    } else {
+        fab.classList.add('d-none');
+    }
+}
+
+// Show background task detail
+window.showBackgroundTaskDetail = async function(taskId) {
+    try {
+        // Try to get from server first, fallback to cache
+        let task;
+        const userId = getUserId();
+        try {
+            task = await fetchJSON(`/api/background-tasks/${taskId}?user_id=${encodeURIComponent(userId)}`);
+        } catch (e) {
+            // Server may not have this task (e.g., after restart), try cache
+            task = backgroundTaskState.cachedTasks.find(t => t.task_id === taskId);
+            if (!task) {
+                task = backgroundTaskState.tasks.find(t => t.task_id === taskId);
+            }
+            if (!task) {
+                showNotification('error', 'Error', 'Task not found');
+                return;
+            }
+        }
+        
+        // Create or get detail modal
+        let modal = document.getElementById('bg-task-detail-modal');
+        if (!modal) {
+            modal = document.createElement('dialog');
+            modal.id = 'bg-task-detail-modal';
+            modal.className = 'bg-task-detail-modal';
+            document.body.appendChild(modal);
+        }
+        
+        const statusClass = task.status === 'completed' ? 'success' : task.status === 'failed' ? 'error' : 'info';
+        const statusText = task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed';
+        
+        modal.innerHTML = `
+            <div class="bg-task-detail-header">
+                <div>
+                    <span class="bg-task-status ${task.status}">${statusText}</span>
+                    <div class="text-muted">${task.pipeline_name}</div>
+                </div>
+                <button class="bg-modal-close-btn" onclick="document.getElementById('bg-task-detail-modal').close()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="bg-task-detail-body">
+                <div class="bg-task-detail-question">
+                    <strong>Question</strong>
+                    ${escapeHtml(task.full_question || task.question)}
+                </div>
+                ${task.status === 'completed' ? `
+                    <div class="bg-task-detail-answer">
+                        ${typeof renderMarkdown === 'function' ? renderMarkdown(task.result || '') : escapeHtml(task.result || '')}
+                    </div>
+                ` : task.status === 'failed' ? `
+                    <div class="bg-task-detail-question" style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15);">
+                        <strong style="color: #ef4444;">Error</strong>
+                        ${escapeHtml(task.error || 'Unknown error')}
+                    </div>
+                ` : `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div class="spinner-border" style="color: #3b82f6; width: 2rem; height: 2rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">Processing your request...</div>
+                    </div>
+                `}
+                <div class="d-flex gap-2">
+                    ${task.status === 'completed' ? `
+                        <button class="btn btn-primary" onclick="copyTaskResult('${taskId}')">Copy Result</button>
+                        <button class="btn btn-outline-secondary" onclick="loadTaskToChat('${taskId}')">Load to Chat</button>
+                    ` : ''}
+                    <button class="btn btn-outline-danger ms-auto" onclick="deleteBackgroundTask('${taskId}')">Delete</button>
+                </div>
+            </div>
+        `;
+        
+        modal.showModal();
+        
+        // If task is still running, refresh periodically
+        if (task.status === 'running') {
+            const refreshInterval = setInterval(async () => {
+                const userId = getUserId();
+                const updated = await fetchJSON(`/api/background-tasks/${taskId}?user_id=${encodeURIComponent(userId)}`);
+                if (updated.status !== 'running') {
+                    clearInterval(refreshInterval);
+                    showBackgroundTaskDetail(taskId);
+                }
+            }, 2000);
+            
+            modal.addEventListener('close', () => clearInterval(refreshInterval), { once: true });
+        }
+    } catch (e) {
+        console.error('Failed to load task detail:', e);
+    }
+};
+
+// Copy task result
+window.copyTaskResult = async function(taskId) {
+    try {
+        // Try server first, fallback to cache
+        let task;
+        const userId = getUserId();
+        try {
+            task = await fetchJSON(`/api/background-tasks/${taskId}?user_id=${encodeURIComponent(userId)}`);
+        } catch (e) {
+            task = backgroundTaskState.cachedTasks.find(t => t.task_id === taskId) ||
+                   backgroundTaskState.tasks.find(t => t.task_id === taskId);
+        }
+        
+        if (task && task.result) {
+            await navigator.clipboard.writeText(task.result);
+            showNotification('success', 'Copied', 'Result copied to clipboard');
+        }
+    } catch (e) {
+        console.error('Failed to copy:', e);
+    }
+};
+
+// Load task result to chat
+window.loadTaskToChat = async function(taskId) {
+    try {
+        // Try server first, fallback to cache
+        let task;
+        const userId = getUserId();
+        try {
+            task = await fetchJSON(`/api/background-tasks/${taskId}?user_id=${encodeURIComponent(userId)}`);
+        } catch (e) {
+            task = backgroundTaskState.cachedTasks.find(t => t.task_id === taskId) ||
+                   backgroundTaskState.tasks.find(t => t.task_id === taskId);
+        }
+        
+        if (!task || task.status !== 'completed') return;
+        
+        // Close modal
+        const modal = document.getElementById('bg-task-detail-modal');
+        if (modal) modal.close();
+        
+        // Add to chat history
+        state.chat.history.push({ 
+            role: 'user', 
+            text: task.full_question || task.question,
+            timestamp: new Date(task.created_at * 1000).toISOString()
+        });
+        state.chat.history.push({ 
+            role: 'assistant', 
+            text: task.result || '',
+            meta: { sources: task.sources || [] },
+            timestamp: new Date(task.completed_at * 1000).toISOString()
+        });
+        
+        // Save and render
+        saveCurrentSession();
+        renderChatHistory();
+        
+        // Close background panel
+        toggleBackgroundPanel();
+        
+        showNotification('success', 'Loaded', 'Background task result loaded to current chat');
+    } catch (e) {
+        console.error('Failed to load task to chat:', e);
+    }
+};
+
+// Delete background task
+window.deleteBackgroundTask = async function(taskId) {
+    if (!confirm('Are you sure you want to delete this task?')) return;
+    
+    try {
+        // Try to delete from server (may fail if task is only in cache)
+        const userId = getUserId();
+        try {
+            await fetchJSON(`/api/background-tasks/${taskId}?user_id=${encodeURIComponent(userId)}`, { method: 'DELETE' });
+        } catch (e) {
+            // Ignore server error, may be a cached-only task
+        }
+        
+        // Also remove from local cache
+        backgroundTaskState.cachedTasks = backgroundTaskState.cachedTasks.filter(t => t.task_id !== taskId);
+        backgroundTaskState.tasks = backgroundTaskState.tasks.filter(t => t.task_id !== taskId);
+        localStorage.setItem(BG_TASKS_STORAGE_KEY, JSON.stringify(backgroundTaskState.cachedTasks));
+        
+        // Close detail modal
+        const modal = document.getElementById('bg-task-detail-modal');
+        if (modal) modal.close();
+        
+        // Update UI
+        renderBackgroundTasksList();
+        updateBackgroundTasksCount();
+    } catch (e) {
+        console.error('Failed to delete task:', e);
+    }
+};
+
+// Clear completed tasks
+window.clearCompletedTasks = async function() {
+    try {
+        // Try to clear from server
+        let serverCount = 0;
+        const userId = getUserId();
+        try {
+            const result = await fetchJSON('/api/background-tasks/clear-completed', { 
+                method: 'POST',
+                body: JSON.stringify({ user_id: userId })
+            });
+            serverCount = result.count || 0;
+        } catch (e) {
+            // Ignore server error
+        }
+        
+        // Also clear from local cache
+        const cachedCount = backgroundTaskState.cachedTasks.filter(t => t.status === 'completed').length;
+        backgroundTaskState.cachedTasks = backgroundTaskState.cachedTasks.filter(t => t.status !== 'completed');
+        backgroundTaskState.tasks = backgroundTaskState.tasks.filter(t => t.status !== 'completed');
+        localStorage.setItem(BG_TASKS_STORAGE_KEY, JSON.stringify(backgroundTaskState.cachedTasks));
+        
+        const totalCleared = Math.max(serverCount, cachedCount);
+        showNotification('success', 'Cleared', `Cleared ${totalCleared} completed tasks`);
+        
+        // Update UI
+        renderBackgroundTasksList();
+        updateBackgroundTasksCount();
+    } catch (e) {
+        console.error('Failed to clear tasks:', e);
+    }
+};
+
+// Send to background
+async function sendToBackground(question) {
+    if (!state.chat.engineSessionId) {
+        alert('Please start the engine first');
+        return null;
+    }
+    
+    const selectedCollection = els.chatCollectionSelect ? els.chatCollectionSelect.value : '';
+    const dynamicParams = {};
+    if (selectedCollection) {
+        dynamicParams['collection_name'] = selectedCollection;
+    }
+    
+    try {
+        const userId = getUserId();
+        const response = await fetchJSON(
+            `/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/chat/background`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    question,
+                    session_id: state.chat.engineSessionId,
+                    dynamic_params: dynamicParams,
+                    user_id: userId
+                })
+            }
+        );
+        
+        showNotification('info', 'Task Submitted', 'Question sent to background, you will be notified when complete');
+        
+        // Show background tasks FAB
+        const fab = document.getElementById('bg-tasks-fab');
+        if (fab) fab.classList.remove('d-none');
+        
+        // Start polling
+        startBackgroundPolling();
+        
+        return response.task_id;
+    } catch (e) {
+        console.error('Failed to send to background:', e);
+        showNotification('error', '发送失败', e.message || '无法发送到后台');
+        return null;
+    }
+}
+
+// Start background task polling
+function startBackgroundPolling() {
+    if (backgroundTaskState.polling) return;
+    
+    backgroundTaskState.polling = setInterval(async () => {
+        await refreshBackgroundTasks();
+        
+        // Stop polling if no running tasks
+        const hasRunning = backgroundTaskState.tasks.some(t => t.status === 'running');
+        if (!hasRunning) {
+            stopBackgroundPolling();
+        }
+    }, 3000);
+}
+
+// Stop background task polling
+function stopBackgroundPolling() {
+    if (backgroundTaskState.polling) {
+        clearInterval(backgroundTaskState.polling);
+        backgroundTaskState.polling = null;
+    }
+}
+
 // Chat-only 模式下初始化 Chat 界面
 async function initChatOnlyView() {
   // 1. 渲染 Pipeline 选择菜单
@@ -2883,6 +3821,1112 @@ async function initChatOnlyView() {
   
   // 6. 更新 Demo 控制按钮状态
   updateDemoControls();
+  
+  // 7. Initialize background tasks state
+  initBackgroundTasks();
 }
+
+// Initialize background tasks functionality
+async function initBackgroundTasks() {
+    // Load cached tasks from localStorage first
+    loadCachedBackgroundTasks();
+    
+    // Request browser notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+        // 延迟请求，避免打扰用户
+        setTimeout(() => {
+            Notification.requestPermission();
+        }, 5000);
+    }
+    
+    // Load background tasks list
+    await refreshBackgroundTasks();
+    
+    // Start polling if there are running tasks
+    if (backgroundTaskState.tasks.some(t => t.status === 'running')) {
+        startBackgroundPolling();
+    }
+}
+
+// 页面刷新/关闭时处理
+window.addEventListener('beforeunload', function(e) {
+    // 如果正在生成，显示浏览器确认弹窗
+    if (state.chat.running) {
+        // 保存当前已生成的内容
+        saveCurrentSession(true);
+        // 显示浏览器原生确认弹窗
+        e.preventDefault();
+        e.returnValue = 'A response is being generated. Are you sure you want to leave?';
+        return e.returnValue;
+    }
+    // 正常情况下保存会话
+    if (state.chat.history.length > 0 && state.chat.currentSessionId) {
+        saveCurrentSession(true);
+    }
+});
+
+// ==========================================
+// --- PaperAgent Logic ---
+// ==========================================
+
+const paperAgentState = {
+    categories: [],
+    selectedInterests: new Set(),
+    recommendedPapers: [],
+    selectedPapers: new Set(),
+    currentProfile: null,
+    reports: [],
+    currentTab: 'profile'
+};
+
+// PaperAgent 元素引用
+const paEls = {
+    mainView: document.getElementById("paperagent-main-view"),
+    btn: document.getElementById("paperagent-btn"),
+    tabs: document.querySelectorAll("[data-pa-tab]"),
+    interestChips: document.getElementById("pa-interest-chips"),
+    recommendPapers: document.getElementById("pa-recommend-papers"),
+    selectedCount: document.getElementById("pa-selected-count"),
+    saveProfileBtn: document.getElementById("pa-save-profile-btn"),
+    currentProfile: document.getElementById("pa-current-profile"),
+    clearProfileBtn: document.getElementById("pa-clear-profile-btn"),
+    refreshPapersBtn: document.getElementById("pa-refresh-papers-btn"),
+    searchInput: document.getElementById("pa-search-input"),
+    searchBtn: document.getElementById("pa-search-btn"),
+    categoryFilter: document.getElementById("pa-category-filter"),
+    searchResults: document.getElementById("pa-search-results"),
+    refreshReportsBtn: document.getElementById("pa-refresh-reports-btn"),
+    reportList: document.getElementById("pa-report-list"),
+    // 报告阅读器
+    reportReader: document.getElementById("pa-report-reader"),
+    readerBackBtn: document.getElementById("pa-reader-back-btn"),
+    readerTitle: document.getElementById("pa-reader-title"),
+    readerType: document.getElementById("pa-reader-type"),
+    readerDate: document.getElementById("pa-reader-date"),
+    readerContent: document.getElementById("pa-reader-content"),
+    readerDownloadBtn: document.getElementById("pa-reader-download-btn"),
+    citationsList: document.getElementById("pa-citations-list"),
+};
+
+// 初始化 PaperAgent
+async function initPaperAgent() {
+    if (!paEls.btn) return;
+    
+    // 绑定按钮事件
+    paEls.btn.onclick = openPaperAgentView;
+    
+    // 绑定 Tab 切换
+    paEls.tabs.forEach(tab => {
+        tab.onclick = () => switchPaperAgentTab(tab.dataset.paTab);
+    });
+    
+    // 绑定搜索
+    if (paEls.searchBtn) {
+        paEls.searchBtn.onclick = searchPapers;
+    }
+    if (paEls.searchInput) {
+        paEls.searchInput.onkeypress = (e) => {
+            if (e.key === 'Enter') searchPapers();
+        };
+    }
+    
+    // 绑定保存画像
+    if (paEls.saveProfileBtn) {
+        paEls.saveProfileBtn.onclick = saveUserProfile;
+    }
+    
+    // 绑定刷新论文
+    if (paEls.refreshPapersBtn) {
+        paEls.refreshPapersBtn.onclick = refreshRecommendedPapers;
+    }
+    
+    // 绑定清空画像
+    if (paEls.clearProfileBtn) {
+        paEls.clearProfileBtn.onclick = clearUserProfile;
+    }
+    
+    // 绑定刷新报告
+    if (paEls.refreshReportsBtn) {
+        paEls.refreshReportsBtn.onclick = loadReports;
+    }
+    
+    // 绑定阅读器返回
+    if (paEls.readerBackBtn) {
+        paEls.readerBackBtn.onclick = closeReportReader;
+    }
+    
+    // 绑定阅读器下载
+    if (paEls.readerDownloadBtn) {
+        paEls.readerDownloadBtn.onclick = downloadCurrentReport;
+    }
+}
+
+// 切换到 PaperAgent 视图
+function openPaperAgentView() {
+    if (!els.chatMainView || !paEls.mainView) return;
+    
+    // 如果正在生成，显示确认弹窗
+    if (state.chat.running) {
+        showInterruptConfirmDialog(() => {
+            interruptAndOpenPaperAgent();
+        });
+        return;
+    }
+    
+    doOpenPaperAgentView();
+}
+
+function doOpenPaperAgentView() {
+    // 隐藏其他视图
+    els.chatMainView.classList.add("d-none");
+    if (els.kbMainView) els.kbMainView.classList.add("d-none");
+    paEls.mainView.classList.remove("d-none");
+    
+    // 更新按钮状态
+    if (paEls.btn) paEls.btn.classList.add("active");
+    if (els.kbBtn) els.kbBtn.classList.remove("active");
+    
+    // 取消 Session 列表高亮
+    document.querySelectorAll(".chat-session-item").forEach(el => el.classList.remove("active"));
+    
+    // 加载数据
+    loadPaperAgentData();
+}
+
+function interruptAndOpenPaperAgent() {
+    if (state.chat.controller) {
+        state.chat.controller.abort();
+    }
+    state.chat.running = false;
+    doOpenPaperAgentView();
+}
+
+// 切换 Tab
+function switchPaperAgentTab(tabName) {
+    paperAgentState.currentTab = tabName;
+    
+    // 更新 Tab 按钮状态
+    paEls.tabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.paTab === tabName);
+    });
+    
+    // 更新 Tab 内容
+    document.querySelectorAll('.pa-tab-pane').forEach(pane => {
+        pane.classList.add('d-none');
+    });
+    const activePane = document.getElementById(`pa-${tabName}-pane`);
+    if (activePane) activePane.classList.remove('d-none');
+}
+
+// 加载 PaperAgent 数据
+async function loadPaperAgentData() {
+    try {
+        // 加载 CS 分类
+        await loadCategories();
+        
+        // 加载用户画像
+        await loadUserProfile();
+        
+        // 加载推荐论文
+        await loadRecommendedPapers();
+        
+        // 加载历史报告
+        await loadReports();
+        
+    } catch (error) {
+        console.error("Failed to load PaperAgent data:", error);
+    }
+}
+
+// 加载 CS 分类
+async function loadCategories() {
+    try {
+        const data = await fetchJSON('/api/paperagent/categories');
+        paperAgentState.categories = data.categories || [];
+        renderInterestChips();
+        renderCategoryFilter();
+    } catch (error) {
+        console.error("Failed to load categories:", error);
+        // 使用默认分类
+        paperAgentState.categories = [
+            { code: "cs.AI", name: "Artificial Intelligence", name_zh: "人工智能" },
+            { code: "cs.CL", name: "Computation and Language", name_zh: "计算语言学" },
+            { code: "cs.CV", name: "Computer Vision", name_zh: "计算机视觉" },
+            { code: "cs.LG", name: "Machine Learning", name_zh: "机器学习" },
+            { code: "cs.IR", name: "Information Retrieval", name_zh: "信息检索" },
+        ];
+        renderInterestChips();
+        renderCategoryFilter();
+    }
+}
+
+// 渲染兴趣标签
+function renderInterestChips() {
+    if (!paEls.interestChips) return;
+    
+    paEls.interestChips.innerHTML = paperAgentState.categories.map(cat => `
+        <div class="pa-interest-chip ${paperAgentState.selectedInterests.has(cat.code) ? 'selected' : ''}" 
+             data-code="${cat.code}" onclick="toggleInterest('${cat.code}')">
+            <span>${cat.name_zh || cat.name}</span>
+            <span class="chip-count">${cat.code}</span>
+        </div>
+    `).join('');
+}
+
+// 切换兴趣选择
+window.toggleInterest = function(code) {
+    if (paperAgentState.selectedInterests.has(code)) {
+        paperAgentState.selectedInterests.delete(code);
+    } else {
+        paperAgentState.selectedInterests.add(code);
+    }
+    renderInterestChips();
+    
+    // 根据选择的兴趣加载推荐论文
+    if (paperAgentState.selectedInterests.size > 0) {
+        loadRecommendedPapers();
+    }
+};
+
+// 渲染分类过滤器
+function renderCategoryFilter() {
+    if (!paEls.categoryFilter) return;
+    
+    paEls.categoryFilter.innerHTML = `
+        <option value="">所有分类</option>
+        ${paperAgentState.categories.map(cat => 
+            `<option value="${cat.code}">${cat.name_zh || cat.name}</option>`
+        ).join('')}
+    `;
+}
+
+// 加载用户画像
+async function loadUserProfile() {
+    try {
+        const userId = localStorage.getItem('paperagent_user_id') || 'default';
+        const data = await fetchJSON(`/api/paperagent/profile/${userId}`);
+        paperAgentState.currentProfile = data.profile;
+        
+        // 恢复选中的兴趣（兼容 research_interests 和 interests 字段）
+        const interests = data.profile?.research_interests || data.profile?.interests || [];
+        if (interests.length > 0) {
+            paperAgentState.selectedInterests = new Set(
+                interests.map(i => typeof i === 'string' ? i : i.category)
+            );
+            renderInterestChips();
+        }
+        
+        renderCurrentProfile();
+    } catch (error) {
+        console.log("No existing profile found");
+    }
+}
+
+// 渲染当前画像
+function renderCurrentProfile() {
+    if (!paEls.currentProfile) return;
+    
+    const profile = paperAgentState.currentProfile;
+    // 兼容后端返回的 research_interests 字段
+    const interests = profile?.research_interests || profile?.interests || [];
+    const interactionCount = profile?.paper_interactions?.length || profile?.interaction_count || 0;
+    const keywords = profile?.keyword_preferences || profile?.keyword_weights || {};
+    
+    if (!profile || interests.length === 0) {
+        paEls.currentProfile.innerHTML = `
+            <div class="col-12 text-center text-muted py-4">
+                暂无画像数据，请先选择感兴趣的论文
+            </div>
+        `;
+        return;
+    }
+    
+    const topKeywords = Object.entries(keywords)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+    
+    paEls.currentProfile.innerHTML = `
+        <div class="col-md-4">
+            <div class="pa-profile-stat">
+                <span class="stat-value">${interests.length}</span>
+                <span class="stat-label">研究领域</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pa-profile-stat">
+                <span class="stat-value">${interactionCount}</span>
+                <span class="stat-label">论文交互</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pa-profile-stat">
+                <span class="stat-value">${topKeywords.length}</span>
+                <span class="stat-label">关键词</span>
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <h6 class="small text-muted fw-bold mb-2">研究兴趣领域</h6>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                ${interests.map(i => `
+                    <span class="pa-paper-category">${typeof i === 'string' ? i : i.category}</span>
+                `).join('')}
+            </div>
+            ${topKeywords.length > 0 ? `
+                <h6 class="small text-muted fw-bold mb-2 mt-3">关键词云</h6>
+                <div class="pa-profile-keywords">
+                    ${topKeywords.map(([kw, weight]) => `
+                        <span class="pa-profile-keyword">
+                            ${escapeHtml(kw)}
+                            <span class="keyword-weight">${(weight * 100).toFixed(0)}%</span>
+                        </span>
+                    `).join('')}
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
+// 加载推荐论文
+async function loadRecommendedPapers() {
+    if (!paEls.recommendPapers) return;
+    
+    paEls.recommendPapers.innerHTML = `
+        <div class="pa-loading">
+            <div class="spinner"></div>
+            <span>加载推荐论文中...</span>
+        </div>
+    `;
+    
+    try {
+        const categories = Array.from(paperAgentState.selectedInterests);
+        const params = categories.length > 0 
+            ? `?categories=${categories.join(',')}`
+            : '';
+        
+        const data = await fetchJSON(`/api/paperagent/recommend${params}`);
+        paperAgentState.recommendedPapers = data.papers || [];
+        renderRecommendedPapers();
+    } catch (error) {
+        console.error("Failed to load recommended papers:", error);
+        paEls.recommendPapers.innerHTML = `
+            <div class="pa-empty-state">
+                <div class="empty-icon">📄</div>
+                <div class="empty-title">无法加载论文</div>
+                <div class="empty-desc">请检查网络连接或稍后重试</div>
+            </div>
+        `;
+    }
+}
+
+// 刷新推荐论文（重新从 arXiv 获取）
+async function refreshRecommendedPapers() {
+    if (!paEls.recommendPapers || !paEls.refreshPapersBtn) return;
+    
+    const originalText = paEls.refreshPapersBtn.innerHTML;
+    paEls.refreshPapersBtn.disabled = true;
+    paEls.refreshPapersBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 刷新中...';
+    
+    paEls.recommendPapers.innerHTML = `
+        <div class="pa-loading">
+            <div class="spinner"></div>
+            <span>正在从 arXiv 获取最新论文...</span>
+        </div>
+    `;
+    
+    try {
+        const categories = Array.from(paperAgentState.selectedInterests);
+        const params = new URLSearchParams();
+        if (categories.length > 0) {
+            params.append('categories', categories.join(','));
+        }
+        params.append('refresh', 'true'); // 告诉后端强制刷新
+        
+        const data = await fetchJSON(`/api/paperagent/recommend?${params.toString()}`);
+        paperAgentState.recommendedPapers = data.papers || [];
+        
+        // 清空已选择的论文
+        paperAgentState.selectedPapers.clear();
+        updateSelectedCount();
+        
+        renderRecommendedPapers();
+        showNotification('success', '刷新成功', `已获取 ${paperAgentState.recommendedPapers.length} 篇最新论文`);
+        
+    } catch (error) {
+        console.error("Failed to refresh papers:", error);
+        showNotification('error', '刷新失败', '无法获取最新论文');
+        paEls.recommendPapers.innerHTML = `
+            <div class="pa-empty-state">
+                <div class="empty-icon">📄</div>
+                <div class="empty-title">刷新失败</div>
+                <div class="empty-desc">请检查网络连接或稍后重试</div>
+            </div>
+        `;
+    } finally {
+        paEls.refreshPapersBtn.disabled = false;
+        paEls.refreshPapersBtn.innerHTML = originalText;
+    }
+}
+
+// 渲染推荐论文
+function renderRecommendedPapers() {
+    if (!paEls.recommendPapers) return;
+    
+    if (paperAgentState.recommendedPapers.length === 0) {
+        paEls.recommendPapers.innerHTML = `
+            <div class="pa-empty-state">
+                <div class="empty-icon">📄</div>
+                <div class="empty-title">暂无推荐</div>
+                <div class="empty-desc">请先选择感兴趣的研究领域</div>
+            </div>
+        `;
+        return;
+    }
+    
+    paEls.recommendPapers.innerHTML = paperAgentState.recommendedPapers.map(paper => `
+        <div class="pa-paper-item position-relative ${paperAgentState.selectedPapers.has(paper.arxiv_id) ? 'selected' : ''}" 
+             data-id="${paper.arxiv_id}" onclick="togglePaperSelection('${paper.arxiv_id}')">
+            <div class="pa-paper-title">${paper.title}</div>
+            <div class="pa-paper-meta">
+                <span>${paper.authors ? paper.authors.slice(0, 3).join(', ') : 'Unknown'}</span>
+                <span>•</span>
+                <span>${paper.published || ''}</span>
+            </div>
+            <div class="d-flex gap-1 mb-2">
+                ${(paper.categories || []).slice(0, 3).map(cat => 
+                    `<span class="pa-paper-category">${cat}</span>`
+                ).join('')}
+            </div>
+            <div class="pa-paper-abstract">${paper.abstract || ''}</div>
+        </div>
+    `).join('');
+    
+    updateSelectedCount();
+}
+
+// 切换论文选择
+window.togglePaperSelection = function(arxivId) {
+    if (paperAgentState.selectedPapers.has(arxivId)) {
+        paperAgentState.selectedPapers.delete(arxivId);
+    } else if (paperAgentState.selectedPapers.size < 5) {
+        paperAgentState.selectedPapers.add(arxivId);
+    }
+    
+    renderRecommendedPapers();
+    updateSelectedCount();
+};
+
+// 更新选中计数
+function updateSelectedCount() {
+    if (paEls.selectedCount) {
+        paEls.selectedCount.textContent = `${paperAgentState.selectedPapers.size}/5`;
+    }
+    if (paEls.saveProfileBtn) {
+        paEls.saveProfileBtn.disabled = paperAgentState.selectedPapers.size === 0;
+    }
+}
+
+// 保存用户画像
+async function saveUserProfile() {
+    if (paperAgentState.selectedPapers.size === 0) return;
+    
+    const userId = localStorage.getItem('paperagent_user_id') || 'user_' + Date.now();
+    localStorage.setItem('paperagent_user_id', userId);
+    
+    const selectedPapers = paperAgentState.recommendedPapers.filter(
+        p => paperAgentState.selectedPapers.has(p.arxiv_id)
+    );
+    
+    try {
+        paEls.saveProfileBtn.disabled = true;
+        paEls.saveProfileBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>保存中...';
+        
+        await fetchJSON('/api/paperagent/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                interests: Array.from(paperAgentState.selectedInterests),
+                selected_papers: selectedPapers
+            })
+        });
+        
+        // 重新加载画像
+        await loadUserProfile();
+        
+        paEls.saveProfileBtn.innerHTML = '<span class="me-1">✓</span> 已保存';
+        setTimeout(() => {
+            paEls.saveProfileBtn.innerHTML = '保存画像';
+            paEls.saveProfileBtn.disabled = paperAgentState.selectedPapers.size === 0;
+        }, 2000);
+        
+    } catch (error) {
+        console.error("Failed to save profile:", error);
+        paEls.saveProfileBtn.innerHTML = '保存失败';
+        paEls.saveProfileBtn.disabled = false;
+    }
+}
+
+// 清空用户画像
+async function clearUserProfile() {
+    if (!confirm('确定要清空当前画像吗？此操作不可撤销。')) return;
+    
+    const userId = localStorage.getItem('paperagent_user_id');
+    if (!userId) {
+        showNotification('info', '无画像', '当前没有已保存的画像');
+        return;
+    }
+    
+    try {
+        if (paEls.clearProfileBtn) {
+            paEls.clearProfileBtn.disabled = true;
+            paEls.clearProfileBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+        }
+        
+        await fetchJSON(`/api/paperagent/profile/${userId}`, {
+            method: 'DELETE'
+        });
+        
+        // 清空本地状态
+        paperAgentState.currentProfile = null;
+        paperAgentState.selectedInterests.clear();
+        paperAgentState.selectedPapers.clear();
+        
+        // 重新渲染
+        renderCurrentProfile();
+        renderInterestChips();
+        updateSelectedCount();
+        
+        showNotification('success', '已清空', '用户画像已清空');
+        
+    } catch (error) {
+        console.error("Failed to clear profile:", error);
+        showNotification('error', '清空失败', error.message || '请稍后重试');
+    } finally {
+        if (paEls.clearProfileBtn) {
+            paEls.clearProfileBtn.disabled = false;
+            paEls.clearProfileBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                清空画像
+            `;
+        }
+    }
+}
+
+// 搜索论文
+async function searchPapers() {
+    if (!paEls.searchInput || !paEls.searchResults) return;
+    
+    const query = paEls.searchInput.value.trim();
+    if (!query) return;
+    
+    const category = paEls.categoryFilter?.value || '';
+    
+    paEls.searchResults.innerHTML = `
+        <div class="pa-loading">
+            <div class="spinner"></div>
+            <span>搜索中...</span>
+        </div>
+    `;
+    
+    try {
+        const params = new URLSearchParams({ query });
+        if (category) params.append('category', category);
+        
+        const data = await fetchJSON(`/api/paperagent/search?${params}`);
+        const papers = data.papers || [];
+        
+        if (papers.length === 0) {
+            paEls.searchResults.innerHTML = `
+                <div class="pa-empty-state">
+                    <div class="empty-icon">🔍</div>
+                    <div class="empty-title">未找到相关论文</div>
+                    <div class="empty-desc">尝试使用不同的关键词</div>
+                </div>
+            `;
+            return;
+        }
+        
+        paEls.searchResults.innerHTML = papers.map(paper => `
+            <div class="pa-paper-item" onclick="viewPaperDetail('${paper.arxiv_id}')">
+                <div class="pa-paper-title">${paper.title}</div>
+                <div class="pa-paper-meta">
+                    <span>${paper.authors ? paper.authors.slice(0, 3).join(', ') : 'Unknown'}</span>
+                    <span>•</span>
+                    <span>${paper.published || ''}</span>
+                </div>
+                <div class="d-flex gap-1 mb-2">
+                    ${(paper.categories || []).slice(0, 3).map(cat => 
+                        `<span class="pa-paper-category">${cat}</span>`
+                    ).join('')}
+                </div>
+                <div class="pa-paper-abstract">${paper.abstract || ''}</div>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        console.error("Search failed:", error);
+        paEls.searchResults.innerHTML = `
+            <div class="pa-empty-state">
+                <div class="empty-icon">⚠️</div>
+                <div class="empty-title">搜索失败</div>
+                <div class="empty-desc">${error.message || '请稍后重试'}</div>
+            </div>
+        `;
+    }
+}
+
+// 查看论文详情
+window.viewPaperDetail = function(arxivId) {
+    window.open(`https://arxiv.org/abs/${arxivId}`, '_blank');
+};
+
+// 加载报告列表
+async function loadReports() {
+    if (!paEls.reportList) return;
+    
+    try {
+        const userId = localStorage.getItem('paperagent_user_id') || 'default';
+        const data = await fetchJSON(`/api/paperagent/reports/${userId}`);
+        paperAgentState.reports = data.reports || [];
+        renderReportList();
+    } catch (error) {
+        console.log("No reports found");
+        paperAgentState.reports = [];
+        renderReportList();
+    }
+}
+
+// 渲染报告列表（使用卡片网格布局）
+function renderReportList() {
+    if (!paEls.reportList) return;
+    
+    if (paperAgentState.reports.length === 0) {
+        paEls.reportList.innerHTML = `
+            <div class="pa-empty-state">
+                <div class="empty-icon">📊</div>
+                <div class="empty-title">暂无研究报告</div>
+                <div class="empty-desc">在 Chat 中选择 paper_research Pipeline，输入研究问题即可生成报告</div>
+            </div>
+        `;
+        return;
+    }
+    
+    const typeLabels = {
+        hotspot: '热点分析',
+        idea: '新 Idea',
+        survey: '综述'
+    };
+    
+    paEls.reportList.innerHTML = paperAgentState.reports.map(report => {
+        const dateStr = report.created_at 
+            ? new Date(report.created_at).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })
+            : '';
+        return `
+            <div class="pa-report-card">
+                <div class="report-card-content" onclick="viewReport('${report.report_id}')">
+                    <span class="report-type-badge ${report.report_type || 'hotspot'}">${typeLabels[report.report_type] || '报告'}</span>
+                    <div class="report-title">${escapeHtml(report.title || '未命名报告')}</div>
+                    <div class="report-summary">${escapeHtml(report.summary || '')}</div>
+                </div>
+                <div class="report-footer">
+                    <span>${dateStr}</span>
+                    <button class="btn btn-sm btn-outline-danger report-delete-btn" onclick="event.stopPropagation(); deleteReport('${report.report_id}')" title="删除报告">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 生成报告 - 使用 paper_research pipeline 后台执行
+async function generateReport() {
+    if (!paEls.reportTopic) return;
+    
+    const topic = paEls.reportTopic.value.trim();
+    if (!topic) {
+        alert('请输入研究主题');
+        return;
+    }
+    
+    const reportType = paEls.reportType?.value || 'hotspot';
+    const userId = localStorage.getItem('paperagent_user_id') || 'default';
+    
+    try {
+        paEls.generateReportBtn.disabled = true;
+        paEls.generateReportBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>提交中...';
+        
+        const data = await fetchJSON('/api/paperagent/generate-report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                topic: topic,
+                report_type: reportType
+            })
+        });
+        
+        // 检查是否是后台任务
+        if (data.status === 'started' && data.task_id) {
+            // 显示通知
+            showNotification('info', '报告生成中', `「${topic}」的研究报告正在后台生成，完成后将通知您。`);
+            
+            // 显示后台任务按钮
+            const fab = document.getElementById('bg-tasks-fab');
+            if (fab) fab.classList.remove('d-none');
+            
+            // 开始轮询后台任务
+            startBackgroundPolling();
+            
+            // 保存任务信息以便后续关联报告
+            const taskInfo = {
+                task_id: data.task_id,
+                topic: topic,
+                report_type: reportType,
+                user_id: userId,
+                created_at: new Date().toISOString()
+            };
+            savePaperAgentTask(taskInfo);
+            
+            paEls.generateReportBtn.innerHTML = '<span class="me-1">✨</span> 生成报告';
+            paEls.generateReportBtn.disabled = false;
+            paEls.reportTopic.value = '';
+            
+        } else if (data.report_id) {
+            // 直接返回了报告（快速模式）
+            showNotification('success', '报告生成完成', `「${topic}」的研究报告已生成`);
+            await loadReports();
+            viewReport(data.report_id);
+            
+            paEls.generateReportBtn.innerHTML = '<span class="me-1">✨</span> 生成报告';
+            paEls.generateReportBtn.disabled = false;
+            paEls.reportTopic.value = '';
+        }
+        
+    } catch (error) {
+        console.error("Failed to generate report:", error);
+        
+        // 如果 pipeline 不存在，使用快速模式
+        if (error.message && error.message.includes('not found')) {
+            showNotification('info', '使用快速模式', 'Pipeline 未配置，使用快速生成模式');
+            await generateQuickReport(topic, reportType, userId);
+        } else {
+            showNotification('error', '生成失败', error.message || '请稍后重试');
+            paEls.generateReportBtn.innerHTML = '<span class="me-1">✨</span> 生成报告';
+            paEls.generateReportBtn.disabled = false;
+        }
+    }
+}
+
+// 快速生成报告（不使用 pipeline）
+async function generateQuickReport(topic, reportType, userId) {
+    try {
+        paEls.generateReportBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>生成中...';
+        
+        const data = await fetchJSON('/api/paperagent/quick-report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                topic: topic,
+                report_type: reportType
+            })
+        });
+        
+        if (data.report_id) {
+            showNotification('success', '报告生成完成', `「${topic}」的研究报告已生成`);
+            await loadReports();
+            viewReport(data.report_id);
+        }
+        
+        paEls.generateReportBtn.innerHTML = '<span class="me-1">✨</span> 生成报告';
+        paEls.generateReportBtn.disabled = false;
+        paEls.reportTopic.value = '';
+        
+    } catch (error) {
+        console.error("Failed to generate quick report:", error);
+        showNotification('error', '生成失败', error.message || '请稍后重试');
+        paEls.generateReportBtn.innerHTML = '<span class="me-1">✨</span> 生成报告';
+        paEls.generateReportBtn.disabled = false;
+    }
+}
+
+// 保存 PaperAgent 任务信息
+function savePaperAgentTask(taskInfo) {
+    const key = 'paperagent_tasks';
+    let tasks = [];
+    try {
+        const stored = localStorage.getItem(key);
+        if (stored) tasks = JSON.parse(stored);
+    } catch (e) {}
+    
+    tasks.unshift(taskInfo);
+    // 只保留最近 20 个
+    if (tasks.length > 20) tasks = tasks.slice(0, 20);
+    
+    localStorage.setItem(key, JSON.stringify(tasks));
+}
+
+// 查看报告（全屏阅读器模式）
+window.viewReport = async function(reportId) {
+    if (!paEls.reportReader) return;
+    
+    try {
+        const data = await fetchJSON(`/api/paperagent/report/${reportId}`);
+        const report = data.report;
+        
+        const typeLabels = {
+            hotspot: '热点分析',
+            idea: '新 Idea 挖掘',
+            survey: '综述概要'
+        };
+        
+        // 设置标题和元信息
+        if (paEls.readerTitle) paEls.readerTitle.textContent = report.title || '研究报告';
+        if (paEls.readerType) {
+            paEls.readerType.textContent = typeLabels[report.report_type] || '研究报告';
+            paEls.readerType.className = `report-type-badge ${report.report_type || 'hotspot'}`;
+        }
+        if (paEls.readerDate) {
+            const dateStr = report.created_at 
+                ? new Date(report.created_at).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+                : '';
+            paEls.readerDate.textContent = dateStr;
+        }
+        
+        // 渲染 Markdown 内容并处理 citations
+        if (paEls.readerContent && window.marked) {
+            let htmlContent = DOMPurify.sanitize(marked.parse(report.content || ''));
+            
+            // 处理 citation 引用 [1], [2] 等，添加点击事件
+            htmlContent = htmlContent.replace(
+                /\[(\d+)\]/g, 
+                '<span class="citation-link" onclick="showReportCitation($1)">[$1]</span>'
+            );
+            
+            paEls.readerContent.innerHTML = htmlContent;
+            
+            // 渲染数学公式
+            if (window.renderMathInElement) {
+                renderMathInElement(paEls.readerContent, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+        
+        // 渲染引用列表
+        renderCitationsList(report);
+        
+        // 保存当前报告用于下载
+        paperAgentState.currentReport = report;
+        
+        // 显示阅读器
+        paEls.reportReader.classList.remove('d-none');
+        document.body.style.overflow = 'hidden';
+        
+    } catch (error) {
+        console.error("Failed to load report:", error);
+        showNotification('error', '加载失败', '无法加载报告内容');
+    }
+};
+
+// 渲染引用列表
+function renderCitationsList(report) {
+    if (!paEls.citationsList) return;
+    
+    // 尝试从引用论文中获取详情
+    const citedPapers = report.cited_papers || [];
+    
+    if (citedPapers.length === 0) {
+        // 如果没有 cited_papers，从内容中提取引用数字
+        const content = report.content || '';
+        const citationMatches = content.match(/\[(\d+)\]/g);
+        const uniqueCitations = [...new Set(citationMatches || [])].sort((a, b) => {
+            return parseInt(a.match(/\d+/)[0]) - parseInt(b.match(/\d+/)[0]);
+        });
+        
+        if (uniqueCitations.length === 0) {
+            paEls.citationsList.innerHTML = '<div class="text-muted small">暂无引用信息</div>';
+            return;
+        }
+        
+        paEls.citationsList.innerHTML = uniqueCitations.map(cite => {
+            const num = cite.match(/\d+/)[0];
+            return `
+                <div class="citation-item" data-citation-id="${num}">
+                    <span class="citation-id">${num}</span>
+                    <div class="citation-title">引用 ${num}</div>
+                    <div class="citation-meta">见正文</div>
+                </div>
+            `;
+        }).join('');
+        return;
+    }
+    
+    // 使用 cited_papers 渲染引用列表
+    paEls.citationsList.innerHTML = citedPapers.map(paper => {
+        const citationId = paper.citation_id || citedPapers.indexOf(paper) + 1;
+        const authors = paper.authors ? paper.authors.slice(0, 3).join(', ') : '';
+        const arxivUrl = paper.arxiv_url || (paper.arxiv_id ? `https://arxiv.org/abs/${paper.arxiv_id}` : '');
+        
+        return `
+            <div class="citation-item" data-citation-id="${citationId}">
+                <span class="citation-id">${citationId}</span>
+                <div class="citation-title">${arxivUrl ? `<a href="${arxivUrl}" target="_blank">${escapeHtml(paper.title || '')}</a>` : escapeHtml(paper.title || '')}</div>
+                <div class="citation-meta">${authors}${authors && paper.published ? ' • ' : ''}${paper.published || ''}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 关闭报告阅读器
+function closeReportReader() {
+    if (paEls.reportReader) {
+        paEls.reportReader.classList.add('d-none');
+        document.body.style.overflow = '';
+    }
+}
+
+// 删除报告
+window.deleteReport = async function(reportId) {
+    if (!confirm('确定要删除这份报告吗？此操作不可撤销。')) return;
+    
+    try {
+        await fetchJSON(`/api/paperagent/reports/${reportId}`, {
+            method: 'DELETE'
+        });
+        
+        showNotification('success', '已删除', '报告已删除');
+        
+        // 刷新列表
+        await loadReports();
+        
+    } catch (error) {
+        console.error("Failed to delete report:", error);
+        showNotification('error', '删除失败', error.message || '请稍后重试');
+    }
+};
+
+// 点击引用弹出详情（参考 chat 中的实现）
+window.showReportCitation = function(citationNum) {
+    const report = paperAgentState.currentReport;
+    if (!report) return;
+    
+    // 在右侧引用列表中高亮并滚动到对应引用
+    const citationItems = document.querySelectorAll('#pa-citations-list .citation-item');
+    citationItems.forEach((item) => {
+        item.classList.remove('highlighted');
+        const itemCitationId = item.dataset.citationId;
+        if (itemCitationId == citationNum) {
+            item.classList.add('highlighted');
+            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+    
+    // 同时使用 chat 的 source-detail-panel 显示详情
+    const panel = document.getElementById("source-detail-panel");
+    if (panel) {
+        const citedPapers = report.cited_papers || [];
+        // 通过 citation_id 查找论文
+        const paper = citedPapers.find(p => p.citation_id == citationNum) || citedPapers[citationNum - 1];
+        
+        let detailHtml = '';
+        if (paper) {
+            const arxivUrl = paper.arxiv_url || (paper.arxiv_id ? `https://arxiv.org/abs/${paper.arxiv_id}` : '');
+            detailHtml = `
+                <div class="source-detail-header">
+                    <span class="source-id">[${citationNum}]</span>
+                    <span class="source-title">${escapeHtml(paper.title || '')}</span>
+                </div>
+                <div class="source-detail-content">
+                    ${paper.authors ? `<p class="mb-2"><strong>作者:</strong> ${escapeHtml(paper.authors.slice(0, 5).join(', '))}${paper.authors.length > 5 ? ' 等' : ''}</p>` : ''}
+                    ${arxivUrl ? `<p class="mb-2"><strong>arXiv:</strong> <a href="${arxivUrl}" target="_blank">${paper.arxiv_id || arxivUrl}</a></p>` : ''}
+                    ${paper.published ? `<p class="mb-2"><strong>发布日期:</strong> ${paper.published}</p>` : ''}
+                    ${paper.categories ? `<p class="mb-2"><strong>分类:</strong> ${Array.isArray(paper.categories) ? paper.categories.join(', ') : paper.categories}</p>` : ''}
+                    ${paper.abstract ? `<p class="mb-0"><strong>摘要:</strong> ${escapeHtml(paper.abstract.substring(0, 500))}${paper.abstract.length > 500 ? '...' : ''}</p>` : ''}
+                </div>
+            `;
+        } else {
+            detailHtml = `
+                <div class="source-detail-header">
+                    <span class="source-id">[${citationNum}]</span>
+                    <span class="source-title">引用 ${citationNum}</span>
+                </div>
+                <div class="source-detail-content">
+                    <p class="text-muted">详细信息见正文</p>
+                </div>
+            `;
+        }
+        
+        panel.innerHTML = detailHtml;
+        panel.classList.add("show");
+    }
+};
+
+// 下载报告为 Markdown
+async function downloadCurrentReport() {
+    const report = paperAgentState.currentReport;
+    if (!report) return;
+    
+    try {
+        // 创建 Markdown 内容
+        const markdown = `# ${report.title}\n\n> 生成时间: ${report.created_at}\n> 类型: ${report.report_type}\n\n${report.content}`;
+        
+        // 创建下载
+        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${report.title || 'research_report'}.md`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showNotification('success', '下载成功', 'Markdown 文件已保存');
+    } catch (error) {
+        console.error("Failed to download report:", error);
+        showNotification('error', '下载失败', '无法下载报告');
+    }
+}
+
+// 刷新 PaperAgent 数据
+window.refreshPaperAgentData = function() {
+    loadPaperAgentData();
+};
+
+// 返回聊天视图时也要处理 PaperAgent 视图
+const originalBackToChatView = typeof backToChatView === 'function' ? backToChatView : null;
+function enhancedBackToChatView() {
+    if (!els.chatMainView) return;
+    
+    // 隐藏所有其他视图
+    if (els.kbMainView) els.kbMainView.classList.add("d-none");
+    if (paEls.mainView) paEls.mainView.classList.add("d-none");
+    els.chatMainView.classList.remove("d-none");
+    
+    // 更新按钮状态
+    if (els.kbBtn) els.kbBtn.classList.remove("active");
+    if (paEls.btn) paEls.btn.classList.remove("active");
+    
+    renderChatCollectionOptions();
+    renderChatSidebar();
+}
+
+// 初始化时调用
+setTimeout(() => {
+    initPaperAgent();
+    
+    // 覆盖 backToChatView
+    if (typeof window.backToChatView !== 'undefined' || originalBackToChatView) {
+        // 保持原有逻辑但扩展
+    }
+}, 100);
 
 bootstrap();
