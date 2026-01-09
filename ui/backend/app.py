@@ -153,6 +153,23 @@ def create_app(admin_mode: bool = False) -> Flask:
         question = payload.get("question", "")
         session_id = payload.get("session_id")
         dynamic_params = payload.get("dynamic_params", {})
+        
+        # 新增：前端传入的对话历史（浏览器会话中之前的对话）
+        # 兼容两种字段名：conversation_history 或 history
+        raw_history = payload.get("conversation_history") or payload.get("history") or []
+        
+        # 转换格式：前端用 {role, text}，后端用 {role, content}
+        conversation_history = []
+        for msg in raw_history:
+            if isinstance(msg, dict):
+                role = msg.get("role", "user")
+                # 兼容 text 和 content 两种字段名
+                content = msg.get("content") or msg.get("text") or ""
+                if role in ("user", "assistant") and content:
+                    conversation_history.append({"role": role, "content": str(content)})
+        
+        # 新增：允许前端强制指定是否走完整 pipeline
+        force_full_pipeline = payload.get("force_full_pipeline", False)
 
         selected_collection = dynamic_params.get("collection_name")
 
@@ -182,10 +199,28 @@ def create_app(admin_mode: bool = False) -> Flask:
         if not session_id:
             return jsonify({"error": "session_id missing. Please start engine first."}), 400
         
-        return Response(
-            pm.chat_demo_stream(name, question, session_id, dynamic_params),
-            mimetype='text/event-stream'
-        )
+        # 根据前端传入的对话历史判断是否是第一次提问
+        # 注意：前端在发送请求之前已经把当前问题添加到 history 中了
+        # 所以：第一次提问时 history 有 1 条消息，第二次提问时 history 有 3 条消息
+        # 只有当有 >= 2 条消息时（说明有之前的助手回复），才走多轮对话
+        has_previous_conversation = len(conversation_history) >= 2
+        
+        LOGGER.info(f"Session {session_id}: conversation_history length = {len(conversation_history)}, has_previous = {has_previous_conversation}")
+        
+        if not has_previous_conversation or force_full_pipeline:
+            # 第一次提问（或强制）：走完整 pipeline
+            LOGGER.info(f"Session {session_id}: First turn (history empty), running full pipeline '{name}'")
+            return Response(
+                pm.chat_demo_stream(name, question, session_id, dynamic_params),
+                mimetype='text/event-stream'
+            )
+        else:
+            # 后续提问：走多轮对话，使用前端传入的对话历史
+            LOGGER.info(f"Session {session_id}: Multi-turn chat mode with {len(conversation_history)} history messages")
+            return Response(
+                pm.chat_multiturn_stream(session_id, question, dynamic_params, conversation_history),
+                mimetype='text/event-stream'
+            )
     
     @app.route("/api/pipelines/chat/stop", methods=["POST"])
     def stop_chat_generation():
@@ -194,6 +229,44 @@ def create_app(admin_mode: bool = False) -> Flask:
         if not session_id:
             return jsonify({"error": "session_id required"}), 400
         return jsonify(pm.interrupt_chat(session_id))
+    
+    @app.route("/api/pipelines/chat/clear-history", methods=["POST"])
+    def clear_chat_history():
+        """清除会话的对话历史，使下一次提问重新走完整 pipeline"""
+        payload = request.get_json(force=True) or {}
+        session_id = payload.get("session_id")
+        if not session_id:
+            return jsonify({"error": "session_id required"}), 400
+        
+        session = pm.SESSION_MANAGER.get(session_id)
+        if not session:
+            return jsonify({"error": "Session not found"}), 404
+        
+        session.clear_history()
+        return jsonify({
+            "status": "cleared",
+            "session_id": session_id,
+            "message": "Conversation history cleared. Next question will run full pipeline."
+        })
+    
+    @app.route("/api/pipelines/chat/history", methods=["GET"])
+    def get_chat_history():
+        """获取当前会话的对话历史"""
+        session_id = request.args.get("session_id")
+        if not session_id:
+            return jsonify({"error": "session_id required"}), 400
+        
+        session = pm.SESSION_MANAGER.get(session_id)
+        if not session:
+            return jsonify({"error": "Session not found"}), 404
+        
+        history = session.get_conversation_history()
+        return jsonify({
+            "session_id": session_id,
+            "history": history,
+            "is_first_turn": session.is_first_turn(),
+            "message_count": len(history)
+        })
 
     # ===== 后台聊天任务 API =====
     
