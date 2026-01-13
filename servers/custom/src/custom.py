@@ -665,7 +665,7 @@ def _surveycpm_check_language_consistency(item: Any, user_instruction: str) -> b
     if is_chinese:
         return chinese_count / total_chars > 0.6
     else:
-        return chinese_count / total_chars < 0.3
+        return chinese_count / total_chars < 0.15
 
 
 def surveycpm_parse_response(
@@ -702,7 +702,7 @@ def surveycpm_parse_response(
                 action_is_valid = surveycpm_validate_action(
                     action, 
                     valid_actions=valid_actions, 
-                    # hard_mode=True, # You can use hard mode for better performance
+                    hard_mode=True, # You can use hard mode for better performance
                     **kwargs
                 )
             except:
@@ -1289,6 +1289,20 @@ def _surveycpm_clean_content(content: str) -> str:
     return content.strip()
 
 
+def _surveycpm_to_one_line_old(string):
+    if isinstance(string, dict):
+        if "content" in string and string["content"]:
+            return _surveycpm_to_one_line_old(string["content"])
+        elif "plan" in string and string["plan"]:
+            return _surveycpm_to_one_line_old(string["plan"])
+        else:
+            return ""
+    if not string:
+        return ""
+    else:
+        return string
+
+
 def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     """Format survey as clean Markdown for final output.
     
@@ -1317,7 +1331,8 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
         section_title = section.get(title_key, "")
         section_num = i + 1
         
-        lines.append(f"## {section_num} {section_title}")
+        # lines.append(f"## {section_num} {section_title}")
+        lines.append(f"## **{section_title}** ")
         lines.append("")
         
         # Section content
@@ -1336,7 +1351,7 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                 subsection_title = subsection.get(title_key, "")
                 subsection_num = f"{section_num}.{j + 1}"
                 
-                lines.append(f"### {subsection_num} {subsection_title}")
+                lines.append(f"### **{subsection_title}**")
                 lines.append("")
                 
                 if "content" in subsection and subsection["content"]:
@@ -1354,7 +1369,7 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                         subsubsection_title = subsubsection.get(title_key, "")
                         subsubsection_num = f"{section_num}.{j + 1}.{k + 1}"
                         
-                        lines.append(f"#### {subsubsection_num} {subsubsection_title}")
+                        lines.append(f"#### **{subsubsection_title}**")
                         lines.append("")
                         
                         if "content" in subsubsection and subsubsection["content"]:
@@ -1369,6 +1384,32 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     # Final cleanup: normalize multiple blank lines
     result = "\n".join(lines)
     result = re.sub(r'\n{3,}', '\n\n', result)
+    
+    # change citation format from bibkey to []
+    def extract_num_from_textid(textid):
+        try:
+            if textid.startswith("textid"):
+                return int(textid.split("textid")[-1].strip())
+        except:
+            return None
+        return None
+    def replace_bibkey(match): # \\cite{textid2, textid1} -> [1,2]
+        bibkey_group = match.group(1)
+        single_bibs = [bib.strip() for bib in bibkey_group.split(",")]
+        new_bibs = []
+        for bib in single_bibs:
+            if bib.startswith("bibkey: "):
+                bib = bib[len("bibkey: "):].strip()
+            num = extract_num_from_textid(bib)
+            if num is not None:
+                new_bibs.append(str(num))
+        new_bibs = sorted(set(new_bibs), key=lambda x: int(x))
+        if len(new_bibs) > 0:
+            return f'{"".join([f"[{i}]" for i in new_bibs])}'
+        else:
+            return ""
+    reg = r"\\cite\{(.+?)\}"
+    result = re.sub(reg, replace_bibkey, result)
     return result.strip()
 
 
