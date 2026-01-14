@@ -1361,6 +1361,20 @@ def _surveycpm_to_one_line_old(string):
         return string
 
 
+def _surveycpm_to_one_line_old(string):
+    if isinstance(string, dict):
+        if "content" in string and string["content"]:
+            return _surveycpm_to_one_line_old(string["content"])
+        elif "plan" in string and string["plan"]:
+            return _surveycpm_to_one_line_old(string["plan"])
+        else:
+            return ""
+    if not string:
+        return ""
+    else:
+        return string
+
+
 def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     """Format survey as clean Markdown for final output.
     

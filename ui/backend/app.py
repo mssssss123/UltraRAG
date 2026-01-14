@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import json
 import logging
 import os
 import threading
 from pathlib import Path
 from typing import Any, Dict
 
-from flask import Flask, jsonify, request, send_from_directory, Response
+from flask import Flask, jsonify, request, send_from_directory, Response, stream_with_context
 
 from . import pipeline_manager as pm
 
@@ -64,6 +65,15 @@ def create_app(admin_mode: bool = False) -> Flask:
     def index():
         return send_from_directory(app.static_folder, "index.html")
 
+    # 直接访问 /chat 或 /config 也返回前端入口，便于分离配置/对话页
+    @app.route("/chat")
+    def chat_page():
+        return send_from_directory(app.static_folder, "index.html")
+
+    @app.route("/config")
+    def config_page():
+        return send_from_directory(app.static_folder, "index.html")
+
     @app.route("/api/config/mode", methods=["GET"])
     def get_app_mode():
         """Return the application mode (admin or chat-only)"""
@@ -108,6 +118,12 @@ def create_app(admin_mode: bool = False) -> Flask:
         payload = request.get_json(force=True)
         return jsonify(pm.save_pipeline(payload))
 
+    @app.route("/api/pipelines/<string:name>/yaml", methods=["PUT"])
+    def save_pipeline_yaml(name: str):
+        """直接保存 YAML 文本到文件"""
+        yaml_content = request.get_data(as_text=True)
+        return jsonify(pm.save_pipeline_yaml(name, yaml_content))
+
     @app.route("/api/pipelines/<string:name>", methods=["GET"])
     def get_pipeline(name: str):
         return jsonify(pm.load_pipeline(name))
@@ -116,6 +132,17 @@ def create_app(admin_mode: bool = False) -> Flask:
     def delete_pipeline(name: str):
         pm.delete_pipeline(name)
         return jsonify({"status": "deleted"})
+
+    @app.route("/api/pipelines/<string:name>/rename", methods=["POST"])
+    def rename_pipeline(name: str):
+        """Rename a pipeline"""
+        payload = request.get_json(force=True)
+        new_name = payload.get("new_name", "").strip()
+        if not new_name:
+            return jsonify({"error": "new_name is required"}), 400
+        
+        result = pm.rename_pipeline(name, new_name)
+        return jsonify(result)
 
     @app.route("/api/pipelines/<string:name>/parameters", methods=["GET"])
     def get_parameters(name: str):
@@ -501,7 +528,497 @@ def create_app(admin_mode: bool = False) -> Flask:
         
         return jsonify(task)
 
+    # =========================================
+    # Prompt Template API
+    # =========================================
+    
+    PROMPTS_DIR = BASE_DIR.parent.parent / "prompt"
+    
+    @app.route("/api/prompts", methods=["GET"])
+    def list_prompts():
+        """List all prompt template files"""
+        prompts = []
+        if PROMPTS_DIR.exists():
+            for f in sorted(PROMPTS_DIR.rglob("*.jinja*")):
+                rel_path = f.relative_to(PROMPTS_DIR)
+                prompts.append({
+                    "name": f.name,
+                    "path": str(rel_path),
+                    "size": f.stat().st_size
+                })
+        return jsonify(prompts)
+    
+    @app.route("/api/prompts/<path:filepath>", methods=["GET"])
+    def get_prompt(filepath: str):
+        """Read a prompt template file"""
+        file_path = PROMPTS_DIR / filepath
+        if not file_path.exists():
+            return jsonify({"error": "File not found"}), 404
+        if not str(file_path.resolve()).startswith(str(PROMPTS_DIR.resolve())):
+            return jsonify({"error": "Invalid path"}), 400
+        
+        content = file_path.read_text(encoding="utf-8")
+        return jsonify({
+            "path": filepath,
+            "content": content
+        })
+    
+    @app.route("/api/prompts", methods=["POST"])
+    def create_prompt():
+        """Create a new prompt template file"""
+        payload = request.get_json(force=True)
+        name = payload.get("name", "").strip()
+        content = payload.get("content", "")
+        
+        if not name:
+            return jsonify({"error": "Name is required"}), 400
+        
+        # 安全检查：确保文件名合法
+        if ".." in name or name.startswith("/"):
+            return jsonify({"error": "Invalid filename"}), 400
+        
+        file_path = PROMPTS_DIR / name
+        if file_path.exists():
+            return jsonify({"error": "File already exists"}), 409
+        
+        # 确保目录存在
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        file_path.write_text(content, encoding="utf-8")
+        
+        return jsonify({
+            "status": "created",
+            "path": name
+        })
+    
+    @app.route("/api/prompts/<path:filepath>", methods=["PUT"])
+    def update_prompt(filepath: str):
+        """Update a prompt template file"""
+        payload = request.get_json(force=True)
+        content = payload.get("content", "")
+        
+        file_path = PROMPTS_DIR / filepath
+        if not str(file_path.resolve()).startswith(str(PROMPTS_DIR.resolve())):
+            return jsonify({"error": "Invalid path"}), 400
+        
+        # 确保目录存在
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        file_path.write_text(content, encoding="utf-8")
+        
+        return jsonify({
+            "status": "saved",
+            "path": filepath
+        })
+    
+    @app.route("/api/prompts/<path:filepath>", methods=["DELETE"])
+    def delete_prompt(filepath: str):
+        """Delete a prompt template file"""
+        file_path = PROMPTS_DIR / filepath
+        if not file_path.exists():
+            return jsonify({"error": "File not found"}), 404
+        if not str(file_path.resolve()).startswith(str(PROMPTS_DIR.resolve())):
+            return jsonify({"error": "Invalid path"}), 400
+        
+        file_path.unlink()
+        return jsonify({"status": "deleted"})
+
+    @app.route("/api/prompts/<path:filepath>/rename", methods=["POST"])
+    def rename_prompt(filepath: str):
+        """Rename a prompt template file"""
+        payload = request.get_json(force=True)
+        new_name = payload.get("new_name", "").strip()
+        
+        if not new_name:
+            return jsonify({"error": "new_name is required"}), 400
+        
+        if ".." in new_name or new_name.startswith("/"):
+            return jsonify({"error": "Invalid filename"}), 400
+        
+        old_path = PROMPTS_DIR / filepath
+        if not old_path.exists():
+            return jsonify({"error": "File not found"}), 404
+        if not str(old_path.resolve()).startswith(str(PROMPTS_DIR.resolve())):
+            return jsonify({"error": "Invalid path"}), 400
+        
+        new_path = PROMPTS_DIR / new_name
+        if new_path.exists():
+            return jsonify({"error": "A file with this name already exists"}), 409
+        
+        # 确保目标目录存在
+        new_path.parent.mkdir(parents=True, exist_ok=True)
+        old_path.rename(new_path)
+        
+        return jsonify({
+            "status": "renamed",
+            "old_path": filepath,
+            "new_path": new_name
+        })
+
+    # =========================================
+    # AI Assistant API
+    # =========================================
+    
+    @app.route("/api/ai/test", methods=["POST"])
+    def test_ai_connection():
+        """Test AI API connection"""
+        import requests
+        
+        payload = request.get_json(force=True)
+        provider = payload.get("provider", "openai")
+        base_url = payload.get("baseUrl", "").rstrip("/")
+        api_key = payload.get("apiKey", "")
+        model = payload.get("model", "gpt-4")
+        
+        if not api_key:
+            return jsonify({"success": False, "error": "API key is required"})
+        
+        try:
+            if provider == "openai" or provider == "custom":
+                # OpenAI-compatible API
+                headers = {
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                }
+                
+                # Try to list models or send a simple request
+                test_url = f"{base_url}/models"
+                resp = requests.get(test_url, headers=headers, timeout=10)
+                
+                if resp.status_code == 200:
+                    return jsonify({"success": True, "model": model})
+                else:
+                    # Try a simple completion as fallback
+                    chat_url = f"{base_url}/chat/completions"
+                    test_payload = {
+                        "model": model,
+                        "messages": [{"role": "user", "content": "Hi"}],
+                        "max_tokens": 5
+                    }
+                    resp = requests.post(chat_url, headers=headers, json=test_payload, timeout=15)
+                    
+                    if resp.status_code == 200:
+                        return jsonify({"success": True, "model": model})
+                    else:
+                        return jsonify({"success": False, "error": f"API returned {resp.status_code}: {resp.text[:200]}"})
+                        
+            elif provider == "anthropic":
+                headers = {
+                    "x-api-key": api_key,
+                    "anthropic-version": "2023-06-01",
+                    "Content-Type": "application/json"
+                }
+                test_url = f"{base_url}/messages"
+                test_payload = {
+                    "model": model,
+                    "max_tokens": 5,
+                    "messages": [{"role": "user", "content": "Hi"}]
+                }
+                resp = requests.post(test_url, headers=headers, json=test_payload, timeout=15)
+                
+                if resp.status_code == 200:
+                    return jsonify({"success": True, "model": model})
+                else:
+                    return jsonify({"success": False, "error": f"API returned {resp.status_code}: {resp.text[:200]}"})
+                    
+            elif provider == "azure":
+                headers = {
+                    "api-key": api_key,
+                    "Content-Type": "application/json"
+                }
+                # Azure uses deployment name in URL
+                test_url = f"{base_url}/openai/deployments/{model}/chat/completions?api-version=2024-02-15-preview"
+                test_payload = {
+                    "messages": [{"role": "user", "content": "Hi"}],
+                    "max_tokens": 5
+                }
+                resp = requests.post(test_url, headers=headers, json=test_payload, timeout=15)
+                
+                if resp.status_code == 200:
+                    return jsonify({"success": True, "model": model})
+                else:
+                    return jsonify({"success": False, "error": f"API returned {resp.status_code}: {resp.text[:200]}"})
+            else:
+                return jsonify({"success": False, "error": f"Unknown provider: {provider}"})
+                
+        except requests.Timeout:
+            return jsonify({"success": False, "error": "Connection timeout"})
+        except requests.RequestException as e:
+            return jsonify({"success": False, "error": str(e)})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+    
+    @app.route("/api/ai/chat", methods=["POST"])
+    def ai_chat():
+        """Handle AI chat request"""
+        import requests
+        
+        payload = request.get_json(force=True)
+        settings = payload.get("settings", {})
+        messages = payload.get("messages", [])
+        context = payload.get("context", {})
+        stream_response = payload.get("stream", False)
+        
+        provider = settings.get("provider", "openai")
+        base_url = settings.get("baseUrl", "").rstrip("/")
+        api_key = settings.get("apiKey", "")
+        model = settings.get("model", "gpt-4")
+        
+        if not api_key:
+            return jsonify({"error": "API key is required"})
+        
+        # Build system prompt with context
+        system_prompt = build_ai_system_prompt(context)
+        
+        # Prepend system message
+        full_messages = [{"role": "system", "content": system_prompt}] + messages
+        
+        try:
+            if stream_response and (provider == "openai" or provider == "custom"):
+                def stream_openai_chat():
+                    import requests
+                    try:
+                        headers = {
+                            "Authorization": f"Bearer {api_key}",
+                            "Content-Type": "application/json"
+                        }
+                        chat_url = f"{base_url}/chat/completions"
+                        chat_payload = {
+                            "model": model,
+                            "messages": full_messages,
+                            "temperature": 0.7,
+                            "stream": True
+                        }
+                        resp = requests.post(chat_url, headers=headers, json=chat_payload, stream=True, timeout=120)
+                        
+                        if resp.status_code != 200:
+                            yield f"data: {json.dumps({'type': 'error', 'message': f'API error: {resp.status_code}'})}\n\n"
+                            return
+                        
+                        full_text = ""
+                        for raw_line in resp.iter_lines(decode_unicode=True):
+                            if not raw_line:
+                                continue
+                            
+                            line = raw_line.strip()
+                            if not line:
+                                continue
+                            
+                            if line.startswith("data:"):
+                                line = line[len("data:"):].strip()
+                            
+                            if line == "[DONE]":
+                                break
+                            
+                            try:
+                                data = json.loads(line)
+                            except Exception:
+                                continue
+                            
+                            delta = data.get("choices", [{}])[0].get("delta", {}).get("content", "")
+                            if delta:
+                                full_text += delta
+                                yield f"data: {json.dumps({'type': 'token', 'content': delta, 'is_final': False})}\n\n"
+                        
+                        actions = parse_ai_actions(full_text, context)
+                        yield f"data: {json.dumps({'type': 'final', 'content': full_text, 'actions': actions})}\n\n"
+                    except requests.Timeout:
+                        yield f"data: {json.dumps({'type': 'error', 'message': 'Request timeout'})}\n\n"
+                    except Exception as e:
+                        LOGGER.error(f"AI chat stream error: {e}")
+                        yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+                
+                return Response(stream_with_context(stream_openai_chat()), mimetype="text/event-stream")
+            
+            if provider == "openai" or provider == "custom":
+                headers = {
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                }
+                chat_url = f"{base_url}/chat/completions"
+                chat_payload = {
+                    "model": model,
+                    "messages": full_messages,
+                    "temperature": 0.7
+                }
+                resp = requests.post(chat_url, headers=headers, json=chat_payload, timeout=120)
+                
+                if resp.status_code == 200:
+                    data = resp.json()
+                    content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                    
+                    # Parse for actions
+                    actions = parse_ai_actions(content, context)
+                    
+                    return jsonify({
+                        "content": content,
+                        "actions": actions
+                    })
+                else:
+                    return jsonify({"error": f"API error: {resp.status_code}"})
+                    
+            elif provider == "anthropic":
+                headers = {
+                    "x-api-key": api_key,
+                    "anthropic-version": "2023-06-01",
+                    "Content-Type": "application/json"
+                }
+                
+                # Convert messages format for Anthropic
+                anthropic_messages = []
+                for msg in messages:
+                    anthropic_messages.append({
+                        "role": msg["role"],
+                        "content": msg["content"]
+                    })
+                
+                chat_url = f"{base_url}/messages"
+                chat_payload = {
+                    "model": model,
+                    "max_tokens": 4096,
+                    "system": system_prompt,
+                    "messages": anthropic_messages
+                }
+                resp = requests.post(chat_url, headers=headers, json=chat_payload, timeout=120)
+                
+                if resp.status_code == 200:
+                    data = resp.json()
+                    content = data.get("content", [{}])[0].get("text", "")
+                    actions = parse_ai_actions(content, context)
+                    return jsonify({"content": content, "actions": actions})
+                else:
+                    return jsonify({"error": f"API error: {resp.status_code}"})
+                    
+            elif provider == "azure":
+                headers = {
+                    "api-key": api_key,
+                    "Content-Type": "application/json"
+                }
+                chat_url = f"{base_url}/openai/deployments/{model}/chat/completions?api-version=2024-02-15-preview"
+                chat_payload = {
+                    "messages": full_messages,
+                    "temperature": 0.7
+                }
+                resp = requests.post(chat_url, headers=headers, json=chat_payload, timeout=120)
+                
+                if resp.status_code == 200:
+                    data = resp.json()
+                    content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                    actions = parse_ai_actions(content, context)
+                    return jsonify({"content": content, "actions": actions})
+                else:
+                    return jsonify({"error": f"API error: {resp.status_code}"})
+            else:
+                return jsonify({"error": f"Unknown provider: {provider}"})
+                
+        except requests.Timeout:
+            return jsonify({"error": "Request timeout"})
+        except Exception as e:
+            LOGGER.error(f"AI chat error: {e}")
+            return jsonify({"error": str(e)})
+
     return app
+
+
+def build_ai_system_prompt(context: Dict) -> str:
+    """Build system prompt with current context"""
+    base_prompt = """You are an AI assistant for UltraRAG, a RAG (Retrieval-Augmented Generation) pipeline configuration system.
+
+You help users:
+1. Build and configure pipelines (YAML format)
+2. Set parameters for servers (retriever, generator, reranker, etc.)
+3. Edit Jinja2 prompt templates
+
+When suggesting modifications, use the following format to indicate actionable changes:
+
+For Pipeline modifications:
+```yaml:pipeline
+<your yaml content here>
+```
+
+For Prompt modifications:
+```jinja:prompt:<filename>
+<your jinja content here>
+```
+
+For Parameter changes, describe them clearly with the full path like:
+"Set `generation.model_name` to `gpt-4`"
+
+Be concise and helpful. Provide complete code when suggesting changes.
+"""
+
+    # Add context information
+    context_info = []
+    
+    if context.get("currentMode"):
+        context_info.append(f"Current mode: {context['currentMode']}")
+    
+    if context.get("selectedPipeline"):
+        context_info.append(f"Selected pipeline: {context['selectedPipeline']}")
+    
+    if context.get("pipelineYaml"):
+        context_info.append(f"Current pipeline YAML:\n```yaml\n{context['pipelineYaml']}\n```")
+    
+    if context.get("currentPromptFile"):
+        context_info.append(f"Current prompt file: {context['currentPromptFile']}")
+        if context.get("promptContent"):
+            context_info.append(f"Current prompt content:\n```jinja\n{context['promptContent']}\n```")
+    
+    if context.get("parameters"):
+        import json
+        params_str = json.dumps(context["parameters"], indent=2, ensure_ascii=False)
+        context_info.append(f"Current parameters:\n```json\n{params_str}\n```")
+    
+    if context_info:
+        base_prompt += "\n\n## Current Context\n" + "\n".join(context_info)
+    
+    return base_prompt
+
+
+def parse_ai_actions(content: str, context: Dict) -> list:
+    """Parse AI response for actionable modifications"""
+    import re
+    
+    actions = []
+    
+    # Parse pipeline YAML blocks
+    yaml_pattern = r'```yaml:pipeline\s*\n(.*?)```'
+    yaml_matches = re.findall(yaml_pattern, content, re.DOTALL)
+    for match in yaml_matches:
+        actions.append({
+            "type": "modify_pipeline",
+            "content": match.strip(),
+            "preview": match.strip()[:500]
+        })
+    
+    # Parse prompt blocks
+    prompt_pattern = r'```jinja:prompt:([^\n]+)\s*\n(.*?)```'
+    prompt_matches = re.findall(prompt_pattern, content, re.DOTALL)
+    for filename, prompt_content in prompt_matches:
+        actions.append({
+            "type": "modify_prompt",
+            "filename": filename.strip(),
+            "content": prompt_content.strip(),
+            "preview": prompt_content.strip()[:500]
+        })
+    
+    # Parse parameter changes
+    param_pattern = r'[Ss]et\s+`([^`]+)`\s+to\s+`([^`]+)`'
+    param_matches = re.findall(param_pattern, content)
+    for path, value in param_matches:
+        # Try to parse value
+        try:
+            import json
+            parsed_value = json.loads(value)
+        except:
+            parsed_value = value
+        
+        actions.append({
+            "type": "modify_parameter",
+            "path": path.strip(),
+            "value": parsed_value,
+            "preview": f"{path} = {value}"
+        })
+    
+    return actions
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
