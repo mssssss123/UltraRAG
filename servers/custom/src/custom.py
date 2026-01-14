@@ -672,6 +672,7 @@ def surveycpm_parse_response(
     response_text: str,
     is_json: bool = True,
     valid_actions: List[str] | None = None,
+    hard_mode: bool = True,
     **kwargs
 ) -> Dict[str, Any]:
     extracted_result = {}
@@ -702,7 +703,7 @@ def surveycpm_parse_response(
                 action_is_valid = surveycpm_validate_action(
                     action, 
                     valid_actions=valid_actions, 
-                    hard_mode=True, # You can use hard mode for better performance
+                    hard_mode=hard_mode, # You can use hard mode for better performance
                     **kwargs
                 )
             except:
@@ -715,10 +716,17 @@ def surveycpm_parse_response(
         action_match = re.search(action_pattern, response_text, re.DOTALL | re.MULTILINE)
         if action_match:
             action = action_match.group(1).strip()
-            action_is_valid = True
+            # action_is_valid = True
+            
         else:
             action = ""
         action = {"name": "write", "content": action}
+        action_is_valid = surveycpm_validate_action(
+            action, 
+            valid_actions=valid_actions, 
+            hard_mode=hard_mode, # You can use hard mode for better performance
+            **kwargs
+        )
     
     extracted_result["action"] = action
     extracted_result["parse_success"] = action_is_valid
@@ -913,9 +921,10 @@ def surveycpm_state_init(
     }
 
 
-@app.tool(output="response_ls->keywords_ls")
+@app.tool(output="response_ls,hard_mode->keywords_ls")
 def surveycpm_parse_search_response(
-    response_ls: List[str]
+    response_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
     keywords_ls = []
     
@@ -923,7 +932,8 @@ def surveycpm_parse_search_response(
         result = surveycpm_parse_response(
             response_text=response, 
             is_json=True,
-            valid_actions=["search"]
+            valid_actions=["search"],
+            hard_mode=hard_mode
         )
         keywords = result.get("action", {}).get("keywords", [])
         keywords_ls.append(keywords)
@@ -971,11 +981,12 @@ def surveycpm_process_passages(
     return {"retrieved_info_ls": retrieved_info_ls}
 
 
-@app.tool(output="response_ls,survey_ls,instruction_ls->survey_ls,cursor_ls")
+@app.tool(output="response_ls,survey_ls,instruction_ls,hard_mode->survey_ls,cursor_ls")
 def surveycpm_after_init_plan(
     response_ls: List[str],
     survey_ls: List[str], 
     instruction_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
 
     import json
@@ -987,7 +998,8 @@ def surveycpm_after_init_plan(
             response_text=response, 
             is_json=True,
             user_instruction=instruction,
-            valid_actions=["init-plan"]
+            valid_actions=["init-plan"],
+            hard_mode=hard_mode
         )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
@@ -1009,13 +1021,14 @@ def surveycpm_after_init_plan(
     }
 
 
-@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,retrieved_info_ls->survey_ls,cursor_ls")
+@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,retrieved_info_ls,hard_mode->survey_ls,cursor_ls")
 def surveycpm_after_write(
     response_ls: List[str],
     survey_ls: List[str],
     cursor_ls: List[str | None],
     instruction_ls: List[str],
     retrieved_info_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
 
     import json
@@ -1036,7 +1049,8 @@ def surveycpm_after_write(
             cursor=cursor,
             user_instruction=instruction,
             retrieved_bibkeys=retrieved_bibkeys,
-            valid_actions=["write"]
+            valid_actions=["write"],
+            hard_mode=hard_mode
         )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
@@ -1065,12 +1079,13 @@ def surveycpm_after_write(
     }
 
 
-@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls->survey_ls,cursor_ls,extend_result_ls")
+@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,hard_mode->survey_ls,cursor_ls,extend_result_ls")
 def surveycpm_after_extend(
     response_ls: List[str],
     survey_ls: List[str],  # JSON strings
     cursor_ls: List[str | None],
     instruction_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
 
     import json
@@ -1086,7 +1101,8 @@ def surveycpm_after_extend(
             current_survey=survey,
             cursor=cursor,
             user_instruction=instruction,
-            valid_actions=["extend-plan", "nop"]
+            valid_actions=["extend-plan", "nop"],
+            hard_mode=hard_mode
         )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
