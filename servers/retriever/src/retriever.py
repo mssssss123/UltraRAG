@@ -94,12 +94,12 @@ class Retriever:
             self.backend = "openai"
             self.index_backend_name = "milvus"
             
-            if self.backend == "openai" and "openai" not in self.backend_configs:
-                raise ValidationError("is_demo=True with backend='openai' requires 'openai' in backend_configs.")
+            if "openai" not in self.backend_configs:
+                raise ValidationError("is_demo=True requires 'openai' in backend_configs.")
             if "milvus" not in self.index_backend_configs:
                 raise ValidationError("is_demo=True requires 'milvus' in index_backend_configs.")
                 
-            app.logger.info(f"[retriever] Demo mode enforced: Index=Milvus. Backend={self.backend}")
+            app.logger.info("[retriever] Demo mode enforced: Backend=OpenAI, Index=Milvus.")
         else:
             self.backend = backend.lower()
             self.index_backend_name = index_backend.lower()
@@ -235,8 +235,7 @@ class Retriever:
 
         should_load_corpus_to_memory = (
             (self.backend == "bm25") or 
-            (self.index_backend_name == "faiss") or
-            (self.index_backend_name == "milvus")
+            (self.index_backend_name == "faiss")
         )
         if should_load_corpus_to_memory and corpus_path and os.path.exists(corpus_path):
             app.logger.info(f"[retriever] Loading corpus to memory for {self.index_backend_name}/BM25...")
