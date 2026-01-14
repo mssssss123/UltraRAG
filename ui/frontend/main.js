@@ -57,7 +57,6 @@ const els = {
   pipelineMenu: document.getElementById("pipeline-menu"),
   refreshPipelines: document.getElementById("refresh-pipelines"),
   newPipelineBtn: document.getElementById("new-pipeline-btn"),
-  shutdownApp: document.getElementById("shutdown-app"),
   heroSelectedPipeline: document.getElementById("hero-selected-pipeline"),
   heroStatus: document.getElementById("hero-status"),
 
@@ -139,6 +138,21 @@ const els = {
   // [新增] 刷新按钮
   refreshCollectionsBtn: document.getElementById("refresh-collections-btn"),
   // --- [End] Knowledge Base Elements ---
+
+  // --- [Start] YAML Editor Elements ---
+  yamlEditor: document.getElementById("yaml-editor"),
+  yamlLineNumbers: document.getElementById("yaml-line-numbers"),
+  yamlSyncStatus: document.getElementById("yaml-sync-status"),
+  yamlErrorBar: document.getElementById("yaml-error-bar"),
+  yamlErrorMessage: document.getElementById("yaml-error-message"),
+  yamlFormatBtn: document.getElementById("yaml-format-btn"),
+  builderResizer: document.getElementById("builder-resizer"),
+  // --- [End] YAML Editor Elements ---
+
+  // --- [Start] Console Elements ---
+  canvasConsole: document.getElementById("canvas-console"),
+  consoleToggle: document.getElementById("console-toggle"),
+  // --- [End] Console Elements ---
 };
 
 const Modes = {
@@ -1097,20 +1111,128 @@ function renderMarkdown(text, { allowCodeBlock = true, unwrapLanguages = [] } = 
 }
 
 // --- Lifecycle ---
+
+/**
+ * 显示输入弹窗
+ * @param {string} message - 提示信息
+ * @param {object} options - 配置选项
+ * @returns {Promise<string|null>} 用户输入的值，取消返回 null
+ */
+function showPrompt(message, options = {}) {
+  const {
+    title = "Input",
+    placeholder = "",
+    defaultValue = "",
+    confirmText = "OK",
+    cancelText = "Cancel"
+  } = options;
+  
+  return new Promise((resolve) => {
+    const modal = document.getElementById("unified-modal");
+    const iconEl = document.getElementById("unified-modal-icon");
+    const titleEl = document.getElementById("unified-modal-title");
+    const messageEl = document.getElementById("unified-modal-message");
+    const actionsEl = document.getElementById("unified-modal-actions");
+    
+    if (!modal) {
+      const result = window.prompt(message, defaultValue);
+      resolve(result);
+      return;
+    }
+    
+    iconEl.className = "unified-modal-icon info";
+    iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
+    
+    titleEl.textContent = title;
+    messageEl.innerHTML = `
+      <p style="margin-bottom: 12px;">${message}</p>
+      <input type="text" id="prompt-input" class="form-control" placeholder="${placeholder}" value="${defaultValue}" style="width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.95rem;">
+    `;
+    
+    actionsEl.innerHTML = `
+      <button class="btn unified-modal-btn unified-modal-btn-secondary" id="prompt-cancel">${cancelText}</button>
+      <button class="btn unified-modal-btn unified-modal-btn-primary" id="prompt-confirm">${confirmText}</button>
+    `;
+    
+    modal.showModal();
+    
+    const inputEl = document.getElementById("prompt-input");
+    inputEl.focus();
+    inputEl.select();
+    
+    const handleConfirm = () => {
+      const value = inputEl.value.trim();
+      modal.close();
+      resolve(value || null);
+    };
+    
+    const handleCancel = () => {
+      modal.close();
+      resolve(null);
+    };
+    
+    document.getElementById("prompt-confirm").onclick = handleConfirm;
+    document.getElementById("prompt-cancel").onclick = handleCancel;
+    
+    inputEl.onkeydown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleConfirm();
+      } else if (e.key === "Escape") {
+        handleCancel();
+      }
+    };
+  });
+}
+
 async function createNewPipeline() {
+  // 如果有未保存的更改，先确认
   if (state.steps.length > 0) {
     const confirmed = await showConfirm("Create new pipeline? Unsaved changes will be lost.", {
       title: "Create New Pipeline",
       type: "warning",
-      confirmText: "Create New"
+      confirmText: "Continue"
     });
     if (!confirmed) return;
   }
-  state.selectedPipeline = null; state.parameterData = null; state.steps = []; state.isBuilt = false; state.parametersReady = false;
-  els.name.value = ""; if (els.pipelineDropdownBtn) els.pipelineDropdownBtn.textContent = "Select Pipeline";
-  setHeroPipelineLabel(""); setHeroStatusLabel("idle");
-  resetContextStack(); renderSteps(); updatePipelinePreview(); setMode(Modes.BUILDER); updateActionButtons();
-  log("Created new blank pipeline.");
+  
+  // 弹出输入框让用户输入 Pipeline 名字
+  const pipelineName = await showPrompt("Enter a name for the new pipeline:", {
+    title: "New Pipeline",
+    placeholder: "my_pipeline",
+    confirmText: "Create"
+  });
+  
+  if (!pipelineName) return; // 用户取消
+  
+  // 验证名字格式
+  if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(pipelineName)) {
+    await showModal("Invalid pipeline name. Use only letters, numbers, underscores and hyphens. Must start with a letter or underscore.", {
+      title: "Invalid Name",
+      type: "error"
+    });
+    return;
+  }
+  
+  // 创建新 pipeline
+  state.selectedPipeline = pipelineName; 
+  state.parameterData = null; 
+  state.steps = []; 
+  state.isBuilt = false; 
+  state.parametersReady = false;
+  
+  els.name.value = pipelineName; 
+  if (els.pipelineDropdownBtn) els.pipelineDropdownBtn.textContent = pipelineName;
+  setHeroPipelineLabel(pipelineName); 
+  setHeroStatusLabel("idle");
+  
+  resetContextStack(); 
+  renderSteps(); 
+  updatePipelinePreview(); 
+  setMode(Modes.BUILDER); 
+  updateActionButtons();
+  
+  log(`Created new pipeline: ${pipelineName}`);
 }
 
 // --- Demo Session / Engine Control ---
@@ -1219,32 +1341,34 @@ async function renderChatCollectionOptions() {
         const data = await fetchJSON('/api/kb/files');
         const collections = data.index || []; // data.index 存放的是 collection 列表
         
-        els.chatCollectionSelect.innerHTML = '<option value="">No Knowledge Base</option>';
-        
-        collections.forEach(c => {
-            const opt = document.createElement("option");
-            opt.value = c.name;
-            // 显示名字和数据量
-            opt.textContent = `${c.name} (${c.count || 0})`;
-            els.chatCollectionSelect.appendChild(opt);
-        });
+        // 渲染新的自定义下拉菜单
+        renderKbDropdownOptions(collections);
         
         // 尝试恢复选中状态
         if (currentVal) {
-            // 检查新列表里是否还有这个值
             const exists = collections.find(c => c.name === currentVal);
-            if (exists) els.chatCollectionSelect.value = currentVal;
+            if (exists) {
+                els.chatCollectionSelect.value = currentVal;
+                // 更新下拉菜单的选中状态
+                const menu = document.getElementById('kb-dropdown-menu');
+                if (menu) {
+                    menu.querySelectorAll('.kb-dropdown-item').forEach(item => {
+                        item.classList.remove('selected');
+                        if (item.dataset.value === currentVal) {
+                            item.classList.add('selected');
+                        }
+                    });
+                }
+            }
         }
 
         // 渲染完 options 后，手动触发一次视觉更新
-        // 确保 "Knowledge Base" 这里的文字显示正确（比如维持之前选中的状态）
         if (window.updateKbLabel && els.chatCollectionSelect) {
             window.updateKbLabel(els.chatCollectionSelect);
         }
         
     } catch (e) {
         console.error("Failed to load collections for chat:", e);
-        // 出错时不覆盖默认选项，或者显示错误
     }
 }
 
@@ -1535,11 +1659,15 @@ async function showInterruptConfirmDialog(onConfirm) {
 function saveCurrentSession(force = false) {
     if (!state.chat.currentSessionId) return;
     
-    // 如果当前没有任何消息，且不是强制保存，则不保存（避免产生大量空会话）
-    if (!force && state.chat.history.length === 0) {
-        // 从列表中移除当前空会话
+    // 如果没有任何有效消息（包含空文本的“新建”会话），则不保存到历史
+    const hasContent = state.chat.history.some(m => {
+        if (!m) return false;
+        if (typeof m.text === "string" && m.text.trim() !== "") return true;
+        if (m.meta && Object.keys(m.meta).length > 0) return true;
+        return false;
+    });
+    if (!hasContent) {
         state.chat.sessions = state.chat.sessions.filter(s => s.id !== state.chat.currentSessionId);
-        // 更新 UI 和 本地存储
         renderChatSidebar();
         localStorage.setItem("ultrarag_sessions", JSON.stringify(state.chat.sessions));
         return;
@@ -1692,51 +1820,49 @@ function formatCitationHtml(html, messageIdx = null) {
     );
 }
 
+// [新增] 渲染预设建议按钮（已禁用）
+function renderSuggestionChips() {
+    // 预设按钮已删除，不再渲染
+}
+
+// [新增] 移除预设建议按钮
+function removeSuggestionChips() {
+    const existing = document.getElementById('suggestion-chips-container');
+    if (existing) existing.remove();
+}
+
 // 2. [主函数] 修改后的 renderChatHistory
 function renderChatHistory() {
     if (!els.chatHistory) return;
     els.chatHistory.innerHTML = "";
-    // [核心修改] 仿 Gemini 空白欢迎页
+    
+    // 获取 chat-container 元素来控制空状态布局
+    const chatContainer = els.chatHistory.parentElement;
+    
+    // [核心修改] 仿通义千问空白欢迎页 - 输入框居中，预设按钮在下方
     if (state.chat.history.length === 0) { 
+        // 添加空状态类，让输入框居中
+        if (chatContainer) chatContainer.classList.add('empty-state');
+        
         els.chatHistory.innerHTML = `
             <div class="empty-state-wrapper fade-in-up">
                 <div class="greeting-section">
                     <div class="greeting-text">
-                        <span class="greeting-gradient">Welcome back.</span>
+                        <span class="greeting-gradient">Hello, UltraRAG</span>
                     </div>
-                    <h1 class="greeting-title">Ready when you are.</h1>
-                </div>
-                
-                <div class="suggestion-chips">
-                    <button class="chip-btn chip-analysis" onclick="setQuickPrompt('结合多篇史料，深度分析北宋初期‘杯酒释兵权’对中后期冗兵冗费问题的潜在影响。')">
-                        <span class="chip-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
-                        </span>
-                        <span>Analysis</span>
-                    </button>
-                    <button class="chip-btn chip-explain" onclick="setQuickPrompt('请结合数学推导，详细拆解 PPO 算法中 Clipping Loss 的设计初衷及其公式含义。')">
-                        <span class="chip-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
-                        </span>
-                        <span>Explain</span>
-                    </button>
-                    <button class="chip-btn chip-implement" onclick="setQuickPrompt('参考我上传的项目文档，快速搭建一个支持流式响应的 ChatGPT 风格聊天 Demo。')">
-                        <span class="chip-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                        </span>
-                        <span>Implement</span>
-                    </button>
-                    <button class="chip-btn chip-insights" onclick="setQuickPrompt('对比最近的相关论文，挖掘多模态领域尚未被充分讨论的科研空白点与潜在机会。')">
-                        <span class="chip-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l3 12"></path><path d="M13 3l3 6-3 12"></path><path d="M2 9h20"></path></svg>
-                        </span>
-                        <span>Insights</span>
-                    </button>
                 </div>
             </div>
         `;
+        
+        // 渲染预设按钮到输入框下方
+        renderSuggestionChips();
         return; 
     }
+    
+    // 移除空状态类，恢复正常布局
+    if (chatContainer) chatContainer.classList.remove('empty-state');
+    // 移除预设按钮
+    removeSuggestionChips();
     state.chat.history.forEach((entry, index) => {
         const bubble = document.createElement("div"); 
         // 加上 fade-in 动画类，稍微好看点
@@ -1824,7 +1950,7 @@ function setChatRunning(isRunning) {
   updateDemoControls();
   
   const btn = els.chatSend;
-  const icon = document.getElementById("chat-send-icon");
+  const iconWrapper = document.getElementById("chat-send-icon");
   
   if (isRunning) {
       setChatStatus("Thinking...", "running");
@@ -1833,11 +1959,11 @@ function setChatRunning(isRunning) {
       if (els.chatInput) els.chatInput.disabled = true;
       if (els.chatSend) els.chatSend.disabled = false; // <--- 关键！必须解开！
 
-      // 样式变为红色停止
+      // 样式变为停止按钮
       if (btn) btn.classList.add("stop");
-      if (icon) {
-          icon.textContent = "";
-          icon.className = "icon-stop";
+      if (iconWrapper) {
+          // 隐藏发送箭头，显示停止图标
+          iconWrapper.innerHTML = '<span class="icon-stop"></span>';
       }
   } else {
       updateActionButtons();
@@ -1845,9 +1971,14 @@ function setChatRunning(isRunning) {
       // 闲置状态：输入框解锁（前提是引擎在线，updateDemoControls 已处理）
       // 样式变回箭头
       if (btn) btn.classList.remove("stop");
-      if (icon) {
-          icon.className = "";
-          icon.textContent = "↑";
+      if (iconWrapper) {
+          // 恢复发送箭头图标
+          iconWrapper.innerHTML = `
+            <svg class="icon-send" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+          `;
       }
   }
 }
@@ -1937,6 +2068,7 @@ function openChatView() {
   renderChatHistory();
   renderChatSidebar();
   setMode(Modes.CHAT);
+  updateUrlForView(Modes.CHAT);
 
   backToChatView();
   
@@ -2025,13 +2157,37 @@ function showSourceDetail(title, content) {
         const rawText = content || "No content available.";
         const cleanedText = cleanPDFText(rawText);
 
-        if (typeof renderMarkdown === 'function') {
-            contentDiv.innerHTML = renderMarkdown(cleanedText);
-            renderLatex(contentDiv);
+        // 3. 检查是否包含 Title: 和 Content: 格式，如果有则分别渲染
+        const titleMatch = cleanedText.match(/^Title:\s*(.+?)(?:\n|Content:)/i);
+        const contentMatch = cleanedText.match(/Content:\s*([\s\S]*)/i);
+        
+        let renderedHtml = "";
+        
+        if (titleMatch && contentMatch) {
+            // 有标题和内容格式，分别渲染
+            const docTitle = titleMatch[1].trim();
+            const docContent = contentMatch[1].trim();
+            
+            // 标题加粗显示
+            renderedHtml = `<div class="source-doc-title">${escapeHtmlForDetail(docTitle)}</div>`;
+            
+            // 内容正常渲染
+            if (typeof renderMarkdown === 'function') {
+                renderedHtml += renderMarkdown(docContent);
+            } else {
+                renderedHtml += `<p>${escapeHtmlForDetail(docContent).replace(/\n/g, '<br>')}</p>`;
+            }
         } else {
-            // 降级处理：直接显示清洗后的纯文本，也比之前好读很多
-            contentDiv.innerText = cleanedText;
+            // 普通格式，直接渲染
+            if (typeof renderMarkdown === 'function') {
+                renderedHtml = renderMarkdown(cleanedText);
+            } else {
+                renderedHtml = `<p>${escapeHtmlForDetail(cleanedText).replace(/\n/g, '<br>')}</p>`;
+            }
         }
+        
+        contentDiv.innerHTML = renderedHtml;
+        renderLatex(contentDiv);
 
         // 4. 滚动回顶部 (防止上次看到底部，这次打开还在底部)
         contentDiv.scrollTop = 0;
@@ -2039,6 +2195,13 @@ function showSourceDetail(title, content) {
         // 展开面板
         panel.classList.add("show");
     }
+}
+
+// HTML 转义辅助函数（用于详情面板）
+function escapeHtmlForDetail(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // [新增] 关闭右侧详情栏 (绑定到了 HTML 的 x 按钮)
@@ -2141,12 +2304,48 @@ function renderSources(bubble, sources, usedIds = null) {
             item.classList.add("active-highlight");
             showSourceDetail(`Reference [${showId}]`, src.content);
         };
+        
+        // 处理引用条目的显示文本：标题拼在开头，后面跟内容
+        const content = src.content || "";
+        let displayText = "";
+        
+        // 检查 content 是否包含 "Title:" 和 "Content:" 格式
+        const titleMatch = content.match(/^Title:\s*(.+?)(?:\n|Content:)/i);
+        const contentMatch = content.match(/Content:\s*([\s\S]*)/i);
+        
+        if (titleMatch && contentMatch) {
+            // 有标题和内容格式：标题 + 内容
+            const docTitle = titleMatch[1].trim();
+            const afterContent = contentMatch[1].trim();
+            const firstLine = afterContent.split('\n')[0].trim();
+            displayText = `${docTitle}: ${firstLine}`;
+        } else if (contentMatch) {
+            // 只有 Content: 格式
+            const afterContent = contentMatch[1].trim();
+            displayText = afterContent.split('\n')[0].trim();
+        } else {
+            // 普通格式，使用原始 title
+            displayText = src.title || content.split('\n')[0].trim();
+        }
+        
+        // 截断过长的文本
+        if (displayText.length > 80) {
+            displayText = displayText.substring(0, 80) + "...";
+        }
+        
         item.innerHTML = `
             <span class="ref-id">[${showId}]</span>
-            <span class="ref-title">${src.title}</span>
+            <span class="ref-title">${escapeHtml(displayText)}</span>
         `;
         return item;
     };
+    
+    // HTML 转义辅助函数
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
     
     // 渲染已使用的引用
     if (usedSources.length > 0) {
@@ -2688,16 +2887,6 @@ function setHeroStatusLabel(status) {
   if (!els.heroStatus) return;
   els.heroStatus.dataset.status = status; els.heroStatus.textContent = status.toUpperCase();
 }
-async function requestShutdown() { 
-    const confirmed = await showConfirm("Exit UltraRAG UI?", {
-        title: "Exit Application",
-        type: "confirm",
-        confirmText: "Exit"
-    });
-    if (!confirmed) return; 
-    fetch("/api/system/shutdown", { method: "POST" }); 
-    setTimeout(() => window.close(), 800); 
-}
 
 async function fetchJSON(url, options = {}) {
   const resp = await fetch(url, { headers: { "Content-Type": "application/json" }, ...options });
@@ -2766,24 +2955,58 @@ function setActiveLocation(location) {
 }
 function resetContextStack() { state.contextStack = [createLocation([])]; renderContextControls(); }
 
-// ... (YAML Helpers stay same) ...
+// ... (YAML Helpers - Corrected formatting) ...
 function yamlScalar(value) {
     if (value === null || value === undefined) return "null";
     if (typeof value === "boolean") return value ? "true" : "false";
     if (typeof value === "number") return Number.isFinite(value) ? String(value) : "null";
-    if (typeof value === "string") return value; return JSON.stringify(value);
+    if (typeof value === "string") return value;
+    return JSON.stringify(value);
 }
-function yamlStringify(value, indent = 0) {
+
+/**
+ * 将 JavaScript 对象转换为正确格式的 YAML 字符串
+ * 修复：数组中的对象应该紧跟在 `-` 后面，而不是换行
+ */
+function yamlStringify(value, indent = 0, isArrayItem = false) {
     const pad = "  ".repeat(indent);
+    const itemPad = isArrayItem ? "" : pad; // 数组项的第一行不需要缩进
+    
     if (Array.isArray(value)) {
-        if (!value.length) return `${pad}[]`;
-        return value.map(item => { if (item && typeof item === "object") return `${pad}-\n${yamlStringify(item, indent + 1)}`; return `${pad}- ${yamlScalar(item)}`; }).join("\n");
+        if (!value.length) return `${itemPad}[]`;
+        return value.map(item => {
+            if (item && typeof item === "object") {
+                // 对象作为数组项：第一个键跟在 `-` 后面
+                const objStr = yamlStringify(item, indent + 1, true);
+                return `${pad}- ${objStr}`;
+            }
+            return `${pad}- ${yamlScalar(item)}`;
+        }).join("\n");
     }
+    
     if (value && typeof value === "object") {
-        const entries = Object.entries(value); if (!entries.length) return `${pad}{}`;
-        return entries.map(([k, v]) => { if (v && typeof v === "object") return `${pad}${k}:\n${yamlStringify(v, indent + 1)}`; return `${pad}${k}: ${yamlScalar(v)}`; }).join("\n");
+        const entries = Object.entries(value);
+        if (!entries.length) return `${itemPad}{}`;
+        
+        return entries.map(([k, v], idx) => {
+            const keyPad = (isArrayItem && idx === 0) ? "" : pad; // 数组项的第一个键不需要额外缩进
+            
+            if (v && typeof v === "object") {
+                if (Array.isArray(v)) {
+                    if (!v.length) {
+                        return `${keyPad}${k}: []`;
+                    }
+                    return `${keyPad}${k}:\n${yamlStringify(v, indent)}`;
+                }
+                // 嵌套对象
+                const nestedStr = yamlStringify(v, indent + 1, false);
+                return `${keyPad}${k}:\n${nestedStr}`;
+            }
+            return `${keyPad}${k}: ${yamlScalar(v)}`;
+        }).join("\n");
     }
-    return `${pad}${yamlScalar(value)}`;
+    
+    return `${itemPad}${yamlScalar(value)}`;
 }
 function collectServersFromSteps(steps, set = new Set()) {
     for (const step of steps) {
@@ -2797,13 +3020,468 @@ function collectServersFromSteps(steps, set = new Set()) {
 }
 function buildServersMapping(steps) { const mapping = {}; collectServersFromSteps(steps, new Set()).forEach((name) => { mapping[name] = `servers/${name}`; }); return mapping; }
 function buildPipelinePayloadForPreview() { return { servers: buildServersMapping(state.steps), pipeline: cloneDeep(state.steps) }; }
-function updatePipelinePreview() { if (els.pipelinePreview) els.pipelinePreview.textContent = yamlStringify(buildPipelinePayloadForPreview()); }
+
+// =========================================
+// YAML Editor Sync System
+// =========================================
+
+// 标记：防止循环更新
+let yamlEditorSyncLock = false;
+let yamlEditorDebounceTimer = null;
+
+/**
+ * 更新 YAML 编辑器的行号显示
+ */
+function updateYamlLineNumbers() {
+  if (!els.yamlEditor || !els.yamlLineNumbers) return;
+  
+  const content = els.yamlEditor.value || '';
+  const lines = content.split('\n');
+  const lineCount = Math.max(lines.length, 1);
+  
+  // 生成行号 HTML，每行一个 div 保证对齐
+  let lineNumbersHtml = '';
+  for (let i = 1; i <= lineCount; i++) {
+    lineNumbersHtml += `<div class="line-number">${i}</div>`;
+  }
+  els.yamlLineNumbers.innerHTML = lineNumbersHtml;
+  
+  // 同步滚动位置
+  els.yamlLineNumbers.scrollTop = els.yamlEditor.scrollTop;
+}
+
+/**
+ * 设置同步状态指示器
+ * @param {'synced' | 'syncing' | 'error' | 'modified'} status
+ */
+function setYamlSyncStatus(status) {
+  if (!els.yamlSyncStatus) return;
+  
+  els.yamlSyncStatus.classList.remove('synced', 'syncing', 'error', 'modified');
+  els.yamlSyncStatus.classList.add(status);
+  
+  const icons = {
+    synced: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+    syncing: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>',
+    error: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+    modified: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+  };
+  
+  const titles = {
+    synced: 'Synced with canvas',
+    syncing: 'Syncing...',
+    error: 'Parse error',
+    modified: 'Editor modified (Save to apply)'
+  };
+  
+  els.yamlSyncStatus.innerHTML = icons[status] || icons.synced;
+  els.yamlSyncStatus.title = titles[status] || '';
+}
+
+/**
+ * 显示/隐藏 YAML 错误信息
+ * @param {string|null} message - 错误信息，null 表示清除错误
+ */
+function showYamlError(message) {
+  if (!els.yamlErrorBar || !els.yamlErrorMessage) return;
+  
+  if (message) {
+    els.yamlErrorMessage.textContent = message;
+    els.yamlErrorBar.classList.remove('d-none');
+    setYamlSyncStatus('error');
+  } else {
+    els.yamlErrorBar.classList.add('d-none');
+    setYamlSyncStatus('synced');
+  }
+}
+
+/**
+ * 简单的 YAML 解析器 (支持基本语法)
+ * @param {string} yamlStr - YAML 字符串
+ * @returns {object} 解析后的对象
+ */
+function parseSimpleYaml(yamlStr) {
+  const lines = yamlStr.split('\n');
+  const result = {};
+  const stack = [{ indent: -1, obj: result, key: null }];
+  let currentArray = null;
+  let currentArrayIndent = -1;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    
+    // 跳过空行和注释
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    
+    // 计算缩进
+    const indent = line.search(/\S/);
+    
+    // 处理数组项 (以 - 开头)
+    if (trimmed.startsWith('- ')) {
+      const value = trimmed.substring(2).trim();
+      
+      // 找到合适的父级
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop();
+      }
+      
+      const parent = stack[stack.length - 1];
+      if (parent.key && !Array.isArray(parent.obj[parent.key])) {
+        parent.obj[parent.key] = [];
+      }
+      
+      if (parent.key && Array.isArray(parent.obj[parent.key])) {
+        // 尝试解析 JSON
+        if (value.startsWith('{') || value.startsWith('[')) {
+          try {
+            parent.obj[parent.key].push(JSON.parse(value));
+          } catch {
+            parent.obj[parent.key].push(value);
+          }
+        } else {
+          parent.obj[parent.key].push(value || null);
+        }
+      }
+      continue;
+    }
+    
+    // 处理只有 - 的行（后续行是嵌套对象）
+    if (trimmed === '-') {
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop();
+      }
+      
+      const parent = stack[stack.length - 1];
+      if (parent.key && !Array.isArray(parent.obj[parent.key])) {
+        parent.obj[parent.key] = [];
+      }
+      
+      if (parent.key && Array.isArray(parent.obj[parent.key])) {
+        const newObj = {};
+        parent.obj[parent.key].push(newObj);
+        stack.push({ indent: indent, obj: newObj, key: null });
+      }
+      continue;
+    }
+    
+    // 处理键值对
+    const colonIndex = trimmed.indexOf(':');
+    if (colonIndex > 0) {
+      const key = trimmed.substring(0, colonIndex).trim();
+      let value = trimmed.substring(colonIndex + 1).trim();
+      
+      // 回退栈到合适的层级
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop();
+      }
+      
+      const parent = stack[stack.length - 1].obj;
+      
+      if (value === '' || value === '[]' || value === '{}') {
+        // 空值或空容器，后续行可能有嵌套
+        if (value === '[]') {
+          parent[key] = [];
+        } else if (value === '{}') {
+          parent[key] = {};
+        } else {
+          parent[key] = {};
+        }
+        stack.push({ indent: indent, obj: parent, key: key });
+      } else {
+        // 有值
+        if (value === 'true') value = true;
+        else if (value === 'false') value = false;
+        else if (value === 'null') value = null;
+        else if (/^-?\d+$/.test(value)) value = parseInt(value, 10);
+        else if (/^-?\d+\.\d+$/.test(value)) value = parseFloat(value);
+        else if ((value.startsWith('"') && value.endsWith('"')) || 
+                 (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1);
+        }
+        
+        parent[key] = value;
+      }
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * 从 YAML 编辑器同步到画布 (YAML → Canvas)
+ * 保留编辑器内容（含注释），不反向覆盖
+ */
+function syncYamlToCanvas() {
+  syncYamlToCanvasOnly();
+}
+
+/**
+ * 只同步到画布，不触发任何编辑器更新
+ * 这样可以保留编辑器中的注释等内容
+ */
+function syncYamlToCanvasOnly() {
+  if (!els.yamlEditor) return;
+  
+  const yamlContent = els.yamlEditor.value;
+  
+  // 空内容时清空画布
+  if (!yamlContent.trim()) {
+    yamlEditorSyncLock = true;
+    state.steps = [];
+    resetContextStack();
+    renderSteps();
+    showYamlError(null);
+    setYamlSyncStatus('synced');
+    yamlEditorSyncLock = false;
+    log("Editor synced to canvas.");
+    return;
+  }
+  
+  try {
+    setYamlSyncStatus('syncing');
+    
+    // 解析 YAML
+    const parsed = parseSimpleYaml(yamlContent);
+    
+    // 提取 pipeline/steps
+    let newSteps = [];
+    if (Array.isArray(parsed)) {
+      newSteps = parsed;
+    } else if (parsed && typeof parsed === 'object') {
+      if (Array.isArray(parsed.pipeline)) {
+        newSteps = parsed.pipeline;
+      } else if (Array.isArray(parsed.steps)) {
+        newSteps = parsed.steps;
+      }
+    }
+    
+    // 验证 steps 格式
+    if (!Array.isArray(newSteps)) {
+      throw new Error('Invalid pipeline format: expected "pipeline" or "steps" array');
+    }
+    
+    // 更新画布 (锁定防止循环，不触发 updatePipelinePreview)
+    yamlEditorSyncLock = true;
+    state.steps = cloneDeep(newSteps);
+    resetContextStack();
+    renderSteps();
+    showYamlError(null);
+    setYamlSyncStatus('synced');
+    yamlEditorSyncLock = false;
+    
+    log("Editor synced to canvas.");
+    
+  } catch (err) {
+    showYamlError(err.message);
+    setYamlSyncStatus('error');
+    yamlEditorSyncLock = false;
+  }
+}
+
+/**
+ * 从画布同步到 YAML 编辑器 (Canvas → YAML)
+ * 这是 updatePipelinePreview 的增强版
+ */
+function updatePipelinePreview() {
+  // 更新隐藏的 preview 元素（保持兼容性）
+  if (els.pipelinePreview) {
+    els.pipelinePreview.textContent = yamlStringify(buildPipelinePayloadForPreview());
+  }
+  
+  // 更新 YAML 编辑器
+  if (els.yamlEditor && !yamlEditorSyncLock) {
+    yamlEditorSyncLock = true;
+    
+    const yamlContent = yamlStringify(buildPipelinePayloadForPreview());
+    els.yamlEditor.value = yamlContent;
+    updateYamlLineNumbers();
+    showYamlError(null);
+    
+    yamlEditorSyncLock = false;
+  }
+}
+
+/**
+ * 初始化 YAML 编辑器的事件监听
+ */
+function initYamlEditor() {
+  if (!els.yamlEditor) return;
+  
+  // 监听输入事件，更新行号和标记为已修改
+  els.yamlEditor.addEventListener('input', () => {
+    updateYamlLineNumbers();
+    // 标记编辑器有未同步的更改
+    setYamlSyncStatus('modified');
+  });
+  
+  // 监听滚动事件，同步行号滚动
+  els.yamlEditor.addEventListener('scroll', () => {
+    if (els.yamlLineNumbers) {
+      els.yamlLineNumbers.scrollTop = els.yamlEditor.scrollTop;
+    }
+  });
+  
+  // 监听 Tab 键，插入空格而非切换焦点
+  els.yamlEditor.addEventListener('keydown', (e) => {
+    const isSaveShortcut = (e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey);
+    if (isSaveShortcut) {
+      e.preventDefault();
+      handleSubmit(e);
+      return;
+    }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = els.yamlEditor.selectionStart;
+      const end = els.yamlEditor.selectionEnd;
+      const spaces = '  '; // 2 空格缩进
+      
+      els.yamlEditor.value = 
+        els.yamlEditor.value.substring(0, start) + 
+        spaces + 
+        els.yamlEditor.value.substring(end);
+      
+      els.yamlEditor.selectionStart = els.yamlEditor.selectionEnd = start + spaces.length;
+      updateYamlLineNumbers();
+    }
+  });
+  
+  // Format 按钮：重新从 Canvas 状态生成 YAML（恢复到画布状态）
+  if (els.yamlFormatBtn) {
+    els.yamlFormatBtn.addEventListener('click', async () => {
+      const confirmed = await showConfirm(
+        "This will reset the editor content to match the current canvas state. Any manual edits in the editor will be lost.",
+        {
+          title: "Reset Editor",
+          type: "warning",
+          confirmText: "Reset"
+        }
+      );
+      if (confirmed) {
+        updatePipelinePreview();
+        log("Editor synced from canvas.");
+      }
+    });
+  }
+  
+  // 初始化行号
+  updateYamlLineNumbers();
+}
+
+/**
+ * 初始化分隔条拖拽功能
+ */
+function initBuilderResizer() {
+  const resizer = els.builderResizer;
+  if (!resizer) return;
+  
+  const canvasPanel = document.querySelector('.canvas-left-panel');
+  const yamlPanel = document.querySelector('.canvas-right-panel');
+  const splitView = document.querySelector('.canvas-split-layout');
+  
+  if (!canvasPanel || !yamlPanel || !splitView) return;
+  
+  let isResizing = false;
+  let startX = 0;
+  let startCanvasWidth = 0;
+  
+  resizer.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    startX = e.clientX;
+    startCanvasWidth = canvasPanel.offsetWidth;
+    
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    
+    e.preventDefault();
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    
+    const dx = e.clientX - startX;
+    const newCanvasWidth = Math.max(350, Math.min(startCanvasWidth + dx, splitView.offsetWidth - 400));
+    
+    canvasPanel.style.flex = 'none';
+    canvasPanel.style.width = newCanvasWidth + 'px';
+    yamlPanel.style.flex = '1';
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      resizer.classList.remove('dragging');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+}
+
+/**
+ * 初始化可折叠的 Console
+ */
+function initConsole() {
+  const consoleEl = els.canvasConsole;
+  const toggleEl = els.consoleToggle;
+  
+  if (!consoleEl || !toggleEl) return;
+  
+  // 默认折叠
+  consoleEl.classList.add('collapsed');
+  
+  // 点击切换折叠状态
+  toggleEl.addEventListener('click', () => {
+    consoleEl.classList.toggle('collapsed');
+  });
+}
+
+// 从 URL 推断初始视图（支持 /chat 或 ?view=chat）
+function getInitialModeFromUrl() {
+  const path = (window.location.pathname || "").toLowerCase();
+  const hash = (window.location.hash || "").toLowerCase();
+  const params = new URLSearchParams(window.location.search);
+  const viewParam = (params.get('view') || "").toLowerCase();
+  
+  if (viewParam === 'chat' || path.startsWith('/chat') || hash === '#chat') {
+    return Modes.CHAT;
+  }
+  if (viewParam === 'builder' || viewParam === 'config' || path.startsWith('/config')) {
+    return Modes.BUILDER;
+  }
+  return null;
+}
+
+// 根据当前视图同步地址栏，便于直接输入 URL 访问
+function updateUrlForView(mode, replace = false) {
+  let targetPath = null;
+  const currentPath = window.location.pathname;
+  
+  if (mode === Modes.CHAT) {
+    targetPath = "/chat";
+  } else if (mode === Modes.BUILDER) {
+    // 如果本就在 /config 下则保持 /config，否则使用根路径
+    targetPath = currentPath.startsWith("/config") ? "/config" : "/";
+  }
+  
+  if (!targetPath || currentPath === targetPath) return;
+  
+  const url = new URL(window.location.href);
+  const method = replace ? 'replaceState' : 'pushState';
+  window.history[method](null, "", targetPath + url.search + url.hash);
+}
 
 function setMode(mode) {
   state.mode = mode;
   if (els.pipelineForm) els.pipelineForm.classList.toggle("d-none", mode !== Modes.BUILDER);
   if (els.parameterPanel) els.parameterPanel.classList.toggle("d-none", mode !== Modes.PARAMETERS);
   if (els.chatView) els.chatView.classList.toggle("d-none", mode !== Modes.CHAT);
+  
+  // AI助手只在管理员界面显示（非Chat模式）
+  const aiContainer = document.getElementById('ai-assistant-container');
+  if (aiContainer) {
+    aiContainer.classList.toggle('d-none', mode === Modes.CHAT);
+  }
 }
 
 // ... (Node Picker Helpers - keep same) ...
@@ -3153,14 +3831,77 @@ async function checkPipelineReadiness(name) {
 
 
 function handleSubmit(e) {
-    e.preventDefault(); const name = els.name.value.trim(); if (!name) return log("Pipeline name is required");
-    fetchJSON("/api/pipelines", { method: "POST", body: JSON.stringify({ name, pipeline: cloneDeep(state.steps) }) })
-    .then(s => { state.selectedPipeline=s.name||name; refreshPipelines(); log("Pipeline saved."); loadPipeline(s.name||name); }).catch(e=>log(e.message));
+    if (e) e.preventDefault(); 
+    const name = els.name.value.trim(); 
+    if (!name) return log("Pipeline name is required");
+    
+    // 获取编辑器中的 YAML 内容
+    let yamlContent = els.yamlEditor ? els.yamlEditor.value.trim() : '';
+    
+    // 如果编辑器有内容，使用 YAML API 直接保存
+    if (yamlContent) {
+        fetch(`/api/pipelines/${encodeURIComponent(name)}/yaml`, { 
+            method: "PUT", 
+            headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+            body: yamlContent,
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+            return res.json();
+        })
+        .then(s => { 
+            state.selectedPipeline = name; 
+            refreshPipelines(); 
+            log("Pipeline saved."); 
+            setYamlSyncStatus('synced');
+            
+            // 保存成功后，自动同步画布（不覆盖编辑器）
+            syncYamlToCanvasOnly();
+        })
+        .catch(err => {
+            log(`Error: ${err.message}`);
+        });
+    } else {
+        // 空内容，使用 JSON 方式保存
+        saveWithJson(name);
+    }
+}
+
+function saveWithJson(name) {
+    fetchJSON("/api/pipelines", { 
+        method: "POST", 
+        body: JSON.stringify({ name, pipeline: cloneDeep(state.steps) }) 
+    })
+    .then(s => { 
+        state.selectedPipeline = s.name || name; 
+        refreshPipelines(); 
+        log("Pipeline saved."); 
+        setYamlSyncStatus('synced');
+        loadPipeline(s.name || name); 
+    })
+    .catch(e => log(e.message));
 }
 function buildSelectedPipeline() {
     if(!state.selectedPipeline) return log("Please save the pipeline first.");
     fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/build`, { method: "POST" })
-    .then(() => { state.isBuilt=true; state.parametersReady=false; updateActionButtons(); log("Pipeline built."); showParameterPanel(true); }).catch(e=>log(e.message));
+    .then(async () => { 
+        state.isBuilt = true; 
+        state.parametersReady = false; 
+        updateActionButtons(); 
+        log("Pipeline built."); 
+        
+        // 加载参数数据
+        try {
+            state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
+        } catch (e) {
+            log("Failed to load parameters: " + e.message);
+        }
+        
+        // 切换到Parameters面板
+        if (typeof switchWorkspaceMode === 'function') {
+            switchWorkspaceMode('parameters');
+        }
+    }).catch(e => log(e.message));
 }
 async function deleteSelectedPipeline() {
     if(!state.selectedPipeline) return;
@@ -3173,6 +3914,43 @@ async function deleteSelectedPipeline() {
     if (!confirmed) return;
     fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}`, { method: "DELETE" })
     .then(() => { state.selectedPipeline=null; els.name.value=""; setSteps([]); refreshPipelines(); }).catch(e=>log(e.message));
+}
+
+// Pipeline 名称输入框失去焦点时触发重命名
+async function handlePipelineNameBlur() {
+    const newName = els.name.value.trim();
+    
+    // 如果没有选中pipeline或名称未变，不处理
+    if (!state.selectedPipeline || newName === state.selectedPipeline) {
+        return;
+    }
+    
+    // 如果名称为空，恢复原名
+    if (!newName) {
+        els.name.value = state.selectedPipeline;
+        return;
+    }
+    
+    // 验证名称格式
+    if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(newName)) {
+        log("Invalid name. Use letters, numbers, underscores, hyphens. Start with letter or underscore.");
+        els.name.value = state.selectedPipeline;
+        return;
+    }
+    
+    try {
+        await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/rename`, {
+            method: "POST",
+            body: JSON.stringify({ new_name: newName })
+        });
+        
+        state.selectedPipeline = newName;
+        await refreshPipelines();
+        log(`Pipeline renamed to "${newName}".`);
+    } catch (e) {
+        log(`Rename failed: ${e.message}`);
+        els.name.value = state.selectedPipeline; // 恢复原名
+    }
 }
 function flattenParameters(obj, prefix = "") {
     const entries = []; if (!obj || typeof obj !== "object") return entries;
@@ -3187,26 +3965,133 @@ function setNestedValue(obj, path, val) {
 }
 
 function renderParameterForm() {
-    const container = els.parameterForm; container.innerHTML = "";
-    if (!state.parameterData || typeof state.parameterData !== "object") { container.innerHTML = '<div class="col-12"><p class="text-muted text-center">No parameters available for configuration.</p></div>'; return; }
+    const container = els.parameterForm;
+    const navContainer = document.getElementById('parameter-nav');
+    container.innerHTML = "";
+    if (navContainer) navContainer.innerHTML = "";
+    
+    if (!state.parameterData || typeof state.parameterData !== "object") {
+        container.innerHTML = '<div class="parameter-empty"><p>No parameters available for configuration.</p></div>';
+        return;
+    }
+    
     const entries = flattenParameters(state.parameterData);
-    if (!entries.length) { container.innerHTML = '<div class="col-12"><p class="text-muted text-center">The current Pipeline has no editable parameters.</p></div>'; return; }
+    if (!entries.length) {
+        container.innerHTML = '<div class="parameter-empty"><p>The current Pipeline has no editable parameters.</p></div>';
+        return;
+    }
+    
+    // 按 server 分组参数
+    const grouped = {};
     entries.forEach(e => {
-        const grp = document.createElement("div"); grp.className = "form-group-styled";
-        const isComplex = e.type === "array" || e.type === "object";
-        if (isComplex) grp.classList.add("full-width");
-        const label = document.createElement("label"); label.textContent = e.path;
-        let ctrl;
-        if (isComplex) { ctrl = document.createElement("textarea"); ctrl.rows = 4; ctrl.value = JSON.stringify(e.value, null, 2); }
-        else { ctrl = document.createElement("input"); ctrl.type = "text"; ctrl.value = String(e.value ?? ""); }
-        ctrl.className = "form-control code-font";
-        ctrl.onchange = (ev) => {
-            let val = ev.target.value;
-            if (e.type === "number") val = Number(val); if (e.type === "boolean") val = val.toLowerCase() === "true";
-            try { if (isComplex) val = JSON.parse(val); } catch (err) {}
-            e.value = val; setNestedValue(state.parameterData, e.path, val); state.parametersReady = false; updateActionButtons();
+        const parts = e.path.split('.');
+        const serverName = parts[0].toUpperCase();
+        if (!grouped[serverName]) grouped[serverName] = [];
+        grouped[serverName].push({
+            ...e,
+            displayPath: parts.slice(1).join('.') || parts[0], // 去掉 server 前缀
+            fullPath: e.path
+        });
+    });
+    
+    const serverNames = Object.keys(grouped).sort();
+    
+    // 渲染左侧导航
+    if (navContainer) {
+        serverNames.forEach((serverName, idx) => {
+            const navItem = document.createElement('button');
+            navItem.className = 'parameter-nav-item';
+            navItem.dataset.server = serverName;
+            navItem.innerHTML = `
+                <span class="nav-item-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
+                <span class="nav-item-name">${serverName}</span>
+                <span class="nav-item-count">${grouped[serverName].length}</span>
+            `;
+            navItem.onclick = () => {
+                // 滚动到对应 section
+                const section = document.getElementById(`param-section-${serverName}`);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // 展开该 section
+                    section.classList.add('expanded');
+                }
+                // 高亮当前导航
+                document.querySelectorAll('.parameter-nav-item').forEach(n => n.classList.remove('active'));
+                navItem.classList.add('active');
+            };
+            navContainer.appendChild(navItem);
+        });
+    }
+    
+    // 渲染右侧参数区
+    serverNames.forEach((serverName, idx) => {
+        const section = document.createElement('div');
+        section.className = 'parameter-section expanded'; // 默认展开
+        section.id = `param-section-${serverName}`;
+        
+        // Section Header (可折叠)
+        const header = document.createElement('div');
+        header.className = 'parameter-section-header';
+        header.innerHTML = `
+            <div class="section-header-left">
+                <svg class="section-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span class="section-title">${serverName}</span>
+                <span class="section-badge">${grouped[serverName].length} parameters</span>
+            </div>
+        `;
+        header.onclick = () => {
+            section.classList.toggle('expanded');
         };
-        grp.append(label, ctrl); container.appendChild(grp);
+        
+        // Section Content
+        const content = document.createElement('div');
+        content.className = 'parameter-section-content';
+        
+        const grid = document.createElement('div');
+        grid.className = 'parameter-grid';
+        
+        grouped[serverName].forEach(e => {
+            const grp = document.createElement('div');
+            grp.className = 'parameter-field';
+            const isComplex = e.type === "array" || e.type === "object";
+            if (isComplex) grp.classList.add('full-width');
+            
+            const label = document.createElement('label');
+            label.className = 'parameter-label';
+            label.textContent = e.displayPath;
+            label.title = e.fullPath; // 完整路径作为 tooltip
+            
+            let ctrl;
+            if (isComplex) {
+                ctrl = document.createElement("textarea");
+                ctrl.rows = 4;
+                ctrl.value = JSON.stringify(e.value, null, 2);
+            } else {
+                ctrl = document.createElement("input");
+                ctrl.type = "text";
+                ctrl.value = String(e.value ?? "");
+            }
+            ctrl.className = "parameter-input";
+            ctrl.onchange = (ev) => {
+                let val = ev.target.value;
+                if (e.type === "number") val = Number(val);
+                if (e.type === "boolean") val = val.toLowerCase() === "true";
+                try { if (isComplex) val = JSON.parse(val); } catch (err) {}
+                e.value = val;
+                setNestedValue(state.parameterData, e.fullPath, val);
+                state.parametersReady = false;
+                updateActionButtons();
+            };
+            
+            grp.append(label, ctrl);
+            grid.appendChild(grp);
+        });
+        
+        content.appendChild(grid);
+        section.append(header, content);
+        container.appendChild(section);
     });
 }
 async function showParameterPanel(force = false) {
@@ -3222,7 +4107,17 @@ async function refreshTools() {
 }
 
 function bindEvents() {
-    els.pipelineForm.addEventListener("submit", handleSubmit);
+    // Save 按钮点击事件（兼容 form submit 和 button click）
+    if (els.pipelineForm) {
+        els.pipelineForm.addEventListener("submit", handleSubmit);
+    }
+    if (els.savePipeline) {
+        els.savePipeline.addEventListener("click", (e) => {
+            e.preventDefault();
+            handleSubmit(e);
+        });
+    }
+    
     els.clearSteps.addEventListener("click", async () => { 
         const confirmed = await showConfirm("Clear all steps?", {
             title: "Clear Steps",
@@ -3233,8 +4128,11 @@ function bindEvents() {
     });
     els.buildPipeline.addEventListener("click", buildSelectedPipeline);
     els.deletePipeline.addEventListener("click", deleteSelectedPipeline);
+    
+    // Pipeline 名称输入框失去焦点时触发重命名
+    els.name.addEventListener("blur", handlePipelineNameBlur);
+    
     if (els.newPipelineBtn) els.newPipelineBtn.addEventListener("click", createNewPipeline); 
-    if (els.shutdownApp) els.shutdownApp.onclick = requestShutdown;
     
     if (els.parameterSave) els.parameterSave.onclick = saveParameterForm;
     if (els.parameterBack) els.parameterBack.onclick = () => setMode(Modes.BUILDER);
@@ -3282,9 +4180,13 @@ function bindEvents() {
             
             setChatRunning(false);
             
-            // [关键修复] 不要直接 setMode，而是调用 showParameterPanel()
-            // 这个函数会负责：检查数据 -> 生成 HTML 表单 -> 切换视图
-            await showParameterPanel(); 
+            // 返回到Builder界面（Pipeline模式）
+            setMode(Modes.BUILDER);
+            updateUrlForView(Modes.BUILDER);
+            // 确保显示Pipeline面板
+            if (typeof switchWorkspaceMode === 'function') {
+                switchWorkspaceMode('pipeline');
+            }
         };
     }
     
@@ -3292,9 +4194,23 @@ function bindEvents() {
     if (els.chatSend) els.chatSend.onclick = handleChatSubmit;
     
     // Support Shift+Enter for newline, Enter for submit
+    // [修复] 添加 IME 输入法组合状态检测，防止中文输入时误触发发送
     if (els.chatInput) {
+        let isComposing = false; // 跟踪是否正在进行 IME 组合输入
+        
+        // 监听 IME 组合开始事件（拼音输入开始）
+        els.chatInput.addEventListener('compositionstart', function() {
+            isComposing = true;
+        });
+        
+        // 监听 IME 组合结束事件（拼音输入结束，已选择汉字或确认拼音）
+        els.chatInput.addEventListener('compositionend', function() {
+            isComposing = false;
+        });
+        
         els.chatInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
+            // 如果正在进行 IME 组合输入，不触发发送
+            if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
                 e.preventDefault();
                 handleChatSubmit(e);
             }
@@ -3319,7 +4235,12 @@ function bindEvents() {
         try { setStepByPath(state.editingPath, parseStepInput(els.stepEditorValue.value)); closeStepEditor(); renderSteps(); updatePipelinePreview(); } catch(e){ log(e.message); }
     };
     document.getElementById("step-editor-cancel").onclick = closeStepEditor;
-    els.refreshPipelines.onclick = refreshPipelines;
+    els.refreshPipelines.onclick = () => {
+        // 先同步YAML编辑器内容到画布
+        syncYamlToCanvas();
+        // 然后刷新pipeline列表
+        refreshPipelines();
+    };
     els.name.oninput = updatePipelinePreview;
     
     els.nodePickerTabs.forEach(t => t.onclick = () => setNodePickerMode(t.dataset.nodeMode));
@@ -3331,35 +4252,140 @@ function bindEvents() {
     if (els.nodePickerConfirm) els.nodePickerConfirm.onclick = handleNodePickerConfirm;
 }
 
-// [新增] 更新知识库选择器的显示文本
+// [新增] 知识库下拉菜单控制函数
+window.toggleKbDropdown = function() {
+    const wrapper = document.querySelector('.kb-dropdown-wrapper');
+    if (wrapper) {
+        wrapper.classList.toggle('open');
+    }
+};
+
+// 点击其他地方关闭下拉菜单
+document.addEventListener('click', function(e) {
+    const wrapper = document.querySelector('.kb-dropdown-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+        wrapper.classList.remove('open');
+    }
+});
+
+// 选择知识库选项
+window.selectKbOption = function(itemEl) {
+    const value = itemEl.dataset.value;
+    const menu = document.getElementById('kb-dropdown-menu');
+    const trigger = document.getElementById('kb-dropdown-trigger');
+    const label = document.getElementById('kb-label-text');
+    const hiddenSelect = document.getElementById('chat-collection-select');
+    
+    // 更新所有选项的选中状态
+    menu.querySelectorAll('.kb-dropdown-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    itemEl.classList.add('selected');
+    
+    // 更新隐藏的 select 值
+    if (hiddenSelect) {
+        hiddenSelect.value = value;
+    }
+    
+    // 更新触发器显示
+    if (value) {
+        const cleanName = itemEl.querySelector('.kb-item-text').textContent.split('(')[0].trim();
+        label.textContent = cleanName;
+        trigger.classList.add('active');
+    } else {
+        label.textContent = "Knowledge Base";
+        trigger.classList.remove('active');
+    }
+    
+    // 关闭下拉菜单
+    document.querySelector('.kb-dropdown-wrapper').classList.remove('open');
+};
+
+// 渲染知识库下拉选项
+function renderKbDropdownOptions(collections) {
+    const menu = document.getElementById('kb-dropdown-menu');
+    const hiddenSelect = document.getElementById('chat-collection-select');
+    if (!menu) return;
+    
+    const currentVal = hiddenSelect ? hiddenSelect.value : '';
+    
+    // 清空并重建选项
+    menu.innerHTML = `
+        <div class="kb-dropdown-item ${!currentVal ? 'selected' : ''}" data-value="" onclick="selectKbOption(this)">
+            <span class="kb-item-check">✓</span>
+            <span class="kb-item-text">No Knowledge Base</span>
+        </div>
+    `;
+    
+    collections.forEach(c => {
+        const isSelected = c.name === currentVal;
+        const item = document.createElement('div');
+        item.className = `kb-dropdown-item ${isSelected ? 'selected' : ''}`;
+        item.dataset.value = c.name;
+        item.onclick = function() { selectKbOption(this); };
+        item.innerHTML = `
+            <span class="kb-item-check">✓</span>
+            <span class="kb-item-text">${escapeHtmlForDropdown(c.name)}</span>
+            <span class="kb-item-count">${c.count || 0}</span>
+        `;
+        menu.appendChild(item);
+    });
+    
+    // 同步隐藏 select 的选项
+    if (hiddenSelect) {
+        hiddenSelect.innerHTML = '<option value="">No Knowledge Base</option>';
+        collections.forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c.name;
+            opt.textContent = `${c.name} (${c.count || 0})`;
+            if (c.name === currentVal) opt.selected = true;
+            hiddenSelect.appendChild(opt);
+        });
+    }
+    
+    // 更新触发器显示状态
+    const trigger = document.getElementById('kb-dropdown-trigger');
+    const label = document.getElementById('kb-label-text');
+    if (currentVal && trigger) {
+        const selectedCollection = collections.find(c => c.name === currentVal);
+        if (selectedCollection) {
+            label.textContent = selectedCollection.name;
+            trigger.classList.add('active');
+        } else {
+            label.textContent = "Knowledge Base";
+            trigger.classList.remove('active');
+        }
+    }
+}
+
+// HTML 转义辅助函数（用于下拉菜单）
+function escapeHtmlForDropdown(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// [兼容] 更新知识库选择器的显示文本 (兼容旧代码)
 window.updateKbLabel = function(selectEl) {
     const label = document.getElementById('kb-label-text');
-    const visualBtn = document.querySelector('.kb-visual-btn');
-    if (!label || !visualBtn) return;
+    const trigger = document.getElementById('kb-dropdown-trigger');
+    if (!label || !trigger) return;
     
-    // 获取选中的文本
-    const selectedText = selectEl.options[selectEl.selectedIndex].text;
     const selectedVal = selectEl.value;
 
     if (!selectedVal) {
-        // 没选时，显示默认
         label.textContent = "Knowledge Base";
-        label.style.color = ""; 
-        visualBtn.style.background = ""; // 恢复默认背景
+        trigger.classList.remove('active');
     } else {
-        // 选中时，显示具体名字
-        // 我们可以只显示名字部分，去掉括号里的数量，让它更像 Tag
-        // 例如 "wiki_v1 (50)" -> "wiki_v1"
+        const selectedText = selectEl.options[selectEl.selectedIndex].text;
         const cleanName = selectedText.split('(')[0].trim();
         label.textContent = cleanName;
-        
-        // 可选：选中后给个高亮背景，表示“已激活”
-        visualBtn.style.background = "#e0e7ff"; 
-        label.style.color = "#2563eb";
+        trigger.classList.add('active');
     }
 };
 
 async function bootstrap() {
+  const initialModeFromUrl = getInitialModeFromUrl();
   // 0. 首先获取应用模式配置
   try {
       const modeConfig = await fetchJSON('/api/config/mode');
@@ -3369,18 +4395,34 @@ async function bootstrap() {
       state.adminMode = true;
   }
   
-  // 根据模式决定初始视图
+  // 根据模式和 URL 决定初始视图
+  let initialMode;
   if (state.adminMode) {
-      setMode(Modes.BUILDER);
+      initialMode = initialModeFromUrl || Modes.BUILDER;
   } else {
+      initialMode = Modes.CHAT;
+  }
+  
+  setMode(initialMode);
+  
+  if (!state.adminMode && initialMode === Modes.CHAT) {
       // Chat-only 模式：直接进入 Chat 视图
-      setMode(Modes.CHAT);
       applyChatOnlyMode();
   }
+  
+  // 同步地址栏，保证直接访问 /chat 可进入聊天界面
+  updateUrlForView(initialMode, true);
+  const startInChat = initialMode === Modes.CHAT;
   
   resetContextStack(); 
   renderSteps(); 
   updatePipelinePreview(); 
+  
+  // 初始化 YAML 编辑器、分隔条拖拽和 Console
+  initYamlEditor();
+  initBuilderResizer();
+  initConsole();
+  
   bindEvents(); 
   updateActionButtons();
   
@@ -3432,7 +4474,7 @@ async function bootstrap() {
   }
   
   // Chat-only 模式下，初始化 Chat 界面
-  if (!state.adminMode) {
+  if (startInChat) {
       await initChatOnlyView();
   }
 }
@@ -4099,4 +5141,1594 @@ window.addEventListener('beforeunload', function(e) {
     }
 });
 
+// =========================================
+// Workspace Mode Switching
+// =========================================
+
+const workspaceState = {
+    currentMode: 'pipeline',  // 'pipeline' | 'parameters' | 'prompts'
+    prompts: {
+        files: [],
+        currentFile: null,
+        modified: false,
+        originalContent: ''
+    }
+};
+
+function initWorkspace() {
+    // 绑定功能切换按钮
+    document.querySelectorAll('.workspace-nav-btn[data-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            switchWorkspaceMode(mode);
+        });
+    });
+    
+    // Parameters 面板事件
+    const paramsSaveBtn = document.getElementById('params-save-btn');
+    if (paramsSaveBtn) {
+        paramsSaveBtn.addEventListener('click', () => {
+            persistParameterData();
+            log("Parameters saved.");
+        });
+    }
+    
+    const paramsRefreshBtn = document.getElementById('params-refresh-btn');
+    if (paramsRefreshBtn) {
+        paramsRefreshBtn.addEventListener('click', async () => {
+            if (state.selectedPipeline && state.isBuilt) {
+                try {
+                    state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
+                    renderParameterFormInline();
+                    log("Parameters reloaded.");
+                } catch (e) {
+                    log("Failed to reload parameters: " + e.message);
+                }
+            }
+        });
+    }
+    
+    // Prompts 面板事件
+    initPromptEditor();
+}
+
+function switchWorkspaceMode(mode) {
+    workspaceState.currentMode = mode;
+    
+    // 更新导航按钮状态
+    document.querySelectorAll('.workspace-nav-btn[data-mode]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+    
+    // 切换面板显示
+    document.querySelectorAll('.workspace-panel').forEach(panel => {
+        panel.classList.add('d-none');
+    });
+    
+    const targetPanel = document.getElementById(`panel-${mode}`);
+    if (targetPanel) {
+        targetPanel.classList.remove('d-none');
+    }
+    
+    // 根据模式执行特定操作
+    if (mode === 'parameters') {
+        loadParametersInline();
+    } else if (mode === 'prompts') {
+        loadPromptList();
+    }
+    
+    log(`Switched to ${mode} mode.`);
+}
+
+// =========================================
+// Inline Parameter Form (集成版)
+// =========================================
+
+function loadParametersInline() {
+    const emptyEl = document.getElementById('params-empty');
+    const formEl = document.getElementById('parameter-form');
+    
+    if (!state.selectedPipeline || !state.isBuilt) {
+        if (emptyEl) emptyEl.classList.remove('d-none');
+        if (formEl) formEl.innerHTML = '';
+        return;
+    }
+    
+    // 如果已有数据，直接渲染
+    if (state.parameterData) {
+        if (emptyEl) emptyEl.classList.add('d-none');
+        renderParameterFormInline();
+        return;
+    }
+    
+    // 加载参数数据
+    fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`)
+        .then(data => {
+            state.parameterData = cloneDeep(data);
+            if (emptyEl) emptyEl.classList.add('d-none');
+            renderParameterFormInline();
+        })
+        .catch(e => {
+            if (emptyEl) emptyEl.classList.remove('d-none');
+            log("Failed to load parameters: " + e.message);
+        });
+}
+
+function renderParameterFormInline() {
+    const container = document.getElementById('parameter-form');
+    const navContainer = document.getElementById('parameter-nav');
+    if (!container) return;
+    
+    container.innerHTML = "";
+    if (navContainer) navContainer.innerHTML = "";
+    
+    if (!state.parameterData || typeof state.parameterData !== "object") {
+        container.innerHTML = '<div class="params-empty"><p>No parameters available.</p></div>';
+        return;
+    }
+    
+    const entries = flattenParameters(state.parameterData);
+    if (!entries.length) {
+        container.innerHTML = '<div class="params-empty"><p>No editable parameters.</p></div>';
+        return;
+    }
+    
+    // 按 server 分组参数
+    const grouped = {};
+    entries.forEach(e => {
+        const parts = e.path.split('.');
+        const serverName = parts[0].toUpperCase();
+        if (!grouped[serverName]) grouped[serverName] = [];
+        grouped[serverName].push({
+            ...e,
+            displayPath: parts.slice(1).join('.') || parts[0],
+            fullPath: e.path
+        });
+    });
+    
+    const serverNames = Object.keys(grouped).sort();
+    
+    // 渲染左侧导航
+    if (navContainer) {
+        serverNames.forEach(serverName => {
+            const navItem = document.createElement('button');
+            navItem.className = 'parameter-nav-item';
+            navItem.dataset.server = serverName;
+            navItem.innerHTML = `
+                <span class="nav-item-name">${serverName}</span>
+                <span class="nav-item-count">${grouped[serverName].length}</span>
+            `;
+            navItem.onclick = () => {
+                const section = document.getElementById(`param-section-${serverName}`);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    section.classList.add('expanded');
+                }
+                document.querySelectorAll('.parameter-nav-item').forEach(n => n.classList.remove('active'));
+                navItem.classList.add('active');
+            };
+            navContainer.appendChild(navItem);
+        });
+    }
+    
+    // 渲染参数区
+    serverNames.forEach(serverName => {
+        const section = document.createElement('div');
+        section.className = 'parameter-section expanded';
+        section.id = `param-section-${serverName}`;
+        
+        const header = document.createElement('div');
+        header.className = 'parameter-section-header';
+        header.innerHTML = `
+            <div class="section-header-left">
+                <svg class="section-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span class="section-title">${serverName}</span>
+                <span class="section-badge">${grouped[serverName].length} params</span>
+            </div>
+        `;
+        header.onclick = () => section.classList.toggle('expanded');
+        
+        const content = document.createElement('div');
+        content.className = 'parameter-section-content';
+        
+        const grid = document.createElement('div');
+        grid.className = 'parameter-grid';
+        
+        grouped[serverName].forEach(e => {
+            const grp = document.createElement('div');
+            grp.className = 'parameter-field';
+            const isComplex = e.type === "array" || e.type === "object";
+            if (isComplex) grp.classList.add('full-width');
+            
+            const label = document.createElement('label');
+            label.className = 'parameter-label';
+            label.textContent = e.displayPath;
+            label.title = e.fullPath;
+            
+            let ctrl;
+            if (isComplex) {
+                ctrl = document.createElement("textarea");
+                ctrl.rows = 4;
+                ctrl.value = JSON.stringify(e.value, null, 2);
+            } else {
+                ctrl = document.createElement("input");
+                ctrl.type = "text";
+                ctrl.value = String(e.value ?? "");
+            }
+            ctrl.className = "parameter-input";
+            ctrl.onchange = (ev) => {
+                let val = ev.target.value;
+                if (e.type === "number") val = Number(val);
+                if (e.type === "boolean") val = val.toLowerCase() === "true";
+                try { if (isComplex) val = JSON.parse(val); } catch (err) {}
+                e.value = val;
+                setNestedValue(state.parameterData, e.fullPath, val);
+                state.parametersReady = false;
+                updateActionButtons();
+            };
+            
+            grp.append(label, ctrl);
+            grid.appendChild(grp);
+        });
+        
+        content.appendChild(grid);
+        section.append(header, content);
+        container.appendChild(section);
+    });
+}
+
+// =========================================
+// Prompt Editor
+// =========================================
+
+function initPromptEditor() {
+    const newBtn = document.getElementById('prompt-new-btn');
+    const saveBtn = document.getElementById('prompt-save-btn');
+    const deleteBtn = document.getElementById('prompt-delete-btn');
+    const filenameInput = document.getElementById('prompt-filename');
+    const searchInput = document.getElementById('prompt-search');
+    const editor = document.getElementById('prompt-editor');
+    
+    if (newBtn) {
+        newBtn.addEventListener('click', createNewPrompt);
+    }
+    
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveCurrentPrompt);
+    }
+    
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', deleteCurrentPrompt);
+    }
+    
+    // 文件名输入框 - 失去焦点时触发重命名
+    if (filenameInput) {
+        filenameInput.addEventListener('blur', handlePromptFilenameBlur);
+        // 按Enter键也触发重命名
+        filenameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                filenameInput.blur();
+            }
+        });
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            filterPromptList(e.target.value);
+        });
+    }
+    
+    if (editor) {
+        editor.addEventListener('input', () => {
+            workspaceState.prompts.modified = true;
+            updatePromptUI();
+            updatePromptLineNumbers();
+        });
+        
+        editor.addEventListener('scroll', () => {
+            const lineNumbers = document.getElementById('prompt-line-numbers');
+            if (lineNumbers) {
+                lineNumbers.scrollTop = editor.scrollTop;
+            }
+        });
+        
+        editor.addEventListener('keydown', (e) => {
+            const isSaveShortcut = (e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey);
+            if (isSaveShortcut) {
+                e.preventDefault();
+                if (saveBtn && !saveBtn.disabled) {
+                    saveCurrentPrompt();
+                }
+                return;
+            }
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 2;
+            }
+        });
+    }
+}
+
+async function loadPromptList() {
+    const listEl = document.getElementById('prompt-list');
+    if (!listEl) return;
+    
+    try {
+        const files = await fetchJSON('/api/prompts');
+        workspaceState.prompts.files = files;
+        renderPromptList(files);
+    } catch (e) {
+        log("Failed to load prompts: " + e.message);
+        listEl.innerHTML = '<div class="prompts-empty"><p>Failed to load prompts.</p></div>';
+    }
+}
+
+function renderPromptList(files) {
+    const listEl = document.getElementById('prompt-list');
+    if (!listEl) return;
+    
+    listEl.innerHTML = '';
+    
+    if (!files.length) {
+        listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;">No prompt files found.</div>';
+        return;
+    }
+    
+    files.forEach(file => {
+        const item = document.createElement('div');
+        item.className = 'prompt-item';
+        if (workspaceState.prompts.currentFile === file.path) {
+            item.classList.add('active');
+        }
+        item.innerHTML = `
+            <span class="prompt-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            </span>
+            <span class="prompt-item-name" title="${file.path}">${file.name}</span>
+        `;
+        item.onclick = () => selectPromptFile(file);
+        listEl.appendChild(item);
+    });
+}
+
+function filterPromptList(query) {
+    const filtered = workspaceState.prompts.files.filter(f => 
+        f.name.toLowerCase().includes(query.toLowerCase())
+    );
+    renderPromptList(filtered);
+}
+
+async function selectPromptFile(file) {
+    // 检查是否有未保存的更改
+    if (workspaceState.prompts.modified) {
+        const confirmed = await showConfirm("You have unsaved changes. Discard them?", {
+            title: "Unsaved Changes",
+            type: "warning",
+            confirmText: "Discard"
+        });
+        if (!confirmed) return;
+    }
+    
+    try {
+        const content = await fetchJSON(`/api/prompts/${encodeURIComponent(file.path)}`);
+        workspaceState.prompts.currentFile = file.path;
+        workspaceState.prompts.originalContent = content.content;
+        workspaceState.prompts.modified = false;
+        
+        const editor = document.getElementById('prompt-editor');
+        if (editor) {
+            editor.value = content.content;
+        }
+        
+        updatePromptUI();
+        updatePromptLineNumbers();
+        renderPromptList(workspaceState.prompts.files);
+        
+        // 显示编辑器
+        document.getElementById('prompt-empty')?.classList.add('d-none');
+        document.getElementById('prompt-editor-wrapper')?.classList.remove('d-none');
+        
+    } catch (e) {
+        log("Failed to load prompt: " + e.message);
+    }
+}
+
+async function createNewPrompt() {
+    const name = await showPrompt("Enter the prompt file name:", {
+        title: "New Prompt",
+        placeholder: "e.g., my_prompt.jinja2"
+    });
+    
+    if (!name) return;
+    
+    // 确保文件名有正确扩展名
+    let filename = name;
+    if (!filename.endsWith('.jinja2') && !filename.endsWith('.jinja')) {
+        filename += '.jinja2';
+    }
+    
+    try {
+        await fetchJSON('/api/prompts', {
+            method: 'POST',
+            body: JSON.stringify({ name: filename, content: '# New Prompt Template\n\n' })
+        });
+        
+        log(`Created prompt: ${filename}`);
+        await loadPromptList();
+        
+        // 选中新创建的文件
+        const newFile = workspaceState.prompts.files.find(f => f.name === filename);
+        if (newFile) {
+            selectPromptFile(newFile);
+        }
+    } catch (e) {
+        log("Failed to create prompt: " + e.message);
+    }
+}
+
+async function saveCurrentPrompt() {
+    if (!workspaceState.prompts.currentFile) return;
+    
+    const editor = document.getElementById('prompt-editor');
+    if (!editor) return;
+    
+    try {
+        await fetchJSON(`/api/prompts/${encodeURIComponent(workspaceState.prompts.currentFile)}`, {
+            method: 'PUT',
+            body: JSON.stringify({ content: editor.value })
+        });
+        
+        workspaceState.prompts.originalContent = editor.value;
+        workspaceState.prompts.modified = false;
+        updatePromptUI();
+        log(`Saved: ${workspaceState.prompts.currentFile}`);
+    } catch (e) {
+        log("Failed to save prompt: " + e.message);
+    }
+}
+
+async function deleteCurrentPrompt() {
+    if (!workspaceState.prompts.currentFile) return;
+    
+    const confirmed = await showConfirm(`Delete "${workspaceState.prompts.currentFile}"?`, {
+        title: "Delete Prompt",
+        type: "warning",
+        confirmText: "Delete",
+        danger: true
+    });
+    
+    if (!confirmed) return;
+    
+    try {
+        await fetchJSON(`/api/prompts/${encodeURIComponent(workspaceState.prompts.currentFile)}`, {
+            method: 'DELETE'
+        });
+        
+        log(`Deleted: ${workspaceState.prompts.currentFile}`);
+        workspaceState.prompts.currentFile = null;
+        workspaceState.prompts.modified = false;
+        
+        // 隐藏编辑器
+        document.getElementById('prompt-empty')?.classList.remove('d-none');
+        document.getElementById('prompt-editor-wrapper')?.classList.add('d-none');
+        
+        updatePromptUI();
+        await loadPromptList();
+    } catch (e) {
+        log("Failed to delete prompt: " + e.message);
+    }
+}
+
+// Prompt 文件名输入框失去焦点时触发重命名
+async function handlePromptFilenameBlur() {
+    const filenameInput = document.getElementById('prompt-filename');
+    if (!filenameInput || !workspaceState.prompts.currentFile) return;
+    
+    let newName = filenameInput.value.trim();
+    const currentName = workspaceState.prompts.currentFile.split('/').pop();
+    
+    // 如果名称未变，不处理
+    if (!newName || newName === currentName) {
+        filenameInput.value = currentName;
+        return;
+    }
+    
+    // 确保有正确的扩展名
+    if (!newName.endsWith('.jinja2') && !newName.endsWith('.jinja')) {
+        newName += '.jinja';
+        filenameInput.value = newName;
+    }
+    
+    try {
+        await fetchJSON(`/api/prompts/${encodeURIComponent(workspaceState.prompts.currentFile)}/rename`, {
+            method: 'POST',
+            body: JSON.stringify({ new_name: newName })
+        });
+        
+        log(`Renamed to: ${newName}`);
+        workspaceState.prompts.currentFile = newName;
+        
+        await loadPromptList();
+        
+        // 重新选中文件
+        const newFile = workspaceState.prompts.files.find(f => f.name === newName);
+        if (newFile) {
+            workspaceState.prompts.currentFile = newFile.path;
+            renderPromptList(workspaceState.prompts.files);
+        }
+    } catch (e) {
+        log("Failed to rename prompt: " + e.message);
+        filenameInput.value = currentName; // 恢复原名
+    }
+}
+
+function updatePromptUI() {
+    const filenameEl = document.getElementById('prompt-filename');
+    const modifiedEl = document.getElementById('prompt-modified');
+    const saveBtn = document.getElementById('prompt-save-btn');
+    const deleteBtn = document.getElementById('prompt-delete-btn');
+    
+    if (filenameEl) {
+        if (workspaceState.prompts.currentFile) {
+            filenameEl.value = workspaceState.prompts.currentFile.split('/').pop();
+            filenameEl.readOnly = false;
+        } else {
+            filenameEl.value = '';
+            filenameEl.placeholder = 'No file selected';
+            filenameEl.readOnly = true;
+        }
+    }
+    
+    if (modifiedEl) {
+        modifiedEl.classList.toggle('d-none', !workspaceState.prompts.modified);
+    }
+    
+    if (saveBtn) {
+        saveBtn.disabled = !workspaceState.prompts.currentFile;
+    }
+    
+    if (deleteBtn) {
+        deleteBtn.disabled = !workspaceState.prompts.currentFile;
+    }
+}
+
+function updatePromptLineNumbers() {
+    const editor = document.getElementById('prompt-editor');
+    const lineNumbers = document.getElementById('prompt-line-numbers');
+    if (!editor || !lineNumbers) return;
+    
+    const lines = editor.value.split('\n').length;
+    lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => 
+        `<div class="line-number">${i + 1}</div>`
+    ).join('');
+}
+
 bootstrap();
+
+// 初始化工作区
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initWorkspace, 100);
+    setTimeout(initAIAssistant, 200);
+});
+
+// =========================================
+// AI Assistant
+// =========================================
+
+const AI_HISTORY_KEY = 'ultrarag_ai_history';
+
+const aiState = {
+    isOpen: false,
+    isConnected: false,
+    isLoading: false,
+    controller: null,
+    isComposing: false,
+    view: 'home',
+    sessions: [],
+    currentSessionId: null,
+    settings: {
+        provider: 'openai',
+        baseUrl: 'https://api.openai.com/v1',
+        apiKey: '',
+        model: 'gpt-4'
+    },
+    messages: [],
+    conversationHistory: []
+};
+
+const AI_WELCOME_HTML = `
+    <div class="ai-welcome">
+        <div class="ai-welcome-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5"/><circle cx="16.5" cy="14.5" r="1.5"/></svg>
+        </div>
+        <h4>UltraRAG AI Assistant</h4>
+        <p>I can help you build pipelines, configure parameters, and edit prompts.</p>
+        <p class="ai-welcome-hint">Click the settings icon to configure your API connection.</p>
+    </div>
+`;
+
+function initAIAssistant() {
+    const trigger = document.getElementById('ai-assistant-trigger');
+    const panel = document.getElementById('ai-assistant-panel');
+    const closeBtn = document.getElementById('ai-close-btn');
+    const settingsBtn = document.getElementById('ai-settings-btn');
+    const settingsPanel = document.getElementById('ai-settings-panel');
+    const settingsClose = document.getElementById('ai-settings-close');
+    const clearBtn = document.getElementById('ai-clear-btn');
+    const resizer = document.getElementById('ai-panel-resizer');
+    const input = document.getElementById('ai-input');
+    const sendBtn = document.getElementById('ai-send-btn');
+    
+    if (!trigger || !panel) return;
+    
+    loadAISettings();
+    loadAIConversation();
+    ensureAISession();
+    renderAIConversationFromState();
+    setAIView('home');
+    
+    trigger.addEventListener('click', () => openAIPanel());
+    closeBtn?.addEventListener('click', () => closeAIPanel());
+    document.getElementById('ai-back-btn')?.addEventListener('click', () => enterAIHome());
+    
+    settingsBtn?.addEventListener('click', () => settingsPanel?.classList.add('open'));
+    settingsClose?.addEventListener('click', () => settingsPanel?.classList.remove('open'));
+    
+    clearBtn?.addEventListener('click', () => clearAIChat());
+    document.getElementById('ai-session-new')?.addEventListener('click', () => {
+        handleNewAISessionClick();
+    });
+    document.getElementById('ai-session-delete')?.addEventListener('click', () => {
+        deleteAISession();
+    });
+    
+    initAIPanelResizer(resizer, panel);
+    
+    sendBtn?.addEventListener('click', () => {
+        sendAIMessage();
+    });
+    
+    if (input) {
+        input.addEventListener('compositionstart', () => { aiState.isComposing = true; });
+        input.addEventListener('compositionend', () => { aiState.isComposing = false; });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey && !aiState.isComposing) {
+                e.preventDefault();
+                sendAIMessage();
+            }
+        });
+        input.addEventListener('input', () => {
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+        });
+    }
+    
+    initAISettingsPanel();
+}
+
+function updateAIPanelOffset(panel) {
+    if (!panel) return;
+    const width = panel.getBoundingClientRect().width || parseInt(getComputedStyle(panel).width, 10) || 380;
+    document.documentElement.style.setProperty('--ai-panel-width', `${width}px`);
+    document.body.classList.add('ai-panel-open');
+}
+
+function openAIPanel() {
+    const trigger = document.getElementById('ai-assistant-trigger');
+    const panel = document.getElementById('ai-assistant-panel');
+    
+    trigger?.classList.add('hidden');
+    panel?.classList.add('open');
+    aiState.isOpen = true;
+    setAIView('home');
+    updateAIPanelOffset(panel);
+    
+    setTimeout(() => {
+        if (aiState.view === 'chat') {
+            document.getElementById('ai-input')?.focus();
+        }
+    }, 100);
+}
+
+function closeAIPanel() {
+    const trigger = document.getElementById('ai-assistant-trigger');
+    const panel = document.getElementById('ai-assistant-panel');
+    
+    trigger?.classList.remove('hidden');
+    panel?.classList.remove('open');
+    document.body.classList.remove('ai-panel-open');
+    aiState.isOpen = false;
+}
+
+function initAIPanelResizer(resizer, panel) {
+    if (!resizer || !panel) return;
+    
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+    
+    resizer.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = panel.offsetWidth;
+        resizer.classList.add('dragging');
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.userSelect = 'none';
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        
+        const diff = startX - e.clientX;
+        const newWidth = Math.min(Math.max(startWidth + diff, 300), 600);
+        panel.style.width = newWidth + 'px';
+        updateAIPanelOffset(panel);
+    });
+    
+    document.addEventListener('mouseup', () => {
+        if (isResizing) {
+            isResizing = false;
+            resizer.classList.remove('dragging');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+}
+
+function initAISettingsPanel() {
+    const providerSelect = document.getElementById('ai-provider');
+    const baseUrlInput = document.getElementById('ai-base-url');
+    const apiKeyInput = document.getElementById('ai-api-key');
+    const modelInput = document.getElementById('ai-model');
+    const toggleKeyBtn = document.getElementById('ai-toggle-key');
+    const testBtn = document.getElementById('ai-test-connection');
+    const saveBtn = document.getElementById('ai-save-settings');
+    
+    // 填充当前设置
+    if (providerSelect) providerSelect.value = aiState.settings.provider;
+    if (baseUrlInput) baseUrlInput.value = aiState.settings.baseUrl;
+    if (apiKeyInput) apiKeyInput.value = aiState.settings.apiKey;
+    if (modelInput) modelInput.value = aiState.settings.model;
+    
+    // Provider 变化时更新 baseUrl
+    providerSelect?.addEventListener('change', (e) => {
+        const provider = e.target.value;
+        const defaultUrls = {
+            openai: 'https://api.openai.com/v1',
+            azure: 'https://YOUR_RESOURCE.openai.azure.com',
+            anthropic: 'https://api.anthropic.com/v1',
+            custom: ''
+        };
+        if (baseUrlInput && defaultUrls[provider]) {
+            baseUrlInput.value = defaultUrls[provider];
+        }
+    });
+    
+    // 切换密钥可见性
+    toggleKeyBtn?.addEventListener('click', () => {
+        if (apiKeyInput) {
+            apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
+        }
+    });
+    
+    // 测试连接
+    testBtn?.addEventListener('click', async () => {
+        await testAIConnection();
+    });
+    
+    // 保存设置
+    saveBtn?.addEventListener('click', () => {
+        saveAISettings();
+    });
+}
+
+function loadAISettings() {
+    try {
+        const saved = localStorage.getItem('ultrarag_ai_settings');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            aiState.settings = { ...aiState.settings, ...parsed };
+            updateAIConnectionStatus();
+        }
+    } catch (e) {
+        console.error('Failed to load AI settings:', e);
+    }
+}
+
+function saveAISettings() {
+    const providerSelect = document.getElementById('ai-provider');
+    const baseUrlInput = document.getElementById('ai-base-url');
+    const apiKeyInput = document.getElementById('ai-api-key');
+    const modelInput = document.getElementById('ai-model');
+    const statusEl = document.getElementById('ai-settings-status');
+    
+    aiState.settings = {
+        provider: providerSelect?.value || 'openai',
+        baseUrl: baseUrlInput?.value || '',
+        apiKey: apiKeyInput?.value || '',
+        model: modelInput?.value || 'gpt-4'
+    };
+    
+    try {
+        localStorage.setItem('ultrarag_ai_settings', JSON.stringify(aiState.settings));
+        
+        if (statusEl) {
+            statusEl.textContent = 'Settings saved successfully!';
+            statusEl.className = 'ai-settings-status success';
+            setTimeout(() => {
+                statusEl.className = 'ai-settings-status';
+            }, 3000);
+        }
+        
+        updateAIConnectionStatus();
+    } catch (e) {
+        if (statusEl) {
+            statusEl.textContent = 'Failed to save settings: ' + e.message;
+            statusEl.className = 'ai-settings-status error';
+        }
+    }
+}
+
+async function testAIConnection() {
+    const statusEl = document.getElementById('ai-settings-status');
+    const testBtn = document.getElementById('ai-test-connection');
+    
+    if (!aiState.settings.apiKey) {
+        if (statusEl) {
+            statusEl.textContent = 'Please enter an API key';
+            statusEl.className = 'ai-settings-status error';
+        }
+        return;
+    }
+    
+    if (testBtn) testBtn.disabled = true;
+    if (statusEl) {
+        statusEl.textContent = 'Testing connection...';
+        statusEl.className = 'ai-settings-status';
+        statusEl.style.display = 'block';
+    }
+    
+    try {
+        const response = await fetch('/api/ai/test', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(aiState.settings)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            aiState.isConnected = true;
+            if (statusEl) {
+                statusEl.textContent = 'Connection successful! Model: ' + (result.model || aiState.settings.model);
+                statusEl.className = 'ai-settings-status success';
+            }
+        } else {
+            aiState.isConnected = false;
+            if (statusEl) {
+                statusEl.textContent = 'Connection failed: ' + (result.error || 'Unknown error');
+                statusEl.className = 'ai-settings-status error';
+            }
+        }
+        
+        updateAIConnectionStatus();
+    } catch (e) {
+        aiState.isConnected = false;
+        if (statusEl) {
+            statusEl.textContent = 'Connection failed: ' + e.message;
+            statusEl.className = 'ai-settings-status error';
+        }
+    } finally {
+        if (testBtn) testBtn.disabled = false;
+    }
+}
+
+function updateAIConnectionStatus() {
+    const statusEl = document.getElementById('ai-connection-status');
+    if (!statusEl) return;
+    
+    const dot = statusEl.querySelector('.ai-status-dot');
+    const text = statusEl.querySelector('.ai-status-text');
+    
+    if (aiState.settings.apiKey) {
+        if (aiState.isConnected) {
+            dot?.classList.remove('disconnected', 'connecting');
+            dot?.classList.add('connected');
+            if (text) text.textContent = 'Connected to ' + aiState.settings.model;
+        } else {
+            dot?.classList.remove('connected', 'connecting');
+            dot?.classList.add('disconnected');
+            if (text) text.textContent = 'Configured - Click to test';
+        }
+    } else {
+        dot?.classList.remove('connected', 'connecting');
+        dot?.classList.add('disconnected');
+        if (text) text.textContent = 'Not configured';
+    }
+}
+
+function setAIView(view) {
+    const home = document.getElementById('ai-home-view');
+    const chat = document.getElementById('ai-chat-view');
+    const backBtn = document.getElementById('ai-back-btn');
+    aiState.view = view;
+    if (home) {
+        home.classList.toggle('active', view === 'home');
+        home.classList.toggle('d-none', view !== 'home');
+    }
+    if (chat) {
+        chat.classList.toggle('active', view === 'chat');
+        chat.classList.toggle('d-none', view !== 'chat');
+    }
+    if (backBtn) {
+        backBtn.classList.toggle('d-none', view === 'home');
+    }
+}
+
+function enterAIHome() {
+    setAIView('home');
+    renderAISessionList();
+}
+
+function enterAIChat(sessionId) {
+    if (sessionId) {
+        switchAISession(sessionId);
+    } else {
+        setAIView('chat');
+        renderAIConversationFromState();
+    }
+}
+
+function currentSessionHasContent() {
+    const current = aiState.sessions.find(s => s.id === aiState.currentSessionId);
+    return Boolean(current && current.messages && current.messages.length);
+}
+
+function deriveAISessionTitle(messages = []) {
+    const firstUser = messages.find(m => m.role === 'user');
+    if (!firstUser || !firstUser.content) return 'New Session';
+    const text = firstUser.content.trim().replace(/\s+/g, ' ');
+    if (text.length <= 24) return text;
+    return text.slice(0, 24) + '…';
+}
+
+function syncCurrentAISession() {
+    if (!aiState.currentSessionId) return;
+    const idx = aiState.sessions.findIndex(s => s.id === aiState.currentSessionId);
+    if (idx === -1) return;
+    const session = aiState.sessions[idx];
+    session.messages = [...aiState.messages];
+    session.conversationHistory = [...aiState.conversationHistory];
+    session.updatedAt = Date.now();
+    session.title = deriveAISessionTitle(session.messages);
+    aiState.sessions[idx] = session;
+}
+
+function renderAISessionList() {
+    const listEl = document.getElementById('ai-session-list');
+    const deleteBtn = document.getElementById('ai-session-delete');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    if (!aiState.sessions.length) {
+        const empty = document.createElement('div');
+        empty.className = 'ai-session-empty';
+        empty.textContent = 'No sessions yet';
+        listEl.appendChild(empty);
+        if (deleteBtn) deleteBtn.disabled = true;
+        return;
+    }
+    aiState.sessions.forEach(session => {
+        const btn = document.createElement('button');
+        btn.className = 'ai-session-item' + (session.id === aiState.currentSessionId ? ' active' : '');
+        const title = escapeHtml(session.title || 'New Session');
+        const time = session.updatedAt ? new Date(session.updatedAt).toLocaleString() : '';
+        btn.innerHTML = `
+            <div class="ai-session-title-text">${title}</div>
+            <div class="ai-session-meta">${time}</div>
+        `;
+        btn.addEventListener('click', () => {
+            switchAISession(session.id);
+        });
+        listEl.appendChild(btn);
+    });
+    if (deleteBtn) deleteBtn.disabled = aiState.sessions.length === 0;
+}
+
+function applyAISessionState(session, options = {}) {
+    const keepView = options.keepView;
+    aiState.messages = session.messages || [];
+    aiState.conversationHistory = session.conversationHistory || [];
+    aiState.currentSessionId = session.id;
+    aiState.isLoading = false;
+    aiState.controller = null;
+    renderAIConversationFromState();
+    setAIRunning(false);
+    renderAISessionList();
+    if (!keepView) setAIView('chat');
+    persistAIConversation();
+}
+
+function createNewAISession(skipRender = false) {
+    const id = `ai_${Date.now()}`;
+    const session = {
+        id,
+        title: 'New Session',
+        messages: [],
+        conversationHistory: [],
+        updatedAt: Date.now()
+    };
+    aiState.sessions.unshift(session);
+    aiState.currentSessionId = id;
+    if (!skipRender) {
+        applyAISessionState(session);
+    }
+    renderAISessionList();
+}
+
+function handleNewAISessionClick() {
+    const hasContent = currentSessionHasContent();
+    if (!hasContent) {
+        setAIView('chat');
+        renderAIConversationFromState();
+        return;
+    }
+    createNewAISession();
+    setAIView('chat');
+}
+
+function switchAISession(id) {
+    if (aiState.controller) {
+        aiState.controller.abort();
+        aiState.controller = null;
+    }
+    syncCurrentAISession();
+    const session = aiState.sessions.find(s => s.id === id);
+    if (session) {
+        applyAISessionState(session);
+    }
+}
+
+function deleteAISession(id) {
+    const targetId = id || aiState.currentSessionId;
+    if (!targetId) return;
+    aiState.sessions = aiState.sessions.filter(s => s.id !== targetId);
+    if (!aiState.sessions.length) {
+        createNewAISession(true);
+    }
+    const next = aiState.sessions[0];
+    applyAISessionState(next, { keepView: true });
+    setAIView('home');
+}
+
+function ensureAISession() {
+    if (!aiState.sessions.length) {
+        createNewAISession(true);
+    }
+    if (!aiState.currentSessionId) {
+        aiState.currentSessionId = aiState.sessions[0].id;
+    }
+    const current = aiState.sessions.find(s => s.id === aiState.currentSessionId);
+    if (current) {
+        applyAISessionState(current, { keepView: true });
+    } else {
+        createNewAISession(false);
+    }
+}
+
+function persistAIConversation() {
+    try {
+        syncCurrentAISession();
+        localStorage.setItem(AI_HISTORY_KEY, JSON.stringify({
+            sessions: aiState.sessions,
+            currentSessionId: aiState.currentSessionId
+        }));
+    } catch (e) {
+        console.warn('Failed to persist AI conversation', e);
+    }
+}
+
+function loadAIConversation() {
+    let parsed = null;
+    try {
+        const saved = localStorage.getItem(AI_HISTORY_KEY);
+        if (saved) {
+            parsed = JSON.parse(saved);
+            aiState.sessions = parsed.sessions || [];
+            aiState.currentSessionId = parsed.currentSessionId || null;
+        }
+        // 兼容旧数据：只存了一份 messages
+        if ((!aiState.sessions || !aiState.sessions.length) && parsed?.messages) {
+            aiState.sessions = [{
+                id: `ai_${Date.now()}`,
+                title: deriveAISessionTitle(parsed.messages),
+                messages: parsed.messages || [],
+                conversationHistory: parsed.conversationHistory || [],
+                updatedAt: Date.now()
+            }];
+            aiState.currentSessionId = aiState.sessions[0].id;
+        }
+    } catch (e) {
+        console.warn('Failed to load AI conversation', e);
+    }
+}
+
+function renderAIConversationFromState() {
+    const messagesEl = document.getElementById('ai-messages');
+    if (!messagesEl) return;
+    
+    messagesEl.innerHTML = '';
+    if (!aiState.messages.length) {
+        messagesEl.innerHTML = AI_WELCOME_HTML;
+        return;
+    }
+    
+    aiState.messages.forEach(msg => {
+        renderAIMessage(msg.role, msg.content, msg.actions || []);
+    });
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function clearAIChat() {
+    if (aiState.controller) {
+        aiState.controller.abort();
+        aiState.controller = null;
+    }
+    aiState.messages = [];
+    aiState.conversationHistory = [];
+    aiState.controller = null;
+    aiState.isLoading = false;
+    
+    const messagesEl = document.getElementById('ai-messages');
+    if (messagesEl) {
+        messagesEl.innerHTML = AI_WELCOME_HTML;
+    }
+    persistAIConversation();
+    setAIRunning(false);
+    renderAISessionList();
+}
+
+function stopAIResponse() {
+    if (aiState.controller) {
+        aiState.controller.abort();
+    }
+}
+
+function setAIRunning(isRunning) {
+    const sendBtn = document.getElementById('ai-send-btn');
+    const iconWrapper = document.getElementById('ai-send-icon');
+    const input = document.getElementById('ai-input');
+    
+    aiState.isLoading = isRunning;
+    
+    if (isRunning) {
+        if (input) input.disabled = true;
+        if (sendBtn) sendBtn.disabled = false;
+        sendBtn?.classList.add('stop');
+        if (iconWrapper) {
+            iconWrapper.innerHTML = '<span class="icon-stop"></span>';
+        }
+    } else {
+        if (input) input.disabled = false;
+        sendBtn?.classList.remove('stop');
+        if (iconWrapper) {
+            iconWrapper.innerHTML = `
+              <svg class="icon-send" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+            `;
+        }
+    }
+}
+
+function buildAIActionHtml(actions) {
+    let actionsHtml = '';
+    actions.forEach((action, index) => {
+        const typeLabel = {
+            'modify_pipeline': 'Pipeline Modification',
+            'modify_prompt': 'Prompt Modification',
+            'modify_parameter': 'Parameter Change'
+        }[action.type] || 'Modification';
+        
+        const typeIcon = {
+            'modify_pipeline': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
+            'modify_prompt': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>',
+            'modify_parameter': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle></svg>'
+        }[action.type] || '';
+        
+        actionsHtml += `
+            <div class="ai-action-block" data-action-index="${index}">
+                <div class="ai-action-header">
+                    <span class="ai-action-type">${typeIcon} ${typeLabel}</span>
+                    <div class="ai-action-buttons">
+                        <button class="ai-action-btn apply" data-action="apply" data-index="${index}">Apply</button>
+                        <button class="ai-action-btn reject" data-action="reject" data-index="${index}">Reject</button>
+                    </div>
+                </div>
+                <pre class="ai-action-preview">${escapeHtml(action.preview || action.content || '')}</pre>
+            </div>
+        `;
+    });
+    return actionsHtml;
+}
+
+function bindAIActionButtons(container, actions) {
+    if (!container) return;
+    container.querySelectorAll('.ai-action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const actionType = e.target.dataset.action;
+            const actionIndex = parseInt(e.target.dataset.index);
+            const action = actions[actionIndex];
+            
+            if (actionType === 'apply') {
+                applyAIAction(action, e.target.closest('.ai-action-block'));
+            } else {
+                rejectAIAction(e.target.closest('.ai-action-block'));
+            }
+        });
+    });
+}
+
+function renderAIMessage(role, content, actions = []) {
+    const messagesEl = document.getElementById('ai-messages');
+    if (!messagesEl) return null;
+    
+    const welcome = messagesEl.querySelector('.ai-welcome');
+    if (welcome) welcome.remove();
+    
+    const messageEl = document.createElement('div');
+    messageEl.className = `ai-message ${role}`;
+    
+    const avatarSvg = role === 'assistant' 
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>';
+    
+    const renderedContent = renderMarkdown(content || '');
+    const actionsHtml = actions && actions.length ? buildAIActionHtml(actions) : '';
+    
+    messageEl.innerHTML = `
+        <div class="ai-message-avatar">${avatarSvg}</div>
+        <div class="ai-message-content">${renderedContent}${actionsHtml}</div>
+    `;
+    
+    messagesEl.appendChild(messageEl);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    
+    if (actions && actions.length) {
+        bindAIActionButtons(messageEl, actions);
+    }
+    
+    return messageEl;
+}
+
+function addAIMessage(role, content, options = {}) {
+    const { actions = [], addToHistory = false, skipState = false, persist = true } = options;
+    const el = renderAIMessage(role, content, actions);
+    if (skipState) return el;
+    
+    aiState.messages.push({ role, content, actions });
+    if (addToHistory) {
+        aiState.conversationHistory.push({ role, content });
+    }
+    if (persist) persistAIConversation();
+    renderAISessionList();
+    return el;
+}
+
+function addAIMessageWithActions(role, content, actions) {
+    return addAIMessage(role, content, { actions: actions || [], addToHistory: role === 'assistant' });
+}
+
+async function sendAIMessage() {
+    const input = document.getElementById('ai-input');
+    const messagesEl = document.getElementById('ai-messages');
+    
+    if (aiState.isLoading) {
+        stopAIResponse();
+        return;
+    }
+    
+    const message = input?.value?.trim();
+    if (!message) return;
+    
+    if (!aiState.settings.apiKey) {
+        addAIMessage('assistant', 'Please configure your API settings first. Click the settings icon in the top right.');
+        return;
+    }
+    
+    setAIView('chat');
+    
+    if (input) {
+        input.value = '';
+        input.style.height = 'auto';
+    }
+    
+    addAIMessage('user', message, { addToHistory: true });
+    showAIThinking();
+    
+    aiState.controller = new AbortController();
+    aiState.isLoading = true;
+    setAIRunning(true);
+    
+    const controller = aiState.controller;
+    const context = buildAIContext();
+    let accumulated = '';
+    let finalActions = [];
+    let placeholderEl = null;
+    
+    try {
+        const response = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                settings: aiState.settings,
+                messages: aiState.conversationHistory,
+                context: context,
+                stream: true
+            }),
+            signal: controller.signal
+        });
+        
+        hideAIThinking();
+        
+        if (!response.ok) {
+            throw new Error(response.statusText || 'Request failed');
+        }
+        
+        const isStream = (response.headers.get('content-type') || '').includes('text/event-stream');
+        
+        if (!isStream) {
+            const result = await response.json();
+            if (result.error) throw new Error(result.error);
+            accumulated = result.content || result.message || 'No response';
+            finalActions = result.actions || [];
+            renderAIStreamingResult(accumulated, finalActions);
+            aiState.isConnected = true;
+            updateAIConnectionStatus();
+            return;
+        }
+        
+        placeholderEl = renderAIMessage('assistant', '', []);
+        const contentEl = placeholderEl?.querySelector('.ai-message-content');
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const chunks = buffer.split("\n\n");
+            buffer = chunks.pop();
+            
+            for (const chunk of chunks) {
+                const trimmed = chunk.trim();
+                if (!trimmed.startsWith('data:')) continue;
+                const jsonStr = trimmed.slice(5).trim();
+                if (!jsonStr) continue;
+                
+                let data;
+                try { data = JSON.parse(jsonStr); } catch (_) { continue; }
+                
+                if (data.type === 'token') {
+                    if (data.content) {
+                        accumulated += data.content;
+                        if (contentEl) {
+                            contentEl.innerHTML = renderMarkdown(accumulated);
+                            messagesEl.scrollTop = messagesEl.scrollHeight;
+                        }
+                    }
+                } else if (data.type === 'final') {
+                    accumulated = data.content || accumulated;
+                    finalActions = data.actions || [];
+                } else if (data.type === 'error') {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            }
+        }
+        
+        renderAIStreamingResult(accumulated, finalActions, placeholderEl);
+        aiState.isConnected = true;
+        updateAIConnectionStatus();
+    } catch (e) {
+        hideAIThinking();
+        if (e.name === 'AbortError') {
+            if (accumulated) {
+                renderAIStreamingResult(`${accumulated}\n\n*(Stopped)*`, finalActions, placeholderEl);
+            } else if (placeholderEl) {
+                placeholderEl.remove();
+            }
+        } else {
+            addAIMessage('assistant', 'Failed to get response: ' + e.message);
+        }
+    } finally {
+        aiState.isLoading = false;
+        setAIRunning(false);
+        aiState.controller = null;
+    }
+}
+
+function renderAIStreamingResult(content, actions = [], placeholderEl) {
+    const targetEl = placeholderEl || renderAIMessage('assistant', '', []);
+    const contentEl = targetEl?.querySelector('.ai-message-content');
+    const finalText = content || 'No response';
+    
+    if (contentEl) {
+        const actionsHtml = actions && actions.length ? buildAIActionHtml(actions) : '';
+        contentEl.innerHTML = `${renderMarkdown(finalText)}${actionsHtml}`;
+        if (actions && actions.length) {
+            bindAIActionButtons(targetEl, actions);
+        }
+    }
+    
+    aiState.messages.push({ role: 'assistant', content: finalText, actions });
+    aiState.conversationHistory.push({ role: 'assistant', content: finalText });
+    persistAIConversation();
+    renderAISessionList();
+    
+    const messagesEl = document.getElementById('ai-messages');
+    if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function buildAIContext() {
+    const context = {
+        currentMode: workspaceState.currentMode,
+        selectedPipeline: state.selectedPipeline,
+        isBuilt: state.isBuilt
+    };
+    
+    if (workspaceState.currentMode === 'pipeline') {
+        const yamlEditor = document.getElementById('yaml-editor');
+        if (yamlEditor) {
+            context.pipelineYaml = yamlEditor.value;
+        }
+    } else if (workspaceState.currentMode === 'parameters') {
+        context.parameters = state.parameterData;
+    } else if (workspaceState.currentMode === 'prompts') {
+        const promptEditor = document.getElementById('prompt-editor');
+        if (promptEditor && workspaceState.prompts.currentFile) {
+            context.currentPromptFile = workspaceState.prompts.currentFile;
+            context.promptContent = promptEditor.value;
+        }
+    }
+    
+    return context;
+}
+
+function showAIThinking() {
+    const messagesEl = document.getElementById('ai-messages');
+    if (!messagesEl) return;
+    
+    const thinkingEl = document.createElement('div');
+    thinkingEl.className = 'ai-message assistant';
+    thinkingEl.id = 'ai-thinking';
+    thinkingEl.innerHTML = `
+        <div class="ai-message-avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+        </div>
+        <div class="ai-message-content">
+            <div class="ai-thinking">
+                <span class="ai-thinking-dot"></span>
+                <span class="ai-thinking-dot"></span>
+                <span class="ai-thinking-dot"></span>
+            </div>
+        </div>
+    `;
+    
+    messagesEl.appendChild(thinkingEl);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function hideAIThinking() {
+    const thinkingEl = document.getElementById('ai-thinking');
+    if (thinkingEl) thinkingEl.remove();
+}
+
+async function applyAIAction(action, blockEl) {
+    try {
+        let success = false;
+        
+        switch (action.type) {
+            case 'modify_pipeline':
+                success = await applyPipelineModification(action);
+                break;
+            case 'modify_prompt':
+                success = await applyPromptModification(action);
+                break;
+            case 'modify_parameter':
+                success = await applyParameterModification(action);
+                break;
+            default:
+                log('Unknown action type: ' + action.type);
+        }
+        
+        if (success) {
+            blockEl.style.opacity = '0.5';
+            blockEl.querySelector('.ai-action-buttons').innerHTML = '<span style="color: #22c55e; font-size: 0.75rem;">✓ Applied</span>';
+            log('AI modification applied successfully.');
+        }
+    } catch (e) {
+        log('Failed to apply modification: ' + e.message);
+    }
+}
+
+function rejectAIAction(blockEl) {
+    blockEl.style.opacity = '0.5';
+    blockEl.querySelector('.ai-action-buttons').innerHTML = '<span style="color: #94a3b8; font-size: 0.75rem;">Rejected</span>';
+}
+
+async function applyPipelineModification(action) {
+    const yamlEditor = document.getElementById('yaml-editor');
+    if (!yamlEditor) return false;
+    
+    if (action.content) {
+        yamlEditor.value = action.content;
+        updateYamlLineNumbers();
+        syncYamlToCanvasOnly();
+        
+        // 自动保存
+        if (state.selectedPipeline) {
+            await handleSubmit();
+        }
+    }
+    
+    return true;
+}
+
+async function applyPromptModification(action) {
+    const promptEditor = document.getElementById('prompt-editor');
+    if (!promptEditor) return false;
+    
+    // 如果指定了文件名，先切换到该文件
+    if (action.filename && action.filename !== workspaceState.prompts.currentFile) {
+        const file = workspaceState.prompts.files.find(f => f.name === action.filename || f.path === action.filename);
+        if (file) {
+            await selectPromptFile(file);
+        }
+    }
+    
+    if (action.content) {
+        promptEditor.value = action.content;
+        workspaceState.prompts.modified = true;
+        updatePromptLineNumbers();
+        updatePromptUI();
+        
+        // 自动保存
+        await saveCurrentPrompt();
+    }
+    
+    return true;
+}
+
+async function applyParameterModification(action) {
+    if (!action.path || action.value === undefined) return false;
+    
+    setNestedValue(state.parameterData, action.path, action.value);
+    renderParameterFormInline();
+    
+    // 自动保存
+    await persistParameterData();
+    
+    return true;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function renderMarkdown(text) {
+    if (typeof marked !== 'undefined') {
+        try {
+            return marked.parse(text);
+        } catch (e) {
+            return text.replace(/\n/g, '<br>');
+        }
+    }
+    return text.replace(/\n/g, '<br>');
+}

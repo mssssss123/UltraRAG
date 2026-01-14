@@ -98,12 +98,12 @@ class Retriever:
             self.backend = "openai"
             self.index_backend_name = "milvus"
             
-            if "openai" not in self.backend_configs:
-                raise ValidationError("is_demo=True requires 'openai' in backend_configs.")
+            if self.backend == "openai" and "openai" not in self.backend_configs:
+                raise ValidationError("is_demo=True with backend='openai' requires 'openai' in backend_configs.")
             if "milvus" not in self.index_backend_configs:
                 raise ValidationError("is_demo=True requires 'milvus' in index_backend_configs.")
                 
-            app.logger.info("[retriever] Demo mode enforced: Backend=OpenAI, Index=Milvus.")
+            app.logger.info(f"[retriever] Demo mode enforced: Index=Milvus. Backend={self.backend}")
         else:
             self.backend = backend.lower()
             self.index_backend_name = index_backend.lower()
@@ -239,7 +239,8 @@ class Retriever:
 
         should_load_corpus_to_memory = (
             (self.backend == "bm25") or 
-            (self.index_backend_name == "faiss")
+            (self.index_backend_name == "faiss") or
+            (self.index_backend_name == "milvus")
         )
         if should_load_corpus_to_memory and corpus_path and os.path.exists(corpus_path):
             app.logger.info(f"[retriever] Loading corpus to memory for {self.index_backend_name}/BM25...")
@@ -655,21 +656,37 @@ class Retriever:
             embedding = np.load(embedding_path)
             vec_ids = np.arange(embedding.shape[0]).astype(np.int64)
             
-            try:
-                self.index_backend.build_index(
-                    embeddings=embedding,
-                    ids=vec_ids,
-                    overwrite=overwrite,
-                )
-            except ValueError as exc:
-                raise ValidationError(str(exc)) from exc
-            finally:
-                del embedding
-                gc.collect()
-
-            
-            info_msg = f"[{self.index_backend_name}] Indexing success."
-            app.logger.info(info_msg)
+        # Retrieve contents for Milvus backend if needed
+        contents = None
+        if self.index_backend_name == "milvus":
+            if not self.contents:
+                app.logger.warning("[milvus] 'contents' list is empty. Milvus indexing requires text contents.")
+            else:
+                # Truncate content to avoid Milvus length limit (default 60000 chars)
+                max_len = 59000
+                contents = []
+                for c in self.contents:
+                    s_c = str(c)
+                    if len(s_c) > max_len:
+                        contents.append(s_c[:max_len])
+                    else:
+                        contents.append(s_c)
+        
+        try:
+            self.index_backend.build_index(
+                embeddings=embedding,
+                ids=vec_ids,
+                overwrite=overwrite,
+                contents=contents, # Pass contents for Milvus
+            )
+        except ValueError as exc:
+            raise ValidationError(str(exc)) from exc
+        finally:
+            del embedding
+            gc.collect()
+        
+        info_msg = f"[{self.index_backend_name}] Indexing success."
+        app.logger.info(info_msg)
 
     def bm25_index(
         self,
