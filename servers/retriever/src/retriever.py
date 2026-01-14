@@ -652,37 +652,21 @@ class Retriever:
             embedding = np.load(embedding_path)
             vec_ids = np.arange(embedding.shape[0]).astype(np.int64)
             
-        # Retrieve contents for Milvus backend if needed
-        contents = None
-        if self.index_backend_name == "milvus":
-            if not self.contents:
-                app.logger.warning("[milvus] 'contents' list is empty. Milvus indexing requires text contents.")
-            else:
-                # Truncate content to avoid Milvus length limit (default 60000 chars)
-                max_len = 59000
-                contents = []
-                for c in self.contents:
-                    s_c = str(c)
-                    if len(s_c) > max_len:
-                        contents.append(s_c[:max_len])
-                    else:
-                        contents.append(s_c)
-        
-        try:
-            self.index_backend.build_index(
-                embeddings=embedding,
-                ids=vec_ids,
-                overwrite=overwrite,
-                contents=contents, # Pass contents for Milvus
-            )
-        except ValueError as exc:
-            raise ValidationError(str(exc)) from exc
-        finally:
-            del embedding
-            gc.collect()
-        
-        info_msg = f"[{self.index_backend_name}] Indexing success."
-        app.logger.info(info_msg)
+            try:
+                self.index_backend.build_index(
+                    embeddings=embedding,
+                    ids=vec_ids,
+                    overwrite=overwrite,
+                )
+            except ValueError as exc:
+                raise ValidationError(str(exc)) from exc
+            finally:
+                del embedding
+                gc.collect()
+
+            
+            info_msg = f"[{self.index_backend_name}] Indexing success."
+            app.logger.info(info_msg)
 
     async def retriever_search(
         self,

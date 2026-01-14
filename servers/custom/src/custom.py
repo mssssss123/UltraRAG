@@ -666,6 +666,7 @@ def _surveycpm_check_language_consistency(item: Any, user_instruction: str) -> b
         return chinese_count / total_chars > 0.6
     else:
         return chinese_count / total_chars < 0.05
+        return chinese_count / total_chars < 0.05
 
 
 def surveycpm_parse_response(
@@ -1216,7 +1217,6 @@ def surveycpm_update_state(
                 new_extend_time_ls.append(extend_time)
                 new_state_ls.append(state)
             else:
-                
                 new_extend_time_ls.append(extend_time + 1)
                 if extend_time < 12:
                     new_state_ls.append("analyst-extend_plan")
