@@ -94,12 +94,12 @@ class Retriever:
             self.backend = "openai"
             self.index_backend_name = "milvus"
             
-            if "openai" not in self.backend_configs:
-                raise ValidationError("is_demo=True requires 'openai' in backend_configs.")
+            if self.backend == "openai" and "openai" not in self.backend_configs:
+                raise ValidationError("is_demo=True with backend='openai' requires 'openai' in backend_configs.")
             if "milvus" not in self.index_backend_configs:
                 raise ValidationError("is_demo=True requires 'milvus' in index_backend_configs.")
                 
-            app.logger.info("[retriever] Demo mode enforced: Backend=OpenAI, Index=Milvus.")
+            app.logger.info(f"[retriever] Demo mode enforced: Index=Milvus. Backend={self.backend}")
         else:
             self.backend = backend.lower()
             self.index_backend_name = index_backend.lower()
@@ -235,7 +235,8 @@ class Retriever:
 
         should_load_corpus_to_memory = (
             (self.backend == "bm25") or 
-            (self.index_backend_name == "faiss")
+            (self.index_backend_name == "faiss") or
+            (self.index_backend_name == "milvus")
         )
         if should_load_corpus_to_memory and corpus_path and os.path.exists(corpus_path):
             app.logger.info(f"[retriever] Loading corpus to memory for {self.index_backend_name}/BM25...")
@@ -666,38 +667,6 @@ class Retriever:
             
             info_msg = f"[{self.index_backend_name}] Indexing success."
             app.logger.info(info_msg)
-
-    def bm25_index(
-        self,
-        overwrite: bool = False,
-    ):
-        bm25_save_path = self.cfg.get("save_path", None)
-        if bm25_save_path:
-            output_dir = os.path.dirname(bm25_save_path)
-        else:
-            current_file = os.path.abspath(__file__)
-            project_root = os.path.dirname(os.path.dirname(current_file))
-            output_dir = os.path.join(project_root, "output", "index")
-            bm25_save_path = os.path.join(output_dir, "bm25")
-
-        if not overwrite and os.path.exists(bm25_save_path):
-            info_msg = (
-                f"Index file already exists: {bm25_save_path}. "
-                "Set overwrite=True to overwrite."
-            )
-            app.logger.info(info_msg)
-            return
-
-        if overwrite and os.path.exists(bm25_save_path):
-            os.remove(bm25_save_path)
-
-        corpus_tokens = self.tokenizer.tokenize(self.contents, return_as="tuple")
-        self.model.index(corpus_tokens)
-        self.model.save(bm25_save_path, corpus=None)
-        self.tokenizer.save_stopwords(bm25_save_path)
-        self.tokenizer.save_vocab(bm25_save_path)
-        info_msg = "[bm25] Indexing success."
-        app.logger.info(info_msg)
 
     async def retriever_search(
         self,

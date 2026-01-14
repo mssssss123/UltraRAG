@@ -29,14 +29,14 @@ backend_configs:
     lang: en
     save_path: index/bm25
 
-index_backend: faiss # options: faiss, milvus
+index_backend: milvus # options: faiss, milvus
 index_backend_configs:
   faiss:
     index_use_gpu: True
     index_chunk_size: 10000
     index_path: index/index.index
   milvus:
-    uri: index/milvus_demo.db # Milvus Lite local file (or http://localhost:19530 for server)
+    uri: http://g52:19530 # Milvus Lite local file (or http://localhost:19530 for server)
     token: null
     id_field_name: id
     vector_field_name: vector
