@@ -665,13 +665,14 @@ def _surveycpm_check_language_consistency(item: Any, user_instruction: str) -> b
     if is_chinese:
         return chinese_count / total_chars > 0.6
     else:
-        return chinese_count / total_chars < 0.15
+        return chinese_count / total_chars < 0.05
 
 
 def surveycpm_parse_response(
     response_text: str,
     is_json: bool = True,
     valid_actions: List[str] | None = None,
+    hard_mode: bool = True,
     **kwargs
 ) -> Dict[str, Any]:
     extracted_result = {}
@@ -702,7 +703,7 @@ def surveycpm_parse_response(
                 action_is_valid = surveycpm_validate_action(
                     action, 
                     valid_actions=valid_actions, 
-                    hard_mode=True, # You can use hard mode for better performance
+                    hard_mode=hard_mode, # You can use hard mode for better performance
                     **kwargs
                 )
             except:
@@ -715,10 +716,17 @@ def surveycpm_parse_response(
         action_match = re.search(action_pattern, response_text, re.DOTALL | re.MULTILINE)
         if action_match:
             action = action_match.group(1).strip()
-            action_is_valid = True
+            # action_is_valid = True
+            
         else:
             action = ""
         action = {"name": "write", "content": action}
+        action_is_valid = surveycpm_validate_action(
+            action, 
+            valid_actions=valid_actions, 
+            hard_mode=hard_mode, # You can use hard mode for better performance
+            **kwargs
+        )
     
     extracted_result["action"] = action
     extracted_result["parse_success"] = action_is_valid
@@ -896,7 +904,7 @@ def surveycpm_get_position(
         raise ValueError(f"Invalid tag: {tag}")
 
 
-@app.tool(output="instruction_ls->state_ls,cursor_ls,survey_ls,step_ls,extend_time_ls,extend_result_ls,retrieved_info_ls")
+@app.tool(output="instruction_ls->state_ls,cursor_ls,survey_ls,step_ls,extend_time_ls,extend_result_ls,retrieved_info_ls,parsed_ls")
 def surveycpm_state_init(
     instruction_ls: List[str],
 ) -> Dict[str, List]:
@@ -910,25 +918,30 @@ def surveycpm_state_init(
         "extend_time_ls": [0] * n,
         "extend_result_ls": ["<PAD>"] * n,
         "retrieved_info_ls": ["<PAD>"] * n,
+        "parsed_ls": [True] * n,
     }
 
 
-@app.tool(output="response_ls->keywords_ls")
+@app.tool(output="response_ls,hard_mode->keywords_ls,parsed_ls")
 def surveycpm_parse_search_response(
-    response_ls: List[str]
+    response_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
     keywords_ls = []
+    parsed_ls = []
     
     for response in response_ls:
         result = surveycpm_parse_response(
             response_text=response, 
             is_json=True,
-            valid_actions=["search"]
+            valid_actions=["search"],
+            hard_mode=hard_mode
         )
         keywords = result.get("action", {}).get("keywords", [])
         keywords_ls.append(keywords)
+        parsed_ls.append(result.get("parse_success", False))
     
-    return {"keywords_ls": keywords_ls}
+    return {"keywords_ls": keywords_ls, "parsed_ls": parsed_ls}
 
 
 @app.tool(output="ret_psg_ls->retrieved_info_ls")
@@ -971,26 +984,30 @@ def surveycpm_process_passages(
     return {"retrieved_info_ls": retrieved_info_ls}
 
 
-@app.tool(output="response_ls,survey_ls,instruction_ls->survey_ls,cursor_ls")
+@app.tool(output="response_ls,survey_ls,instruction_ls,hard_mode->survey_ls,cursor_ls,parsed_ls")
 def surveycpm_after_init_plan(
     response_ls: List[str],
     survey_ls: List[str], 
     instruction_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
 
     import json
     new_survey_ls = []
     new_cursor_ls = []
+    parsed_ls = []
     
     for response, survey_json, instruction in zip(response_ls, survey_ls, instruction_ls):
         result = surveycpm_parse_response(
             response_text=response, 
             is_json=True,
             user_instruction=instruction,
-            valid_actions=["init-plan"]
+            valid_actions=["init-plan"],
+            hard_mode=hard_mode
         )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
+        parsed_ls.append(parse_success)
         
         if parse_success and action.get("name") == "init-plan":
             new_survey = {
@@ -1006,21 +1023,24 @@ def surveycpm_after_init_plan(
     return {
         "survey_ls": new_survey_ls,
         "cursor_ls": new_cursor_ls,
+        "parsed_ls": parsed_ls,
     }
 
 
-@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,retrieved_info_ls->survey_ls,cursor_ls")
+@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,retrieved_info_ls,hard_mode->survey_ls,cursor_ls,parsed_ls")
 def surveycpm_after_write(
     response_ls: List[str],
     survey_ls: List[str],
     cursor_ls: List[str | None],
     instruction_ls: List[str],
     retrieved_info_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
 
     import json
     new_survey_ls = []
     new_cursor_ls = []
+    parsed_ls = []
     
     for response, survey_json, cursor, instruction, retrieved_info in zip(response_ls, survey_ls, cursor_ls, instruction_ls, retrieved_info_ls):
         survey = json.loads(survey_json) if survey_json and survey_json != "<PAD>" else {}
@@ -1036,10 +1056,12 @@ def surveycpm_after_write(
             cursor=cursor,
             user_instruction=instruction,
             retrieved_bibkeys=retrieved_bibkeys,
-            valid_actions=["write"]
+            valid_actions=["write"],
+            hard_mode=hard_mode
         )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
+        parsed_ls.append(parse_success)
         
         if parse_success and action.get("name") == "write":
             content = action.get("content", "")
@@ -1062,21 +1084,24 @@ def surveycpm_after_write(
     return {
         "survey_ls": new_survey_ls,
         "cursor_ls": new_cursor_ls,
+        "parsed_ls": parsed_ls,
     }
 
 
-@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls->survey_ls,cursor_ls,extend_result_ls")
+@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,hard_mode->survey_ls,cursor_ls,extend_result_ls,parsed_ls")
 def surveycpm_after_extend(
     response_ls: List[str],
     survey_ls: List[str],  # JSON strings
     cursor_ls: List[str | None],
     instruction_ls: List[str],
+    hard_mode: bool = True
 ) -> Dict[str, List]:
 
     import json
     new_survey_ls = []
     new_cursor_ls = []
     new_extend_result_ls = []
+    parsed_ls = []
     
     for response, survey_json, cursor, instruction in zip(response_ls, survey_ls, cursor_ls, instruction_ls):
         survey = json.loads(survey_json) if survey_json and survey_json != "<PAD>" else {}
@@ -1086,11 +1111,13 @@ def surveycpm_after_extend(
             current_survey=survey,
             cursor=cursor,
             user_instruction=instruction,
-            valid_actions=["extend-plan", "nop"]
+            valid_actions=["extend-plan", "nop"],
+            hard_mode=hard_mode
         )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
         action_name = action.get("name", "")
+        parsed_ls.append(parse_success)
         
         if parse_success and action_name == "extend-plan":
             position = action.get("position", "")
@@ -1123,15 +1150,17 @@ def surveycpm_after_extend(
         "survey_ls": new_survey_ls,
         "cursor_ls": new_cursor_ls,
         "extend_result_ls": new_extend_result_ls,
+        "parsed_ls": parsed_ls,
     }
 
-@app.tool(output="state_ls,cursor_ls,extend_time_ls,extend_result_ls,step_ls->state_ls,extend_time_ls,step_ls")
+@app.tool(output="state_ls,cursor_ls,extend_time_ls,extend_result_ls,step_ls,parsed_ls->state_ls,extend_time_ls,step_ls")
 def surveycpm_update_state(
     state_ls: List[str],
     cursor_ls: List[str | None],
     extend_time_ls: List[int],
     extend_result_ls: List[str],
     step_ls: List[int],
+    parsed_ls: List[bool],
     max_step: int = 140,
 ) -> Dict[str, List]:
     """Update state based on cursor and extend results.
@@ -1141,6 +1170,7 @@ def surveycpm_update_state(
     
     State transition logic:
     - If step >= max_step: -> done
+    - If parsed_ls is False: -> keep current state (retry)
     - If current state is 'search':
         - cursor == 'outline': -> analyst-init_plan
         - cursor is section-X: -> write
@@ -1162,8 +1192,12 @@ def surveycpm_update_state(
     new_extend_time_ls = []
     new_step_ls = []
     
-    for i, (state, cursor, extend_time, step) in enumerate(
-        zip(state_ls, cursor_ls, extend_time_ls, step_ls)
+    # if parsed_ls is empty, pad with True
+    if not parsed_ls:
+        parsed_ls = [True] * len(state_ls)
+    
+    for i, (state, cursor, extend_time, step, parsed) in enumerate(
+        zip(state_ls, cursor_ls, extend_time_ls, step_ls, parsed_ls)
     ):
         extend_result = extend_result_ls[i] if i < len(extend_result_ls) else "<PAD>"
         if extend_result == "<PAD>":
@@ -1172,6 +1206,17 @@ def surveycpm_update_state(
         if step >= max_step:
             new_state_ls.append("done")
             new_extend_time_ls.append(extend_time)
+            # still increment step
+            new_step_ls.append(step + 1)
+            continue
+
+        if not parsed:
+            new_state_ls.append(state)
+            if state != "analyst-extend_plan":
+                new_extend_time_ls.append(extend_time)
+            else:
+                new_extend_time_ls.append(extend_time + 1)
+            new_step_ls.append(step + 1)
             continue
         
         if state == "search":
@@ -1288,6 +1333,33 @@ def _surveycpm_clean_content(content: str) -> str:
     
     return content.strip()
 
+def _surveycpm_clean_title(title:str) -> str:
+    # remove any thing like section 1., Section-1., 1., (1), 一、, （一）, 一. ，
+    # and keep the original title
+    title = re.sub(r'(?i)section[-\s]*[\d\.]*\s*', '', title)
+    title = re.sub(r'\d+(?:\.\d+)+[\.、]?\s*', '', title)
+    title = re.sub(r'\d+[.、]\s*', '', title)
+    title = re.sub(r'[\(（]\d+[\)）]\s*', '', title)
+    title = re.sub(r'[一二三四五六七八九十]+(?:\.\d+)+[\.、]?\s*', '', title)
+    title = re.sub(r'[一二三四五六七八九十]+[.、]\s*', '', title)
+    title = re.sub(r'[\(（][一二三四五六七八九十]+[\)）]\s*', '', title)
+    title = re.sub(r'^[一二三四五六七八九十]+\s+', '', title)
+    return title.strip()
+
+
+def _surveycpm_to_one_line_old(string):
+    if isinstance(string, dict):
+        if "content" in string and string["content"]:
+            return _surveycpm_to_one_line_old(string["content"])
+        elif "plan" in string and string["plan"]:
+            return _surveycpm_to_one_line_old(string["plan"])
+        else:
+            return ""
+    if not string:
+        return ""
+    else:
+        return string
+
 
 def _surveycpm_to_one_line_old(string):
     if isinstance(string, dict):
@@ -1329,10 +1401,11 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     for i, section in enumerate(sections):
         title_key = "name" if "name" in section else "title"
         section_title = section.get(title_key, "")
+        section_title = _surveycpm_clean_title(section_title)
         section_num = i + 1
         
-        # lines.append(f"## {section_num} {section_title}")
-        lines.append(f"## **{section_title}** ")
+        lines.append(f"## {section_num} {section_title}")
+        # lines.append(f"## **{section_title}** ")
         lines.append("")
         
         # Section content
@@ -1349,9 +1422,11 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
         if "subsections" in section:
             for j, subsection in enumerate(section["subsections"]):
                 subsection_title = subsection.get(title_key, "")
+                subsection_title = _surveycpm_clean_title(subsection_title)
                 subsection_num = f"{section_num}.{j + 1}"
                 
-                lines.append(f"### **{subsection_title}**")
+                lines.append(f"### {subsection_num} {subsection_title}")
+                # lines.append(f"### **{subsection_title}**")
                 lines.append("")
                 
                 if "content" in subsection and subsection["content"]:
@@ -1369,7 +1444,8 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                         subsubsection_title = subsubsection.get(title_key, "")
                         subsubsection_num = f"{section_num}.{j + 1}.{k + 1}"
                         
-                        lines.append(f"#### **{subsubsection_title}**")
+                        lines.append(f"#### {subsubsection_num} {subsubsection_title}")
+                        # lines.append(f"#### **{subsubsection_title}**")
                         lines.append("")
                         
                         if "content" in subsubsection and subsubsection["content"]:
