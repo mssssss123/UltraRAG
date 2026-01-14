@@ -352,7 +352,7 @@ class SurveyCPMCitationRegistry:
         return cls._instances[query_index]
     
     @classmethod
-    def assign_id(cls, query_index: int, doc_text: str) -> int:
+    def assign_id(cls, query_index: int, doc_text: str) -> str:
         """Assign a unique ID to a document, deduplicating across rounds."""
         state = cls.get_or_create(query_index)
         doc_hash = doc_text.strip()
@@ -361,8 +361,8 @@ class SurveyCPMCitationRegistry:
             return state["registry"][doc_hash]
         else:
             state["counter"] += 1
-            state["registry"][doc_hash] = state["counter"]
-            return state["counter"]
+            state["registry"][doc_hash] = f'textid{str(state["counter"])}'
+            return f'textid{str(state["counter"])}'
 
 
 @app.tool(output="instruction_ls->instruction_ls")
@@ -372,9 +372,10 @@ def surveycpm_init_citation_registry(instruction_ls: List[str]) -> Dict[str, Any
     return {"instruction_ls": instruction_ls}
 
 
-@app.tool(output="ret_psg_ls->retrieved_info_ls,ret_psg")
+@app.tool(output="ret_psg_ls,survey_ls->retrieved_info_ls,ret_psg")
 def surveycpm_process_passages_with_citation(
     ret_psg_ls: List[List[List[str]]],
+    survey_ls: List[str],
 ) -> Dict[str, Any]:
     """Process passages and assign unique citation IDs for SurveyCPM.
     
@@ -386,11 +387,13 @@ def surveycpm_process_passages_with_citation(
         - ret_psg: List of lists of cited passages for frontend rendering
                    (same length as ret_psg_ls, each element is a list of cited docs)
     """
-    top_k = 20
     retrieved_info_ls = []
     ret_psg_output = []  # List of lists for frontend sources (same length as input)
     
-    for query_idx, ret_psg in enumerate(ret_psg_ls):
+    for query_idx, (ret_psg, survey_json) in enumerate(zip(ret_psg_ls, survey_ls)):
+        survey = json.loads(survey_json) if survey_json and survey_json != "<PAD>" else {}
+        top_k = 10 if survey else 20
+
         if not ret_psg:
             retrieved_info_ls.append("")
             ret_psg_output.append([])
@@ -409,7 +412,8 @@ def surveycpm_process_passages_with_citation(
                     seen.add(psg)
                     # Assign unique citation ID
                     citation_id = SurveyCPMCitationRegistry.assign_id(query_idx, psg)
-                    cited_psg = f"[{citation_id}] {psg}"
+                    # cited_psg = f"[{citation_id}] {psg}"
+                    cited_psg = f"bibkey:{citation_id}\n{psg}"
                     all_passages.append(cited_psg)
         
         # Second pass: fill remaining slots
@@ -420,7 +424,7 @@ def surveycpm_process_passages_with_citation(
                     if psg not in seen and remaining_slots > 0:
                         seen.add(psg)
                         citation_id = SurveyCPMCitationRegistry.assign_id(query_idx, psg)
-                        cited_psg = f"[{citation_id}] {psg}"
+                        cited_psg = f"bibkey:{citation_id}\n{psg}"
                         all_passages.append(cited_psg)
                         remaining_slots -= 1
         
@@ -648,7 +652,7 @@ def _surveycpm_check_language_consistency(item: Any, user_instruction: str) -> b
     text = text.replace(" ", "").replace("\n", "").replace("\t", "")
     text = re.sub(r'(\\\\cite)\{(.*?)\}', '', text, flags=re.DOTALL)
     text = re.sub(r'(\\cite)\{(.*?)\}', '', text, flags=re.DOTALL)
-    comma_english = r'[!"#$%&\'()\*\+,-./:;<=>\?@\\\[\]^_`{\|}~]'
+    comma_english = r'[!"#$%&\'()\*\+,-./:;<=>\?@\\\[\]^_`{\|}~1234567890]'
     text = re.sub(comma_english, "", text)
     if len(text) == 0:
         return True
@@ -661,14 +665,19 @@ def _surveycpm_check_language_consistency(item: Any, user_instruction: str) -> b
     if is_chinese:
         return chinese_count / total_chars > 0.6
     else:
-        return chinese_count / total_chars < 0.3
+        return chinese_count / total_chars < 0.15
 
 
 def surveycpm_parse_response(
     response_text: str,
-    is_json: bool = True
+    is_json: bool = True,
+    valid_actions: List[str] | None = None,
+    **kwargs
 ) -> Dict[str, Any]:
     extracted_result = {}
+    
+    if valid_actions is None:
+        valid_actions = ["search", "init-plan", "extend-plan", "nop", "write"]
     
     think_pattern = r"<thought>(.*?)</thought>"
     action_pattern = r"<action>(.*?)</action>"
@@ -689,7 +698,13 @@ def surveycpm_parse_response(
             action = action_match.group(1).strip()
             try:
                 action = json.loads(action)
-                action_is_valid = True
+                # action_is_valid = True
+                action_is_valid = surveycpm_validate_action(
+                    action, 
+                    valid_actions=valid_actions, 
+                    hard_mode=True, # You can use hard mode for better performance
+                    **kwargs
+                )
             except:
                 action_is_valid = False
                 action = {}
@@ -781,6 +796,16 @@ def surveycpm_validate_action(
             if cursor is not None:
                 assert action["position"] == cursor
             assert action["position"].count(".") < 2
+            
+            # Check if already extended
+            if current_survey:
+                try:
+                    section_node = surveycpm_get_position(current_survey, action["position"], tag="outline")
+                    if "subsections" in section_node:
+                        return False
+                except:
+                    return False
+
             for sec in action["subsections"]:
                 assert isinstance(sec, dict)
                 assert "title" in sec and "plan" in sec
@@ -804,7 +829,7 @@ def surveycpm_validate_action(
             if hard_mode:
                 assert "#" not in action["content"]
                 assert "bibkey" not in action["content"].lower()
-                assert len(action["content"].strip()) > 100
+                assert len(action["content"].strip()) > 50
                 if user_instruction:
                     assert _surveycpm_check_language_consistency(action["content"], user_instruction)
                 ref_key_list = _surveycpm_match_reference(action["content"])
@@ -812,7 +837,7 @@ def surveycpm_validate_action(
                     for ref_key in ref_key_list:
                         if ref_key not in retrieved_bibkeys:
                             return False
-                assert action["content"].count("\\cite") < 10
+                assert action["content"].count("\\cite") <= 12
                 
     except:
         return False
@@ -895,7 +920,11 @@ def surveycpm_parse_search_response(
     keywords_ls = []
     
     for response in response_ls:
-        result = surveycpm_parse_response(response_text=response, is_json=True)
+        result = surveycpm_parse_response(
+            response_text=response, 
+            is_json=True,
+            valid_actions=["search"]
+        )
         keywords = result.get("action", {}).get("keywords", [])
         keywords_ls.append(keywords)
     
@@ -942,18 +971,24 @@ def surveycpm_process_passages(
     return {"retrieved_info_ls": retrieved_info_ls}
 
 
-@app.tool(output="response_ls,survey_ls->survey_ls,cursor_ls")
+@app.tool(output="response_ls,survey_ls,instruction_ls->survey_ls,cursor_ls")
 def surveycpm_after_init_plan(
     response_ls: List[str],
     survey_ls: List[str], 
+    instruction_ls: List[str],
 ) -> Dict[str, List]:
 
     import json
     new_survey_ls = []
     new_cursor_ls = []
     
-    for response, survey_json in zip(response_ls, survey_ls):
-        result = surveycpm_parse_response(response_text=response, is_json=True)
+    for response, survey_json, instruction in zip(response_ls, survey_ls, instruction_ls):
+        result = surveycpm_parse_response(
+            response_text=response, 
+            is_json=True,
+            user_instruction=instruction,
+            valid_actions=["init-plan"]
+        )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
         
@@ -974,20 +1009,35 @@ def surveycpm_after_init_plan(
     }
 
 
-@app.tool(output="response_ls,survey_ls,cursor_ls->survey_ls,cursor_ls")
+@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls,retrieved_info_ls->survey_ls,cursor_ls")
 def surveycpm_after_write(
     response_ls: List[str],
     survey_ls: List[str],
     cursor_ls: List[str | None],
+    instruction_ls: List[str],
+    retrieved_info_ls: List[str],
 ) -> Dict[str, List]:
 
     import json
     new_survey_ls = []
     new_cursor_ls = []
     
-    for response, survey_json, cursor in zip(response_ls, survey_ls, cursor_ls):
+    for response, survey_json, cursor, instruction, retrieved_info in zip(response_ls, survey_ls, cursor_ls, instruction_ls, retrieved_info_ls):
         survey = json.loads(survey_json) if survey_json and survey_json != "<PAD>" else {}
-        result = surveycpm_parse_response(response_text=response, is_json=False)
+        
+        retrieved_bibkeys = None
+        if retrieved_info and retrieved_info != "<PAD>":
+             retrieved_bibkeys = list(_surveycpm_match_reference(retrieved_info))
+             
+        result = surveycpm_parse_response(
+            response_text=response, 
+            is_json=False,
+            current_survey=survey,
+            cursor=cursor,
+            user_instruction=instruction,
+            retrieved_bibkeys=retrieved_bibkeys,
+            valid_actions=["write"]
+        )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
         
@@ -1015,11 +1065,12 @@ def surveycpm_after_write(
     }
 
 
-@app.tool(output="response_ls,survey_ls,cursor_ls->survey_ls,cursor_ls,extend_result_ls")
+@app.tool(output="response_ls,survey_ls,cursor_ls,instruction_ls->survey_ls,cursor_ls,extend_result_ls")
 def surveycpm_after_extend(
     response_ls: List[str],
     survey_ls: List[str],  # JSON strings
     cursor_ls: List[str | None],
+    instruction_ls: List[str],
 ) -> Dict[str, List]:
 
     import json
@@ -1027,9 +1078,16 @@ def surveycpm_after_extend(
     new_cursor_ls = []
     new_extend_result_ls = []
     
-    for response, survey_json, cursor in zip(response_ls, survey_ls, cursor_ls):
+    for response, survey_json, cursor, instruction in zip(response_ls, survey_ls, cursor_ls, instruction_ls):
         survey = json.loads(survey_json) if survey_json and survey_json != "<PAD>" else {}
-        result = surveycpm_parse_response(response_text=response, is_json=True)
+        result = surveycpm_parse_response(
+            response_text=response, 
+            is_json=True,
+            current_survey=survey,
+            cursor=cursor,
+            user_instruction=instruction,
+            valid_actions=["extend-plan", "nop"]
+        )
         parse_success = result.get("parse_success", False)
         action = result.get("action", {})
         action_name = action.get("name", "")
@@ -1136,7 +1194,7 @@ def surveycpm_update_state(
             if cursor is not None:
                 new_state_ls.append("search")
                 new_extend_time_ls.append(extend_time)
-            elif extend_time < 10:
+            elif extend_time < 12:
                 new_state_ls.append("analyst-extend_plan")
                 new_extend_time_ls.append(extend_time + 1)
             else:
@@ -1231,6 +1289,20 @@ def _surveycpm_clean_content(content: str) -> str:
     return content.strip()
 
 
+def _surveycpm_to_one_line_old(string):
+    if isinstance(string, dict):
+        if "content" in string and string["content"]:
+            return _surveycpm_to_one_line_old(string["content"])
+        elif "plan" in string and string["plan"]:
+            return _surveycpm_to_one_line_old(string["plan"])
+        else:
+            return ""
+    if not string:
+        return ""
+    else:
+        return string
+
+
 def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     """Format survey as clean Markdown for final output.
     
@@ -1259,7 +1331,8 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
         section_title = section.get(title_key, "")
         section_num = i + 1
         
-        lines.append(f"## {section_num} {section_title}")
+        # lines.append(f"## {section_num} {section_title}")
+        lines.append(f"## **{section_title}** ")
         lines.append("")
         
         # Section content
@@ -1278,7 +1351,7 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                 subsection_title = subsection.get(title_key, "")
                 subsection_num = f"{section_num}.{j + 1}"
                 
-                lines.append(f"### {subsection_num} {subsection_title}")
+                lines.append(f"### **{subsection_title}**")
                 lines.append("")
                 
                 if "content" in subsection and subsection["content"]:
@@ -1296,7 +1369,7 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                         subsubsection_title = subsubsection.get(title_key, "")
                         subsubsection_num = f"{section_num}.{j + 1}.{k + 1}"
                         
-                        lines.append(f"#### {subsubsection_num} {subsubsection_title}")
+                        lines.append(f"#### **{subsubsection_title}**")
                         lines.append("")
                         
                         if "content" in subsubsection and subsubsection["content"]:
@@ -1311,6 +1384,32 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
     # Final cleanup: normalize multiple blank lines
     result = "\n".join(lines)
     result = re.sub(r'\n{3,}', '\n\n', result)
+    
+    # change citation format from bibkey to []
+    def extract_num_from_textid(textid):
+        try:
+            if textid.startswith("textid"):
+                return int(textid.split("textid")[-1].strip())
+        except:
+            return None
+        return None
+    def replace_bibkey(match): # \\cite{textid2, textid1} -> [1,2]
+        bibkey_group = match.group(1)
+        single_bibs = [bib.strip() for bib in bibkey_group.split(",")]
+        new_bibs = []
+        for bib in single_bibs:
+            if bib.startswith("bibkey: "):
+                bib = bib[len("bibkey: "):].strip()
+            num = extract_num_from_textid(bib)
+            if num is not None:
+                new_bibs.append(str(num))
+        new_bibs = sorted(set(new_bibs), key=lambda x: int(x))
+        if len(new_bibs) > 0:
+            return f'{"".join([f"[{i}]" for i in new_bibs])}'
+        else:
+            return ""
+    reg = r"\\cite\{(.+?)\}"
+    result = re.sub(reg, replace_bibkey, result)
     return result.strip()
 
 
