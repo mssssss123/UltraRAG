@@ -1211,11 +1211,16 @@ def surveycpm_update_state(
             continue
 
         if not parsed:
-            new_state_ls.append(state)
+            
             if state != "analyst-extend_plan":
                 new_extend_time_ls.append(extend_time)
+                new_state_ls.append(state)
             else:
                 new_extend_time_ls.append(extend_time + 1)
+                if extend_time < 12:
+                    new_state_ls.append("analyst-extend_plan")
+                else:
+                    new_state_ls.append("done")
             new_step_ls.append(step + 1)
             continue
         
@@ -1251,8 +1256,10 @@ def surveycpm_update_state(
                 new_state_ls.append("search")
             elif extend_result == "nop":
                 new_state_ls.append("done")
-            else:
+            elif extend_time < 12:
                 new_state_ls.append("analyst-extend_plan")
+            else:
+                new_state_ls.append("done")
             new_extend_time_ls.append(extend_time)
             
         else:  # done or unknown
@@ -1336,12 +1343,22 @@ def _surveycpm_clean_content(content: str) -> str:
 def _surveycpm_clean_title(title:str) -> str:
     # remove any thing like section 1., Section-1., 1., (1), 一、, （一）, 一. ，
     # and keep the original title
-    title = re.sub(r'(?i)section[-\s]*[\d\.]*\s*', '', title)
-    title = re.sub(r'\d+(?:\.\d+)+[\.、]?\s*', '', title)
-    title = re.sub(r'\d+[.、]\s*', '', title)
+    # Some sources use full-width dots "．" or "。" in section numbers.
+    _dot = r'[.\uFF0E\u3002]'
+
+    title = re.sub(rf'(?i)^\s*section[-\s]*[\d{_dot}]*\s*', '', title)
+    # remove headings like "第一章 第一节 第一部 ..." / "第1章: ..." (can repeat)
+    title = re.sub(
+        r'^(?:第\s*[0-9一二三四五六七八九十百千]+\s*(?:章|节|部(?:分)?|篇|卷)\s*[-—:：\.、，,]?\s*)+',
+        '',
+        title,
+    )
+    # remove headings like "3.4.2，" / "3.4.2." / "3.4.2 "
+    title = re.sub(rf'^\s*\d+(?:{_dot}\d+)+[\.、，,]?\s*', '', title)
+    title = re.sub(r'^\s*\d+[.、，,]\s*', '', title)
     title = re.sub(r'[\(（]\d+[\)）]\s*', '', title)
-    title = re.sub(r'[一二三四五六七八九十]+(?:\.\d+)+[\.、]?\s*', '', title)
-    title = re.sub(r'[一二三四五六七八九十]+[.、]\s*', '', title)
+    title = re.sub(rf'^\s*[一二三四五六七八九十]+(?:{_dot}\d+)+[\.、，,]?\s*', '', title)
+    title = re.sub(r'^\s*[一二三四五六七八九十]+[.、，,]\s*', '', title)
     title = re.sub(r'[\(（][一二三四五六七八九十]+[\)）]\s*', '', title)
     title = re.sub(r'^[一二三四五六七八九十]+\s+', '', title)
     return title.strip()
@@ -1443,7 +1460,7 @@ def _surveycpm_format_survey_markdown(survey: Dict[str, Any]) -> str:
                     for k, subsubsection in enumerate(subsection["subsections"]):
                         subsubsection_title = subsubsection.get(title_key, "")
                         subsubsection_num = f"{section_num}.{j + 1}.{k + 1}"
-                        
+                        subsubsection_title = _surveycpm_clean_title(subsubsection_title)
                         lines.append(f"#### {subsubsection_num} {subsubsection_title}")
                         # lines.append(f"#### **{subsubsection_title}**")
                         lines.append("")
