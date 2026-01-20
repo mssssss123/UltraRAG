@@ -443,7 +443,6 @@ def search_o1_init(
         ret.append(p)
     return ret
 
-
 @app.prompt(
     output="extract_query_list, ret_psg, total_reason_list, searcho1_refine_template -> prompt_ls"
 )
@@ -491,6 +490,7 @@ def search_o1_reasoning_indocument(
 
     return ret
 
+    return ret
 
 @app.prompt(
     output="q_ls,total_subq_list,total_final_info_list,searcho1_reasoning_template->prompt_ls"
