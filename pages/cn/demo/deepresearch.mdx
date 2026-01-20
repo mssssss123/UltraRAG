@@ -5,7 +5,7 @@ icon: "flask"
 
 AgentCPM-Report 是一款由 [THUNLP](https://nlp.csai.tsinghua.edu.cn)、中国人民大学 [RUCBM](https://github.com/RUCBM) 和 [ModelBest](https://modelbest.cn/en) 联合研发的开源大语言模型智能体。
 
-该模型基于 [MiniCPM4.1](https://github.com/OpenBMB/MiniCPM4.1)（80亿参数）基座构建，能够接受用户指令，自主进行深度调研并生成长篇报告。
+该模型基于 [MiniCPM4.1](https://github.com/OpenBMB/MiniCPM)（80亿参数）基座构建，能够接受用户指令，自主进行深度调研并生成长篇报告。
 
 核心亮点：
 
@@ -139,7 +139,8 @@ benchmark:
     seed: 42
     shuffle: false
 custom:
-  surveycpm_hard_mode: false
+  surveycpm_hard_mode: false # [!code --]
+  surveycpm_hard_mode: true # [!code ++]
   surveycpm_max_extend_step: 12
   surveycpm_max_step: 140
 generation:

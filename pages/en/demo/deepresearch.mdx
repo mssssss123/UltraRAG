@@ -5,12 +5,12 @@ icon: "flask"
 
 AgentCPM-Report is an open-source large language model agent jointly developed by [THUNLP](https://nlp.csai.tsinghua.edu.cn), Renmin University of China [RUCBM](https://github.com/RUCBM), and [ModelBest](https://modelbest.cn/en).
 
-The model is built on the [MiniCPM4.1](https://github.com/OpenBMB/MiniCPM4.1) base (8 billion parameters) and can accept user instructions to autonomously conduct in-depth research and generate long-form reports.
+The model is built on the [MiniCPM4.1](https://github.com/OpenBMB/MiniCPM) base (8 billion parameters) and can accept user instructions to autonomously conduct in-depth research and generate long-form reports.
 
 Key Highlights:
 
-- **Exceptional Insight and Comprehensiveness**: As an 8B parameter edge-side model, AgentCPM-Report demonstrates remarkable potential in deep research report generation tasks, with performance that has surpassed some closed-source commercial agent systems. It redefines the performance ceiling for small-scale agents, achieving SOTA results particularly in the Insight metric.
-- **Lightweight and Localized Deployment**: The model supports agile deployment on personal computers. By combining with frameworks like UltraRAG, users can build scalable local knowledge bases to generate reports that are more professional and in-depth than general-purpose large models. This lightweight and localized nature provides a secure and reliable foundation for deep report writing on private or proprietary data.
+- **Extreme Performance, Minimal Footprint**: Through an average of 40 rounds of deep retrieval and nearly 100 rounds of chain-of-thought reasoning, it achieves comprehensive information mining and restructuring, enabling edge-side models to produce logically rigorous, deeply insightful long-form articles with tens of thousands of words. With just 8 billion parameters, it delivers performance on par with top-tier closed-source systems in deep research tasks.  
+- **Physical Isolation, Local Security**: Specifically designed for high-privacy scenarios, it supports fully offline and agile local deployment, completely eliminating the risk of cloud data leaks. Leveraging our UltraRAG framework, it efficiently mounts and understands your local private knowledge base, securely transforming core confidential data into highly valuable professional decision-making reports without ever leaving its domain.
 
 This document aims to introduce how to configure and use AgentCPM-Report in the UltraRAG framework.
 
@@ -140,7 +140,8 @@ benchmark:
     seed: 42
     shuffle: false
 custom:
-  surveycpm_hard_mode: false
+  surveycpm_hard_mode: false # [!code --]
+  surveycpm_hard_mode: true # [!code ++]
   surveycpm_max_extend_step: 12
   surveycpm_max_step: 140
 generation:
@@ -250,4 +251,4 @@ After configuration is complete, start the AgentCPM-Report Pipeline in UltraRAG 
 <Note>Since the generation of a 10,000-word review involves a large amount of concurrent retrieval and multi-turn reasoning, it usually takes more than 10 minutes. You can use the UI's [background running](/pages/en/ui/start) function and come back to check the final report after the task is completed.</Note>
 
 
-![](/images/demo/deepresearch.png)
+![](/images/demo/deepresearch_en.png)
