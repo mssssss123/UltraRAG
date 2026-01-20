@@ -1217,7 +1217,6 @@ async function confirmUnsavedChanges(actionLabel = "continue") {
 }
 
 // Markdown 渲染（带简单降级）
-let markdownConfigured = false;
 const MARKDOWN_LANGS = ["markdown", "md", "mdx"];
 
 // 引用高亮函数已移至后面的 formatCitationHtml(html, messageIdx) 定义
@@ -1397,29 +1396,92 @@ function renderLatex(element) {
   }
 }
 
+// [新增] ChatGPT 风格代码块渲染
+function renderCodeBlock(code, lang) {
+  const escapedCode = escapeHtml(code);
+  const langClass = lang ? `language-${lang.toLowerCase()}` : '';
+  
+  // 生成唯一ID用于复制功能
+  const blockId = 'code-' + Math.random().toString(36).substr(2, 9);
+  
+  return `<div class="code-block-wrapper">
+    <button class="code-block-copy" data-code-id="${blockId}" onclick="copyCodeBlock(this)" title="Copy code">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+    <pre><code id="${blockId}" class="${langClass}">${escapedCode}</code></pre>
+  </div>`;
+}
+
+// [新增] 复制代码块功能
+function copyCodeBlock(btn) {
+  const codeId = btn.dataset.codeId;
+  const codeEl = document.getElementById(codeId);
+  if (!codeEl) return;
+  
+  const code = codeEl.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.classList.add('copied');
+    const textSpan = btn.querySelector('.copy-text');
+    if (textSpan) textSpan.textContent = 'Copied!';
+    
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      if (textSpan) textSpan.textContent = 'Copy';
+    }, 2000);
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
+}
+
+// [新增] 应用代码高亮
+function applyCodeHighlight(container) {
+  if (!window.hljs) return;
+  const codeBlocks = container.querySelectorAll('pre code');
+  codeBlocks.forEach(block => {
+    // 只对有语言类的代码块或未高亮的代码块应用高亮
+    if (!block.classList.contains('hljs')) {
+      window.hljs.highlightElement(block);
+    }
+  });
+}
+
+// 将 copyCodeBlock 挂载到 window 以便 onclick 调用
+window.copyCodeBlock = copyCodeBlock;
+
 function renderMarkdown(text, { allowCodeBlock = true, unwrapLanguages = [] } = {}) {
   if (!text) return "";
   if (unwrapLanguages.length) {
     text = unwrapLanguageBlocks(text, unwrapLanguages);
   }
   if (window.marked) {
-    if (!markdownConfigured) {
-      window.marked.setOptions({ breaks: true, gfm: true });
-      markdownConfigured = true;
-    }
+    // 每次渲染都创建新的渲染器，确保代码块使用自定义渲染
+    const renderer = new window.marked.Renderer();
+    renderer.code = function(codeObj, lang) {
+      // marked v5+ 传入对象格式 { text, lang, escaped }
+      let codeText, codeLang;
+      if (typeof codeObj === 'object' && codeObj !== null) {
+        codeText = codeObj.text || '';
+        codeLang = codeObj.lang || '';
+      } else {
+        codeText = codeObj || '';
+        codeLang = lang || '';
+      }
+      
+      if (!allowCodeBlock) {
+        return `<p>${escapeHtml(codeText).replace(/\n/g, "<br>")}</p>`;
+      }
+      return renderCodeBlock(codeText, codeLang);
+    };
     
     // Protect Math from Markdown processing
     const { text: protectedText, mathBlocks } = protectMath(text);
-
-    let rendererOptions = undefined;
-    if (!allowCodeBlock && window.marked) {
-      const renderer = new window.marked.Renderer();
-      renderer.code = (code) => `<p>${escapeHtml(code).replace(/\n/g, "<br>")}</p>`;
-      rendererOptions = { renderer };
-    }
     
-    const rawHtml = window.marked.parse(protectedText, rendererOptions);
-    let sanitized = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+    const rawHtml = window.marked.parse(protectedText, { breaks: true, gfm: true, renderer: renderer });
+    let sanitized = window.DOMPurify ? DOMPurify.sanitize(rawHtml, { 
+      ADD_TAGS: ['button', 'svg', 'path', 'rect', 'line', 'polyline', 'circle', 'polygon'],
+      ADD_ATTR: ['onclick', 'data-code-id', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'd', 'x', 'y', 'width', 'height', 'rx', 'ry', 'cx', 'cy', 'r', 'x1', 'y1', 'x2', 'y2', 'points']
+    }) : rawHtml;
     
     // Restore original LaTeX (with $$ delimiters intact)
     sanitized = restoreMath(sanitized, mathBlocks);
@@ -2207,35 +2269,80 @@ function renderChatSidebar() {
     state.chat.sessions.forEach(session => {
         // 容器
         const itemDiv = document.createElement("div");
-        itemDiv.className = `chat-session-item d-flex justify-content-between align-items-center ${session.id === state.chat.currentSessionId ? 'active' : ''}`;
+        itemDiv.className = `chat-session-item ${session.id === state.chat.currentSessionId ? 'active' : ''}`;
         
-        // 标题按钮 (点击加载)
-        const titleBtn = document.createElement("span");
-        titleBtn.className = "text-truncate flex-grow-1";
-        titleBtn.style.cursor = "pointer";
-        titleBtn.textContent = session.title || "Untitled Chat";
-        titleBtn.onclick = (e) => {
-            e.stopPropagation(); // 防止冒泡
+        // 内容区域 (点击加载)
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "chat-session-content";
+        contentDiv.innerHTML = `<span class="chat-session-title">${escapeHtml(session.title || "Untitled Chat")}</span>`;
+        contentDiv.onclick = (e) => {
+            e.stopPropagation();
             loadChatSession(session.id);
         };
         
-        // 删除按钮 (小垃圾桶)
+        // 删除按钮 (悬浮时显示)
         const delBtn = document.createElement("button");
-        delBtn.className = "btn btn-sm btn-icon text-muted ms-2";
-        delBtn.innerHTML = "×"; // 或者用图标
+        delBtn.className = "chat-session-delete-btn";
+        delBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         delBtn.title = "Delete Chat";
-        delBtn.style.width = "20px";
-        delBtn.style.height = "20px";
-        delBtn.style.lineHeight = "1";
         delBtn.onclick = (e) => {
             e.stopPropagation();
             deleteChatSession(session.id);
         };
 
-        itemDiv.appendChild(titleBtn);
+        // 右键菜单
+        itemDiv.oncontextmenu = (e) => showChatSessionContextMenu(e, session);
+
+        itemDiv.appendChild(contentDiv);
         itemDiv.appendChild(delBtn);
         els.chatSessionList.appendChild(itemDiv);
     });
+}
+
+// [新增] 显示聊天会话右键菜单
+function showChatSessionContextMenu(event, session) {
+    event.preventDefault();
+    event.stopPropagation();
+    const menu = document.getElementById('chat-session-context-menu');
+    if (!menu || !session?.id) return;
+
+    const menuWidth = 160;
+    const menuHeight = 96;
+    const left = Math.min(event.clientX, window.innerWidth - menuWidth - 12);
+    const top = Math.min(event.clientY, window.innerHeight - menuHeight - 12);
+
+    menu.dataset.sessionId = session.id;
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+    menu.classList.remove('d-none');
+}
+
+// [新增] 隐藏聊天会话右键菜单
+function hideChatSessionContextMenu() {
+    const menu = document.getElementById('chat-session-context-menu');
+    if (!menu) return;
+    menu.classList.add('d-none');
+    menu.dataset.sessionId = '';
+}
+
+// [新增] 重命名聊天会话
+async function renameChatSession(sessionId) {
+    if (!sessionId) return;
+    const session = state.chat.sessions.find(s => s.id === sessionId);
+    if (!session) return;
+    
+    const newTitle = await showPrompt("Enter a new name for this chat:", {
+        title: "Rename Chat",
+        placeholder: "e.g., My important conversation",
+        defaultValue: session.title || "Untitled Chat",
+        confirmText: "Rename"
+    });
+    
+    if (!newTitle || newTitle.trim() === '' || newTitle.trim() === session.title) return;
+    
+    session.title = newTitle.trim();
+    localStorage.setItem("ultrarag_sessions", JSON.stringify(state.chat.sessions));
+    renderChatSidebar();
 }
 
 // [新增] 删除会话辅助函数
@@ -2365,6 +2472,7 @@ function renderChatHistory() {
             let htmlContent = renderMarkdown(entry.text || "", { unwrapLanguages: MARKDOWN_LANGS });
             content.innerHTML = formatCitationHtml(htmlContent, index);
             renderLatex(content);
+            applyCodeHighlight(content);
         } else {
             // 用户消息：保留换行效果
             // 将换行符转换为HTML，同时转义HTML特殊字符防止XSS
@@ -2698,6 +2806,7 @@ function showSourceDetail(title, content) {
         
         contentDiv.innerHTML = renderedHtml;
         renderLatex(contentDiv);
+        applyCodeHighlight(contentDiv);
 
         // 4. 滚动回顶部 (防止上次看到底部，这次打开还在底部)
         contentDiv.scrollTop = 0;
@@ -3288,6 +3397,7 @@ async function handleChatSubmit(event) {
                     html = formatCitationHtml(html, entryIndex);
                     contentDiv.innerHTML = html;
                     renderLatex(contentDiv);
+                    applyCodeHighlight(contentDiv);
                     if (shouldAutoScroll) {
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                     }
@@ -3300,6 +3410,7 @@ async function handleChatSubmit(event) {
                 html = formatCitationHtml(html, entryIndex);
                 contentDiv.innerHTML = html;
                 renderLatex(contentDiv);
+                applyCodeHighlight(contentDiv);
 
                 // 计算哪些引用被使用了
                 const usedIds = new Set();
@@ -5010,6 +5121,25 @@ function bindEvents() {
     if (els.chatNewBtn) els.chatNewBtn.onclick = createNewChatSession;
     if (els.clearAllChats) els.clearAllChats.onclick = deleteAllChatSessions;
     if (els.demoToggleBtn) els.demoToggleBtn.onclick = toggleDemoSession;
+
+    // [新增] 聊天会话右键菜单初始化
+    const chatSessionContextMenu = document.getElementById('chat-session-context-menu');
+    if (chatSessionContextMenu) {
+        chatSessionContextMenu.addEventListener('click', (e) => {
+            const btn = e.target.closest('.chat-session-context-item');
+            const action = btn?.dataset?.action;
+            const sessionId = chatSessionContextMenu.dataset.sessionId;
+            if (!action || !sessionId) return;
+            hideChatSessionContextMenu();
+            if (action === 'rename') {
+                renameChatSession(sessionId);
+            } else if (action === 'delete') {
+                deleteChatSession(sessionId);
+            }
+        });
+    }
+    document.addEventListener('click', hideChatSessionContextMenu);
+    document.addEventListener('scroll', hideChatSessionContextMenu, true);
 
     if (els.kbBtn) els.kbBtn.onclick = openKBView;
     
@@ -7026,6 +7156,7 @@ function initAIAssistant() {
     const resizer = document.getElementById('ai-panel-resizer');
     const input = document.getElementById('ai-input');
     const sendBtn = document.getElementById('ai-send-btn');
+    const connectionStatus = document.getElementById('ai-connection-status');
     
     if (!panel || (!trigger && !sidebarBtn)) return;
     
@@ -7036,6 +7167,17 @@ function initAIAssistant() {
     renderAIConversationFromState();
     setAIView('home');
     updateAIContextBanner('init');
+    
+    // 如果已配置，自动测试连接
+    if (aiState.settings.apiKey) {
+        autoTestAIConnection();
+    }
+    
+    // 点击状态栏打开设置界面
+    connectionStatus?.addEventListener('click', () => {
+        settingsPanel?.classList.add('open');
+    });
+    connectionStatus?.style.setProperty('cursor', 'pointer');
     
     const openHandler = () => toggleAIPanel();
     trigger?.addEventListener('click', openHandler);
@@ -7051,7 +7193,7 @@ function initAIAssistant() {
         handleNewAISessionClick();
     });
     document.getElementById('ai-session-delete')?.addEventListener('click', () => {
-        deleteAISession();
+        deleteAllAISessions();
     });
     
     initAIPanelResizer(resizer, panel);
@@ -7347,6 +7489,32 @@ async function testAIConnection(triggerBtn = null) {
     }
 }
 
+// 静默测试连接 - 页面加载时自动检测已保存配置
+async function autoTestAIConnection() {
+    if (!aiState.settings.apiKey) return;
+    
+    try {
+        const response = await fetch('/api/ai/test', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(aiState.settings)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            aiState.isConnected = true;
+        } else {
+            aiState.isConnected = false;
+        }
+        
+        updateAIConnectionStatus();
+    } catch (e) {
+        aiState.isConnected = false;
+        updateAIConnectionStatus();
+    }
+}
+
 function updateAIConnectionStatus() {
     const statusEl = document.getElementById('ai-connection-status');
     if (!statusEl) return;
@@ -7362,7 +7530,7 @@ function updateAIConnectionStatus() {
         } else {
             dot?.classList.remove('connected', 'connecting');
             dot?.classList.add('disconnected');
-            if (text) text.textContent = 'Configured - Save&Test to verify';
+            if (text) text.textContent = 'Configured - Save & Test to verify';
         }
     } else {
         dot?.classList.remove('connected', 'connecting');
@@ -7433,7 +7601,13 @@ function renderAISessionList() {
     const deleteBtn = document.getElementById('ai-session-delete');
     if (!listEl) return;
     listEl.innerHTML = '';
-    if (!aiState.sessions.length) {
+    
+    // 过滤掉空会话（没有消息的会话不显示）
+    const nonEmptySessions = aiState.sessions.filter(session => 
+        session.messages && session.messages.length > 0
+    );
+    
+    if (!nonEmptySessions.length) {
         const empty = document.createElement('div');
         empty.className = 'ai-session-empty';
         empty.textContent = 'No sessions yet';
@@ -7441,21 +7615,34 @@ function renderAISessionList() {
         if (deleteBtn) deleteBtn.disabled = true;
         return;
     }
-    aiState.sessions.forEach(session => {
-        const btn = document.createElement('button');
+    nonEmptySessions.forEach(session => {
+        const btn = document.createElement('div');
         btn.className = 'ai-session-item' + (session.id === aiState.currentSessionId ? ' active' : '');
         const title = escapeHtml(session.title || 'New Session');
         const time = session.updatedAt ? new Date(session.updatedAt).toLocaleString() : '';
         btn.innerHTML = `
-            <div class="ai-session-title-text">${title}</div>
-            <div class="ai-session-meta">${time}</div>
+            <div class="ai-session-content">
+                <div class="ai-session-title-text">${title}</div>
+                <div class="ai-session-meta">${time}</div>
+            </div>
+            <button class="ai-session-delete-btn" title="Delete session">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
         `;
-        btn.addEventListener('click', () => {
+        // 点击会话内容切换会话
+        const contentEl = btn.querySelector('.ai-session-content');
+        contentEl?.addEventListener('click', () => {
             switchAISession(session.id);
+        });
+        // 点击删除按钮删除会话
+        const deleteBtnEl = btn.querySelector('.ai-session-delete-btn');
+        deleteBtnEl?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteAISession(session.id);
         });
         listEl.appendChild(btn);
     });
-    if (deleteBtn) deleteBtn.disabled = aiState.sessions.length === 0;
+    if (deleteBtn) deleteBtn.disabled = nonEmptySessions.length === 0;
 }
 
 function applyAISessionState(session, options = {}) {
@@ -7512,13 +7699,43 @@ function switchAISession(id) {
     }
 }
 
-function deleteAISession(id) {
+async function deleteAISession(id) {
     const targetId = id || aiState.currentSessionId;
     if (!targetId) return;
+    
+    const confirmed = await showConfirm('Are you sure you want to delete this session?', {
+        title: 'Delete Session',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        danger: true
+    });
+    
+    if (!confirmed) return;
+    
     aiState.sessions = aiState.sessions.filter(s => s.id !== targetId);
     if (!aiState.sessions.length) {
         createNewAISession(true);
     }
+    const next = aiState.sessions[0];
+    applyAISessionState(next, { keepView: true });
+    setAIView('home');
+}
+
+async function deleteAllAISessions() {
+    const nonEmptySessions = aiState.sessions.filter(s => s.messages && s.messages.length > 0);
+    if (!nonEmptySessions.length) return;
+    
+    const confirmed = await showConfirm(`Are you sure you want to delete all ${nonEmptySessions.length} session(s)?`, {
+        title: 'Delete All Sessions',
+        confirmText: 'Delete All',
+        cancelText: 'Cancel',
+        danger: true
+    });
+    
+    if (!confirmed) return;
+    
+    aiState.sessions = [];
+    createNewAISession(true);
     const next = aiState.sessions[0];
     applyAISessionState(next, { keepView: true });
     setAIView('home');
@@ -7757,6 +7974,9 @@ function renderAIMessage(role, content, actions = []) {
     messagesEl.appendChild(messageEl);
     messagesEl.scrollTop = messagesEl.scrollHeight;
     
+    // 应用代码高亮
+    applyCodeHighlight(messageEl);
+    
     if (normalizedActions.length) {
         bindAIActionButtons(messageEl, normalizedActions);
     }
@@ -7882,6 +8102,7 @@ async function sendAIMessage() {
                         accumulated += data.content;
                         if (contentEl) {
                             contentEl.innerHTML = renderMarkdown(accumulated);
+                            applyCodeHighlight(contentEl);
                             messagesEl.scrollTop = messagesEl.scrollHeight;
                         }
                     }
@@ -7926,6 +8147,7 @@ function renderAIStreamingResult(content, actions = [], placeholderEl) {
     if (contentEl) {
         const actionsHtml = normalizedActions.length ? buildAIActionHtml(normalizedActions) : '';
         contentEl.innerHTML = `${renderMarkdown(finalText)}${actionsHtml}`;
+        applyCodeHighlight(contentEl);
         if (normalizedActions.length) {
             bindAIActionButtons(targetEl, normalizedActions);
         }
@@ -7944,15 +8166,15 @@ function describeAIContext(snapshot) {
     if (!snapshot) return 'No active context';
     const { currentMode, selectedPipeline, currentPromptFile } = snapshot;
     if (currentMode === 'prompts') {
-        if (currentPromptFile) return `Editing prompt: ${currentPromptFile}`;
+        if (currentPromptFile) return `Editing Prompt: ${currentPromptFile}`;
         return 'Prompt panel';
     }
     if (currentMode === 'parameters') {
-        if (selectedPipeline) return `Editing parameters for ${selectedPipeline}`;
+        if (selectedPipeline) return `Editing Parameters for ${selectedPipeline}`;
         return 'Parameters panel (no pipeline selected)';
     }
     if (currentMode === 'pipeline') {
-        if (selectedPipeline) return `Editing pipeline: ${selectedPipeline}`;
+        if (selectedPipeline) return `Editing Pipeline YAML: ${selectedPipeline}`;
         return 'Pipeline canvas';
     }
     return 'No active context';
@@ -7991,8 +8213,8 @@ function updateAIContextBanner(reason = '') {
     const snapshot = getAIContextSnapshot();
     if (hintEl) {
         hintEl.textContent = snapshot && snapshot.focusHint 
-            ? `Current context: ${snapshot.focusHint}`
-            : 'Current context: None';
+            ? `${snapshot.focusHint}`
+            : 'None';
     }
 }
 
@@ -8236,19 +8458,3 @@ async function applyParameterModification(action) {
     return true;
 }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function renderMarkdown(text) {
-    if (typeof marked !== 'undefined') {
-        try {
-            return marked.parse(text);
-        } catch (e) {
-            return text.replace(/\n/g, '<br>');
-        }
-    }
-    return text.replace(/\n/g, '<br>');
-}
