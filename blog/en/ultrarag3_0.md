@@ -35,9 +35,6 @@ Through the “Show Thinking” panel, UltraRAG provides pixel-level, real-time 
 
 When bad cases arise, there is no need to search through backend logs. Developers can directly compare retrieved evidence slices with the final answer in the interface to quickly determine whether the issue originates from **data-level noise** or **model-level hallucination**, significantly shortening the iteration cycle.
 
-Below, we showcase two representative scenarios from the AgentCPM-Report workflow to demonstrate the practical impact of white-box debugging:
-
-
 ## Breaking Free from Framework Lock-In
 
 Experimenting with new algorithmic ideas often requires diving deep into framework internals and rewriting large numbers of inherited classes. To realize **10%** of genuine algorithmic innovation, developers are frequently forced to bear **90%** of the framework learning cost.
