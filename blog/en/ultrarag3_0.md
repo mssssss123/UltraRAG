@@ -12,8 +12,6 @@ Today, **UltraRAG 3.0** is jointly released by **THUNLP Lab at Tsinghua Universi
 - **An embedded intelligent development assistant — your interactive development guide:**  
   A framework-aware AI assistant supports Pipeline generation and prompt optimization through natural language interaction, dramatically lowering the barrier to entry.
 
-[1]
-
 ## Logic Becomes Application: Zero Distance from Orchestration to Interaction
 
 Let algorithms move beyond cold console logs. By automatically handling UI encapsulation and parameter binding, UltraRAG 3.0 ensures that the moment logical orchestration is complete, a fully interactive demo interface is generated simultaneously.
@@ -27,8 +25,6 @@ Let algorithms move beyond cold console logs. By automatically handling UI encap
 - **One-Click Build and Validation:**  
   After construction, clicking the “Build” button triggers automatic logic checks and syntax validation, followed by dynamic generation of parameter panels. Once parameters are set, static algorithmic logic instantly becomes a fully interactive system — truly achieving *what you write is what you get, and what you get is immediately usable*.
 
-[2]
-
 ## Rejecting the “Black Box”: Making Complex RAG Reasoning Fully Transparent
 
 As RAG systems evolve from single-pass retrieval to multi-round dynamic decision-making, reasoning chains can easily span hundreds of steps. Without visibility into intermediate states, debugging becomes a process of blind trial and error.
@@ -41,9 +37,6 @@ When bad cases arise, there is no need to search through backend logs. Developer
 
 Below, we showcase two representative scenarios from the AgentCPM-Report workflow to demonstrate the practical impact of white-box debugging:
 
-[3]
-
-[4]
 
 ## Breaking Free from Framework Lock-In
 
@@ -73,5 +66,3 @@ Below are four real interaction scenarios illustrating how natural language is t
 
 4. **Free-Form Optimization: From Concept to Implementation**  
    > User: “I want to redesign my RAG workflow by referencing this paper: https://arxiv.org/pdf/2410.08821 (DeepNote). Please analyze its core ideas and help me construct a similar Pipeline architecture.”
-
-[5]
