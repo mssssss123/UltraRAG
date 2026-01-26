@@ -53,6 +53,7 @@ function updateI18nTexts() {
         const key = el.getAttribute("data-i18n");
         if (!key) return;
         if (el.hasAttribute("data-i18n-html")) return;
+        if (el.dataset.i18nOverride === "true") return;
         if (key === "knowledge_base") return; // handled below to avoid overwriting selection
         if (key === "builder_select_pipeline") return; // handled below to preserve selection
         if (key === "builder_no_pipeline_selected") return; // handled below to preserve selection
@@ -990,7 +991,7 @@ function renderCollectionList(container, collections) {
                      <div class="kb-meta-count">${countStr}</div>
                 </div>
                 
-                <button class="btn-delete-book" onclick="event.stopPropagation(); deleteKBFile('collection', '${c.name}')" title="${t("kb_delete_collection")}">
+                <button class="btn-delete-book" onclick="event.stopPropagation(); deleteKBFile('collection', '${c.name}', '${displayName.replace(/'/g, "\\'")}')" title="${t("kb_delete_collection")}">
                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 </button>
             </div>
@@ -1232,7 +1233,10 @@ window.handleKBAction = async function (filePath, pipelineName) {
     if (pipelineName === 'milvus_index') {
         // Update hint and default value in Milvus modal
         const uriTxt = els.dbUriDisplay ? els.dbUriDisplay.textContent : t("kb_current_db");
-        if (els.modalTargetDb) els.modalTargetDb.textContent = uriTxt;
+        if (els.modalTargetDb) {
+            els.modalTargetDb.textContent = uriTxt;
+            els.modalTargetDb.dataset.i18nOverride = "true";
+        }
 
         // Auto-fill Collection name (use filename as default collection name)
         const fileName = filePath.split('/').pop().replace('.jsonl', '').replace('.', '_');
@@ -1545,9 +1549,10 @@ window.handleFileUpload = async function (input) {
 };
 
 // Delete file (mounted to window)
-window.deleteKBFile = async function (category, filename) {
+window.deleteKBFile = async function (category, filename, displayName = "") {
     const action = category === 'collection' ? t('kb_delete_collection_action') : t('kb_delete_file_action');
-    const confirmed = await showConfirm(formatTemplate(t("kb_delete_confirm_message"), { action, name: filename }), {
+    const label = category === 'collection' ? (displayName || filename) : filename;
+    const confirmed = await showConfirm(formatTemplate(t("kb_delete_confirm_message"), { action, name: label }), {
         title: t("kb_delete_confirm_title"),
         type: "warning",
         confirmText: t("kb_delete"),
@@ -1592,7 +1597,7 @@ async function runKBTask(pipelineName, filePath, extraParams = {}) {
             // B. Start polling
             pollTaskStatus(data.task_id);
         } else {
-            throw new Error(data.error || 'Task start failed');
+            throw new Error(data.error || t("kb_task_start_failed"));
         }
     } catch (e) {
         showModal(e.message, { title: t("kb_task_error_title"), type: "error" });
@@ -1620,7 +1625,10 @@ function pollTaskStatus(taskId) {
             } else if (task.status === 'failed') {
                 clearInterval(interval);
                 updateKBStatus(false);
-                showModal(`Task Failed: ${task.error}`, { title: "Task Failed", type: "error" });
+                showModal(
+                    formatTemplate(t("kb_task_failed_message"), { error: task.error }),
+                    { title: t("kb_task_failed_title"), type: "error" }
+                );
             } else {
                 // still running...
                 console.log('Task running...');
@@ -2404,8 +2412,11 @@ async function startEngine(pipelineName) {
             console.error(err);
             setChatStatus("Engine Error", "error");
             state.chat.engineSessionId = null;
-            const msg = err?.message ? String(err.message) : "Unknown error";
-            showModal(`Engine initialization failed: ${msg}`, { title: "Engine Error", type: "error" });
+            const msg = err?.message ? String(err.message) : t("common_unknown_error");
+            showModal(formatTemplate(t("chat_engine_init_failed_message"), { error: msg }), {
+                title: t("chat_engine_error_title"),
+                type: "error"
+            });
         } finally {
             state.chat.demoLoading = false;
             updateDemoControls();
@@ -2692,7 +2703,7 @@ async function renderChatPipelineMenu() {
 async function switchChatPipeline(name) {
     if (name === state.selectedPipeline) return;
     if (state.chat.running) {
-        showModal("Please wait for the current response to finish.", { title: "Please Wait", type: "info" });
+        showModal(t("chat_wait_for_response_message"), { title: t("chat_wait_for_response_title"), type: "info" });
         return;
     }
 
@@ -2882,11 +2893,11 @@ function hasHistoryChanged(session, history) {
 // Show interrupt confirmation dialog
 async function showInterruptConfirmDialog(onConfirm) {
     const confirmed = await showConfirm(
-        "A response is currently being generated. This action will interrupt the generation.\n\nTip: Use Background mode to run tasks without interruption.",
+        t("chat_interrupt_message"),
         {
-            title: "Generation in Progress",
+            title: t("chat_interrupt_title"),
             type: "warning",
-            confirmText: "Interrupt",
+            confirmText: t("chat_interrupt_confirm"),
             danger: true
         }
     );
@@ -3042,11 +3053,11 @@ async function renameChatSession(sessionId) {
     const session = state.chat.sessions.find(s => s.id === sessionId);
     if (!session) return;
 
-    const newTitle = await showPrompt("Enter a new name for this chat:", {
-        title: "Rename Chat",
-        placeholder: "e.g., My important conversation",
-        defaultValue: session.title || "Untitled Chat",
-        confirmText: "Rename"
+    const newTitle = await showPrompt(t("chat_rename_prompt"), {
+        title: t("chat_rename_title"),
+        placeholder: t("chat_rename_placeholder"),
+        defaultValue: session.title || t("chat_untitled"),
+        confirmText: t("common_rename")
     });
 
     if (!newTitle || newTitle.trim() === '' || newTitle.trim() === session.title) return;
@@ -3058,10 +3069,10 @@ async function renameChatSession(sessionId) {
 
 // Delete session helper function
 async function deleteChatSession(sessionId) {
-    const confirmed = await showConfirm("Delete this chat?", {
-        title: "Delete Chat",
+    const confirmed = await showConfirm(t("chat_delete_confirm"), {
+        title: t("chat_delete_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -3092,10 +3103,10 @@ async function deleteChatSession(sessionId) {
 // Delete all sessions
 async function deleteAllChatSessions() {
     if (state.chat.sessions.length === 0) return;
-    const confirmed = await showConfirm("Delete all chat history?", {
-        title: "Clear All Chats",
+    const confirmed = await showConfirm(t("chat_delete_all_confirm"), {
+        title: t("chat_delete_all_title"),
         type: "warning",
-        confirmText: "Delete All",
+        confirmText: t("chat_delete_all_action"),
         danger: true
     });
     if (!confirmed) return;
@@ -3382,8 +3393,8 @@ function validateKnowledgeBaseSelection() {
  * Show knowledge base selection prompt modal
  */
 async function showKnowledgeBaseAlert() {
-    await showModal("Please select a Knowledge Base before starting the conversation.", {
-        title: "Knowledge Base Required",
+    await showModal(t("chat_kb_required_message"), {
+        title: t("chat_kb_required_title"),
         type: "warning"
     });
     // Focus on knowledge base selection dropdown
@@ -3979,7 +3990,7 @@ async function handleChatSubmit(event) {
     if (!canUseChat()) return;
     const engineReady = await ensureEngineReady(state.selectedPipeline);
     if (!engineReady) {
-        showModal("Please start the engine first.", { title: "Engine Required", type: "warning" });
+        showModal(t("chat_engine_required_message"), { title: t("chat_engine_required_title"), type: "warning" });
         return;
     }
 
@@ -4195,8 +4206,11 @@ async function handleChatSubmit(event) {
                             setChatStatus("Ready", "ready");
                         }
                         else if (data.type === "error") {
-                            const msg = data?.message ? String(data.message) : "Unknown error";
-                            showModal(`Backend Error: ${msg}`, { title: "Chat Error", type: "error" });
+                            const msg = data?.message ? String(data.message) : t("common_unknown_error");
+                            showModal(formatTemplate(t("chat_backend_error_message"), { error: msg }), {
+                                title: t("chat_error_title"),
+                                type: "error"
+                            });
                             setChatStatus("Error", "error");
                         }
                     } catch (e) { console.error(e); }
@@ -4237,8 +4251,11 @@ async function handleChatSubmit(event) {
             return;
         }
         console.error(err);
-        const msg = err?.message ? String(err.message) : "Unknown error";
-        showModal(`Network Error: ${msg}`, { title: "Chat Error", type: "error" });
+        const msg = err?.message ? String(err.message) : t("common_unknown_error");
+        showModal(formatTemplate(t("chat_network_error_message"), { error: msg }), {
+            title: t("chat_error_title"),
+            type: "error"
+        });
         setChatStatus("Error", "error");
     } finally {
         if (state.chat.controller) {
@@ -4836,11 +4853,11 @@ function initYamlEditor() {
     if (els.yamlFormatBtn) {
         els.yamlFormatBtn.addEventListener('click', async () => {
             const confirmed = await showConfirm(
-                "This will reset the editor content to match the current canvas state. Any manual edits in the editor will be lost.",
+                t("builder_editor_reset_message"),
                 {
-                    title: "Reset Editor",
+                    title: t("builder_editor_reset_title"),
                     type: "warning",
-                    confirmText: "Reset"
+                    confirmText: t("builder_editor_reset_action")
                 }
             );
             if (confirmed) {
@@ -5986,6 +6003,15 @@ function bindEvents() {
     if (els.nodePickerLoopTimes) els.nodePickerLoopTimes.oninput = (e) => nodePickerState.loopTimes = e.target.value;
     if (els.nodePickerCustom) els.nodePickerCustom.oninput = (e) => nodePickerState.customValue = e.target.value;
     if (els.nodePickerConfirm) els.nodePickerConfirm.onclick = handleNodePickerConfirm;
+
+    if (els.milvusDialog) {
+        els.milvusDialog.addEventListener('close', () => {
+            if (els.modalTargetDb) {
+                els.modalTargetDb.textContent = t("kb_loading_config");
+                delete els.modalTargetDb.dataset.i18nOverride;
+            }
+        });
+    }
 }
 
 // Knowledge base dropdown control function
@@ -7049,10 +7075,10 @@ window.loadTaskToChat = async function (taskId, target = 'current') {
 
 // Delete background task
 window.deleteBackgroundTask = async function (taskId) {
-    const confirmed = await showConfirm("Are you sure you want to delete this task?", {
-        title: "Delete Task",
+    const confirmed = await showConfirm(t("bg_task_delete_confirm"), {
+        title: t("bg_task_delete_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -7086,11 +7112,11 @@ window.deleteBackgroundTask = async function (taskId) {
 // Clear completed tasks
 window.clearCompletedTasks = async function () {
     try {
-        const confirmed = await showConfirm("This will remove all completed background tasks. Continue?", {
-            title: "Clear Completed Tasks",
+        const confirmed = await showConfirm(t("bg_tasks_clear_completed_confirm"), {
+            title: t("bg_tasks_clear_completed_title"),
             type: "warning",
-            confirmText: "Clear",
-            cancelText: "Cancel",
+            confirmText: t("bg_tasks_clear"),
+            cancelText: t("common_cancel"),
             danger: true
         });
         if (!confirmed) return;
@@ -7128,7 +7154,7 @@ window.clearCompletedTasks = async function () {
 // Send to background
 async function sendToBackground(question) {
     if (!state.chat.engineSessionId) {
-        showModal("Please start the engine first", { title: "Engine Required", type: "warning" });
+        showModal(t("chat_engine_required_message"), { title: t("chat_engine_required_title"), type: "warning" });
         return null;
     }
 
@@ -8767,10 +8793,10 @@ async function deleteAISession(id) {
     const targetId = id || aiState.currentSessionId;
     if (!targetId) return;
 
-    const confirmed = await showConfirm('Are you sure you want to delete this session?', {
-        title: 'Delete Session',
-        confirmText: 'Delete',
-        cancelText: 'Cancel',
+    const confirmed = await showConfirm(t('ai_session_delete_confirm'), {
+        title: t('ai_session_delete_title'),
+        confirmText: t('common_delete'),
+        cancelText: t('common_cancel'),
         danger: true
     });
 
@@ -8789,10 +8815,10 @@ async function deleteAllAISessions() {
     const nonEmptySessions = aiState.sessions.filter(s => s.messages && s.messages.length > 0);
     if (!nonEmptySessions.length) return;
 
-    const confirmed = await showConfirm(`Are you sure you want to delete all ${nonEmptySessions.length} session(s)?`, {
-        title: 'Delete All Sessions',
-        confirmText: 'Delete All',
-        cancelText: 'Cancel',
+    const confirmed = await showConfirm(formatTemplate(t('ai_session_delete_all_confirm'), { count: nonEmptySessions.length }), {
+        title: t('ai_session_delete_all_title'),
+        confirmText: t('ai_session_delete_all_action'),
+        cancelText: t('common_cancel'),
         danger: true
     });
 
