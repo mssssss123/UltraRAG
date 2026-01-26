@@ -43,10 +43,19 @@ function formatTemplate(template, params = {}) {
 }
 
 function updateI18nTexts() {
+    document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-html");
+        if (!key) return;
+        el.innerHTML = t(key);
+    });
+
     document.querySelectorAll('[data-i18n]').forEach((el) => {
         const key = el.getAttribute("data-i18n");
         if (!key) return;
+        if (el.hasAttribute("data-i18n-html")) return;
         if (key === "knowledge_base") return; // handled below to avoid overwriting selection
+        if (key === "builder_select_pipeline") return; // handled below to preserve selection
+        if (key === "builder_no_pipeline_selected") return; // handled below to preserve selection
         el.textContent = t(key);
     });
 
@@ -54,6 +63,24 @@ function updateI18nTexts() {
     document.querySelectorAll('[data-i18n-title]').forEach((el) => {
         const key = el.getAttribute("data-i18n-title");
         if (key) el.title = t(key);
+    });
+
+    // Placeholder attributes
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (key) el.placeholder = t(key);
+    });
+
+    // Aria-label attributes
+    document.querySelectorAll('[data-i18n-aria-label]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-aria-label");
+        if (key) el.setAttribute("aria-label", t(key));
+    });
+
+    // Prompt data attributes
+    document.querySelectorAll('[data-i18n-prompt]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-prompt");
+        if (key) el.setAttribute("data-prompt", t(key));
     });
 
     // Knowledge base label: only update when no selection
@@ -85,6 +112,50 @@ function updateI18nTexts() {
             chatPipelineLabel.textContent = t("select_pipeline");
             chatPipelineLabel.dataset.selected = "false";
         }
+    }
+
+    const heroPipelineLabel = document.getElementById("hero-selected-pipeline");
+    if (heroPipelineLabel) {
+        const fallbackName = heroPipelineLabel.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            heroPipelineLabel.textContent = name;
+            heroPipelineLabel.dataset.selected = "true";
+            heroPipelineLabel.dataset.currentName = name;
+        } else {
+            heroPipelineLabel.textContent = t("builder_no_pipeline_selected");
+            heroPipelineLabel.dataset.selected = "false";
+        }
+    }
+
+    const pipelineDropdown = document.getElementById("pipelineDropdownBtn");
+    if (pipelineDropdown) {
+        const fallbackName = pipelineDropdown.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            pipelineDropdown.textContent = name;
+            pipelineDropdown.dataset.selected = "true";
+            pipelineDropdown.dataset.currentName = name;
+        } else {
+            pipelineDropdown.textContent = t("builder_select_pipeline");
+            pipelineDropdown.dataset.selected = "false";
+        }
+    }
+
+    if (typeof updateAIConnectionStatus === "function") {
+        updateAIConnectionStatus();
+    }
+    if (typeof updateAIContextBanner === "function") {
+        updateAIContextBanner("i18n");
+    }
+    if (typeof renderAISessionList === "function") {
+        renderAISessionList();
+    }
+    if (typeof renderPromptTabs === "function") {
+        renderPromptTabs();
+    }
+    if (typeof renderPromptList === "function" && typeof workspaceState !== "undefined") {
+        renderPromptList(workspaceState?.prompts?.files || []);
     }
 
     // Placeholder updates
@@ -335,9 +406,9 @@ const Modes = {
  */
 function showModal(message, options = {}) {
     const {
-        title = "Notification",
+        title = t("modal_notification"),
         type = "info",
-        confirmText = "OK"
+        confirmText = t("common_ok")
     } = options;
 
     return new Promise((resolve) => {
@@ -405,10 +476,10 @@ function showModal(message, options = {}) {
  */
 function showConfirm(message, options = {}) {
     const {
-        title = "Confirm",
+        title = t("modal_confirm_title"),
         type = "confirm",
-        confirmText = "Confirm",
-        cancelText = "Cancel",
+        confirmText = t("common_confirm"),
+        cancelText = t("common_cancel"),
         danger = false
     } = options;
 
@@ -490,11 +561,11 @@ function showConfirm(message, options = {}) {
  */
 function showChoice(message, options = {}) {
     const {
-        title = "Choose an option",
+        title = t("modal_choice_title"),
         type = "warning",
-        primaryText = "Primary",
-        secondaryText = "Secondary",
-        cancelText = "Cancel",
+        primaryText = t("common_primary"),
+        secondaryText = t("common_secondary"),
+        cancelText = t("common_cancel"),
         primaryValue = "primary",
         secondaryValue = "secondary",
         dangerPrimary = false,
@@ -1608,20 +1679,20 @@ function setBuildButtonState(state = "idle", label = "") {
 
     if (state === "running") {
         els.buildPipeline.disabled = true;
-        els.buildPipeline.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${label || "Building..."}`;
+        els.buildPipeline.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${label || t("builder_build_running")}`;
         return;
     }
 
     if (state === "success") {
         els.buildPipeline.disabled = false;
-        els.buildPipeline.innerHTML = `<span class="text-success me-1">✓</span>${label || "Build Success"}`;
+        els.buildPipeline.innerHTML = `<span class="text-success me-1">✓</span>${label || t("builder_build_success")}`;
         setTimeout(reset, 1200);
         return;
     }
 
     if (state === "error") {
         els.buildPipeline.disabled = false;
-        els.buildPipeline.innerHTML = `<span class="text-danger me-1">⚠</span>${label || "Build Failed"}`;
+        els.buildPipeline.innerHTML = `<span class="text-danger me-1">⚠</span>${label || t("builder_build_failed")}`;
         setTimeout(reset, 1800);
         return;
     }
@@ -1655,16 +1726,17 @@ function updateUnsavedFromEditor() {
     }
 }
 
-async function confirmUnsavedChanges(actionLabel = "continue") {
+async function confirmUnsavedChanges(actionLabel = t("builder_action_continue")) {
     if (!state.unsavedChanges) return true;
 
+    const message = formatTemplate(t("builder_unsaved_changes_message"), { action: actionLabel });
     const confirmed = await showConfirm(
-        `You have unsaved changes. Continuing may discard them. Do you want to ${actionLabel}?`,
+        message,
         {
-            title: "Unsaved changes",
+            title: t("builder_unsaved_changes_title"),
             type: "warning",
-            confirmText: "Continue",
-            cancelText: "Cancel"
+            confirmText: t("common_continue"),
+            cancelText: t("common_cancel")
         }
     );
 
@@ -2131,11 +2203,11 @@ function renderMarkdown(text, { allowCodeBlock = true, unwrapLanguages = [] } = 
  */
 function showPrompt(message, options = {}) {
     const {
-        title = "Input",
+        title = t("modal_input_title"),
         placeholder = "",
         defaultValue = "",
-        confirmText = "OK",
-        cancelText = "Cancel"
+        confirmText = t("common_ok"),
+        cancelText = t("common_cancel")
     } = options;
 
     return new Promise((resolve) => {
@@ -2199,23 +2271,23 @@ function showPrompt(message, options = {}) {
 async function createNewPipeline() {
     // If there are unsaved changes, confirm first
     if (state.unsavedChanges) {
-        const confirmed = await confirmUnsavedChanges("create a new pipeline");
+        const confirmed = await confirmUnsavedChanges(t("builder_action_create_pipeline"));
         if (!confirmed) return;
     }
 
     // Show input dialog for user to enter Pipeline name
-    const pipelineName = await showPrompt("Enter a name for the new pipeline:", {
-        title: "New Pipeline",
+    const pipelineName = await showPrompt(t("builder_new_pipeline_prompt"), {
+        title: t("builder_new_pipeline"),
         placeholder: "my_pipeline",
-        confirmText: "Create"
+        confirmText: t("common_create")
     });
 
     if (!pipelineName) return; // User cancelled
 
     // Validate name format
     if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(pipelineName)) {
-        await showModal("Invalid pipeline name. Use only letters, numbers, underscores and hyphens. Must start with a letter or underscore.", {
-            title: "Invalid Name",
+        await showModal(t("builder_invalid_pipeline_name_full"), {
+            title: t("builder_invalid_name_title"),
             type: "error"
         });
         return;
@@ -2643,7 +2715,7 @@ async function switchChatPipeline(name) {
         state.parameterData = await fetchJSON(`/api/pipelines/${encodeURIComponent(name)}/parameters`);
         state.parametersReady = true;
     } catch (e) {
-        console.warn("Parameters not found.");
+        console.warn(t("builder_params_not_found"));
         state.parametersReady = false;
     }
 
@@ -3322,7 +3394,7 @@ async function showKnowledgeBaseAlert() {
 
 async function safeOpenChatView() {
     if (state.mode !== Modes.CHAT && state.unsavedChanges) {
-        const proceed = await confirmUnsavedChanges("enter Chat mode");
+        const proceed = await confirmUnsavedChanges(t("builder_action_enter_chat"));
         if (!proceed) return;
     }
     await openChatView();
@@ -3331,7 +3403,7 @@ async function safeOpenChatView() {
 async function openChatView() {
     if (!canUseChat()) {
         log("Please build and save parameters first.");
-        showModal("Please build and save parameters before entering Chat.", { title: "Pipeline not ready", type: "warning" });
+        showModal(t("builder_pipeline_not_ready_message"), { title: t("builder_pipeline_not_ready_title"), type: "warning" });
         return;
     }
     if (els.chatPipelineName) els.chatPipelineName.textContent = state.selectedPipeline || "—";
@@ -4189,7 +4261,17 @@ async function handleChatSubmit(event) {
 
 // --- Common Logic (Mode Switching, Node Picker, etc.) ---
 function resetLogView() { if (els.log) els.log.textContent = ""; }
-function setHeroPipelineLabel(name) { if (els.heroSelectedPipeline) els.heroSelectedPipeline.textContent = name ? name : "No Pipeline Selected"; }
+function setHeroPipelineLabel(name) {
+    if (!els.heroSelectedPipeline) return;
+    if (name) {
+        els.heroSelectedPipeline.textContent = name;
+        els.heroSelectedPipeline.dataset.selected = "true";
+        els.heroSelectedPipeline.dataset.currentName = name;
+    } else {
+        els.heroSelectedPipeline.textContent = t("builder_no_pipeline_selected");
+        els.heroSelectedPipeline.dataset.selected = "false";
+    }
+}
 function setHeroStatusLabel(status) {
     if (!els.heroStatus) return;
     els.heroStatus.dataset.status = status; els.heroStatus.textContent = status.toUpperCase();
@@ -4204,7 +4286,7 @@ async function fetchJSON(url, options = {}) {
 async function persistParameterData({ silent = false } = {}) {
     if (!state.selectedPipeline || !state.parameterData) throw new Error("No parameters to save");
     await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`, { method: "PUT", body: JSON.stringify(state.parameterData) });
-    state.parametersReady = true; updateActionButtons(); if (!silent) log("Parameters saved.");
+    state.parametersReady = true; updateActionButtons(); if (!silent) log(t("builder_params_saved"));
 }
 
 // --- Action Helpers (Removed Run Logic) ---
@@ -4402,10 +4484,10 @@ function setYamlSyncStatus(status) {
     };
 
     const titles = {
-        synced: 'Synced with canvas',
-        syncing: 'Syncing...',
-        error: 'Parse error',
-        modified: 'Editor modified (Save to apply)'
+        synced: t('builder_yaml_synced_title'),
+        syncing: t('builder_yaml_syncing_title'),
+        error: t('builder_yaml_error_title'),
+        modified: t('builder_yaml_modified_title')
     };
 
     els.yamlSyncStatus.innerHTML = icons[status] || icons.synced;
@@ -4580,7 +4662,7 @@ function extractStepsFromParsedYaml(parsed) {
     }
 
     if (!Array.isArray(newSteps)) {
-        throw new Error('Invalid pipeline format: expected "pipeline" or "steps" array');
+        throw new Error(t('builder_yaml_invalid_format'));
     }
 
     return newSteps;
@@ -4602,11 +4684,14 @@ async function validateYamlEditorContent(options = {}) {
         showYamlError(null);
         return { valid: true, content: yamlContent, steps, parsed };
     } catch (err) {
-        const message = err?.message ? String(err.message) : "YAML parse failed";
+        const message = err?.message ? String(err.message) : t("builder_yaml_parse_failed");
         showYamlError(message);
         setYamlSyncStatus('error');
         if (showModalOnError) {
-            showModal(`YAML cannot be parsed: ${message}`, { title: "YAML Error", type: "error" });
+            showModal(formatTemplate(t("builder_yaml_parse_failed_message"), { error: message }), {
+                title: t("builder_yaml_error_title"),
+                type: "error"
+            });
         }
         return { valid: false, error: message };
     }
@@ -4638,7 +4723,7 @@ async function syncYamlToCanvasOnly(options = {}) {
         showYamlError(null);
         setYamlSyncStatus('synced');
         yamlEditorSyncLock = false;
-        log("Editor synced to canvas.");
+        log(t("builder_editor_synced_to_canvas"));
         return;
     }
 
@@ -4664,7 +4749,7 @@ async function syncYamlToCanvasOnly(options = {}) {
         setYamlSyncStatus('synced');
         yamlEditorSyncLock = false;
 
-        log("Editor synced to canvas.");
+        log(t("builder_editor_synced_to_canvas"));
 
     } catch (err) {
         showYamlError(err.message);
@@ -4760,7 +4845,7 @@ function initYamlEditor() {
             );
             if (confirmed) {
                 updatePipelinePreview();
-                log("Editor synced from canvas.");
+                log(t("builder_editor_synced_from_canvas"));
             }
         });
     }
@@ -4925,7 +5010,14 @@ function populateNodePickerTools() {
     if (!els.nodePickerTool) return;
     const select = els.nodePickerTool; select.innerHTML = "";
     const server = nodePickerState.server; const tools = (server && state.toolCatalog.byServer[server]) || [];
-    if (!tools.length) { const option = document.createElement("option"); option.textContent = server ? "No tools" : "Select Server"; select.appendChild(option); select.disabled = true; nodePickerState.tool = null; return; }
+    if (!tools.length) {
+        const option = document.createElement("option");
+        option.textContent = server ? t("builder_node_no_tools") : t("builder_node_select_server");
+        select.appendChild(option);
+        select.disabled = true;
+        nodePickerState.tool = null;
+        return;
+    }
     select.disabled = false; if (!nodePickerState.tool) nodePickerState.tool = tools[0].tool;
     tools.forEach(t => { const option = document.createElement("option"); option.value = t.tool; option.textContent = t.tool; select.appendChild(option); });
     select.value = nodePickerState.tool || "";
@@ -4934,7 +5026,13 @@ function populateNodePickerServers() {
     if (!els.nodePickerServer) return;
     const select = els.nodePickerServer; select.innerHTML = "";
     const servers = state.toolCatalog.order || [];
-    if (!servers.length) { const option = document.createElement("option"); option.textContent = "No Servers"; select.appendChild(option); select.disabled = true; return; }
+    if (!servers.length) {
+        const option = document.createElement("option");
+        option.textContent = t("builder_node_no_servers");
+        select.appendChild(option);
+        select.disabled = true;
+        return;
+    }
     select.disabled = false; if (!nodePickerState.server) nodePickerState.server = servers[0];
     servers.forEach(s => { const option = document.createElement("option"); option.value = s; option.textContent = s; select.appendChild(option); });
     select.value = nodePickerState.server; populateNodePickerTools();
@@ -4960,10 +5058,16 @@ function handleNodePickerConfirm() {
     const { location, index } = pendingInsert;
     try {
         switch (nodePickerState.mode) {
-            case "tool": if (!nodePickerState.server || !nodePickerState.tool) throw new Error("Select a tool"); insertStepAt(location, index, `${nodePickerState.server}.${nodePickerState.tool}`); break;
+            case "tool":
+                if (!nodePickerState.server || !nodePickerState.tool) throw new Error(t("builder_node_select_tool_error"));
+                insertStepAt(location, index, `${nodePickerState.server}.${nodePickerState.tool}`);
+                break;
             case "loop": const times = Math.max(1, Number(nodePickerState.loopTimes) || 1); const p = insertStepAt(location, index, { loop: { times, steps: [] } }); enterStructureContext("loop", p); break;
             case "branch": const cases = (nodePickerState.branchCases || "").split(",").map(c => c.trim()).filter(B => B); const step = { branch: { router: [], branches: {} } }; (cases.length ? cases : ["c1", "c2"]).forEach(k => step.branch.branches[k] = []); const p2 = insertStepAt(location, index, step); enterStructureContext("branch", p2); break;
-            case "custom": if (!nodePickerState.customValue) throw new Error("Custom value cannot be empty"); insertStepAt(location, index, parseStepInput(nodePickerState.customValue)); break;
+            case "custom":
+                if (!nodePickerState.customValue) throw new Error(t("builder_node_custom_empty_error"));
+                insertStepAt(location, index, parseStepInput(nodePickerState.customValue));
+                break;
         }
         getNodePickerModal()?.hide(); pendingInsert = null;
     } catch (e) { showNodePickerError(e.message); }
@@ -4988,7 +5092,7 @@ function markPipelineDirty() {
             state.chat.engineSessionId = null;
         }
         persistActiveEngines();
-        log(`Pipeline '${currentName}' modified. Engine invalidated.`);
+        log(formatTemplate(t("builder_log_engine_invalidated"), { name: currentName }));
     }
 
     if (state.mode !== Modes.BUILDER) setMode(Modes.BUILDER);
@@ -5045,12 +5149,27 @@ function insertStepAt(location, insertIndex, stepValue) {
 function removeStep(stepPath) { removeStepByPath(stepPath); markPipelineDirty(); resetContextStack(); renderSteps(); updatePipelinePreview(); }
 function openStepEditor(stepPath) { state.editingPath = stepPath; const step = getStepByPath(stepPath); els.stepEditorValue.value = typeof step === "string" ? step : JSON.stringify(step, null, 2); els.stepEditor.hidden = false; }
 function closeStepEditor() { state.editingPath = null; els.stepEditor.hidden = true; }
-function parseStepInput(raw) { const t = (raw || "").trim(); if (!t) throw new Error("Empty"); if ((t.startsWith("{") && t.endsWith("}")) || (t.startsWith("[") && t.endsWith("]"))) return JSON.parse(t); return t; }
+function parseStepInput(raw) {
+    const trimmed = (raw || "").trim();
+    if (!trimmed) throw new Error(t("builder_parse_empty_error"));
+    if ((trimmed.startsWith("{") && trimmed.endsWith("}")) || (trimmed.startsWith("[") && trimmed.endsWith("]"))) return JSON.parse(trimmed);
+    return trimmed;
+}
 function createInsertControl(location, insertIndex, { prominent = false, compact = false } = {}) {
-    const holder = document.createElement("div"); holder.className = "flow-insert-control"; if (prominent) holder.classList.add("prominent");
-    const button = document.createElement("button"); button.type = "button"; button.className = "flow-insert-button"; button.title = "Insert Node Here"; button.innerHTML = '<span>+</span><span>Add Node</span>';
-    button.addEventListener("click", () => { const pendingLocation = createLocation((location.segments || []).map((seg) => ({ ...seg }))); openNodePicker(pendingLocation, insertIndex); });
-    holder.appendChild(button); return holder;
+    const holder = document.createElement("div");
+    holder.className = "flow-insert-control";
+    if (prominent) holder.classList.add("prominent");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "flow-insert-button";
+    button.title = t("builder_node_insert_here");
+    button.innerHTML = `<span>+</span><span>${t("builder_node_add")}</span>`;
+    button.addEventListener("click", () => {
+        const pendingLocation = createLocation((location.segments || []).map((seg) => ({ ...seg })));
+        openNodePicker(pendingLocation, insertIndex);
+    });
+    holder.appendChild(button);
+    return holder;
 }
 
 // ... (Render Helpers - Tool/Loop/Branch Nodes - keep same) ...
@@ -5088,7 +5207,10 @@ function renderToolNode(identifier, stepPath, meta = {}) {
 
     const body = document.createElement("div"); body.className = "flow-node-body"; body.textContent = toolName || raw;
     const actions = document.createElement("div"); actions.className = "step-actions";
-    const removeBtn = document.createElement("button"); removeBtn.className = "btn btn-outline-danger btn-sm"; removeBtn.textContent = "Delete"; removeBtn.onclick = (e) => { e.stopPropagation(); removeStep(stepPath); };
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "btn btn-outline-danger btn-sm";
+    removeBtn.textContent = t("common_delete");
+    removeBtn.onclick = (e) => { e.stopPropagation(); removeStep(stepPath); };
     actions.append(removeBtn); card.append(header, body, actions); return card;
 }
 function renderLoopNode(step, parentLocation, index) {
@@ -5097,15 +5219,25 @@ function renderLoopNode(step, parentLocation, index) {
     const loopLocation = createLocation([...(parentLocation.segments || []), { type: "loop", index }]);
     const container = document.createElement("div"); container.className = "loop-container";
     const header = document.createElement("div"); header.className = "loop-header";
-    const title = document.createElement("h6"); title.textContent = `Loop (${step.loop.times}x)`;
-    const enterBtn = document.createElement("button"); enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0"; enterBtn.textContent = "Open Context →"; enterBtn.onclick = () => setActiveLocation(loopLocation);
+    const title = document.createElement("h6");
+    title.textContent = formatTemplate(t("builder_loop_title"), { times: step.loop.times });
+    const enterBtn = document.createElement("button");
+    enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0";
+    enterBtn.textContent = t("builder_open_context");
+    enterBtn.onclick = () => setActiveLocation(loopLocation);
     header.append(title, enterBtn);
     const actions = document.createElement("div"); actions.className = "mt-2 d-flex justify-content-end gap-2";
-    const editBtn = document.createElement("button"); editBtn.className = "btn btn-sm btn-outline-secondary border-0"; editBtn.textContent = "Edit"; editBtn.onclick = () => openStepEditor(createStepPath(parentLocation, index));
-    const delBtn = document.createElement("button"); delBtn.className = "btn btn-sm btn-outline-danger border-0"; delBtn.textContent = "Delete"; delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn btn-sm btn-outline-secondary border-0";
+    editBtn.textContent = t("common_edit");
+    editBtn.onclick = () => openStepEditor(createStepPath(parentLocation, index));
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn btn-sm btn-outline-danger border-0";
+    delBtn.textContent = t("common_delete");
+    delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
     actions.append(editBtn, delBtn);
 
-    const list = renderStepList(loopSteps, loopLocation, { placeholderText: "Empty Loop", compact: true });
+    const list = renderStepList(loopSteps, loopLocation, { placeholderText: t("builder_empty_loop"), compact: true });
 
     container.append(header, list, actions); if (locationsEqual(loopLocation, getActiveLocation())) container.classList.add("active"); return container;
 }
@@ -5115,24 +5247,41 @@ function renderBranchNode(step, parentLocation, index) {
 
     const branchBase = createLocation([...(parentLocation.segments || []), { type: "branch", index, section: "router" }]);
     const container = document.createElement("div"); container.className = "branch-container";
-    const header = document.createElement("div"); header.className = "branch-header"; header.innerHTML = `<h6>Branch</h6>`;
-    const enterBtn = document.createElement("button"); enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0"; enterBtn.textContent = "Open Router →";
+    const header = document.createElement("div");
+    header.className = "branch-header";
+    header.innerHTML = `<h6>${t("builder_branch")}</h6>`;
+    const enterBtn = document.createElement("button");
+    enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0";
+    enterBtn.textContent = t("builder_open_router");
     enterBtn.onclick = () => setActiveLocation(branchBase);
     header.appendChild(enterBtn);
     const routerDiv = document.createElement("div"); routerDiv.className = "branch-router " + (locationsEqual(branchBase, getActiveLocation()) ? "active" : "");
-    routerDiv.appendChild(renderStepList(step.branch.router, branchBase, { placeholderText: "Router Logic", compact: true }));
+    routerDiv.appendChild(renderStepList(step.branch.router, branchBase, { placeholderText: t("builder_router_logic"), compact: true }));
     const casesDiv = document.createElement("div"); casesDiv.className = "branch-cases mt-3";
     Object.keys(step.branch.branches).forEach(k => {
         const loc = createLocation([...(parentLocation.segments || []), { type: "branch", index, section: "branch", branchKey: k }]);
         const cCard = document.createElement("div"); cCard.className = "branch-case " + (locationsEqual(loc, getActiveLocation()) ? "active" : "");
         const cHeader = document.createElement("div"); cHeader.className = "d-flex justify-content-between mb-2";
-        const cTitle = document.createElement("span"); cTitle.className = "fw-bold text-xs"; cTitle.textContent = `Case: ${k}`;
-        const cBtn = document.createElement("button"); cBtn.className = "btn btn-link btn-sm p-0 text-decoration-none"; cBtn.textContent = "Open"; cBtn.onclick = () => setActiveLocation(loc);
-        cHeader.append(cTitle, cBtn); cCard.append(cHeader, renderStepList(step.branch.branches[k], loc, { placeholderText: "Empty Case", compact: true })); casesDiv.appendChild(cCard);
+        const cTitle = document.createElement("span");
+        cTitle.className = "fw-bold text-xs";
+        cTitle.textContent = formatTemplate(t("builder_case_label"), { name: k });
+        const cBtn = document.createElement("button");
+        cBtn.className = "btn btn-link btn-sm p-0 text-decoration-none";
+        cBtn.textContent = t("common_open");
+        cBtn.onclick = () => setActiveLocation(loc);
+        cHeader.append(cTitle, cBtn);
+        cCard.append(cHeader, renderStepList(step.branch.branches[k], loc, { placeholderText: t("builder_empty_case"), compact: true }));
+        casesDiv.appendChild(cCard);
     });
     const actions = document.createElement("div"); actions.className = "mt-2 d-flex justify-content-end gap-2";
-    const addBtn = document.createElement("button"); addBtn.className = "btn btn-sm btn-light border"; addBtn.textContent = "+ Case"; addBtn.onclick = () => addBranchCase(parentLocation, index);
-    const delBtn = document.createElement("button"); delBtn.className = "btn btn-sm btn-text text-danger"; delBtn.textContent = "Delete Branch"; delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
+    const addBtn = document.createElement("button");
+    addBtn.className = "btn btn-sm btn-light border";
+    addBtn.textContent = t("builder_add_case");
+    addBtn.onclick = () => addBranchCase(parentLocation, index);
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn btn-sm btn-text text-danger";
+    delBtn.textContent = t("builder_delete_branch");
+    delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
     actions.append(addBtn, delBtn); container.append(header, routerDiv, casesDiv, actions); return container;
 }
 function renderStepNode(step, parentLocation, index) {
@@ -5144,7 +5293,8 @@ function renderStepNode(step, parentLocation, index) {
     }
     if (step && typeof step === "object" && step.loop) return renderLoopNode(step, parentLocation, index);
     if (step && typeof step === "object" && step.branch) return renderBranchNode(step, parentLocation, index);
-    const card = renderToolNode("Custom Object", stepPath, { description: truncateText(JSON.stringify(step)) }); return card;
+    const card = renderToolNode(t("builder_custom_object"), stepPath, { description: truncateText(JSON.stringify(step)) });
+    return card;
 }
 function renderStepList(steps, location, options = {}) {
     const safeSteps = Array.isArray(steps) ? steps : [];
@@ -5189,13 +5339,24 @@ function renderContextControls() {
     els.contextControls.appendChild(breadcrumb);
     const active = getActiveLocation(); const kind = getContextKind(active);
     if (kind !== "root") {
-        const exitBtn = document.createElement("button"); exitBtn.className = "btn btn-sm btn-link text-danger text-decoration-none mt-2"; exitBtn.textContent = "Exit Context ✕";
-        exitBtn.onclick = () => { setActiveLocation(createLocation((active.segments || []).slice(0, -1))); }; els.contextControls.appendChild(exitBtn);
+        const exitBtn = document.createElement("button");
+        exitBtn.className = "btn btn-sm btn-link text-danger text-decoration-none mt-2";
+        exitBtn.textContent = t("builder_exit_context");
+        exitBtn.onclick = () => { setActiveLocation(createLocation((active.segments || []).slice(0, -1))); };
+        els.contextControls.appendChild(exitBtn);
     }
 }
 function ctxLabel(location, idx) {
-    if (idx === 0) return "Root"; const last = (location.segments || [])[location.segments.length - 1];
-    if (!last) return "Root"; if (last.type === "loop") return "Loop"; if (last.type === "branch") return last.section === "router" ? "Router" : `Case:${last.branchKey}`; return "Node";
+    if (idx === 0) return t("builder_context_root");
+    const last = (location.segments || [])[location.segments.length - 1];
+    if (!last) return t("builder_context_root");
+    if (last.type === "loop") return t("builder_context_loop");
+    if (last.type === "branch") {
+        return last.section === "router"
+            ? t("builder_context_router")
+            : formatTemplate(t("builder_context_case"), { name: last.branchKey });
+    }
+    return t("builder_context_node");
 }
 function addBranchCase(parentLocation, branchIndex) {
     const steps = resolveSteps(parentLocation); const entry = steps[branchIndex]; if (!entry?.branch) return;
@@ -5215,7 +5376,7 @@ function renderPipelineMenu(items) {
     els.pipelineMenu.innerHTML = "";
     if (!items.length) {
         const li = document.createElement("li");
-        li.innerHTML = '<span class="dropdown-item text-muted small">No pipelines</span>';
+        li.innerHTML = `<span class="dropdown-item text-muted small">${t("builder_no_pipelines")}</span>`;
         els.pipelineMenu.appendChild(li);
         return;
     }
@@ -5237,7 +5398,7 @@ function renderPipelineMenu(items) {
         if (i.is_ready) {
             const readyDot = document.createElement("span");
             readyDot.className = "pipeline-ready-dot";
-            readyDot.title = "Built";
+            readyDot.title = t("builder_pipeline_built_title");
             btn.appendChild(readyDot);
         }
 
@@ -5249,7 +5410,7 @@ function renderPipelineMenu(items) {
 async function loadPipeline(name, options = {}) {
     const { ignoreUnsaved = false } = options;
     if (!ignoreUnsaved && state.unsavedChanges && state.selectedPipeline && state.selectedPipeline !== name) {
-        const proceed = await confirmUnsavedChanges("switch to another pipeline");
+        const proceed = await confirmUnsavedChanges(t("builder_action_switch_pipeline"));
         if (!proceed) return;
     }
 
@@ -5304,7 +5465,7 @@ async function loadPipeline(name, options = {}) {
         updateAIContextBanner('pipeline-load');
 
     } catch (err) {
-        log(`Failed to load pipeline: ${err.message}`);
+        log(formatTemplate(t("builder_load_pipeline_failed"), { error: err.message }));
         console.error(err);
     }
 }
@@ -5324,7 +5485,7 @@ async function checkPipelineReadiness(name) {
         state.isBuilt = true;         // Consider as built
         state.parametersReady = true; // Consider parameters as ready
 
-        log(`Pipeline '${name}' parameters loaded. Ready to Chat.`);
+        log(formatTemplate(t("builder_pipeline_ready"), { name }));
         updateActionButtons(); // This will enable "Enter Chat Mode" button
 
     } catch (e) {
@@ -5341,13 +5502,13 @@ async function checkPipelineReadiness(name) {
 async function handleSubmit(e) {
     if (e) e.preventDefault();
     const name = els.name.value.trim();
-    if (!name) return log("Pipeline name is required");
+    if (!name) return log(t("builder_pipeline_name_required"));
 
     // Get YAML content from editor and validate
     const validation = await validateYamlEditorContent({ showModalOnError: true });
     let yamlContent = validation.valid ? (validation.content || '') : null;
     if (yamlContent === null) {
-        log("Save aborted due to YAML errors.");
+        log(t("builder_save_aborted_yaml_error"));
         return;
     }
 
@@ -5368,22 +5529,22 @@ async function handleSubmit(e) {
                 headers: { 'Content-Type': 'text/plain; charset=utf-8' },
                 body: yamlContent,
             });
-            if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+            if (!res.ok) throw new Error(formatTemplate(t("builder_save_failed_status"), { status: res.status }));
             await res.json();
 
             state.selectedPipeline = name;
             refreshPipelines();
-            log("Pipeline saved.");
+            log(t("builder_pipeline_saved"));
             setYamlSyncStatus('synced');
             snapshotSavedYaml(yamlContent);
 
             // After successful save, automatically sync canvas (don't overwrite editor), but maintain "saved" state
             await syncYamlToCanvasOnly({ markUnsaved: false });
         } catch (err) {
-            const msg = err?.message || "Unknown error";
-            log(`Error: ${msg}`);
+            const msg = err?.message || t("common_unknown_error");
+            log(formatTemplate(t("builder_error_message"), { error: msg }));
             showYamlError(msg);
-            showModal(`Save failed: ${msg}`, { title: "Save Error", type: "error" });
+            showModal(formatTemplate(t("builder_save_failed_message"), { error: msg }), { title: t("builder_save_error_title"), type: "error" });
         }
     } else {
         // Empty content, save using JSON method
@@ -5399,7 +5560,7 @@ function saveWithJson(name) {
         .then(s => {
             state.selectedPipeline = s.name || name;
             refreshPipelines();
-            log("Pipeline saved.");
+            log(t("builder_pipeline_saved"));
             setYamlSyncStatus('synced');
             snapshotSavedYaml(yamlStringify(buildPipelinePayloadForPreview()));
             loadPipeline(s.name || name);
@@ -5408,13 +5569,13 @@ function saveWithJson(name) {
 }
 async function buildSelectedPipeline() {
     if (state.unsavedChanges) {
-        showModal("Please save the pipeline before building.", { title: "Unsaved changes", type: "warning" });
+        showModal(t("builder_save_before_build"), { title: t("builder_unsaved_changes_title"), type: "warning" });
         return;
     }
-    if (!state.selectedPipeline) return log("Please save the pipeline first.");
+    if (!state.selectedPipeline) return log(t("builder_save_pipeline_first"));
     expandConsole();
     setBuildButtonState("running");
-    log(`Building pipeline "${state.selectedPipeline}"...`);
+    log(formatTemplate(t("builder_building_pipeline"), { name: state.selectedPipeline }));
     try {
         await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/build`, { method: "POST" });
 
@@ -5422,13 +5583,13 @@ async function buildSelectedPipeline() {
         state.parametersReady = false;
         updateActionButtons();
         setBuildButtonState("success");
-        log("Pipeline built.");
+        log(t("builder_pipeline_built_log"));
 
         // Load parameter data
         try {
             state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
         } catch (e) {
-            log("Failed to load parameters: " + e.message);
+            log(formatTemplate(t("builder_load_parameters_failed"), { error: e.message }));
         }
 
         // Switch to Parameters panel
@@ -5437,16 +5598,16 @@ async function buildSelectedPipeline() {
         }
     } catch (e) {
         setBuildButtonState("error");
-        log(`Build failed: ${e.message}`);
-        showModal(`Build failed: ${e.message}`, { title: "Build Error", type: "error" });
+        log(formatTemplate(t("builder_build_failed_message"), { error: e.message }));
+        showModal(formatTemplate(t("builder_build_failed_message"), { error: e.message }), { title: t("builder_build_error_title"), type: "error" });
     }
 }
 async function deleteSelectedPipeline() {
     if (!state.selectedPipeline) return;
-    const confirmed = await showConfirm("Delete this pipeline?", {
-        title: "Delete Pipeline",
+    const confirmed = await showConfirm(t("builder_delete_pipeline_confirm"), {
+        title: t("builder_delete_pipeline_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -5482,7 +5643,7 @@ async function handlePipelineNameBlur() {
 
     // Validate name format
     if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(newName)) {
-        log("Invalid name. Use letters, numbers, underscores, hyphens. Start with letter or underscore.");
+        log(t("builder_invalid_pipeline_name"));
         els.name.value = state.selectedPipeline;
         return;
     }
@@ -5495,7 +5656,7 @@ async function handlePipelineNameBlur() {
 
         state.selectedPipeline = newName;
         await refreshPipelines();
-        log(`Pipeline renamed to "${newName}".`);
+        log(formatTemplate(t("builder_pipeline_renamed"), { name: newName }));
     } catch (e) {
         log(`Rename failed: ${e.message}`);
         els.name.value = state.selectedPipeline; // Restore original name
@@ -5644,7 +5805,7 @@ function renderParameterForm() {
     });
 }
 async function showParameterPanel(force = false) {
-    if (!state.isBuilt) return log("Please build the pipeline first.");
+    if (!state.isBuilt) return log(t("builder_build_pipeline_first"));
     if (force || !state.parameterData) { try { state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`)); } catch (e) { return log(e.message); } }
     renderParameterForm(); setMode(Modes.PARAMETERS);
 }
@@ -5669,10 +5830,10 @@ function bindEvents() {
 
     if (els.clearSteps) {
         els.clearSteps.addEventListener("click", async () => {
-            const confirmed = await showConfirm("Clear all steps?", {
-                title: "Clear Steps",
+            const confirmed = await showConfirm(t("builder_clear_steps_confirm"), {
+                title: t("builder_clear_steps_title"),
                 type: "warning",
-                confirmText: "Clear"
+                confirmText: t("builder_clear_steps_action")
             });
             if (confirmed) setSteps([], { markUnsaved: true });
         });
@@ -5805,7 +5966,7 @@ function bindEvents() {
     document.getElementById("step-editor-cancel").onclick = closeStepEditor;
     if (els.refreshPipelines) {
         els.refreshPipelines.onclick = async () => {
-            const canProceed = state.unsavedChanges ? await confirmUnsavedChanges("refresh pipeline list") : true;
+            const canProceed = state.unsavedChanges ? await confirmUnsavedChanges(t("builder_action_refresh_pipeline_list")) : true;
             if (!canProceed) return;
 
             await refreshPipelines();
@@ -5835,13 +5996,66 @@ window.toggleKbDropdown = function () {
     }
 };
 
-// Click elsewhere to close dropdown menu
-document.addEventListener('click', function (e) {
-    const wrapper = document.querySelector('.kb-dropdown-wrapper');
-    if (wrapper && !wrapper.contains(e.target)) {
-        wrapper.classList.remove('open');
+function closeChatPipelineDropdown(target) {
+    const trigger = document.getElementById('chatPipelineDropdown');
+    const menu = document.getElementById('chat-pipeline-menu');
+    if (!trigger || !menu) return;
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true' || menu.classList.contains('show');
+    if (!isOpen) return;
+    if (menu.contains(target) || trigger.contains(target)) return;
+    if (window.bootstrap?.Dropdown) {
+        const instance = window.bootstrap.Dropdown.getOrCreateInstance(trigger);
+        instance.hide();
+    } else {
+        trigger.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('show');
     }
-});
+}
+
+function closeBuilderPipelineDropdown(target) {
+    const trigger = document.getElementById('pipelineDropdownBtn');
+    const menu = document.getElementById('pipeline-menu');
+    if (!trigger || !menu) return;
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true' || menu.classList.contains('show');
+    if (!isOpen) return;
+    if (menu.contains(target) || trigger.contains(target)) return;
+    if (window.bootstrap?.Dropdown) {
+        const instance = window.bootstrap.Dropdown.getOrCreateInstance(trigger);
+        instance.hide();
+    } else {
+        trigger.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('show');
+    }
+}
+
+function closeKbDropdown(target) {
+    const wrapper = document.querySelector('.kb-dropdown-wrapper');
+    const menu = document.getElementById('kb-dropdown-menu');
+    const trigger = document.getElementById('kb-dropdown-trigger');
+    if (!wrapper || !wrapper.classList.contains('open')) return;
+    if ((menu && menu.contains(target)) || (trigger && trigger.contains(target))) return;
+    wrapper.classList.remove('open');
+}
+
+function closeContextMenus(target) {
+    const chatMenu = document.getElementById('chat-session-context-menu');
+    if (chatMenu && !chatMenu.classList.contains('d-none') && !chatMenu.contains(target)) {
+        hideChatSessionContextMenu();
+    }
+    const promptMenu = document.getElementById('prompt-context-menu');
+    if (promptMenu && !promptMenu.classList.contains('d-none') && !promptMenu.contains(target)) {
+        hidePromptContextMenu();
+    }
+}
+
+// Pointer-down capture to close menus on blank area click
+document.addEventListener('pointerdown', function (e) {
+    const target = e.target;
+    closeContextMenus(target);
+    closeKbDropdown(target);
+    closeChatPipelineDropdown(target);
+    closeBuilderPipelineDropdown(target);
+}, true);
 
 // Clear knowledge base selection
 window.clearKbSelection = function (e) {
@@ -7096,7 +7310,7 @@ function initWorkspace() {
     if (paramsSaveBtn) {
         paramsSaveBtn.addEventListener('click', () => {
             persistParameterData();
-            log("Parameters saved.");
+            log(t("builder_params_saved"));
         });
     }
 
@@ -7107,7 +7321,7 @@ function initWorkspace() {
                 try {
                     state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
                     renderParameterFormInline();
-                    log("Parameters reloaded.");
+                    log(t("builder_params_reloaded"));
                 } catch (e) {
                     log("Failed to reload parameters: " + e.message);
                 }
@@ -7188,7 +7402,12 @@ async function switchWorkspaceMode(mode) {
     if (mode === workspaceState.currentMode) return;
 
     if (workspaceState.currentMode === 'pipeline' && mode !== 'pipeline') {
-        const ok = await confirmUnsavedChanges("change workspace mode will discard unsaved changes, are you sure?");
+        const ok = await showConfirm(t("builder_workspace_switch_unsaved_message"), {
+            title: t("builder_unsaved_changes_title"),
+            type: "warning",
+            confirmText: t("common_continue"),
+            cancelText: t("common_cancel")
+        });
         if (!ok) return;
     }
 
@@ -7218,7 +7437,13 @@ async function switchWorkspaceMode(mode) {
         loadPromptList();
     }
 
-    log(`Switched to ${mode} mode.`);
+    const modeLabels = {
+        pipeline: t("builder_mode_pipeline"),
+        parameters: t("builder_mode_parameters"),
+        prompts: t("builder_mode_prompts")
+    };
+    const modeLabel = modeLabels[mode] || mode;
+    log(formatTemplate(t("builder_switched_mode"), { mode: modeLabel }));
 }
 
 // =========================================
@@ -7510,7 +7735,7 @@ function renderPromptTabs() {
         if (tabState[path]?.modified) tab.classList.add('unsaved');
         tab.innerHTML = `
             <span class="prompt-tab-name">${name}</span>
-            <button class="prompt-tab-close" type="button" title="Close">×</button>
+            <button class="prompt-tab-close" type="button" title="${t("common_close")}">×</button>
         `;
         tab.onclick = () => setActivePromptTab(path);
         tab.querySelector('.prompt-tab-close')?.addEventListener('click', (e) => {
@@ -7563,7 +7788,7 @@ async function setActivePromptTab(path, fileHint = null) {
             tabState.originalContent = content.content || '';
             tabState.modified = false;
         } catch (e) {
-            log("Failed to load prompt: " + e.message);
+            log(formatTemplate(t("builder_prompt_load_failed"), { error: e.message }));
             return;
         }
     }
@@ -7587,10 +7812,10 @@ async function closePromptTab(path, options = {}) {
     if (!path) return;
     const tabState = workspaceState.prompts.tabState[path];
     if (tabState?.modified && !options.skipConfirm) {
-        const confirmed = await showConfirm(`Discard unsaved changes in "${getPromptFileName(path)}"?`, {
-            title: "Unsaved Changes",
+        const confirmed = await showConfirm(formatTemplate(t("builder_prompt_discard_confirm"), { name: getPromptFileName(path) }), {
+            title: t("builder_unsaved_changes_title"),
             type: "warning",
-            confirmText: "Discard"
+            confirmText: t("builder_discard")
         });
         if (!confirmed) return;
     }
@@ -7641,10 +7866,10 @@ function hidePromptContextMenu() {
 
 async function deletePromptFile(path) {
     if (!path) return;
-    const confirmed = await showConfirm(`Delete "${getPromptFileName(path)}"?`, {
-        title: "Delete Prompt",
+    const confirmed = await showConfirm(formatTemplate(t("builder_prompt_delete_confirm"), { name: getPromptFileName(path) }), {
+        title: t("builder_prompt_delete_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -7653,23 +7878,23 @@ async function deletePromptFile(path) {
         await fetchJSON(`/api/prompts/${encodeURIComponent(path)}`, {
             method: 'DELETE'
         });
-        log(`Deleted: ${path}`);
+        log(formatTemplate(t("builder_prompt_deleted"), { path }));
 
         await closePromptTab(path, { skipConfirm: true });
         await loadPromptList();
     } catch (e) {
-        log("Failed to delete prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_delete_failed"), { error: e.message }));
     }
 }
 
 async function renamePromptFile(path) {
     if (!path) return;
     const currentName = getPromptFileName(path);
-    const newNameInput = await showPrompt("Enter the new file name:", {
-        title: "Rename Prompt",
-        placeholder: "e.g., my_prompt.jinja",
+    const newNameInput = await showPrompt(t("builder_prompt_rename_prompt"), {
+        title: t("builder_prompt_rename_title"),
+        placeholder: t("builder_prompt_rename_placeholder"),
         defaultValue: currentName,
-        confirmText: "Rename"
+        confirmText: t("common_rename")
     });
     if (!newNameInput) return;
 
@@ -7684,7 +7909,7 @@ async function renamePromptFile(path) {
             method: 'POST',
             body: JSON.stringify({ new_name: newName })
         });
-        log(`Renamed to: ${newName}`);
+        log(formatTemplate(t("builder_prompt_renamed"), { name: newName }));
 
         await loadPromptList();
         const newFile = workspaceState.prompts.files.find(f => f.name === newName);
@@ -7708,7 +7933,7 @@ async function renamePromptFile(path) {
             }
         }
     } catch (e) {
-        log("Failed to rename prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_rename_failed"), { error: e.message }));
     }
 }
 
@@ -7722,8 +7947,8 @@ async function loadPromptList() {
         renderPromptList(files);
         prunePromptTabs(files);
     } catch (e) {
-        log("Failed to load prompts: " + e.message);
-        listEl.innerHTML = '<div class="prompts-empty"><p>Failed to load prompts.</p></div>';
+        log(formatTemplate(t("builder_prompt_list_load_failed"), { error: e.message }));
+        listEl.innerHTML = `<div class="prompts-empty"><p>${t("builder_prompt_list_load_failed_ui")}</p></div>`;
     }
 }
 
@@ -7734,7 +7959,7 @@ function renderPromptList(files) {
     listEl.innerHTML = '';
 
     if (!files.length) {
-        listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;">No prompt files found.</div>';
+        listEl.innerHTML = `<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;">${t("builder_prompt_list_empty")}</div>`;
         return;
     }
 
@@ -7770,9 +7995,9 @@ async function selectPromptFile(file) {
 }
 
 async function createNewPrompt() {
-    const name = await showPrompt("Enter the prompt file name:", {
-        title: "New Prompt",
-        placeholder: "e.g., my_prompt.jinja"
+    const name = await showPrompt(t("builder_prompt_new_prompt"), {
+        title: t("builder_new_prompt"),
+        placeholder: t("builder_prompt_new_placeholder")
     });
 
     if (!name) return;
@@ -7789,7 +8014,7 @@ async function createNewPrompt() {
             body: JSON.stringify({ name: filename, content: '# New Prompt Template\n\n' })
         });
 
-        log(`Created prompt: ${filename}`);
+        log(formatTemplate(t("builder_prompt_created"), { name: filename }));
         await loadPromptList();
 
         // Select newly created file
@@ -7798,7 +8023,7 @@ async function createNewPrompt() {
             openPromptTab(newFile);
         }
     } catch (e) {
-        log("Failed to create prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_create_failed"), { error: e.message }));
     }
 }
 
@@ -7822,9 +8047,9 @@ async function saveCurrentPrompt() {
         workspaceState.prompts.modified = false;
         updatePromptUI();
         renderPromptTabs();
-        log(`Saved: ${workspaceState.prompts.currentFile}`);
+        log(formatTemplate(t("builder_prompt_saved"), { path: workspaceState.prompts.currentFile }));
     } catch (e) {
-        log("Failed to save prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_save_failed"), { error: e.message }));
     }
 }
 
@@ -7945,35 +8170,35 @@ const AI_WELCOME_HTML = `
         <div class="ai-welcome-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5"/><circle cx="16.5" cy="14.5" r="1.5"/></svg>
         </div>
-        <h4>UltraRAG AI Assistant</h4>
-        <p>I can help you build pipelines, configure parameters, and edit prompts.</p>
-        <p class="ai-welcome-hint">Click the settings icon to configure your API connection.</p>
-        
+        <h4 data-i18n="builder_ai_welcome_title">UltraRAG AI Assistant</h4>
+        <p data-i18n="builder_ai_welcome_desc">I can help you build pipelines, configure parameters, and edit prompts.</p>
+        <p class="ai-welcome-hint" data-i18n="builder_ai_welcome_hint">Click the settings icon to configure your API connection.</p>
+
         <!-- Quick Action Cards -->
         <div class="ai-starter-chips">
-            <button class="ai-starter-chip" data-prompt="Update the current RAG pipeline to include a citation module, ensuring the final output displays source references for fact-checking purposes.">
+            <button class="ai-starter-chip" data-prompt="Update the current RAG pipeline to include a citation module, ensuring the final output displays source references for fact-checking purposes." data-i18n-prompt="builder_ai_prompt_pipeline_adjustment">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Pipeline Adjustment</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_pipeline_adjustment">Pipeline Adjustment</span>
             </button>
-            <button class="ai-starter-chip" data-prompt="Optimize the system prompt for the [Insert Domain, e.g., Medical/Legal] domain. Please refine the instructions to ensure the generated responses strictly adhere to professional terminology and logical accuracy suitable for this field.">
+            <button class="ai-starter-chip" data-prompt="Optimize the system prompt for the [Insert Domain, e.g., Medical/Legal] domain. Please refine the instructions to ensure the generated responses strictly adhere to professional terminology and logical accuracy suitable for this field." data-i18n-prompt="builder_ai_prompt_prompt_adaptation">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Prompt Adaptation</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_prompt_adaptation">Prompt Adaptation</span>
             </button>
-            <button class="ai-starter-chip" data-prompt="Reconfigure the generation backend. Switch the backend type to OpenAI, set the model name to [Insert Model Name, e.g., Llama-3-70B], and update the API endpoint to port [Insert Port, e.g., 8000].">
+            <button class="ai-starter-chip" data-prompt="Reconfigure the generation backend. Switch the backend type to OpenAI, set the model name to [Insert Model Name, e.g., Llama-3-70B], and update the API endpoint to port [Insert Port, e.g., 8000]." data-i18n-prompt="builder_ai_prompt_parameter_settings">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Parameter Settings</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_parameter_settings">Parameter Settings</span>
             </button>
-            <button class="ai-starter-chip" data-prompt="I want to redesign my RAG workflow based on this article/paper: [Insert Link]. Please analyze its core methodologies and assist me in constructing a similar pipeline architecture.">
+            <button class="ai-starter-chip" data-prompt="I want to redesign my RAG workflow based on this article/paper: [Insert Link]. Please analyze its core methodologies and assist me in constructing a similar pipeline architecture." data-i18n-prompt="builder_ai_prompt_freeform_tuning">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Free-form Tuning</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_freeform_tuning">Free-form Tuning</span>
             </button>
         </div>
     </div>
@@ -8252,7 +8477,7 @@ function saveAISettings(options = {}) {
         localStorage.setItem('ultrarag_ai_settings', JSON.stringify(aiState.settings));
 
         if (statusEl && !silent) {
-            statusEl.textContent = 'Settings saved successfully!';
+            statusEl.textContent = t('builder_ai_settings_saved_success');
             statusEl.className = 'ai-settings-status success';
             setTimeout(() => {
                 statusEl.className = 'ai-settings-status';
@@ -8263,7 +8488,7 @@ function saveAISettings(options = {}) {
         return true;
     } catch (e) {
         if (statusEl) {
-            statusEl.textContent = 'Failed to save settings: ' + e.message;
+            statusEl.textContent = formatTemplate(t('builder_ai_settings_save_failed'), { error: e.message });
             statusEl.className = 'ai-settings-status error';
         }
         return false;
@@ -8276,7 +8501,7 @@ async function testAIConnection(triggerBtn = null) {
 
     if (!aiState.settings.apiKey) {
         if (statusEl) {
-            statusEl.textContent = 'Please enter an API key';
+            statusEl.textContent = t('builder_ai_settings_api_key_required');
             statusEl.className = 'ai-settings-status error';
         }
         return;
@@ -8284,7 +8509,7 @@ async function testAIConnection(triggerBtn = null) {
 
     if (actionBtn) actionBtn.disabled = true;
     if (statusEl) {
-        statusEl.textContent = 'Testing connection...';
+        statusEl.textContent = t('builder_ai_settings_testing');
         statusEl.className = 'ai-settings-status';
         statusEl.style.display = 'block';
     }
@@ -8301,13 +8526,17 @@ async function testAIConnection(triggerBtn = null) {
         if (result.success) {
             aiState.isConnected = true;
             if (statusEl) {
-                statusEl.textContent = 'Connection successful! Model: ' + (result.model || aiState.settings.model);
+                statusEl.textContent = formatTemplate(t('builder_ai_settings_connection_success'), {
+                    model: result.model || aiState.settings.model
+                });
                 statusEl.className = 'ai-settings-status success';
             }
         } else {
             aiState.isConnected = false;
             if (statusEl) {
-                statusEl.textContent = 'Connection failed: ' + (result.error || 'Unknown error');
+                statusEl.textContent = formatTemplate(t('builder_ai_settings_connection_failed'), {
+                    error: result.error || t('common_unknown_error')
+                });
                 statusEl.className = 'ai-settings-status error';
             }
         }
@@ -8316,7 +8545,7 @@ async function testAIConnection(triggerBtn = null) {
     } catch (e) {
         aiState.isConnected = false;
         if (statusEl) {
-            statusEl.textContent = 'Connection failed: ' + e.message;
+            statusEl.textContent = formatTemplate(t('builder_ai_settings_connection_failed'), { error: e.message });
             statusEl.className = 'ai-settings-status error';
         }
     } finally {
@@ -8361,16 +8590,16 @@ function updateAIConnectionStatus() {
         if (aiState.isConnected) {
             dot?.classList.remove('disconnected', 'connecting');
             dot?.classList.add('connected');
-            if (text) text.textContent = 'Connected to ' + aiState.settings.model;
+            if (text) text.textContent = formatTemplate(t("builder_ai_status_connected"), { model: aiState.settings.model });
         } else {
             dot?.classList.remove('connected', 'connecting');
             dot?.classList.add('disconnected');
-            if (text) text.textContent = 'Configured - Save & Test to verify';
+            if (text) text.textContent = t("builder_ai_status_configured_pending");
         }
     } else {
         dot?.classList.remove('connected', 'connecting');
         dot?.classList.add('disconnected');
-        if (text) text.textContent = 'Not configured';
+        if (text) text.textContent = t("builder_ai_status_not_configured");
     }
 }
 
@@ -8413,7 +8642,7 @@ function currentSessionHasContent() {
 
 function deriveAISessionTitle(messages = []) {
     const firstUser = messages.find(m => m.role === 'user');
-    if (!firstUser || !firstUser.content) return 'New Session';
+    if (!firstUser || !firstUser.content) return t("builder_ai_session_new");
     const text = firstUser.content.trim().replace(/\s+/g, ' ');
     if (text.length <= 24) return text;
     return text.slice(0, 24) + '…';
@@ -8445,7 +8674,7 @@ function renderAISessionList() {
     if (!nonEmptySessions.length) {
         const empty = document.createElement('div');
         empty.className = 'ai-session-empty';
-        empty.textContent = 'No sessions yet';
+        empty.textContent = t("builder_ai_sessions_empty");
         listEl.appendChild(empty);
         if (deleteBtn) deleteBtn.disabled = true;
         return;
@@ -8460,7 +8689,7 @@ function renderAISessionList() {
                 <div class="ai-session-title-text">${title}</div>
                 <div class="ai-session-meta">${time}</div>
             </div>
-            <button class="ai-session-delete-btn" title="Delete session">
+            <button class="ai-session-delete-btn" title="${t("builder_ai_delete_session")}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
             </button>
         `;
@@ -8635,6 +8864,7 @@ function renderAIConversationFromState() {
     messagesEl.innerHTML = '';
     if (!aiState.messages.length) {
         messagesEl.innerHTML = AI_WELCOME_HTML;
+        updateI18nTexts();
         // Re-bind recommended question card events
         initAIStarterChips();
         return;
@@ -8659,6 +8889,7 @@ function clearAIChat() {
     const messagesEl = document.getElementById('ai-messages');
     if (messagesEl) {
         messagesEl.innerHTML = AI_WELCOME_HTML;
+        updateI18nTexts();
         // Re-bind recommended question card events
         initAIStarterChips();
     }
@@ -8738,10 +8969,10 @@ function buildAIActionHtml(actions) {
     let actionsHtml = '';
     uniqueActions.forEach((action, index) => {
         const typeLabel = {
-            'modify_pipeline': 'Pipeline Modification',
-            'modify_prompt': 'Prompt Modification',
-            'modify_parameter': 'Parameter Change'
-        }[action.type] || 'Modification';
+            'modify_pipeline': t('builder_ai_action_modify_pipeline'),
+            'modify_prompt': t('builder_ai_action_modify_prompt'),
+            'modify_parameter': t('builder_ai_action_modify_parameter')
+        }[action.type] || t('builder_ai_action_modify_generic');
 
         const typeIcon = {
             'modify_pipeline': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
@@ -8754,8 +8985,8 @@ function buildAIActionHtml(actions) {
                 <div class="ai-action-header">
                     <span class="ai-action-type">${typeIcon} ${typeLabel}</span>
                     <div class="ai-action-buttons">
-                        <button class="ai-action-btn apply" data-action="apply" data-index="${index}">Apply</button>
-                        <button class="ai-action-btn reject" data-action="reject" data-index="${index}">Reject</button>
+                        <button class="ai-action-btn apply" data-action="apply" data-index="${index}">${t("common_apply")}</button>
+                        <button class="ai-action-btn reject" data-action="reject" data-index="${index}">${t("common_reject")}</button>
                     </div>
                 </div>
                 <pre class="ai-action-preview">${escapeHtml(action.preview || action.content || '')}</pre>
@@ -8895,7 +9126,7 @@ async function sendAIMessage() {
         hideAIThinking();
 
         if (!response.ok) {
-            throw new Error(response.statusText || 'Request failed');
+            throw new Error(response.statusText || t('builder_ai_error_request_failed'));
         }
 
         const isStream = (response.headers.get('content-type') || '').includes('text/event-stream');
@@ -8903,7 +9134,7 @@ async function sendAIMessage() {
         if (!isStream) {
             const result = await response.json();
             if (result.error) throw new Error(result.error);
-            accumulated = result.content || result.message || 'No response';
+            accumulated = result.content || result.message || t('builder_ai_no_response');
             finalActions = result.actions || [];
             renderAIStreamingResult(accumulated, finalActions);
             aiState.isConnected = true;
@@ -8947,7 +9178,7 @@ async function sendAIMessage() {
                     accumulated = data.content || accumulated;
                     finalActions = data.actions || [];
                 } else if (data.type === 'error') {
-                    throw new Error(data.message || 'Unknown error');
+                    throw new Error(data.message || t('common_unknown_error'));
                 }
             }
         }
@@ -8978,7 +9209,7 @@ async function sendAIMessage() {
 function renderAIStreamingResult(content, actions = [], placeholderEl) {
     const targetEl = placeholderEl || renderAIMessage('assistant', '', []);
     const contentEl = targetEl?.querySelector('.ai-message-content');
-    const finalText = content || 'No response';
+    const finalText = content || t('builder_ai_no_response');
     const normalizedActions = dedupeAIActionList(actions);
 
     if (contentEl) {
@@ -9001,21 +9232,21 @@ function renderAIStreamingResult(content, actions = [], placeholderEl) {
 }
 
 function describeAIContext(snapshot) {
-    if (!snapshot) return 'No active context';
+    if (!snapshot) return t('builder_ai_context_none');
     const { currentMode, selectedPipeline, currentPromptFile } = snapshot;
     if (currentMode === 'prompts') {
-        if (currentPromptFile) return `Editing Prompt: ${currentPromptFile}`;
-        return 'Prompt panel';
+        if (currentPromptFile) return formatTemplate(t('builder_ai_context_prompt_editing'), { file: currentPromptFile });
+        return t('builder_ai_context_prompt_panel');
     }
     if (currentMode === 'parameters') {
-        if (selectedPipeline) return `Editing Parameters for ${selectedPipeline}`;
-        return 'Parameters panel (no pipeline selected)';
+        if (selectedPipeline) return formatTemplate(t('builder_ai_context_parameters_editing'), { pipeline: selectedPipeline });
+        return t('builder_ai_context_parameters_no_pipeline');
     }
     if (currentMode === 'pipeline') {
-        if (selectedPipeline) return `Editing Pipeline YAML: ${selectedPipeline}`;
-        return 'Pipeline canvas';
+        if (selectedPipeline) return formatTemplate(t('builder_ai_context_pipeline_editing'), { pipeline: selectedPipeline });
+        return t('builder_ai_context_pipeline_canvas');
     }
-    return 'No active context';
+    return t('builder_ai_context_none');
 }
 
 function getAIContextSnapshot() {
@@ -9052,7 +9283,7 @@ function updateAIContextBanner(reason = '') {
     if (hintEl) {
         hintEl.textContent = snapshot && snapshot.focusHint
             ? `${snapshot.focusHint}`
-            : 'None';
+            : t('builder_ai_context_none');
     }
 }
 
@@ -9108,17 +9339,17 @@ function findParameterFieldByPath(path) {
 
 function mapAIErrorMessage(rawMessage = '') {
     const msg = String(rawMessage || '').toLowerCase();
-    if (!rawMessage) return 'Request failed. Please try again.';
+    if (!rawMessage) return t('builder_ai_error_generic');
     if (msg.includes('list index out of range')) {
-        return 'Upstream model returned an invalid response (list index out of range). Please retry or check model settings.';
+        return t('builder_ai_error_list_index');
     }
     if (msg.includes('timeout')) {
-        return 'Request timed out. Check network or model service status and retry.';
+        return t('builder_ai_error_timeout');
     }
     if (msg.includes('network') || msg.includes('fetch')) {
-        return 'Network error. Please check your connection or proxy settings.';
+        return t('builder_ai_error_network');
     }
-    return `Request failed: ${rawMessage}`;
+    return formatTemplate(t('builder_ai_error_with_message'), { error: rawMessage });
 }
 
 function showAIErrorWithRetry(rawMessage) {
@@ -9132,7 +9363,7 @@ function showAIErrorWithRetry(rawMessage) {
     card.className = 'ai-error-card';
     card.innerHTML = `
         <span>${friendly}</span>
-        <button class="ai-retry-btn" type="button">Retry</button>
+        <button class="ai-retry-btn" type="button">${t("common_retry")}</button>
     `;
     const btn = card.querySelector('.ai-retry-btn');
     btn?.addEventListener('click', () => retryLastAIRequest());
@@ -9155,8 +9386,8 @@ async function applyAIAction(action, blockEl) {
         if (action.type === 'modify_pipeline' && workspaceState.currentMode === 'parameters') {
             showNotification(
                 'info',
-                'Pipeline change ignored',
-                'You are editing parameters. Ask explicitly to update the pipeline YAML or switch to Pipeline view.',
+                t('builder_ai_pipeline_change_ignored'),
+                t('builder_ai_pipeline_change_ignored_hint'),
                 () => switchWorkspaceMode('pipeline')
             );
             return;
@@ -9173,7 +9404,7 @@ async function applyAIAction(action, blockEl) {
                 success = await applyParameterModification(action);
                 break;
             default:
-                log('Unknown action type: ' + action.type);
+                log(formatTemplate(t('builder_ai_action_unknown'), { type: action.type }));
         }
 
         if (success) {
@@ -9181,14 +9412,14 @@ async function applyAIAction(action, blockEl) {
                 blockEl.classList.add('applied');
                 const btns = blockEl.querySelector('.ai-action-buttons');
                 if (btns) {
-                    btns.innerHTML = '<span style="color: #22c55e; font-size: 0.75rem;">✓ Applied</span>';
+                    btns.innerHTML = `<span style="color: #22c55e; font-size: 0.75rem;">${t("builder_ai_action_applied")}</span>`;
                 }
                 flashHighlight(blockEl);
             }
-            log('AI modification applied successfully.');
+            log(t('builder_ai_action_applied_log'));
         }
     } catch (e) {
-        log('Failed to apply modification: ' + e.message);
+        log(formatTemplate(t('builder_ai_action_apply_failed'), { error: e.message }));
     }
 }
 
@@ -9197,7 +9428,7 @@ function rejectAIAction(blockEl) {
     blockEl.classList.add('rejected');
     const btns = blockEl.querySelector('.ai-action-buttons');
     if (btns) {
-        btns.innerHTML = '<span style="color: #94a3b8; font-size: 0.75rem;">Rejected</span>';
+        btns.innerHTML = `<span style="color: #94a3b8; font-size: 0.75rem;">${t("builder_ai_action_rejected")}</span>`;
     }
 }
 
@@ -9219,8 +9450,10 @@ async function applyPipelineModification(action) {
         updateAIContextBanner('pipeline-apply');
         showNotification(
             'success',
-            'Pipeline updated',
-            state.selectedPipeline ? `Replaced YAML for ${state.selectedPipeline}` : 'AI updated current YAML',
+            t('builder_ai_pipeline_updated_title'),
+            state.selectedPipeline
+                ? formatTemplate(t('builder_ai_pipeline_updated_message'), { name: state.selectedPipeline })
+                : t('builder_ai_pipeline_updated_message_default'),
             () => switchWorkspaceMode('pipeline')
         );
     }
@@ -9252,8 +9485,10 @@ async function applyPromptModification(action) {
         updateAIContextBanner('prompt-apply');
         showNotification(
             'success',
-            'Prompt updated',
-            action.filename ? `Updated ${action.filename}` : 'AI updated the current prompt',
+            t('builder_ai_prompt_updated_title'),
+            action.filename
+                ? formatTemplate(t('builder_ai_prompt_updated_message'), { name: action.filename })
+                : t('builder_ai_prompt_updated_message_default'),
             () => switchWorkspaceMode('prompts')
         );
     }
@@ -9271,7 +9506,7 @@ async function applyParameterModification(action) {
                 state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
             } catch (e) {
                 state.parameterData = {};
-                log(`Failed to load parameters before apply: ${e.message}`);
+                log(formatTemplate(t('builder_ai_params_load_failed'), { error: e.message }));
             }
         } else {
             state.parameterData = {};
@@ -9288,8 +9523,8 @@ async function applyParameterModification(action) {
     updateAIContextBanner('params-apply');
     showNotification(
         'success',
-        'Parameter updated',
-        `Set ${action.path}`,
+        t('builder_ai_parameter_updated_title'),
+        formatTemplate(t('builder_ai_parameter_updated_message'), { path: action.path }),
         () => switchWorkspaceMode('parameters')
     );
 
