@@ -1722,10 +1722,12 @@ function setBuildButtonState(state = "idle", label = "") {
 
 function markUnsavedChanges() {
     state.unsavedChanges = true;
+    setYamlSyncStatus('modified');
 }
 
 function clearUnsavedChanges() {
     state.unsavedChanges = false;
+    setYamlSyncStatus('synced');
 }
 
 function snapshotSavedYaml(content = "") {
@@ -4538,7 +4540,7 @@ function showYamlError(message) {
         setYamlSyncStatus('error');
     } else {
         els.yamlErrorBar.classList.add('d-none');
-        setYamlSyncStatus('synced');
+        setYamlSyncStatus(state.unsavedChanges ? 'modified' : 'synced');
     }
 }
 
@@ -7441,7 +7443,7 @@ async function switchWorkspaceMode(mode) {
     if (!mode) return;
     if (mode === workspaceState.currentMode) return;
 
-    if (workspaceState.currentMode === 'pipeline' && mode !== 'pipeline') {
+    if (workspaceState.currentMode === 'pipeline' && mode !== 'pipeline' && state.unsavedChanges) {
         const ok = await showConfirm(t("builder_workspace_switch_unsaved_message"), {
             title: t("builder_unsaved_changes_title"),
             type: "warning",
@@ -7449,6 +7451,15 @@ async function switchWorkspaceMode(mode) {
             cancelText: t("common_cancel")
         });
         if (!ok) return;
+
+        // Discard unsaved changes: restore editor to last saved state
+        if (els.yamlEditor && state.lastSavedYaml !== undefined) {
+            els.yamlEditor.value = state.lastSavedYaml;
+            updateYamlLineNumbers();
+            setYamlSyncStatus('synced');
+            await syncYamlToCanvasOnly({ markUnsaved: false });
+        }
+        clearUnsavedChanges();
     }
 
     workspaceState.currentMode = mode;
