@@ -23,6 +23,182 @@ function persistActiveEngines() {
     }
 }
 
+const UI_LANGUAGE_STORAGE_KEY = "ultrarag_ui_language";
+const UI_LANGUAGE_MAP = { en: "English", zh: "中文" };
+
+const LOCALES = window.I18N_LOCALES || {};
+const DEFAULT_LOCALE = "en";
+
+function t(key) {
+    const lang = state.uiLanguage || DEFAULT_LOCALE;
+    const table = LOCALES[lang] || LOCALES[DEFAULT_LOCALE] || {};
+    const fallback = LOCALES[DEFAULT_LOCALE] || {};
+    return table[key] || fallback[key] || key;
+}
+
+function formatTemplate(template, params = {}) {
+    return String(template).replace(/\{(\w+)\}/g, (_, key) =>
+        params[key] !== undefined ? String(params[key]) : `{${key}}`
+    );
+}
+
+function updateI18nTexts() {
+    document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-html");
+        if (!key) return;
+        el.innerHTML = t(key);
+    });
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (!key) return;
+        if (el.hasAttribute("data-i18n-html")) return;
+        if (el.dataset.i18nOverride === "true") return;
+        if (key === "knowledge_base") return; // handled below to avoid overwriting selection
+        if (key === "builder_select_pipeline") return; // handled below to preserve selection
+        if (key === "builder_no_pipeline_selected") return; // handled below to preserve selection
+        el.textContent = t(key);
+    });
+
+    // Title attributes
+    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-title");
+        if (key) el.title = t(key);
+    });
+
+    // Placeholder attributes
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (key) el.placeholder = t(key);
+    });
+
+    // Aria-label attributes
+    document.querySelectorAll('[data-i18n-aria-label]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-aria-label");
+        if (key) el.setAttribute("aria-label", t(key));
+    });
+
+    // Prompt data attributes
+    document.querySelectorAll('[data-i18n-prompt]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-prompt");
+        if (key) el.setAttribute("data-prompt", t(key));
+    });
+
+    // Knowledge base label: only update when no selection
+    document.querySelectorAll('[data-i18n="knowledge_base"]').forEach((el) => {
+        const hasSelection = el.dataset.selected === "true";
+        if (!hasSelection) el.textContent = t("knowledge_base");
+    });
+
+    // Refresh DB status text for KB page on language switch
+    if (currentDbStatus) {
+        updateDbStatusUI(currentDbStatus, currentDbConfig);
+    }
+
+    // Refresh KB cards to update vector labels on language switch
+    if (Array.isArray(indexCollectionsCache) && indexCollectionsCache.length > 0) {
+        renderCollectionList(null, indexCollectionsCache);
+    }
+
+    // Select pipeline label: keep selected pipeline name if exists
+    const chatPipelineLabel = document.getElementById("chat-pipeline-label");
+    if (chatPipelineLabel) {
+        const fallbackName = chatPipelineLabel.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            chatPipelineLabel.textContent = name;
+            chatPipelineLabel.dataset.selected = "true";
+            chatPipelineLabel.dataset.currentName = name;
+        } else {
+            chatPipelineLabel.textContent = t("select_pipeline");
+            chatPipelineLabel.dataset.selected = "false";
+        }
+    }
+
+    const heroPipelineLabel = document.getElementById("hero-selected-pipeline");
+    if (heroPipelineLabel) {
+        const fallbackName = heroPipelineLabel.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            heroPipelineLabel.textContent = name;
+            heroPipelineLabel.dataset.selected = "true";
+            heroPipelineLabel.dataset.currentName = name;
+        } else {
+            heroPipelineLabel.textContent = t("builder_no_pipeline_selected");
+            heroPipelineLabel.dataset.selected = "false";
+        }
+    }
+
+    const pipelineDropdown = document.getElementById("pipelineDropdownBtn");
+    if (pipelineDropdown) {
+        const fallbackName = pipelineDropdown.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            pipelineDropdown.textContent = name;
+            pipelineDropdown.dataset.selected = "true";
+            pipelineDropdown.dataset.currentName = name;
+        } else {
+            pipelineDropdown.textContent = t("builder_select_pipeline");
+            pipelineDropdown.dataset.selected = "false";
+        }
+    }
+
+    if (typeof updateAIConnectionStatus === "function") {
+        updateAIConnectionStatus();
+    }
+    if (typeof updateAIContextBanner === "function") {
+        updateAIContextBanner("i18n");
+    }
+    if (typeof renderAISessionList === "function") {
+        renderAISessionList();
+    }
+    if (typeof renderPromptTabs === "function") {
+        renderPromptTabs();
+    }
+    if (typeof renderPromptList === "function" && typeof workspaceState !== "undefined") {
+        renderPromptList(workspaceState?.prompts?.files || []);
+    }
+
+    // Placeholder updates
+    const chatInput = document.getElementById("chat-input");
+    if (chatInput) {
+        chatInput.placeholder = t("placeholder_chat_input");
+    }
+
+    // Empty state greeting
+    const greeting = document.querySelector(".greeting-gradient");
+    if (greeting) {
+        greeting.textContent = t("greeting_explore");
+    }
+
+    // Update chat history i18n texts (Show Thinking, Cited References, Other Retrieved)
+    document.querySelectorAll(".process-header > span[data-i18n-key='chat_show_thinking']").forEach((el) => {
+        el.textContent = t("chat_show_thinking");
+    });
+    document.querySelectorAll(".ref-header[data-i18n-key='chat_cited_references']").forEach((el) => {
+        const count = el.dataset.count || 0;
+        el.textContent = `${t("chat_cited_references")} (${count})`;
+    });
+    document.querySelectorAll(".unused-header span[data-i18n-key='chat_other_retrieved']").forEach((el) => {
+        const count = el.dataset.count || 0;
+        el.textContent = `${t("chat_other_retrieved")} (${count})`;
+    });
+}
+
+function resolveInitialLanguage() {
+    try {
+        const stored = localStorage.getItem(UI_LANGUAGE_STORAGE_KEY);
+        if (stored && UI_LANGUAGE_MAP[stored]) {
+            return stored;
+        }
+    } catch (e) {
+        console.warn("Failed to load UI language", e);
+    }
+
+    // Default to English
+    return "en";
+}
+
 const state = {
     selectedPipeline: null,
     steps: [],
@@ -39,6 +215,8 @@ const state = {
 
     // Application mode: true = admin (full interface), false = chat-only
     adminMode: true,
+
+    uiLanguage: resolveInitialLanguage(),
 
     // [Modified] Chat state management
     chat: {
@@ -124,7 +302,6 @@ const els = {
 
     // Chat Controls
     chatPipelineName: document.getElementById("chat-pipeline-name"),
-    chatBack: document.getElementById("chat-back"),
     chatHistory: document.getElementById("chat-history"),
     chatForm: document.getElementById("chat-form"),
     chatInput: document.getElementById("chat-input"),
@@ -135,6 +312,11 @@ const els = {
     clearAllChats: document.getElementById("clear-all-chats"),
     demoToggleBtn: document.getElementById("demo-toggle-btn"), // Engine toggle button
     chatCollectionSelect: document.getElementById("chat-collection-select"),
+    settingsMenu: document.getElementById("settings-menu"),
+    settingsMenuTrigger: document.getElementById("settings-menu-trigger"),
+    settingsDropdown: document.getElementById("settings-dropdown"),
+    settingsBuilder: document.getElementById("settings-builder"),
+    settingsLanguageLabel: document.getElementById("settings-language-label"),
 
     // [New] View containers
     chatMainView: document.getElementById("chat-main-view"),
@@ -237,9 +419,9 @@ const Modes = {
  */
 function showModal(message, options = {}) {
     const {
-        title = "Notification",
+        title = t("modal_notification"),
         type = "info",
-        confirmText = "OK"
+        confirmText = t("common_ok")
     } = options;
 
     return new Promise((resolve) => {
@@ -307,10 +489,10 @@ function showModal(message, options = {}) {
  */
 function showConfirm(message, options = {}) {
     const {
-        title = "Confirm",
+        title = t("modal_confirm_title"),
         type = "confirm",
-        confirmText = "Confirm",
-        cancelText = "Cancel",
+        confirmText = t("common_confirm"),
+        cancelText = t("common_cancel"),
         danger = false
     } = options;
 
@@ -392,11 +574,11 @@ function showConfirm(message, options = {}) {
  */
 function showChoice(message, options = {}) {
     const {
-        title = "Choose an option",
+        title = t("modal_choice_title"),
         type = "warning",
-        primaryText = "Primary",
-        secondaryText = "Secondary",
-        cancelText = "Cancel",
+        primaryText = t("common_primary"),
+        secondaryText = t("common_secondary"),
+        cancelText = t("common_cancel"),
         primaryValue = "primary",
         secondaryValue = "secondary",
         dangerPrimary = false,
@@ -491,6 +673,8 @@ let currentTargetFile = null;
 let existingFilesSnapshot = new Set();
 let indexCollectionsCache = [];
 let lastIndexMode = "new";
+let currentDbConfig = null;
+let currentDbStatus = null;
 
 // Open import workspace modal
 window.openImportModal = async function () {
@@ -532,10 +716,10 @@ window.closeImportModal = function () {
 
 // Clear staging area
 window.clearStagingArea = async function () {
-    const confirmed = await showConfirm("Are you sure you want to clear ALL temporary files (Raw, Corpus, Chunks)?", {
-        title: "Clear Staging Area",
+    const confirmed = await showConfirm(t("kb_clear_staging_prompt"), {
+        title: t("kb_clear_staging_title"),
         type: "warning",
-        confirmText: "Clear All",
+        confirmText: t("kb_clear_all"),
         danger: true
     });
     if (!confirmed) return;
@@ -547,23 +731,32 @@ window.clearStagingArea = async function () {
         if (res.ok) {
             const total = data.total_deleted || 0;
             const counts = data.deleted_counts || {};
-            let message = `Deleted:\n- Raw: ${counts.raw || 0} items\n- Corpus: ${counts.corpus || 0} items\n- Chunks: ${counts.chunks || 0} items\n\nTotal: ${total} items`;
+            let message = formatTemplate(t("kb_deleted_summary"), {
+                raw: counts.raw || 0,
+                corpus: counts.corpus || 0,
+                chunks: counts.chunks || 0,
+                total
+            });
 
             if (data.errors && data.errors.length > 0) {
-                message += `\n\nNote: Some errors occurred:\n${data.errors.slice(0, 3).join('\n')}`;
+                message += `\n\n${formatTemplate(t("kb_note_errors"), {
+                    errors: data.errors.slice(0, 3).join('\n')
+                })}`;
                 if (data.errors.length > 3) {
-                    message += `\n... and ${data.errors.length - 3} more errors`;
+                    message += `\n${formatTemplate(t("kb_more_errors"), {
+                        count: data.errors.length - 3
+                    })}`;
                 }
             }
 
-            await showModal(message, { title: "Staging Area Cleared", type: "success" });
+            await showModal(message, { title: t("kb_staging_cleared_title"), type: "success" });
             await refreshKBFiles();
         } else {
-            await showModal("Clear failed: " + (data.error || res.statusText), { title: "Error", type: "error" });
+            await showModal(t("kb_clear_failed") + (data.error || res.statusText), { title: t("status_error"), type: "error" });
         }
     } catch (e) {
         console.error(e);
-        await showModal("Clear error: " + e.message, { title: "Error", type: "error" });
+        await showModal(t("kb_clear_error") + e.message, { title: t("status_error"), type: "error" });
     }
 };
 
@@ -571,9 +764,9 @@ window.clearStagingArea = async function () {
 
 // Helper function specifically for refreshing modal views
 function refreshKBModalViews(data) {
-    renderKBList(document.getElementById('list-raw'), data.raw, 'build_text_corpus', 'Parse');
-    renderKBList(document.getElementById('list-corpus'), data.corpus, 'corpus_chunk', 'Chunk');
-    renderKBList(document.getElementById('list-chunks'), data.chunks, 'milvus_index', 'Index');
+    renderKBList(document.getElementById('list-raw'), data.raw, 'build_text_corpus', t("kb_action_parse"));
+    renderKBList(document.getElementById('list-corpus'), data.corpus, 'corpus_chunk', t("kb_action_chunk"));
+    renderKBList(document.getElementById('list-chunks'), data.chunks, 'milvus_index', t("kb_action_index"));
 }
 
 // Refresh file list (main function)
@@ -607,7 +800,7 @@ function renderKBList(container, files, nextPipeline, actionLabel) {
     container.innerHTML = '';
 
     if (!files || files.length === 0) {
-        container.innerHTML = '<div class="text-muted small text-center mt-5 opacity-50">Empty</div>';
+        container.innerHTML = `<div class="text-muted small text-center mt-5 opacity-50">${t("kb_empty")}</div>`;
         return;
     }
 
@@ -637,7 +830,7 @@ function renderKBList(container, files, nextPipeline, actionLabel) {
         // 3. Metadata row content
         let metaText = sizeStr;
         if (isFolder && f.file_count) {
-            metaText = `${f.file_count} files · ${sizeStr}`;
+            metaText = `${f.file_count} ${t("kb_files")} · ${sizeStr}`;
         }
 
         // 4. Action button
@@ -646,7 +839,7 @@ function renderKBList(container, files, nextPipeline, actionLabel) {
         // 5. Delete button
         let deleteBtn = '';
         if (f.category !== 'collection') {
-            deleteBtn = `<button class="btn btn-sm text-danger ms-2 btn-icon-only flex-shrink-0" onclick="event.stopPropagation(); deleteKBFile('${f.category}', '${f.name}')" title="Delete">×</button>`;
+            deleteBtn = `<button class="btn btn-sm text-danger ms-2 btn-icon-only flex-shrink-0" onclick="event.stopPropagation(); deleteKBFile('${f.category}', '${f.name}')" title="${t("kb_delete")}">×</button>`;
         }
 
         // 6. Card click event
@@ -713,13 +906,13 @@ window.inspectFolder = async function (category, folderName, displayName) {
                     </div>
                 `).join('');
             } else {
-                listContainer.innerHTML = '<div class="text-center text-muted small mt-3">Empty (No visible files)</div>';
+                listContainer.innerHTML = `<div class="text-center text-muted small mt-3">${t("kb_empty_no_visible")}</div>`;
             }
         } else {
-            listContainer.innerHTML = '<div class="text-center text-muted small mt-3">Empty Folder</div>';
+            listContainer.innerHTML = `<div class="text-center text-muted small mt-3">${t("kb_empty_folder")}</div>`;
         }
     } catch (e) {
-        if (listContainer) listContainer.innerHTML = `<div class="text-danger small p-2">Error: ${e.message}</div>`;
+        if (listContainer) listContainer.innerHTML = `<div class="text-danger small p-2">${t("status_error")}: ${e.message}</div>`;
         console.error(e);
     }
 };
@@ -779,8 +972,8 @@ function renderCollectionList(container, collections) {
         grid.innerHTML = `
             <div class="col-12 text-center py-5 text-muted" style="grid-column: 1 / -1;">
                 <div style="font-size:3rem; margin-bottom:1rem; opacity:0.3;">📚</div>
-                <h5>Library is empty</h5>
-                <p>Click "New Collection" to import documents.</p>
+                <h5>${t("kb_library_empty_title")}</h5>
+                <p>${t("kb_library_empty_hint")}</p>
             </div>
         `;
         return;
@@ -795,7 +988,7 @@ function renderCollectionList(container, collections) {
         const card = document.createElement('div');
         card.className = 'collection-card kb-card';
 
-        const countStr = c.count !== undefined ? `${c.count} vectors` : 'Ready';
+        const countStr = c.count !== undefined ? `${c.count} ${t("kb_vectors")}` : t("kb_ready");
         const colors = pickKbColors(displayName || c.name || "collection");
         const coverInitial = getKbInitial(displayName || c.name || "C");
 
@@ -810,7 +1003,7 @@ function renderCollectionList(container, collections) {
                      <div class="kb-meta-count">${countStr}</div>
                 </div>
                 
-                <button class="btn-delete-book" onclick="event.stopPropagation(); deleteKBFile('collection', '${c.name}')" title="Delete Collection">
+                <button class="btn-delete-book" onclick="event.stopPropagation(); deleteKBFile('collection', '${c.name}', '${displayName.replace(/'/g, "\\'")}')" title="${t("kb_delete_collection")}">
                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 </button>
             </div>
@@ -823,6 +1016,7 @@ function renderCollectionList(container, collections) {
 // UI status update
 function updateDbStatusUI(status, config) {
     currentDbConfig = config;
+    currentDbStatus = status;
 
     const chip = els.dbConnectionChip || document.getElementById('db-connection-chip');
     const statusTextEl = els.dbConnectionText || document.getElementById('db-connection-text');
@@ -832,14 +1026,16 @@ function updateDbStatusUI(status, config) {
     // Status dot & text
     const statusClass = status === 'connected' ? 'connected' : (status === 'connecting' ? 'connecting' : 'disconnected');
     els.dbConnectionStatus.className = `kb-conn-dot ${statusClass}`;
-    statusTextEl.textContent = status === 'connected' ? 'Connected' : (status === 'connecting' ? 'Connecting...' : 'Disconnected');
+    statusTextEl.textContent = status === 'connected'
+        ? t('kb_connected')
+        : (status === 'connecting' ? t('kb_connecting') : t('kb_disconnected'));
     chip.setAttribute('data-status', statusClass);
 
     // URI display: use shortened version in main text, full address in tooltip
-    const fullUri = (config && config.milvus && config.milvus.uri) ? config.milvus.uri : "Not configured";
+    const fullUri = (config && config.milvus && config.milvus.uri) ? config.milvus.uri : t("kb_not_configured");
     const shortUri = fullUri.length > 38 ? `${fullUri.slice(0, 16)}…${fullUri.slice(-12)}` : fullUri;
     els.dbUriDisplay.textContent = shortUri;
-    chip.title = `Endpoint: ${fullUri}`;
+    chip.title = `${t("kb_endpoint")}: ${fullUri}`;
 }
 
 // Configuration modal logic (mounted to window)
@@ -864,7 +1060,7 @@ window.saveDbConfig = async function () {
     const uri = els.cfgUri.value.trim();
     const token = els.cfgToken.value.trim();
 
-    if (!uri) { showModal("URI is required", { title: "Validation Error", type: "warning" }); return; }
+    if (!uri) { showModal(t("kb_uri_required"), { title: t("kb_validation_error"), type: "warning" }); return; }
 
     const fullConfig = window._currentFullKbConfig || {};
     if (!fullConfig.milvus) fullConfig.milvus = {};
@@ -964,7 +1160,7 @@ window.saveChunkConfig = function () {
     const useTitleStr = document.getElementById('cfg-chunk-title').value;
 
     if (isNaN(size) || size <= 0) {
-        showModal("Chunk size must be a positive number", { title: "Validation Error", type: "warning" });
+        showModal(t("kb_chunk_size_invalid"), { title: t("kb_validation_error"), type: "warning" });
         return;
     }
 
@@ -1015,12 +1211,12 @@ window.saveIndexConfig = function () {
     const modelName = document.getElementById('cfg-emb-model-name').value.trim();
 
     if (!baseUrl) {
-        showModal("Base URL is required", { title: "Validation Error", type: "warning" });
+        showModal(t("kb_base_url_required"), { title: t("kb_validation_error"), type: "warning" });
         return;
     }
 
     if (!modelName) {
-        showModal("Model Name is required", { title: "Validation Error", type: "warning" });
+        showModal(t("kb_model_name_required"), { title: t("kb_validation_error"), type: "warning" });
         return;
     }
 
@@ -1048,8 +1244,11 @@ window.handleKBAction = async function (filePath, pipelineName) {
 
     if (pipelineName === 'milvus_index') {
         // Update hint and default value in Milvus modal
-        const uriTxt = els.dbUriDisplay ? els.dbUriDisplay.textContent : "Current DB";
-        if (els.modalTargetDb) els.modalTargetDb.textContent = uriTxt;
+        const uriTxt = els.dbUriDisplay ? els.dbUriDisplay.textContent : t("kb_current_db");
+        if (els.modalTargetDb) {
+            els.modalTargetDb.textContent = uriTxt;
+            els.modalTargetDb.dataset.i18nOverride = "true";
+        }
 
         // Auto-fill Collection name (use filename as default collection name)
         const fileName = filePath.split('/').pop().replace('.jsonl', '').replace('.', '_');
@@ -1168,7 +1367,7 @@ async function syncIndexModeUI(mode, options = {}) {
 
     const isNew = activeMode === "new";
     if (els.idxCollectionLabel) {
-        els.idxCollectionLabel.textContent = isNew ? "Collection Name" : "Existing Collection";
+        els.idxCollectionLabel.textContent = isNew ? t("kb_collection_name") : t("kb_existing_collection");
     }
     if (els.idxCollection) {
         els.idxCollection.classList.toggle("d-none", !isNew);
@@ -1203,35 +1402,35 @@ async function confirmIndexMode(mode, collection) {
     const label = getCollectionDisplayName(collection) || collection?.name || "";
     if (mode === "append") {
         return await showConfirm(
-            `Append data to the existing collection "${label}"?`,
+            formatTemplate(t("kb_confirm_append"), { label }),
             {
-                title: "Append Confirmation",
+                title: t("kb_confirm_append_title"),
                 type: "info",
-                confirmText: "Continue",
-                cancelText: "Cancel"
+                confirmText: t("kb_continue"),
+                cancelText: t("kb_cancel")
             }
         );
     }
     if (mode === "overwrite") {
         return await showConfirm(
-            `Overwrite the existing collection "${label}"? This will drop and rebuild the collection.`,
+            formatTemplate(t("kb_confirm_overwrite"), { label }),
             {
-                title: "Overwrite Confirmation",
+                title: t("kb_confirm_overwrite_title"),
                 type: "warning",
-                confirmText: "Overwrite",
-                cancelText: "Cancel",
+                confirmText: t("kb_mode_overwrite"),
+                cancelText: t("kb_cancel"),
                 danger: true
             }
         );
     }
     if (mode === "new") {
         return await showConfirm(
-            `Create a new collection named "${label}"?`,
+            formatTemplate(t("kb_confirm_new"), { label }),
             {
-                title: "Create Collection",
+                title: t("kb_confirm_new_title"),
                 type: "info",
-                confirmText: "Create",
-                cancelText: "Cancel"
+                confirmText: t("kb_create"),
+                cancelText: t("kb_cancel")
             }
         );
     }
@@ -1244,8 +1443,8 @@ window.confirmIndexTask = async function () {
 
     const collections = await loadIndexCollections({ forceFetch: true });
     if (collections === null) {
-        await showModal("Failed to load existing collections. Please try again.", {
-            title: "Load Failed",
+        await showModal(t("kb_load_collections_failed"), {
+            title: t("kb_load_failed_title"),
             type: "error"
         });
         return;
@@ -1255,21 +1454,29 @@ window.confirmIndexTask = async function () {
         if (!els.idxCollection) return;
         const inputName = els.idxCollection.value.trim();
         if (!inputName) {
-            showModal("Collection name is required", { title: "Validation Error", type: "warning" });
+            showModal(t("kb_collection_name_required"), { title: t("kb_validation_error"), type: "warning" });
             return;
         }
 
         const matched = findMatchingCollection(collections, inputName);
         if (matched) {
             const displayName = getCollectionDisplayName(matched);
+            const displayNameSuffix = displayName && displayName !== inputName
+                ? (state.uiLanguage === "zh"
+                    ? `（别名“${displayName}”）`
+                    : ` as "${displayName}"`)
+                : "";
             const choice = await showChoice(
-                `Collection name "${inputName}" already exists${displayName && displayName !== inputName ? ` as "${displayName}"` : ""}. Choose "Append" to add data or "Overwrite" to drop and rebuild.`,
+                formatTemplate(t("kb_collection_exists"), {
+                    inputName,
+                    displayName: displayNameSuffix
+                }),
                 {
-                    title: "Name Already Exists",
+                    title: t("kb_name_exists_title"),
                     type: "warning",
-                    primaryText: "Append",
-                    secondaryText: "Overwrite",
-                    cancelText: "Cancel",
+                    primaryText: t("kb_mode_append"),
+                    secondaryText: t("kb_mode_overwrite"),
+                    cancelText: t("kb_cancel"),
                     primaryValue: "append",
                     secondaryValue: "overwrite",
                     dangerSecondary: true
@@ -1300,8 +1507,8 @@ window.confirmIndexTask = async function () {
 
     if (!els.idxCollectionSelect) return;
     if (collections.length === 0) {
-        await showModal("No existing collections found. Use \"New\" mode to create one.", {
-            title: "No Collections",
+        await showModal(t("kb_no_collections_message"), {
+            title: t("kb_no_collections_title"),
             type: "warning"
         });
         return;
@@ -1309,8 +1516,8 @@ window.confirmIndexTask = async function () {
 
     const selectedName = els.idxCollectionSelect.value;
     if (!selectedName) {
-        await showModal("Please select a collection.", {
-            title: "Selection Required",
+        await showModal(t("kb_select_collection_message"), {
+            title: t("kb_select_collection_title"),
             type: "warning"
         });
         return;
@@ -1334,32 +1541,33 @@ window.handleFileUpload = async function (input) {
         formData.append('file', input.files[i]);
     }
 
-    updateKBStatus(true, 'Uploading...');
+    updateKBStatus(true, t('kb_uploading'));
     try {
         const res = await fetch('/api/kb/upload', { method: 'POST', body: formData });
         if (res.ok) {
             await refreshKBFiles();
             updateKBStatus(false);
         } else {
-            showModal("Upload failed", { title: "Error", type: "error" });
+            showModal(t("kb_upload_failed"), { title: t("status_error"), type: "error" });
             updateKBStatus(false);
         }
     } catch (e) {
         console.error(e);
         updateKBStatus(false);
-        showModal("Upload error: " + e.message, { title: "Error", type: "error" });
+        showModal(t("kb_upload_error") + e.message, { title: t("status_error"), type: "error" });
     } finally {
         input.value = '';
     }
 };
 
 // Delete file (mounted to window)
-window.deleteKBFile = async function (category, filename) {
-    const action = category === 'collection' ? 'drop this collection' : 'delete this file';
-    const confirmed = await showConfirm(`Permanently ${action} (${filename})?`, {
-        title: "Delete Confirmation",
+window.deleteKBFile = async function (category, filename, displayName = "") {
+    const action = category === 'collection' ? t('kb_delete_collection_action') : t('kb_delete_file_action');
+    const label = category === 'collection' ? (displayName || filename) : filename;
+    const confirmed = await showConfirm(formatTemplate(t("kb_delete_confirm_message"), { action, name: label }), {
+        title: t("kb_delete_confirm_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("kb_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -1370,7 +1578,7 @@ window.deleteKBFile = async function (category, filename) {
             refreshKBFiles();
         } else {
             const err = await res.json();
-            showModal("Delete failed: " + (err.error || res.statusText), { title: "Error", type: "error" });
+            showModal(t("kb_delete_failed") + (err.error || res.statusText), { title: t("status_error"), type: "error" });
         }
     } catch (e) {
         console.error(e);
@@ -1381,7 +1589,7 @@ window.deleteKBFile = async function (category, filename) {
 
 // Core: submit task and poll
 async function runKBTask(pipelineName, filePath, extraParams = {}) {
-    updateKBStatus(true, `Running ${pipelineName}...`);
+    updateKBStatus(true, formatTemplate(t("kb_running_task"), { task: pipelineName }));
 
     try {
         // A. Submit task
@@ -1401,10 +1609,10 @@ async function runKBTask(pipelineName, filePath, extraParams = {}) {
             // B. Start polling
             pollTaskStatus(data.task_id);
         } else {
-            throw new Error(data.error || 'Task start failed');
+            throw new Error(data.error || t("kb_task_start_failed"));
         }
     } catch (e) {
-        showModal(e.message, { title: "Task Error", type: "error" });
+        showModal(e.message, { title: t("kb_task_error_title"), type: "error" });
         updateKBStatus(false);
     }
 }
@@ -1429,7 +1637,10 @@ function pollTaskStatus(taskId) {
             } else if (task.status === 'failed') {
                 clearInterval(interval);
                 updateKBStatus(false);
-                showModal(`Task Failed: ${task.error}`, { title: "Task Failed", type: "error" });
+                showModal(
+                    formatTemplate(t("kb_task_failed_message"), { error: task.error }),
+                    { title: t("kb_task_failed_title"), type: "error" }
+                );
             } else {
                 // still running...
                 console.log('Task running...');
@@ -1488,20 +1699,20 @@ function setBuildButtonState(state = "idle", label = "") {
 
     if (state === "running") {
         els.buildPipeline.disabled = true;
-        els.buildPipeline.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${label || "Building..."}`;
+        els.buildPipeline.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${label || t("builder_build_running")}`;
         return;
     }
 
     if (state === "success") {
         els.buildPipeline.disabled = false;
-        els.buildPipeline.innerHTML = `<span class="text-success me-1">✓</span>${label || "Build Success"}`;
+        els.buildPipeline.innerHTML = `<span class="text-success me-1">✓</span>${label || t("builder_build_success")}`;
         setTimeout(reset, 1200);
         return;
     }
 
     if (state === "error") {
         els.buildPipeline.disabled = false;
-        els.buildPipeline.innerHTML = `<span class="text-danger me-1">⚠</span>${label || "Build Failed"}`;
+        els.buildPipeline.innerHTML = `<span class="text-danger me-1">⚠</span>${label || t("builder_build_failed")}`;
         setTimeout(reset, 1800);
         return;
     }
@@ -1511,10 +1722,12 @@ function setBuildButtonState(state = "idle", label = "") {
 
 function markUnsavedChanges() {
     state.unsavedChanges = true;
+    setYamlSyncStatus('modified');
 }
 
 function clearUnsavedChanges() {
     state.unsavedChanges = false;
+    setYamlSyncStatus('synced');
 }
 
 function snapshotSavedYaml(content = "") {
@@ -1535,16 +1748,17 @@ function updateUnsavedFromEditor() {
     }
 }
 
-async function confirmUnsavedChanges(actionLabel = "continue") {
+async function confirmUnsavedChanges(actionLabel = t("builder_action_continue")) {
     if (!state.unsavedChanges) return true;
 
+    const message = formatTemplate(t("builder_unsaved_changes_message"), { action: actionLabel });
     const confirmed = await showConfirm(
-        `You have unsaved changes. Continuing may discard them. Do you want to ${actionLabel}?`,
+        message,
         {
-            title: "Unsaved changes",
+            title: t("builder_unsaved_changes_title"),
             type: "warning",
-            confirmText: "Continue",
-            cancelText: "Cancel"
+            confirmText: t("common_continue"),
+            cancelText: t("common_cancel")
         }
     );
 
@@ -2011,11 +2225,11 @@ function renderMarkdown(text, { allowCodeBlock = true, unwrapLanguages = [] } = 
  */
 function showPrompt(message, options = {}) {
     const {
-        title = "Input",
+        title = t("modal_input_title"),
         placeholder = "",
         defaultValue = "",
-        confirmText = "OK",
-        cancelText = "Cancel"
+        confirmText = t("common_ok"),
+        cancelText = t("common_cancel")
     } = options;
 
     return new Promise((resolve) => {
@@ -2079,23 +2293,23 @@ function showPrompt(message, options = {}) {
 async function createNewPipeline() {
     // If there are unsaved changes, confirm first
     if (state.unsavedChanges) {
-        const confirmed = await confirmUnsavedChanges("create a new pipeline");
+        const confirmed = await confirmUnsavedChanges(t("builder_action_create_pipeline"));
         if (!confirmed) return;
     }
 
     // Show input dialog for user to enter Pipeline name
-    const pipelineName = await showPrompt("Enter a name for the new pipeline:", {
-        title: "New Pipeline",
+    const pipelineName = await showPrompt(t("builder_new_pipeline_prompt"), {
+        title: t("builder_new_pipeline"),
         placeholder: "my_pipeline",
-        confirmText: "Create"
+        confirmText: t("common_create")
     });
 
     if (!pipelineName) return; // User cancelled
 
     // Validate name format
     if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(pipelineName)) {
-        await showModal("Invalid pipeline name. Use only letters, numbers, underscores and hyphens. Must start with a letter or underscore.", {
-            title: "Invalid Name",
+        await showModal(t("builder_invalid_pipeline_name_full"), {
+            title: t("builder_invalid_name_title"),
             type: "error"
         });
         return;
@@ -2212,8 +2426,11 @@ async function startEngine(pipelineName) {
             console.error(err);
             setChatStatus("Engine Error", "error");
             state.chat.engineSessionId = null;
-            const msg = err?.message ? String(err.message) : "Unknown error";
-            showModal(`Engine initialization failed: ${msg}`, { title: "Engine Error", type: "error" });
+            const msg = err?.message ? String(err.message) : t("common_unknown_error");
+            showModal(formatTemplate(t("chat_engine_init_failed_message"), { error: msg }), {
+                title: t("chat_engine_error_title"),
+                type: "error"
+            });
         } finally {
             state.chat.demoLoading = false;
             updateDemoControls();
@@ -2483,7 +2700,16 @@ async function renderChatPipelineMenu() {
 
     // Update top label
     if (els.chatPipelineLabel) {
-        els.chatPipelineLabel.textContent = state.selectedPipeline || "Select Pipeline";
+        const fallbackName = els.chatPipelineLabel.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            els.chatPipelineLabel.textContent = name;
+            els.chatPipelineLabel.dataset.selected = "true";
+            els.chatPipelineLabel.dataset.currentName = name;
+        } else {
+            els.chatPipelineLabel.textContent = t("select_pipeline");
+            els.chatPipelineLabel.dataset.selected = "false";
+        }
     }
 }
 
@@ -2491,7 +2717,7 @@ async function renderChatPipelineMenu() {
 async function switchChatPipeline(name) {
     if (name === state.selectedPipeline) return;
     if (state.chat.running) {
-        showModal("Please wait for the current response to finish.", { title: "Please Wait", type: "info" });
+        showModal(t("chat_wait_for_response_message"), { title: t("chat_wait_for_response_title"), type: "info" });
         return;
     }
 
@@ -2514,7 +2740,7 @@ async function switchChatPipeline(name) {
         state.parameterData = await fetchJSON(`/api/pipelines/${encodeURIComponent(name)}/parameters`);
         state.parametersReady = true;
     } catch (e) {
-        console.warn("Parameters not found.");
+        console.warn(t("builder_params_not_found"));
         state.parametersReady = false;
     }
 
@@ -2681,11 +2907,11 @@ function hasHistoryChanged(session, history) {
 // Show interrupt confirmation dialog
 async function showInterruptConfirmDialog(onConfirm) {
     const confirmed = await showConfirm(
-        "A response is currently being generated. This action will interrupt the generation.\n\nTip: Use Background mode to run tasks without interruption.",
+        t("chat_interrupt_message"),
         {
-            title: "Generation in Progress",
+            title: t("chat_interrupt_title"),
             type: "warning",
-            confirmText: "Interrupt",
+            confirmText: t("chat_interrupt_confirm"),
             danger: true
         }
     );
@@ -2841,11 +3067,11 @@ async function renameChatSession(sessionId) {
     const session = state.chat.sessions.find(s => s.id === sessionId);
     if (!session) return;
 
-    const newTitle = await showPrompt("Enter a new name for this chat:", {
-        title: "Rename Chat",
-        placeholder: "e.g., My important conversation",
-        defaultValue: session.title || "Untitled Chat",
-        confirmText: "Rename"
+    const newTitle = await showPrompt(t("chat_rename_prompt"), {
+        title: t("chat_rename_title"),
+        placeholder: t("chat_rename_placeholder"),
+        defaultValue: session.title || t("chat_untitled"),
+        confirmText: t("common_rename")
     });
 
     if (!newTitle || newTitle.trim() === '' || newTitle.trim() === session.title) return;
@@ -2857,10 +3083,10 @@ async function renameChatSession(sessionId) {
 
 // Delete session helper function
 async function deleteChatSession(sessionId) {
-    const confirmed = await showConfirm("Delete this chat?", {
-        title: "Delete Chat",
+    const confirmed = await showConfirm(t("chat_delete_confirm"), {
+        title: t("chat_delete_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -2891,10 +3117,10 @@ async function deleteChatSession(sessionId) {
 // Delete all sessions
 async function deleteAllChatSessions() {
     if (state.chat.sessions.length === 0) return;
-    const confirmed = await showConfirm("Delete all chat history?", {
-        title: "Clear All Chats",
+    const confirmed = await showConfirm(t("chat_delete_all_confirm"), {
+        title: t("chat_delete_all_title"),
         type: "warning",
-        confirmText: "Delete All",
+        confirmText: t("chat_delete_all_action"),
         danger: true
     });
     if (!confirmed) return;
@@ -2951,7 +3177,7 @@ function renderChatHistory() {
             <div class="empty-state-wrapper fade-in-up">
                 <div class="greeting-section">
                     <div class="greeting-text">
-                        <span class="greeting-gradient">What shall we explore today?</span>
+                        <span class="greeting-gradient">${t("greeting_explore")}</span>
                     </div>
                 </div>
             </div>
@@ -3050,14 +3276,33 @@ function setChatStatus(message, variant = "info") {
     if (!els.chatStatus) return;
     const badge = els.chatStatus;
     const variants = { info: "bg-light text-dark", ready: "bg-light text-dark", running: "bg-primary text-white", success: "bg-success text-white", warn: "bg-warning text-dark", error: "bg-danger text-white" };
-    badge.className = `badge rounded-pill border ${variants[variant] || variants.info}`; badge.textContent = message || "";
+    const statusMap = {
+        "Ready": "status_ready",
+        "Offline": "status_offline",
+        "Engine Offline": "status_engine_offline",
+        "Thinking...": "status_thinking",
+        "Initializing...": "status_initializing",
+        "Reconnecting...": "status_reconnecting",
+        "Params Missing": "status_params_missing",
+        "Engine Ready": "status_engine_ready",
+        "Engine Error": "status_engine_error",
+        "Error": "status_error",
+        "Interrupted": "status_interrupted",
+        "Suspending...": "status_suspending",
+    };
+    const key = statusMap[message] || null;
+    badge.className = `badge rounded-pill border ${variants[variant] || variants.info}`;
+    badge.textContent = key ? t(key) : (message || "");
 }
 
 function updateChatIdleStatus() {
     if (state.chat.engineSessionId) {
         setChatStatus("Ready", "ready");
     } else {
-        setChatStatus("Engine Offline", "info");
+        // Avoid overriding to offline if a pipeline is selected but engine state is ambiguous
+        if (!state.selectedPipeline) {
+            setChatStatus("Engine Offline", "info");
+        }
     }
 }
 
@@ -3162,8 +3407,8 @@ function validateKnowledgeBaseSelection() {
  * Show knowledge base selection prompt modal
  */
 async function showKnowledgeBaseAlert() {
-    await showModal("Please select a Knowledge Base before starting the conversation.", {
-        title: "Knowledge Base Required",
+    await showModal(t("chat_kb_required_message"), {
+        title: t("chat_kb_required_title"),
         type: "warning"
     });
     // Focus on knowledge base selection dropdown
@@ -3174,7 +3419,7 @@ async function showKnowledgeBaseAlert() {
 
 async function safeOpenChatView() {
     if (state.mode !== Modes.CHAT && state.unsavedChanges) {
-        const proceed = await confirmUnsavedChanges("enter Chat mode");
+        const proceed = await confirmUnsavedChanges(t("builder_action_enter_chat"));
         if (!proceed) return;
     }
     await openChatView();
@@ -3183,7 +3428,7 @@ async function safeOpenChatView() {
 async function openChatView() {
     if (!canUseChat()) {
         log("Please build and save parameters first.");
-        showModal("Please build and save parameters before entering Chat.", { title: "Pipeline not ready", type: "warning" });
+        showModal(t("builder_pipeline_not_ready_message"), { title: t("builder_pipeline_not_ready_title"), type: "warning" });
         return;
     }
     if (els.chatPipelineName) els.chatPipelineName.textContent = state.selectedPipeline || "—";
@@ -3488,7 +3733,9 @@ function renderSources(bubble, sources, usedIds = null) {
     if (usedSources.length > 0) {
         const usedHeader = document.createElement("div");
         usedHeader.className = "ref-header";
-        usedHeader.textContent = `Cited References (${usedSources.length})`;
+        usedHeader.setAttribute("data-i18n-key", "chat_cited_references");
+        usedHeader.dataset.count = usedSources.length;
+        usedHeader.textContent = `${t("chat_cited_references")} (${usedSources.length})`;
         refContainer.appendChild(usedHeader);
 
         const usedList = document.createElement("div");
@@ -3509,7 +3756,7 @@ function renderSources(bubble, sources, usedIds = null) {
         const unusedHeader = document.createElement("div");
         unusedHeader.className = "ref-header unused-header";
         unusedHeader.innerHTML = `
-            <span>Other Retrieved (${unusedSources.length})</span>
+            <span data-i18n-key="chat_other_retrieved" data-count="${unusedSources.length}">${t("chat_other_retrieved")} (${unusedSources.length})</span>
             <span class="toggle-icon">▶</span>
         `;
         unusedHeader.onclick = () => {
@@ -3557,7 +3804,7 @@ function renderStepsFromHistory(bubble, steps, isInterrupted = false) {
     procDiv.className = "process-container collapsed"; // Collapsed by default
     procDiv.innerHTML = `
         <div class="process-header" onclick="this.parentNode.classList.toggle('collapsed')">
-            <span>Show Thinking</span>
+            <span data-i18n-key="chat_show_thinking">${t("chat_show_thinking")}</span>
             <svg class="process-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -3660,7 +3907,7 @@ function updateProcessUI(entryIndex, eventData) {
         // Expanded structure by default
         procDiv.innerHTML = `
             <div class="process-header" onclick="this.parentNode.classList.toggle('collapsed')">
-                <span>Show Thinking</span>
+                <span data-i18n-key="chat_show_thinking">${t("chat_show_thinking")}</span>
                 <svg class="process-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
@@ -3759,7 +4006,7 @@ async function handleChatSubmit(event) {
     if (!canUseChat()) return;
     const engineReady = await ensureEngineReady(state.selectedPipeline);
     if (!engineReady) {
-        showModal("Please start the engine first.", { title: "Engine Required", type: "warning" });
+        showModal(t("chat_engine_required_message"), { title: t("chat_engine_required_title"), type: "warning" });
         return;
     }
 
@@ -3975,8 +4222,11 @@ async function handleChatSubmit(event) {
                             setChatStatus("Ready", "ready");
                         }
                         else if (data.type === "error") {
-                            const msg = data?.message ? String(data.message) : "Unknown error";
-                            showModal(`Backend Error: ${msg}`, { title: "Chat Error", type: "error" });
+                            const msg = data?.message ? String(data.message) : t("common_unknown_error");
+                            showModal(formatTemplate(t("chat_backend_error_message"), { error: msg }), {
+                                title: t("chat_error_title"),
+                                type: "error"
+                            });
                             setChatStatus("Error", "error");
                         }
                     } catch (e) { console.error(e); }
@@ -4017,8 +4267,11 @@ async function handleChatSubmit(event) {
             return;
         }
         console.error(err);
-        const msg = err?.message ? String(err.message) : "Unknown error";
-        showModal(`Network Error: ${msg}`, { title: "Chat Error", type: "error" });
+        const msg = err?.message ? String(err.message) : t("common_unknown_error");
+        showModal(formatTemplate(t("chat_network_error_message"), { error: msg }), {
+            title: t("chat_error_title"),
+            type: "error"
+        });
         setChatStatus("Error", "error");
     } finally {
         if (state.chat.controller) {
@@ -4041,7 +4294,17 @@ async function handleChatSubmit(event) {
 
 // --- Common Logic (Mode Switching, Node Picker, etc.) ---
 function resetLogView() { if (els.log) els.log.textContent = ""; }
-function setHeroPipelineLabel(name) { if (els.heroSelectedPipeline) els.heroSelectedPipeline.textContent = name ? name : "No Pipeline Selected"; }
+function setHeroPipelineLabel(name) {
+    if (!els.heroSelectedPipeline) return;
+    if (name) {
+        els.heroSelectedPipeline.textContent = name;
+        els.heroSelectedPipeline.dataset.selected = "true";
+        els.heroSelectedPipeline.dataset.currentName = name;
+    } else {
+        els.heroSelectedPipeline.textContent = t("builder_no_pipeline_selected");
+        els.heroSelectedPipeline.dataset.selected = "false";
+    }
+}
 function setHeroStatusLabel(status) {
     if (!els.heroStatus) return;
     els.heroStatus.dataset.status = status; els.heroStatus.textContent = status.toUpperCase();
@@ -4056,7 +4319,7 @@ async function fetchJSON(url, options = {}) {
 async function persistParameterData({ silent = false } = {}) {
     if (!state.selectedPipeline || !state.parameterData) throw new Error("No parameters to save");
     await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`, { method: "PUT", body: JSON.stringify(state.parameterData) });
-    state.parametersReady = true; updateActionButtons(); if (!silent) log("Parameters saved.");
+    state.parametersReady = true; updateActionButtons(); if (!silent) log(t("builder_params_saved"));
 }
 
 // --- Action Helpers (Removed Run Logic) ---
@@ -4254,10 +4517,10 @@ function setYamlSyncStatus(status) {
     };
 
     const titles = {
-        synced: 'Synced with canvas',
-        syncing: 'Syncing...',
-        error: 'Parse error',
-        modified: 'Editor modified (Save to apply)'
+        synced: t('builder_yaml_synced_title'),
+        syncing: t('builder_yaml_syncing_title'),
+        error: t('builder_yaml_error_title'),
+        modified: t('builder_yaml_modified_title')
     };
 
     els.yamlSyncStatus.innerHTML = icons[status] || icons.synced;
@@ -4277,7 +4540,7 @@ function showYamlError(message) {
         setYamlSyncStatus('error');
     } else {
         els.yamlErrorBar.classList.add('d-none');
-        setYamlSyncStatus('synced');
+        setYamlSyncStatus(state.unsavedChanges ? 'modified' : 'synced');
     }
 }
 
@@ -4432,7 +4695,7 @@ function extractStepsFromParsedYaml(parsed) {
     }
 
     if (!Array.isArray(newSteps)) {
-        throw new Error('Invalid pipeline format: expected "pipeline" or "steps" array');
+        throw new Error(t('builder_yaml_invalid_format'));
     }
 
     return newSteps;
@@ -4454,11 +4717,14 @@ async function validateYamlEditorContent(options = {}) {
         showYamlError(null);
         return { valid: true, content: yamlContent, steps, parsed };
     } catch (err) {
-        const message = err?.message ? String(err.message) : "YAML parse failed";
+        const message = err?.message ? String(err.message) : t("builder_yaml_parse_failed");
         showYamlError(message);
         setYamlSyncStatus('error');
         if (showModalOnError) {
-            showModal(`YAML cannot be parsed: ${message}`, { title: "YAML Error", type: "error" });
+            showModal(formatTemplate(t("builder_yaml_parse_failed_message"), { error: message }), {
+                title: t("builder_yaml_error_title"),
+                type: "error"
+            });
         }
         return { valid: false, error: message };
     }
@@ -4490,7 +4756,7 @@ async function syncYamlToCanvasOnly(options = {}) {
         showYamlError(null);
         setYamlSyncStatus('synced');
         yamlEditorSyncLock = false;
-        log("Editor synced to canvas.");
+        log(t("builder_editor_synced_to_canvas"));
         return;
     }
 
@@ -4516,7 +4782,7 @@ async function syncYamlToCanvasOnly(options = {}) {
         setYamlSyncStatus('synced');
         yamlEditorSyncLock = false;
 
-        log("Editor synced to canvas.");
+        log(t("builder_editor_synced_to_canvas"));
 
     } catch (err) {
         showYamlError(err.message);
@@ -4603,16 +4869,16 @@ function initYamlEditor() {
     if (els.yamlFormatBtn) {
         els.yamlFormatBtn.addEventListener('click', async () => {
             const confirmed = await showConfirm(
-                "This will reset the editor content to match the current canvas state. Any manual edits in the editor will be lost.",
+                t("builder_editor_reset_message"),
                 {
-                    title: "Reset Editor",
+                    title: t("builder_editor_reset_title"),
                     type: "warning",
-                    confirmText: "Reset"
+                    confirmText: t("builder_editor_reset_action")
                 }
             );
             if (confirmed) {
                 updatePipelinePreview();
-                log("Editor synced from canvas.");
+                log(t("builder_editor_synced_from_canvas"));
             }
         });
     }
@@ -4777,7 +5043,14 @@ function populateNodePickerTools() {
     if (!els.nodePickerTool) return;
     const select = els.nodePickerTool; select.innerHTML = "";
     const server = nodePickerState.server; const tools = (server && state.toolCatalog.byServer[server]) || [];
-    if (!tools.length) { const option = document.createElement("option"); option.textContent = server ? "No tools" : "Select Server"; select.appendChild(option); select.disabled = true; nodePickerState.tool = null; return; }
+    if (!tools.length) {
+        const option = document.createElement("option");
+        option.textContent = server ? t("builder_node_no_tools") : t("builder_node_select_server");
+        select.appendChild(option);
+        select.disabled = true;
+        nodePickerState.tool = null;
+        return;
+    }
     select.disabled = false; if (!nodePickerState.tool) nodePickerState.tool = tools[0].tool;
     tools.forEach(t => { const option = document.createElement("option"); option.value = t.tool; option.textContent = t.tool; select.appendChild(option); });
     select.value = nodePickerState.tool || "";
@@ -4786,7 +5059,13 @@ function populateNodePickerServers() {
     if (!els.nodePickerServer) return;
     const select = els.nodePickerServer; select.innerHTML = "";
     const servers = state.toolCatalog.order || [];
-    if (!servers.length) { const option = document.createElement("option"); option.textContent = "No Servers"; select.appendChild(option); select.disabled = true; return; }
+    if (!servers.length) {
+        const option = document.createElement("option");
+        option.textContent = t("builder_node_no_servers");
+        select.appendChild(option);
+        select.disabled = true;
+        return;
+    }
     select.disabled = false; if (!nodePickerState.server) nodePickerState.server = servers[0];
     servers.forEach(s => { const option = document.createElement("option"); option.value = s; option.textContent = s; select.appendChild(option); });
     select.value = nodePickerState.server; populateNodePickerTools();
@@ -4812,10 +5091,16 @@ function handleNodePickerConfirm() {
     const { location, index } = pendingInsert;
     try {
         switch (nodePickerState.mode) {
-            case "tool": if (!nodePickerState.server || !nodePickerState.tool) throw new Error("Select a tool"); insertStepAt(location, index, `${nodePickerState.server}.${nodePickerState.tool}`); break;
+            case "tool":
+                if (!nodePickerState.server || !nodePickerState.tool) throw new Error(t("builder_node_select_tool_error"));
+                insertStepAt(location, index, `${nodePickerState.server}.${nodePickerState.tool}`);
+                break;
             case "loop": const times = Math.max(1, Number(nodePickerState.loopTimes) || 1); const p = insertStepAt(location, index, { loop: { times, steps: [] } }); enterStructureContext("loop", p); break;
             case "branch": const cases = (nodePickerState.branchCases || "").split(",").map(c => c.trim()).filter(B => B); const step = { branch: { router: [], branches: {} } }; (cases.length ? cases : ["c1", "c2"]).forEach(k => step.branch.branches[k] = []); const p2 = insertStepAt(location, index, step); enterStructureContext("branch", p2); break;
-            case "custom": if (!nodePickerState.customValue) throw new Error("Custom value cannot be empty"); insertStepAt(location, index, parseStepInput(nodePickerState.customValue)); break;
+            case "custom":
+                if (!nodePickerState.customValue) throw new Error(t("builder_node_custom_empty_error"));
+                insertStepAt(location, index, parseStepInput(nodePickerState.customValue));
+                break;
         }
         getNodePickerModal()?.hide(); pendingInsert = null;
     } catch (e) { showNodePickerError(e.message); }
@@ -4840,7 +5125,7 @@ function markPipelineDirty() {
             state.chat.engineSessionId = null;
         }
         persistActiveEngines();
-        log(`Pipeline '${currentName}' modified. Engine invalidated.`);
+        log(formatTemplate(t("builder_log_engine_invalidated"), { name: currentName }));
     }
 
     if (state.mode !== Modes.BUILDER) setMode(Modes.BUILDER);
@@ -4897,12 +5182,27 @@ function insertStepAt(location, insertIndex, stepValue) {
 function removeStep(stepPath) { removeStepByPath(stepPath); markPipelineDirty(); resetContextStack(); renderSteps(); updatePipelinePreview(); }
 function openStepEditor(stepPath) { state.editingPath = stepPath; const step = getStepByPath(stepPath); els.stepEditorValue.value = typeof step === "string" ? step : JSON.stringify(step, null, 2); els.stepEditor.hidden = false; }
 function closeStepEditor() { state.editingPath = null; els.stepEditor.hidden = true; }
-function parseStepInput(raw) { const t = (raw || "").trim(); if (!t) throw new Error("Empty"); if ((t.startsWith("{") && t.endsWith("}")) || (t.startsWith("[") && t.endsWith("]"))) return JSON.parse(t); return t; }
+function parseStepInput(raw) {
+    const trimmed = (raw || "").trim();
+    if (!trimmed) throw new Error(t("builder_parse_empty_error"));
+    if ((trimmed.startsWith("{") && trimmed.endsWith("}")) || (trimmed.startsWith("[") && trimmed.endsWith("]"))) return JSON.parse(trimmed);
+    return trimmed;
+}
 function createInsertControl(location, insertIndex, { prominent = false, compact = false } = {}) {
-    const holder = document.createElement("div"); holder.className = "flow-insert-control"; if (prominent) holder.classList.add("prominent");
-    const button = document.createElement("button"); button.type = "button"; button.className = "flow-insert-button"; button.title = "Insert Node Here"; button.innerHTML = '<span>+</span><span>Add Node</span>';
-    button.addEventListener("click", () => { const pendingLocation = createLocation((location.segments || []).map((seg) => ({ ...seg }))); openNodePicker(pendingLocation, insertIndex); });
-    holder.appendChild(button); return holder;
+    const holder = document.createElement("div");
+    holder.className = "flow-insert-control";
+    if (prominent) holder.classList.add("prominent");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "flow-insert-button";
+    button.title = t("builder_node_insert_here");
+    button.innerHTML = `<span>+</span><span>${t("builder_node_add")}</span>`;
+    button.addEventListener("click", () => {
+        const pendingLocation = createLocation((location.segments || []).map((seg) => ({ ...seg })));
+        openNodePicker(pendingLocation, insertIndex);
+    });
+    holder.appendChild(button);
+    return holder;
 }
 
 // ... (Render Helpers - Tool/Loop/Branch Nodes - keep same) ...
@@ -4940,7 +5240,10 @@ function renderToolNode(identifier, stepPath, meta = {}) {
 
     const body = document.createElement("div"); body.className = "flow-node-body"; body.textContent = toolName || raw;
     const actions = document.createElement("div"); actions.className = "step-actions";
-    const removeBtn = document.createElement("button"); removeBtn.className = "btn btn-outline-danger btn-sm"; removeBtn.textContent = "Delete"; removeBtn.onclick = (e) => { e.stopPropagation(); removeStep(stepPath); };
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "btn btn-outline-danger btn-sm";
+    removeBtn.textContent = t("common_delete");
+    removeBtn.onclick = (e) => { e.stopPropagation(); removeStep(stepPath); };
     actions.append(removeBtn); card.append(header, body, actions); return card;
 }
 function renderLoopNode(step, parentLocation, index) {
@@ -4949,15 +5252,25 @@ function renderLoopNode(step, parentLocation, index) {
     const loopLocation = createLocation([...(parentLocation.segments || []), { type: "loop", index }]);
     const container = document.createElement("div"); container.className = "loop-container";
     const header = document.createElement("div"); header.className = "loop-header";
-    const title = document.createElement("h6"); title.textContent = `Loop (${step.loop.times}x)`;
-    const enterBtn = document.createElement("button"); enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0"; enterBtn.textContent = "Open Context →"; enterBtn.onclick = () => setActiveLocation(loopLocation);
+    const title = document.createElement("h6");
+    title.textContent = formatTemplate(t("builder_loop_title"), { times: step.loop.times });
+    const enterBtn = document.createElement("button");
+    enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0";
+    enterBtn.textContent = t("builder_open_context");
+    enterBtn.onclick = () => setActiveLocation(loopLocation);
     header.append(title, enterBtn);
     const actions = document.createElement("div"); actions.className = "mt-2 d-flex justify-content-end gap-2";
-    const editBtn = document.createElement("button"); editBtn.className = "btn btn-sm btn-outline-secondary border-0"; editBtn.textContent = "Edit"; editBtn.onclick = () => openStepEditor(createStepPath(parentLocation, index));
-    const delBtn = document.createElement("button"); delBtn.className = "btn btn-sm btn-outline-danger border-0"; delBtn.textContent = "Delete"; delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn btn-sm btn-outline-secondary border-0";
+    editBtn.textContent = t("common_edit");
+    editBtn.onclick = () => openStepEditor(createStepPath(parentLocation, index));
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn btn-sm btn-outline-danger border-0";
+    delBtn.textContent = t("common_delete");
+    delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
     actions.append(editBtn, delBtn);
 
-    const list = renderStepList(loopSteps, loopLocation, { placeholderText: "Empty Loop", compact: true });
+    const list = renderStepList(loopSteps, loopLocation, { placeholderText: t("builder_empty_loop"), compact: true });
 
     container.append(header, list, actions); if (locationsEqual(loopLocation, getActiveLocation())) container.classList.add("active"); return container;
 }
@@ -4967,24 +5280,41 @@ function renderBranchNode(step, parentLocation, index) {
 
     const branchBase = createLocation([...(parentLocation.segments || []), { type: "branch", index, section: "router" }]);
     const container = document.createElement("div"); container.className = "branch-container";
-    const header = document.createElement("div"); header.className = "branch-header"; header.innerHTML = `<h6>Branch</h6>`;
-    const enterBtn = document.createElement("button"); enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0"; enterBtn.textContent = "Open Router →";
+    const header = document.createElement("div");
+    header.className = "branch-header";
+    header.innerHTML = `<h6>${t("builder_branch")}</h6>`;
+    const enterBtn = document.createElement("button");
+    enterBtn.className = "btn btn-sm btn-link text-decoration-none p-0";
+    enterBtn.textContent = t("builder_open_router");
     enterBtn.onclick = () => setActiveLocation(branchBase);
     header.appendChild(enterBtn);
     const routerDiv = document.createElement("div"); routerDiv.className = "branch-router " + (locationsEqual(branchBase, getActiveLocation()) ? "active" : "");
-    routerDiv.appendChild(renderStepList(step.branch.router, branchBase, { placeholderText: "Router Logic", compact: true }));
+    routerDiv.appendChild(renderStepList(step.branch.router, branchBase, { placeholderText: t("builder_router_logic"), compact: true }));
     const casesDiv = document.createElement("div"); casesDiv.className = "branch-cases mt-3";
     Object.keys(step.branch.branches).forEach(k => {
         const loc = createLocation([...(parentLocation.segments || []), { type: "branch", index, section: "branch", branchKey: k }]);
         const cCard = document.createElement("div"); cCard.className = "branch-case " + (locationsEqual(loc, getActiveLocation()) ? "active" : "");
         const cHeader = document.createElement("div"); cHeader.className = "d-flex justify-content-between mb-2";
-        const cTitle = document.createElement("span"); cTitle.className = "fw-bold text-xs"; cTitle.textContent = `Case: ${k}`;
-        const cBtn = document.createElement("button"); cBtn.className = "btn btn-link btn-sm p-0 text-decoration-none"; cBtn.textContent = "Open"; cBtn.onclick = () => setActiveLocation(loc);
-        cHeader.append(cTitle, cBtn); cCard.append(cHeader, renderStepList(step.branch.branches[k], loc, { placeholderText: "Empty Case", compact: true })); casesDiv.appendChild(cCard);
+        const cTitle = document.createElement("span");
+        cTitle.className = "fw-bold text-xs";
+        cTitle.textContent = formatTemplate(t("builder_case_label"), { name: k });
+        const cBtn = document.createElement("button");
+        cBtn.className = "btn btn-link btn-sm p-0 text-decoration-none";
+        cBtn.textContent = t("common_open");
+        cBtn.onclick = () => setActiveLocation(loc);
+        cHeader.append(cTitle, cBtn);
+        cCard.append(cHeader, renderStepList(step.branch.branches[k], loc, { placeholderText: t("builder_empty_case"), compact: true }));
+        casesDiv.appendChild(cCard);
     });
     const actions = document.createElement("div"); actions.className = "mt-2 d-flex justify-content-end gap-2";
-    const addBtn = document.createElement("button"); addBtn.className = "btn btn-sm btn-light border"; addBtn.textContent = "+ Case"; addBtn.onclick = () => addBranchCase(parentLocation, index);
-    const delBtn = document.createElement("button"); delBtn.className = "btn btn-sm btn-text text-danger"; delBtn.textContent = "Delete Branch"; delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
+    const addBtn = document.createElement("button");
+    addBtn.className = "btn btn-sm btn-light border";
+    addBtn.textContent = t("builder_add_case");
+    addBtn.onclick = () => addBranchCase(parentLocation, index);
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn btn-sm btn-text text-danger";
+    delBtn.textContent = t("builder_delete_branch");
+    delBtn.onclick = () => removeStep(createStepPath(parentLocation, index));
     actions.append(addBtn, delBtn); container.append(header, routerDiv, casesDiv, actions); return container;
 }
 function renderStepNode(step, parentLocation, index) {
@@ -4996,7 +5326,8 @@ function renderStepNode(step, parentLocation, index) {
     }
     if (step && typeof step === "object" && step.loop) return renderLoopNode(step, parentLocation, index);
     if (step && typeof step === "object" && step.branch) return renderBranchNode(step, parentLocation, index);
-    const card = renderToolNode("Custom Object", stepPath, { description: truncateText(JSON.stringify(step)) }); return card;
+    const card = renderToolNode(t("builder_custom_object"), stepPath, { description: truncateText(JSON.stringify(step)) });
+    return card;
 }
 function renderStepList(steps, location, options = {}) {
     const safeSteps = Array.isArray(steps) ? steps : [];
@@ -5041,13 +5372,24 @@ function renderContextControls() {
     els.contextControls.appendChild(breadcrumb);
     const active = getActiveLocation(); const kind = getContextKind(active);
     if (kind !== "root") {
-        const exitBtn = document.createElement("button"); exitBtn.className = "btn btn-sm btn-link text-danger text-decoration-none mt-2"; exitBtn.textContent = "Exit Context ✕";
-        exitBtn.onclick = () => { setActiveLocation(createLocation((active.segments || []).slice(0, -1))); }; els.contextControls.appendChild(exitBtn);
+        const exitBtn = document.createElement("button");
+        exitBtn.className = "btn btn-sm btn-link text-danger text-decoration-none mt-2";
+        exitBtn.textContent = t("builder_exit_context");
+        exitBtn.onclick = () => { setActiveLocation(createLocation((active.segments || []).slice(0, -1))); };
+        els.contextControls.appendChild(exitBtn);
     }
 }
 function ctxLabel(location, idx) {
-    if (idx === 0) return "Root"; const last = (location.segments || [])[location.segments.length - 1];
-    if (!last) return "Root"; if (last.type === "loop") return "Loop"; if (last.type === "branch") return last.section === "router" ? "Router" : `Case:${last.branchKey}`; return "Node";
+    if (idx === 0) return t("builder_context_root");
+    const last = (location.segments || [])[location.segments.length - 1];
+    if (!last) return t("builder_context_root");
+    if (last.type === "loop") return t("builder_context_loop");
+    if (last.type === "branch") {
+        return last.section === "router"
+            ? t("builder_context_router")
+            : formatTemplate(t("builder_context_case"), { name: last.branchKey });
+    }
+    return t("builder_context_node");
 }
 function addBranchCase(parentLocation, branchIndex) {
     const steps = resolveSteps(parentLocation); const entry = steps[branchIndex]; if (!entry?.branch) return;
@@ -5067,7 +5409,7 @@ function renderPipelineMenu(items) {
     els.pipelineMenu.innerHTML = "";
     if (!items.length) {
         const li = document.createElement("li");
-        li.innerHTML = '<span class="dropdown-item text-muted small">No pipelines</span>';
+        li.innerHTML = `<span class="dropdown-item text-muted small">${t("builder_no_pipelines")}</span>`;
         els.pipelineMenu.appendChild(li);
         return;
     }
@@ -5089,7 +5431,7 @@ function renderPipelineMenu(items) {
         if (i.is_ready) {
             const readyDot = document.createElement("span");
             readyDot.className = "pipeline-ready-dot";
-            readyDot.title = "Built";
+            readyDot.title = t("builder_pipeline_built_title");
             btn.appendChild(readyDot);
         }
 
@@ -5101,7 +5443,7 @@ function renderPipelineMenu(items) {
 async function loadPipeline(name, options = {}) {
     const { ignoreUnsaved = false } = options;
     if (!ignoreUnsaved && state.unsavedChanges && state.selectedPipeline && state.selectedPipeline !== name) {
-        const proceed = await confirmUnsavedChanges("switch to another pipeline");
+        const proceed = await confirmUnsavedChanges(t("builder_action_switch_pipeline"));
         if (!proceed) return;
     }
 
@@ -5156,7 +5498,7 @@ async function loadPipeline(name, options = {}) {
         updateAIContextBanner('pipeline-load');
 
     } catch (err) {
-        log(`Failed to load pipeline: ${err.message}`);
+        log(formatTemplate(t("builder_load_pipeline_failed"), { error: err.message }));
         console.error(err);
     }
 }
@@ -5176,7 +5518,7 @@ async function checkPipelineReadiness(name) {
         state.isBuilt = true;         // Consider as built
         state.parametersReady = true; // Consider parameters as ready
 
-        log(`Pipeline '${name}' parameters loaded. Ready to Chat.`);
+        log(formatTemplate(t("builder_pipeline_ready"), { name }));
         updateActionButtons(); // This will enable "Enter Chat Mode" button
 
     } catch (e) {
@@ -5193,13 +5535,13 @@ async function checkPipelineReadiness(name) {
 async function handleSubmit(e) {
     if (e) e.preventDefault();
     const name = els.name.value.trim();
-    if (!name) return log("Pipeline name is required");
+    if (!name) return log(t("builder_pipeline_name_required"));
 
     // Get YAML content from editor and validate
     const validation = await validateYamlEditorContent({ showModalOnError: true });
     let yamlContent = validation.valid ? (validation.content || '') : null;
     if (yamlContent === null) {
-        log("Save aborted due to YAML errors.");
+        log(t("builder_save_aborted_yaml_error"));
         return;
     }
 
@@ -5220,22 +5562,22 @@ async function handleSubmit(e) {
                 headers: { 'Content-Type': 'text/plain; charset=utf-8' },
                 body: yamlContent,
             });
-            if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+            if (!res.ok) throw new Error(formatTemplate(t("builder_save_failed_status"), { status: res.status }));
             await res.json();
 
             state.selectedPipeline = name;
             refreshPipelines();
-            log("Pipeline saved.");
+            log(t("builder_pipeline_saved"));
             setYamlSyncStatus('synced');
             snapshotSavedYaml(yamlContent);
 
             // After successful save, automatically sync canvas (don't overwrite editor), but maintain "saved" state
             await syncYamlToCanvasOnly({ markUnsaved: false });
         } catch (err) {
-            const msg = err?.message || "Unknown error";
-            log(`Error: ${msg}`);
+            const msg = err?.message || t("common_unknown_error");
+            log(formatTemplate(t("builder_error_message"), { error: msg }));
             showYamlError(msg);
-            showModal(`Save failed: ${msg}`, { title: "Save Error", type: "error" });
+            showModal(formatTemplate(t("builder_save_failed_message"), { error: msg }), { title: t("builder_save_error_title"), type: "error" });
         }
     } else {
         // Empty content, save using JSON method
@@ -5251,7 +5593,7 @@ function saveWithJson(name) {
         .then(s => {
             state.selectedPipeline = s.name || name;
             refreshPipelines();
-            log("Pipeline saved.");
+            log(t("builder_pipeline_saved"));
             setYamlSyncStatus('synced');
             snapshotSavedYaml(yamlStringify(buildPipelinePayloadForPreview()));
             loadPipeline(s.name || name);
@@ -5260,13 +5602,13 @@ function saveWithJson(name) {
 }
 async function buildSelectedPipeline() {
     if (state.unsavedChanges) {
-        showModal("Please save the pipeline before building.", { title: "Unsaved changes", type: "warning" });
+        showModal(t("builder_save_before_build"), { title: t("builder_unsaved_changes_title"), type: "warning" });
         return;
     }
-    if (!state.selectedPipeline) return log("Please save the pipeline first.");
+    if (!state.selectedPipeline) return log(t("builder_save_pipeline_first"));
     expandConsole();
     setBuildButtonState("running");
-    log(`Building pipeline "${state.selectedPipeline}"...`);
+    log(formatTemplate(t("builder_building_pipeline"), { name: state.selectedPipeline }));
     try {
         await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/build`, { method: "POST" });
 
@@ -5274,13 +5616,13 @@ async function buildSelectedPipeline() {
         state.parametersReady = false;
         updateActionButtons();
         setBuildButtonState("success");
-        log("Pipeline built.");
+        log(t("builder_pipeline_built_log"));
 
         // Load parameter data
         try {
             state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
         } catch (e) {
-            log("Failed to load parameters: " + e.message);
+            log(formatTemplate(t("builder_load_parameters_failed"), { error: e.message }));
         }
 
         // Switch to Parameters panel
@@ -5289,16 +5631,16 @@ async function buildSelectedPipeline() {
         }
     } catch (e) {
         setBuildButtonState("error");
-        log(`Build failed: ${e.message}`);
-        showModal(`Build failed: ${e.message}`, { title: "Build Error", type: "error" });
+        log(formatTemplate(t("builder_build_failed_message"), { error: e.message }));
+        showModal(formatTemplate(t("builder_build_failed_message"), { error: e.message }), { title: t("builder_build_error_title"), type: "error" });
     }
 }
 async function deleteSelectedPipeline() {
     if (!state.selectedPipeline) return;
-    const confirmed = await showConfirm("Delete this pipeline?", {
-        title: "Delete Pipeline",
+    const confirmed = await showConfirm(t("builder_delete_pipeline_confirm"), {
+        title: t("builder_delete_pipeline_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -5334,7 +5676,7 @@ async function handlePipelineNameBlur() {
 
     // Validate name format
     if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(newName)) {
-        log("Invalid name. Use letters, numbers, underscores, hyphens. Start with letter or underscore.");
+        log(t("builder_invalid_pipeline_name"));
         els.name.value = state.selectedPipeline;
         return;
     }
@@ -5347,7 +5689,7 @@ async function handlePipelineNameBlur() {
 
         state.selectedPipeline = newName;
         await refreshPipelines();
-        log(`Pipeline renamed to "${newName}".`);
+        log(formatTemplate(t("builder_pipeline_renamed"), { name: newName }));
     } catch (e) {
         log(`Rename failed: ${e.message}`);
         els.name.value = state.selectedPipeline; // Restore original name
@@ -5496,7 +5838,7 @@ function renderParameterForm() {
     });
 }
 async function showParameterPanel(force = false) {
-    if (!state.isBuilt) return log("Please build the pipeline first.");
+    if (!state.isBuilt) return log(t("builder_build_pipeline_first"));
     if (force || !state.parameterData) { try { state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`)); } catch (e) { return log(e.message); } }
     renderParameterForm(); setMode(Modes.PARAMETERS);
 }
@@ -5521,10 +5863,10 @@ function bindEvents() {
 
     if (els.clearSteps) {
         els.clearSteps.addEventListener("click", async () => {
-            const confirmed = await showConfirm("Clear all steps?", {
-                title: "Clear Steps",
+            const confirmed = await showConfirm(t("builder_clear_steps_confirm"), {
+                title: t("builder_clear_steps_title"),
                 type: "warning",
-                confirmText: "Clear"
+                confirmText: t("builder_clear_steps_action")
             });
             if (confirmed) setSteps([], { markUnsaved: true });
         });
@@ -5589,38 +5931,7 @@ function bindEvents() {
         });
     }
 
-    if (els.chatBack) {
-        const navigateBackToBuilder = async () => {
-            try {
-                saveCurrentSession(true);
-            } catch (e) {
-                console.error(e);
-            }
-
-            setChatRunning(false);
-
-            setMode(Modes.BUILDER);
-            updateUrlForView(Modes.BUILDER);
-            if (typeof switchWorkspaceMode === 'function') {
-                switchWorkspaceMode('pipeline');
-            }
-        };
-
-        els.chatBack.onclick = async () => {
-            if (state.chat.running) {
-                showInterruptConfirmDialog(async () => {
-                    if (state.chat.controller) {
-                        state.chat.controller.abort();
-                        state.chat.controller = null;
-                    }
-                    await navigateBackToBuilder();
-                });
-                return;
-            }
-
-            await navigateBackToBuilder();
-        };
-    }
+    setupSettingsMenu();
 
     if (els.chatForm) els.chatForm.onsubmit = handleChatSubmit;
     if (els.chatSend) els.chatSend.onclick = handleChatSubmit;
@@ -5688,7 +5999,7 @@ function bindEvents() {
     document.getElementById("step-editor-cancel").onclick = closeStepEditor;
     if (els.refreshPipelines) {
         els.refreshPipelines.onclick = async () => {
-            const canProceed = state.unsavedChanges ? await confirmUnsavedChanges("refresh pipeline list") : true;
+            const canProceed = state.unsavedChanges ? await confirmUnsavedChanges(t("builder_action_refresh_pipeline_list")) : true;
             if (!canProceed) return;
 
             await refreshPipelines();
@@ -5708,6 +6019,15 @@ function bindEvents() {
     if (els.nodePickerLoopTimes) els.nodePickerLoopTimes.oninput = (e) => nodePickerState.loopTimes = e.target.value;
     if (els.nodePickerCustom) els.nodePickerCustom.oninput = (e) => nodePickerState.customValue = e.target.value;
     if (els.nodePickerConfirm) els.nodePickerConfirm.onclick = handleNodePickerConfirm;
+
+    if (els.milvusDialog) {
+        els.milvusDialog.addEventListener('close', () => {
+            if (els.modalTargetDb) {
+                els.modalTargetDb.textContent = t("kb_loading_config");
+                delete els.modalTargetDb.dataset.i18nOverride;
+            }
+        });
+    }
 }
 
 // Knowledge base dropdown control function
@@ -5718,13 +6038,66 @@ window.toggleKbDropdown = function () {
     }
 };
 
-// Click elsewhere to close dropdown menu
-document.addEventListener('click', function (e) {
-    const wrapper = document.querySelector('.kb-dropdown-wrapper');
-    if (wrapper && !wrapper.contains(e.target)) {
-        wrapper.classList.remove('open');
+function closeChatPipelineDropdown(target) {
+    const trigger = document.getElementById('chatPipelineDropdown');
+    const menu = document.getElementById('chat-pipeline-menu');
+    if (!trigger || !menu) return;
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true' || menu.classList.contains('show');
+    if (!isOpen) return;
+    if (menu.contains(target) || trigger.contains(target)) return;
+    if (window.bootstrap?.Dropdown) {
+        const instance = window.bootstrap.Dropdown.getOrCreateInstance(trigger);
+        instance.hide();
+    } else {
+        trigger.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('show');
     }
-});
+}
+
+function closeBuilderPipelineDropdown(target) {
+    const trigger = document.getElementById('pipelineDropdownBtn');
+    const menu = document.getElementById('pipeline-menu');
+    if (!trigger || !menu) return;
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true' || menu.classList.contains('show');
+    if (!isOpen) return;
+    if (menu.contains(target) || trigger.contains(target)) return;
+    if (window.bootstrap?.Dropdown) {
+        const instance = window.bootstrap.Dropdown.getOrCreateInstance(trigger);
+        instance.hide();
+    } else {
+        trigger.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('show');
+    }
+}
+
+function closeKbDropdown(target) {
+    const wrapper = document.querySelector('.kb-dropdown-wrapper');
+    const menu = document.getElementById('kb-dropdown-menu');
+    const trigger = document.getElementById('kb-dropdown-trigger');
+    if (!wrapper || !wrapper.classList.contains('open')) return;
+    if ((menu && menu.contains(target)) || (trigger && trigger.contains(target))) return;
+    wrapper.classList.remove('open');
+}
+
+function closeContextMenus(target) {
+    const chatMenu = document.getElementById('chat-session-context-menu');
+    if (chatMenu && !chatMenu.classList.contains('d-none') && !chatMenu.contains(target)) {
+        hideChatSessionContextMenu();
+    }
+    const promptMenu = document.getElementById('prompt-context-menu');
+    if (promptMenu && !promptMenu.classList.contains('d-none') && !promptMenu.contains(target)) {
+        hidePromptContextMenu();
+    }
+}
+
+// Pointer-down capture to close menus on blank area click
+document.addEventListener('pointerdown', function (e) {
+    const target = e.target;
+    closeContextMenus(target);
+    closeKbDropdown(target);
+    closeChatPipelineDropdown(target);
+    closeBuilderPipelineDropdown(target);
+}, true);
 
 // Clear knowledge base selection
 window.clearKbSelection = function (e) {
@@ -5736,7 +6109,7 @@ window.clearKbSelection = function (e) {
     // Simulate selecting empty item
     const mockItem = document.createElement('div');
     mockItem.dataset.value = "";
-    mockItem.dataset.label = "Knowledge Base";
+    mockItem.dataset.label = t("knowledge_base");
     selectKbOption(mockItem);
 };
 
@@ -5771,10 +6144,12 @@ window.selectKbOption = function (itemEl) {
     // Update trigger display
     if (value) {
         label.textContent = labelText;
+        label.dataset.selected = "true";
         trigger.classList.add('active');
         if (clearBtn) clearBtn.style.display = 'inline-flex';
     } else {
-        label.textContent = "Knowledge Base";
+        label.textContent = t("knowledge_base");
+        label.dataset.selected = "false";
         trigger.classList.remove('active');
         if (clearBtn) clearBtn.style.display = 'none';
     }
@@ -5811,7 +6186,7 @@ function renderKbDropdownOptions(collections) {
 
     // Sync hidden select options
     if (hiddenSelect) {
-        hiddenSelect.innerHTML = '<option value="">No Knowledge Base</option>';
+        hiddenSelect.innerHTML = `<option value="">${t('no_knowledge_base')}</option>`;
         collections.forEach(c => {
             const displayName = c.display_name || c.name;
             const opt = document.createElement("option");
@@ -5830,15 +6205,18 @@ function renderKbDropdownOptions(collections) {
         const selectedCollection = collections.find(c => c.name === currentVal);
         if (selectedCollection) {
             label.textContent = selectedCollection.display_name || selectedCollection.name;
+            label.dataset.selected = "true";
             trigger.classList.add('active');
             if (clearBtn) clearBtn.style.display = 'inline-flex';
         } else {
-            label.textContent = "Knowledge Base";
+            label.textContent = t("knowledge_base");
+            label.dataset.selected = "false";
             trigger.classList.remove('active');
             if (clearBtn) clearBtn.style.display = 'none';
         }
     } else if (trigger) {
-        label.textContent = "Knowledge Base";
+        label.textContent = t("knowledge_base");
+        label.dataset.selected = "false";
         trigger.classList.remove('active');
         if (clearBtn) clearBtn.style.display = 'none';
     }
@@ -5860,11 +6238,13 @@ window.updateKbLabel = function (selectEl) {
     const selectedVal = selectEl.value;
 
     if (!selectedVal) {
-        label.textContent = "Knowledge Base";
+        label.textContent = t("knowledge_base");
+        label.dataset.selected = "false";
         trigger.classList.remove('active');
     } else {
         const selectedText = selectEl.options[selectEl.selectedIndex].text;
         label.textContent = selectedText;
+        label.dataset.selected = "true";
         trigger.classList.add('active');
     }
 };
@@ -5892,6 +6272,7 @@ async function bootstrap() {
     }
 
     setMode(initialMode);
+    applyUILanguage(state.uiLanguage);
 
     if (!state.adminMode && initialMode === Modes.CHAT) {
         // Chat-only mode: directly enter Chat view
@@ -5971,8 +6352,160 @@ async function bootstrap() {
 // Hide admin-related buttons in Chat-only mode
 function applyChatOnlyMode() {
     // Hide "Configure Pipeline" back button (not allowed to return to Builder)
-    if (els.chatBack) {
-        els.chatBack.style.display = 'none';
+    if (els.settingsBuilder) {
+        els.settingsBuilder.style.display = "none";
+    }
+    if (els.settingsMenu) {
+        els.settingsMenu.classList.remove("open");
+    }
+}
+
+function applyUILanguage(lang) {
+    const resolved = UI_LANGUAGE_MAP[lang] ? lang : "en";
+    state.uiLanguage = resolved;
+
+    try {
+        localStorage.setItem(UI_LANGUAGE_STORAGE_KEY, resolved);
+    } catch (e) {
+        console.warn("Failed to persist UI language", e);
+    }
+
+    document.documentElement.setAttribute("data-ui-lang", resolved);
+
+    if (els.settingsLanguageLabel) {
+        els.settingsLanguageLabel.textContent = UI_LANGUAGE_MAP[resolved];
+    }
+
+    updateI18nTexts();
+
+    document.querySelectorAll("[data-ui-lang]").forEach((btn) => {
+        const isActive = btn.getAttribute("data-ui-lang") === resolved;
+        btn.classList.toggle("active", isActive);
+    });
+}
+
+async function navigateBackToBuilder() {
+    try {
+        saveCurrentSession(true);
+    } catch (e) {
+        console.error(e);
+    }
+
+    setChatRunning(false);
+
+    setMode(Modes.BUILDER);
+    updateUrlForView(Modes.BUILDER);
+    if (typeof switchWorkspaceMode === "function") {
+        switchWorkspaceMode("pipeline");
+    }
+}
+
+function setupSettingsMenu() {
+    if (!els.settingsMenu) return;
+
+    const closeMenu = () => {
+        els.settingsMenu.classList.remove("open");
+        const languageItem = document.getElementById("settings-language");
+        if (languageItem) languageItem.classList.remove("submenu-open");
+    };
+    const toggleMenu = () => els.settingsMenu.classList.toggle("open");
+
+    if (els.settingsMenuTrigger) {
+        els.settingsMenuTrigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+    }
+
+    document.addEventListener("click", (e) => {
+        if (!els.settingsMenu.contains(e.target)) {
+            closeMenu();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeMenu();
+        }
+    });
+
+    // Language submenu: keep open after hover/click until outside click
+    const languageItem = document.getElementById("settings-language");
+    if (languageItem) {
+        const openSubmenu = () => languageItem.classList.add("submenu-open");
+        const closeSubmenu = () => languageItem.classList.remove("submenu-open");
+
+        languageItem.addEventListener("mouseenter", openSubmenu);
+        languageItem.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isOpen = languageItem.classList.contains("submenu-open");
+            if (isOpen) {
+                closeSubmenu();
+            } else {
+                openSubmenu();
+            }
+        });
+
+        // Keep submenu open when moving between item and submenu
+        const languageSubmenu = document.getElementById("settings-language-submenu");
+        if (languageSubmenu) {
+            languageSubmenu.addEventListener("mouseenter", openSubmenu);
+            languageSubmenu.addEventListener("click", (e) => e.stopPropagation());
+        }
+
+        // Close submenu on outside click
+        document.addEventListener("click", (e) => {
+            if (!languageItem.contains(e.target)) {
+                closeSubmenu();
+            }
+        });
+    }
+
+    const languageButtons = document.querySelectorAll("[data-ui-lang]");
+    languageButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const lang = btn.getAttribute("data-ui-lang");
+            applyUILanguage(lang);
+            closeMenu();
+        });
+    });
+
+    if (els.settingsBuilder) {
+        els.settingsBuilder.onclick = async (e) => {
+            e?.stopPropagation();
+            if (state.chat.running) {
+                showInterruptConfirmDialog(async () => {
+                    if (state.chat.controller) {
+                        state.chat.controller.abort();
+                        state.chat.controller = null;
+                    }
+                    await navigateBackToBuilder();
+                });
+                return;
+            }
+
+            await navigateBackToBuilder();
+            closeMenu();
+        };
+    }
+
+    // Ensure chat pipeline dropdown closes after selection
+    const chatPipelineDropdown = document.getElementById("chatPipelineDropdown");
+    const chatPipelineMenu = document.getElementById("chat-pipeline-menu");
+    if (chatPipelineDropdown && chatPipelineMenu) {
+        chatPipelineMenu.addEventListener("click", () => {
+            if (window.bootstrap?.Dropdown) {
+                const inst =
+                    window.bootstrap.Dropdown.getInstance(chatPipelineDropdown) ||
+                    new window.bootstrap.Dropdown(chatPipelineDropdown);
+                inst.hide();
+            } else {
+                chatPipelineDropdown.classList.remove("show");
+                chatPipelineMenu.classList.remove("show");
+                chatPipelineDropdown.setAttribute("aria-expanded", "false");
+            }
+        });
     }
 }
 
@@ -6163,7 +6696,7 @@ async function requestBrowserNotification(title, message) {
 // Toggle background tasks panel
 window.toggleBackgroundPanel = function () {
     if (state.mode !== Modes.CHAT) {
-        showNotification('info', 'Background Tasks', 'Please switch to Chat to view background tasks.');
+        showNotification('info', t('bg_tasks_title'), t('bg_tasks_switch_chat'));
         return;
     }
 
@@ -6213,7 +6746,7 @@ function checkForCompletedTasks(tasks) {
             backgroundTaskState.notifiedTasks.add(task.task_id);
             showNotification(
                 'success',
-                'Background Task Completed',
+                t('bg_task_completed_title'),
                 task.question,
                 () => showBackgroundTaskDetail(task.task_id)
             );
@@ -6221,7 +6754,7 @@ function checkForCompletedTasks(tasks) {
             backgroundTaskState.notifiedTasks.add(task.task_id);
             showNotification(
                 'error',
-                'Background Task Failed',
+                t('bg_task_failed_title'),
                 task.error || task.question,
                 () => showBackgroundTaskDetail(task.task_id)
             );
@@ -6235,17 +6768,22 @@ function renderBackgroundTasksList() {
     if (!container) return;
 
     if (backgroundTaskState.tasks.length === 0) {
-        container.innerHTML = '<div class="text-muted text-center py-4 small">No background tasks</div>';
+        container.innerHTML = `<div class="text-muted text-center py-4 small">${t('bg_tasks_empty')}</div>`;
         return;
     }
 
     container.innerHTML = backgroundTaskState.tasks.map(task => {
         const time = task.created_at ? new Date(task.created_at * 1000).toLocaleTimeString() : '';
+        const statusText = task.status === 'running'
+            ? t('bg_task_running')
+            : task.status === 'completed'
+                ? t('bg_task_completed')
+                : t('bg_task_failed');
         return `
             <div class="bg-task-item ${task.status}" onclick="showBackgroundTaskDetail('${task.task_id}')">
                 <div class="bg-task-header">
                     <div class="bg-task-question">${escapeHtml(task.question)}</div>
-                    <span class="bg-task-status ${task.status}">${task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed'}</span>
+                    <span class="bg-task-status ${task.status}">${statusText}</span>
                 </div>
                 <div class="bg-task-meta">
                     <span>${task.pipeline_name}</span>
@@ -6294,14 +6832,15 @@ function updateBackgroundTasksCount() {
     }
 }
 
-function renderTaskDetailLoading(modal, message = 'Loading task details...') {
+function renderTaskDetailLoading(modal, message = null) {
     if (!modal) return;
+    const loadingMessage = message || t('bg_task_loading_details');
     modal.innerHTML = `
         <div style="padding: 32px; text-align: center;">
             <div class="spinner-border" style="color: #3b82f6; width: 2.5rem; height: 2.5rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">${t('bg_task_loading_details')}</span>
             </div>
-            <div style="margin-top: 16px; color: var(--text-secondary);">${escapeHtml(message)}</div>
+            <div style="margin-top: 16px; color: var(--text-secondary);">${escapeHtml(loadingMessage)}</div>
         </div>
     `;
 }
@@ -6316,7 +6855,7 @@ function setLoadButtonsLoading(taskId, isLoading, target) {
             btn.dataset.originalText = btn.dataset.originalText || btn.innerHTML;
             btn.disabled = true;
             btn.classList.add('disabled');
-            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${btn.dataset.loadTarget === 'new' ? 'Loading to new chat...' : 'Loading to chat...'}`;
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${btn.dataset.loadTarget === 'new' ? t('bg_task_loading_to_new') : t('bg_task_loading_to_current')}`;
         } else {
             btn.disabled = false;
             btn.classList.remove('disabled');
@@ -6340,7 +6879,7 @@ window.showBackgroundTaskDetail = async function (taskId) {
         document.body.appendChild(modal);
     }
 
-    renderTaskDetailLoading(modal, 'Loading task details...');
+    renderTaskDetailLoading(modal, t('bg_task_loading_details'));
     modal.showModal();
     backgroundTaskState.detailLoadingTaskId = taskId;
 
@@ -6357,22 +6896,26 @@ window.showBackgroundTaskDetail = async function (taskId) {
                 task = backgroundTaskState.tasks.find(t => t.task_id === taskId);
             }
             if (!task) {
-                showNotification('error', 'Error', 'Task not found');
+                showNotification('error', t('status_error'), t('bg_task_task_not_found'));
                 if (modal) modal.close();
                 backgroundTaskState.detailLoadingTaskId = null;
                 return;
             }
         }
 
-        const statusText = task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed';
+        const statusText = task.status === 'running'
+            ? t('bg_task_running')
+            : task.status === 'completed'
+                ? t('bg_task_completed')
+                : t('bg_task_failed');
 
         const actionButtons = `
             ${task.status === 'completed' ? `
-                <button class="btn btn-primary" onclick="copyTaskResult('${taskId}')">Copy Result</button>
-                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="current" onclick="loadTaskToChat('${taskId}','current')">Load to Current Chat</button>
-                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="new" onclick="loadTaskToChat('${taskId}','new')">Load to New Chat</button>
+                <button class="btn btn-primary" onclick="copyTaskResult('${taskId}')">${t('bg_task_copy_result')}</button>
+                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="current" onclick="loadTaskToChat('${taskId}','current')">${t('bg_task_load_current')}</button>
+                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="new" onclick="loadTaskToChat('${taskId}','new')">${t('bg_task_load_new')}</button>
             ` : ''}
-            <button class="btn btn-outline-danger ms-auto" onclick="deleteBackgroundTask('${taskId}')">Delete</button>
+            <button class="btn btn-outline-danger ms-auto" onclick="deleteBackgroundTask('${taskId}')">${t('bg_task_delete')}</button>
         `;
 
         modal.innerHTML = `
@@ -6387,7 +6930,7 @@ window.showBackgroundTaskDetail = async function (taskId) {
             </div>
             <div class="bg-task-detail-body">
                 <div class="bg-task-detail-question">
-                    <strong>Question</strong>
+                    <strong>${t('bg_task_question')}</strong>
                     ${escapeHtml(task.full_question || task.question)}
                 </div>
                 ${task.status === 'completed' ? `
@@ -6396,15 +6939,15 @@ window.showBackgroundTaskDetail = async function (taskId) {
                     </div>
                 ` : task.status === 'failed' ? `
                     <div class="bg-task-detail-question" style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15);">
-                        <strong style="color: #ef4444;">Error</strong>
-                        ${escapeHtml(task.error || 'Unknown error')}
+                        <strong style="color: #ef4444;">${t('bg_task_error')}</strong>
+                        ${escapeHtml(task.error || t('bg_task_unknown_error'))}
                     </div>
                 ` : `
                     <div style="text-align: center; padding: 40px 20px;">
                         <div class="spinner-border" style="color: #3b82f6; width: 2rem; height: 2rem;" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">${t('bg_task_loading_details')}</span>
                         </div>
-                        <div style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">Processing your request...</div>
+                        <div style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">${t('bg_task_processing')}</div>
                     </div>
                 `}
             </div>
@@ -6430,7 +6973,7 @@ window.showBackgroundTaskDetail = async function (taskId) {
         }
     } catch (e) {
         console.error('Failed to load task detail:', e);
-        renderTaskDetailLoading(modal, 'Failed to load task details.');
+        renderTaskDetailLoading(modal, t('bg_task_loading_details_failed'));
     } finally {
         backgroundTaskState.detailLoadingTaskId = null;
     }
@@ -6531,10 +7074,14 @@ window.loadTaskToChat = async function (taskId, target = 'current') {
         const modal = document.getElementById('bg-task-detail-modal');
         if (modal) modal.close();
 
-        showNotification('success', 'Loaded', target === 'new' ? 'Background task loaded to a new chat' : 'Background task loaded to the current chat');
+        showNotification(
+            'success',
+            t('bg_task_loaded'),
+            target === 'new' ? t('bg_task_loaded_new') : t('bg_task_loaded_current')
+        );
     } catch (e) {
         console.error('Failed to load task to chat:', e);
-        showNotification('error', 'Load Failed', e.message || 'Unable to load task into chat.');
+        showNotification('error', t('bg_task_load_failed'), e.message || t('bg_task_load_failed'));
     } finally {
         backgroundTaskState.loadToChatTaskId = null;
         backgroundTaskState.loadToChatTarget = null;
@@ -6544,10 +7091,10 @@ window.loadTaskToChat = async function (taskId, target = 'current') {
 
 // Delete background task
 window.deleteBackgroundTask = async function (taskId) {
-    const confirmed = await showConfirm("Are you sure you want to delete this task?", {
-        title: "Delete Task",
+    const confirmed = await showConfirm(t("bg_task_delete_confirm"), {
+        title: t("bg_task_delete_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -6581,11 +7128,11 @@ window.deleteBackgroundTask = async function (taskId) {
 // Clear completed tasks
 window.clearCompletedTasks = async function () {
     try {
-        const confirmed = await showConfirm("This will remove all completed background tasks. Continue?", {
-            title: "Clear Completed Tasks",
+        const confirmed = await showConfirm(t("bg_tasks_clear_completed_confirm"), {
+            title: t("bg_tasks_clear_completed_title"),
             type: "warning",
-            confirmText: "Clear",
-            cancelText: "Cancel",
+            confirmText: t("bg_tasks_clear"),
+            cancelText: t("common_cancel"),
             danger: true
         });
         if (!confirmed) return;
@@ -6623,7 +7170,7 @@ window.clearCompletedTasks = async function () {
 // Send to background
 async function sendToBackground(question) {
     if (!state.chat.engineSessionId) {
-        showModal("Please start the engine first", { title: "Engine Required", type: "warning" });
+        showModal(t("chat_engine_required_message"), { title: t("chat_engine_required_title"), type: "warning" });
         return null;
     }
 
@@ -6805,7 +7352,7 @@ function initWorkspace() {
     if (paramsSaveBtn) {
         paramsSaveBtn.addEventListener('click', () => {
             persistParameterData();
-            log("Parameters saved.");
+            log(t("builder_params_saved"));
         });
     }
 
@@ -6816,7 +7363,7 @@ function initWorkspace() {
                 try {
                     state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
                     renderParameterFormInline();
-                    log("Parameters reloaded.");
+                    log(t("builder_params_reloaded"));
                 } catch (e) {
                     log("Failed to reload parameters: " + e.message);
                 }
@@ -6896,9 +7443,23 @@ async function switchWorkspaceMode(mode) {
     if (!mode) return;
     if (mode === workspaceState.currentMode) return;
 
-    if (workspaceState.currentMode === 'pipeline' && mode !== 'pipeline') {
-        const ok = await confirmUnsavedChanges("change workspace mode will discard unsaved changes, are you sure?");
+    if (workspaceState.currentMode === 'pipeline' && mode !== 'pipeline' && state.unsavedChanges) {
+        const ok = await showConfirm(t("builder_workspace_switch_unsaved_message"), {
+            title: t("builder_unsaved_changes_title"),
+            type: "warning",
+            confirmText: t("common_continue"),
+            cancelText: t("common_cancel")
+        });
         if (!ok) return;
+
+        // Discard unsaved changes: restore editor to last saved state
+        if (els.yamlEditor && state.lastSavedYaml !== undefined) {
+            els.yamlEditor.value = state.lastSavedYaml;
+            updateYamlLineNumbers();
+            setYamlSyncStatus('synced');
+            await syncYamlToCanvasOnly({ markUnsaved: false });
+        }
+        clearUnsavedChanges();
     }
 
     workspaceState.currentMode = mode;
@@ -6927,7 +7488,13 @@ async function switchWorkspaceMode(mode) {
         loadPromptList();
     }
 
-    log(`Switched to ${mode} mode.`);
+    const modeLabels = {
+        pipeline: t("builder_mode_pipeline"),
+        parameters: t("builder_mode_parameters"),
+        prompts: t("builder_mode_prompts")
+    };
+    const modeLabel = modeLabels[mode] || mode;
+    log(formatTemplate(t("builder_switched_mode"), { mode: modeLabel }));
 }
 
 // =========================================
@@ -7219,7 +7786,7 @@ function renderPromptTabs() {
         if (tabState[path]?.modified) tab.classList.add('unsaved');
         tab.innerHTML = `
             <span class="prompt-tab-name">${name}</span>
-            <button class="prompt-tab-close" type="button" title="Close">×</button>
+            <button class="prompt-tab-close" type="button" title="${t("common_close")}">×</button>
         `;
         tab.onclick = () => setActivePromptTab(path);
         tab.querySelector('.prompt-tab-close')?.addEventListener('click', (e) => {
@@ -7272,7 +7839,7 @@ async function setActivePromptTab(path, fileHint = null) {
             tabState.originalContent = content.content || '';
             tabState.modified = false;
         } catch (e) {
-            log("Failed to load prompt: " + e.message);
+            log(formatTemplate(t("builder_prompt_load_failed"), { error: e.message }));
             return;
         }
     }
@@ -7296,10 +7863,10 @@ async function closePromptTab(path, options = {}) {
     if (!path) return;
     const tabState = workspaceState.prompts.tabState[path];
     if (tabState?.modified && !options.skipConfirm) {
-        const confirmed = await showConfirm(`Discard unsaved changes in "${getPromptFileName(path)}"?`, {
-            title: "Unsaved Changes",
+        const confirmed = await showConfirm(formatTemplate(t("builder_prompt_discard_confirm"), { name: getPromptFileName(path) }), {
+            title: t("builder_unsaved_changes_title"),
             type: "warning",
-            confirmText: "Discard"
+            confirmText: t("builder_discard")
         });
         if (!confirmed) return;
     }
@@ -7350,10 +7917,10 @@ function hidePromptContextMenu() {
 
 async function deletePromptFile(path) {
     if (!path) return;
-    const confirmed = await showConfirm(`Delete "${getPromptFileName(path)}"?`, {
-        title: "Delete Prompt",
+    const confirmed = await showConfirm(formatTemplate(t("builder_prompt_delete_confirm"), { name: getPromptFileName(path) }), {
+        title: t("builder_prompt_delete_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("common_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -7362,23 +7929,23 @@ async function deletePromptFile(path) {
         await fetchJSON(`/api/prompts/${encodeURIComponent(path)}`, {
             method: 'DELETE'
         });
-        log(`Deleted: ${path}`);
+        log(formatTemplate(t("builder_prompt_deleted"), { path }));
 
         await closePromptTab(path, { skipConfirm: true });
         await loadPromptList();
     } catch (e) {
-        log("Failed to delete prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_delete_failed"), { error: e.message }));
     }
 }
 
 async function renamePromptFile(path) {
     if (!path) return;
     const currentName = getPromptFileName(path);
-    const newNameInput = await showPrompt("Enter the new file name:", {
-        title: "Rename Prompt",
-        placeholder: "e.g., my_prompt.jinja",
+    const newNameInput = await showPrompt(t("builder_prompt_rename_prompt"), {
+        title: t("builder_prompt_rename_title"),
+        placeholder: t("builder_prompt_rename_placeholder"),
         defaultValue: currentName,
-        confirmText: "Rename"
+        confirmText: t("common_rename")
     });
     if (!newNameInput) return;
 
@@ -7393,7 +7960,7 @@ async function renamePromptFile(path) {
             method: 'POST',
             body: JSON.stringify({ new_name: newName })
         });
-        log(`Renamed to: ${newName}`);
+        log(formatTemplate(t("builder_prompt_renamed"), { name: newName }));
 
         await loadPromptList();
         const newFile = workspaceState.prompts.files.find(f => f.name === newName);
@@ -7417,7 +7984,7 @@ async function renamePromptFile(path) {
             }
         }
     } catch (e) {
-        log("Failed to rename prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_rename_failed"), { error: e.message }));
     }
 }
 
@@ -7431,8 +7998,8 @@ async function loadPromptList() {
         renderPromptList(files);
         prunePromptTabs(files);
     } catch (e) {
-        log("Failed to load prompts: " + e.message);
-        listEl.innerHTML = '<div class="prompts-empty"><p>Failed to load prompts.</p></div>';
+        log(formatTemplate(t("builder_prompt_list_load_failed"), { error: e.message }));
+        listEl.innerHTML = `<div class="prompts-empty"><p>${t("builder_prompt_list_load_failed_ui")}</p></div>`;
     }
 }
 
@@ -7443,7 +8010,7 @@ function renderPromptList(files) {
     listEl.innerHTML = '';
 
     if (!files.length) {
-        listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;">No prompt files found.</div>';
+        listEl.innerHTML = `<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;">${t("builder_prompt_list_empty")}</div>`;
         return;
     }
 
@@ -7479,9 +8046,9 @@ async function selectPromptFile(file) {
 }
 
 async function createNewPrompt() {
-    const name = await showPrompt("Enter the prompt file name:", {
-        title: "New Prompt",
-        placeholder: "e.g., my_prompt.jinja"
+    const name = await showPrompt(t("builder_prompt_new_prompt"), {
+        title: t("builder_new_prompt"),
+        placeholder: t("builder_prompt_new_placeholder")
     });
 
     if (!name) return;
@@ -7498,7 +8065,7 @@ async function createNewPrompt() {
             body: JSON.stringify({ name: filename, content: '# New Prompt Template\n\n' })
         });
 
-        log(`Created prompt: ${filename}`);
+        log(formatTemplate(t("builder_prompt_created"), { name: filename }));
         await loadPromptList();
 
         // Select newly created file
@@ -7507,7 +8074,7 @@ async function createNewPrompt() {
             openPromptTab(newFile);
         }
     } catch (e) {
-        log("Failed to create prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_create_failed"), { error: e.message }));
     }
 }
 
@@ -7531,9 +8098,9 @@ async function saveCurrentPrompt() {
         workspaceState.prompts.modified = false;
         updatePromptUI();
         renderPromptTabs();
-        log(`Saved: ${workspaceState.prompts.currentFile}`);
+        log(formatTemplate(t("builder_prompt_saved"), { path: workspaceState.prompts.currentFile }));
     } catch (e) {
-        log("Failed to save prompt: " + e.message);
+        log(formatTemplate(t("builder_prompt_save_failed"), { error: e.message }));
     }
 }
 
@@ -7654,35 +8221,35 @@ const AI_WELCOME_HTML = `
         <div class="ai-welcome-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5"/><circle cx="16.5" cy="14.5" r="1.5"/></svg>
         </div>
-        <h4>UltraRAG AI Assistant</h4>
-        <p>I can help you build pipelines, configure parameters, and edit prompts.</p>
-        <p class="ai-welcome-hint">Click the settings icon to configure your API connection.</p>
-        
+        <h4 data-i18n="builder_ai_welcome_title">UltraRAG AI Assistant</h4>
+        <p data-i18n="builder_ai_welcome_desc">I can help you build pipelines, configure parameters, and edit prompts.</p>
+        <p class="ai-welcome-hint" data-i18n="builder_ai_welcome_hint">Click the settings icon to configure your API connection.</p>
+
         <!-- Quick Action Cards -->
         <div class="ai-starter-chips">
-            <button class="ai-starter-chip" data-prompt="Update the current RAG pipeline to include a citation module, ensuring the final output displays source references for fact-checking purposes.">
+            <button class="ai-starter-chip" data-prompt="Update the current RAG pipeline to include a citation module, ensuring the final output displays source references for fact-checking purposes." data-i18n-prompt="builder_ai_prompt_pipeline_adjustment">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Pipeline Adjustment</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_pipeline_adjustment">Pipeline Adjustment</span>
             </button>
-            <button class="ai-starter-chip" data-prompt="Optimize the system prompt for the [Insert Domain, e.g., Medical/Legal] domain. Please refine the instructions to ensure the generated responses strictly adhere to professional terminology and logical accuracy suitable for this field.">
+            <button class="ai-starter-chip" data-prompt="Optimize the system prompt for the [Insert Domain, e.g., Medical/Legal] domain. Please refine the instructions to ensure the generated responses strictly adhere to professional terminology and logical accuracy suitable for this field." data-i18n-prompt="builder_ai_prompt_prompt_adaptation">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Prompt Adaptation</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_prompt_adaptation">Prompt Adaptation</span>
             </button>
-            <button class="ai-starter-chip" data-prompt="Reconfigure the generation backend. Switch the backend type to OpenAI, set the model name to [Insert Model Name, e.g., Llama-3-70B], and update the API endpoint to port [Insert Port, e.g., 8000].">
+            <button class="ai-starter-chip" data-prompt="Reconfigure the generation backend. Switch the backend type to OpenAI, set the model name to [Insert Model Name, e.g., Llama-3-70B], and update the API endpoint to port [Insert Port, e.g., 8000]." data-i18n-prompt="builder_ai_prompt_parameter_settings">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Parameter Settings</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_parameter_settings">Parameter Settings</span>
             </button>
-            <button class="ai-starter-chip" data-prompt="I want to redesign my RAG workflow based on this article/paper: [Insert Link]. Please analyze its core methodologies and assist me in constructing a similar pipeline architecture.">
+            <button class="ai-starter-chip" data-prompt="I want to redesign my RAG workflow based on this article/paper: [Insert Link]. Please analyze its core methodologies and assist me in constructing a similar pipeline architecture." data-i18n-prompt="builder_ai_prompt_freeform_tuning">
                 <span class="ai-starter-chip-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
                 </span>
-                <span class="ai-starter-chip-text">Free-form Tuning</span>
+                <span class="ai-starter-chip-text" data-i18n="builder_ai_chip_freeform_tuning">Free-form Tuning</span>
             </button>
         </div>
     </div>
@@ -7961,7 +8528,7 @@ function saveAISettings(options = {}) {
         localStorage.setItem('ultrarag_ai_settings', JSON.stringify(aiState.settings));
 
         if (statusEl && !silent) {
-            statusEl.textContent = 'Settings saved successfully!';
+            statusEl.textContent = t('builder_ai_settings_saved_success');
             statusEl.className = 'ai-settings-status success';
             setTimeout(() => {
                 statusEl.className = 'ai-settings-status';
@@ -7972,7 +8539,7 @@ function saveAISettings(options = {}) {
         return true;
     } catch (e) {
         if (statusEl) {
-            statusEl.textContent = 'Failed to save settings: ' + e.message;
+            statusEl.textContent = formatTemplate(t('builder_ai_settings_save_failed'), { error: e.message });
             statusEl.className = 'ai-settings-status error';
         }
         return false;
@@ -7985,7 +8552,7 @@ async function testAIConnection(triggerBtn = null) {
 
     if (!aiState.settings.apiKey) {
         if (statusEl) {
-            statusEl.textContent = 'Please enter an API key';
+            statusEl.textContent = t('builder_ai_settings_api_key_required');
             statusEl.className = 'ai-settings-status error';
         }
         return;
@@ -7993,7 +8560,7 @@ async function testAIConnection(triggerBtn = null) {
 
     if (actionBtn) actionBtn.disabled = true;
     if (statusEl) {
-        statusEl.textContent = 'Testing connection...';
+        statusEl.textContent = t('builder_ai_settings_testing');
         statusEl.className = 'ai-settings-status';
         statusEl.style.display = 'block';
     }
@@ -8010,13 +8577,17 @@ async function testAIConnection(triggerBtn = null) {
         if (result.success) {
             aiState.isConnected = true;
             if (statusEl) {
-                statusEl.textContent = 'Connection successful! Model: ' + (result.model || aiState.settings.model);
+                statusEl.textContent = formatTemplate(t('builder_ai_settings_connection_success'), {
+                    model: result.model || aiState.settings.model
+                });
                 statusEl.className = 'ai-settings-status success';
             }
         } else {
             aiState.isConnected = false;
             if (statusEl) {
-                statusEl.textContent = 'Connection failed: ' + (result.error || 'Unknown error');
+                statusEl.textContent = formatTemplate(t('builder_ai_settings_connection_failed'), {
+                    error: result.error || t('common_unknown_error')
+                });
                 statusEl.className = 'ai-settings-status error';
             }
         }
@@ -8025,7 +8596,7 @@ async function testAIConnection(triggerBtn = null) {
     } catch (e) {
         aiState.isConnected = false;
         if (statusEl) {
-            statusEl.textContent = 'Connection failed: ' + e.message;
+            statusEl.textContent = formatTemplate(t('builder_ai_settings_connection_failed'), { error: e.message });
             statusEl.className = 'ai-settings-status error';
         }
     } finally {
@@ -8070,16 +8641,16 @@ function updateAIConnectionStatus() {
         if (aiState.isConnected) {
             dot?.classList.remove('disconnected', 'connecting');
             dot?.classList.add('connected');
-            if (text) text.textContent = 'Connected to ' + aiState.settings.model;
+            if (text) text.textContent = formatTemplate(t("builder_ai_status_connected"), { model: aiState.settings.model });
         } else {
             dot?.classList.remove('connected', 'connecting');
             dot?.classList.add('disconnected');
-            if (text) text.textContent = 'Configured - Save & Test to verify';
+            if (text) text.textContent = t("builder_ai_status_configured_pending");
         }
     } else {
         dot?.classList.remove('connected', 'connecting');
         dot?.classList.add('disconnected');
-        if (text) text.textContent = 'Not configured';
+        if (text) text.textContent = t("builder_ai_status_not_configured");
     }
 }
 
@@ -8122,7 +8693,7 @@ function currentSessionHasContent() {
 
 function deriveAISessionTitle(messages = []) {
     const firstUser = messages.find(m => m.role === 'user');
-    if (!firstUser || !firstUser.content) return 'New Session';
+    if (!firstUser || !firstUser.content) return t("builder_ai_session_new");
     const text = firstUser.content.trim().replace(/\s+/g, ' ');
     if (text.length <= 24) return text;
     return text.slice(0, 24) + '…';
@@ -8154,7 +8725,7 @@ function renderAISessionList() {
     if (!nonEmptySessions.length) {
         const empty = document.createElement('div');
         empty.className = 'ai-session-empty';
-        empty.textContent = 'No sessions yet';
+        empty.textContent = t("builder_ai_sessions_empty");
         listEl.appendChild(empty);
         if (deleteBtn) deleteBtn.disabled = true;
         return;
@@ -8169,7 +8740,7 @@ function renderAISessionList() {
                 <div class="ai-session-title-text">${title}</div>
                 <div class="ai-session-meta">${time}</div>
             </div>
-            <button class="ai-session-delete-btn" title="Delete session">
+            <button class="ai-session-delete-btn" title="${t("builder_ai_delete_session")}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
             </button>
         `;
@@ -8247,10 +8818,10 @@ async function deleteAISession(id) {
     const targetId = id || aiState.currentSessionId;
     if (!targetId) return;
 
-    const confirmed = await showConfirm('Are you sure you want to delete this session?', {
-        title: 'Delete Session',
-        confirmText: 'Delete',
-        cancelText: 'Cancel',
+    const confirmed = await showConfirm(t('ai_session_delete_confirm'), {
+        title: t('ai_session_delete_title'),
+        confirmText: t('common_delete'),
+        cancelText: t('common_cancel'),
         danger: true
     });
 
@@ -8269,10 +8840,10 @@ async function deleteAllAISessions() {
     const nonEmptySessions = aiState.sessions.filter(s => s.messages && s.messages.length > 0);
     if (!nonEmptySessions.length) return;
 
-    const confirmed = await showConfirm(`Are you sure you want to delete all ${nonEmptySessions.length} session(s)?`, {
-        title: 'Delete All Sessions',
-        confirmText: 'Delete All',
-        cancelText: 'Cancel',
+    const confirmed = await showConfirm(formatTemplate(t('ai_session_delete_all_confirm'), { count: nonEmptySessions.length }), {
+        title: t('ai_session_delete_all_title'),
+        confirmText: t('ai_session_delete_all_action'),
+        cancelText: t('common_cancel'),
         danger: true
     });
 
@@ -8344,6 +8915,7 @@ function renderAIConversationFromState() {
     messagesEl.innerHTML = '';
     if (!aiState.messages.length) {
         messagesEl.innerHTML = AI_WELCOME_HTML;
+        updateI18nTexts();
         // Re-bind recommended question card events
         initAIStarterChips();
         return;
@@ -8368,6 +8940,7 @@ function clearAIChat() {
     const messagesEl = document.getElementById('ai-messages');
     if (messagesEl) {
         messagesEl.innerHTML = AI_WELCOME_HTML;
+        updateI18nTexts();
         // Re-bind recommended question card events
         initAIStarterChips();
     }
@@ -8447,10 +9020,10 @@ function buildAIActionHtml(actions) {
     let actionsHtml = '';
     uniqueActions.forEach((action, index) => {
         const typeLabel = {
-            'modify_pipeline': 'Pipeline Modification',
-            'modify_prompt': 'Prompt Modification',
-            'modify_parameter': 'Parameter Change'
-        }[action.type] || 'Modification';
+            'modify_pipeline': t('builder_ai_action_modify_pipeline'),
+            'modify_prompt': t('builder_ai_action_modify_prompt'),
+            'modify_parameter': t('builder_ai_action_modify_parameter')
+        }[action.type] || t('builder_ai_action_modify_generic');
 
         const typeIcon = {
             'modify_pipeline': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
@@ -8463,8 +9036,8 @@ function buildAIActionHtml(actions) {
                 <div class="ai-action-header">
                     <span class="ai-action-type">${typeIcon} ${typeLabel}</span>
                     <div class="ai-action-buttons">
-                        <button class="ai-action-btn apply" data-action="apply" data-index="${index}">Apply</button>
-                        <button class="ai-action-btn reject" data-action="reject" data-index="${index}">Reject</button>
+                        <button class="ai-action-btn apply" data-action="apply" data-index="${index}">${t("common_apply")}</button>
+                        <button class="ai-action-btn reject" data-action="reject" data-index="${index}">${t("common_reject")}</button>
                     </div>
                 </div>
                 <pre class="ai-action-preview">${escapeHtml(action.preview || action.content || '')}</pre>
@@ -8604,7 +9177,7 @@ async function sendAIMessage() {
         hideAIThinking();
 
         if (!response.ok) {
-            throw new Error(response.statusText || 'Request failed');
+            throw new Error(response.statusText || t('builder_ai_error_request_failed'));
         }
 
         const isStream = (response.headers.get('content-type') || '').includes('text/event-stream');
@@ -8612,7 +9185,7 @@ async function sendAIMessage() {
         if (!isStream) {
             const result = await response.json();
             if (result.error) throw new Error(result.error);
-            accumulated = result.content || result.message || 'No response';
+            accumulated = result.content || result.message || t('builder_ai_no_response');
             finalActions = result.actions || [];
             renderAIStreamingResult(accumulated, finalActions);
             aiState.isConnected = true;
@@ -8656,7 +9229,7 @@ async function sendAIMessage() {
                     accumulated = data.content || accumulated;
                     finalActions = data.actions || [];
                 } else if (data.type === 'error') {
-                    throw new Error(data.message || 'Unknown error');
+                    throw new Error(data.message || t('common_unknown_error'));
                 }
             }
         }
@@ -8687,7 +9260,7 @@ async function sendAIMessage() {
 function renderAIStreamingResult(content, actions = [], placeholderEl) {
     const targetEl = placeholderEl || renderAIMessage('assistant', '', []);
     const contentEl = targetEl?.querySelector('.ai-message-content');
-    const finalText = content || 'No response';
+    const finalText = content || t('builder_ai_no_response');
     const normalizedActions = dedupeAIActionList(actions);
 
     if (contentEl) {
@@ -8710,21 +9283,21 @@ function renderAIStreamingResult(content, actions = [], placeholderEl) {
 }
 
 function describeAIContext(snapshot) {
-    if (!snapshot) return 'No active context';
+    if (!snapshot) return t('builder_ai_context_none');
     const { currentMode, selectedPipeline, currentPromptFile } = snapshot;
     if (currentMode === 'prompts') {
-        if (currentPromptFile) return `Editing Prompt: ${currentPromptFile}`;
-        return 'Prompt panel';
+        if (currentPromptFile) return formatTemplate(t('builder_ai_context_prompt_editing'), { file: currentPromptFile });
+        return t('builder_ai_context_prompt_panel');
     }
     if (currentMode === 'parameters') {
-        if (selectedPipeline) return `Editing Parameters for ${selectedPipeline}`;
-        return 'Parameters panel (no pipeline selected)';
+        if (selectedPipeline) return formatTemplate(t('builder_ai_context_parameters_editing'), { pipeline: selectedPipeline });
+        return t('builder_ai_context_parameters_no_pipeline');
     }
     if (currentMode === 'pipeline') {
-        if (selectedPipeline) return `Editing Pipeline YAML: ${selectedPipeline}`;
-        return 'Pipeline canvas';
+        if (selectedPipeline) return formatTemplate(t('builder_ai_context_pipeline_editing'), { pipeline: selectedPipeline });
+        return t('builder_ai_context_pipeline_canvas');
     }
-    return 'No active context';
+    return t('builder_ai_context_none');
 }
 
 function getAIContextSnapshot() {
@@ -8761,7 +9334,7 @@ function updateAIContextBanner(reason = '') {
     if (hintEl) {
         hintEl.textContent = snapshot && snapshot.focusHint
             ? `${snapshot.focusHint}`
-            : 'None';
+            : t('builder_ai_context_none');
     }
 }
 
@@ -8817,17 +9390,17 @@ function findParameterFieldByPath(path) {
 
 function mapAIErrorMessage(rawMessage = '') {
     const msg = String(rawMessage || '').toLowerCase();
-    if (!rawMessage) return 'Request failed. Please try again.';
+    if (!rawMessage) return t('builder_ai_error_generic');
     if (msg.includes('list index out of range')) {
-        return 'Upstream model returned an invalid response (list index out of range). Please retry or check model settings.';
+        return t('builder_ai_error_list_index');
     }
     if (msg.includes('timeout')) {
-        return 'Request timed out. Check network or model service status and retry.';
+        return t('builder_ai_error_timeout');
     }
     if (msg.includes('network') || msg.includes('fetch')) {
-        return 'Network error. Please check your connection or proxy settings.';
+        return t('builder_ai_error_network');
     }
-    return `Request failed: ${rawMessage}`;
+    return formatTemplate(t('builder_ai_error_with_message'), { error: rawMessage });
 }
 
 function showAIErrorWithRetry(rawMessage) {
@@ -8841,7 +9414,7 @@ function showAIErrorWithRetry(rawMessage) {
     card.className = 'ai-error-card';
     card.innerHTML = `
         <span>${friendly}</span>
-        <button class="ai-retry-btn" type="button">Retry</button>
+        <button class="ai-retry-btn" type="button">${t("common_retry")}</button>
     `;
     const btn = card.querySelector('.ai-retry-btn');
     btn?.addEventListener('click', () => retryLastAIRequest());
@@ -8864,8 +9437,8 @@ async function applyAIAction(action, blockEl) {
         if (action.type === 'modify_pipeline' && workspaceState.currentMode === 'parameters') {
             showNotification(
                 'info',
-                'Pipeline change ignored',
-                'You are editing parameters. Ask explicitly to update the pipeline YAML or switch to Pipeline view.',
+                t('builder_ai_pipeline_change_ignored'),
+                t('builder_ai_pipeline_change_ignored_hint'),
                 () => switchWorkspaceMode('pipeline')
             );
             return;
@@ -8882,7 +9455,7 @@ async function applyAIAction(action, blockEl) {
                 success = await applyParameterModification(action);
                 break;
             default:
-                log('Unknown action type: ' + action.type);
+                log(formatTemplate(t('builder_ai_action_unknown'), { type: action.type }));
         }
 
         if (success) {
@@ -8890,14 +9463,14 @@ async function applyAIAction(action, blockEl) {
                 blockEl.classList.add('applied');
                 const btns = blockEl.querySelector('.ai-action-buttons');
                 if (btns) {
-                    btns.innerHTML = '<span style="color: #22c55e; font-size: 0.75rem;">✓ Applied</span>';
+                    btns.innerHTML = `<span style="color: #22c55e; font-size: 0.75rem;">${t("builder_ai_action_applied")}</span>`;
                 }
                 flashHighlight(blockEl);
             }
-            log('AI modification applied successfully.');
+            log(t('builder_ai_action_applied_log'));
         }
     } catch (e) {
-        log('Failed to apply modification: ' + e.message);
+        log(formatTemplate(t('builder_ai_action_apply_failed'), { error: e.message }));
     }
 }
 
@@ -8906,7 +9479,7 @@ function rejectAIAction(blockEl) {
     blockEl.classList.add('rejected');
     const btns = blockEl.querySelector('.ai-action-buttons');
     if (btns) {
-        btns.innerHTML = '<span style="color: #94a3b8; font-size: 0.75rem;">Rejected</span>';
+        btns.innerHTML = `<span style="color: #94a3b8; font-size: 0.75rem;">${t("builder_ai_action_rejected")}</span>`;
     }
 }
 
@@ -8928,8 +9501,10 @@ async function applyPipelineModification(action) {
         updateAIContextBanner('pipeline-apply');
         showNotification(
             'success',
-            'Pipeline updated',
-            state.selectedPipeline ? `Replaced YAML for ${state.selectedPipeline}` : 'AI updated current YAML',
+            t('builder_ai_pipeline_updated_title'),
+            state.selectedPipeline
+                ? formatTemplate(t('builder_ai_pipeline_updated_message'), { name: state.selectedPipeline })
+                : t('builder_ai_pipeline_updated_message_default'),
             () => switchWorkspaceMode('pipeline')
         );
     }
@@ -8961,8 +9536,10 @@ async function applyPromptModification(action) {
         updateAIContextBanner('prompt-apply');
         showNotification(
             'success',
-            'Prompt updated',
-            action.filename ? `Updated ${action.filename}` : 'AI updated the current prompt',
+            t('builder_ai_prompt_updated_title'),
+            action.filename
+                ? formatTemplate(t('builder_ai_prompt_updated_message'), { name: action.filename })
+                : t('builder_ai_prompt_updated_message_default'),
             () => switchWorkspaceMode('prompts')
         );
     }
@@ -8980,7 +9557,7 @@ async function applyParameterModification(action) {
                 state.parameterData = cloneDeep(await fetchJSON(`/api/pipelines/${encodeURIComponent(state.selectedPipeline)}/parameters`));
             } catch (e) {
                 state.parameterData = {};
-                log(`Failed to load parameters before apply: ${e.message}`);
+                log(formatTemplate(t('builder_ai_params_load_failed'), { error: e.message }));
             }
         } else {
             state.parameterData = {};
@@ -8997,8 +9574,8 @@ async function applyParameterModification(action) {
     updateAIContextBanner('params-apply');
     showNotification(
         'success',
-        'Parameter updated',
-        `Set ${action.path}`,
+        t('builder_ai_parameter_updated_title'),
+        formatTemplate(t('builder_ai_parameter_updated_message'), { path: action.path }),
         () => switchWorkspaceMode('parameters')
     );
 
