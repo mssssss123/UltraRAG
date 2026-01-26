@@ -23,6 +23,98 @@ function persistActiveEngines() {
     }
 }
 
+const UI_LANGUAGE_STORAGE_KEY = "ultrarag_ui_language";
+const UI_LANGUAGE_MAP = { en: "English", zh: "中文" };
+
+const LOCALES = window.I18N_LOCALES || {};
+const DEFAULT_LOCALE = "en";
+
+function t(key) {
+    const lang = state.uiLanguage || DEFAULT_LOCALE;
+    const table = LOCALES[lang] || LOCALES[DEFAULT_LOCALE] || {};
+    const fallback = LOCALES[DEFAULT_LOCALE] || {};
+    return table[key] || fallback[key] || key;
+}
+
+function formatTemplate(template, params = {}) {
+    return String(template).replace(/\{(\w+)\}/g, (_, key) =>
+        params[key] !== undefined ? String(params[key]) : `{${key}}`
+    );
+}
+
+function updateI18nTexts() {
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (!key) return;
+        if (key === "knowledge_base") return; // handled below to avoid overwriting selection
+        el.textContent = t(key);
+    });
+
+    // Title attributes
+    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+        const key = el.getAttribute("data-i18n-title");
+        if (key) el.title = t(key);
+    });
+
+    // Knowledge base label: only update when no selection
+    document.querySelectorAll('[data-i18n="knowledge_base"]').forEach((el) => {
+        const hasSelection = el.dataset.selected === "true";
+        if (!hasSelection) el.textContent = t("knowledge_base");
+    });
+
+    // Refresh DB status text for KB page on language switch
+    if (currentDbStatus) {
+        updateDbStatusUI(currentDbStatus, currentDbConfig);
+    }
+
+    // Refresh KB cards to update vector labels on language switch
+    if (Array.isArray(indexCollectionsCache) && indexCollectionsCache.length > 0) {
+        renderCollectionList(null, indexCollectionsCache);
+    }
+
+    // Select pipeline label: keep selected pipeline name if exists
+    const chatPipelineLabel = document.getElementById("chat-pipeline-label");
+    if (chatPipelineLabel) {
+        const fallbackName = chatPipelineLabel.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            chatPipelineLabel.textContent = name;
+            chatPipelineLabel.dataset.selected = "true";
+            chatPipelineLabel.dataset.currentName = name;
+        } else {
+            chatPipelineLabel.textContent = t("select_pipeline");
+            chatPipelineLabel.dataset.selected = "false";
+        }
+    }
+
+    // Placeholder updates
+    const chatInput = document.getElementById("chat-input");
+    if (chatInput) {
+        chatInput.placeholder = t("placeholder_chat_input");
+    }
+
+    // Empty state greeting
+    const greeting = document.querySelector(".greeting-gradient");
+    if (greeting) {
+        greeting.textContent = t("greeting_explore");
+    }
+}
+
+function resolveInitialLanguage() {
+    try {
+        const stored = localStorage.getItem(UI_LANGUAGE_STORAGE_KEY);
+        if (stored && UI_LANGUAGE_MAP[stored]) {
+            return stored;
+        }
+    } catch (e) {
+        console.warn("Failed to load UI language", e);
+    }
+
+    const browserLang = (navigator.language || "").toLowerCase();
+    if (browserLang.startsWith("zh")) return "zh";
+    return "en";
+}
+
 const state = {
     selectedPipeline: null,
     steps: [],
@@ -39,6 +131,8 @@ const state = {
 
     // Application mode: true = admin (full interface), false = chat-only
     adminMode: true,
+
+    uiLanguage: resolveInitialLanguage(),
 
     // [Modified] Chat state management
     chat: {
@@ -124,7 +218,6 @@ const els = {
 
     // Chat Controls
     chatPipelineName: document.getElementById("chat-pipeline-name"),
-    chatBack: document.getElementById("chat-back"),
     chatHistory: document.getElementById("chat-history"),
     chatForm: document.getElementById("chat-form"),
     chatInput: document.getElementById("chat-input"),
@@ -135,6 +228,11 @@ const els = {
     clearAllChats: document.getElementById("clear-all-chats"),
     demoToggleBtn: document.getElementById("demo-toggle-btn"), // Engine toggle button
     chatCollectionSelect: document.getElementById("chat-collection-select"),
+    settingsMenu: document.getElementById("settings-menu"),
+    settingsMenuTrigger: document.getElementById("settings-menu-trigger"),
+    settingsDropdown: document.getElementById("settings-dropdown"),
+    settingsBuilder: document.getElementById("settings-builder"),
+    settingsLanguageLabel: document.getElementById("settings-language-label"),
 
     // [New] View containers
     chatMainView: document.getElementById("chat-main-view"),
@@ -491,6 +589,8 @@ let currentTargetFile = null;
 let existingFilesSnapshot = new Set();
 let indexCollectionsCache = [];
 let lastIndexMode = "new";
+let currentDbConfig = null;
+let currentDbStatus = null;
 
 // Open import workspace modal
 window.openImportModal = async function () {
@@ -532,10 +632,10 @@ window.closeImportModal = function () {
 
 // Clear staging area
 window.clearStagingArea = async function () {
-    const confirmed = await showConfirm("Are you sure you want to clear ALL temporary files (Raw, Corpus, Chunks)?", {
-        title: "Clear Staging Area",
+    const confirmed = await showConfirm(t("kb_clear_staging_prompt"), {
+        title: t("kb_clear_staging_title"),
         type: "warning",
-        confirmText: "Clear All",
+        confirmText: t("kb_clear_all"),
         danger: true
     });
     if (!confirmed) return;
@@ -547,23 +647,32 @@ window.clearStagingArea = async function () {
         if (res.ok) {
             const total = data.total_deleted || 0;
             const counts = data.deleted_counts || {};
-            let message = `Deleted:\n- Raw: ${counts.raw || 0} items\n- Corpus: ${counts.corpus || 0} items\n- Chunks: ${counts.chunks || 0} items\n\nTotal: ${total} items`;
+            let message = formatTemplate(t("kb_deleted_summary"), {
+                raw: counts.raw || 0,
+                corpus: counts.corpus || 0,
+                chunks: counts.chunks || 0,
+                total
+            });
 
             if (data.errors && data.errors.length > 0) {
-                message += `\n\nNote: Some errors occurred:\n${data.errors.slice(0, 3).join('\n')}`;
+                message += `\n\n${formatTemplate(t("kb_note_errors"), {
+                    errors: data.errors.slice(0, 3).join('\n')
+                })}`;
                 if (data.errors.length > 3) {
-                    message += `\n... and ${data.errors.length - 3} more errors`;
+                    message += `\n${formatTemplate(t("kb_more_errors"), {
+                        count: data.errors.length - 3
+                    })}`;
                 }
             }
 
-            await showModal(message, { title: "Staging Area Cleared", type: "success" });
+            await showModal(message, { title: t("kb_staging_cleared_title"), type: "success" });
             await refreshKBFiles();
         } else {
-            await showModal("Clear failed: " + (data.error || res.statusText), { title: "Error", type: "error" });
+            await showModal(t("kb_clear_failed") + (data.error || res.statusText), { title: t("status_error"), type: "error" });
         }
     } catch (e) {
         console.error(e);
-        await showModal("Clear error: " + e.message, { title: "Error", type: "error" });
+        await showModal(t("kb_clear_error") + e.message, { title: t("status_error"), type: "error" });
     }
 };
 
@@ -571,9 +680,9 @@ window.clearStagingArea = async function () {
 
 // Helper function specifically for refreshing modal views
 function refreshKBModalViews(data) {
-    renderKBList(document.getElementById('list-raw'), data.raw, 'build_text_corpus', 'Parse');
-    renderKBList(document.getElementById('list-corpus'), data.corpus, 'corpus_chunk', 'Chunk');
-    renderKBList(document.getElementById('list-chunks'), data.chunks, 'milvus_index', 'Index');
+    renderKBList(document.getElementById('list-raw'), data.raw, 'build_text_corpus', t("kb_action_parse"));
+    renderKBList(document.getElementById('list-corpus'), data.corpus, 'corpus_chunk', t("kb_action_chunk"));
+    renderKBList(document.getElementById('list-chunks'), data.chunks, 'milvus_index', t("kb_action_index"));
 }
 
 // Refresh file list (main function)
@@ -607,7 +716,7 @@ function renderKBList(container, files, nextPipeline, actionLabel) {
     container.innerHTML = '';
 
     if (!files || files.length === 0) {
-        container.innerHTML = '<div class="text-muted small text-center mt-5 opacity-50">Empty</div>';
+        container.innerHTML = `<div class="text-muted small text-center mt-5 opacity-50">${t("kb_empty")}</div>`;
         return;
     }
 
@@ -637,7 +746,7 @@ function renderKBList(container, files, nextPipeline, actionLabel) {
         // 3. Metadata row content
         let metaText = sizeStr;
         if (isFolder && f.file_count) {
-            metaText = `${f.file_count} files · ${sizeStr}`;
+            metaText = `${f.file_count} ${t("kb_files")} · ${sizeStr}`;
         }
 
         // 4. Action button
@@ -646,7 +755,7 @@ function renderKBList(container, files, nextPipeline, actionLabel) {
         // 5. Delete button
         let deleteBtn = '';
         if (f.category !== 'collection') {
-            deleteBtn = `<button class="btn btn-sm text-danger ms-2 btn-icon-only flex-shrink-0" onclick="event.stopPropagation(); deleteKBFile('${f.category}', '${f.name}')" title="Delete">×</button>`;
+            deleteBtn = `<button class="btn btn-sm text-danger ms-2 btn-icon-only flex-shrink-0" onclick="event.stopPropagation(); deleteKBFile('${f.category}', '${f.name}')" title="${t("kb_delete")}">×</button>`;
         }
 
         // 6. Card click event
@@ -713,13 +822,13 @@ window.inspectFolder = async function (category, folderName, displayName) {
                     </div>
                 `).join('');
             } else {
-                listContainer.innerHTML = '<div class="text-center text-muted small mt-3">Empty (No visible files)</div>';
+                listContainer.innerHTML = `<div class="text-center text-muted small mt-3">${t("kb_empty_no_visible")}</div>`;
             }
         } else {
-            listContainer.innerHTML = '<div class="text-center text-muted small mt-3">Empty Folder</div>';
+            listContainer.innerHTML = `<div class="text-center text-muted small mt-3">${t("kb_empty_folder")}</div>`;
         }
     } catch (e) {
-        if (listContainer) listContainer.innerHTML = `<div class="text-danger small p-2">Error: ${e.message}</div>`;
+        if (listContainer) listContainer.innerHTML = `<div class="text-danger small p-2">${t("status_error")}: ${e.message}</div>`;
         console.error(e);
     }
 };
@@ -779,8 +888,8 @@ function renderCollectionList(container, collections) {
         grid.innerHTML = `
             <div class="col-12 text-center py-5 text-muted" style="grid-column: 1 / -1;">
                 <div style="font-size:3rem; margin-bottom:1rem; opacity:0.3;">📚</div>
-                <h5>Library is empty</h5>
-                <p>Click "New Collection" to import documents.</p>
+                <h5>${t("kb_library_empty_title")}</h5>
+                <p>${t("kb_library_empty_hint")}</p>
             </div>
         `;
         return;
@@ -795,7 +904,7 @@ function renderCollectionList(container, collections) {
         const card = document.createElement('div');
         card.className = 'collection-card kb-card';
 
-        const countStr = c.count !== undefined ? `${c.count} vectors` : 'Ready';
+        const countStr = c.count !== undefined ? `${c.count} ${t("kb_vectors")}` : t("kb_ready");
         const colors = pickKbColors(displayName || c.name || "collection");
         const coverInitial = getKbInitial(displayName || c.name || "C");
 
@@ -810,7 +919,7 @@ function renderCollectionList(container, collections) {
                      <div class="kb-meta-count">${countStr}</div>
                 </div>
                 
-                <button class="btn-delete-book" onclick="event.stopPropagation(); deleteKBFile('collection', '${c.name}')" title="Delete Collection">
+                <button class="btn-delete-book" onclick="event.stopPropagation(); deleteKBFile('collection', '${c.name}')" title="${t("kb_delete_collection")}">
                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 </button>
             </div>
@@ -823,6 +932,7 @@ function renderCollectionList(container, collections) {
 // UI status update
 function updateDbStatusUI(status, config) {
     currentDbConfig = config;
+    currentDbStatus = status;
 
     const chip = els.dbConnectionChip || document.getElementById('db-connection-chip');
     const statusTextEl = els.dbConnectionText || document.getElementById('db-connection-text');
@@ -832,14 +942,16 @@ function updateDbStatusUI(status, config) {
     // Status dot & text
     const statusClass = status === 'connected' ? 'connected' : (status === 'connecting' ? 'connecting' : 'disconnected');
     els.dbConnectionStatus.className = `kb-conn-dot ${statusClass}`;
-    statusTextEl.textContent = status === 'connected' ? 'Connected' : (status === 'connecting' ? 'Connecting...' : 'Disconnected');
+    statusTextEl.textContent = status === 'connected'
+        ? t('kb_connected')
+        : (status === 'connecting' ? t('kb_connecting') : t('kb_disconnected'));
     chip.setAttribute('data-status', statusClass);
 
     // URI display: use shortened version in main text, full address in tooltip
-    const fullUri = (config && config.milvus && config.milvus.uri) ? config.milvus.uri : "Not configured";
+    const fullUri = (config && config.milvus && config.milvus.uri) ? config.milvus.uri : t("kb_not_configured");
     const shortUri = fullUri.length > 38 ? `${fullUri.slice(0, 16)}…${fullUri.slice(-12)}` : fullUri;
     els.dbUriDisplay.textContent = shortUri;
-    chip.title = `Endpoint: ${fullUri}`;
+    chip.title = `${t("kb_endpoint")}: ${fullUri}`;
 }
 
 // Configuration modal logic (mounted to window)
@@ -864,7 +976,7 @@ window.saveDbConfig = async function () {
     const uri = els.cfgUri.value.trim();
     const token = els.cfgToken.value.trim();
 
-    if (!uri) { showModal("URI is required", { title: "Validation Error", type: "warning" }); return; }
+    if (!uri) { showModal(t("kb_uri_required"), { title: t("kb_validation_error"), type: "warning" }); return; }
 
     const fullConfig = window._currentFullKbConfig || {};
     if (!fullConfig.milvus) fullConfig.milvus = {};
@@ -964,7 +1076,7 @@ window.saveChunkConfig = function () {
     const useTitleStr = document.getElementById('cfg-chunk-title').value;
 
     if (isNaN(size) || size <= 0) {
-        showModal("Chunk size must be a positive number", { title: "Validation Error", type: "warning" });
+        showModal(t("kb_chunk_size_invalid"), { title: t("kb_validation_error"), type: "warning" });
         return;
     }
 
@@ -1015,12 +1127,12 @@ window.saveIndexConfig = function () {
     const modelName = document.getElementById('cfg-emb-model-name').value.trim();
 
     if (!baseUrl) {
-        showModal("Base URL is required", { title: "Validation Error", type: "warning" });
+        showModal(t("kb_base_url_required"), { title: t("kb_validation_error"), type: "warning" });
         return;
     }
 
     if (!modelName) {
-        showModal("Model Name is required", { title: "Validation Error", type: "warning" });
+        showModal(t("kb_model_name_required"), { title: t("kb_validation_error"), type: "warning" });
         return;
     }
 
@@ -1048,7 +1160,7 @@ window.handleKBAction = async function (filePath, pipelineName) {
 
     if (pipelineName === 'milvus_index') {
         // Update hint and default value in Milvus modal
-        const uriTxt = els.dbUriDisplay ? els.dbUriDisplay.textContent : "Current DB";
+        const uriTxt = els.dbUriDisplay ? els.dbUriDisplay.textContent : t("kb_current_db");
         if (els.modalTargetDb) els.modalTargetDb.textContent = uriTxt;
 
         // Auto-fill Collection name (use filename as default collection name)
@@ -1168,7 +1280,7 @@ async function syncIndexModeUI(mode, options = {}) {
 
     const isNew = activeMode === "new";
     if (els.idxCollectionLabel) {
-        els.idxCollectionLabel.textContent = isNew ? "Collection Name" : "Existing Collection";
+        els.idxCollectionLabel.textContent = isNew ? t("kb_collection_name") : t("kb_existing_collection");
     }
     if (els.idxCollection) {
         els.idxCollection.classList.toggle("d-none", !isNew);
@@ -1203,35 +1315,35 @@ async function confirmIndexMode(mode, collection) {
     const label = getCollectionDisplayName(collection) || collection?.name || "";
     if (mode === "append") {
         return await showConfirm(
-            `Append data to the existing collection "${label}"?`,
+            formatTemplate(t("kb_confirm_append"), { label }),
             {
-                title: "Append Confirmation",
+                title: t("kb_confirm_append_title"),
                 type: "info",
-                confirmText: "Continue",
-                cancelText: "Cancel"
+                confirmText: t("kb_continue"),
+                cancelText: t("kb_cancel")
             }
         );
     }
     if (mode === "overwrite") {
         return await showConfirm(
-            `Overwrite the existing collection "${label}"? This will drop and rebuild the collection.`,
+            formatTemplate(t("kb_confirm_overwrite"), { label }),
             {
-                title: "Overwrite Confirmation",
+                title: t("kb_confirm_overwrite_title"),
                 type: "warning",
-                confirmText: "Overwrite",
-                cancelText: "Cancel",
+                confirmText: t("kb_mode_overwrite"),
+                cancelText: t("kb_cancel"),
                 danger: true
             }
         );
     }
     if (mode === "new") {
         return await showConfirm(
-            `Create a new collection named "${label}"?`,
+            formatTemplate(t("kb_confirm_new"), { label }),
             {
-                title: "Create Collection",
+                title: t("kb_confirm_new_title"),
                 type: "info",
-                confirmText: "Create",
-                cancelText: "Cancel"
+                confirmText: t("kb_create"),
+                cancelText: t("kb_cancel")
             }
         );
     }
@@ -1244,8 +1356,8 @@ window.confirmIndexTask = async function () {
 
     const collections = await loadIndexCollections({ forceFetch: true });
     if (collections === null) {
-        await showModal("Failed to load existing collections. Please try again.", {
-            title: "Load Failed",
+        await showModal(t("kb_load_collections_failed"), {
+            title: t("kb_load_failed_title"),
             type: "error"
         });
         return;
@@ -1255,21 +1367,29 @@ window.confirmIndexTask = async function () {
         if (!els.idxCollection) return;
         const inputName = els.idxCollection.value.trim();
         if (!inputName) {
-            showModal("Collection name is required", { title: "Validation Error", type: "warning" });
+            showModal(t("kb_collection_name_required"), { title: t("kb_validation_error"), type: "warning" });
             return;
         }
 
         const matched = findMatchingCollection(collections, inputName);
         if (matched) {
             const displayName = getCollectionDisplayName(matched);
+            const displayNameSuffix = displayName && displayName !== inputName
+                ? (state.uiLanguage === "zh"
+                    ? `（别名“${displayName}”）`
+                    : ` as "${displayName}"`)
+                : "";
             const choice = await showChoice(
-                `Collection name "${inputName}" already exists${displayName && displayName !== inputName ? ` as "${displayName}"` : ""}. Choose "Append" to add data or "Overwrite" to drop and rebuild.`,
+                formatTemplate(t("kb_collection_exists"), {
+                    inputName,
+                    displayName: displayNameSuffix
+                }),
                 {
-                    title: "Name Already Exists",
+                    title: t("kb_name_exists_title"),
                     type: "warning",
-                    primaryText: "Append",
-                    secondaryText: "Overwrite",
-                    cancelText: "Cancel",
+                    primaryText: t("kb_mode_append"),
+                    secondaryText: t("kb_mode_overwrite"),
+                    cancelText: t("kb_cancel"),
                     primaryValue: "append",
                     secondaryValue: "overwrite",
                     dangerSecondary: true
@@ -1300,8 +1420,8 @@ window.confirmIndexTask = async function () {
 
     if (!els.idxCollectionSelect) return;
     if (collections.length === 0) {
-        await showModal("No existing collections found. Use \"New\" mode to create one.", {
-            title: "No Collections",
+        await showModal(t("kb_no_collections_message"), {
+            title: t("kb_no_collections_title"),
             type: "warning"
         });
         return;
@@ -1309,8 +1429,8 @@ window.confirmIndexTask = async function () {
 
     const selectedName = els.idxCollectionSelect.value;
     if (!selectedName) {
-        await showModal("Please select a collection.", {
-            title: "Selection Required",
+        await showModal(t("kb_select_collection_message"), {
+            title: t("kb_select_collection_title"),
             type: "warning"
         });
         return;
@@ -1334,20 +1454,20 @@ window.handleFileUpload = async function (input) {
         formData.append('file', input.files[i]);
     }
 
-    updateKBStatus(true, 'Uploading...');
+    updateKBStatus(true, t('kb_uploading'));
     try {
         const res = await fetch('/api/kb/upload', { method: 'POST', body: formData });
         if (res.ok) {
             await refreshKBFiles();
             updateKBStatus(false);
         } else {
-            showModal("Upload failed", { title: "Error", type: "error" });
+            showModal(t("kb_upload_failed"), { title: t("status_error"), type: "error" });
             updateKBStatus(false);
         }
     } catch (e) {
         console.error(e);
         updateKBStatus(false);
-        showModal("Upload error: " + e.message, { title: "Error", type: "error" });
+        showModal(t("kb_upload_error") + e.message, { title: t("status_error"), type: "error" });
     } finally {
         input.value = '';
     }
@@ -1355,11 +1475,11 @@ window.handleFileUpload = async function (input) {
 
 // Delete file (mounted to window)
 window.deleteKBFile = async function (category, filename) {
-    const action = category === 'collection' ? 'drop this collection' : 'delete this file';
-    const confirmed = await showConfirm(`Permanently ${action} (${filename})?`, {
-        title: "Delete Confirmation",
+    const action = category === 'collection' ? t('kb_delete_collection_action') : t('kb_delete_file_action');
+    const confirmed = await showConfirm(formatTemplate(t("kb_delete_confirm_message"), { action, name: filename }), {
+        title: t("kb_delete_confirm_title"),
         type: "warning",
-        confirmText: "Delete",
+        confirmText: t("kb_delete"),
         danger: true
     });
     if (!confirmed) return;
@@ -1370,7 +1490,7 @@ window.deleteKBFile = async function (category, filename) {
             refreshKBFiles();
         } else {
             const err = await res.json();
-            showModal("Delete failed: " + (err.error || res.statusText), { title: "Error", type: "error" });
+            showModal(t("kb_delete_failed") + (err.error || res.statusText), { title: t("status_error"), type: "error" });
         }
     } catch (e) {
         console.error(e);
@@ -1381,7 +1501,7 @@ window.deleteKBFile = async function (category, filename) {
 
 // Core: submit task and poll
 async function runKBTask(pipelineName, filePath, extraParams = {}) {
-    updateKBStatus(true, `Running ${pipelineName}...`);
+    updateKBStatus(true, formatTemplate(t("kb_running_task"), { task: pipelineName }));
 
     try {
         // A. Submit task
@@ -1404,7 +1524,7 @@ async function runKBTask(pipelineName, filePath, extraParams = {}) {
             throw new Error(data.error || 'Task start failed');
         }
     } catch (e) {
-        showModal(e.message, { title: "Task Error", type: "error" });
+        showModal(e.message, { title: t("kb_task_error_title"), type: "error" });
         updateKBStatus(false);
     }
 }
@@ -2483,7 +2603,16 @@ async function renderChatPipelineMenu() {
 
     // Update top label
     if (els.chatPipelineLabel) {
-        els.chatPipelineLabel.textContent = state.selectedPipeline || "Select Pipeline";
+        const fallbackName = els.chatPipelineLabel.dataset.currentName;
+        const name = state.selectedPipeline || fallbackName;
+        if (name) {
+            els.chatPipelineLabel.textContent = name;
+            els.chatPipelineLabel.dataset.selected = "true";
+            els.chatPipelineLabel.dataset.currentName = name;
+        } else {
+            els.chatPipelineLabel.textContent = t("select_pipeline");
+            els.chatPipelineLabel.dataset.selected = "false";
+        }
     }
 }
 
@@ -2951,7 +3080,7 @@ function renderChatHistory() {
             <div class="empty-state-wrapper fade-in-up">
                 <div class="greeting-section">
                     <div class="greeting-text">
-                        <span class="greeting-gradient">What shall we explore today?</span>
+                        <span class="greeting-gradient">${t("greeting_explore")}</span>
                     </div>
                 </div>
             </div>
@@ -3050,14 +3179,33 @@ function setChatStatus(message, variant = "info") {
     if (!els.chatStatus) return;
     const badge = els.chatStatus;
     const variants = { info: "bg-light text-dark", ready: "bg-light text-dark", running: "bg-primary text-white", success: "bg-success text-white", warn: "bg-warning text-dark", error: "bg-danger text-white" };
-    badge.className = `badge rounded-pill border ${variants[variant] || variants.info}`; badge.textContent = message || "";
+    const statusMap = {
+        "Ready": "status_ready",
+        "Offline": "status_offline",
+        "Engine Offline": "status_engine_offline",
+        "Thinking...": "status_thinking",
+        "Initializing...": "status_initializing",
+        "Reconnecting...": "status_reconnecting",
+        "Params Missing": "status_params_missing",
+        "Engine Ready": "status_engine_ready",
+        "Engine Error": "status_engine_error",
+        "Error": "status_error",
+        "Interrupted": "status_interrupted",
+        "Suspending...": "status_suspending",
+    };
+    const key = statusMap[message] || null;
+    badge.className = `badge rounded-pill border ${variants[variant] || variants.info}`;
+    badge.textContent = key ? t(key) : (message || "");
 }
 
 function updateChatIdleStatus() {
     if (state.chat.engineSessionId) {
         setChatStatus("Ready", "ready");
     } else {
-        setChatStatus("Engine Offline", "info");
+        // Avoid overriding to offline if a pipeline is selected but engine state is ambiguous
+        if (!state.selectedPipeline) {
+            setChatStatus("Engine Offline", "info");
+        }
     }
 }
 
@@ -5589,38 +5737,7 @@ function bindEvents() {
         });
     }
 
-    if (els.chatBack) {
-        const navigateBackToBuilder = async () => {
-            try {
-                saveCurrentSession(true);
-            } catch (e) {
-                console.error(e);
-            }
-
-            setChatRunning(false);
-
-            setMode(Modes.BUILDER);
-            updateUrlForView(Modes.BUILDER);
-            if (typeof switchWorkspaceMode === 'function') {
-                switchWorkspaceMode('pipeline');
-            }
-        };
-
-        els.chatBack.onclick = async () => {
-            if (state.chat.running) {
-                showInterruptConfirmDialog(async () => {
-                    if (state.chat.controller) {
-                        state.chat.controller.abort();
-                        state.chat.controller = null;
-                    }
-                    await navigateBackToBuilder();
-                });
-                return;
-            }
-
-            await navigateBackToBuilder();
-        };
-    }
+    setupSettingsMenu();
 
     if (els.chatForm) els.chatForm.onsubmit = handleChatSubmit;
     if (els.chatSend) els.chatSend.onclick = handleChatSubmit;
@@ -5736,7 +5853,7 @@ window.clearKbSelection = function (e) {
     // Simulate selecting empty item
     const mockItem = document.createElement('div');
     mockItem.dataset.value = "";
-    mockItem.dataset.label = "Knowledge Base";
+    mockItem.dataset.label = t("knowledge_base");
     selectKbOption(mockItem);
 };
 
@@ -5771,10 +5888,12 @@ window.selectKbOption = function (itemEl) {
     // Update trigger display
     if (value) {
         label.textContent = labelText;
+        label.dataset.selected = "true";
         trigger.classList.add('active');
         if (clearBtn) clearBtn.style.display = 'inline-flex';
     } else {
-        label.textContent = "Knowledge Base";
+        label.textContent = t("knowledge_base");
+        label.dataset.selected = "false";
         trigger.classList.remove('active');
         if (clearBtn) clearBtn.style.display = 'none';
     }
@@ -5811,7 +5930,7 @@ function renderKbDropdownOptions(collections) {
 
     // Sync hidden select options
     if (hiddenSelect) {
-        hiddenSelect.innerHTML = '<option value="">No Knowledge Base</option>';
+        hiddenSelect.innerHTML = `<option value="">${t('no_knowledge_base')}</option>`;
         collections.forEach(c => {
             const displayName = c.display_name || c.name;
             const opt = document.createElement("option");
@@ -5830,15 +5949,18 @@ function renderKbDropdownOptions(collections) {
         const selectedCollection = collections.find(c => c.name === currentVal);
         if (selectedCollection) {
             label.textContent = selectedCollection.display_name || selectedCollection.name;
+            label.dataset.selected = "true";
             trigger.classList.add('active');
             if (clearBtn) clearBtn.style.display = 'inline-flex';
         } else {
-            label.textContent = "Knowledge Base";
+            label.textContent = t("knowledge_base");
+            label.dataset.selected = "false";
             trigger.classList.remove('active');
             if (clearBtn) clearBtn.style.display = 'none';
         }
     } else if (trigger) {
-        label.textContent = "Knowledge Base";
+        label.textContent = t("knowledge_base");
+        label.dataset.selected = "false";
         trigger.classList.remove('active');
         if (clearBtn) clearBtn.style.display = 'none';
     }
@@ -5860,11 +5982,13 @@ window.updateKbLabel = function (selectEl) {
     const selectedVal = selectEl.value;
 
     if (!selectedVal) {
-        label.textContent = "Knowledge Base";
+        label.textContent = t("knowledge_base");
+        label.dataset.selected = "false";
         trigger.classList.remove('active');
     } else {
         const selectedText = selectEl.options[selectEl.selectedIndex].text;
         label.textContent = selectedText;
+        label.dataset.selected = "true";
         trigger.classList.add('active');
     }
 };
@@ -5892,6 +6016,7 @@ async function bootstrap() {
     }
 
     setMode(initialMode);
+    applyUILanguage(state.uiLanguage);
 
     if (!state.adminMode && initialMode === Modes.CHAT) {
         // Chat-only mode: directly enter Chat view
@@ -5971,8 +6096,160 @@ async function bootstrap() {
 // Hide admin-related buttons in Chat-only mode
 function applyChatOnlyMode() {
     // Hide "Configure Pipeline" back button (not allowed to return to Builder)
-    if (els.chatBack) {
-        els.chatBack.style.display = 'none';
+    if (els.settingsBuilder) {
+        els.settingsBuilder.style.display = "none";
+    }
+    if (els.settingsMenu) {
+        els.settingsMenu.classList.remove("open");
+    }
+}
+
+function applyUILanguage(lang) {
+    const resolved = UI_LANGUAGE_MAP[lang] ? lang : "en";
+    state.uiLanguage = resolved;
+
+    try {
+        localStorage.setItem(UI_LANGUAGE_STORAGE_KEY, resolved);
+    } catch (e) {
+        console.warn("Failed to persist UI language", e);
+    }
+
+    document.documentElement.setAttribute("data-ui-lang", resolved);
+
+    if (els.settingsLanguageLabel) {
+        els.settingsLanguageLabel.textContent = UI_LANGUAGE_MAP[resolved];
+    }
+
+    updateI18nTexts();
+
+    document.querySelectorAll("[data-ui-lang]").forEach((btn) => {
+        const isActive = btn.getAttribute("data-ui-lang") === resolved;
+        btn.classList.toggle("active", isActive);
+    });
+}
+
+async function navigateBackToBuilder() {
+    try {
+        saveCurrentSession(true);
+    } catch (e) {
+        console.error(e);
+    }
+
+    setChatRunning(false);
+
+    setMode(Modes.BUILDER);
+    updateUrlForView(Modes.BUILDER);
+    if (typeof switchWorkspaceMode === "function") {
+        switchWorkspaceMode("pipeline");
+    }
+}
+
+function setupSettingsMenu() {
+    if (!els.settingsMenu) return;
+
+    const closeMenu = () => {
+        els.settingsMenu.classList.remove("open");
+        const languageItem = document.getElementById("settings-language");
+        if (languageItem) languageItem.classList.remove("submenu-open");
+    };
+    const toggleMenu = () => els.settingsMenu.classList.toggle("open");
+
+    if (els.settingsMenuTrigger) {
+        els.settingsMenuTrigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+    }
+
+    document.addEventListener("click", (e) => {
+        if (!els.settingsMenu.contains(e.target)) {
+            closeMenu();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeMenu();
+        }
+    });
+
+    // Language submenu: keep open after hover/click until outside click
+    const languageItem = document.getElementById("settings-language");
+    if (languageItem) {
+        const openSubmenu = () => languageItem.classList.add("submenu-open");
+        const closeSubmenu = () => languageItem.classList.remove("submenu-open");
+
+        languageItem.addEventListener("mouseenter", openSubmenu);
+        languageItem.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isOpen = languageItem.classList.contains("submenu-open");
+            if (isOpen) {
+                closeSubmenu();
+            } else {
+                openSubmenu();
+            }
+        });
+
+        // Keep submenu open when moving between item and submenu
+        const languageSubmenu = document.getElementById("settings-language-submenu");
+        if (languageSubmenu) {
+            languageSubmenu.addEventListener("mouseenter", openSubmenu);
+            languageSubmenu.addEventListener("click", (e) => e.stopPropagation());
+        }
+
+        // Close submenu on outside click
+        document.addEventListener("click", (e) => {
+            if (!languageItem.contains(e.target)) {
+                closeSubmenu();
+            }
+        });
+    }
+
+    const languageButtons = document.querySelectorAll("[data-ui-lang]");
+    languageButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const lang = btn.getAttribute("data-ui-lang");
+            applyUILanguage(lang);
+            closeMenu();
+        });
+    });
+
+    if (els.settingsBuilder) {
+        els.settingsBuilder.onclick = async (e) => {
+            e?.stopPropagation();
+            if (state.chat.running) {
+                showInterruptConfirmDialog(async () => {
+                    if (state.chat.controller) {
+                        state.chat.controller.abort();
+                        state.chat.controller = null;
+                    }
+                    await navigateBackToBuilder();
+                });
+                return;
+            }
+
+            await navigateBackToBuilder();
+            closeMenu();
+        };
+    }
+
+    // Ensure chat pipeline dropdown closes after selection
+    const chatPipelineDropdown = document.getElementById("chatPipelineDropdown");
+    const chatPipelineMenu = document.getElementById("chat-pipeline-menu");
+    if (chatPipelineDropdown && chatPipelineMenu) {
+        chatPipelineMenu.addEventListener("click", () => {
+            if (window.bootstrap?.Dropdown) {
+                const inst =
+                    window.bootstrap.Dropdown.getInstance(chatPipelineDropdown) ||
+                    new window.bootstrap.Dropdown(chatPipelineDropdown);
+                inst.hide();
+            } else {
+                chatPipelineDropdown.classList.remove("show");
+                chatPipelineMenu.classList.remove("show");
+                chatPipelineDropdown.setAttribute("aria-expanded", "false");
+            }
+        });
     }
 }
 
@@ -6163,7 +6440,7 @@ async function requestBrowserNotification(title, message) {
 // Toggle background tasks panel
 window.toggleBackgroundPanel = function () {
     if (state.mode !== Modes.CHAT) {
-        showNotification('info', 'Background Tasks', 'Please switch to Chat to view background tasks.');
+        showNotification('info', t('bg_tasks_title'), t('bg_tasks_switch_chat'));
         return;
     }
 
@@ -6213,7 +6490,7 @@ function checkForCompletedTasks(tasks) {
             backgroundTaskState.notifiedTasks.add(task.task_id);
             showNotification(
                 'success',
-                'Background Task Completed',
+                t('bg_task_completed_title'),
                 task.question,
                 () => showBackgroundTaskDetail(task.task_id)
             );
@@ -6221,7 +6498,7 @@ function checkForCompletedTasks(tasks) {
             backgroundTaskState.notifiedTasks.add(task.task_id);
             showNotification(
                 'error',
-                'Background Task Failed',
+                t('bg_task_failed_title'),
                 task.error || task.question,
                 () => showBackgroundTaskDetail(task.task_id)
             );
@@ -6235,17 +6512,22 @@ function renderBackgroundTasksList() {
     if (!container) return;
 
     if (backgroundTaskState.tasks.length === 0) {
-        container.innerHTML = '<div class="text-muted text-center py-4 small">No background tasks</div>';
+        container.innerHTML = `<div class="text-muted text-center py-4 small">${t('bg_tasks_empty')}</div>`;
         return;
     }
 
     container.innerHTML = backgroundTaskState.tasks.map(task => {
         const time = task.created_at ? new Date(task.created_at * 1000).toLocaleTimeString() : '';
+        const statusText = task.status === 'running'
+            ? t('bg_task_running')
+            : task.status === 'completed'
+                ? t('bg_task_completed')
+                : t('bg_task_failed');
         return `
             <div class="bg-task-item ${task.status}" onclick="showBackgroundTaskDetail('${task.task_id}')">
                 <div class="bg-task-header">
                     <div class="bg-task-question">${escapeHtml(task.question)}</div>
-                    <span class="bg-task-status ${task.status}">${task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed'}</span>
+                    <span class="bg-task-status ${task.status}">${statusText}</span>
                 </div>
                 <div class="bg-task-meta">
                     <span>${task.pipeline_name}</span>
@@ -6294,14 +6576,15 @@ function updateBackgroundTasksCount() {
     }
 }
 
-function renderTaskDetailLoading(modal, message = 'Loading task details...') {
+function renderTaskDetailLoading(modal, message = null) {
     if (!modal) return;
+    const loadingMessage = message || t('bg_task_loading_details');
     modal.innerHTML = `
         <div style="padding: 32px; text-align: center;">
             <div class="spinner-border" style="color: #3b82f6; width: 2.5rem; height: 2.5rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">${t('bg_task_loading_details')}</span>
             </div>
-            <div style="margin-top: 16px; color: var(--text-secondary);">${escapeHtml(message)}</div>
+            <div style="margin-top: 16px; color: var(--text-secondary);">${escapeHtml(loadingMessage)}</div>
         </div>
     `;
 }
@@ -6316,7 +6599,7 @@ function setLoadButtonsLoading(taskId, isLoading, target) {
             btn.dataset.originalText = btn.dataset.originalText || btn.innerHTML;
             btn.disabled = true;
             btn.classList.add('disabled');
-            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${btn.dataset.loadTarget === 'new' ? 'Loading to new chat...' : 'Loading to chat...'}`;
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${btn.dataset.loadTarget === 'new' ? t('bg_task_loading_to_new') : t('bg_task_loading_to_current')}`;
         } else {
             btn.disabled = false;
             btn.classList.remove('disabled');
@@ -6340,7 +6623,7 @@ window.showBackgroundTaskDetail = async function (taskId) {
         document.body.appendChild(modal);
     }
 
-    renderTaskDetailLoading(modal, 'Loading task details...');
+    renderTaskDetailLoading(modal, t('bg_task_loading_details'));
     modal.showModal();
     backgroundTaskState.detailLoadingTaskId = taskId;
 
@@ -6357,22 +6640,26 @@ window.showBackgroundTaskDetail = async function (taskId) {
                 task = backgroundTaskState.tasks.find(t => t.task_id === taskId);
             }
             if (!task) {
-                showNotification('error', 'Error', 'Task not found');
+                showNotification('error', t('status_error'), t('bg_task_task_not_found'));
                 if (modal) modal.close();
                 backgroundTaskState.detailLoadingTaskId = null;
                 return;
             }
         }
 
-        const statusText = task.status === 'running' ? 'Running' : task.status === 'completed' ? 'Completed' : 'Failed';
+        const statusText = task.status === 'running'
+            ? t('bg_task_running')
+            : task.status === 'completed'
+                ? t('bg_task_completed')
+                : t('bg_task_failed');
 
         const actionButtons = `
             ${task.status === 'completed' ? `
-                <button class="btn btn-primary" onclick="copyTaskResult('${taskId}')">Copy Result</button>
-                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="current" onclick="loadTaskToChat('${taskId}','current')">Load to Current Chat</button>
-                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="new" onclick="loadTaskToChat('${taskId}','new')">Load to New Chat</button>
+                <button class="btn btn-primary" onclick="copyTaskResult('${taskId}')">${t('bg_task_copy_result')}</button>
+                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="current" onclick="loadTaskToChat('${taskId}','current')">${t('bg_task_load_current')}</button>
+                <button class="btn btn-outline-secondary" data-task-id="${taskId}" data-load-target="new" onclick="loadTaskToChat('${taskId}','new')">${t('bg_task_load_new')}</button>
             ` : ''}
-            <button class="btn btn-outline-danger ms-auto" onclick="deleteBackgroundTask('${taskId}')">Delete</button>
+            <button class="btn btn-outline-danger ms-auto" onclick="deleteBackgroundTask('${taskId}')">${t('bg_task_delete')}</button>
         `;
 
         modal.innerHTML = `
@@ -6387,7 +6674,7 @@ window.showBackgroundTaskDetail = async function (taskId) {
             </div>
             <div class="bg-task-detail-body">
                 <div class="bg-task-detail-question">
-                    <strong>Question</strong>
+                    <strong>${t('bg_task_question')}</strong>
                     ${escapeHtml(task.full_question || task.question)}
                 </div>
                 ${task.status === 'completed' ? `
@@ -6396,15 +6683,15 @@ window.showBackgroundTaskDetail = async function (taskId) {
                     </div>
                 ` : task.status === 'failed' ? `
                     <div class="bg-task-detail-question" style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15);">
-                        <strong style="color: #ef4444;">Error</strong>
-                        ${escapeHtml(task.error || 'Unknown error')}
+                        <strong style="color: #ef4444;">${t('bg_task_error')}</strong>
+                        ${escapeHtml(task.error || t('bg_task_unknown_error'))}
                     </div>
                 ` : `
                     <div style="text-align: center; padding: 40px 20px;">
                         <div class="spinner-border" style="color: #3b82f6; width: 2rem; height: 2rem;" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">${t('bg_task_loading_details')}</span>
                         </div>
-                        <div style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">Processing your request...</div>
+                        <div style="margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem;">${t('bg_task_processing')}</div>
                     </div>
                 `}
             </div>
@@ -6430,7 +6717,7 @@ window.showBackgroundTaskDetail = async function (taskId) {
         }
     } catch (e) {
         console.error('Failed to load task detail:', e);
-        renderTaskDetailLoading(modal, 'Failed to load task details.');
+        renderTaskDetailLoading(modal, t('bg_task_loading_details_failed'));
     } finally {
         backgroundTaskState.detailLoadingTaskId = null;
     }
@@ -6531,10 +6818,14 @@ window.loadTaskToChat = async function (taskId, target = 'current') {
         const modal = document.getElementById('bg-task-detail-modal');
         if (modal) modal.close();
 
-        showNotification('success', 'Loaded', target === 'new' ? 'Background task loaded to a new chat' : 'Background task loaded to the current chat');
+        showNotification(
+            'success',
+            t('bg_task_loaded'),
+            target === 'new' ? t('bg_task_loaded_new') : t('bg_task_loaded_current')
+        );
     } catch (e) {
         console.error('Failed to load task to chat:', e);
-        showNotification('error', 'Load Failed', e.message || 'Unable to load task into chat.');
+        showNotification('error', t('bg_task_load_failed'), e.message || t('bg_task_load_failed'));
     } finally {
         backgroundTaskState.loadToChatTaskId = null;
         backgroundTaskState.loadToChatTarget = null;
