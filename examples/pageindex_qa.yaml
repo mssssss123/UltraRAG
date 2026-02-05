@@ -1,0 +1,41 @@
+# PageIndex QA pipeline
+
+servers:
+  benchmark: servers/benchmark
+  pageindex: servers/pageindex
+  prompt: servers/prompt
+  generation: servers/generation
+  custom: servers/custom
+
+pipeline:
+- benchmark.get_data
+- generation.generation_init
+- pageindex.copy_query
+- pageindex.prepare_tree_search_prompt
+- generation.generate
+- pageindex.parse_tree_search
+- loop:
+    times: 3
+    steps:
+    - pageindex.prepare_search_decision_prompt:
+        input:
+          q_ls: orig_q_ls
+    - generation.generate
+    - branch:
+        router:
+        - pageindex.route_search_state
+        branches:
+          continue:
+          - pageindex.prepare_tree_search_prompt:
+              input:
+                q_ls: q_ls
+          - generation.generate
+          - pageindex.parse_tree_search:
+              output:
+                ret_psg: temp_psg
+          - custom.merge_passages
+          stop: []
+- prompt.qa_rag_boxed:
+    input:
+      q_ls: orig_q_ls
+- generation.generate

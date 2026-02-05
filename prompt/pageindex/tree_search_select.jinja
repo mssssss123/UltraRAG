@@ -1,0 +1,13 @@
+You are given a user query and a document outline with node_ids.
+Select up to {{ top_k }} node_ids that are most relevant to answer the query.
+
+Return JSON only:
+{
+  "node_ids": ["id1", "id2"]
+}
+
+Query:
+{{ query }}
+
+Outline:
+{{ outline }}

@@ -1,0 +1,143 @@
+# PageIndex index build pipeline
+# 支持超长文档，逻辑简洁
+
+servers:
+  generation: servers/generation
+  pageindex: servers/pageindex
+
+pipeline:
+# ========== 1. 初始化 ==========
+- pageindex.build_page_corpus
+- generation.generation_init
+
+# ========== 2. TOC 检测与提取 ==========
+- pageindex.prepare_toc_detect_prompts
+- generation.generate
+- pageindex.parse_toc_detect
+- pageindex.prepare_toc_extract_prompt
+- generation.generate
+- pageindex.parse_toc_extract
+
+# TOC 续写检查（防止 LLM 输出截断）
+- loop:
+    times: 5
+    steps:
+    - pageindex.prepare_toc_extract_check_prompt
+    - generation.generate
+    - branch:
+        router:
+        - pageindex.route_toc_extract_state
+        branches:
+          continue:
+          - pageindex.prepare_toc_extract_continue_prompt
+          - generation.generate
+          - pageindex.append_toc_content
+          stop: []
+
+# 检查 TOC 是否包含页码
+- pageindex.prepare_toc_page_index_prompt
+- generation.generate
+- pageindex.parse_toc_page_index
+
+# ========== 3. 根据 TOC 情况选择处理模式 ==========
+- pageindex.prepare_presence_routing
+- branch:
+    router:
+    - pageindex.route_toc_presence
+    branches:
+      # 模式A: TOC 有页码 → 直接转换映射
+      with_page_numbers:
+      - pageindex.prepare_toc_transform_prompt
+      - generation.generate
+      - pageindex.parse_toc_transform
+      - pageindex.prepare_toc_map_prompt
+      - generation.generate
+      - pageindex.parse_toc_map
+      - pageindex.apply_page_offset
+      - pageindex.prepare_fill_missing_prompts
+      - generation.generate
+      - pageindex.parse_fix_incorrect
+      - pageindex.normalize_toc_physical_index
+
+      # 模式B: TOC 无页码 → 分页填充
+      with_toc_no_page:
+      - pageindex.prepare_toc_transform_prompt
+      - generation.generate
+      - pageindex.parse_toc_transform
+      - pageindex.prepare_page_groups
+      - pageindex.prepare_toc_fill_prompt
+      - generation.generate
+      - pageindex.parse_toc_fill
+      - loop:
+          times: 200
+          steps:
+          - pageindex.prepare_group_routing
+          - branch:
+              router:
+              - pageindex.route_group_state
+              branches:
+                continue:
+                - pageindex.advance_group_idx
+                - pageindex.prepare_toc_fill_prompt
+                - generation.generate
+                - pageindex.parse_toc_fill
+                stop: []
+      - pageindex.normalize_toc_physical_index:
+          input:
+            toc_with_physical_index: toc_list
+
+      # 模式C: 无 TOC → 分页生成
+      no_toc:
+      - pageindex.prepare_page_groups
+      - pageindex.prepare_toc_generate_init_prompt
+      - generation.generate
+      - pageindex.parse_toc_generate
+      - loop:
+          times: 200
+          steps:
+          - pageindex.prepare_group_routing
+          - branch:
+              router:
+              - pageindex.route_group_state
+              branches:
+                continue:
+                - pageindex.advance_group_idx
+                - pageindex.prepare_toc_generate_continue_prompt
+                - generation.generate
+                - pageindex.parse_toc_generate_continue
+                - pageindex.merge_toc_lists
+                stop: []
+      - pageindex.normalize_toc_physical_index:
+          input:
+            toc_with_physical_index: toc_list
+
+# ========== 4. 验证与修复 ==========
+- pageindex.validate_physical_indices
+- pageindex.prepare_verify_title_prompts
+- generation.generate
+- pageindex.parse_verify_title
+- pageindex.prepare_fix_incorrect_prompts
+- generation.generate
+- pageindex.parse_fix_incorrect
+
+# ========== 5. 构建索引 ==========
+- pageindex.apply_preface_if_needed
+- pageindex.prepare_title_start_prompts
+- generation.generate
+- pageindex.apply_title_start
+- pageindex.build_index
+
+# ========== 6. 索引增强 ==========
+- pageindex.prepare_recursive_split_prompts:
+    input:
+      tree_json_path: index_path
+- generation.generate
+- pageindex.parse_recursive_split:
+    input:
+      tree_json_path: index_path
+- pageindex.prepare_node_summary_prompts
+- generation.generate
+- pageindex.apply_node_summaries
+- pageindex.prepare_doc_description_prompt
+- generation.generate
+- pageindex.apply_doc_description

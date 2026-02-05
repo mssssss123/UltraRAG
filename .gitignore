@@ -21,6 +21,7 @@ test/
 corpora/
 data/chat_sessions/
 data/knowledge_base/
+data/pageindex/
 # Environment variables and secrets
 .env
 
@@ -33,3 +34,5 @@ servers/*/server.yaml
 
 # Python package metadata
 src/*.egg-info/
+
+PageIndex-main

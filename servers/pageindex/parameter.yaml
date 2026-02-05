@@ -1,0 +1,66 @@
+# servers/pageindex/parameter.yaml
+
+# Page corpus inputs
+parse_file_path: ""
+page_corpus_save_path: data/pageindex/page_corpus.jsonl
+tokenizer_model: gpt-4o-2024-11-20
+
+# Index outputs
+index_dir: data/pageindex
+index_name: ""
+if_add_node_id: "yes"
+if_add_node_text: "yes"
+
+# TOC prompt controls
+toc_check_page_num: 20
+max_page_chars: 4000
+max_toc_chars: 12000
+max_map_chars: 12000
+
+# Chunking controls
+max_group_tokens: 20000
+overlap_pages: 1
+
+# Verify/fix controls
+verify_sample_size: 20
+max_fix_pages: 20
+accuracy_threshold: 0.6
+
+# Recursive split controls
+max_page_num_each_node: 10
+max_token_num_each_node: 20000
+max_chunk_chars: 12000
+
+# Summary controls
+summary_token_threshold: 200
+max_summary_chars: 12000
+
+# Prompt templates (repo-relative paths)
+toc_detect_template: prompt/pageindex/toc_detect.jinja
+toc_detect_page_index_template: prompt/pageindex/toc_detect_page_index.jinja
+toc_extract_template: prompt/pageindex/toc_extract.jinja
+toc_extract_check_template: prompt/pageindex/toc_extract_check.jinja
+toc_extract_continue_template: prompt/pageindex/toc_extract_continue.jinja
+toc_transform_template: prompt/pageindex/toc_transform.jinja
+toc_transform_check_template: prompt/pageindex/toc_transform_check.jinja
+toc_transform_continue_template: prompt/pageindex/toc_transform_continue.jinja
+toc_map_template: prompt/pageindex/toc_map_physical.jinja
+toc_verify_template: prompt/pageindex/toc_verify_title.jinja
+toc_fix_template: prompt/pageindex/toc_fix_incorrect.jinja
+toc_generate_init_template: prompt/pageindex/toc_generate_init.jinja
+toc_generate_continue_template: prompt/pageindex/toc_generate_continue.jinja
+toc_fill_template: prompt/pageindex/toc_fill_physical_index.jinja
+toc_check_start_template: prompt/pageindex/toc_check_start.jinja
+tree_search_template: prompt/pageindex/tree_search_select.jinja
+node_summary_template: prompt/pageindex/node_summary.jinja
+doc_description_template: prompt/pageindex/doc_description.jinja
+search_decision_template: prompt/pageindex/search_decision.jinja
+
+# Tree search inputs
+tree_json_path: ""
+top_k: 5
+max_depth: 4
+max_nodes: 200
+max_outline_chars: 12000
+max_passage_chars: 4000
+include_summary: true
